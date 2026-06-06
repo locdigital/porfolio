@@ -100,29 +100,33 @@ const pathname = Astro.url.pathname;
   <!-- ============================================================
        FOOTER
   ============================================================ -->
-  <div class="footer-divider"></div>
-  <div class="container">
-    <footer class="footer r" aria-label="Footer">
-      <div class="footer-contact">
-        Let's connect —
-        <button class="email-copy" id="copy-email" aria-label="Copy email address" data-tip="Copy">
-          hi@loc.digital
-        </button>
+  {!pathname.startsWith('/gallery') && (
+    <>
+      <div class="footer-divider"></div>
+      <div class="container">
+        <footer class="footer r" aria-label="Footer">
+          <div class="footer-contact">
+            Let's connect —
+            <button class="email-copy" id="copy-email" aria-label="Copy email address" data-tip="Copy">
+              hi@loc.digital
+            </button>
+          </div>
+          <ul class="footer-links">
+            <li><a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer"
+                aria-label="LinkedIn">LinkedIn ↗</a></li>
+            <li><a href="https://github.com/phucloc" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub ↗</a></li>
+            <li><a href="https://phucloc.digital/resume" target="_blank" rel="noopener noreferrer"
+                aria-label="Resume">Resume ↗</a></li>
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </footer>
+        <div class="colophon">
+          <span>© 2026 Phuc Loc Nguyen</span>
+          <span>Astro · Static HTML · WCAG 2.2 AA</span>
+        </div>
       </div>
-      <ul class="footer-links">
-        <li><a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer"
-            aria-label="LinkedIn">LinkedIn ↗</a></li>
-        <li><a href="https://github.com/phucloc" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub ↗</a></li>
-        <li><a href="https://phucloc.digital/resume" target="_blank" rel="noopener noreferrer"
-            aria-label="Resume">Resume ↗</a></li>
-        <li><a href="/rss.xml">RSS</a></li>
-      </ul>
-    </footer>
-    <div class="colophon">
-      <span>© 2026 Phuc Loc Nguyen</span>
-      <span>Astro · Static HTML · WCAG 2.2 AA</span>
-    </div>
-  </div>
+    </>
+  )}
 
   <!-- Scripts -->
   <script is:inline>
