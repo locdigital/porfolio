@@ -16,7 +16,7 @@ const uniquePhotos = Array.from(
       <div id="gallery-canvas" class="gallery-canvas">
         {uniquePhotos.map((photo, index) => (
           <div
-            class="gallery-item"
+            class="gallery-item original-item"
             data-w={photo.w}
             data-h={photo.h}
           >
@@ -91,6 +91,8 @@ const uniquePhotos = Array.from(
 
     const GAP = 5; // px gap between images
 
+    let blockHeight = 0;
+
     function getColumnCount() {
       const w = window.innerWidth;
       if (w <= 480) return 2;
@@ -100,7 +102,10 @@ const uniquePhotos = Array.from(
     }
 
     function buildMasonry() {
-      const items = Array.from(canvas.querySelectorAll('.gallery-item'));
+      // Remove any existing clones (for resize)
+      canvas.querySelectorAll('.clone-item').forEach(el => el.remove());
+
+      const items = Array.from(canvas.querySelectorAll('.original-item'));
       const cols = getColumnCount();
       const totalWidth = canvas.offsetWidth - GAP * (cols - 1);
       const colWidth = totalWidth / cols;
@@ -130,9 +135,33 @@ const uniquePhotos = Array.from(
         colHeights[shortestCol] += itemHeight + GAP;
       });
 
-      // Set canvas height
-      const totalHeight = Math.max(...colHeights);
-      canvas.style.height = totalHeight + 'px';
+      // The height of one complete set
+      blockHeight = Math.max(...colHeights);
+
+      // Create clones for infinite scroll
+      const fragment = document.createDocumentFragment();
+      
+      // Clone Above (offset Y by -blockHeight)
+      items.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.remove('original-item');
+        clone.classList.add('clone-item');
+        const y = parseFloat(item.style.top) - blockHeight;
+        clone.style.top = y + 'px';
+        fragment.appendChild(clone);
+      });
+
+      // Clone Below (offset Y by +blockHeight)
+      items.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.remove('original-item');
+        clone.classList.add('clone-item');
+        const y = parseFloat(item.style.top) + blockHeight;
+        clone.style.top = y + 'px';
+        fragment.appendChild(clone);
+      });
+
+      canvas.appendChild(fragment);
     }
 
     // Build layout immediately with known dimensions
@@ -144,17 +173,20 @@ const uniquePhotos = Array.from(
     let targetY = 0;
     let velocityY = 0;
 
-    function getMaxScroll() {
-      return -(parseInt(canvas.style.height || '0') - container.clientHeight + GAP);
-    }
-
-    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-
     function tick() {
+      if (blockHeight > 0) {
+        // Infinite wrap logic
+        while (targetY <= -blockHeight) {
+          targetY += blockHeight;
+          currentY += blockHeight;
+        }
+        while (targetY > 0) {
+          targetY -= blockHeight;
+          currentY -= blockHeight;
+        }
+      }
+
       currentY += (targetY - currentY) * 0.1;
-      const maxScroll = getMaxScroll();
-      currentY = clamp(currentY, maxScroll, 0);
-      targetY = clamp(targetY, maxScroll, 0);
       canvas.style.transform = `translate3d(0, ${currentY}px, 0)`;
       requestAnimationFrame(tick);
     }
