@@ -1,0 +1,590 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const locations = [
+  {
+    id: "phu-quy",
+    name: "Phú Quý",
+    slug: "phu-quy",
+    description: "Island life at its most untouched — turquoise water, fishing boats, and red-rock cliffs.",
+    photos: [
+      { src: "assets/photos/phu-quy/photo-1.jpg", alt: "Phú Quý — photo 1", w: 1280, h: 1920 },
+      { src: "assets/photos/phu-quy/photo-2.jpg", alt: "Phú Quý — photo 2", w: 1280, h: 1920 },
+      { src: "assets/photos/phu-quy/photo-3.jpg", alt: "Phú Quý — photo 3", w: 1280, h: 1920 },
+      { src: "assets/photos/phu-quy/photo-4.jpg", alt: "Phú Quý — photo 4", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-quy/photo-4.jpg", alt: "Phú Quý — photo 5", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-quy/photo-4.jpg", alt: "Phú Quý — photo 6", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-quy/photo-4.jpg", alt: "Phú Quý — photo 7", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-quy/photo-4.jpg", alt: "Phú Quý — photo 8", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-quy/photo-4.jpg", alt: "Phú Quý — photo 9", w: 1920, h: 1280 },
+    ],
+  },
+  {
+    id: "phu-yen",
+    name: "Phú Yên",
+    slug: "phu-yen",
+    description: "Golden hour on Gành Đá Đĩa, winding roads along the coast, and the bluest sky.",
+    photos: [
+      { src: "assets/photos/phu-yen/photo-1.jpg", alt: "Phú Yên — photo 1", w: 1280, h: 1920 },
+      { src: "assets/photos/phu-yen/photo-4.jpg", alt: "Phú Yên — photo 2", w: 1280, h: 1920 },
+      { src: "assets/photos/phu-yen/photo-1.jpg", alt: "Phú Yên — photo 3", w: 1280, h: 1920 },
+      { src: "assets/photos/phu-yen/photo-2.jpg", alt: "Phú Yên — photo 4", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-yen/photo-3.jpg", alt: "Phú Yên — photo 5", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-yen/photo-2.jpg", alt: "Phú Yên — photo 6", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-yen/photo-3.jpg", alt: "Phú Yên — photo 7", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-yen/photo-2.jpg", alt: "Phú Yên — photo 8", w: 1920, h: 1280 },
+      { src: "assets/photos/phu-yen/photo-3.jpg", alt: "Phú Yên — photo 9", w: 1920, h: 1280 },
+    ],
+  },
+  {
+    id: "quy-nhon",
+    name: "Quy Nhơn",
+    slug: "quy-nhon",
+    description: "Hidden beaches, Cham towers at dusk, and long stretches of empty white sand.",
+    photos: [
+      { src: "assets/photos/quy-nhon/photo-1.jpg", alt: "Quy Nhơn — photo 1", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-2.jpg", alt: "Quy Nhơn — photo 2", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-3.jpg", alt: "Quy Nhơn — photo 3", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-4.jpg", alt: "Quy Nhơn — photo 4", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-1.jpg", alt: "Quy Nhơn — photo 5", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-2.jpg", alt: "Quy Nhơn — photo 6", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-3.jpg", alt: "Quy Nhơn — photo 7", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-4.jpg", alt: "Quy Nhơn — photo 8", w: 1920, h: 1280 },
+      { src: "assets/photos/quy-nhon/photo-1.jpg", alt: "Quy Nhơn — photo 9", w: 1920, h: 1280 },
+    ],
+  },
+  {
+    id: "da-lat",
+    name: "Đà Lạt",
+    slug: "da-lat",
+    description: "Pine forests in the mist, flower fields, and the cool air of Vietnam's highland city.",
+    photos: [
+      { src: "assets/photos/da-lat/photo-2.jpg", alt: "Đà Lạt — photo 1", w: 1280, h: 1920 },
+      { src: "assets/photos/da-lat/photo-3.jpg", alt: "Đà Lạt — photo 2", w: 1280, h: 1920 },
+      { src: "assets/photos/da-lat/photo-4.jpg", alt: "Đà Lạt — photo 3", w: 1280, h: 1920 },
+      { src: "assets/photos/da-lat/photo-1.jpg", alt: "Đà Lạt — photo 4", w: 1920, h: 1280 },
+      { src: "assets/photos/da-lat/photo-1.jpg", alt: "Đà Lạt — photo 5", w: 1920, h: 1280 },
+      { src: "assets/photos/da-lat/photo-1.jpg", alt: "Đà Lạt — photo 6", w: 1920, h: 1280 },
+      { src: "assets/photos/da-lat/photo-1.jpg", alt: "Đà Lạt — photo 7", w: 1920, h: 1280 },
+      { src: "assets/photos/da-lat/photo-1.jpg", alt: "Đà Lạt — photo 8", w: 1920, h: 1280 },
+      { src: "assets/photos/da-lat/photo-1.jpg", alt: "Đà Lạt — photo 9", w: 1920, h: 1280 },
+    ],
+  },
+];
+---
+
+<Layout title="Photos — Phuc Loc Nguyen">
+
+  <main class="photos-page">
+
+    <!-- PAGE HERO -->
+    <section class="photos-hero" aria-label="Photos introduction">
+      <div class="container">
+        <div class="sh r">
+          <span class="sh-title" data-parallax=".1">Photos</span>
+          <span class="sh-number" data-parallax=".3">—</span>
+        </div>
+        <h1 class="photos-heading r" data-d="1">
+          Places I've<br><em>wandered.</em>
+        </h1>
+        <p class="photos-subtext r" data-d="2">
+          Shot on whatever was in my pocket. These are the places that stayed with me.
+        </p>
+      </div>
+    </section>
+
+    <!-- QUICK NAV -->
+    <div class="photos-nav-wrapper">
+      <div class="container">
+        <nav class="photos-nav" aria-label="Locations navigation">
+          <ul class="photos-nav-list">
+            {locations.map((loc, i) => (
+              <li>
+                <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`} data-nav-target={loc.slug}>
+                  {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- LOCATION SECTIONS -->
+    {locations.map((loc, locIdx) => (
+      <section
+        class="loc-section"
+        id={loc.slug}
+        aria-label={`Photos from ${loc.name}`}
+      >
+        <div class="container">
+          <!-- Location header -->
+          <div class="loc-header r" data-d="1">
+            <div class="loc-meta">
+              <span class="loc-index">{String(locIdx + 1).padStart(2, '0')}</span>
+              <div>
+                <h2 class="loc-name">{loc.name}</h2>
+                <p class="loc-desc">{loc.description}</p>
+              </div>
+            </div>
+            <span class="loc-count">{loc.photos.length} photos</span>
+          </div>
+        </div>
+
+        <!-- Masonry grid — full-bleed inside container -->
+        <div class="container">
+          <div class={`loc-grid loc-grid--${loc.photos.length}`} data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
+            {loc.photos.map((photo, i) => (
+              <a
+                href={photo.src}
+                class="loc-photo-item r"
+                data-d={String((i % 5) + 1)}
+                data-pswp-width={photo.w}
+                data-pswp-height={photo.h}
+                aria-label={photo.alt}
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  loading={locIdx === 0 && i < 2 ? "eager" : "lazy"}
+                />
+                <div class="loc-photo-overlay" aria-hidden="true">
+                  <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <!-- BACK LINK -->
+    <div class="container photos-back r">
+      <a href="/#photography" class="back-link">← Back to home</a>
+    </div>
+
+  </main>
+
+</Layout>
+
+<style>
+  /* ── Page ── */
+  .photos-page {
+    padding-top: var(--hdr-h);
+  }
+
+  /* ── Hero ── */
+  .photos-hero {
+    padding: clamp(56px, 8vw, 100px) 0 clamp(32px, 4vw, 52px);
+  }
+
+  .photos-heading {
+    font-family: var(--serif);
+    font-size: clamp(44px, 7vw, 96px);
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -.025em;
+    color: var(--text);
+    margin-bottom: 20px;
+    margin-top: 28px;
+  }
+
+  .photos-heading em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .photos-subtext {
+    font-size: clamp(14px, 1.5vw, 16px);
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  /* ── Quick Nav ── */
+  .photos-nav-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: transparent;
+    padding: 28px 0;
+    margin-bottom: 40px;
+    margin-top: -1px;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease, padding 0.3s ease;
+  }
+
+  .photos-nav-wrapper.is-scrolled {
+    background: transparent;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  @supports (backdrop-filter: blur(10px)) {
+    .photos-nav-wrapper.is-scrolled {
+      background: transparent;
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .photos-nav-wrapper.is-scrolled {
+      background: rgba(20, 20, 20, 0.85);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    }
+    @supports (backdrop-filter: blur(10px)) {
+      .photos-nav-wrapper.is-scrolled {
+        background: linear-gradient(135deg, rgba(30, 30, 30, 0.65) 0%, rgba(15, 15, 15, 0.4) 100%);
+      }
+    }
+  }
+
+  .photos-nav-list {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .photos-nav-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .photos-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 40px;
+    font-size: 15px;
+    font-family: var(--sans, system-ui, -apple-system, sans-serif);
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .photos-nav-link:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .photos-nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .photos-nav-count {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--mono, monospace);
+    transform: translateY(-30%);
+    display: inline-block;
+  }
+
+  /* Active state mimicking the image */
+  .photos-nav-link.active {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .photos-nav-link.active .photos-nav-count {
+    color: var(--bg);
+    opacity: 0.7;
+  }
+
+  /* ── Location section ── */
+  .loc-section {
+    padding: clamp(80px, 12vw, 160px) 0;
+    scroll-margin-top: calc(var(--hdr-h, 80px) + 70px); /* Account for sticky nav height */
+  }
+
+  .loc-section:not(:first-of-type) {
+    border-top: 1px solid var(--divider);
+  }
+
+  .loc-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .loc-meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .loc-index {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    padding-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .loc-name {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .loc-desc {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 420px;
+    line-height: 1.65;
+  }
+
+  .loc-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 4px;
+    letter-spacing: .06em;
+  }
+
+  /* ── Image Grid ── */
+  .loc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, auto);
+    grid-auto-flow: column;
+    gap: 6px;
+  }
+
+  .loc-photo-item {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05); /* placeholder color */
+  }
+
+  /* First 3 items span 2 rows (tall) */
+  .loc-photo-item:nth-child(1),
+  .loc-photo-item:nth-child(2),
+  .loc-photo-item:nth-child(3) {
+    grid-row: span 2;
+  }
+
+  /* Remaining items span 1 row (wide) */
+  .loc-photo-item:nth-child(n+4) {
+    grid-row: span 1;
+    aspect-ratio: 3 / 2;
+  }
+
+  .loc-photo-item img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .65s ease;
+    transition: transform .65s var(--ease-out, ease);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  @media (hover: hover) {
+    .loc-photo-item:hover img {
+      transform: scale(1.04);
+    }
+  }
+
+  /* Overlay: appears on hover */
+  .loc-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.35) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity .35s ease;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    padding: 14px 16px;
+  }
+
+  .loc-photo-item:hover .loc-photo-overlay {
+    opacity: 1;
+  }
+
+  .loc-photo-index {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(255,255,255,.7);
+    letter-spacing: .1em;
+  }
+
+  /* ── Back link ── */
+  .photos-back {
+    padding: clamp(32px, 4vw, 56px) 0 clamp(48px, 6vw, 80px);
+    border-top: 1px solid var(--divider);
+    margin-top: clamp(16px, 2vw, 32px);
+  }
+
+  .back-link {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--mono);
+    transition: color .25s ease;
+    letter-spacing: .04em;
+  }
+
+  .back-link:hover {
+    color: var(--text);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .loc-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto;
+      grid-auto-flow: row dense;
+    }
+    
+    .loc-photo-item:nth-child(1),
+    .loc-photo-item:nth-child(2) {
+      grid-row: span 2;
+    }
+    
+    .loc-photo-item:nth-child(3) {
+      grid-row: span 1;
+      aspect-ratio: 1;
+    }
+
+    .loc-photo-item:nth-child(n+4) {
+      aspect-ratio: 1; /* make the rest square */
+    }
+  }
+
+  @media (max-width: 560px) {
+    .loc-header {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .loc-meta {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .loc-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+    }
+  }
+</style>
+
+<script is:inline>
+  // PhotoSwipe per-gallery init
+  (function () {
+    document.addEventListener('DOMContentLoaded', () => {
+      // Re-use IO from layout for .r elements on this page
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -32px 0px' });
+      document.querySelectorAll('.r').forEach(el => io.observe(el));
+
+      // Active state for sticky nav buttons
+      const sections = document.querySelectorAll('.loc-section');
+      const navLinks = document.querySelectorAll('.photos-nav-link');
+
+      const navIo = new IntersectionObserver(entries => {
+        let activeId = null;
+        // Find the topmost intersecting section
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            activeId = entry.target.id;
+          }
+        });
+        
+        if (activeId) {
+          navLinks.forEach(link => {
+            if (link.getAttribute('data-nav-target') === activeId) {
+              link.classList.add('active');
+              // Scroll the nav link into view horizontally if needed
+              link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      }, { threshold: 0.2, rootMargin: '-100px 0px -40% 0px' });
+
+      sections.forEach(sec => navIo.observe(sec));
+      
+      // Smooth scroll on click for nav links
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId && targetId.startsWith('#')) {
+            e.preventDefault();
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth' });
+              // Update URL hash without jumping
+              history.pushState(null, null, targetId);
+            }
+          }
+        });
+      });
+
+      // Toggle background when scrolling
+      const navWrapper = document.querySelector('.photos-nav-wrapper');
+      if (navWrapper) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 50) {
+            navWrapper.classList.add('is-scrolled');
+          } else {
+            navWrapper.classList.remove('is-scrolled');
+          }
+        }, { passive: true });
+      }
+    });
+  })();
+</script>
+
+<script type="module" is:inline>
+  import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+
+  // One lightbox instance covering all galleries on the page
+  const lb = new PhotoSwipeLightbox({
+    gallery: '[data-gallery]',
+    children: 'a',
+    pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js'),
+    showHideAnimationType: 'zoom',
+    bgOpacity: 0.95,
+    padding: { top: 20, bottom: 40, left: 20, right: 20 },
+    preloaderDelay: 0,
+  });
+
+  // Caption: show alt text
+  lb.on('uiRegister', () => {
+    lb.pswp?.ui?.registerElement?.({
+      name: 'caption', order: 9, isButton: false, appendTo: 'root',
+      onInit: (el, pswp) => {
+        el.style.cssText = 'position:absolute;bottom:0;left:0;right:0;padding:12px 20px;font-family:\'DM Mono\',monospace;font-size:11px;color:rgba(255,255,255,.55);text-align:center;letter-spacing:.06em;pointer-events:none;';
+        pswp.on('change', () => { el.textContent = pswp.currSlide.data.element?.querySelector('img')?.alt || ''; });
+      }
+    });
+  });
+
+  lb.init();
+</script>
