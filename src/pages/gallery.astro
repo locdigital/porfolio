@@ -2,221 +2,216 @@
 import Layout from "../layouts/Layout.astro";
 import { locations } from "../lib/locations";
 
-// Get unique photos by source to avoid duplicates
+// Unique photos (deduplicated by src)
 const uniquePhotos = Array.from(
   new Map(
     locations.flatMap(loc => loc.photos).map(photo => [photo.src, photo])
   ).values()
 );
-
-// Map photos with dynamic masonry spans based on aspect ratio
-const allPhotos = uniquePhotos.map((photo, index) => {
-  const ratio = photo.w / photo.h;
-  let spanClass = "gallery-span-standard";
-  
-  if (ratio < 0.8) {
-    // Portrait (Tall) -> e.g. 1280x1920 (ratio 0.66)
-    spanClass = "gallery-span-tall";
-  } else if (ratio > 1.35) {
-    // Landscape (Wide) -> e.g. 1920x1280 (ratio 1.5)
-    // Alternate some landscape to be featured large (2x2) and some to be wide (2x1)
-    spanClass = index % 5 === 0 ? "gallery-span-large" : "gallery-span-wide";
-  } else {
-    // Square-ish / Standard (1x1)
-    // Alternate some standard photos to be large (2x2) for dynamic hierarchy
-    spanClass = index % 7 === 0 ? "gallery-span-large" : "gallery-span-standard";
-  }
-  
-  return {
-    ...photo,
-    spanClass
-  };
-});
 ---
 
 <Layout title="Gallery — Phuc Loc Nguyen">
-  <main class="gallery-wrapper fixed inset-0 overflow-hidden bg-white select-none">
-    <div class="gallery-container">
-      <div id="gallery-grid" class="gallery-grid">
-        {allPhotos.map((photo, index) => (
-          <div class={`gallery-item ${photo.spanClass}`}>
-            <img src={photo.src} alt={photo.alt} loading={index < 10 ? "eager" : "lazy"} />
+  <main class="gallery-page">
+    <div id="gallery-container" class="gallery-container">
+      <div id="gallery-canvas" class="gallery-canvas">
+        {uniquePhotos.map((photo, index) => (
+          <div
+            class="gallery-item"
+            data-w={photo.w}
+            data-h={photo.h}
+          >
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading={index < 16 ? "eager" : "lazy"}
+              draggable="false"
+            />
           </div>
         ))}
       </div>
     </div>
-    
+  </main>
+</Layout>
+
 <style>
-  .gallery-wrapper {
-    touch-action: none; /* Prevent native scroll */
-    background: #ffffff;
+  .gallery-page {
     position: fixed;
     inset: 0;
-    z-index: 40; /* Sit above normal page flow if needed, but below cursor/nav if any */
+    background: #fff;
+    overflow: hidden;
   }
 
   .gallery-container {
     position: absolute;
     inset: 0;
-    width: 100vw;
-    height: 100vh;
+    overflow: hidden;
     cursor: grab;
   }
+
   .gallery-container:active {
     cursor: grabbing;
   }
 
-  /* The masonry grid */
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: clamp(100px, 9vw, 160px);
-    grid-auto-flow: dense;
-    gap: 5px;
+  /* Canvas is absolutely positioned for JS masonry */
+  .gallery-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    /* height set by JS */
     will-change: transform;
   }
 
-  @media (max-width: 900px) {
-    .gallery-grid {
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: clamp(90px, 12vw, 130px);
-    }
-  }
-
-  @media (max-width: 600px) {
-    .gallery-grid {
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: clamp(80px, 18vw, 100px);
-    }
-  }
-
   .gallery-item {
-    position: relative;
-    background: #f5f5f5;
+    position: absolute;
     overflow: hidden;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .gallery-span-standard {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-
-  .gallery-span-tall {
-    grid-column: span 1;
-    grid-row: span 2;
-  }
-
-  .gallery-span-wide {
-    grid-column: span 2;
-    grid-row: span 1;
-  }
-
-  .gallery-span-large {
-    grid-column: span 2;
-    grid-row: span 2;
+    /* top/left/width/height set by JS */
   }
 
   .gallery-item img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     pointer-events: none;
     user-select: none;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.04);
   }
 </style>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.gallery-container');
-    const grid = document.getElementById('gallery-grid');
-    
-    if (!container || !grid) return;
+    const container = document.getElementById('gallery-container');
+    const canvas = document.getElementById('gallery-canvas');
+    if (!container || !canvas) return;
 
-    const originalCount = grid.children.length;
-    let blockHeight = 0;
-    const gap = 5;
+    const GAP = 5; // px gap between images
 
-    // Clone items 2 times to ensure we can scroll infinitely in both directions seamlessly
-    const items = Array.from(grid.children);
-    for (let i = 0; i < 2; i++) {
-      items.forEach(item => {
-        grid.appendChild(item.cloneNode(true));
-      });
+    function getColumnCount() {
+      const w = window.innerWidth;
+      if (w <= 480) return 2;
+      if (w <= 768) return 3;
+      if (w <= 1200) return 4;
+      return 5;
     }
 
-    let isDragging = false;
-    let startY = 0;
-    
-    // Target and current values for lerp
+    function buildMasonry() {
+      const items = Array.from(canvas.querySelectorAll('.gallery-item'));
+      const cols = getColumnCount();
+      const totalWidth = canvas.offsetWidth - GAP * (cols - 1);
+      const colWidth = totalWidth / cols;
+
+      // Track bottom Y of each column
+      const colHeights = new Array(cols).fill(0);
+
+      items.forEach(item => {
+        const w = parseInt(item.dataset.w) || 1;
+        const h = parseInt(item.dataset.h) || 1;
+        const itemHeight = Math.round(colWidth * h / w);
+
+        // Place in shortest column
+        let shortestCol = 0;
+        for (let i = 1; i < cols; i++) {
+          if (colHeights[i] < colHeights[shortestCol]) shortestCol = i;
+        }
+
+        const x = shortestCol * (colWidth + GAP);
+        const y = colHeights[shortestCol];
+
+        item.style.left = x + 'px';
+        item.style.top = y + 'px';
+        item.style.width = colWidth + 'px';
+        item.style.height = itemHeight + 'px';
+
+        colHeights[shortestCol] += itemHeight + GAP;
+      });
+
+      // Set canvas height
+      const totalHeight = Math.max(...colHeights);
+      canvas.style.height = totalHeight + 'px';
+    }
+
+    // Build layout immediately with known dimensions
+    buildMasonry();
+    window.addEventListener('resize', buildMasonry);
+
+    // ── Smooth drag scroll ──────────────────────────────────────────────────
     let currentY = 0;
     let targetY = 0;
+    let velocityY = 0;
 
-    function calculateBlockHeight() {
-      const allItems = Array.from(grid.children);
-      const originalItems = allItems.slice(0, originalCount);
-      
-      const gridRect = grid.getBoundingClientRect();
-      let maxBottom = 0;
-      
-      originalItems.forEach(item => {
-        const rect = item.getBoundingClientRect();
-        if (rect.bottom > maxBottom) {
-          maxBottom = rect.bottom;
-        }
-      });
-      
-      // Calculate total height of the first block including the gap at the bottom
-      blockHeight = (maxBottom - gridRect.top) + gap;
+    function getMaxScroll() {
+      return -(parseInt(canvas.style.height || '0') - container.clientHeight + GAP);
     }
 
-    // Wait for layout to settle, then calculate
-    setTimeout(() => {
-      calculateBlockHeight();
-      raf(); // start animation loop
-    }, 100);
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
-    window.addEventListener('resize', calculateBlockHeight);
+    function tick() {
+      currentY += (targetY - currentY) * 0.1;
+      const maxScroll = getMaxScroll();
+      currentY = clamp(currentY, maxScroll, 0);
+      targetY = clamp(targetY, maxScroll, 0);
+      canvas.style.transform = `translate3d(0, ${currentY}px, 0)`;
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // Pointer drag (desktop)
+    let dragging = false;
+    let dragStartY = 0;
+    let dragLastY = 0;
 
     container.addEventListener('pointerdown', (e) => {
-      isDragging = true;
-      startY = e.clientY;
+      dragging = true;
+      dragStartY = dragLastY = e.clientY;
+      velocityY = 0;
+      container.setPointerCapture(e.pointerId);
     });
 
-    window.addEventListener('pointermove', (e) => {
-      if (!isDragging) return;
-      targetY += (e.clientY - startY) * 1.5;
-      startY = e.clientY;
+    container.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dy = e.clientY - dragLastY;
+      velocityY = dy;
+      dragLastY = e.clientY;
+      targetY += dy;
     });
 
-    window.addEventListener('pointerup', () => isDragging = false);
-    window.addEventListener('pointerleave', () => isDragging = false);
+    container.addEventListener('pointerup', () => {
+      dragging = false;
+      targetY += velocityY * 10; // momentum
+    });
 
-    window.addEventListener('wheel', (e) => {
-      targetY -= e.deltaY * 1.0;
+    container.addEventListener('pointercancel', () => { dragging = false; });
+
+    // Wheel
+    container.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      targetY -= e.deltaY * 1.2;
+    }, { passive: false });
+
+    // Touch (mobile)
+    let touchLastY = 0;
+    let touchVelocity = 0;
+
+    container.addEventListener('touchstart', (e) => {
+      touchLastY = e.touches[0].clientY;
+      touchVelocity = 0;
     }, { passive: true });
 
-    function raf() {
-      if (blockHeight === 0) {
-        requestAnimationFrame(raf);
-        return;
-      }
+    container.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const dy = e.touches[0].clientY - touchLastY;
+      touchVelocity = dy;
+      touchLastY = e.touches[0].clientY;
+      targetY += dy;
+    }, { passive: false });
 
-      currentY += (targetY - currentY) * 0.08;
-
-      // Infinite wrap logic
-      if (currentY <= -blockHeight) {
-        currentY += blockHeight;
-        targetY += blockHeight;
-      } else if (currentY > 0) {
-        currentY -= blockHeight;
-        targetY -= blockHeight;
-      }
-
-      grid.style.transform = `translate3d(0, ${currentY}px, 0)`;
-      requestAnimationFrame(raf);
-    }
+    container.addEventListener('touchend', () => {
+      targetY += touchVelocity * 10;
+    }, { passive: true });
   });
 </script>

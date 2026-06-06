@@ -378,8 +378,31 @@ import { locations } from "../lib/locations";
 
   @media (max-width: 600px) {
     .loc-grid {
-      grid-template-columns: repeat(2, 1fr);
+      /* Horizontal swipe carousel on mobile */
+      display: flex;
+      flex-direction: row;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
       gap: 3px;
+      /* Prevent vertical page scroll when swiping horizontally */
+      touch-action: pan-x;
+    }
+
+    .loc-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .loc-photo-item {
+      flex: 0 0 75vw;
+      width: 75vw;
+      height: 75vw;
+      aspect-ratio: 1 / 1 !important;
+      scroll-snap-align: start;
+      grid-column: unset !important;
+      grid-row: unset !important;
     }
 
     .loc-header {
