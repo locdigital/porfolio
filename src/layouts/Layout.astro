@@ -68,7 +68,6 @@ const pathname = Astro.url.pathname;
           <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
           <li><a href="/#work">Experience</a></li>
           <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
-          <li><a href="/gallery" class={pathname.startsWith('/gallery') ? 'active' : ''}>Gallery</a></li>
           <li><a href="/#writing">Writing</a></li>
         </ul>
       </nav>
@@ -91,7 +90,6 @@ const pathname = Astro.url.pathname;
         <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
         <li><a href="/#work">Experience</a></li>
         <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
-        <li><a href="/gallery" class={pathname.startsWith('/gallery') ? 'active' : ''}>Gallery</a></li>
         <li><a href="/#writing">Writing</a></li>
       </ul>
     </nav>
@@ -354,6 +352,11 @@ const pathname = Astro.url.pathname;
       const arrowR = document.querySelector('.gallery-arrow--right');
 
       if (stripOuter && arrowL && arrowR) {
+        // Prevent native drag behaviors on child elements
+        stripOuter.querySelectorAll('a, img').forEach(el => {
+          el.setAttribute('draggable', 'false');
+        });
+
         const fadeR = stripOuter.parentElement.querySelector('.gallery-fade-right');
         const fadeL = stripOuter.parentElement.querySelector('.gallery-fade-left');
 

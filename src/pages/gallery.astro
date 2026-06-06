@@ -40,6 +40,33 @@ const allPhotos = [
   { src: "/assets/photos/img-portfolio/photo-7.jpg", alt: "Đà Lạt — photo 4", w: 1920, h: 1280 },
   { src: "/assets/photos/img-portfolio/photo-8.jpg", alt: "Đà Lạt — photo 5", w: 1920, h: 1280 },
   { src: "/assets/photos/img-portfolio/photo-9.jpg", alt: "Đà Lạt — photo 6", w: 1920, h: 1280 },
+  // New Photos
+  { src: "/assets/photos/img-portfolio/photo-16.jpg", alt: "Portfolio photo 16", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-17.jpg", alt: "Portfolio photo 17", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-18.jpg", alt: "Portfolio photo 18", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-19.jpg", alt: "Portfolio photo 19", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-20.jpg", alt: "Portfolio photo 20", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-21.jpg", alt: "Portfolio photo 21", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-22.jpg", alt: "Portfolio photo 22", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-23.jpg", alt: "Portfolio photo 23", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-24.jpg", alt: "Portfolio photo 24", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-25.jpg", alt: "Portfolio photo 25", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-26.jpg", alt: "Portfolio photo 26", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-27.jpg", alt: "Portfolio photo 27", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-28.jpg", alt: "Portfolio photo 28", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-29.jpg", alt: "Portfolio photo 29", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-30.jpg", alt: "Portfolio photo 30", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-31.jpg", alt: "Portfolio photo 31", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-32.jpg", alt: "Portfolio photo 32", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-33.jpg", alt: "Portfolio photo 33", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-34.jpg", alt: "Portfolio photo 34", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-35.jpg", alt: "Portfolio photo 35", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-36.jpg", alt: "Portfolio photo 36", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-37.jpg", alt: "Portfolio photo 37", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-38.jpg", alt: "Portfolio photo 38", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-39.jpg", alt: "Portfolio photo 39", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-40.jpg", alt: "Portfolio photo 40", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-41.jpg", alt: "Portfolio photo 41", w: 1920, h: 1279 },
 ];
 ---
 
@@ -96,7 +123,7 @@ const allPhotos = [
 
   .gallery-item {
     position: relative;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1; /* Square grid */
     background: #f5f5f5;
     overflow: hidden;
     width: 100% !important;
@@ -104,8 +131,7 @@ const allPhotos = [
   }
 
   .gallery-item-tall {
-    grid-row: span 2;
-    aspect-ratio: unset;
+    aspect-ratio: 1 / 1;
     height: 100% !important;
   }
 
@@ -125,7 +151,7 @@ const allPhotos = [
     
     if (!container || !grid) return;
 
-    const originalCount = 33; // We have exactly 33 images
+    const originalCount = grid.children.length;
     let blockHeight = 0;
     const gap = 5;
 
