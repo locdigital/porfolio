@@ -136,6 +136,15 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     }
 
+    #site-header.gallery-glass-header .header-name,
+    #site-header.gallery-glass-header .header-nav-desktop a {
+      color: #000;
+    }
+
+    #site-header.gallery-glass-header .hamburger-line {
+      background: #000;
+    }
+
     .header-inner {
       max-width: var(--max);
       margin: 0 auto;
@@ -1007,13 +1016,23 @@
         aspect-ratio: unset;
       }
 
+      .gallery-strip {
+        flex-direction: row;
+        height: 280px;
+      }
+
+      .gallery-row {
+        display: contents;
+      }
+
       .gallery-item {
-        height: 180px;
-        width: 180px;
+        height: 100%;
+        width: 240px;
+        flex-shrink: 0;
       }
 
       .gallery-item.w-wide {
-        width: 270px;
+        width: 340px;
       }
 
       .footer {
