@@ -128,6 +128,14 @@
       }
     }
 
+    #site-header.gallery-glass-header {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 100%);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
     .header-inner {
       max-width: var(--max);
       margin: 0 auto;
@@ -408,6 +416,18 @@
       color: var(--accent);
     }
 
+    .char.active-cursor::after {
+      content: "";
+      position: absolute;
+      top: 10%;
+      right: -3px;
+      width: 3px;
+      height: 85%;
+      background: linear-gradient(180deg, #4285f4, #ea4335, #fbbc05, #34a853);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
     /* Continuous float after entrance */
     .hero-line.floating {
       animation: hfloat 5.2s ease-in-out infinite;
@@ -663,7 +683,7 @@
       cursor: grab;
       user-select: none;
       will-change: scroll-position;
-      touch-action: pan-x;
+      touch-action: pan-x pan-y;
     }
 
     .gallery-strip-outer.is-dragging {

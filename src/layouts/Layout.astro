@@ -56,7 +56,7 @@ const pathname = Astro.url.pathname;
   <!-- ============================================================
        HEADER
   ============================================================ -->
-  <header id="site-header" class={pathname.startsWith('/photos') ? 'absolute-header' : ''}>
+  <header id="site-header" class={`${pathname.startsWith('/photos') ? 'absolute-header' : ''} ${pathname.startsWith('/gallery') ? 'gallery-glass-header' : ''}`.trim()}>
     <div class="header-inner">
       <a href="/" class="header-name" aria-label="Phuc Loc Nguyen — back to home">
         <span class="n-keep">P</span><span class="n-collapse">huc</span><span class="n-collapse">&nbsp;</span><span
@@ -68,6 +68,7 @@ const pathname = Astro.url.pathname;
           <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
           <li><a href="/#work">Experience</a></li>
           <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+          <li><a href="/gallery" class={pathname.startsWith('/gallery') ? 'active' : ''}>Gallery</a></li>
           <li><a href="/#writing">Writing</a></li>
         </ul>
       </nav>
@@ -90,6 +91,7 @@ const pathname = Astro.url.pathname;
         <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
         <li><a href="/#work">Experience</a></li>
         <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+        <li><a href="/gallery" class={pathname.startsWith('/gallery') ? 'active' : ''}>Gallery</a></li>
         <li><a href="/#writing">Writing</a></li>
       </ul>
     </nav>
@@ -137,16 +139,130 @@ const pathname = Astro.url.pathname;
         // Nav: drop from above (spring CSS handles overshoot)
         setTimeout(() => document.getElementById('site-header')?.classList.add('in'), 80);
 
-        // Hero lines: staggered fly-up
-        document.querySelectorAll('.hero-line').forEach((line, i) => {
-          setTimeout(() => {
-            line.classList.add('in');
-            if (!reduced) setTimeout(() => line.classList.add('floating'), 980);
-          }, 280 + i * 130);
-        });
+        // Prepare typing effect for hero lines
+        const heroLines = document.querySelectorAll('.hero-line');
+        
+        // Helper to prepare DOM structure for a line
+        function prepareTyping(element) {
+          if (!element.getAttribute('aria-label')) {
+            element.setAttribute('aria-label', element.textContent.trim());
+          }
+          element.setAttribute('aria-hidden', 'true');
+
+          function processNode(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+              const text = node.textContent;
+              if (!text.trim()) return document.createTextNode(text);
+
+              const fragment = document.createDocumentFragment();
+              const words = text.split(/(\s+)/);
+
+              words.forEach(word => {
+                if (/\s+/.test(word)) {
+                  fragment.appendChild(document.createTextNode(word));
+                } else {
+                  const wordSpan = document.createElement('span');
+                  wordSpan.className = 'word';
+                  wordSpan.style.display = 'inline-block';
+                  wordSpan.style.whiteSpace = 'nowrap';
+
+                  word.split('').forEach(char => {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'char';
+                    charSpan.textContent = char;
+                    charSpan.style.position = 'relative';
+                    charSpan.style.display = 'inline-block';
+                    charSpan.style.opacity = '0';
+                    charSpan.style.transition = 'opacity 0.08s ease-out';
+                    wordSpan.appendChild(charSpan);
+                  });
+                  fragment.appendChild(wordSpan);
+                }
+              });
+              return fragment;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              const clonedElement = node.cloneNode(false);
+              Array.from(node.childNodes).forEach(child => {
+                clonedElement.appendChild(processNode(child));
+              });
+              return clonedElement;
+            }
+            return node.cloneNode(true);
+          }
+
+          const newFragment = document.createDocumentFragment();
+          Array.from(element.childNodes).forEach(child => {
+            newFragment.appendChild(processNode(child));
+          });
+
+          element.innerHTML = '';
+          element.appendChild(newFragment);
+        }
+
+        // Initialize characters DOM for typing
+        if (!reduced) {
+          heroLines.forEach(prepareTyping);
+        }
+
+        // Type a single line
+        function typeLine(line, speed = 35, callback) {
+          const chars = line.querySelectorAll('.char');
+          if (chars.length === 0) {
+            line.classList.add('in'); // fallback if reduced motion or parser skipped
+            if (callback) callback();
+            return;
+          }
+
+          line.classList.add('in'); // start fly-up transition
+          let index = 0;
+          
+          function next() {
+            if (index < chars.length) {
+              if (index > 0) {
+                chars[index - 1].classList.remove('active-cursor');
+              }
+              chars[index].style.opacity = '1';
+              chars[index].classList.add('active-cursor');
+              index++;
+              setTimeout(next, speed);
+            } else {
+              setTimeout(() => {
+                chars[chars.length - 1].classList.remove('active-cursor');
+                if (!reduced) setTimeout(() => line.classList.add('floating'), 500);
+                if (callback) callback();
+              }, 300);
+            }
+          }
+          next();
+        }
+
+        // Trigger typing sequentially
+        if (heroLines.length > 0) {
+          if (reduced) {
+            // No typing animation if prefers-reduced-motion is active
+            heroLines.forEach((line, i) => {
+              setTimeout(() => {
+                line.classList.add('in');
+              }, 280 + i * 130);
+            });
+          } else {
+            // Type sequentially
+            let lineIndex = 0;
+            function typeNext() {
+              if (lineIndex < heroLines.length) {
+                typeLine(heroLines[lineIndex], 40, () => {
+                  lineIndex++;
+                  setTimeout(typeNext, 150);
+                });
+              }
+            }
+            // Start the sequence after header/nav initial animations
+            setTimeout(typeNext, 280);
+          }
+        }
 
         // Hero aside
-        setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 620);
+        setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
       });
 
       /* ── IntersectionObserver: section reveals ── */

@@ -1,0 +1,212 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Combine all photos from the different locations to form the gallery
+const allPhotos = [
+  // Phú Quý
+  { src: "/assets/photos/img-portfolio/photo-1.jpg", alt: "Phú Quý — photo 1", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-2.jpg", alt: "Phú Quý — photo 2", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-4.jpg", alt: "Phú Quý — photo 3", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-6.jpg", alt: "Phú Quý — photo 4", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-3.jpg", alt: "Phú Quý — photo 5", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-7.jpg", alt: "Phú Quý — photo 6", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-8.jpg", alt: "Phú Quý — photo 7", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-9.jpg", alt: "Phú Quý — photo 8", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-10.jpg", alt: "Phú Quý — photo 9", w: 1920, h: 1280 },
+  // Phú Yên
+  { src: "/assets/photos/img-portfolio/photo-5.jpg", alt: "Phú Yên — photo 1", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-13.jpg", alt: "Phú Yên — photo 2", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-11.jpg", alt: "Phú Yên — photo 3", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-12.jpg", alt: "Phú Yên — photo 4", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-4.jpg", alt: "Phú Yên — photo 5", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-6.jpg", alt: "Phú Yên — photo 6", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-7.jpg", alt: "Phú Yên — photo 7", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-8.jpg", alt: "Phú Yên — photo 8", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-9.jpg", alt: "Phú Yên — photo 9", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-10.jpg", alt: "Phú Yên — photo 10", w: 1920, h: 1280 },
+  // Quy Nhơn
+  { src: "/assets/photos/img-portfolio/photo-14.jpg", alt: "Quy Nhơn — photo 1", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-15.jpg", alt: "Quy Nhơn — photo 2", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-11.jpg", alt: "Quy Nhơn — photo 3", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-12.jpg", alt: "Quy Nhơn — photo 4", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-1.jpg", alt: "Quy Nhơn — photo 5", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-2.jpg", alt: "Quy Nhơn — photo 6", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-4.jpg", alt: "Quy Nhơn — photo 7", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-6.jpg", alt: "Quy Nhơn — photo 8", w: 1920, h: 1280 },
+  // Đà Lạt
+  { src: "/assets/photos/img-portfolio/photo-3.jpg", alt: "Đà Lạt — photo 1", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-5.jpg", alt: "Đà Lạt — photo 2", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-13.jpg", alt: "Đà Lạt — photo 3", w: 1280, h: 1920 },
+  { src: "/assets/photos/img-portfolio/photo-7.jpg", alt: "Đà Lạt — photo 4", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-8.jpg", alt: "Đà Lạt — photo 5", w: 1920, h: 1280 },
+  { src: "/assets/photos/img-portfolio/photo-9.jpg", alt: "Đà Lạt — photo 6", w: 1920, h: 1280 },
+];
+---
+
+<Layout title="Gallery — Phuc Loc Nguyen">
+  <main class="gallery-wrapper fixed inset-0 overflow-hidden bg-white select-none">
+    <div class="gallery-container">
+      <div id="gallery-grid" class="gallery-grid">
+        {allPhotos.map((photo, index) => {
+          const isTall = photo.h > photo.w;
+          return (
+            <div class={`gallery-item ${isTall ? 'gallery-item-tall' : ''}`}>
+              <img src={photo.src} alt={photo.alt} loading={index < 10 ? "eager" : "lazy"} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+    
+<style>
+  .gallery-wrapper {
+    touch-action: none; /* Prevent native scroll */
+    background: #ffffff;
+    position: fixed;
+    inset: 0;
+    z-index: 40; /* Sit above normal page flow if needed, but below cursor/nav if any */
+  }
+
+  .gallery-container {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    cursor: grab;
+  }
+  .gallery-container:active {
+    cursor: grabbing;
+  }
+
+  /* The masonry grid */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-flow: dense;
+    gap: 5px;
+    width: 100%;
+    will-change: transform;
+  }
+
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .gallery-item {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: #f5f5f5;
+    overflow: hidden;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .gallery-item-tall {
+    grid-row: span 2;
+    aspect-ratio: unset;
+    height: 100% !important;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.gallery-container');
+    const grid = document.getElementById('gallery-grid');
+    
+    if (!container || !grid) return;
+
+    const originalCount = 33; // We have exactly 33 images
+    let blockHeight = 0;
+    const gap = 5;
+
+    // Clone items 2 times to ensure we can scroll infinitely in both directions seamlessly
+    const items = Array.from(grid.children);
+    for (let i = 0; i < 2; i++) {
+      items.forEach(item => {
+        grid.appendChild(item.cloneNode(true));
+      });
+    }
+
+    let isDragging = false;
+    let startY = 0;
+    
+    // Target and current values for lerp
+    let currentY = 0;
+    let targetY = 0;
+
+    function calculateBlockHeight() {
+      const allItems = Array.from(grid.children);
+      const originalItems = allItems.slice(0, originalCount);
+      
+      const gridRect = grid.getBoundingClientRect();
+      let maxBottom = 0;
+      
+      originalItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        if (rect.bottom > maxBottom) {
+          maxBottom = rect.bottom;
+        }
+      });
+      
+      // Calculate total height of the first block including the gap at the bottom
+      blockHeight = (maxBottom - gridRect.top) + gap;
+    }
+
+    // Wait for layout to settle, then calculate
+    setTimeout(() => {
+      calculateBlockHeight();
+      raf(); // start animation loop
+    }, 100);
+
+    window.addEventListener('resize', calculateBlockHeight);
+
+    container.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      startY = e.clientY;
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      targetY += (e.clientY - startY) * 1.5;
+      startY = e.clientY;
+    });
+
+    window.addEventListener('pointerup', () => isDragging = false);
+    window.addEventListener('pointerleave', () => isDragging = false);
+
+    window.addEventListener('wheel', (e) => {
+      targetY -= e.deltaY * 1.0;
+    }, { passive: true });
+
+    function raf() {
+      if (blockHeight === 0) {
+        requestAnimationFrame(raf);
+        return;
+      }
+
+      currentY += (targetY - currentY) * 0.08;
+
+      // Infinite wrap logic
+      if (currentY <= -blockHeight) {
+        currentY += blockHeight;
+        targetY += blockHeight;
+      } else if (currentY > 0) {
+        currentY -= blockHeight;
+        targetY -= blockHeight;
+      }
+
+      grid.style.transform = `translate3d(0, ${currentY}px, 0)`;
+      requestAnimationFrame(raf);
+    }
+  });
+</script>
