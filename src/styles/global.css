@@ -725,8 +725,7 @@
      * Positioned relative to .gallery-strip-outer so it scrolls with nothing
      * but sits on top of the images via pointer-events:none.
      */
-    .gallery-fade-right,
-    .gallery-fade-left {
+    .gallery-fade-right {
       position: absolute;
       top: 0;
       bottom: 0;
@@ -738,18 +737,6 @@
     .gallery-fade-right {
       right: 0;
       background: linear-gradient(to right, transparent, var(--bg) 90%);
-    }
-
-    .gallery-fade-left {
-      left: 0;
-      background: linear-gradient(to left, transparent, var(--bg) 90%);
-      opacity: 0;
-      /* hidden until user has scrolled right */
-      transition: opacity .4s ease;
-    }
-
-    .gallery-fade-left.visible {
-      opacity: 1;
     }
 
     .gallery-strip {
