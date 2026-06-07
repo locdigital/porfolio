@@ -113,6 +113,8 @@ const uniquePhotos = Array.from(
       // Track bottom Y of each column
       const colHeights = new Array(cols).fill(0);
 
+      const lastItemInCol = new Array(cols).fill(null);
+
       items.forEach(item => {
         const w = parseInt(item.dataset.w) || 1;
         const h = parseInt(item.dataset.h) || 1;
@@ -133,10 +135,23 @@ const uniquePhotos = Array.from(
         item.style.height = itemHeight + 'px';
 
         colHeights[shortestCol] += itemHeight + GAP;
+        lastItemInCol[shortestCol] = item;
       });
 
       // The height of one complete set
       blockHeight = Math.max(...colHeights);
+
+      // Stretch the last item in each column to eliminate bottom gaps
+      for (let i = 0; i < cols; i++) {
+        if (lastItemInCol[i]) {
+          const item = lastItemInCol[i];
+          const currentHeight = parseFloat(item.style.height);
+          const gap = blockHeight - colHeights[i];
+          if (gap > 0) {
+            item.style.height = (currentHeight + gap) + 'px';
+          }
+        }
+      }
 
       // Create clones for infinite scroll
       const fragment = document.createDocumentFragment();
