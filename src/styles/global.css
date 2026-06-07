@@ -698,7 +698,6 @@
       width: 100%;
       overflow-x: auto;
       overflow-y: hidden;
-      scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       cursor: grab;
@@ -772,7 +771,6 @@
       overflow: hidden;
       user-select: none;
       -webkit-user-drag: none;
-      scroll-snap-align: start;
     }
 
     .gallery-item.w-wide {
