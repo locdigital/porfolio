@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { HeroCollage } from "../components/ui/modern-hero-section";
+
+const stats = [
+  { value: '10+', label: 'Tools Integrated' },
+  { value: '4+', label: 'Years Experience' },
+  { value: '100+', label: 'Campaigns Delivered' },
+];
+
+const images = [
+  '/assets/photos/img-portfolio/photo-1.jpg',
+  '/assets/photos/img-portfolio/photo-2.jpg',
+  '/assets/photos/img-portfolio/photo-3.jpg',
+  '/assets/photos/img-portfolio/photo-4.jpg',
+  '/assets/photos/img-portfolio/photo-5.jpg',
+  '/assets/photos/img-portfolio/photo-6.jpg',
+  '/assets/photos/img-portfolio/photo-7.jpg',
+];
+---
+
+<Layout title="Workflow Space — Phuc Loc Nguyen">
+  <main class="min-h-screen pt-12">
+    <HeroCollage
+      client:load
+      title="My Workflow Space"
+      subtitle="A glimpse into the digital tools, setups, and workflows I use daily to build, optimize, and scale data-driven marketing systems."
+      stats={stats}
+      images={images}
+    />
+  </main>
+</Layout>

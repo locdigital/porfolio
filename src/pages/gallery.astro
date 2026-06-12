@@ -2,263 +2,171 @@
 import Layout from "../layouts/Layout.astro";
 import { locations } from "../lib/locations";
 
-// Unique photos (deduplicated by src)
+// Flatten all photos from all locations
+const allPhotos = locations.flatMap(loc =>
+  loc.photos.map((photo, i) => ({
+    ...photo,
+    alt: `${loc.name} — photo ${i + 1}`
+  }))
+);
+
+// Deduplicate photos by src
 const uniquePhotos = Array.from(
-  new Map(
-    locations.flatMap(loc => loc.photos).map(photo => [photo.src, photo])
-  ).values()
+  new Map(allPhotos.map(p => [p.src, p])).values()
 );
 ---
 
 <Layout title="Gallery — Phuc Loc Nguyen">
   <main class="gallery-page">
-    <div id="gallery-container" class="gallery-container">
-      <div id="gallery-canvas" class="gallery-canvas">
-        {uniquePhotos.map((photo, index) => (
-          <div
-            class="gallery-item original-item"
-            data-w={photo.w}
-            data-h={photo.h}
-          >
-            <img
-              src={photo.src}
-              alt={photo.alt}
-              loading={index < 16 ? "eager" : "lazy"}
-              draggable="false"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
+    <div id="gallery-grid" class="gallery-grid"></div>
+    <div id="loading-trigger" style="height:1px;width:100%;"></div>
   </main>
-</Layout>
 
-<style>
-  .gallery-page {
-    position: fixed;
-    inset: 0;
-    background: #fff;
-    overflow: hidden;
-  }
-
-  .gallery-container {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    cursor: grab;
-  }
-
-  .gallery-container:active {
-    cursor: grabbing;
-  }
-
-  /* Canvas is absolutely positioned for JS masonry */
-  .gallery-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* height set by JS */
-    will-change: transform;
-  }
-
-  .gallery-item {
-    position: absolute;
-    overflow: hidden;
-    /* top/left/width/height set by JS */
-  }
-
-  .gallery-item img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-    user-select: none;
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .gallery-item:hover img {
-    transform: scale(1.04);
-  }
-</style>
-
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('gallery-container');
-    const canvas = document.getElementById('gallery-canvas');
-    if (!container || !canvas) return;
-
-    const GAP = 5; // px gap between images
-
-    let blockHeight = 0;
-
-    function getColumnCount() {
-      const w = window.innerWidth;
-      if (w <= 480) return 2;
-      if (w <= 768) return 3;
-      if (w <= 1200) return 4;
-      return 5;
+  <style>
+    .gallery-page {
+      min-height: 100vh;
+      background: #fdfdfd;
+      padding: 8px clamp(20px, 4vw, 56px);
+      padding-top: 80px;
+      max-width: 1160px;
+      margin: 0 auto;
     }
 
-    function buildMasonry() {
-      // Remove any existing clones (for resize)
-      canvas.querySelectorAll('.clone-item').forEach(el => el.remove());
+    .gallery-grid {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      align-items: flex-start;
+    }
 
-      const items = Array.from(canvas.querySelectorAll('.original-item'));
-      const cols = getColumnCount();
-      const totalWidth = canvas.offsetWidth - GAP * (cols - 1);
-      const colWidth = totalWidth / cols;
+    :global(.gallery-col) {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-      // Track bottom Y of each column
-      const colHeights = new Array(cols).fill(0);
+    :global(.gal-item) {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 4px;
+      background: #ddd;
+    }
 
-      const lastItemInCol = new Array(cols).fill(null);
+    /* The aspect-ratio box — padding-bottom locks each image to its real ratio */
+    :global(.gal-item .ratio-box) {
+      position: relative;
+      width: 100%;
+      height: 0;
+      overflow: hidden;
+    }
 
-      items.forEach(item => {
-        const w = parseInt(item.dataset.w) || 1;
-        const h = parseInt(item.dataset.h) || 1;
-        const itemHeight = Math.round(colWidth * h / w);
+    :global(.gal-item .ratio-box img) {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
 
-        // Place in shortest column
-        let shortestCol = 0;
-        for (let i = 1; i < cols; i++) {
-          if (colHeights[i] < colHeights[shortestCol]) shortestCol = i;
+    :global(.gal-item:hover .ratio-box img) {
+      transform: scale(1.04);
+    }
+  </style>
+
+  <script is:inline define:vars={{ uniquePhotos }}>
+    (function () {
+      var photos = uniquePhotos;
+      var grid = document.getElementById('gallery-grid');
+      var trigger = document.getElementById('loading-trigger');
+      var cols = 3;
+      var colEls = [];
+      var colH = [];   // logical height tracker (sum of h/w ratios)
+
+      function numCols() {
+        return window.innerWidth < 600 ? 2 : 3;
+      }
+
+      function initCols() {
+        if (!grid) return;
+        grid.innerHTML = '';
+        colEls = [];
+        colH = [];
+        cols = numCols();
+        for (var i = 0; i < cols; i++) {
+          var c = document.createElement('div');
+          c.className = 'gallery-col';
+          grid.appendChild(c);
+          colEls.push(c);
+          colH.push(0);
         }
+      }
 
-        const x = shortestCol * (colWidth + GAP);
-        const y = colHeights[shortestCol];
+      function addPhotos(list) {
+        for (var i = 0; i < list.length; i++) {
+          var photo = list[i];
 
-        item.style.left = x + 'px';
-        item.style.top = y + 'px';
-        item.style.width = colWidth + 'px';
-        item.style.height = itemHeight + 'px';
-
-        colHeights[shortestCol] += itemHeight + GAP;
-        lastItemInCol[shortestCol] = item;
-      });
-
-      // The height of one complete set
-      blockHeight = Math.max(...colHeights);
-
-      // Stretch the last item in each column to eliminate bottom gaps
-      for (let i = 0; i < cols; i++) {
-        if (lastItemInCol[i]) {
-          const item = lastItemInCol[i];
-          const currentHeight = parseFloat(item.style.height);
-          const gap = blockHeight - colHeights[i];
-          if (gap > 0) {
-            item.style.height = (currentHeight + gap) + 'px';
+          // find shortest column
+          var min = 0;
+          for (var j = 1; j < cols; j++) {
+            if (colH[j] < colH[min]) min = j;
           }
+
+          var pw = photo.w || 1280;
+          var ph = photo.h || 853;
+          var ratio = ph / pw;                    // e.g. portrait → 1.5, landscape → 0.667
+          var pb = (ratio * 100).toFixed(3) + '%'; // padding-bottom %
+
+          var item = document.createElement('div');
+          item.className = 'gal-item';
+
+          var box = document.createElement('div');
+          box.className = 'ratio-box';
+          box.style.paddingBottom = pb;          // ← this locks in natural height
+
+          var img = document.createElement('img');
+          img.src = photo.src;
+          img.alt = photo.alt;
+          img.loading = 'lazy';
+          img.decoding = 'async';
+
+          box.appendChild(img);
+          item.appendChild(box);
+          colEls[min].appendChild(item);
+
+          colH[min] += ratio;   // accumulate logical height
         }
       }
 
-      // Create clones for infinite scroll
-      const fragment = document.createDocumentFragment();
-      
-      // Clone Above (offset Y by -blockHeight)
-      items.forEach(item => {
-        const clone = item.cloneNode(true);
-        clone.classList.remove('original-item');
-        clone.classList.add('clone-item');
-        const y = parseFloat(item.style.top) - blockHeight;
-        clone.style.top = y + 'px';
-        fragment.appendChild(clone);
-      });
+      // Run immediately (script is deferred by is:inline)
+      initCols();
+      addPhotos(photos);
 
-      // Clone Below (offset Y by +blockHeight)
-      items.forEach(item => {
-        const clone = item.cloneNode(true);
-        clone.classList.remove('original-item');
-        clone.classList.add('clone-item');
-        const y = parseFloat(item.style.top) + blockHeight;
-        clone.style.top = y + 'px';
-        fragment.appendChild(clone);
-      });
-
-      canvas.appendChild(fragment);
-    }
-
-    // Build layout immediately with known dimensions
-    buildMasonry();
-    window.addEventListener('resize', buildMasonry);
-
-    // ── Smooth drag scroll ──────────────────────────────────────────────────
-    let currentY = 0;
-    let targetY = 0;
-    let velocityY = 0;
-
-    function tick() {
-      if (blockHeight > 0) {
-        // Infinite wrap logic
-        while (targetY <= -blockHeight) {
-          targetY += blockHeight;
-          currentY += blockHeight;
-        }
-        while (targetY > 0) {
-          targetY -= blockHeight;
-          currentY -= blockHeight;
-        }
+      // Infinite scroll
+      if (trigger) {
+        var io = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) {
+            addPhotos(photos);
+          }
+        }, { rootMargin: '800px' });
+        io.observe(trigger);
       }
 
-      currentY += (targetY - currentY) * 0.1;
-      canvas.style.transform = `translate3d(0, ${currentY}px, 0)`;
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-
-    // Pointer drag (desktop)
-    let dragging = false;
-    let dragStartY = 0;
-    let dragLastY = 0;
-
-    container.addEventListener('pointerdown', (e) => {
-      dragging = true;
-      dragStartY = dragLastY = e.clientY;
-      velocityY = 0;
-      container.setPointerCapture(e.pointerId);
-    });
-
-    container.addEventListener('pointermove', (e) => {
-      if (!dragging) return;
-      const dy = e.clientY - dragLastY;
-      velocityY = dy;
-      dragLastY = e.clientY;
-      targetY += dy;
-    });
-
-    container.addEventListener('pointerup', () => {
-      dragging = false;
-      targetY += velocityY * 10; // momentum
-    });
-
-    container.addEventListener('pointercancel', () => { dragging = false; });
-
-    // Wheel
-    container.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      targetY -= e.deltaY * 1.2;
-    }, { passive: false });
-
-    // Touch (mobile)
-    let touchLastY = 0;
-    let touchVelocity = 0;
-
-    container.addEventListener('touchstart', (e) => {
-      touchLastY = e.touches[0].clientY;
-      touchVelocity = 0;
-    }, { passive: true });
-
-    container.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const dy = e.touches[0].clientY - touchLastY;
-      touchVelocity = dy;
-      touchLastY = e.touches[0].clientY;
-      targetY += dy;
-    }, { passive: false });
-
-    container.addEventListener('touchend', () => {
-      targetY += touchVelocity * 10;
-    }, { passive: true });
-  });
-</script>
+      // Responsive reflow
+      var resizeT;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeT);
+        resizeT = setTimeout(function () {
+          var n = numCols();
+          if (n !== cols) {
+            initCols();
+            addPhotos(photos);
+          }
+        }, 250);
+      });
+    })();
+  </script>
+</Layout>

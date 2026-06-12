@@ -21,7 +21,7 @@ import Layout from "../layouts/Layout.astro";
               <span class="hero-line hero-line-1">Performance.</span>
               <span class="hero-line hero-line-2">Strategy.</span>
               <span class="hero-line hero-line-3"><em>Scaling revenue</em></span>
-              <span class="hero-line hero-line-4"><em>with data.</em></span>
+              <span class="hero-line hero-line-4"><em>with <span id="typed-text"></span></em></span>
             </h1>
           </div>
 
@@ -315,5 +315,20 @@ import Layout from "../layouts/Layout.astro";
   <!-- ============================================================
        SCRIPTS
   ============================================================ -->
-
+  <script is:inline src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Small delay to allow the hero lines to fade in before typing starts
+      setTimeout(() => {
+        new Typed('#typed-text', {
+          strings: ['data.', 'automation.', 'ads.'],
+          typeSpeed: 55,
+          backSpeed: 35,
+          backDelay: 2500,
+          loop: true,
+          cursorChar: '|',
+        });
+      }, 1100);
+    });
+  </script>
 </Layout>

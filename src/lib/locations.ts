@@ -83,6 +83,7 @@ export const locations: Location[] = [
       { src: "/assets/photos/img-portfolio/photo-33.jpg", alt: "Quy Nhơn — photo 13", w: 1280, h: 1920 },
       { src: "/assets/photos/img-portfolio/photo-34.jpg", alt: "Quy Nhơn — photo 14", w: 1920, h: 1280 },
       { src: "/assets/photos/img-portfolio/photo-35.jpg", alt: "Quy Nhơn — photo 15", w: 1920, h: 1280 },
+      { src: "/assets/photos/quy-nhon/DSC_0370-Edit%20copy.jpg", alt: "Quy Nhơn — photo 16", w: 4032, h: 6048 },
     ],
   },
   {
@@ -103,6 +104,7 @@ export const locations: Location[] = [
       { src: "/assets/photos/img-portfolio/photo-39.jpg", alt: "Đà Lạt — photo 10", w: 1280, h: 1920 },
       { src: "/assets/photos/img-portfolio/photo-40.jpg", alt: "Đà Lạt — photo 11", w: 1920, h: 1280 },
       { src: "/assets/photos/img-portfolio/photo-41.jpg", alt: "Đà Lạt — photo 12", w: 1920, h: 1279 },
+      { src: "/assets/photos/da-lat/DSC_0174.jpg", alt: "Đà Lạt — photo 13", w: 4032, h: 6048 },
     ],
   },
 ];
