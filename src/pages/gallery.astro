@@ -26,10 +26,10 @@ const uniquePhotos = Array.from(
     .gallery-page {
       min-height: 100vh;
       background: #fdfdfd;
-      padding: 8px clamp(20px, 4vw, 56px);
+      padding: 8px;
       padding-top: 80px;
-      max-width: 1160px;
-      margin: 0 auto;
+      width: 100%;
+      margin: 0;
     }
 
     .gallery-grid {
@@ -82,12 +82,16 @@ const uniquePhotos = Array.from(
       var photos = uniquePhotos;
       var grid = document.getElementById('gallery-grid');
       var trigger = document.getElementById('loading-trigger');
-      var cols = 3;
+      var cols = 6;
       var colEls = [];
       var colH = [];   // logical height tracker (sum of h/w ratios)
 
       function numCols() {
-        return window.innerWidth < 600 ? 2 : 3;
+        var w = window.innerWidth;
+        if (w < 600) return 2;
+        if (w < 900) return 3;
+        if (w < 1200) return 4;
+        return 6;
       }
 
       function initCols() {
