@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ExpandingCardsDemo from "../../components/ui/expanding-cards-demo";
+---
+
+<Layout title="Projects | Lộc Digital" description="My Projects">
+  <main style="display:flex;flex-direction:column;padding-top:140px;padding-bottom:120px;">
+    <section class="projects" style="padding-top: 0; padding-bottom: 0;">
+      <div class="container">
+        
+        <div class="sh" style="margin-bottom: 80px;">
+          <span class="sh-title">Projects</span>
+          <span class="sh-number">2 items</span>
+        </div>
+
+        <ExpandingCardsDemo client:load />
+
+      </div>
+    </section>
+  </main>
+</Layout>

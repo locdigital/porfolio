@@ -3,6 +3,26 @@
 @tailwind utilities;
 
 /* ============================================================
+   LOCAL FONTS — PP Editorial Old (self-hosted, zero CDN round-trip)
+   font-display: swap = show fallback text immediately, swap when loaded
+============================================================ */
+@font-face {
+  font-family: 'PP Editorial Old';
+  src: url('/assets/fonts/ppeditorialold-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Editorial Old';
+  src: url('/assets/fonts/ppeditorialold-italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ============================================================
    DESIGN TOKENS
 ============================================================ */
     :root {
@@ -10,7 +30,8 @@
       --text: #1C1C1C;
       --muted: #6E6E6E;
       --divider: #E8E8E2;
-      --accent: hsl(228 100% 50%);
+      --accent: radial-gradient(circle farthest-side at 0% 0%, #cab1ff 5%, #146ef5 10%, currentColor 20%);
+      --accent-solid: #146ef5;
       --hdr-h: 60px;
 
       --serif: 'Imbue', serif;
@@ -63,7 +84,7 @@
     }
 
     a:focus-visible {
-      outline: 2px solid var(--accent);
+      outline: 2px solid var(--accent-solid);
       outline-offset: 3px;
       border-radius: 2px;
     }
@@ -71,6 +92,25 @@
     img {
       display: block;
       max-width: 100%;
+      border-radius: 0.3rem;
+    }
+
+    /* Global photo styling: border radius + gradient overlay */
+    picture, .ratio-box {
+      display: block;
+      position: relative;
+      border-radius: 0.3rem;
+      overflow: hidden;
+    }
+
+    picture::after, .ratio-box::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, .1), rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, .3));
+      pointer-events: none;
+      z-index: 2;
+      border-radius: inherit;
     }
 
     ul {
@@ -169,7 +209,10 @@
     }
 
     .header-name:hover {
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .n-collapse {
@@ -295,7 +338,10 @@
 
     .mobile-nav a:hover,
     .mobile-nav a.active {
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .mobile-nav a.active {
@@ -436,7 +482,10 @@
 
     .hero-line em {
       font-style: italic;
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .char.active-cursor::after {
@@ -519,7 +568,10 @@
     }
 
     .hero-aside a:hover {
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .location {
@@ -623,8 +675,11 @@
     }
 
     .tl-company a:hover {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      border-bottom-color: var(--accent-solid);
     }
 
     .tl-desc {
@@ -675,7 +730,10 @@
     }
 
     .about-prose a:hover {
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .about-prose em {
@@ -861,7 +919,10 @@
 
     /* Hover: only the title text turns accent green — like luke.ac */
     .post-item:hover .post-title {
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .see-all {
@@ -874,7 +935,10 @@
     }
 
     .see-all:hover {
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     /* ============================================================
@@ -902,7 +966,10 @@
     /* Email copy button */
     .email-copy {
       font: inherit;
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       text-decoration: underline;
       text-underline-offset: 4px;
       text-decoration-color: var(--border-bright);
@@ -914,7 +981,10 @@
     }
 
     .email-copy:hover {
-      color: var(--accent);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .email-copy::after {
@@ -954,7 +1024,10 @@
     }
 
     .footer-links a:hover {
-      color: var(--text);
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .colophon {

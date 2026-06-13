@@ -1,5 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Picture, Image } from "astro:assets";
+import { getPhotoAsset } from "../lib/photo-assets";
+
+const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.jpg");
+const lifeOne = getPhotoAsset("/assets/photos/img-portfolio/photo-4.jpg");
+const lifeTwo = getPhotoAsset("/assets/photos/img-portfolio/photo-2.jpg");
+const lifeThree = getPhotoAsset("/assets/photos/img-portfolio/photo-3.jpg");
 ---
 
 <Layout title="About | Phuc Loc Nguyen">
@@ -14,7 +21,18 @@ import Layout from "../layouts/Layout.astro";
 
       <!-- Featured Image -->
       <figure class="about-featured-image fade-in">
-        <img src="/assets/photos/img-portfolio/hero-about.jpg" alt="Phuc Loc Nguyen">
+        <Picture
+          src={heroAbout}
+          alt="Phuc Loc Nguyen"
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 900px) 100vw, 960px"
+          formats={["avif", "webp"]}
+          fallbackFormat="jpg"
+          quality={75}
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
         <figcaption>Somewhere in Ho Chi Minh City 📍</figcaption>
       </figure>
 
@@ -28,9 +46,36 @@ import Layout from "../layouts/Layout.astro";
 
         <!-- Collage -->
         <div class="about-collage">
-          <img src="/assets/photos/img-portfolio/photo-4.jpg" class="img-1 fade-in" alt="Life 1">
-          <img src="/assets/photos/img-portfolio/photo-2.jpg" class="img-2 fade-in" alt="Life 2">
-          <img src="/assets/photos/img-portfolio/photo-3.jpg" class="img-3 fade-in" alt="Life 3">
+          <Image
+            src={lifeOne}
+            class="img-1 fade-in"
+            alt="Travel photo from Loc's life"
+            widths={[360, 520, 760]}
+            sizes="(max-width: 768px) 65vw, 560px"
+            quality={72}
+            loading="lazy"
+            decoding="async"
+          />
+          <Image
+            src={lifeTwo}
+            class="img-2 fade-in"
+            alt="Portrait travel photo from Loc's life"
+            widths={[280, 420, 640]}
+            sizes="(max-width: 768px) 45vw, 420px"
+            quality={72}
+            loading="lazy"
+            decoding="async"
+          />
+          <Image
+            src={lifeThree}
+            class="img-3 fade-in"
+            alt="Portrait travel photo from Loc's life"
+            widths={[320, 480, 640]}
+            sizes="(max-width: 768px) 60vw, 480px"
+            quality={72}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
 
         <p>I believe in the power of continuous learning. When I'm not optimizing ad campaigns or analyzing data, you can find me taking photographs around the city, reading up on the latest tech trends, or exploring new coffee shops.</p>

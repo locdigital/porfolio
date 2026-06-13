@@ -1,0 +1,51 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getPosts } from "../../lib/wordpress";
+
+const posts = await getPosts(20);
+---
+
+<Layout title="Writing | Lộc Digital" description="Nhật Ký & Bài Viết">
+  <main style="display:flex;flex-direction:column;padding-top:140px;padding-bottom:120px;">
+    <section class="writing" style="padding-top: 0; padding-bottom: 0;">
+      <div class="container">
+        
+        <div class="sh" style="margin-bottom: 80px;">
+          <span class="sh-title">Writing</span>
+          <span class="sh-number">{posts ? posts.length : 0} posts</span>
+        </div>
+
+        {posts && posts.length > 0 ? (
+          <div class="flex flex-col gap-y-[72px]">
+            {posts.map((post: any) => {
+              const dateStr = new Date(post.date).toLocaleDateString('en-US', { 
+                month: 'short', 
+                year: 'numeric' 
+              });
+              
+              return (
+                <a 
+                  href={`/blog/${post.slug}`} 
+                  class="group flex flex-col md:flex-row md:items-start md:gap-[60px] transition-opacity hover:opacity-70 duration-300"
+                >
+                  <div class="md:w-[120px] flex-shrink-0 font-mono text-[11px] text-muted-foreground uppercase pt-[14px] mb-2 md:mb-0 tracking-wider">
+                    {dateStr}
+                  </div>
+                  <div class="flex-grow max-w-[800px]">
+                    <h2 class="text-[32px] md:text-[42px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] text-foreground leading-[1.1] mb-[12px]" set:html={post.title.rendered} />
+                    <div class="text-[15px] text-muted-foreground leading-[1.6] line-clamp-2" set:html={post.excerpt.rendered.replace(/<[^>]+>/g, '')} />
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="py-10 text-muted-foreground">
+            <p>Vui lòng kiểm tra WordPress Admin và tạo bài viết đầu tiên!</p>
+          </div>
+        )}
+
+      </div>
+    </section>
+  </main>
+</Layout>

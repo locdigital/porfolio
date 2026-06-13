@@ -1,6 +1,11 @@
 ---
 import '../styles/global.css';
-const { title = "Phuc Loc Nguyen | Digital Marketing Specialist" } = Astro.props;
+const { 
+  title = "Phuc Loc Nguyen | Digital Marketing Specialist",
+  description = "Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.",
+  ogImage = "https://loc.digital/og-image.jpg",
+  hideHeader = false
+} = Astro.props;
 const pathname = Astro.url.pathname;
 ---
 
@@ -10,20 +15,19 @@ const pathname = Astro.url.pathname;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
-  <meta name="description"
-    content="Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.">
+  <meta name="description" content={description}>
   
   <!-- Open Graph / Social Media Thumbnail -->
   <meta property="og:title" content={title}>
-  <meta property="og:description" content="Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.">
-  <meta property="og:image" content="https://loc.digital/og-image.jpg">
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={ogImage}>
   <meta property="og:url" content="https://loc.digital/">
   <meta property="og:type" content="website">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
-  <meta name="twitter:description" content="Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.">
-  <meta name="twitter:image" content="https://loc.digital/og-image.jpg">
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={ogImage}>
 
   <title>{title}</title>
   <meta name="theme-color" content="#FAFAF7">
@@ -41,57 +45,75 @@ const pathname = Astro.url.pathname;
     gtag('config', 'G-DYB5FLYNH4');
   </script>
 
-  <!-- Fonts -->
+  <!-- Resource Hints: preconnect + dns-prefetch for external CDNs -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="//unpkg.com">
+
+  <!-- Fonts: non-blocking load (media="print" trick avoids render-blocking) -->
   <link
     href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400&display=swap"
-    rel="stylesheet">
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'">
+  <!-- Fallback for no-JS -->
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400&display=swap"
+      rel="stylesheet">
+  </noscript>
 
-  <!-- PhotoSwipe CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css">
+  <!-- PhotoSwipe CSS: preload so it's ready when needed -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css"></noscript>
 </head>
 
 <body>
   <!-- ============================================================
        HEADER
   ============================================================ -->
-  <header id="site-header" class={`${pathname.startsWith('/photos') ? 'absolute-header' : ''} ${pathname.startsWith('/gallery') ? 'gallery-glass-header' : ''}`.trim()}>
-    <div class="header-inner">
-      <a href="/" class="header-name" aria-label="Phuc Loc Nguyen — back to home">
-        <span class="n-keep">P</span><span class="n-collapse">huc</span><span class="n-collapse">&nbsp;</span><span
-          class="n-keep">L</span><span class="n-collapse">oc</span>
-      </a>
+  {!hideHeader && (
+    <>
+      <header id="site-header" class={`${pathname.startsWith('/photos') ? 'absolute-header' : ''} ${pathname.startsWith('/gallery') ? 'gallery-glass-header' : ''}`.trim()}>
+        <div class="header-inner">
+          <a href="/" class="header-name" aria-label="Phuc Loc Nguyen — back to home">
+            <span class="n-keep">P</span><span class="n-collapse">huc</span><span class="n-collapse">&nbsp;</span><span
+              class="n-keep">L</span><span class="n-collapse">oc</span>
+          </a>
 
-      <nav class="header-nav-desktop" aria-label="Main navigation">
-        <ul>
-          <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
-          <li><a href="/#work">Experience</a></li>
-          <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
-        </ul>
-      </nav>
+          <nav class="header-nav-desktop" aria-label="Main navigation">
+            <ul>
+              <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
+              <li><a href="/#work">Experience</a></li>
+              <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+            </ul>
+          </nav>
 
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-        <span class="hamburger-line hamburger-line--top"></span>
-        <span class="hamburger-line hamburger-line--mid"></span>
-        <span class="hamburger-line hamburger-line--bottom"></span>
-      </button>
-    </div>
-  </header>
+          <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+            <span class="hamburger-line hamburger-line--top"></span>
+            <span class="hamburger-line hamburger-line--mid"></span>
+            <span class="hamburger-line hamburger-line--bottom"></span>
+          </button>
+        </div>
+      </header>
 
-  <!-- Mobile Backdrop -->
-  <div class="mobile-backdrop" id="mobile-backdrop" aria-hidden="true"></div>
+      <!-- Mobile Backdrop -->
+      <div class="mobile-backdrop" id="mobile-backdrop" aria-hidden="true"></div>
 
-  <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-    <nav aria-label="Mobile navigation">
-      <ul class="mobile-nav">
-        <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
-        <li><a href="/#work">Experience</a></li>
-        <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
-      </ul>
-    </nav>
-  </div>
+      <!-- Mobile Menu -->
+      <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <nav aria-label="Mobile navigation">
+          <ul class="mobile-nav">
+            <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
+            <li><a href="/#work">Experience</a></li>
+            <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+          </ul>
+        </nav>
+      </div>
+    </>
+  )}
 
   <slot />
 
@@ -147,9 +169,6 @@ const pathname = Astro.url.pathname;
           heroLines.forEach((line, i) => {
             setTimeout(() => {
               line.classList.add('in');
-              if (!reduced) {
-                setTimeout(() => line.classList.add('floating'), 500);
-              }
             }, reduced ? (280 + i * 130) : (280 + i * 150));
           });
         }

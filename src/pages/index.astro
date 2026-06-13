@@ -1,5 +1,28 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes } from "../lib/photo-assets";
+
+const makePortfolioPhoto = (number: number) => ({
+  src: `/assets/photos/img-portfolio/photo-${number}.jpg`,
+  alt: `Photo ${number}`,
+  w: 0,
+  h: 0,
+});
+
+const homeGalleryRows = await Promise.all(
+  [
+    [1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+    [9, 10, 11, 12, 13, 14, 15, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
+  ].map((row) =>
+    optimizePhotos(row.map(makePortfolioPhoto), {
+      previewWidth: 480,
+      previewWidths: [240, 320, 480, 640],   // tighten widths for strip (fixed-height thumbnails)
+      previewSizes: STRIP_GALLERY_SIZES,
+      fullQuality: 78,
+      withWebpFallback: true,                // AVIF primary, WebP fallback for old Safari
+    }),
+  ),
+);
 ---
 <Layout title="Phuc Loc Nguyen | Digital Marketing Specialist">
 
@@ -134,133 +157,44 @@ import Layout from "../layouts/Layout.astro";
           <div class="gallery-strip-outer">
 
             <div class="gallery-strip" data-gallery aria-label="Photo gallery">
-              <div class="gallery-row">
-                <a href="/assets/photos/img-portfolio/photo-1.jpg" class="gallery-item r" data-d="1" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 1">
-                  <img src="/assets/photos/img-portfolio/photo-1.jpg" alt="Photo 1" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-2.jpg" class="gallery-item r" data-d="2" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 2">
-                  <img src="/assets/photos/img-portfolio/photo-2.jpg" alt="Photo 2" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-3.jpg" class="gallery-item r" data-d="3" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 3">
-                  <img src="/assets/photos/img-portfolio/photo-3.jpg" alt="Photo 3" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-4.jpg" class="gallery-item w-wide r" data-d="4" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 4">
-                  <img src="/assets/photos/img-portfolio/photo-4.jpg" alt="Photo 4" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-5.jpg" class="gallery-item r" data-d="5" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 5">
-                  <img src="/assets/photos/img-portfolio/photo-5.jpg" alt="Photo 5" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-6.jpg" class="gallery-item w-wide r" data-d="1" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 6">
-                  <img src="/assets/photos/img-portfolio/photo-6.jpg" alt="Photo 6" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-7.jpg" class="gallery-item w-wide r" data-d="2" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 7">
-                  <img src="/assets/photos/img-portfolio/photo-7.jpg" alt="Photo 7" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-8.jpg" class="gallery-item r" data-d="3" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 8">
-                  <img src="/assets/photos/img-portfolio/photo-8.jpg" alt="Photo 8" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-16.jpg" class="gallery-item r" data-d="1" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 16">
-                  <img src="/assets/photos/img-portfolio/photo-16.jpg" alt="Photo 16" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-17.jpg" class="gallery-item w-wide r" data-d="2" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 17">
-                  <img src="/assets/photos/img-portfolio/photo-17.jpg" alt="Photo 17" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-18.jpg" class="gallery-item r" data-d="3" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 18">
-                  <img src="/assets/photos/img-portfolio/photo-18.jpg" alt="Photo 18" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-19.jpg" class="gallery-item w-wide r" data-d="4" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 19">
-                  <img src="/assets/photos/img-portfolio/photo-19.jpg" alt="Photo 19" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-20.jpg" class="gallery-item r" data-d="5" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 20">
-                  <img src="/assets/photos/img-portfolio/photo-20.jpg" alt="Photo 20" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-21.jpg" class="gallery-item r" data-d="1" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 21">
-                  <img src="/assets/photos/img-portfolio/photo-21.jpg" alt="Photo 21" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-22.jpg" class="gallery-item w-wide r" data-d="2" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 22">
-                  <img src="/assets/photos/img-portfolio/photo-22.jpg" alt="Photo 22" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-23.jpg" class="gallery-item r" data-d="3" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 23">
-                  <img src="/assets/photos/img-portfolio/photo-23.jpg" alt="Photo 23" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-24.jpg" class="gallery-item r" data-d="4" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 24">
-                  <img src="/assets/photos/img-portfolio/photo-24.jpg" alt="Photo 24" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-25.jpg" class="gallery-item w-wide r" data-d="5" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 25">
-                  <img src="/assets/photos/img-portfolio/photo-25.jpg" alt="Photo 25" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-26.jpg" class="gallery-item w-wide r" data-d="1" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 26">
-                  <img src="/assets/photos/img-portfolio/photo-26.jpg" alt="Photo 26" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-27.jpg" class="gallery-item w-wide r" data-d="2" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 27">
-                  <img src="/assets/photos/img-portfolio/photo-27.jpg" alt="Photo 27" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-28.jpg" class="gallery-item r" data-d="3" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 28">
-                  <img src="/assets/photos/img-portfolio/photo-28.jpg" alt="Photo 28" loading="lazy">
-                </a>
-              </div>
-              <div class="gallery-row">
-                <a href="/assets/photos/img-portfolio/photo-9.jpg" class="gallery-item w-wide r" data-d="4" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 9">
-                  <img src="/assets/photos/img-portfolio/photo-9.jpg" alt="Photo 9" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-10.jpg" class="gallery-item w-wide r" data-d="5" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 10">
-                  <img src="/assets/photos/img-portfolio/photo-10.jpg" alt="Photo 10" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-11.jpg" class="gallery-item w-wide r" data-d="1" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 11">
-                  <img src="/assets/photos/img-portfolio/photo-11.jpg" alt="Photo 11" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-12.jpg" class="gallery-item w-wide r" data-d="2" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 12">
-                  <img src="/assets/photos/img-portfolio/photo-12.jpg" alt="Photo 12" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-13.jpg" class="gallery-item w-wide r" data-d="3" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 13">
-                  <img src="/assets/photos/img-portfolio/photo-13.jpg" alt="Photo 13" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-14.jpg" class="gallery-item r" data-d="4" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 14">
-                  <img src="/assets/photos/img-portfolio/photo-14.jpg" alt="Photo 14" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-15.jpg" class="gallery-item r" data-d="5" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 15">
-                  <img src="/assets/photos/img-portfolio/photo-15.jpg" alt="Photo 15" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-29.jpg" class="gallery-item w-wide r" data-d="4" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 29">
-                  <img src="/assets/photos/img-portfolio/photo-29.jpg" alt="Photo 29" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-30.jpg" class="gallery-item r" data-d="5" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 30">
-                  <img src="/assets/photos/img-portfolio/photo-30.jpg" alt="Photo 30" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-31.jpg" class="gallery-item w-wide r" data-d="1" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 31">
-                  <img src="/assets/photos/img-portfolio/photo-31.jpg" alt="Photo 31" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-32.jpg" class="gallery-item w-wide r" data-d="2" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 32">
-                  <img src="/assets/photos/img-portfolio/photo-32.jpg" alt="Photo 32" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-33.jpg" class="gallery-item r" data-d="3" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 33">
-                  <img src="/assets/photos/img-portfolio/photo-33.jpg" alt="Photo 33" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-34.jpg" class="gallery-item w-wide r" data-d="4" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 34">
-                  <img src="/assets/photos/img-portfolio/photo-34.jpg" alt="Photo 34" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-35.jpg" class="gallery-item w-wide r" data-d="5" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 35">
-                  <img src="/assets/photos/img-portfolio/photo-35.jpg" alt="Photo 35" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-36.jpg" class="gallery-item w-wide r" data-d="1" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 36">
-                  <img src="/assets/photos/img-portfolio/photo-36.jpg" alt="Photo 36" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-37.jpg" class="gallery-item w-wide r" data-d="2" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 37">
-                  <img src="/assets/photos/img-portfolio/photo-37.jpg" alt="Photo 37" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-38.jpg" class="gallery-item r" data-d="3" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 38">
-                  <img src="/assets/photos/img-portfolio/photo-38.jpg" alt="Photo 38" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-39.jpg" class="gallery-item r" data-d="4" data-pswp-width="1280" data-pswp-height="1920" aria-label="Photo 39">
-                  <img src="/assets/photos/img-portfolio/photo-39.jpg" alt="Photo 39" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-40.jpg" class="gallery-item w-wide r" data-d="5" data-pswp-width="1920" data-pswp-height="1280" aria-label="Photo 40">
-                  <img src="/assets/photos/img-portfolio/photo-40.jpg" alt="Photo 40" loading="lazy">
-                </a>
-                <a href="/assets/photos/img-portfolio/photo-41.jpg" class="gallery-item w-wide r" data-d="1" data-pswp-width="1920" data-pswp-height="1279" aria-label="Photo 41">
-                  <img src="/assets/photos/img-portfolio/photo-41.jpg" alt="Photo 41" loading="lazy">
-                </a>
-              </div>
+              {homeGalleryRows.map((row) => (
+                <div class="gallery-row">
+                  {row.map((photo, i) => (
+                    <a
+                      href={photo.fullSrc}
+                      class={`gallery-item ${photo.w > photo.h ? "w-wide " : ""}r`}
+                      data-d={String((i % 5) + 1)}
+                      data-pswp-width={photo.fullWidth}
+                      data-pswp-height={photo.fullHeight}
+                      aria-label={photo.alt}
+                    >
+                      <!-- AVIF primary → WebP fallback for old browsers -->
+                      <picture>
+                        <source
+                          type="image/avif"
+                          srcset={photo.previewSrcSet}
+                          sizes={photo.previewSizes}
+                        />
+                        {photo.webpSrcSet && (
+                          <source
+                            type="image/webp"
+                            srcset={photo.webpSrcSet}
+                            sizes={photo.previewSizes}
+                          />
+                        )}
+                        <img
+                          src={photo.previewSrc}
+                          width={photo.previewWidth}
+                          height={photo.previewHeight}
+                          alt={photo.alt}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </picture>
+                    </a>
+                  ))}
+                </div>
+              ))}
             </div>
 
           </div><!-- /.gallery-strip-outer -->
@@ -315,10 +249,16 @@ import Layout from "../layouts/Layout.astro";
   <!-- ============================================================
        SCRIPTS
   ============================================================ -->
-  <script is:inline src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <!-- Typed.js: defer = download parallel, execute after HTML parsed (non-blocking) -->
+  <script defer src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
   <script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Small delay to allow the hero lines to fade in before typing starts
+    // Wait for both DOM and Typed.js to be ready
+    function initTyped() {
+      if (typeof Typed === 'undefined') {
+        // Typed.js not yet loaded (deferred), wait a tick
+        setTimeout(initTyped, 50);
+        return;
+      }
       setTimeout(() => {
         new Typed('#typed-text', {
           strings: ['data.', 'automation.', 'ads.'],
@@ -329,6 +269,8 @@ import Layout from "../layouts/Layout.astro";
           cursorChar: '|',
         });
       }, 1100);
-    });
+    }
+    document.addEventListener('DOMContentLoaded', initTyped);
   </script>
+
 </Layout>

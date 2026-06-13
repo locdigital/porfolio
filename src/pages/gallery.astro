@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { locations } from "../lib/locations";
+import { optimizePhotos } from "../lib/photo-assets";
 
 // Flatten all photos from all locations
 const allPhotos = locations.flatMap(loc =>
@@ -11,9 +12,13 @@ const allPhotos = locations.flatMap(loc =>
 );
 
 // Deduplicate photos by src
-const uniquePhotos = Array.from(
+const uniqueRawPhotos = Array.from(
   new Map(allPhotos.map(p => [p.src, p])).values()
 );
+
+const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
+  previewWidth: 800,
+});
 ---
 
 <Layout title="Gallery — Phuc Loc Nguyen">
@@ -119,8 +124,8 @@ const uniquePhotos = Array.from(
             if (colH[j] < colH[min]) min = j;
           }
 
-          var pw = photo.w || 1280;
-          var ph = photo.h || 853;
+          var pw = photo.previewWidth || photo.w || 1280;
+          var ph = photo.previewHeight || photo.h || 853;
           var ratio = ph / pw;                    // e.g. portrait → 1.5, landscape → 0.667
           var pb = (ratio * 100).toFixed(3) + '%'; // padding-bottom %
 
@@ -132,7 +137,7 @@ const uniquePhotos = Array.from(
           box.style.paddingBottom = pb;          // ← this locks in natural height
 
           var img = document.createElement('img');
-          img.src = photo.src;
+          img.src = photo.previewSrc || photo.src;
           img.alt = photo.alt;
           img.loading = 'lazy';
           img.decoding = 'async';
