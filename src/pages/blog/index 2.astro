@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = await getCollection('posts');
+---
+
+<Layout title="Blog - Loc Digital">
+  <main class="container mx-auto px-4 py-20 max-w-4xl pt-32">
+    <div class="mb-12">
+      <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-4">Blog</h1>
+      <p class="text-xl text-neutral-400">Những bài viết, chia sẻ và cập nhật mới nhất.</p>
+    </div>
+
+    {posts.length === 0 ? (
+      <div class="text-center py-20 bg-neutral-900/50 rounded-2xl border border-neutral-800">
+        <p class="text-neutral-400 text-lg">Chưa có bài viết nào.</p>
+        <a href="/keystatic" class="inline-block mt-4 text-[#D3FF86] hover:underline">Viết bài mới trong Admin</a>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {posts.map((post) => (
+          <article class="group bg-neutral-900/50 rounded-2xl border border-neutral-800 overflow-hidden hover:border-neutral-700 transition-colors">
+            {post.data.coverImage && (
+              <div class="aspect-video w-full overflow-hidden">
+                <img 
+                  src={post.data.coverImage} 
+                  alt={post.data.title} 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            )}
+            <div class="p-6">
+              <h2 class="text-2xl font-bold mb-3 group-hover:text-[#D3FF86] transition-colors">
+                <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+              </h2>
+              {post.data.summary && (
+                <p class="text-neutral-400 mb-6 line-clamp-3">{post.data.summary}</p>
+              )}
+              <a href={`/blog/${post.slug}`} class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-[#D3FF86] transition-colors">
+                Đọc tiếp
+                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </main>
+</Layout>

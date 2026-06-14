@@ -1,0 +1,66 @@
+---
+title: Animation Examples
+description: Demonstration of motion.md animation capabilities
+---
+
+# Basic Animations (Slidev Compatible)
+
+## Fade In
+<Animation name="fadeIn" duration={1}>
+  Hello World!
+</Animation>
+
+## Scale
+<Animation name="scale">
+  Scaling content
+</Animation>
+
+# Extended Syntax (motion.md Features)
+
+## Slide In
+<Animation name="slideIn" duration={1.5} easing="ease-out">
+  Sliding from left to right
+</Animation>
+
+## Rotate
+<Animation name="rotate" duration={2}>
+  Rotating element
+</Animation>
+
+# Advanced MDX Examples
+
+## Combined Animations
+<Animation name="fadeIn" duration={0.5}>
+  <Animation name="scale">
+    Fade and scale together
+  </Animation>
+</Animation>
+
+## Sequential Animations
+<Animation name="fadeIn" duration={0.3}>
+  First fade in
+  <Animation name="slideIn" duration={0.5}>
+    Then slide in
+    <Animation name="rotate" duration={1}>
+      Finally rotate
+    </Animation>
+  </Animation>
+</Animation>
+
+## Interactive Elements
+<Animation name="fadeIn">
+  <button onClick={() => console.log('Clicked!')}>
+    Animated Button
+  </button>
+</Animation>
+
+## Dynamic Content
+{Array(3).fill(0).map((_, i) => (
+  <Animation
+    key={i}
+    name="fadeIn"
+    duration={0.5 + (i * 0.2)}
+  >
+    Item {i + 1}
+  </Animation>
+))}
