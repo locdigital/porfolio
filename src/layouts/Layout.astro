@@ -33,15 +33,7 @@ const pathname = Astro.url.pathname;
   <meta name="theme-color" content="#FAFAF7">
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
   <meta name="google-site-verification" content="tYabJCSeApR0trq6VL7V6_JKbEKbBnznDtNmvaBehfY" />
-  <link id="dynamic-favicon" rel="icon" type="image/png" href="/favicon-active.png" />
-  <script is:inline>
-    document.addEventListener("visibilitychange", function() {
-      const favicon = document.getElementById("dynamic-favicon");
-      if (favicon) {
-        favicon.href = document.hidden ? "/favicon-inactive.png" : "/favicon-active.png";
-      }
-    });
-  </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DYB5FLYNH4"></script>
