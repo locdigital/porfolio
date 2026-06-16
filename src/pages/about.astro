@@ -3,85 +3,215 @@ import Layout from "../layouts/Layout.astro";
 import { Picture, Image } from "astro:assets";
 import { getPhotoAsset } from "../lib/photo-assets";
 
-const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.jpg");
-const lifeOne = getPhotoAsset("/assets/photos/img-portfolio/photo-4.jpg");
-const lifeTwo = getPhotoAsset("/assets/photos/img-portfolio/photo-2.jpg");
-const lifeThree = getPhotoAsset("/assets/photos/img-portfolio/photo-3.jpg");
+const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 ---
 
 <Layout title="About | Phuc Loc Nguyen">
   <main class="about-page">
     <div class="container">
       
-      <!-- Intro -->
-      <h1 class="about-title"><span class="highlight">Xin chào!</span></h1>
-      <p class="about-intro">
-        I'm Loc 👋 a Performance-driven Digital Marketer, strategist, and builder living and working in <strong>Ho Chi Minh City, Vietnam 🇻🇳</strong>. I love creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.
-      </p>
-
-      <!-- Featured Image -->
-      <figure class="about-featured-image fade-in">
-        <Picture
-          src={heroAbout}
-          alt="Phuc Loc Nguyen"
-          widths={[640, 960, 1280]}
-          sizes="(max-width: 900px) 100vw, 960px"
-          formats={["avif", "webp"]}
-          fallbackFormat="jpg"
-          quality={75}
-          loading="eager"
-          decoding="async"
-          fetchpriority="high"
-        />
-        <figcaption>Somewhere in Ho Chi Minh City 📍</figcaption>
-      </figure>
-
-      <!-- Content text -->
-      <div class="about-content">
-        <p>My favourite type of professional projects involve translating meticulously crafted details into deliberate, data-driven marketing systems. Over the past 4+ years, I've managed multi-channel paid media and scaled revenue for e-commerce, education, and consumer brands.</p>
-        
-        <p>Apart from work, I enjoy creating automated workflows, exploring technical SEO, and building online communities in visually expressive and distinct ways. I believe that good marketing isn't just about numbers; it's about telling a compelling story.</p>
-        
-        <p>As I continue in my career, I am interested in scaling revenue efficiently, managing large-scale budgets with a rigorous focus on ROAS, and discovering new challenges to drive measurable growth.</p>
-
-        <!-- Collage -->
-        <div class="about-collage">
-          <Image
-            src={lifeOne}
-            class="img-1 fade-in"
-            alt="Travel photo from Loc's life"
-            widths={[360, 520, 760]}
-            sizes="(max-width: 768px) 65vw, 560px"
-            quality={72}
-            loading="lazy"
+      <!-- Top Hero Section -->
+      <section class="about-hero fade-in">
+        <div class="hero-text">
+          <h1 class="about-title"><span class="highlight"><span id="typing-text"></span><span class="typing-cursor">|</span></span><br/>I'm Loc 👋</h1>
+          <p class="about-intro">I'm a Performance-driven Digital Marketer, strategist, and builder based in <strong>Ho Chi Minh City, Vietnam 🇻🇳</strong>.</p>
+          <div class="about-desc">
+            <p>My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.</p>
+            <p>Over the past 4+ years, I've managed multi-channel paid media and scaled revenue for e-commerce, education, and consumer brands. Apart from work, I enjoy creating automated workflows, exploring technical SEO, and building online communities.</p>
+          </div>
+          <a href="mailto:hi@loc.digital" class="btn-connect">Let's connect!</a>
+        </div>
+        <div class="hero-image">
+          <Picture
+            src={heroAbout}
+            alt="Phuc Loc Nguyen"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 900px) 100vw, 50vw"
+            formats={["avif", "webp"]}
+            fallbackFormat="jpg"
+            quality={80}
+            loading="eager"
             decoding="async"
-          />
-          <Image
-            src={lifeTwo}
-            class="img-2 fade-in"
-            alt="Portrait travel photo from Loc's life"
-            widths={[280, 420, 640]}
-            sizes="(max-width: 768px) 45vw, 420px"
-            quality={72}
-            loading="lazy"
-            decoding="async"
-          />
-          <Image
-            src={lifeThree}
-            class="img-3 fade-in"
-            alt="Portrait travel photo from Loc's life"
-            widths={[320, 480, 640]}
-            sizes="(max-width: 768px) 60vw, 480px"
-            quality={72}
-            loading="lazy"
-            decoding="async"
+            fetchpriority="high"
           />
         </div>
+      </section>
 
-        <p>I believe in the power of continuous learning. When I'm not optimizing ad campaigns or analyzing data, you can find me taking photographs around the city, reading up on the latest tech trends, or exploring new coffee shops.</p>
+      <!-- Grid Layout for Resume -->
+      <section class="resume-grid fade-in">
         
-        <p>If you're building something interesting and need someone who understands both the creative and performance side of growth, I'd love to chat.</p>
-      </div>
+        <!-- Left Column -->
+        <div class="resume-main">
+          
+          <div class="resume-section">
+            <h2 class="resume-sh">Working History</h2>
+            <div class="card-list">
+                    <!-- WorkFlow Space -->
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-logo"><img src="/assets/logos/logo-workflow.webp" alt="WorkFlow Space" loading="lazy" decoding="async" /></div>
+                  <div class="card-title-group">
+                    <h3>Digital Marketing Specialist</h3>
+                    <span class="company-date">WorkFlow Space | 2024 – Present</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <ul>
+                    <li>Manage content, paid media campaigns, and community growth strategies.</li>
+                    <li>Optimize digital presence for maximum reach and engagement.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- PlayAh! -->
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-logo"><img src="/assets/logos/logo-playah.webp" alt="PlayAh!" loading="lazy" decoding="async" /></div>
+                  <div class="card-title-group">
+                    <h3>Digital Marketing Specialist</h3>
+                    <span class="company-date">PlayAh! | 2024 – Present</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <ul>
+                    <li>Execute brand campaigns and performance marketing strategies.</li>
+                    <li>Analyze metrics to ensure strong return on ad spend (ROAS).</li>
+                  </ul>
+                </div>
+              </div>
+ 
+              <!-- POPS -->
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-logo"><img src="/assets/logos/logo-pops.webp" alt="POPS Worldwide" loading="lazy" decoding="async" /></div>
+                  <div class="card-title-group">
+                    <h3>SEO Executive</h3>
+                    <span class="company-date">POPS Worldwide | 2023 – 2024</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <ul>
+                    <li>Developed and executed comprehensive search strategies and organic growth initiatives.</li>
+                  </ul>
+                </div>
+              </div>
+ 
+              <!-- PNJ -->
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-logo"><img src="/assets/logos/logo-pnj.webp" alt="PNJ" loading="lazy" decoding="async" /></div>
+                  <div class="card-title-group">
+                    <h3>Digital Marketing Specialist</h3>
+                    <span class="company-date">PNJ | 2022 – 2023</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <ul>
+                    <li>Managed e-commerce and retail campaigns to drive sales and customer acquisition.</li>
+                  </ul>
+                </div>
+              </div>
+ 
+              <!-- Sony -->
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-logo"><img src="/assets/logos/logo-sony.webp" alt="Sony" loading="lazy" decoding="async" /></div>
+                  <div class="card-title-group">
+                    <h3>Digital Marketing Specialist</h3>
+                    <span class="company-date">Sony | 2021 – 2022</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <ul>
+                    <li>Led brand awareness campaigns and lead generation efforts.</li>
+                  </ul>
+                </div>
+              </div>             </div>
+
+            </div>
+          </div>
+
+          <div class="resume-section">
+            <h2 class="resume-sh">Education</h2>
+            <div class="card-grid">
+              <div class="card compact-card">
+                 <div class="card-logo placeholder-icon">🎓</div>
+                 <div class="card-title-group">
+                   <h3>Bachelor's Degree</h3>
+                   <span class="company-date">University Name<br/>2017 - 2021</span>
+                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="resume-section">
+            <h2 class="resume-sh">Certifications</h2>
+            <div class="card-grid">
+              <div class="card compact-card">
+                 <div class="card-logo placeholder-icon">🏆</div>
+                 <div class="card-title-group">
+                   <h3>Digital Marketing Specialization</h3>
+                   <span class="company-date">Google | 2022</span>
+                 </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="resume-sidebar">
+          
+          <div class="resume-section">
+            <h2 class="resume-sh">Skills</h2>
+            <div class="card outline-card">
+              <ul class="skills-list">
+                <li>Performance Marketing</li>
+                <li>Search Engine Optimization (SEO)</li>
+                <li>Paid Social (Meta, TikTok)</li>
+                <li>Search Ads (Google)</li>
+                <li>Data Analysis & Reporting</li>
+                <li>Marketing Automation</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="resume-section">
+            <h2 class="resume-sh">Working Tools</h2>
+            <div class="card outline-card tools-grid">
+              <div class="tool-item"><span class="tool-icon">📊</span><span class="tool-name">Google Ads</span></div>
+              <div class="tool-item"><span class="tool-icon">📈</span><span class="tool-name">Meta Ads</span></div>
+              <div class="tool-item"><span class="tool-icon">📱</span><span class="tool-name">TikTok Ads</span></div>
+              <div class="tool-item"><span class="tool-icon">🔎</span><span class="tool-name">Analytics</span></div>
+              <div class="tool-item"><span class="tool-icon">🎨</span><span class="tool-name">Figma</span></div>
+              <div class="tool-item"><span class="tool-icon">⚡</span><span class="tool-name">Zapier</span></div>
+              <div class="tool-item"><span class="tool-icon">🕸️</span><span class="tool-name">Ahrefs</span></div>
+              <div class="tool-item"><span class="tool-icon">📝</span><span class="tool-name">Notion</span></div>
+              <div class="tool-item"><span class="tool-icon">✉️</span><span class="tool-name">Mailchimp</span></div>
+            </div>
+          </div>
+
+          <div class="resume-section">
+            <h2 class="resume-sh">Languages</h2>
+            <div class="card outline-card">
+              <ul class="languages-list">
+                <li><span class="flag">🇻🇳</span> Vietnamese (Native)</li>
+                <li><span class="flag">🇬🇧</span> English (Fluent)</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Bottom CTA Section -->
+      <section class="about-cta fade-in">
+        <h2 class="cta-title">Thank You!</h2>
+        <p class="cta-subtitle">For exploring my profile and reviewing my work.</p>
+        <p class="cta-text">Do you have a great idea and want to share?<br/>Let's make something amazing together!</p>
+        <a href="mailto:hi@loc.digital" class="btn-solid">Get in touch with me</a>
+      </section>
 
     </div>
   </main>
@@ -89,19 +219,56 @@ const lifeThree = getPhotoAsset("/assets/photos/img-portfolio/photo-3.jpg");
 
 <style>
   .about-page {
-    padding: calc(var(--hdr-h) + 60px) 0 100px;
+    padding: calc(var(--hdr-h) + 80px) 0 100px;
   }
 
-  /* Title & Intro */
-  .about-title {
-    font-family: var(--serif);
-    font-size: clamp(42px, 6.5vw, 90px);
-    font-weight: 400;
-    margin-bottom: 32px;
-    letter-spacing: -0.02em;
-    color: var(--text);
+  /* Simple fade-in animation */
+  .fade-in {
+    animation: fadeIn 1s ease-out forwards;
+    opacity: 0;
   }
   
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Hero Section */
+  .about-hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+
+  @media (max-width: 900px) {
+    .about-hero {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+  }
+
+  .hero-text {
+    max-width: 540px;
+  }
+
+  .about-title {
+    font-family: var(--serif);
+    font-size: clamp(42px, 6.5vw, 84px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
   .highlight {
     position: relative;
     display: inline-block;
@@ -120,165 +287,412 @@ const lifeThree = getPhotoAsset("/assets/photos/img-portfolio/photo-3.jpg");
     border-radius: 2px;
   }
 
-  .about-intro {
-    font-size: 15px;
-    line-height: 1.72;
-    margin-bottom: 48px;
-    font-weight: 400;
+  /* Typing cursor */
+  .typing-cursor {
+    display: inline-block;
+    font-weight: 300;
+    margin-left: 2px;
+    animation: blink 0.75s step-end infinite;
     color: var(--text);
-  }
-  
-  .about-intro strong {
-    font-weight: 600;
+    opacity: 0.7;
   }
 
-  /* Featured Image */
-  .about-featured-image {
-    margin: 0 0 48px 0;
-  }
-  
-  .about-featured-image img {
-    width: 100%;
-    border-radius: 12px;
-    object-fit: cover;
-    aspect-ratio: 16 / 7; /* Wider aspect ratio for bigger container */
-    animation: floatImage 9s ease-in-out 1s infinite both;
-  }
-  
-  @keyframes floatImage {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-7px); }
-  }
-  
-  .about-featured-image figcaption {
-    margin-top: 12px;
-    font-size: 13px;
-    color: var(--muted);
+  @keyframes blink {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0; }
   }
 
-  /* Content */
-  .about-content {
-  }
-
-  .about-content p {
-    font-size: 15px;
-    line-height: 1.72;
+  .about-intro {
+    font-size: 17px;
+    line-height: 1.6;
     margin-bottom: 24px;
     color: var(--text);
   }
 
-  /* Collage */
-  .about-collage {
-    position: relative;
-    height: 520px;
-    margin: 80px 0;
+  .about-desc p {
+    font-size: 15px;
+    line-height: 1.72;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .btn-connect {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .btn-connect:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .hero-image {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    transform: rotate(1deg);
+    transition: transform 0.4s ease;
+  }
+  
+  .hero-image:hover {
+    transform: rotate(0deg) translateY(-5px);
+  }
+
+  .hero-image img {
     width: 100%;
-    isolation: isolate; /* Creates a stacking context */
-  }
-  
-  @keyframes float-polaroid {
-    0%, 100% { translate: 0 0px; }
-    50% { translate: 0 -8px; }
-  }
-
-  .about-collage img {
-    position: absolute;
-    border-radius: 24px;
+    aspect-ratio: 4 / 5;
     object-fit: cover;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    transition:
-      transform 1s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 1s ease,
-      filter 1s ease;
-    transform-origin: center;
-    cursor: pointer;
-    animation: float-polaroid 9s ease-in-out infinite both;
+  }
+
+  /* Resume Grid */
+  .resume-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+    margin-bottom: 100px;
+  }
+
+  @media (max-width: 900px) {
+    .resume-grid {
+      grid-template-columns: 1fr;
+      gap: 60px;
+    }
+  }
+
+  .resume-section {
+    margin-bottom: 48px;
+  }
+
+  .resume-sh {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 24px;
+    font-family: var(--sans);
+  }
+
+  /* Cards */
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .card-logo {
+    width: 104px;
+    height: 52px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .placeholder-icon {
+    font-size: 26px;
+    padding: 0 !important;
+  }
+
+  .card-title-group h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    font-family: var(--sans);
+  }
+
+  .company-date {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--mono);
+    display: block;
+    line-height: 1.4;
+  }
+
+  .card-body ul {
+    padding-left: 20px;
+    margin: 0;
+    list-style-type: disc;
+  }
+
+  .card-body li {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .card-body li:last-child {
+    margin-bottom: 0;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .compact-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .compact-card .card-logo {
+    flex-shrink: 0;
+  }
+
+  /* Outline Card (Sidebar) */
+  .outline-card {
+    padding: 28px;
+    box-shadow: none;
+    border-style: dashed;
+    border-width: 1.5px;
+  }
+
+  .outline-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+    border-style: solid;
+  }
+
+  .skills-list, .languages-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .skills-list li, .languages-list li {
+    font-size: 14.5px;
+    color: var(--text);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+  }
+
+  .skills-list li::before {
+    content: "✓";
+    color: var(--accent);
+    margin-right: 12px;
+    font-weight: bold;
+  }
+
+  .skills-list li:last-child, .languages-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .skills-list li:first-child, .languages-list li:first-child {
+    padding-top: 0;
+  }
+
+  .flag {
+    margin-right: 12px;
+    font-size: 18px;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .tool-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .tool-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--bg);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border: 1px solid var(--divider);
+    transition: transform 0.2s ease, background 0.2s ease;
   }
   
-  /* When the container is hovered, spread them out slightly */
-  .about-collage:hover .img-1 {
-    transform: rotate(-3deg) translate(-10px, -7px);
-  }
-  .about-collage:hover .img-2 {
-    transform: rotate(4deg) translate(10px, -9px);
-  }
-  .about-collage:hover .img-3 {
-    transform: rotate(-1.5deg) translate(10px, 10px);
+  .tool-item:hover .tool-icon {
+    transform: translateY(-3px);
+    background: #fff;
+    border-color: var(--accent);
   }
 
-  /* The hover effect on the parent: slightly dim the images */
-  .about-collage:hover img {
-    filter: brightness(0.9) contrast(0.95);
+  .tool-name {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
   }
 
-  /* The hover effect on the specific image being hovered */
-  .about-collage img:hover {
-    transform: scale(1.025) rotate(0deg) !important;
-    z-index: 10 !important;
-    box-shadow: 0 18px 42px rgba(0,0,0,0.13);
-    filter: brightness(1) contrast(1);
-    transition:
-      transform 1s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 1s ease,
-      filter 1s ease;
-    animation-play-state: paused;
-  }
-
-  /* Default rotations and positions */
-  .img-1 {
-    width: 58%;
-    height: 420px;
-    left: 0;
-    top: 30px;
-    z-index: 2;
-    transform: rotate(-2deg);
-    animation-delay: 1s;
+  /* CTA Section */
+  .about-cta {
+    text-align: center;
+    padding: 60px 0 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
   }
   
-  .img-2 {
-    width: 42%;
-    height: 340px;
-    right: 8%;
+  .about-cta::before {
+    content: '';
+    position: absolute;
     top: 0;
-    z-index: 1;
-    transform: rotate(3deg);
-    animation-delay: 1.35s;
-  }
-  
-  .img-3 {
-    width: 48%;
-    height: 280px;
-    right: 12%;
-    bottom: -20px;
-    z-index: 3;
-    transform: rotate(-1deg);
-    animation-delay: 1.7s;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--divider), transparent);
   }
 
-  /* Simple fade-in animation */
-  .fade-in {
-    animation: fadeIn 1s ease-out forwards;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .cta-title {
+    font-family: var(--serif);
+    font-size: 56px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
   }
 
-  @media (max-width: 768px) {
-    .about-collage { height: 400px; margin: 40px 0; }
-    .img-1 { width: 65%; height: 260px; top: 20px; left: 0; transform: rotate(-2deg); }
-    .img-2 { width: 45%; height: 220px; top: 0; right: 0; transform: rotate(3deg); }
-    .img-3 { width: 60%; height: 180px; right: 5%; bottom: 0; transform: rotate(-1deg); }
-    
-    .about-collage:hover .img-1 { transform: rotate(-3deg) translate(-4px, -4px); }
-    .about-collage:hover .img-2 { transform: rotate(4deg) translate(4px, -4px); }
-    .about-collage:hover .img-3 { transform: rotate(-1.5deg) translate(4px, 4px); }
+  .cta-subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 40px;
+    font-family: var(--mono);
+  }
+
+  .cta-text {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 36px;
+    font-weight: 500;
+  }
+
+  .btn-solid {
+    display: inline-block;
+    padding: 16px 36px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 40px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    text-decoration: none;
+  }
+
+  .btn-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 117, 222, 0.3);
+    background: var(--text);
   }
 </style>
+
+<script>
+  const greetings = [
+    "Xin chào!",
+    "Hello!",
+    "Hola!",
+    "Nǐ hǎo!",
+    "Namaste!",
+    "Marhaban!",
+    "Bonjour!",
+    "Nomoshkar!",
+    "Olá!",
+    "Privet!",
+    "Halo!",
+  ];
+
+  const el = document.getElementById("typing-text");
+  let greetingIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let isPaused = false;
+
+  const TYPE_SPEED = 80;   // ms per character when typing
+  const DELETE_SPEED = 45; // ms per character when deleting
+  const PAUSE_AFTER_TYPE = 1600; // pause before starting to delete
+  const PAUSE_AFTER_DELETE = 300; // pause before typing next word
+
+  function tick() {
+    if (!el) return;
+
+    const current = greetings[greetingIndex];
+
+    if (isPaused) {
+      isPaused = false;
+      setTimeout(tick, isDeleting ? PAUSE_AFTER_DELETE : PAUSE_AFTER_TYPE);
+      return;
+    }
+
+    if (!isDeleting) {
+      // Typing forward
+      charIndex++;
+      el.textContent = current.slice(0, charIndex);
+
+      if (charIndex === current.length) {
+        // Finished typing — pause then start deleting
+        isDeleting = true;
+        isPaused = true;
+        setTimeout(tick, PAUSE_AFTER_TYPE);
+        return;
+      }
+    } else {
+      // Deleting
+      charIndex--;
+      el.textContent = current.slice(0, charIndex);
+
+      if (charIndex === 0) {
+        // Finished deleting — move to next greeting
+        isDeleting = false;
+        greetingIndex = (greetingIndex + 1) % greetings.length;
+        isPaused = true;
+        setTimeout(tick, PAUSE_AFTER_DELETE);
+        return;
+      }
+    }
+
+    setTimeout(tick, isDeleting ? DELETE_SPEED : TYPE_SPEED);
+  }
+
+  // Kick off with a small initial delay
+  setTimeout(tick, 600);
+</script>

@@ -84,8 +84,7 @@ const optimizedLocations = await Promise.all(
         <div class="container">
           <div class="loc-grid" data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
             {loc.photos.map((photo, i) => (
-              <a
-                href={photo.fullSrc}
+              <div
                 class={`loc-photo-item r ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
                 data-d={String((i % 5) + 1)}
                 data-pswp-width={photo.fullWidth}
@@ -119,7 +118,7 @@ const optimizedLocations = await Promise.all(
                 <div class="loc-photo-overlay" aria-hidden="true">
                   <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
@@ -140,30 +139,27 @@ const optimizedLocations = await Promise.all(
 
   /* ── Hero ── */
   .photos-hero {
-    padding: clamp(56px, 8vw, 100px) 0 clamp(32px, 4vw, 52px);
+    padding: 80px 0 clamp(32px, 4vw, 52px);
   }
 
   .photos-heading {
     font-family: var(--serif);
-    font-size: clamp(44px, 7vw, 96px);
+    font-size: clamp(42px, 6.5vw, 90px);
     font-weight: 400;
     line-height: 1.06;
     letter-spacing: -.025em;
     color: var(--text);
     margin-bottom: 20px;
-    margin-top: 28px;
+    margin-top: 0;
   }
 
   .photos-heading em {
     font-style: italic;
-    background: var(--accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent);
   }
 
   .photos-subtext {
-    font-size: clamp(14px, 1.5vw, 16px);
+    font-size: 15px;
     color: var(--muted);
     max-width: 480px;
     line-height: 1.7;
@@ -204,6 +200,11 @@ const optimizedLocations = await Promise.all(
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+
+  .photos-nav-list:active {
+    cursor: grabbing;
   }
 
   .photos-nav-list::-webkit-scrollbar {
@@ -414,29 +415,49 @@ const optimizedLocations = await Promise.all(
       const sections = document.querySelectorAll('.loc-section');
       const navLinks = document.querySelectorAll('.photos-nav-link');
 
-      const navIo = new IntersectionObserver(entries => {
+      let spyTicking = false;
+      const updateSpy = () => {
         let activeId = null;
-        // Find the topmost intersecting section
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            activeId = entry.target.id;
+        // header offset is around 100px or so
+        const offset = 150; 
+        
+        sections.forEach(sec => {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= offset && rect.bottom > offset) {
+            activeId = sec.id;
           }
         });
-        
+
+        // Fallback: if we scrolled all the way to the bottom, the last section should be active
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
+           if (sections.length > 0) activeId = sections[sections.length - 1].id;
+        }
+
         if (activeId) {
           navLinks.forEach(link => {
             if (link.getAttribute('data-nav-target') === activeId) {
-              link.classList.add('active');
-              // Scroll the nav link into view horizontally if needed
-              link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              if (!link.classList.contains('active')) {
+                link.classList.add('active');
+                // Scroll the nav link into view horizontally if needed
+                link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              }
             } else {
               link.classList.remove('active');
             }
           });
         }
-      }, { threshold: 0.2, rootMargin: '-100px 0px -40% 0px' });
+        spyTicking = false;
+      };
 
-      sections.forEach(sec => navIo.observe(sec));
+      window.addEventListener('scroll', () => {
+        if (!spyTicking) {
+          window.requestAnimationFrame(updateSpy);
+          spyTicking = true;
+        }
+      }, { passive: true });
+      
+      // Run once on load
+      updateSpy();
       
       // Smooth scroll on click for nav links
       navLinks.forEach(link => {
@@ -466,34 +487,51 @@ const optimizedLocations = await Promise.all(
           }
         }, { passive: true });
       }
-    });
-  })();
-</script>
 
-<script type="module" is:inline>
-  import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+      // Drag-to-scroll for nav list
+      const navList = document.querySelector('.photos-nav-list');
+      if (navList) {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let hasDragged = false;
 
-  // One lightbox instance covering all galleries on the page
-  const lb = new PhotoSwipeLightbox({
-    gallery: '[data-gallery]',
-    children: 'a',
-    pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js'),
-    showHideAnimationType: 'zoom',
-    bgOpacity: 0.95,
-    padding: { top: 20, bottom: 40, left: 20, right: 20 },
-    preloaderDelay: 0,
-  });
+        navList.addEventListener('mousedown', (e) => {
+          isDown = true;
+          hasDragged = false;
+          startX = e.pageX - navList.offsetLeft;
+          scrollLeft = navList.scrollLeft;
+        });
 
-  // Caption: show alt text
-  lb.on('uiRegister', () => {
-    lb.pswp?.ui?.registerElement?.({
-      name: 'caption', order: 9, isButton: false, appendTo: 'root',
-      onInit: (el, pswp) => {
-        el.style.cssText = 'position:absolute;bottom:0;left:0;right:0;padding:12px 20px;font-family:\'DM Mono\',monospace;font-size:11px;color:rgba(255,255,255,.55);text-align:center;letter-spacing:.06em;pointer-events:none;';
-        pswp.on('change', () => { el.textContent = pswp.currSlide.data.element?.querySelector('img')?.alt || ''; });
+        navList.addEventListener('mouseleave', () => {
+          isDown = false;
+        });
+
+        navList.addEventListener('mouseup', () => {
+          isDown = false;
+        });
+
+        navList.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - navList.offsetLeft;
+          const walk = (x - startX) * 2; // scroll speed multiplier
+          if (Math.abs(walk) > 5) hasDragged = true;
+          navList.scrollLeft = scrollLeft - walk;
+        });
+
+        // Prevent click if dragging
+        navList.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', (e) => {
+            if (hasDragged) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+            }
+          });
+          // Prevent ghost drag
+          link.addEventListener('dragstart', (e) => e.preventDefault());
+        });
       }
     });
-  });
-
-  lb.init();
+  })();
 </script>

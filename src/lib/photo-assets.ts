@@ -42,7 +42,7 @@ export const STRIP_GALLERY_SIZES =
 
 // Removed 1280 — grid thumbnails never render that wide; saves bandwidth
 const DEFAULT_PREVIEW_WIDTHS = [240, 400, 640, 960];
-const photoModules = import.meta.glob<ImageModule>("../assets/photos/**/*.{jpg,jpeg,png}", {
+const photoModules = import.meta.glob<ImageModule>("../assets/photos/**/*.{jpg,jpeg,png,webp}", {
   eager: true,
 });
 
@@ -138,7 +138,7 @@ export async function optimizePhoto(
   const full = await getImage({
     src: asset,
     width: fullWidth,
-    format: options.fullFormat ?? "jpg",
+    format: options.fullFormat ?? "webp",
     quality: options.fullQuality ?? 75,
   });
   const previewDimensions = dimensionsAtWidth(asset, previewWidth);

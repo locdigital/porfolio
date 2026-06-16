@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes } from "../lib/photo-assets";
+import { getPosts } from "../lib/wordpress";
 
 const makePortfolioPhoto = (number: number) => ({
-  src: `/assets/photos/img-portfolio/photo-${number}.jpg`,
+  src: `/assets/photos/img-portfolio/photo-${number}.webp`,
   alt: `Photo ${number}`,
   w: 0,
   h: 0,
@@ -23,6 +24,8 @@ const homeGalleryRows = await Promise.all(
     }),
   ),
 );
+
+const posts = await getPosts(5);
 ---
 <Layout title="Phuc Loc Nguyen | Digital Marketing Specialist">
 
@@ -55,7 +58,7 @@ const homeGalleryRows = await Promise.all(
                 href="mailto:hi@loc.digital">talk</a>.</p>
             <div class="location">
               <span class="loc-dot" aria-hidden="true"></span>
-              Ho Chi Minh City, Vietnam
+              BangKok, Thailand
             </div>
           </div>
 
@@ -74,7 +77,7 @@ const homeGalleryRows = await Promise.all(
         <ul>
           <li class="timeline-row r" data-d="1">
             <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-workflow.png" alt="WorkFlow Space"
+              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-workflow.webp" alt="WorkFlow Space"
                   loading="lazy"></div>
               <div class="tl-info">
                 <span class="tl-company"><a href="https://www.workflowspace.vn/" target="_blank" rel="noopener">WorkFlow
@@ -86,7 +89,7 @@ const homeGalleryRows = await Promise.all(
           </li>
           <li class="timeline-row r" data-d="2">
             <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-playah.png" alt="PlayAh!"
+              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-playah.webp" alt="PlayAh!"
                   loading="lazy"></div>
               <div class="tl-info">
                 <span class="tl-company"><a href="https://playahvietnam.com/" target="_blank"
@@ -98,7 +101,7 @@ const homeGalleryRows = await Promise.all(
           </li>
           <li class="timeline-row r" data-d="3">
             <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-pops.jpg" alt="POPS Worldwide"
+              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-pops.webp" alt="POPS Worldwide"
                   loading="lazy"></div>
               <div class="tl-info">
                 <span class="tl-company"><a href="https://pops.vn/" target="_blank" rel="noopener">POPS
@@ -110,7 +113,7 @@ const homeGalleryRows = await Promise.all(
           </li>
           <li class="timeline-row r" data-d="4">
             <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-pnj.png" alt="PNJ" loading="lazy">
+              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-pnj.webp" alt="PNJ" loading="lazy">
               </div>
               <div class="tl-info">
                 <span class="tl-company"><a href="https://www.pnj.com.vn/" target="_blank" rel="noopener">PNJ</a></span>
@@ -121,7 +124,7 @@ const homeGalleryRows = await Promise.all(
           </li>
           <li class="timeline-row r" data-d="5">
             <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-sony.jpg" alt="Sony" loading="lazy">
+              <div class="tl-logo" aria-hidden="true"><img src="assets/logos/logo-sony.webp" alt="Sony" loading="lazy">
               </div>
               <div class="tl-info">
                 <span class="tl-company"><a href="https://www.sony.com.vn/" target="_blank"
@@ -139,12 +142,7 @@ const homeGalleryRows = await Promise.all(
 
     <!-- PHOTOGRAPHY –––––––––––––––––––––––––––– -->
     <section class="gallery" id="photography" aria-label="Photography">
-      <div class="container">
-        <div class="sh r">
-          <span class="sh-title" data-parallax=".1">Photos</span>
-          <span class="sh-number" data-parallax=".3">02</span>
-        </div>
-      </div>
+
 
       <div class="gallery-scroll-wrapper">
         <button class="gallery-arrow gallery-arrow--left" aria-label="Scroll left" disabled>
@@ -157,44 +155,47 @@ const homeGalleryRows = await Promise.all(
           <div class="gallery-strip-outer">
 
             <div class="gallery-strip" data-gallery aria-label="Photo gallery">
-              {homeGalleryRows.map((row) => (
-                <div class="gallery-row">
-                  {row.map((photo, i) => (
-                    <a
-                      href={photo.fullSrc}
-                      class={`gallery-item ${photo.w > photo.h ? "w-wide " : ""}r`}
-                      data-d={String((i % 5) + 1)}
-                      data-pswp-width={photo.fullWidth}
-                      data-pswp-height={photo.fullHeight}
-                      aria-label={photo.alt}
-                    >
-                      <!-- AVIF primary → WebP fallback for old browsers -->
-                      <picture>
-                        <source
-                          type="image/avif"
-                          srcset={photo.previewSrcSet}
-                          sizes={photo.previewSizes}
-                        />
-                        {photo.webpSrcSet && (
+              {homeGalleryRows.map((row) => {
+                const doubledRow = [...row, ...row];
+                return (
+                  <div class="gallery-row">
+                    {doubledRow.map((photo, i) => (
+                      <a
+                        href={photo.fullSrc}
+                        class={`gallery-item ${photo.w > photo.h ? "w-wide " : ""}r`}
+                        data-d={String((i % 5) + 1)}
+                        data-pswp-width={photo.fullWidth}
+                        data-pswp-height={photo.fullHeight}
+                        aria-label={photo.alt}
+                      >
+                        <!-- AVIF primary → WebP fallback for old browsers -->
+                        <picture>
                           <source
-                            type="image/webp"
-                            srcset={photo.webpSrcSet}
+                            type="image/avif"
+                            srcset={photo.previewSrcSet}
                             sizes={photo.previewSizes}
                           />
-                        )}
-                        <img
-                          src={photo.previewSrc}
-                          width={photo.previewWidth}
-                          height={photo.previewHeight}
-                          alt={photo.alt}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </picture>
-                    </a>
-                  ))}
-                </div>
-              ))}
+                          {photo.webpSrcSet && (
+                            <source
+                              type="image/webp"
+                              srcset={photo.webpSrcSet}
+                              sizes={photo.previewSizes}
+                            />
+                          )}
+                          <img
+                            src={photo.previewSrc}
+                            width={photo.previewWidth}
+                            height={photo.previewHeight}
+                            alt={photo.alt}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </picture>
+                      </a>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
 
           </div><!-- /.gallery-strip-outer -->
@@ -215,29 +216,27 @@ const homeGalleryRows = await Promise.all(
         </div>
 
         <div class="post-list">
-          <a href="#" class="post-item r" data-d="1" aria-label="Read: SEO for Vietnamese brands">
-            <span class="post-date">May 2026</span>
-            <span class="post-title">SEO for Vietnamese brands — why local search intent changes everything</span>
-          </a>
-          <a href="#" class="post-item r" data-d="2" aria-label="Read: D2C Marketing strategy">
-            <span class="post-date">Mar 2026</span>
-            <span class="post-title">D2C Marketing playbook: lessons from running campaigns for SONY Vietnam</span>
-          </a>
-          <a href="#" class="post-item r" data-d="3" aria-label="Read: Social media growth">
-            <span class="post-date">Jan 2026</span>
-            <span class="post-title">Growing a community from 0 — the WorkFlow Space social media story</span>
-          </a>
-          <a href="#" class="post-item r" data-d="4" aria-label="Read: Meta Ads optimization">
-            <span class="post-date">Oct 2025</span>
-            <span class="post-title">Meta Ads optimization: how I cut CPL by 40% for an education brand</span>
-          </a>
-          <a href="#" class="post-item r" data-d="5" aria-label="Read: Full-funnel digital marketing">
-            <span class="post-date">Aug 2025</span>
-            <span class="post-title">Full-funnel thinking: why most marketers focus on the wrong stage</span>
-          </a>
+          {posts && posts.length > 0 ? (
+            posts.slice(0, 5).map((post: any, i: number) => {
+              const dateStr = new Date(post.date).toLocaleDateString('en-US', { 
+                month: 'short', 
+                year: 'numeric' 
+              });
+              return (
+                <a href={`/blog/${post.slug}`} class="post-item r" data-d={String(i + 1)} aria-label={`Read: ${post.title.rendered}`}>
+                  <span class="post-date">{dateStr}</span>
+                  <span class="post-title" set:html={post.title.rendered} />
+                </a>
+              );
+            })
+          ) : (
+            <div class="py-10 text-[var(--muted)] r">
+              <p>Vui lòng kiểm tra WordPress Admin và tạo bài viết đầu tiên!</p>
+            </div>
+          )}
         </div>
 
-        <a href="#" class="see-all">All writing →</a>
+        <a href="/blog" class="see-all">All writing →</a>
       </div>
     </section>
 

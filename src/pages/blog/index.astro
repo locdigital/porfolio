@@ -28,19 +28,19 @@ const posts = await getPosts(20);
                   href={`/blog/${post.slug}`} 
                   class="group flex flex-col md:flex-row md:items-start md:gap-[60px] transition-opacity hover:opacity-70 duration-300"
                 >
-                  <div class="md:w-[120px] flex-shrink-0 font-mono text-[11px] text-muted-foreground uppercase pt-[14px] mb-2 md:mb-0 tracking-wider">
+                  <div class="md:w-[120px] flex-shrink-0 font-mono text-[11px] text-[var(--muted)] uppercase pt-[14px] mb-2 md:mb-0 tracking-wider">
                     {dateStr}
                   </div>
                   <div class="flex-grow max-w-[800px]">
-                    <h2 class="text-[32px] md:text-[42px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] text-foreground leading-[1.1] mb-[12px]" set:html={post.title.rendered} />
-                    <div class="text-[15px] text-muted-foreground leading-[1.6] line-clamp-2" set:html={post.excerpt.rendered.replace(/<[^>]+>/g, '')} />
+                    <h2 class="text-[32px] md:text-[42px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] text-[var(--text)] leading-[1.1] mb-[12px]" set:html={post.title.rendered} />
+                    <div class="text-[15px] text-[var(--muted)] leading-[1.6] line-clamp-2" set:html={post.excerpt.rendered.replace(/<[^>]+>/g, '')} />
                   </div>
                 </a>
               );
             })}
           </div>
         ) : (
-          <div class="py-10 text-muted-foreground">
+          <div class="py-10 text-[var(--muted)]">
             <p>Vui lòng kiểm tra WordPress Admin và tạo bài viết đầu tiên!</p>
           </div>
         )}

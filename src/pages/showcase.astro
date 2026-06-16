@@ -5,7 +5,7 @@ import { optimizePhotos } from "../lib/photo-assets";
 const showcaseSrcs = (
   await optimizePhotos(
     [1, 4, 6, 9, 12, 16, 19, 22, 25, 28, 31, 34].map((number) => ({
-      src: `/assets/photos/img-portfolio/photo-${number}.jpg`,
+      src: `/assets/photos/img-portfolio/photo-${number}.webp`,
       alt: `Showcase photo ${number}`,
       w: 0,
       h: 0,
@@ -25,7 +25,15 @@ const showcaseSrcs = (
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Showcase — Phuc Loc Nguyen</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link id="dynamic-favicon" rel="icon" type="image/png" href="/ellipse-1.png" />
+  <script is:inline>
+    document.addEventListener("visibilitychange", function() {
+      const favicon = document.getElementById("dynamic-favicon");
+      if (favicon) {
+        favicon.href = document.hidden ? "/ellipse-2.png" : "/ellipse-1.png";
+      }
+    });
+  </script>
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 

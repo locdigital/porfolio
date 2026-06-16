@@ -30,8 +30,8 @@
       --text: #1C1C1C;
       --muted: #6E6E6E;
       --divider: #E8E8E2;
-      --accent: radial-gradient(circle farthest-side at 0% 0%, #cab1ff 5%, #146ef5 10%, currentColor 20%);
-      --accent-solid: #146ef5;
+      --accent: #0075de;
+      --accent-solid: #0075de;
       --hdr-h: 60px;
 
       --serif: 'Imbue', serif;
@@ -41,8 +41,8 @@
       --max: 1160px;
       --px: clamp(20px, 4vw, 56px);
 
-      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --spring: cubic-bezier(0.28, 1.36, 0.54, 1);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     /* ============================================================
@@ -69,13 +69,15 @@
       color: var(--text);
       background: var(--bg);
       overflow-x: hidden;
-      /* Page-load fade */
+      /* Page-load fade & soft rise */
       opacity: 0;
-      transition: opacity 0.45s ease;
+      transform: translateY(16px);
+      transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
     }
 
     body.ready {
       opacity: 1;
+      transform: translateY(0);
     }
 
     a {
@@ -146,8 +148,8 @@
       /* Antigravity entrance: drops from above */
       transform: translateY(-100%);
       opacity: 0;
-      transition: transform .95s var(--spring), opacity .65s ease,
-        background .4s ease, box-shadow .4s ease;
+      transition: transform 1.1s var(--spring), opacity .8s ease,
+        background .5s ease, box-shadow .5s ease;
     }
 
     #site-header.in {
@@ -209,10 +211,7 @@
     }
 
     .header-name:hover {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .n-collapse {
@@ -238,8 +237,35 @@
 
     .header-nav-desktop a.active {
       text-decoration: underline;
-      text-underline-offset: 4px;
+      text-underline-offset: 2px;
       text-decoration-thickness: 1px;
+    }
+
+    /* Ask ✦ — special pill CTA in the nav */
+    .header-nav-desktop a.ask-link {
+      color: #0075de;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 117, 222, 0.28);
+      background: rgba(0, 117, 222, 0.07);
+      transition: background .22s ease, border-color .22s ease,
+                  color .22s ease, box-shadow .22s ease;
+      text-decoration: none !important;
+      font-weight: 500;
+    }
+
+    .header-nav-desktop a.ask-link:hover {
+      background: rgba(0, 117, 222, 0.14);
+      border-color: rgba(0, 117, 222, 0.5);
+      color: #0075de;
+      box-shadow: 0 2px 10px rgba(0, 117, 222, 0.15);
+    }
+
+    .header-nav-desktop a.ask-link.active {
+      background: rgba(0, 117, 222, 0.18);
+      border-color: rgba(0, 117, 222, 0.6);
+      color: #0075de;
+      text-decoration: none !important;
     }
 
     /* Hamburger */
@@ -338,15 +364,12 @@
 
     .mobile-nav a:hover,
     .mobile-nav a.active {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .mobile-nav a.active {
       text-decoration: underline;
-      text-underline-offset: 6px;
+      text-underline-offset: 2px;
       text-decoration-thickness: 1.5px;
     }
 
@@ -389,8 +412,8 @@
     ============================================================ */
     .r {
       opacity: 0;
-      transform: translateY(22px);
-      transition: opacity .75s var(--ease-out), transform .75s var(--ease-out);
+      transform: translateY(28px);
+      transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
     }
 
     .r.in {
@@ -417,6 +440,31 @@
     .r[data-d="5"] {
       transition-delay: .25s;
     }
+
+    /* ── Toki Theme Stretched Reveal ── */
+    .toki-r {
+      opacity: 0;
+      transform: translateY(24px) scaleY(1.08);
+      filter: blur(8px);
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+                  filter 1s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity, filter;
+    }
+
+    .toki-r.in {
+      opacity: 1;
+      transform: translateY(0) scaleY(1);
+      filter: blur(0);
+    }
+
+    .toki-r[data-d="1"] { transition-delay: 50ms; }
+    .toki-r[data-d="2"] { transition-delay: 125ms; }
+    .toki-r[data-d="3"] { transition-delay: 200ms; }
+    .toki-r[data-d="4"] { transition-delay: 275ms; }
+    .toki-r[data-d="5"] { transition-delay: 350ms; }
+    .toki-r[data-d="6"] { transition-delay: 425ms; }
+    .toki-r[data-d="7"] { transition-delay: 500ms; }
 
     /* ============================================================
        HERO
@@ -456,16 +504,20 @@
       line-height: 1.06;
       letter-spacing: -.025em;
       color: var(--text);
-      /* Antigravity entrance */
+      /* Toki-style stretch entrance */
       opacity: 0;
-      transform: translateY(64px);
-      transition: opacity .95s var(--ease-out), transform .95s var(--ease-out);
-      will-change: transform;
+      transform: translateY(32px) scaleY(1.08);
+      filter: blur(8px);
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+                  filter 1s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity, filter;
     }
 
     .hero-line.in {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scaleY(1);
+      filter: blur(0);
     }
 
     .hero-line-2 {
@@ -482,10 +534,9 @@
 
     .hero-line em {
       font-style: italic;
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
+      padding-right: 0.12em;
+      padding-bottom: 0.1em;
     }
 
     .char.active-cursor::after {
@@ -568,10 +619,7 @@
     }
 
     .hero-aside a:hover {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .location {
@@ -588,7 +636,7 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #52B788;
+      background: #22c55e;
       animation: pulse 2.6s ease-in-out infinite;
       flex-shrink: 0;
     }
@@ -639,9 +687,9 @@
     }
 
     .tl-logo {
-      width: 42px;
+      width: 84px;
       height: 42px;
-      border-radius: 10px;
+      border-radius: 6px;
       background: transparent;
       flex-shrink: 0;
       display: grid;
@@ -675,10 +723,7 @@
     }
 
     .tl-company a:hover {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
       border-bottom-color: var(--accent-solid);
     }
 
@@ -708,7 +753,7 @@
       width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 6px;
       transition: transform .7s var(--ease-out);
     }
 
@@ -730,10 +775,7 @@
     }
 
     .about-prose a:hover {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .about-prose em {
@@ -820,6 +862,13 @@
       overflow: hidden;
       user-select: none;
       -webkit-user-drag: none;
+      border-radius: 0 !important;
+    }
+
+    .gallery-item picture,
+    .gallery-item img,
+    .gallery-item picture::after {
+      border-radius: 0 !important;
     }
 
     .gallery-item.w-wide {
@@ -919,10 +968,7 @@
 
     /* Hover: only the title text turns accent green — like luke.ac */
     .post-item:hover .post-title {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .see-all {
@@ -935,10 +981,7 @@
     }
 
     .see-all:hover {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     /* ============================================================
@@ -966,10 +1009,7 @@
     /* Email copy button */
     .email-copy {
       font: inherit;
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
       text-decoration: underline;
       text-underline-offset: 4px;
       text-decoration-color: var(--border-bright);
@@ -978,13 +1018,11 @@
       transition: color .25s ease, text-decoration-color .25s ease;
       background: none;
       border: none;
+      padding-right: 0.12em;
     }
 
     .email-copy:hover {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .email-copy::after {
@@ -1024,10 +1062,7 @@
     }
 
     .footer-links a:hover {
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--accent);
     }
 
     .colophon {

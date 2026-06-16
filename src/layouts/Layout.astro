@@ -4,7 +4,9 @@ const {
   title = "Phuc Loc Nguyen | Digital Marketing Specialist",
   description = "Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.",
   ogImage = "https://loc.digital/og-image.jpg",
-  hideHeader = false
+  hideHeader = false,
+  hideFooter = false,
+  favicon
 } = Astro.props;
 const pathname = Astro.url.pathname;
 ---
@@ -33,15 +35,22 @@ const pathname = Astro.url.pathname;
   <meta name="theme-color" content="#FAFAF7">
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
   <meta name="google-site-verification" content="tYabJCSeApR0trq6VL7V6_JKbEKbBnznDtNmvaBehfY" />
-  <link id="dynamic-favicon" rel="icon" type="image/png" href="/onpage.png" />
-  <script is:inline>
-    document.addEventListener("visibilitychange", function() {
-      const favicon = document.getElementById("dynamic-favicon");
-      if (favicon) {
-        favicon.href = document.hidden ? "/offpage.png" : "/onpage.png";
-      }
-    });
-  </script>
+  
+  {favicon ? (
+    <link rel="icon" href={favicon} />
+  ) : (
+    <>
+      <link id="dynamic-favicon" rel="icon" type="image/png" href="/ellipse-1.png" />
+      <script is:inline>
+        document.addEventListener("visibilitychange", function() {
+          const favicon = document.getElementById("dynamic-favicon");
+          if (favicon) {
+            favicon.href = document.hidden ? "/ellipse-2.png" : "/ellipse-1.png";
+          }
+        });
+      </script>
+    </>
+  )}
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DYB5FLYNH4"></script>
@@ -73,9 +82,6 @@ const pathname = Astro.url.pathname;
       rel="stylesheet">
   </noscript>
 
-  <!-- PhotoSwipe CSS: preload so it's ready when needed -->
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css" as="style" onload="this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css"></noscript>
 </head>
 
 <body>
@@ -94,8 +100,10 @@ const pathname = Astro.url.pathname;
           <nav class="header-nav-desktop" aria-label="Main navigation">
             <ul>
               <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
-              <li><a href="/#work">Experience</a></li>
+              <li><a href="/work" class={pathname.startsWith('/work') ? 'active' : ''}>Work</a></li>
+              <li><a href="/blog" class={pathname.startsWith('/blog') ? 'active' : ''}>Writing</a></li>
               <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+              <li><a href="/question" class={`ask-link ${pathname.startsWith('/question') ? 'active' : ''}`}>Ask ✦</a></li>
             </ul>
           </nav>
 
@@ -115,8 +123,10 @@ const pathname = Astro.url.pathname;
         <nav aria-label="Mobile navigation">
           <ul class="mobile-nav">
             <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
-            <li><a href="/#work">Experience</a></li>
+            <li><a href="/work" class={pathname.startsWith('/work') ? 'active' : ''}>Work</a></li>
+            <li><a href="/blog" class={pathname.startsWith('/blog') ? 'active' : ''}>Writing</a></li>
             <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+            <li><a href="/question" class={pathname.startsWith('/question') ? 'active' : ''}>Ask ✦</a></li>
           </ul>
         </nav>
       </div>
@@ -128,7 +138,7 @@ const pathname = Astro.url.pathname;
   <!-- ============================================================
        FOOTER
   ============================================================ -->
-  {!pathname.startsWith('/gallery') && (
+  {!hideFooter && !pathname.startsWith('/gallery') && (
     <>
       <div class="footer-divider"></div>
       <div class="container">
@@ -158,6 +168,12 @@ const pathname = Astro.url.pathname;
 
   <!-- Scripts -->
   <script is:inline>
+    // Force scroll to top on load/refresh and disable browser scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     (function () {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = () => window.innerWidth < 768;
@@ -191,7 +207,7 @@ const pathname = Astro.url.pathname;
           if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
         });
       }, { threshold: 0.07, rootMargin: '0px 0px -36px 0px' });
-      document.querySelectorAll('.r').forEach(el => io.observe(el));
+      document.querySelectorAll('.r, .toki-r').forEach(el => io.observe(el));
 
       /* ── Scroll: nav bg + progress bar + parallax ── */
       const header = document.getElementById('site-header');
@@ -268,7 +284,7 @@ const pathname = Astro.url.pathname;
         });
       });
 
-      /* ── Gallery arrows ── */
+      /* ── Gallery arrows & Auto Scroll ── */
       const stripOuter = document.querySelector('.gallery-strip-outer');
       const arrowL = document.querySelector('.gallery-arrow--left');
       const arrowR = document.querySelector('.gallery-arrow--right');
@@ -282,24 +298,62 @@ const pathname = Astro.url.pathname;
         const fadeR = stripOuter.parentElement.querySelector('.gallery-fade-right');
         const fadeL = stripOuter.parentElement.querySelector('.gallery-fade-left');
 
+        let down = false;
+        let isHovered = false;
+
         const updateArrows = () => {
-          const atStart = stripOuter.scrollLeft <= 4;
-          const atEnd = stripOuter.scrollLeft >= stripOuter.scrollWidth - stripOuter.clientWidth - 4;
-          arrowL.disabled = atStart;
-          arrowR.disabled = atEnd;
-          // Left fade: show only after scrolling away from start
-          fadeL?.classList.toggle('visible', !atStart);
-          // Right fade: hide when fully scrolled to end
-          if (fadeR) fadeR.style.opacity = atEnd ? '0' : '1';
+          const half = stripOuter.scrollWidth / 2;
+          if (half > 0) {
+            if (stripOuter.scrollLeft >= half) {
+              stripOuter.scrollLeft -= half;
+            } else if (stripOuter.scrollLeft <= 2) {
+              stripOuter.scrollLeft += half;
+            }
+          }
+          arrowL.disabled = false;
+          arrowR.disabled = false;
+          fadeL?.classList.toggle('visible', true);
+          if (fadeR) fadeR.style.opacity = '1';
         };
+
         const step = () => stripOuter.clientWidth * 0.7;
         arrowL.addEventListener('click', () => stripOuter.scrollBy({ left: -step(), behavior: 'smooth' }));
         arrowR.addEventListener('click', () => stripOuter.scrollBy({ left: step(), behavior: 'smooth' }));
         stripOuter.addEventListener('scroll', updateArrows, { passive: true });
         updateArrows();
 
+        // Hover & Touch state monitoring for Auto-scroll pausing
+        const wrapper = document.querySelector('.gallery-scroll-wrapper');
+        if (wrapper) {
+          wrapper.addEventListener('mouseenter', () => { isHovered = true; });
+          wrapper.addEventListener('mouseleave', () => { isHovered = false; });
+          stripOuter.addEventListener('touchstart', () => { isHovered = true; }, { passive: true });
+          stripOuter.addEventListener('touchend', () => { isHovered = false; }, { passive: true });
+        }
+
+        // Auto scroll marquee loop
+        const scrollSpeed = 0.5; // px per frame
+        function tickAutoScroll() {
+          if (!down && !isHovered) {
+            const half = stripOuter.scrollWidth / 2;
+            if (half > 0) {
+              let nextScroll = stripOuter.scrollLeft + scrollSpeed;
+              if (nextScroll >= half) {
+                nextScroll -= half;
+              }
+              stripOuter.scrollLeft = nextScroll;
+            }
+          }
+          requestAnimationFrame(tickAutoScroll);
+        }
+
+        // Start auto scroll after short delay
+        setTimeout(() => {
+          requestAnimationFrame(tickAutoScroll);
+        }, 1000);
+
         // Drag-to-scroll (mouse only — touch uses native scroll which is smoother)
-        let down = false, startX, startSL, vel = 0, lastX, lastT, rafG, rafMove;
+        let startX, startSL, vel = 0, lastX, lastT, rafG, rafMove;
         let isDragging = false;
         let pendingX = 0;
 
@@ -381,33 +435,6 @@ const pathname = Astro.url.pathname;
     })();
   </script>
 
-  <!-- PhotoSwipe -------------------------------------------- -->
-  <script type="module" is:inline>
-    import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
-
-    const lightbox = new PhotoSwipeLightbox({
-      gallery: '[data-gallery]',
-      children: 'a',
-      pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js'),
-      showHideAnimationType: 'zoom',
-      bgOpacity: 0.95,
-      padding: { top: 20, bottom: 40, left: 20, right: 20 },
-      preloaderDelay: 0,
-    });
-
-    // Caption
-    lightbox.on('uiRegister', () => {
-      lightbox.pswp.ui.registerElement({
-        name: 'caption', order: 9, isButton: false, appendTo: 'root',
-        onInit: (el, pswp) => {
-          el.style.cssText = 'position:absolute;bottom:0;left:0;right:0;padding:12px 20px;font-family:\'DM Mono\',monospace;font-size:11px;color:rgba(255,255,255,.55);text-align:center;letter-spacing:.06em;pointer-events:none;';
-          pswp.on('change', () => { el.textContent = pswp.currSlide.data.element?.querySelector('img')?.alt || ''; });
-        }
-      });
-    });
-
-    lightbox.init();
-  </script>
 </body>
 
 </html>

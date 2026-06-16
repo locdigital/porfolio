@@ -63,6 +63,8 @@ const tags = terms.filter((term: any) => term.taxonomy === 'post_tag' || term.ta
           src={featuredImage} 
           alt={post.title.rendered} 
           class="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </div>
     )}
@@ -72,7 +74,7 @@ const tags = terms.filter((term: any) => term.taxonomy === 'post_tag' || term.ta
       class="prose prose-lg max-w-none 
              prose-headings:font-['PP_Editorial_Old'] prose-headings:font-normal prose-headings:text-[var(--text)] prose-headings:tracking-[-0.01em] prose-headings:mt-16 prose-headings:mb-6
              prose-p:font-sans prose-p:text-[17px] prose-p:text-[var(--text)] prose-p:leading-[1.8] prose-p:mb-8
-             prose-a:text-[var(--text)] prose-a:underline prose-a:underline-offset-4 hover:prose-a:[background:var(--accent)] hover:prose-a:[-webkit-background-clip:text] hover:prose-a:[-webkit-text-fill-color:transparent] prose-a:transition-colors
+             prose-a:text-[var(--text)] prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-[var(--accent)] prose-a:transition-colors
              prose-strong:text-[var(--text)] prose-strong:font-semibold
              prose-ul:text-[var(--text)] prose-ol:text-[var(--text)] prose-li:text-[var(--text)]
              prose-img:rounded-[8px] prose-img:mx-auto prose-img:my-12
@@ -82,7 +84,7 @@ const tags = terms.filter((term: any) => term.taxonomy === 'post_tag' || term.ta
     />
 
     <div class="mt-24 pt-8 border-t border-[var(--divider)]">
-      <a href="/blog" class="group inline-flex items-center font-sans text-[13px] font-bold tracking-[0.1em] text-[var(--text)] hover:[background:var(--accent)] hover:[-webkit-background-clip:text] hover:[-webkit-text-fill-color:transparent] transition-colors uppercase">
+      <a href="/blog" class="group inline-flex items-center font-sans text-[13px] font-bold tracking-[0.1em] text-[var(--text)] hover:text-[var(--accent)] transition-colors uppercase">
         <span class="mr-2 transition-transform group-hover:-translate-x-1">←</span> BACK TO WRITING
       </a>
     </div>
