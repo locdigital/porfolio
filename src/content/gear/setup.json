@@ -1,0 +1,61 @@
+{
+  "title": "My Gear",
+  "headline": "Tools I actually use to work, shoot, write, and build.",
+  "description": "A living list of the products in my everyday setup. Each item links out to the product page so it is easy to reference, replace, or share.",
+  "sections": [
+    {
+      "title": "Workstation",
+      "slug": "workstation",
+      "headline": "Daily work setup",
+      "description": "Daily setup for writing, planning campaigns, editing, and building small tools.",
+      "image": "",
+      "items": [
+        {
+          "name": "MacBook Air M2",
+          "slug": "macbook-air-m2",
+          "headline": "Main laptop",
+          "description": "Lightweight enough for cafe work, strong enough for Astro, Figma, ads dashboards, and photo edits.",
+          "image": "",
+          "url": "https://www.apple.com/macbook-air/",
+          "tag": "Laptop"
+        },
+        {
+          "name": "LG UltraFine 27 inch",
+          "slug": "lg-ultrafine-27",
+          "headline": "External display",
+          "description": "A clean second screen for GA4, Meta Ads, docs, and timeline-heavy work.",
+          "image": "",
+          "url": "https://www.lg.com/us/monitors",
+          "tag": "Display"
+        }
+      ]
+    },
+    {
+      "title": "Camera & Content",
+      "slug": "camera-content",
+      "headline": "Small travel kit",
+      "description": "Small kit for travel photos, product shots, and behind-the-scenes content.",
+      "image": "",
+      "items": [
+        {
+          "name": "Sony Alpha a6400",
+          "slug": "sony-alpha-a6400",
+          "headline": "Camera body",
+          "description": "Reliable autofocus, compact size, and still a very capable hybrid camera for the road.",
+          "image": "",
+          "url": "https://electronics.sony.com/imaging/interchangeable-lens-cameras/aps-c/p/ilce6400-b",
+          "tag": "Camera"
+        },
+        {
+          "name": "Sigma 30mm F1.4 DC DN",
+          "slug": "sigma-30mm-f14",
+          "headline": "Everyday lens",
+          "description": "My favorite focal length for low-light street photos, portraits, and natural product frames.",
+          "image": "",
+          "url": "https://www.sigmaphoto.com/30mm-f-1-4-dc-dn-c",
+          "tag": "Lens"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+backend:
+  name: github
+  repo: locdigital/porfolio
+  branch: main
+  base_url: https://loc.digital
+  auth_endpoint: /api/auth
+
+local_backend: true
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+site_url: "https://loc.digital"
+display_url: "https://loc.digital"
+logo_url: "/favicon-404.svg"
+locale: "en"
+show_preview_links: true
+publish_mode: editorial_workflow
+
+editor:
+  preview: true
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    label_singular: "Page"
+    description: "Standalone pages such as /now or lightweight campaign pages."
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} - /{{slug}}"
+    preview_path: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    sortable_fields: ["title", "slug", "draft"]
+    view_filters:
+      - label: "Published"
+        field: "draft"
+        pattern: false
+      - label: "Drafts"
+        field: "draft"
+        pattern: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "Internal title shown in CMS lists." }
+      - { label: "Slug", name: "slug", widget: "string", hint: "URL path without slash, for example now -> /now", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Use lowercase letters, numbers, and hyphens only."] }
+      - { label: "Headline", name: "headline", widget: "string", required: false, hint: "Primary page headline." }
+      - { label: "Subheadline", name: "subheadline", widget: "text", required: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Meta Description", name: "metaDescription", widget: "text", required: false, hint: "SEO summary, ideally 120-160 characters." }
+      - { label: "Cover Image", name: "coverImage", widget: "image", required: false, media_folder: "public/uploads/pages", public_folder: "/uploads/pages" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, hint: "Turn on to hide from public listing." }
+      - { label: "Body", name: "body", widget: "markdown", buttons: ["bold", "italic", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list"], editor_components: ["image"] }
+
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    description: "Case studies and selected work displayed across the portfolio."
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{number}} - {{title}} - {{client}}"
+    preview_path: "work/{{slug}}"
+    extension: "json"
+    format: "json"
+    sortable_fields: ["order", "title", "client", "year"]
+    fields:
+      - { label: "Slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Use lowercase letters, numbers, and hyphens only."] }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", min: 1, hint: "Lower numbers appear first." }
+      - { label: "Number", name: "number", widget: "string", hint: "Display number, for example 01." }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Client", name: "client", widget: "string" }
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text", hint: "Short card copy." }
+      - { label: "Description", name: "description", widget: "text", hint: "Longer detail for the project page." }
+      - { label: "Tools", name: "tools", widget: "list", collapsed: true, default: [], field: { label: "Tool", name: "tool", widget: "string" } }
+      - { label: "Skills", name: "skills", widget: "list", collapsed: true, default: [], field: { label: "Skill", name: "skill", widget: "string" } }
+      - { label: "Cover Image", name: "coverImage", widget: "image", media_folder: "public/uploads/projects", public_folder: "/uploads/projects" }
+      - { label: "Gallery Images", name: "images", widget: "list", collapsed: true, field: { label: "Image", name: "image", widget: "image", media_folder: "public/uploads/projects", public_folder: "/uploads/projects" }, default: [] }
+      - { label: "Link", name: "link", widget: "string", required: false }
+      - { label: "Link Label", name: "linkLabel", widget: "string", required: false }
+      - { label: "Case Study Link", name: "caseStudyLink", widget: "string", required: false }
+
+  - name: "writing"
+    label: "Writing"
+    label_singular: "Post"
+    description: "Essays, notes, SEO writing, and blog posts."
+    folder: "src/content/writing"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} - {{publishedAt}}"
+    preview_path: "blog/{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    sortable_fields: ["publishedAt", "title", "draft"]
+    view_filters:
+      - label: "Published"
+        field: "draft"
+        pattern: false
+      - label: "Drafts"
+        field: "draft"
+        pattern: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Custom Slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Use lowercase letters, numbers, and hyphens only."] }
+      - { label: "Headline", name: "headline", widget: "string", hint: "Public-facing headline." }
+      - { label: "Summary", name: "summary", widget: "text", required: false }
+      - { label: "Keyword", name: "keyword", widget: "string", required: false }
+      - { label: "Meta Description", name: "metaDescription", widget: "text", required: false, hint: "SEO summary, ideally 120-160 characters." }
+      - { label: "Cover Image", name: "coverImage", widget: "image", required: false, media_folder: "public/uploads/writing", public_folder: "/uploads/writing" }
+      - { label: "Published At", name: "publishedAt", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Tags", name: "tags", widget: "list", collapsed: true, default: [], field: { label: "Tag", name: "tag", widget: "string" } }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown", buttons: ["bold", "italic", "link", "heading-two", "heading-three", "quote", "bulleted-list", "numbered-list"], editor_components: ["image"] }
+
+  - name: "photos"
+    label: "Photos"
+    label_singular: "Photo Location"
+    description: "Travel photo collections and location stories."
+    folder: "src/content/photos"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{order}} - {{location}}"
+    preview_path: "photos"
+    extension: "json"
+    format: "json"
+    sortable_fields: ["order", "location"]
+    fields:
+      - { label: "Slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Use lowercase letters, numbers, and hyphens only."] }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", min: 1 }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Main Headline", name: "headline", widget: "string" }
+      - { label: "Sub Headline", name: "subheadline", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        collapsed: true
+        summary: "{{fields.alt}}"
+        fields:
+          - { label: "Image", name: "src", widget: "image", media_folder: "public/uploads/photos", public_folder: "/uploads/photos" }
+          - { label: "Alt Text", name: "alt", widget: "string" }
+          - { label: "Width", name: "width", widget: "number", value_type: "int", required: false }
+          - { label: "Height", name: "height", widget: "number", value_type: "int", required: false }
+
+  - name: "gear"
+    label: "Gear"
+    description: "Editable setup and product stack page."
+    files:
+      - label: "Gear Setup"
+        name: "setup"
+        file: "src/content/gear/setup.json"
+        preview_path: "gear"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Headline", name: "headline", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - label: "Sections"
+            name: "sections"
+            widget: "list"
+            collapsed: true
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Use lowercase letters, numbers, and hyphens only."] }
+              - { label: "Headline", name: "headline", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image", required: false, media_folder: "public/uploads/gear", public_folder: "/uploads/gear" }
+              - label: "Items"
+                name: "items"
+                widget: "list"
+                collapsed: true
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: "Name", name: "name", widget: "string" }
+                  - { label: "Slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "Use lowercase letters, numbers, and hyphens only."] }
+                  - { label: "Headline", name: "headline", widget: "string" }
+                  - { label: "Description", name: "description", widget: "text" }
+                  - { label: "Image", name: "image", widget: "image", required: false, media_folder: "public/uploads/gear", public_folder: "/uploads/gear" }
+                  - { label: "Link", name: "url", widget: "string", required: false }
+                  - { label: "Tag", name: "tag", widget: "string", required: false }

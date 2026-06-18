@@ -1,0 +1,384 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getProjects } from "../../lib/cms";
+
+const projects = await getProjects();
+---
+
+<Layout
+  title="Work | Phuc Loc Nguyen"
+  description="Selected projects by Phuc Loc Nguyen — performance marketing, brand campaigns, and growth strategy across Vietnam's top brands."
+>
+  <main class="projects-page">
+    <div class="container">
+
+      <!-- Page Header -->
+      <div class="page-header r">
+        <div class="page-header-left">
+          <h1 class="page-title">Work</h1>
+          <p class="page-subtitle">Selected work &amp; case studies</p>
+        </div>
+        <div class="page-header-right r" data-d="2">
+          <p class="page-desc">
+            Performance marketing campaigns, brand growth strategy,
+            and data-driven results across e-commerce, entertainment,
+            and consumer brands.
+          </p>
+        </div>
+      </div>
+
+
+      <!-- Project List -->
+      <div class="project-list">
+        {projects.map((project, i) => (
+          <article class="project-row r" data-d={String((i % 5) + 1)}>
+            <div class="project-row-inner">
+
+              <!-- Left: text -->
+              <div class="project-text">
+                <span class="project-number">{project.number} / {project.client.toUpperCase()}</span>
+                <a href={`/work/${project.slug}`} class="project-title-link">
+                  <h2 class="project-name">{project.title}</h2>
+                </a>
+                <p class="project-summary">{project.summary}</p>
+
+                <p class="project-tools">
+                  {project.tags.map((tag, ti) => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </p>
+
+                <div class="project-links">
+                  <a href={`/work/${project.slug}`} class="link-primary">
+                    See case study →
+                  </a>
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" class="link-secondary">
+                      {project.linkLabel ?? "Visit site ↗"}
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              <!-- Right: visual card -->
+              <div class="project-visual">
+                <a href={`/work/${project.slug}`} class="project-card-link" aria-label={`View ${project.title}`}>
+                  <div class="project-card-img">
+                    <div class="card-logo-wrapper">
+                      <img
+                        src={project.coverImage}
+                        alt={project.client}
+                        class="card-logo"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div class="card-overlay">
+                      <span class="card-cta">View project →</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+            </div>
+            <div class="project-divider"></div>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .projects-page {
+    padding: calc(var(--hdr-h) + 80px) 0 120px;
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+    margin-bottom: 64px;
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: clamp(42px, 6.5vw, 90px);
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .page-desc {
+    font-size: 15px;
+    line-height: 1.72;
+    color: var(--muted);
+    max-width: 400px;
+    align-self: end;
+  }
+
+
+  /* ── Project list ── */
+  .project-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Hover effect: blur other rows when hovering one */
+  .project-list:hover .project-row:not(:hover) {
+    opacity: 0.35;
+    filter: blur(3px);
+  }
+
+  .project-row {
+    transition: opacity 0.4s ease, filter 0.4s ease;
+  }
+
+  .project-row-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    padding: 64px 0;
+  }
+
+  /* ── Text side ── */
+  .project-number {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .project-title-link {
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .project-title-link:hover .project-name {
+    color: var(--accent);
+  }
+
+  .project-name {
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.8vw, 34px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin-bottom: 16px;
+    transition: color 0.25s ease;
+  }
+
+  .project-summary {
+    font-size: 14px;
+    line-height: 1.72;
+    color: var(--muted);
+    margin-bottom: 20px;
+    max-width: 420px;
+  }
+
+  .project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    border: 1px solid var(--divider);
+    border-radius: 3px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .project-row:hover .tag {
+    color: var(--text);
+    border-color: #bbb;
+  }
+
+  .project-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .link-primary {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--divider);
+    transition: text-decoration-color 0.25s ease, color 0.25s ease;
+  }
+
+  .link-primary:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .link-secondary {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--muted);
+    transition: color 0.25s ease;
+  }
+
+  .link-secondary:hover {
+    color: var(--text);
+  }
+
+  /* ── Visual card ── */
+  .project-card-link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .project-card-img {
+    position: relative;
+    aspect-ratio: 2 / 1;
+    background: transparent;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.5s ease;
+  }
+
+  .project-card-link:hover .project-card-img {
+    transform: scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  }
+
+  .card-logo-wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  @media (max-width: 600px) {
+    .card-logo-wrapper {
+      padding: 0;
+    }
+  }
+
+  .card-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+    transition: transform 0.5s ease;
+  }
+
+  .project-card-link:hover .card-logo {
+    transform: scale(1.05);
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 28, 28, 0);
+    display: flex;
+    align-items: flex-end;
+    padding: 24px;
+    transition: background 0.4s ease;
+  }
+
+  .card-cta {
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .project-card-link:hover .card-overlay {
+    background: rgba(28, 28, 28, 0.55);
+  }
+
+  .project-card-link:hover .card-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Divider ── */
+  .project-divider {
+    height: 1px;
+    background: var(--divider);
+  }
+
+  .project-row:last-child .project-divider {
+    display: none;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .page-header {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+
+    .page-desc {
+      max-width: 100%;
+    }
+
+    .project-row-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 48px 0;
+    }
+
+    /* On mobile: image first, text below */
+    .project-visual {
+      order: -1;
+    }
+
+    .project-summary {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .projects-page {
+      padding-top: calc(var(--hdr-h) + 48px);
+    }
+
+    .project-row-inner {
+      padding: 36px 0;
+    }
+
+    .project-links {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+</style>
