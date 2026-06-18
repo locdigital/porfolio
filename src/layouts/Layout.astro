@@ -40,14 +40,21 @@ const pathname = Astro.url.pathname;
     <link rel="icon" href={favicon} />
   ) : (
     <>
-      <link id="dynamic-favicon" rel="icon" type="image/png" href="/ellipse-1.png" />
+      <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="/favicon-active.svg" />
       <script is:inline>
-        document.addEventListener("visibilitychange", function() {
+        function syncFavicon() {
           const favicon = document.getElementById("dynamic-favicon");
           if (favicon) {
-            favicon.href = document.hidden ? "/ellipse-2.png" : "/ellipse-1.png";
+            favicon.href = document.hidden || !document.hasFocus()
+              ? "/favicon-inactive.svg"
+              : "/favicon-active.svg";
           }
-        });
+        }
+
+        document.addEventListener("visibilitychange", syncFavicon);
+        window.addEventListener("focus", syncFavicon);
+        window.addEventListener("blur", syncFavicon);
+        syncFavicon();
       </script>
     </>
   )}
@@ -103,6 +110,7 @@ const pathname = Astro.url.pathname;
               <li><a href="/work" class={pathname.startsWith('/work') ? 'active' : ''}>Work</a></li>
               <li><a href="/blog" class={pathname.startsWith('/blog') ? 'active' : ''}>Writing</a></li>
               <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+              <li><a href="/gear" class={pathname.startsWith('/gear') ? 'active' : ''}>Gear</a></li>
               <li><a href="/question" class={`ask-link ${pathname.startsWith('/question') ? 'active' : ''}`}>Ask ✦</a></li>
             </ul>
           </nav>
@@ -126,6 +134,7 @@ const pathname = Astro.url.pathname;
             <li><a href="/work" class={pathname.startsWith('/work') ? 'active' : ''}>Work</a></li>
             <li><a href="/blog" class={pathname.startsWith('/blog') ? 'active' : ''}>Writing</a></li>
             <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
+            <li><a href="/gear" class={pathname.startsWith('/gear') ? 'active' : ''}>Gear</a></li>
             <li><a href="/question" class={pathname.startsWith('/question') ? 'active' : ''}>Ask ✦</a></li>
           </ul>
         </nav>

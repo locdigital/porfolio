@@ -1,0 +1,14 @@
+{
+  "slug": "phu-quy",
+  "order": 1,
+  "location": "Phú Quý",
+  "headline": "Island light, fishing boats, red-rock cliffs.",
+  "subheadline": "Turquoise water and slow days.",
+  "description": "Island life at its most untouched — turquoise water, fishing boats, and red-rock cliffs.",
+  "images": [
+    { "src": "/assets/photos/img-portfolio/photo-1.webp", "alt": "Phú Quý — photo 1", "width": 1280, "height": 1920 },
+    { "src": "/assets/photos/img-portfolio/photo-2.webp", "alt": "Phú Quý — photo 2", "width": 1280, "height": 1920 },
+    { "src": "/assets/photos/img-portfolio/photo-4.webp", "alt": "Phú Quý — photo 3", "width": 1920, "height": 1280 },
+    { "src": "/assets/photos/img-portfolio/photo-6.webp", "alt": "Phú Quý — photo 4", "width": 1920, "height": 1280 }
+  ]
+}

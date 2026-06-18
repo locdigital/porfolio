@@ -112,22 +112,27 @@ export async function optimizePhoto(
   const asset = getPhotoAsset(photo.src);
   const previewWidth = Math.min(options.previewWidth ?? 640, asset.width);
 
+  // Optimize Sharp workload in development mode
+  const isDev = import.meta.env.DEV;
+  const targetWidths = isDev ? [previewWidth] : (options.previewWidths ?? DEFAULT_PREVIEW_WIDTHS);
+  const shouldFallback = isDev ? false : (options.withWebpFallback ?? true);
+
   // Primary: AVIF (≈30% smaller than WebP, supported by 93%+ browsers as of 2025)
   const preview = await buildImage(
     asset,
     previewWidth,
-    options.previewWidths ?? DEFAULT_PREVIEW_WIDTHS,
+    targetWidths,
     options.previewFormat ?? "avif",
     options.previewQuality ?? 65,
   );
 
   // Optional WebP fallback srcset for <picture> tag (Safari < 16, old Edge)
   let webpSrcSet: string | undefined;
-  if (options.withWebpFallback ?? true) {
+  if (shouldFallback) {
     const webpPreview = await buildImage(
       asset,
       previewWidth,
-      options.previewWidths ?? DEFAULT_PREVIEW_WIDTHS,
+      targetWidths,
       "webp",
       (options.previewQuality ?? 65) + 5, // WebP needs slightly higher quality for same visual
     );
@@ -135,9 +140,10 @@ export async function optimizePhoto(
   }
 
   const fullWidth = Math.min(options.fullWidth ?? defaultFullWidth(asset), asset.width);
+  const targetFullWidth = isDev ? Math.min(fullWidth, 1024) : fullWidth;
   const full = await getImage({
     src: asset,
-    width: fullWidth,
+    width: targetFullWidth,
     format: options.fullFormat ?? "webp",
     quality: options.fullQuality ?? 75,
   });

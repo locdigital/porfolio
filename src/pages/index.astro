@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes } from "../lib/photo-assets";
-import { getPosts } from "../lib/wordpress";
+import { getWritingPosts } from "../lib/cms";
 
 const makePortfolioPhoto = (number: number) => ({
   src: `/assets/photos/img-portfolio/photo-${number}.webp`,
@@ -25,7 +25,7 @@ const homeGalleryRows = await Promise.all(
   ),
 );
 
-const posts = await getPosts(5);
+const posts = await getWritingPosts();
 ---
 <Layout title="Phuc Loc Nguyen | Digital Marketing Specialist">
 
@@ -217,21 +217,21 @@ const posts = await getPosts(5);
 
         <div class="post-list">
           {posts && posts.length > 0 ? (
-            posts.slice(0, 5).map((post: any, i: number) => {
-              const dateStr = new Date(post.date).toLocaleDateString('en-US', { 
+            posts.slice(0, 5).map((post, i) => {
+              const dateStr = post.data.publishedAt.toLocaleDateString('en-US', { 
                 month: 'short', 
                 year: 'numeric' 
               });
               return (
-                <a href={`/blog/${post.slug}`} class="post-item r" data-d={String(i + 1)} aria-label={`Read: ${post.title.rendered}`}>
+                <a href={`/blog/${post.slug}`} class="post-item r" data-d={String(i + 1)} aria-label={`Read: ${post.data.title}`}>
                   <span class="post-date">{dateStr}</span>
-                  <span class="post-title" set:html={post.title.rendered} />
+                  <span class="post-title">{post.data.headline}</span>
                 </a>
               );
             })
           ) : (
             <div class="py-10 text-[var(--muted)] r">
-              <p>Vui lòng kiểm tra WordPress Admin và tạo bài viết đầu tiên!</p>
+              <p>Open /admin and create the first writing entry.</p>
             </div>
           )}
         </div>

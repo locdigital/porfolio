@@ -25,14 +25,21 @@ const showcaseSrcs = (
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Showcase — Phuc Loc Nguyen</title>
-  <link id="dynamic-favicon" rel="icon" type="image/png" href="/ellipse-1.png" />
+  <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="/favicon-active.svg" />
   <script is:inline>
-    document.addEventListener("visibilitychange", function() {
+    function syncFavicon() {
       const favicon = document.getElementById("dynamic-favicon");
       if (favicon) {
-        favicon.href = document.hidden ? "/ellipse-2.png" : "/ellipse-1.png";
+        favicon.href = document.hidden || !document.hasFocus()
+          ? "/favicon-inactive.svg"
+          : "/favicon-active.svg";
       }
-    });
+    }
+
+    document.addEventListener("visibilitychange", syncFavicon);
+    window.addEventListener("focus", syncFavicon);
+    window.addEventListener("blur", syncFavicon);
+    syncFavicon();
   </script>
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }

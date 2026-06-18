@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { locations } from "../lib/locations";
-import { optimizePhotos } from "../lib/photo-assets";
+import { MASONRY_GRID_SIZES, optimizePhotos } from "../lib/photo-assets";
 
 // Flatten all photos from all locations
 const allPhotos = locations.flatMap(loc =>
@@ -17,7 +17,11 @@ const uniqueRawPhotos = Array.from(
 );
 
 const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
-  previewWidth: 800,
+  previewWidth: 520,
+  previewWidths: [240, 360, 520, 760],   // tighter — masonry columns max ~520px each
+  previewSizes: MASONRY_GRID_SIZES,
+  fullQuality: 75,
+  withWebpFallback: true,
 });
 ---
 
@@ -30,7 +34,7 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
   <style>
     .gallery-page {
       min-height: 100vh;
-      background: #fdfdfd;
+      background: transparent;
       padding: 8px;
       padding-top: 80px;
       width: 100%;
@@ -90,6 +94,8 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
       var cols = 6;
       var colEls = [];
       var colH = [];   // logical height tracker (sum of h/w ratios)
+      var batchSize = 15;
+      var currentIndex = 0;
 
       function numCols() {
         var w = window.innerWidth;
@@ -114,9 +120,11 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
         }
       }
 
-      function addPhotos(list) {
-        for (var i = 0; i < list.length; i++) {
-          var photo = list[i];
+      function addNextBatch() {
+        if (currentIndex >= photos.length) return;
+        var end = Math.min(currentIndex + batchSize, photos.length);
+        for (var i = currentIndex; i < end; i++) {
+          var photo = photos[i];
 
           // find shortest column
           var min = 0;
@@ -138,9 +146,13 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
 
           var img = document.createElement('img');
           img.src = photo.previewSrc || photo.src;
+          if (photo.previewSrcSet) img.srcset = photo.previewSrcSet;
+          if (photo.previewSizes) img.sizes = photo.previewSizes;
           img.alt = photo.alt;
           img.loading = 'lazy';
           img.decoding = 'async';
+          img.width = pw;
+          img.height = ph;
 
           box.appendChild(img);
           item.appendChild(box);
@@ -148,31 +160,38 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
 
           colH[min] += ratio;   // accumulate logical height
         }
+        currentIndex = end;
       }
 
       // Run immediately (script is deferred by is:inline)
       initCols();
-      addPhotos(photos);
+      addNextBatch();
 
       // Infinite scroll
       if (trigger) {
         var io = new IntersectionObserver(function (entries) {
-          if (entries[0].isIntersecting) {
-            addPhotos(photos);
+          if (entries[0].isIntersecting && currentIndex < photos.length) {
+            addNextBatch();
           }
         }, { rootMargin: '800px' });
         io.observe(trigger);
       }
 
-      // Responsive reflow
+      // Responsive reflow - re-add only the photos that are already loaded
       var resizeT;
       window.addEventListener('resize', function () {
         clearTimeout(resizeT);
         resizeT = setTimeout(function () {
           var n = numCols();
           if (n !== cols) {
+            var loadedPhotosCount = currentIndex;
             initCols();
-            addPhotos(photos);
+            currentIndex = 0;
+            
+            var originalBatchSize = batchSize;
+            batchSize = loadedPhotosCount;
+            addNextBatch();
+            batchSize = originalBatchSize;
           }
         }, 250);
       });

@@ -1,12 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { projects } from "../../data/projects";
+import { getProjects } from "../../lib/cms";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const projects = await getProjects();
   return projects.map((p) => ({ params: { slug: p.slug } }));
 }
 
 const { slug } = Astro.params;
+const projects = await getProjects();
 const project = projects.find((p) => p.slug === slug);
 
 if (!project) {
@@ -265,11 +267,11 @@ const paragraphs = project.description.split("\n\n").filter(Boolean);
 
   .detail-hero-img {
     position: relative;
-    aspect-ratio: 16 / 7;
-    background: #0c0c0e;
-    border-radius: 10px;
+    aspect-ratio: 2 / 1;
+    background: transparent;
+    border-radius: 16px;
     overflow: hidden;
-    border: 1px solid var(--divider);
+    border: 1px solid rgba(0, 0, 0, 0.06);
   }
 
   .hero-logo-wrapper {
@@ -278,12 +280,12 @@ const paragraphs = project.description.split("\n\n").filter(Boolean);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 56px;
+    padding: 0;
   }
 
   @media (max-width: 600px) {
     .hero-logo-wrapper {
-      padding: 24px;
+      padding: 0;
     }
   }
 

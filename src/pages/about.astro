@@ -7,29 +7,32 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 ---
 
 <Layout title="About | Phuc Loc Nguyen">
-  <main class="about-page">
-    <div class="container">
+  <main class="about-minimal-page">
+    <div class="about-minimal-container">
       
-      <!-- Top Hero Section -->
-      <section class="about-hero fade-in">
-        <div class="hero-text">
-          <h1 class="about-title"><span class="highlight"><span id="typing-text"></span><span class="typing-cursor">|</span></span><br/>I'm Loc 👋</h1>
-          <p class="about-intro">I'm a Performance-driven Digital Marketer, strategist, and builder based in <strong>Ho Chi Minh City, Vietnam 🇻🇳</strong>.</p>
-          <div class="about-desc">
-            <p>My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.</p>
+      <!-- HERO SECTION -->
+      <section class="about-min-hero toki-r" data-d="1">
+        <div class="hero-left">
+          <h1 class="hero-main-title">Digital marketer who scales brands with data & code</h1>
+          <p class="hero-sub">Hi, I'm Loc 👋</p>
+          <div class="hero-bio">
+            <p>I'm a Performance-driven Digital Marketer based in Ho Chi Minh City, Vietnam. My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.</p>
             <p>Over the past 4+ years, I've managed multi-channel paid media and scaled revenue for e-commerce, education, and consumer brands. Apart from work, I enjoy creating automated workflows, exploring technical SEO, and building online communities.</p>
           </div>
-          <a href="mailto:hi@loc.digital" class="btn-connect">Let's connect!</a>
+          <div class="hero-links">
+            <a href="mailto:hi@loc.digital" class="min-link">Email me ↗</a>
+            <a href="https://phucloc.digital/resume" target="_blank" class="min-link">View Resume ↗</a>
+          </div>
         </div>
-        <div class="hero-image">
+        <div class="hero-right">
           <Picture
             src={heroAbout}
             alt="Phuc Loc Nguyen"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 900px) 100vw, 50vw"
+            widths={[300, 480]}
+            sizes="(max-width: 768px) 100vw, 320px"
             formats={["avif", "webp"]}
             fallbackFormat="jpg"
-            quality={80}
+            quality={85}
             loading="eager"
             decoding="async"
             fetchpriority="high"
@@ -37,180 +40,136 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
         </div>
       </section>
 
-      <!-- Grid Layout for Resume -->
-      <section class="resume-grid fade-in">
-        
-        <!-- Left Column -->
-        <div class="resume-main">
-          
-          <div class="resume-section">
-            <h2 class="resume-sh">Working History</h2>
-            <div class="card-list">
-                    <!-- WorkFlow Space -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-logo"><img src="/assets/logos/logo-workflow.webp" alt="WorkFlow Space" loading="lazy" decoding="async" /></div>
-                  <div class="card-title-group">
-                    <h3>Digital Marketing Specialist</h3>
-                    <span class="company-date">WorkFlow Space | 2024 – Present</span>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <ul>
-                    <li>Manage content, paid media campaigns, and community growth strategies.</li>
-                    <li>Optimize digital presence for maximum reach and engagement.</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <!-- PlayAh! -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-logo"><img src="/assets/logos/logo-playah.webp" alt="PlayAh!" loading="lazy" decoding="async" /></div>
-                  <div class="card-title-group">
-                    <h3>Digital Marketing Specialist</h3>
-                    <span class="company-date">PlayAh! | 2024 – Present</span>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <ul>
-                    <li>Execute brand campaigns and performance marketing strategies.</li>
-                    <li>Analyze metrics to ensure strong return on ad spend (ROAS).</li>
-                  </ul>
-                </div>
-              </div>
- 
-              <!-- POPS -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-logo"><img src="/assets/logos/logo-pops.webp" alt="POPS Worldwide" loading="lazy" decoding="async" /></div>
-                  <div class="card-title-group">
-                    <h3>SEO Executive</h3>
-                    <span class="company-date">POPS Worldwide | 2023 – 2024</span>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <ul>
-                    <li>Developed and executed comprehensive search strategies and organic growth initiatives.</li>
-                  </ul>
-                </div>
-              </div>
- 
-              <!-- PNJ -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-logo"><img src="/assets/logos/logo-pnj.webp" alt="PNJ" loading="lazy" decoding="async" /></div>
-                  <div class="card-title-group">
-                    <h3>Digital Marketing Specialist</h3>
-                    <span class="company-date">PNJ | 2022 – 2023</span>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <ul>
-                    <li>Managed e-commerce and retail campaigns to drive sales and customer acquisition.</li>
-                  </ul>
-                </div>
-              </div>
- 
-              <!-- Sony -->
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-logo"><img src="/assets/logos/logo-sony.webp" alt="Sony" loading="lazy" decoding="async" /></div>
-                  <div class="card-title-group">
-                    <h3>Digital Marketing Specialist</h3>
-                    <span class="company-date">Sony | 2021 – 2022</span>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <ul>
-                    <li>Led brand awareness campaigns and lead generation efforts.</li>
-                  </ul>
-                </div>
-              </div>             </div>
-
-            </div>
+      <!-- EXPERIENCE SECTION -->
+      <section class="min-section toki-r" data-d="2">
+        <h2 class="min-section-title">My Experience</h2>
+        <p class="min-section-desc">Selected roles spanning performance media buying, search strategy, and brand campaigns.</p>
+        <div class="min-list">
+          <div class="min-row">
+            <div class="col-main">WorkFlow Space</div>
+            <div class="col-desc">Digital Marketing Specialist</div>
+            <div class="col-meta">2024 – Present</div>
           </div>
-
-          <div class="resume-section">
-            <h2 class="resume-sh">Education</h2>
-            <div class="card-grid">
-              <div class="card compact-card">
-                 <div class="card-logo placeholder-icon">🎓</div>
-                 <div class="card-title-group">
-                   <h3>Bachelor's Degree</h3>
-                   <span class="company-date">University Name<br/>2017 - 2021</span>
-                 </div>
-              </div>
-            </div>
+          <div class="min-row">
+            <div class="col-main">PlayAh!</div>
+            <div class="col-desc">Digital Marketing Specialist</div>
+            <div class="col-meta">2024 – Present</div>
           </div>
-
-          <div class="resume-section">
-            <h2 class="resume-sh">Certifications</h2>
-            <div class="card-grid">
-              <div class="card compact-card">
-                 <div class="card-logo placeholder-icon">🏆</div>
-                 <div class="card-title-group">
-                   <h3>Digital Marketing Specialization</h3>
-                   <span class="company-date">Google | 2022</span>
-                 </div>
-              </div>
-            </div>
+          <div class="min-row">
+            <div class="col-main">POPS Worldwide</div>
+            <div class="col-desc">SEO Executive</div>
+            <div class="col-meta">2023 – 2024</div>
           </div>
-
+          <div class="min-row">
+            <div class="col-main">PNJ</div>
+            <div class="col-desc">Digital Marketing Specialist</div>
+            <div class="col-meta">2022 – 2023</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Sony</div>
+            <div class="col-desc">Digital Marketing Specialist</div>
+            <div class="col-meta">2021 – 2022</div>
+          </div>
         </div>
-
-        <!-- Right Column -->
-        <div class="resume-sidebar">
-          
-          <div class="resume-section">
-            <h2 class="resume-sh">Skills</h2>
-            <div class="card outline-card">
-              <ul class="skills-list">
-                <li>Performance Marketing</li>
-                <li>Search Engine Optimization (SEO)</li>
-                <li>Paid Social (Meta, TikTok)</li>
-                <li>Search Ads (Google)</li>
-                <li>Data Analysis & Reporting</li>
-                <li>Marketing Automation</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="resume-section">
-            <h2 class="resume-sh">Working Tools</h2>
-            <div class="card outline-card tools-grid">
-              <div class="tool-item"><span class="tool-icon">📊</span><span class="tool-name">Google Ads</span></div>
-              <div class="tool-item"><span class="tool-icon">📈</span><span class="tool-name">Meta Ads</span></div>
-              <div class="tool-item"><span class="tool-icon">📱</span><span class="tool-name">TikTok Ads</span></div>
-              <div class="tool-item"><span class="tool-icon">🔎</span><span class="tool-name">Analytics</span></div>
-              <div class="tool-item"><span class="tool-icon">🎨</span><span class="tool-name">Figma</span></div>
-              <div class="tool-item"><span class="tool-icon">⚡</span><span class="tool-name">Zapier</span></div>
-              <div class="tool-item"><span class="tool-icon">🕸️</span><span class="tool-name">Ahrefs</span></div>
-              <div class="tool-item"><span class="tool-icon">📝</span><span class="tool-name">Notion</span></div>
-              <div class="tool-item"><span class="tool-icon">✉️</span><span class="tool-name">Mailchimp</span></div>
-            </div>
-          </div>
-
-          <div class="resume-section">
-            <h2 class="resume-sh">Languages</h2>
-            <div class="card outline-card">
-              <ul class="languages-list">
-                <li><span class="flag">🇻🇳</span> Vietnamese (Native)</li>
-                <li><span class="flag">🇬🇧</span> English (Fluent)</li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
-
       </section>
 
-      <!-- Bottom CTA Section -->
-      <section class="about-cta fade-in">
-        <h2 class="cta-title">Thank You!</h2>
-        <p class="cta-subtitle">For exploring my profile and reviewing my work.</p>
-        <p class="cta-text">Do you have a great idea and want to share?<br/>Let's make something amazing together!</p>
-        <a href="mailto:hi@loc.digital" class="btn-solid">Get in touch with me</a>
+      <!-- FEATURED PROJECTS -->
+      <section class="min-section toki-r" data-d="3">
+        <h2 class="min-section-title">Featured Projects</h2>
+        <p class="min-section-desc">Campaigns and platforms built and managed for top consumer brands.</p>
+        <div class="min-list">
+          <a href="/work/playah" class="min-row is-link">
+            <div class="col-main">PlayAh!</div>
+            <div class="col-desc">Brand Growth & Performance Ads</div>
+            <div class="col-meta">playahvietnam.com →</div>
+          </a>
+          <a href="/work/workflow-space" class="min-row is-link">
+            <div class="col-main">WorkFlow Space</div>
+            <div class="col-desc">Community & Content Strategy</div>
+            <div class="col-meta">workflowspace.vn →</div>
+          </a>
+          <a href="/work/pnj" class="min-row is-link">
+            <div class="col-main">PNJ</div>
+            <div class="col-desc">E-commerce Campaigns & Shopping</div>
+            <div class="col-meta">pnj.com.vn →</div>
+          </a>
+          <a href="/work/pops-worldwide" class="min-row is-link">
+            <div class="col-main">POPS Worldwide</div>
+            <div class="col-desc">SEO & Search Strategy</div>
+            <div class="col-meta">pops.vn →</div>
+          </a>
+          <a href="/work/sony-vietnam" class="min-row is-link">
+            <div class="col-main">Sony Vietnam</div>
+            <div class="col-desc">Brand Awareness & Lead Gen</div>
+            <div class="col-meta">sony.com.vn →</div>
+          </a>
+        </div>
+      </section>
+
+      <!-- TOOLSET & SKILLS -->
+      <section class="min-section toki-r" data-d="4">
+        <h2 class="min-section-title">Toolset & Skills</h2>
+        <p class="min-section-desc">Technologies and skills I use to build workflows and run growth experiments.</p>
+        <div class="min-list">
+          <div class="min-row">
+            <div class="col-main">Meta Ads</div>
+            <div class="col-desc">Paid Social Campaigns</div>
+            <div class="col-meta">facebook.com ↗</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Google Ads</div>
+            <div class="col-desc">Search, Shopping & Display</div>
+            <div class="col-meta">ads.google.com ↗</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">TikTok Ads</div>
+            <div class="col-desc">Paid Social Campaigns</div>
+            <div class="col-meta">ads.tiktok.com ↗</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Google Analytics</div>
+            <div class="col-desc">Data Audits & GA4 Reporting</div>
+            <div class="col-meta">analytics.google.com ↗</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Figma</div>
+            <div class="col-desc">Interface Design & Creative Mockups</div>
+            <div class="col-meta">figma.com ↗</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Zapier</div>
+            <div class="col-desc">Marketing & Workflow Automation</div>
+            <div class="col-meta">zapier.com ↗</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Ahrefs</div>
+            <div class="col-desc">SEO Keyword & Competitor Research</div>
+            <div class="col-meta">ahrefs.com ↗</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Notion</div>
+            <div class="col-desc">Docs, Wiki & Project Hub</div>
+            <div class="col-meta">notion.so ↗</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EDUCATION & CREDENTIALS -->
+      <section class="min-section toki-r" data-d="5">
+        <h2 class="min-section-title">Education & Credentials</h2>
+        <p class="min-section-desc">Formal degree and professional marketing certifications.</p>
+        <div class="min-list">
+          <div class="min-row">
+            <div class="col-main">University Name</div>
+            <div class="col-desc">Bachelor's Degree</div>
+            <div class="col-meta">2017 – 2021</div>
+          </div>
+          <div class="min-row">
+            <div class="col-main">Google</div>
+            <div class="col-desc">Digital Marketing Specialization</div>
+            <div class="col-meta">Issued 2022 ↗</div>
+          </div>
+        </div>
       </section>
 
     </div>
@@ -218,481 +177,193 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 </Layout>
 
 <style>
-  .about-page {
-    padding: calc(var(--hdr-h) + 80px) 0 100px;
+  .about-minimal-page {
+    padding: calc(var(--hdr-h) + 64px) 0 120px;
+    background: transparent;
   }
 
-  /* Simple fade-in animation */
-  .fade-in {
-    animation: fadeIn 1s ease-out forwards;
-    opacity: 0;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .about-minimal-container {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--px);
   }
 
-  /* Hero Section */
-  .about-hero {
+  /* ── Hero section ── */
+  .about-min-hero {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 80px;
-    align-items: center;
-    margin-bottom: 100px;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 96px;
   }
 
-  @media (max-width: 900px) {
-    .about-hero {
-      grid-template-columns: 1fr;
-      gap: 50px;
-    }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
   }
 
-  .hero-text {
-    max-width: 540px;
-  }
-
-  .about-title {
+  .hero-main-title {
     font-family: var(--serif);
-    font-size: clamp(42px, 6.5vw, 84px);
+    font-size: clamp(38px, 5.5vw, 64px);
     font-weight: 400;
-    line-height: 1.1;
-    margin-bottom: 24px;
-    color: var(--text);
+    line-height: 1.08;
     letter-spacing: -0.02em;
-  }
-
-  .highlight {
-    position: relative;
-    display: inline-block;
-    z-index: 1;
-  }
-  
-  .highlight::after {
-    content: '';
-    position: absolute;
-    bottom: 8px;
-    left: -4px;
-    right: -4px;
-    height: 20px;
-    background-color: rgba(255, 215, 0, 0.6); /* Yellow highlight */
-    z-index: -1;
-    border-radius: 2px;
-  }
-
-  /* Typing cursor */
-  .typing-cursor {
-    display: inline-block;
-    font-weight: 300;
-    margin-left: 2px;
-    animation: blink 0.75s step-end infinite;
     color: var(--text);
-    opacity: 0.7;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 0; }
-  }
-
-  .about-intro {
-    font-size: 17px;
-    line-height: 1.6;
     margin-bottom: 24px;
-    color: var(--text);
   }
 
-  .about-desc p {
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .hero-bio p {
     font-size: 15px;
     line-height: 1.72;
     color: var(--muted);
     margin-bottom: 16px;
   }
 
-  .btn-connect {
-    display: inline-block;
+  .hero-links {
+    display: flex;
+    gap: 24px;
     margin-top: 16px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--accent);
-    text-decoration: none;
-    transition: opacity 0.2s ease;
   }
 
-  .btn-connect:hover {
-    opacity: 0.8;
+  .min-link {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
     text-decoration: underline;
     text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--divider);
+    transition: all 0.25s ease;
   }
 
-  .hero-image {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-    transform: rotate(1deg);
-    transition: transform 0.4s ease;
-  }
-  
-  .hero-image:hover {
-    transform: rotate(0deg) translateY(-5px);
-  }
-
-  .hero-image img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-  }
-
-  /* Resume Grid */
-  .resume-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 60px;
-    margin-bottom: 100px;
-  }
-
-  @media (max-width: 900px) {
-    .resume-grid {
-      grid-template-columns: 1fr;
-      gap: 60px;
-    }
-  }
-
-  .resume-section {
-    margin-bottom: 48px;
-  }
-
-  .resume-sh {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 24px;
-    font-family: var(--sans);
-  }
-
-  /* Cards */
-  .card-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid var(--divider);
-    border-radius: 16px;
-    padding: 28px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  .card-logo {
-    width: 104px;
-    height: 52px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .card-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .placeholder-icon {
-    font-size: 26px;
-    padding: 0 !important;
-  }
-
-  .card-title-group h3 {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-    font-family: var(--sans);
-  }
-
-  .company-date {
-    font-size: 13px;
-    color: var(--muted);
-    font-family: var(--mono);
-    display: block;
-    line-height: 1.4;
-  }
-
-  .card-body ul {
-    padding-left: 20px;
-    margin: 0;
-    list-style-type: disc;
-  }
-
-  .card-body li {
-    font-size: 14.5px;
-    line-height: 1.65;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  .card-body li:last-child {
-    margin-bottom: 0;
-  }
-
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
-  }
-
-  .compact-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 24px;
-  }
-
-  .compact-card .card-logo {
-    flex-shrink: 0;
-  }
-
-  /* Outline Card (Sidebar) */
-  .outline-card {
-    padding: 28px;
-    box-shadow: none;
-    border-style: dashed;
-    border-width: 1.5px;
-  }
-
-  .outline-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
-    border-style: solid;
-  }
-
-  .skills-list, .languages-list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  .skills-list li, .languages-list li {
-    font-size: 14.5px;
-    color: var(--text);
-    padding: 12px 0;
-    border-bottom: 1px solid var(--divider);
-    display: flex;
-    align-items: center;
-  }
-
-  .skills-list li::before {
-    content: "✓";
+  .min-link:hover {
     color: var(--accent);
-    margin-right: 12px;
-    font-weight: bold;
+    text-decoration-color: var(--accent);
   }
 
-  .skills-list li:last-child, .languages-list li:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .skills-list li:first-child, .languages-list li:first-child {
-    padding-top: 0;
-  }
-
-  .flag {
-    margin-right: 12px;
-    font-size: 18px;
-  }
-
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .tool-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-  }
-
-  .tool-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--bg);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    border: 1px solid var(--divider);
-    transition: transform 0.2s ease, background 0.2s ease;
-  }
-  
-  .tool-item:hover .tool-icon {
-    transform: translateY(-3px);
-    background: #fff;
-    border-color: var(--accent);
-  }
-
-  .tool-name {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  /* CTA Section */
-  .about-cta {
-    text-align: center;
-    padding: 60px 0 40px;
-    max-width: 600px;
-    margin: 0 auto;
+  .hero-right {
     position: relative;
   }
-  
-  .about-cta::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--divider), transparent);
+
+  .hero-right img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--divider);
+    filter: grayscale(0.15);
+    transition: filter 0.3s ease;
   }
 
-  .cta-title {
-    font-family: var(--serif);
-    font-size: 56px;
-    font-weight: 400;
+  .hero-right img:hover {
+    filter: grayscale(0);
+  }
+
+  /* ── Sections ── */
+  .min-section {
+    margin-bottom: 72px;
+  }
+
+  .min-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     color: var(--text);
     margin-bottom: 8px;
-    letter-spacing: -0.01em;
   }
 
-  .cta-subtitle {
-    font-size: 15px;
+  .min-section-desc {
+    font-size: 13.5px;
     color: var(--muted);
-    margin-bottom: 40px;
-    font-family: var(--mono);
+    margin-bottom: 24px;
   }
 
-  .cta-text {
-    font-size: 18px;
-    line-height: 1.6;
+  /* ── Rows ── */
+  .min-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--divider);
+  }
+
+  .min-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1.6fr 1.2fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--divider);
+    font-size: 14.5px;
+    align-items: center;
     color: var(--text);
-    margin-bottom: 36px;
-    font-weight: 500;
+    transition: all 0.2s ease;
   }
 
-  .btn-solid {
-    display: inline-block;
-    padding: 16px 36px;
-    background: var(--accent);
-    color: #fff;
-    border-radius: 40px;
-    font-size: 15px;
-    font-weight: 600;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  a.min-row {
     text-decoration: none;
   }
 
-  .btn-solid:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(0, 117, 222, 0.3);
-    background: var(--text);
+  a.min-row:hover {
+    background: rgba(0, 0, 0, 0.015);
+    padding-left: 8px;
+    padding-right: 8px;
+    color: var(--accent);
+  }
+
+  .col-main {
+    font-weight: 600;
+  }
+
+  .col-desc {
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+
+  a.min-row:hover .col-desc {
+    color: var(--text);
+  }
+
+  .col-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    transition: color 0.2s ease;
+  }
+
+  a.min-row:hover .col-meta {
+    color: var(--accent);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .about-min-hero {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-bottom: 64px;
+    }
+
+    .hero-right {
+      order: -1;
+      max-width: 300px;
+    }
+
+    .min-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 16px 0;
+    }
+
+    .col-meta {
+      grid-column: 1 / -1;
+      text-align: left;
+      margin-top: 2px;
+    }
   }
 </style>
-
-<script>
-  const greetings = [
-    "Xin chào!",
-    "Hello!",
-    "Hola!",
-    "Nǐ hǎo!",
-    "Namaste!",
-    "Marhaban!",
-    "Bonjour!",
-    "Nomoshkar!",
-    "Olá!",
-    "Privet!",
-    "Halo!",
-  ];
-
-  const el = document.getElementById("typing-text");
-  let greetingIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  let isPaused = false;
-
-  const TYPE_SPEED = 80;   // ms per character when typing
-  const DELETE_SPEED = 45; // ms per character when deleting
-  const PAUSE_AFTER_TYPE = 1600; // pause before starting to delete
-  const PAUSE_AFTER_DELETE = 300; // pause before typing next word
-
-  function tick() {
-    if (!el) return;
-
-    const current = greetings[greetingIndex];
-
-    if (isPaused) {
-      isPaused = false;
-      setTimeout(tick, isDeleting ? PAUSE_AFTER_DELETE : PAUSE_AFTER_TYPE);
-      return;
-    }
-
-    if (!isDeleting) {
-      // Typing forward
-      charIndex++;
-      el.textContent = current.slice(0, charIndex);
-
-      if (charIndex === current.length) {
-        // Finished typing — pause then start deleting
-        isDeleting = true;
-        isPaused = true;
-        setTimeout(tick, PAUSE_AFTER_TYPE);
-        return;
-      }
-    } else {
-      // Deleting
-      charIndex--;
-      el.textContent = current.slice(0, charIndex);
-
-      if (charIndex === 0) {
-        // Finished deleting — move to next greeting
-        isDeleting = false;
-        greetingIndex = (greetingIndex + 1) % greetings.length;
-        isPaused = true;
-        setTimeout(tick, PAUSE_AFTER_DELETE);
-        return;
-      }
-    }
-
-    setTimeout(tick, isDeleting ? DELETE_SPEED : TYPE_SPEED);
-  }
-
-  // Kick off with a small initial delay
-  setTimeout(tick, 600);
-</script>

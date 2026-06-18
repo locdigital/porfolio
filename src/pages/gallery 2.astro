@@ -47,7 +47,7 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
 
     .gallery-page {
       min-height: 100vh;
-      background: #fdfdfd;
+      background: transparent;
       padding: 8px;
       padding-top: 80px;
       width: 100%;
@@ -151,6 +151,8 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
       var cols = 6;
       var colEls = [];
       var colH = [];   // logical height tracker (sum of h/w ratios)
+      var batchSize = 15;
+      var currentIndex = 0;
 
       function numCols() {
         var w = window.innerWidth;
@@ -175,9 +177,11 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
         }
       }
 
-      function addPhotos(list) {
-        for (var i = 0; i < list.length; i++) {
-          var photo = list[i];
+      function addNextBatch() {
+        if (currentIndex >= photos.length) return;
+        var end = Math.min(currentIndex + batchSize, photos.length);
+        for (var i = currentIndex; i < end; i++) {
+          var photo = photos[i];
 
           // find shortest column
           var min = 0;
@@ -185,8 +189,8 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
             if (colH[j] < colH[min]) min = j;
           }
 
-          var pw = photo.w || 1280;
-          var ph = photo.h || 853;
+          var pw = photo.previewWidth || photo.w || 1280;
+          var ph = photo.previewHeight || photo.h || 853;
           var ratio = ph / pw;                    // e.g. portrait → 1.5, landscape → 0.667
           var pb = (ratio * 100).toFixed(3) + '%'; // padding-bottom %
 
@@ -204,8 +208,8 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
           img.alt = photo.alt;
           img.loading = 'lazy';
           img.decoding = 'async';
-          img.width = photo.previewWidth;
-          img.height = photo.previewHeight;
+          img.width = pw;
+          img.height = ph;
 
           box.appendChild(img);
           item.appendChild(box);
@@ -213,31 +217,38 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
 
           colH[min] += ratio;   // accumulate logical height
         }
+        currentIndex = end;
       }
 
       // Run immediately (script is deferred by is:inline)
       initCols();
-      addPhotos(photos);
+      addNextBatch();
 
       // Infinite scroll
       if (trigger) {
         var io = new IntersectionObserver(function (entries) {
-          if (entries[0].isIntersecting) {
-            addPhotos(photos);
+          if (entries[0].isIntersecting && currentIndex < photos.length) {
+            addNextBatch();
           }
         }, { rootMargin: '800px' });
         io.observe(trigger);
       }
 
-      // Responsive reflow
+      // Responsive reflow - re-add only the photos that are already loaded
       var resizeT;
       window.addEventListener('resize', function () {
         clearTimeout(resizeT);
         resizeT = setTimeout(function () {
           var n = numCols();
           if (n !== cols) {
+            var loadedPhotosCount = currentIndex;
             initCols();
-            addPhotos(photos);
+            currentIndex = 0;
+            
+            var originalBatchSize = batchSize;
+            batchSize = loadedPhotosCount;
+            addNextBatch();
+            batchSize = originalBatchSize;
           }
         }, 250);
       });

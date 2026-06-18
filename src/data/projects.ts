@@ -28,7 +28,7 @@ export const projects: Project[] = [
     description:
       "Planned and executed full-funnel digital campaigns across Meta, TikTok, and Google Ads. Built a data-driven content calendar, optimized for ROAS, and scaled paid acquisition while maintaining brand voice.\n\nKey outcomes include a 3× uplift in monthly active users across social channels and a 40% reduction in cost-per-lead through creative iteration and audience segmentation.\n\nThe work spanned brand strategy, performance media buying, influencer partnerships, and weekly analytics reporting to the leadership team.",
     tags: ["Meta Ads", "TikTok Ads", "Brand Strategy", "Community Growth", "Analytics"],
-    coverImage: "/assets/logos/logo-playah.webp",
+    coverImage: "/assets/logos/logo-playah.png",
     images: [],
     link: "https://playahvietnam.com/",
     linkLabel: "Visit PlayAh! ↗",
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     description:
       "Developed a content-first growth strategy combining organic social, SEO blog content, and paid campaigns. Managed a team of freelance content creators, coordinated shoots, and set KPI frameworks tracked weekly.\n\nGrew Instagram from 2,000 to 18,000 followers in 8 months through systematic posting, reel strategy, and community engagement. Ran Google Ads and Meta retargeting to drive workspace bookings.\n\nDeliverables included a brand guide refresh, content playbook, and monthly performance dashboards for stakeholders.",
     tags: ["Content Strategy", "SEO", "Meta Ads", "Google Ads", "Instagram Growth"],
-    coverImage: "/assets/logos/logo-workflow.webp",
+    coverImage: "/assets/logos/logo-workflow.png",
     images: [],
     link: "https://www.workflowspace.vn/",
     linkLabel: "Visit WorkFlow Space ↗",
@@ -64,7 +64,7 @@ export const projects: Project[] = [
     description:
       "Led on-page and technical SEO initiatives across the POPS content platform, targeting competitive keywords in the entertainment vertical. Conducted full site audits, fixed crawl errors, and implemented structured data markup for video content.\n\nBuilt an internal linking strategy that improved crawl depth and boosted average page rank position by 22 spots for target keywords over six months.\n\nCollaborated with content, development, and product teams to ensure SEO best practices were embedded in the publishing workflow.",
     tags: ["Technical SEO", "On-Page SEO", "Structured Data", "Analytics", "Content SEO"],
-    coverImage: "/assets/logos/logo-pops.webp",
+    coverImage: "/assets/logos/logo-pops.png",
     images: [],
     link: "https://pops.vn/",
     linkLabel: "Visit POPS ↗",
@@ -82,7 +82,7 @@ export const projects: Project[] = [
     description:
       "Planned and managed seasonal e-commerce campaigns across Meta Ads, Google Shopping, and Zalo Ads. Coordinated with the creative studio on ad assets and A/B tested landing pages to maximize conversion rate.\n\nDuring peak sale events (Valentine's, 8/3, 20/10), managed daily budgets exceeding 200M VND with ROAS targets consistently exceeded by 15–30%.\n\nDeveloped post-campaign reports with attribution models and recommendations, contributing to a 25% increase in digital revenue YoY.",
     tags: ["Google Shopping", "Meta Ads", "E-commerce", "A/B Testing", "Attribution"],
-    coverImage: "/assets/logos/logo-pnj.webp",
+    coverImage: "/assets/logos/logo-pnj.png",
     images: [],
     link: "https://www.pnj.com.vn/",
     linkLabel: "Visit PNJ ↗",
@@ -100,7 +100,7 @@ export const projects: Project[] = [
     description:
       "Supported Sony Vietnam's digital marketing team in planning and executing awareness and lead-gen campaigns for the consumer electronics division. Key categories included audio, cameras, and television product lines.\n\nManaged Meta and Google display campaigns targeting tech-enthusiast segments. Handled creative briefing, media planning, and performance reporting.\n\nInternalized D2C marketing principles and contributed to a cross-channel playbook later adopted as the standard operating procedure for product launch campaigns.",
     tags: ["Meta Ads", "Google Display", "Brand Campaigns", "Lead Generation", "D2C"],
-    coverImage: "/assets/logos/logo-sony.webp",
+    coverImage: "/assets/logos/logo-sony.png",
     images: [],
     link: "https://www.sony.com.vn/",
     linkLabel: "Visit Sony Vietnam ↗",

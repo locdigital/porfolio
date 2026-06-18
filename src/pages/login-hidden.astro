@@ -1,0 +1,165 @@
+---
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#FAFAF7" />
+    <title>CMS Login | Loc Digital</title>
+    <link rel="icon" type="image/svg+xml" href="/admin/favicon.svg" />
+    <link rel="preconnect" href="https://identity.netlify.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+      :root {
+        --bg: #fafaf7;
+        --text: #1c1c1c;
+        --muted: #6e6e6e;
+        --line: #e8e8e2;
+        --accent: #0075de;
+        --serif: "Imbue", Georgia, serif;
+        --sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        --mono: "DM Mono", "Courier New", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: clamp(24px, 6vw, 72px);
+        background:
+          radial-gradient(circle at 20% 12%, rgba(0, 117, 222, 0.1), transparent 30rem),
+          linear-gradient(180deg, #fff 0%, var(--bg) 58%);
+        color: var(--text);
+        font-family: var(--sans);
+      }
+
+      main {
+        width: min(100%, 680px);
+      }
+
+      .mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 34px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 6px rgba(0, 117, 222, 0.1);
+      }
+
+      h1 {
+        max-width: 620px;
+        margin: 0 0 18px;
+        color: var(--text);
+        font-family: var(--serif);
+        font-size: clamp(48px, 10vw, 92px);
+        font-weight: 400;
+        line-height: 0.95;
+      }
+
+      p {
+        max-width: 520px;
+        margin: 0 0 32px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      button,
+      a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 0 18px;
+        font: inherit;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      button {
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: #fff;
+      }
+
+      a {
+        border: 1px solid var(--line);
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      .note {
+        margin-top: 24px;
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="mark"><span class="dot" aria-hidden="true"></span> Private CMS entrance</div>
+      <h1>Loc Digital content room</h1>
+      <p>Use the authorized Identity account to enter the portfolio CMS. After signing in, you will be sent straight to the editor.</p>
+      <div class="actions">
+        <button type="button" id="login-button">Sign in</button>
+        <a href="/admin/">Open CMS</a>
+      </div>
+      <div class="note">Login email: hi@loc.digital</div>
+    </main>
+
+    <script is:inline>
+      function openIdentity() {
+        if (!window.netlifyIdentity) return;
+        window.netlifyIdentity.open();
+      }
+
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          const hash = window.location.hash;
+          if (hash.includes("invite_token") || hash.includes("recovery_token") || hash.includes("confirmation_token")) {
+            window.netlifyIdentity.open();
+          }
+
+          if (user) {
+            document.location.href = "/admin/";
+          }
+        });
+
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+
+      document.getElementById("login-button")?.addEventListener("click", openIdentity);
+    </script>
+  </body>
+</html>

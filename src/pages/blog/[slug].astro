@@ -1,41 +1,34 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getPosts, extractSEOData } from "../../lib/wordpress";
+import { getWritingPosts } from "../../lib/cms";
 
 export async function getStaticPaths() {
-  // Fetch recent posts to generate static paths at build time
-  const posts = await getPosts(100);
-  
-  if (!posts || posts.length === 0) {
-    return [];
-  }
+  const posts = await getWritingPosts();
 
-  return posts.map((post: any) => ({
+  return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const seo = extractSEOData(post);
-const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+
+const featuredImage = post.data.coverImage;
 
 // Format date
-const publishDate = new Date(post.date).toLocaleDateString('en-US', { 
+const publishDate = post.data.publishedAt.toLocaleDateString('en-US', { 
   year: 'numeric', 
   month: 'long', 
   day: 'numeric' 
 });
 
-// Extract tags
-const terms = post._embedded?.['wp:term']?.flat() || [];
-const tags = terms.filter((term: any) => term.taxonomy === 'post_tag' || term.taxonomy === 'category').map((term: any) => term.name);
+const tags = post.data.tags;
 ---
 
 <Layout 
-  title={`${seo?.title || post.title.rendered} | Lộc Digital`} 
-  description={seo?.description} 
-  ogImage={seo?.ogImage || featuredImage}
+  title={`${post.data.title} | Lộc Digital`} 
+  description={post.data.metaDescription || post.data.summary} 
+  ogImage={featuredImage}
 >
   <article class="container mx-auto pb-32 px-4 max-w-[880px]" style="padding-top: 140px;">
     <a href="/blog" class="group inline-flex items-center font-sans text-[11px] font-bold tracking-[0.15em] text-[var(--muted)] hover:text-[var(--text)] transition-colors mb-8 uppercase">
@@ -43,10 +36,10 @@ const tags = terms.filter((term: any) => term.taxonomy === 'post_tag' || term.ta
     </a>
     
     <header class="mb-[64px]">
-      <h1 class="text-[44px] md:text-[64px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] leading-[1.05] text-[var(--text)] mb-[24px]" set:html={post.title.rendered} />
+      <h1 class="text-[44px] md:text-[64px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] leading-[1.05] text-[var(--text)] mb-[24px]">{post.data.headline}</h1>
       
       <div class="flex flex-wrap items-center gap-x-4 text-[var(--muted)] font-mono text-[12px] tracking-wide">
-        <time datetime={post.date}>{publishDate}</time>
+        <time datetime={post.data.publishedAt.toISOString()}>{publishDate}</time>
         {tags.length > 0 && (
           <div class="flex items-center gap-x-3">
             {tags.map((tag: string) => (
@@ -61,7 +54,7 @@ const tags = terms.filter((term: any) => term.taxonomy === 'post_tag' || term.ta
       <div class="aspect-[16/9] w-full rounded-[8px] overflow-hidden mb-[64px]">
         <img 
           src={featuredImage} 
-          alt={post.title.rendered} 
+          alt={post.data.title} 
           class="w-full h-full object-cover"
           loading="lazy"
           decoding="async"
@@ -80,8 +73,9 @@ const tags = terms.filter((term: any) => term.taxonomy === 'post_tag' || term.ta
              prose-img:rounded-[8px] prose-img:mx-auto prose-img:my-12
              prose-hr:border-[var(--divider)] prose-hr:my-12
              prose-blockquote:text-[var(--muted)] prose-blockquote:border-l-[var(--divider)] prose-blockquote:font-normal prose-blockquote:not-italic"
-      set:html={post.content.rendered} 
-    />
+    >
+      <div set:html={post.content} />
+    </div>
 
     <div class="mt-24 pt-8 border-t border-[var(--divider)]">
       <a href="/blog" class="group inline-flex items-center font-sans text-[13px] font-bold tracking-[0.1em] text-[var(--text)] hover:text-[var(--accent)] transition-colors uppercase">

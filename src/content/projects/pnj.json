@@ -1,0 +1,28 @@
+{
+  "skills": [
+    "Campaign Planning",
+    "E-commerce Growth",
+    "Reporting"
+  ],
+  "coverImage": "http://localhost:4323/assets/logos/logo-pnj.webp",
+  "summary": "Multi-channel paid media and e-commerce performance campaigns for PNJ — Vietnam's largest jewelry retail chain.",
+  "number": "04",
+  "slug": "pnj",
+  "client": "PNJ (Phú Nhuận Jewelry)",
+  "order": 4,
+  "caseStudyLink": "",
+  "role": "Digital Marketing Specialist",
+  "title": "PNJ — E-commerce Campaigns",
+  "images": [],
+  "linkLabel": "Visit PNJ ↗",
+  "link": "https://www.pnj.com.vn/",
+  "tools": [
+    "Google Shopping",
+    "Meta Ads",
+    "E-commerce",
+    "A/B Testing",
+    "Attribution"
+  ],
+  "description": "Planned and managed seasonal e-commerce campaigns across Meta Ads, Google Shopping, and Zalo Ads. Coordinated with the creative studio on ad assets and A/B tested landing pages to maximize conversion rate.\n\nDuring peak sale events (Valentine's, 8/3, 20/10), managed daily budgets exceeding 200M VND with ROAS targets consistently exceeded by 15–30%.\n\nDeveloped post-campaign reports with attribution models and recommendations, contributing to a 25% increase in digital revenue YoY.",
+  "year": "2022–2023"
+}
