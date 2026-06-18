@@ -1,5 +1,5 @@
 export const getWPUrl = () => {
-  const url = import.meta.env.PUBLIC_WP_URL || 'https://your-wordpress-site.com';
+  const url = import.meta.env.PUBLIC_WP_URL || 'https://cms.loc.digital';
   // Remove trailing slash if exists
   return url.replace(/\/$/, '');
 };
