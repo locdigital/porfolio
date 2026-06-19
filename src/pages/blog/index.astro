@@ -1,19 +1,21 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getWritingPosts } from "../../lib/cms";
+import { getWritingPosts } from "../../lib/writing";
 
 const posts = await getWritingPosts();
 ---
 
-<Layout title="Writing | Lộc Digital" description="Nhật Ký & Bài Viết">
-  <main style="display:flex;flex-direction:column;padding-top:140px;padding-bottom:120px;">
-    <section class="writing" style="padding-top: 0; padding-bottom: 0;">
-      <div class="container">
-        
-        <div class="sh" style="margin-bottom: 80px;">
-          <span class="sh-title">Writing</span>
-          <span class="sh-number">{posts ? posts.length : 0} posts</span>
-        </div>
+<Layout title="Writing | Lộc Digital" description="Journal & Essays">
+  <main class="gear-page">
+    <div class="gear-container">
+      <!-- PAGE HERO -->
+      <section class="gear-hero toki-r" data-d="1" aria-label="Writing">
+        <p class="gear-kicker">Writing</p>
+        <h1>Journal & <em>Essays</em></h1>
+        <p class="gear-intro">
+          A collection of thoughts, tutorials, and reflections on marketing, code, and life.
+        </p>
+      </section>
 
         {posts.length > 0 ? (
           <div class="flex flex-col gap-y-[72px]">
@@ -41,11 +43,10 @@ const posts = await getWritingPosts();
           </div>
         ) : (
           <div class="py-10 text-[var(--muted)]">
-            <p>Open /admin and create the first writing entry.</p>
+            <p>New writing is coming soon.</p>
           </div>
         )}
 
       </div>
-    </section>
   </main>
 </Layout>

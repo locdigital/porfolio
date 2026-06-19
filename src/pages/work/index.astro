@@ -1,36 +1,32 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getProjects } from "../../lib/cms";
+import { projects } from "../../data/projects";
 
-const projects = await getProjects();
+const sortedProjects = [...projects];
 ---
 
 <Layout
   title="Work | Phuc Loc Nguyen"
   description="Selected projects by Phuc Loc Nguyen — performance marketing, brand campaigns, and growth strategy across Vietnam's top brands."
 >
-  <main class="projects-page">
-    <div class="container">
+  <main class="gear-page">
+    <div class="gear-container">
 
-      <!-- Page Header -->
-      <div class="page-header r">
-        <div class="page-header-left">
-          <h1 class="page-title">Work</h1>
-          <p class="page-subtitle">Selected work &amp; case studies</p>
-        </div>
-        <div class="page-header-right r" data-d="2">
-          <p class="page-desc">
-            Performance marketing campaigns, brand growth strategy,
-            and data-driven results across e-commerce, entertainment,
-            and consumer brands.
-          </p>
-        </div>
-      </div>
+      <!-- PAGE HERO -->
+      <section class="gear-hero toki-r" data-d="1" aria-label="My work">
+        <p class="gear-kicker">My work</p>
+        <h1>Selected work & <em>case studies</em></h1>
+        <p class="gear-intro">
+          Performance marketing campaigns, brand growth strategy,
+          and data-driven results across e-commerce, entertainment,
+          and consumer brands.
+        </p>
+      </section>
 
 
       <!-- Project List -->
       <div class="project-list">
-        {projects.map((project, i) => (
+        {sortedProjects.map((project, i) => (
           <article class="project-row r" data-d={String((i % 5) + 1)}>
             <div class="project-row-inner">
 

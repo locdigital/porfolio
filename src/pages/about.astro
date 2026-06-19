@@ -7,37 +7,16 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 ---
 
 <Layout title="About | Phuc Loc Nguyen">
-  <main class="about-minimal-page">
-    <div class="about-minimal-container">
+  <main class="gear-page">
+    <div class="gear-container">
       
       <!-- HERO SECTION -->
-      <section class="about-min-hero toki-r" data-d="1">
-        <div class="hero-left">
-          <h1 class="hero-main-title">Digital marketer who scales brands with data & code</h1>
-          <p class="hero-sub">Hi, I'm Loc 👋</p>
-          <div class="hero-bio">
-            <p>I'm a Performance-driven Digital Marketer based in Ho Chi Minh City, Vietnam. My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.</p>
-            <p>Over the past 4+ years, I've managed multi-channel paid media and scaled revenue for e-commerce, education, and consumer brands. Apart from work, I enjoy creating automated workflows, exploring technical SEO, and building online communities.</p>
-          </div>
-          <div class="hero-links">
-            <a href="mailto:hi@loc.digital" class="min-link">Email me ↗</a>
-            <a href="https://phucloc.digital/resume" target="_blank" class="min-link">View Resume ↗</a>
-          </div>
-        </div>
-        <div class="hero-right">
-          <Picture
-            src={heroAbout}
-            alt="Phuc Loc Nguyen"
-            widths={[300, 480]}
-            sizes="(max-width: 768px) 100vw, 320px"
-            formats={["avif", "webp"]}
-            fallbackFormat="jpg"
-            quality={85}
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-          />
-        </div>
+      <section class="gear-hero toki-r" data-d="1" aria-label="About me">
+        <p class="gear-kicker">About me</p>
+        <h1>Digital marketer who scales brands with <em>data & code</em></h1>
+        <p class="gear-intro">
+          Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho Chi Minh City, Vietnam. My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.
+        </p>
       </section>
 
       <!-- EXPERIENCE SECTION -->

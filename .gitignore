@@ -4,3 +4,6 @@ dist/
 .astro/
 .DS_Store
 .env
+.pnpm-store/
+git_store.nosync/
+git_store_broken.nosync/

@@ -135,7 +135,7 @@ const gearSections = gear?.sections ?? fallbackGearSections.map((section) => ({
   })),
 }));
 const gearTitle = gear?.title ?? "My Gear";
-const gearHeadline = gear?.headline ?? "Tools I actually use to work, shoot, write, and build.";
+const gearHeadline = gear?.headline ?? "Tools I actually use to <em>work</em>, <em>shoot</em>, <em>write</em>, and <em>build</em>.";
 const gearDescription = gear?.description ?? "A living list of the products in my everyday setup. Each item links out to the product page so it is easy to reference, replace, or share.";
 ---
 
@@ -147,7 +147,7 @@ const gearDescription = gear?.description ?? "A living list of the products in m
     <div class="gear-container">
       <section class="gear-hero toki-r" data-d="1" aria-label="My Gear introduction">
         <p class="gear-kicker">{gearTitle}</p>
-        <h1>{gearHeadline}</h1>
+        <h1 set:html={gearHeadline} />
         <p class="gear-intro">
           {gearDescription}
         </p>
@@ -166,7 +166,7 @@ const gearDescription = gear?.description ?? "A living list of the products in m
           <span class="gear-count">{gearSections.reduce((sum, section) => sum + section.items.length, 0)} items</span>
           <h2>Desk, camera, audio, and apps in one place.</h2>
           <p>
-            Update everything from the CMS: section slug, headline, description, image, product notes, and links.
+            A curated list of my workstation equipment, camera kit, audio gear, and productivity software that I use on a daily basis.
           </p>
         </div>
       </section>
@@ -183,19 +183,18 @@ const gearDescription = gear?.description ?? "A living list of the products in m
 
           <div class="gear-grid">
             {section.items.map((item) => (
-              <a class="gear-card" href={item.url || `#${item.slug}`} target={item.url ? "_blank" : undefined} rel={item.url ? "noopener noreferrer" : undefined} aria-label={`${item.name}: ${item.headline}`}>
+              <div class="gear-card" aria-label={`${item.name}: ${item.headline}`}>
                 <div class="gear-card-visual" aria-hidden="true">
                   {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span>{item.tag}</span>}
                 </div>
                 <div class="gear-card-copy">
                   <div class="gear-card-title">
                     <h3>{item.name}</h3>
-                    <span>↗</span>
                   </div>
                   <p class="gear-role">{item.headline}</p>
                   <p class="gear-note">{item.description}</p>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </section>
@@ -434,15 +433,18 @@ const gearDescription = gear?.description ?? "A living list of the products in m
 
   .gear-card-visual {
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: 16px;
-    background:
-      linear-gradient(90deg, rgba(28, 28, 28, 0.045) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(28, 28, 28, 0.045) 1px, transparent 1px),
-      #eeeee8;
-    background-size: 28px 28px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: transparent;
     border-right: 1px solid var(--divider);
+    overflow: hidden;
+  }
+
+  .gear-card-visual img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   .gear-card-visual span {
@@ -471,15 +473,7 @@ const gearDescription = gear?.description ?? "A living list of the products in m
     color: var(--text);
   }
 
-  .gear-card-title span {
-    color: var(--muted);
-    transition: color 0.2s ease, transform 0.2s ease;
-  }
 
-  .gear-card:hover .gear-card-title span {
-    color: var(--accent);
-    transform: translate(2px, -2px);
-  }
 
   .gear-role {
     font-family: var(--mono);

@@ -6,6 +6,10 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: 'https://loc.digital',
   integrations: [tailwind(), sitemap(), react()],
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
   image: {
     // Sharp: use AVIF as primary format (≈30% smaller than WebP)
     // Falls back to original format for unsupported browsers
@@ -31,10 +35,5 @@ export default defineConfig({
     },
     // Optimize deps
     optimizeDeps: {},
-    // Prefetch for faster navigation
-    prefetch: {
-      prefetchAll: true,
-      defaultStrategy: 'viewport',
-    },
   },
 });

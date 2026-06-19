@@ -1,59 +1,320 @@
 {
   "title": "My Gear",
-  "headline": "Tools I actually use to work, shoot, write, and build.",
+  "headline": "Tools I actually use to <em>work</em>, <em>shoot</em>, <em>write</em>, and <em>build</em>.",
   "description": "A living list of the products in my everyday setup. Each item links out to the product page so it is easy to reference, replace, or share.",
   "sections": [
     {
-      "title": "Workstation",
-      "slug": "workstation",
-      "headline": "Daily work setup",
-      "description": "Daily setup for writing, planning campaigns, editing, and building small tools.",
+      "title": "Computers & Devices",
+      "slug": "computers-devices",
+      "headline": "Workstation & Mobile",
+      "description": "The computing power and mobile devices I use to design, build, and run projects.",
       "image": "",
       "items": [
         {
-          "name": "MacBook Air M2",
-          "slug": "macbook-air-m2",
-          "headline": "Main laptop",
-          "description": "Lightweight enough for cafe work, strong enough for Astro, Figma, ads dashboards, and photo edits.",
-          "image": "",
-          "url": "https://www.apple.com/macbook-air/",
+          "name": "MacBook Pro M4 Max",
+          "slug": "macbook-pro-m4-max",
+          "headline": "Main Laptop",
+          "description": "Maxed out M4 Max for heavy development, design work, and containerized local environments.",
+          "image": "/uploads/macbook_pro_m4_max.png",
+          "url": "https://www.apple.com/macbook-pro/",
           "tag": "Laptop"
         },
         {
-          "name": "LG UltraFine 27 inch",
-          "slug": "lg-ultrafine-27",
-          "headline": "External display",
-          "description": "A clean second screen for GA4, Meta Ads, docs, and timeline-heavy work.",
-          "image": "",
+          "name": "Mac mini M4 Pro",
+          "slug": "mac-mini-m4-pro",
+          "headline": "Desktop Powerhouse",
+          "description": "Compact desktop serving as the main stationary node in my office workstation setup.",
+          "image": "/uploads/mac_mini_m4_pro.png",
+          "url": "https://www.apple.com/mac-mini/",
+          "tag": "Desktop"
+        },
+        {
+          "name": "Asus ROG Strix Scar III",
+          "slug": "asus-rog-scar-iii",
+          "headline": "Gaming Laptop",
+          "description": "Dedicated Windows machine for high-performance gaming, cooling, and VR testing.",
+          "image": "/uploads/asus_rog_scar_iii.png",
+          "url": "https://rog.asus.com/laptops/rog-strix-series/",
+          "tag": "Gaming"
+        },
+        {
+          "name": "iPhone 14 Pro Max",
+          "slug": "iphone-14-pro-max",
+          "headline": "Primary Phone",
+          "description": "Daily driver for testing responsive layouts, quick photography, and staying connected on the go.",
+          "image": "/uploads/iphone_14_pro_max.png",
+          "url": "https://www.apple.com/iphone/",
+          "tag": "Phone"
+        },
+        {
+          "name": "iPhone Air",
+          "slug": "iphone-air",
+          "headline": "Secondary Phone",
+          "description": "Daily mobile device companion in my setup.",
+          "image": "/uploads/iphone_air.png",
+          "url": "https://www.apple.com/vn/iphone-air",
+          "tag": "Phone"
+        },
+        {
+          "name": "iPad Air",
+          "slug": "ipad-air",
+          "headline": "Tablet & Digital Sketchbook",
+          "description": "Perfect for reading documentation, wireframing, sketching UI flows, and taking notes.",
+          "image": "/uploads/ipad_air.png",
+          "url": "https://www.apple.com/ipad-air/",
+          "tag": "Tablet"
+        }
+      ]
+    },
+    {
+      "title": "Monitors",
+      "slug": "monitors",
+      "headline": "Visual Real Estate",
+      "description": "High-resolution screens for productivity, accurate colors, and multi-tasking.",
+      "image": "",
+      "items": [
+        {
+          "name": "LG 27UP850K-W 27\"",
+          "slug": "lg-27up850k-w",
+          "headline": "Primary 4K Monitor",
+          "description": "Excellent color accuracy, USB-C single-cable connectivity for power delivery and video.",
+          "image": "/uploads/lg_27_monitor.png",
+          "url": "https://www.lg.com/us/monitors",
+          "tag": "Display"
+        },
+        {
+          "name": "LG 24QP550 24\"",
+          "slug": "lg-24qp550",
+          "headline": "Secondary 2K Monitor",
+          "description": "Compact QHD screen used vertically for reading logs, long documentation, and code reviews.",
+          "image": "/uploads/lg_24_monitor.png",
           "url": "https://www.lg.com/us/monitors",
           "tag": "Display"
         }
       ]
     },
     {
-      "title": "Camera & Content",
-      "slug": "camera-content",
-      "headline": "Small travel kit",
-      "description": "Small kit for travel photos, product shots, and behind-the-scenes content.",
+      "title": "Keyboards & Mice",
+      "slug": "keyboards-mice",
+      "headline": "Input & Desk Setup",
+      "description": "Custom mechanical keyboards and precise mice that make hours of typing a tactile pleasure.",
       "image": "",
       "items": [
         {
-          "name": "Sony Alpha a6400",
-          "slug": "sony-alpha-a6400",
-          "headline": "Camera body",
-          "description": "Reliable autofocus, compact size, and still a very capable hybrid camera for the road.",
+          "name": "Filco Majestouch Minila",
+          "slug": "filco-majestouch-minila",
+          "headline": "Mechanical Keyboard",
+          "description": "Compact mechanical keyboard with unique thumb-key layouts and absolute durability.",
+          "image": "/uploads/filco_minila.png",
+          "url": "https://www.diatec.co.jp/en/det.php?prod_c=1432",
+          "tag": "Keyboard"
+        },
+        {
+          "name": "AKKO SPR67 Kit",
+          "slug": "akko-spr67",
+          "headline": "Custom Keyboard Kit",
+          "description": "65% layout keyboard featuring a premium spring-mount structure for flexible typing feel.",
+          "image": "/uploads/akko_spr67.png",
+          "url": "https://en.akkogear.com/",
+          "tag": "Keyboard"
+        },
+        {
+          "name": "Flux60 HE PCB & Switches",
+          "slug": "flux60-he-pcb-whisper-switch",
+          "headline": "Hall Effect Keyboard Bundle",
+          "description": "Magnetic switch PCB bundle with WS Flux Ocean Whisper HE switches for custom actuation points.",
+          "image": "/uploads/flux60_pcb.png",
+          "url": "https://flux.keyboard.com",
+          "tag": "Keyboard"
+        },
+        {
+          "name": "GMK CYL Tiramisu Keycaps",
+          "slug": "gmk-cyl-tiramisu",
+          "headline": "Cherry Profile ABS Keycaps",
+          "description": "GMK Tiramisu doubleshot ABS keycap set, featuring warm tones resembling the Italian dessert.",
+          "image": "/uploads/gmk_tiramisu.png",
+          "url": "https://gmkkeycap.com",
+          "tag": "Keycaps"
+        },
+        {
+          "name": "Logitech MX Anywhere 3S",
+          "slug": "logitech-mx-anywhere-3s",
+          "headline": "Mobile Wireless Mouse",
+          "description": "Compact mouse with MagSpeed electromagnetic scrolling and ultra-quiet clicking for focus.",
+          "image": "/uploads/logitech_mx_anywhere_3s.png",
+          "url": "https://www.logitech.com/products/mice/mx-anywhere-3s.html",
+          "tag": "Mouse"
+        },
+        {
+          "name": "Logitech M650",
+          "slug": "logitech-m650",
+          "headline": "Everyday Mouse",
+          "description": "Reliable wireless mouse with SmartWheel scrolling, designed for comfortable everyday navigation.",
+          "image": "/uploads/logitech_m650.png",
+          "url": "https://www.logitech.com/products/mice/signature-m650.html",
+          "tag": "Mouse"
+        },
+        {
+          "name": "Epione Essentials Pad",
+          "slug": "epione-essentials-pad",
+          "headline": "Minimalist Desk Mat",
+          "description": "Clean desk pad providing a smooth surface for mice and a comfortable rest for wrists.",
+          "image": "/images/gear/epione-essentials-pad.png",
+          "url": "https://epione.store/",
+          "tag": "Desk Mat"
+        }
+      ]
+    },
+    {
+      "title": "Ergonomics",
+      "slug": "ergonomics",
+      "headline": "Workspace Comfort",
+      "description": "Furniture and accessories to support posture and comfort during long creative sessions.",
+      "image": "",
+      "items": [
+        {
+          "name": "Gami Crom Pro",
+          "slug": "gami-crom-pro",
+          "headline": "Ergonomic Chair",
+          "description": "Fully adjustable lumbar support and ergonomic mesh back to maintain posture and comfort.",
           "image": "",
-          "url": "https://electronics.sony.com/imaging/interchangeable-lens-cameras/aps-c/p/ilce6400-b",
+          "url": "https://gamioffice.com/",
+          "tag": "Chair"
+        }
+      ]
+    },
+    {
+      "title": "Photography",
+      "slug": "photography",
+      "headline": "Camera & Lenses",
+      "description": "The setup I use for capturing landscapes, cityscapes, street photography, and visual content.",
+      "image": "",
+      "items": [
+        {
+          "name": "Nikon Zf",
+          "slug": "nikon-zf",
+          "headline": "Mirrorless Camera Body",
+          "description": "Full-frame mirrorless camera combining classic vintage design with state-of-the-art autofocus and sensor.",
+          "image": "/uploads/nikon_zf.png",
+          "url": "https://www.nikonusa.com/p/zf/1761",
           "tag": "Camera"
         },
         {
-          "name": "Sigma 30mm F1.4 DC DN",
-          "slug": "sigma-30mm-f14",
-          "headline": "Everyday lens",
-          "description": "My favorite focal length for low-light street photos, portraits, and natural product frames.",
+          "name": "Nikkor Z 24-70mm f/2.8 S",
+          "slug": "nikkor-z-24-70mm-f28-s",
+          "headline": "Professional Zoom Lens",
+          "description": "Highly versatile professional-grade zoom lens delivering exceptional sharpness throughout the range.",
           "image": "",
-          "url": "https://www.sigmaphoto.com/30mm-f-1-4-dc-dn-c",
+          "url": "https://www.nikonusa.com/p/nikkor-z-24-70mm-f28-s/20089",
           "tag": "Lens"
+        },
+        {
+          "name": "Nikkor Z 40mm f/2 SE",
+          "slug": "nikkor-z-40mm-f2-se",
+          "headline": "Compact Prime Lens",
+          "description": "Special Edition vintage-styled lightweight prime lens, perfect for street photography.",
+          "image": "",
+          "url": "https://www.nikonusa.com/p/nikkor-z-40mm-f2-se/20111",
+          "tag": "Lens"
+        },
+        {
+          "name": "Voigtlander NOKTON D35mm f/1.2",
+          "slug": "voigtlander-nokton-d35mm-f12",
+          "headline": "Manual Focus Prime Lens",
+          "description": "Fast manual focus prime lens providing gorgeous vintage rendering and a circular bokeh.",
+          "image": "",
+          "url": "https://www.cosina.co.jp/voigtlander/",
+          "tag": "Lens"
+        }
+      ]
+    },
+    {
+      "title": "Cycling",
+      "slug": "cycling",
+      "headline": "Bikes for Road & Trail",
+      "description": "My rides for city commuting, long road trips, and exploring gravel pathways.",
+      "image": "",
+      "items": [
+        {
+          "name": "Giant Escape 2 City",
+          "slug": "giant-escape-2-city",
+          "headline": "City & Hybrid Bike",
+          "description": "Equipped with racks and fenders, this is my everyday commuter and city runner.",
+          "image": "",
+          "url": "https://www.giant-bicycles.com/",
+          "tag": "Bike"
+        },
+        {
+          "name": "Canyon Grizl 6",
+          "slug": "canyon-grizl-6",
+          "headline": "Gravel Adventure Bike",
+          "description": "Durable gravel bike built for rough gravel roads, light singletracks, and bikepacking trips.",
+          "image": "/uploads/canyon_grizl_6.png",
+          "url": "https://www.canyon.com/en-us/gravel-bikes/adventure/grizl/",
+          "tag": "Bike"
+        }
+      ]
+    },
+    {
+      "title": "Outdoor & Running",
+      "slug": "outdoor-running",
+      "headline": "Running & Hiking Gear",
+      "description": "The athletic gear and outdoor equipment I rely on for trails, road races, and backpacking trips.",
+      "image": "",
+      "items": [
+        {
+          "name": "COROS APEX 4",
+          "slug": "coros-apex-4",
+          "headline": "GPS Sports Watch",
+          "description": "Track workouts, running metrics, heart rate, and routes with incredible multi-day battery life.",
+          "image": "",
+          "url": "https://www.coros.com/",
+          "tag": "Watch"
+        },
+        {
+          "name": "Adidas Adizero Takumi Sen 10",
+          "slug": "adidas-adizero-takumi-sen-10",
+          "headline": "Road Racing Shoes",
+          "description": "Carbon-plated super shoe optimized for peak performance in 5K to half-marathon distances.",
+          "image": "/uploads/takumi_sen_10.png",
+          "url": "https://www.adidas.com/us/running-shoes",
+          "tag": "Shoes"
+        },
+        {
+          "name": "Adidas Adizero Evo SL",
+          "slug": "adidas-adizero-evo-sl",
+          "headline": "Lightweight Daily Trainer",
+          "description": "Extremely light, well-cushioned daily running shoe that is perfect for logging easy base miles.",
+          "image": "",
+          "url": "https://www.adidas.com/us/running-shoes",
+          "tag": "Shoes"
+        },
+        {
+          "name": "Hoka Mafate Speed 5",
+          "slug": "hoka-mafate-speed-5",
+          "headline": "Trail Running Shoes",
+          "description": "Aggressive Vibram outsole and plush cushioning built to tackle technical, steep mountain terrain.",
+          "image": "",
+          "url": "https://www.hoka.com/en/us/mens-trail-running/",
+          "tag": "Shoes"
+        },
+        {
+          "name": "Kailas Fuga EX 330",
+          "slug": "kailas-fuga-ex-330",
+          "headline": "Ultra Trail Running Shoes",
+          "description": "Specially designed for long distance ultra-trail races, offering supreme stability and grip.",
+          "image": "",
+          "url": "https://kailasgear.com/",
+          "tag": "Shoes"
+        },
+        {
+          "name": "Osprey Exos Pro 55",
+          "slug": "osprey-exos-pro-55",
+          "headline": "Ultralight Backpack",
+          "description": "Top-tier ultralight backpacking pack with incredible ventilation and comfortable weight distribution.",
+          "image": "",
+          "url": "https://www.osprey.com/",
+          "tag": "Backpack"
         }
       ]
     }

@@ -111,10 +111,6 @@ export const locations: Location[] = [
       { src: "/assets/photos/da-lat/IMG_8483.webp", alt: "Đà Lạt — photo 17", w: 1437, h: 2560 },
       { src: "/assets/photos/da-lat/IMG_8484.webp", alt: "Đà Lạt — photo 18", w: 1437, h: 2560 },
       { src: "/assets/photos/da-lat/Ok.webp", alt: "Đà Lạt — photo 19", w: 3368, h: 6000 },
-      { src: "/assets/photos/da-lat/photo-1.webp", alt: "Đà Lạt — photo 20", w: 1920, h: 1280 },
-      { src: "/assets/photos/da-lat/photo-2.webp", alt: "Đà Lạt — photo 21", w: 1280, h: 1920 },
-      { src: "/assets/photos/da-lat/photo-3.webp", alt: "Đà Lạt — photo 22", w: 1280, h: 1920 },
-      { src: "/assets/photos/da-lat/photo-4.webp", alt: "Đà Lạt — photo 23", w: 1280, h: 1920 },
     ],
   },
   {

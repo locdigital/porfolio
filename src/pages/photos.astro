@@ -40,29 +40,24 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
 
 <Layout title="Photos — Phuc Loc Nguyen">
 
-  <main class="photos-page">
-
-    <!-- PAGE HERO -->
-    <section class="photos-hero" aria-label="Photos introduction">
-      <div class="container">
-        <div class="sh r">
-          <span class="sh-title" data-parallax=".1">Photos</span>
-          <span class="sh-number" data-parallax=".3">{String(totalPhotosCount).padStart(2, '0')}</span>
-        </div>
-        <h1 class="photos-heading r" data-d="1">
-          Places I've<br><em>wandered.</em>
-        </h1>
-        <p class="photos-subtext r" data-d="2">
+  <main class="gear-page">
+    <div class="gear-container">
+      <!-- PAGE HERO -->
+      <section class="gear-hero toki-r" data-d="1" aria-label="Photos introduction">
+        <p class="gear-kicker">My photos</p>
+        <h1>Places I've <em>wandered.</em></h1>
+        <p class="gear-intro">
           Shot on whatever was in my pocket. These are the places that stayed with me.
         </p>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <!-- QUICK NAV -->
     <div class="photos-nav-wrapper">
       <div class="container">
         <nav class="photos-nav" aria-label="Locations navigation">
           <ul class="photos-nav-list">
+            <li class="photos-nav-indicator" aria-hidden="true"></li>
             {optimizedLocations.map((loc, i) => (
               <li>
                 <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`} data-nav-target={loc.slug}>
@@ -223,6 +218,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
   }
 
   .photos-nav-list {
+    position: relative; /* Anchor absolute indicator */
     display: flex;
     align-items: center;
     gap: 48px;
@@ -243,6 +239,40 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     display: none;
   }
 
+  .photos-nav-indicator {
+    position: absolute;
+    background: var(--text);
+    border-radius: 40px;
+    top: 0;
+    left: 0;
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    z-index: 1; /* Below text */
+    opacity: 0;
+    transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+                width 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+                height 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+                background-color 0.3s ease,
+                opacity 0.25s ease;
+  }
+
+  .photos-nav-indicator.is-active-indicator {
+    background-color: var(--text);
+    opacity: 1;
+  }
+
+  .photos-nav-indicator.is-hover-indicator {
+    background-color: var(--text);
+    opacity: 0.08;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .photos-nav-indicator.is-hover-indicator {
+      opacity: 0.15;
+    }
+  }
+
   .photos-nav-link {
     display: inline-flex;
     align-items: center;
@@ -253,18 +283,42 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     font-family: var(--sans, system-ui, -apple-system, sans-serif);
     color: var(--text);
     text-decoration: none;
-    transition: all 0.25s ease;
     white-space: nowrap;
+    position: relative;
+    z-index: 2; /* Sit on top of the indicator */
+    transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  .photos-nav-link:hover {
-    background: rgba(0, 0, 0, 0.05);
+  /* Fallback active styling when JS is not enabled */
+  .photos-nav-link.active {
+    background: var(--text);
+    color: var(--bg);
+  }
+  .photos-nav-link.active .photos-nav-count {
+    color: var(--bg);
+    opacity: 0.7;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .photos-nav-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+  /* Disable hover background when JS-managed indicator is enabled */
+  .photos-nav-list.js-active-nav .photos-nav-link {
+    background: transparent !important;
+  }
+
+  /* Text color logic when JS indicator is active */
+  .photos-nav-list.js-active-nav:not(.is-hovering) .photos-nav-link.active {
+    color: var(--bg);
+  }
+  .photos-nav-list.js-active-nav:not(.is-hovering) .photos-nav-link.active .photos-nav-count {
+    color: var(--bg);
+    opacity: 0.7;
+  }
+
+  .photos-nav-list.js-active-nav.is-hovering .photos-nav-link {
+    color: var(--text);
+  }
+  .photos-nav-list.js-active-nav.is-hovering .photos-nav-link .photos-nav-count {
+    color: var(--muted);
+    opacity: 1;
   }
 
   .photos-nav-count {
@@ -273,17 +327,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     font-family: var(--mono, monospace);
     transform: translateY(-30%);
     display: inline-block;
-  }
-
-  /* Active state */
-  .photos-nav-link.active {
-    background: var(--text);
-    color: var(--bg);
-  }
-
-  .photos-nav-link.active .photos-nav-count {
-    color: var(--bg);
-    opacity: 0.7;
+    transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .photos-nav-gallery-btn {
@@ -301,12 +345,21 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
 
   /* ── Location section ── */
   .loc-section {
-    padding: clamp(60px, 8vw, 100px) 0;
+    display: none;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s var(--ease-out, ease), transform 0.5s var(--ease-out, ease);
+    padding: clamp(24px, 4vw, 40px) 0 clamp(60px, 8vw, 100px) 0;
     scroll-margin-top: calc(var(--hdr-h, 80px) + 70px);
   }
 
-  .loc-section:not(:first-of-type) {
-    border-top: 1px solid var(--divider);
+  .loc-section.active {
+    display: block;
+  }
+
+  .loc-section.active.fade-in {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .loc-header {
@@ -445,69 +498,170 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
       }, { threshold: 0.05, rootMargin: '0px 0px -32px 0px' });
       document.querySelectorAll('.r').forEach(el => io.observe(el));
 
-      // Active state for sticky nav buttons
+      // Active state for sticky nav buttons and sliding indicator
       const sections = document.querySelectorAll('.loc-section');
       const navLinks = document.querySelectorAll('.photos-nav-link');
+      const navList = document.querySelector('.photos-nav-list');
+      const indicator = document.querySelector('.photos-nav-indicator');
+      let currentActiveLink = null;
 
-      let spyTicking = false;
-      const updateSpy = () => {
-        let activeId = null;
-        // header offset is around 100px or so
-        const offset = 150; 
+      const updateIndicator = (targetLink, isHover = false) => {
+        if (!targetLink || !indicator || !navList) return;
+        navList.classList.add('js-active-nav');
         
+        const linkRect = targetLink.getBoundingClientRect();
+        const listRect = navList.getBoundingClientRect();
+        
+        const offsetLeft = linkRect.left - listRect.left + navList.scrollLeft;
+        const offsetTop = linkRect.top - listRect.top + navList.scrollTop;
+        
+        indicator.style.width = `${linkRect.width}px`;
+        indicator.style.height = `${linkRect.height}px`;
+        indicator.style.transform = `translate3d(${offsetLeft}px, ${offsetTop}px, 0)`;
+        
+        if (isHover) {
+          indicator.classList.remove('is-active-indicator');
+          indicator.classList.add('is-hover-indicator');
+        } else {
+          indicator.classList.remove('is-hover-indicator');
+          indicator.classList.add('is-active-indicator');
+        }
+      };
+
+      // Tab switcher function
+      const activateTab = (slug) => {
+        const targetSection = document.getElementById(slug);
+        if (!targetSection) {
+          // If hash is invalid, default to the first section
+          if (sections.length > 0 && !slug) {
+            activateTab(sections[0].id);
+          }
+          return;
+        }
+
+        // Hide other sections and deactivate links
         sections.forEach(sec => {
-          const rect = sec.getBoundingClientRect();
-          if (rect.top <= offset && rect.bottom > offset) {
-            activeId = sec.id;
+          if (sec.id !== slug) {
+            sec.classList.remove('active', 'fade-in');
+            sec.style.display = 'none';
           }
         });
 
-        // Fallback: if we scrolled all the way to the bottom, the last section should be active
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
-           if (sections.length > 0) activeId = sections[sections.length - 1].id;
+        // Show active section
+        targetSection.style.display = 'block';
+        // Force reflow
+        targetSection.offsetHeight;
+        targetSection.classList.add('active');
+        
+        // Wait a frame to trigger transition
+        requestAnimationFrame(() => {
+          targetSection.classList.add('fade-in');
+        });
+
+        // Update nav links active class
+        let matchedLink = null;
+        navLinks.forEach(link => {
+          const target = link.getAttribute('data-nav-target');
+          if (target === slug) {
+            link.classList.add('active');
+            matchedLink = link;
+          } else {
+            link.classList.remove('active');
+          }
+        });
+
+        if (matchedLink) {
+          currentActiveLink = matchedLink;
+          if (navList && !navList.classList.contains('is-hovering')) {
+            updateIndicator(matchedLink, false);
+          }
+          // Scroll the nav link into view horizontally if needed
+          matchedLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
 
-        if (activeId) {
-          navLinks.forEach(link => {
-            if (link.getAttribute('data-nav-target') === activeId) {
-              if (!link.classList.contains('active')) {
-                link.classList.add('active');
-                // Scroll the nav link into view horizontally if needed
-                link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-              }
-            } else {
-              link.classList.remove('active');
-            }
-          });
-        }
-        spyTicking = false;
+        // Reset and trigger entrance animations for elements inside the active tab
+        targetSection.querySelectorAll('.r').forEach(el => {
+          el.classList.remove('in');
+          io.observe(el);
+        });
       };
 
-      window.addEventListener('scroll', () => {
-        if (!spyTicking) {
-          window.requestAnimationFrame(updateSpy);
-          spyTicking = true;
+      // Reposition indicator on window resize
+      window.addEventListener('resize', () => {
+        if (currentActiveLink && navList && !navList.classList.contains('is-hovering')) {
+          updateIndicator(currentActiveLink, false);
         }
-      }, { passive: true });
+      });
+
+      // Hover effects
+      navLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          updateIndicator(link, true);
+          navLinks.forEach(l => {
+            if (l === link) {
+              l.classList.add('is-hovered-active');
+            } else {
+              l.classList.remove('is-hovered-active');
+            }
+          });
+          if (navList) navList.classList.add('is-hovering');
+        });
+      });
+
+      if (navList) {
+        navList.addEventListener('mouseleave', () => {
+          navList.classList.remove('is-hovering');
+          navLinks.forEach(l => l.classList.remove('is-hovered-active'));
+          if (currentActiveLink) {
+            updateIndicator(currentActiveLink, false);
+          }
+        });
+      }
       
-      // Run once on load
-      updateSpy();
-      
-      // Smooth scroll on click for nav links
+      // Tab switcher clicks
       navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId.startsWith('#')) {
+          const href = this.getAttribute('href');
+          if (href && href.startsWith('#')) {
             e.preventDefault();
-            const targetEl = document.querySelector(targetId);
-            if (targetEl) {
-              targetEl.scrollIntoView({ behavior: 'smooth' });
-              // Update URL hash without jumping
-              history.pushState(null, null, targetId);
+            const slug = href.substring(1);
+            
+            // Update URL hash without causing a page jump
+            history.pushState(null, null, href);
+            activateTab(slug);
+            
+            // Scroll to the nav list wrapper if the user has scrolled past it
+            const navWrapper = document.querySelector('.photos-nav-wrapper');
+            if (navWrapper) {
+              const navRect = navWrapper.getBoundingClientRect();
+              if (navRect.top < 0) {
+                window.scrollTo({
+                  top: window.scrollY + navRect.top - 20,
+                  behavior: 'smooth'
+                });
+              }
             }
           }
         });
       });
+
+      // Handle browser back/forward buttons (history popstate)
+      window.addEventListener('popstate', () => {
+        const hash = window.location.hash;
+        if (hash) {
+          activateTab(hash.substring(1));
+        } else if (sections.length > 0) {
+          activateTab(sections[0].id);
+        }
+      });
+
+      // Initial tab activation based on current hash, default to first tab
+      const initHash = window.location.hash;
+      if (initHash) {
+        activateTab(initHash.substring(1));
+      } else if (sections.length > 0) {
+        activateTab(sections[0].id);
+      }
 
       // Sticky nav glassmorphism effect
       const navWrapper = document.querySelector('.photos-nav-wrapper');
@@ -523,7 +677,6 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
       }
 
       // Drag-to-scroll for nav list
-      const navList = document.querySelector('.photos-nav-list');
       if (navList) {
         let isDown = false;
         let startX;
