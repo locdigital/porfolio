@@ -1,5 +1,5 @@
-const sharp = require('sharp');
-const path = require('path');
+import sharp from 'sharp';
+import path from 'path';
 
 const mappings = {
   "a_clean_white_light_gray_minimalist_graphic_scene_1_batch_1.png": "logo-playah.webp",
@@ -19,3 +19,4 @@ async function run() {
 }
 
 run().catch(console.error);
+
