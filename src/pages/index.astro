@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes } from "../lib/photo-assets";
-import { getWritingPosts } from "../lib/cms";
+import { getWritingPosts } from "../lib/writing";
 
 const makePortfolioPhoto = (number: number) => ({
   src: `/assets/photos/img-portfolio/photo-${number}.webp`,
