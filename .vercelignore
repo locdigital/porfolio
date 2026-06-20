@@ -15,3 +15,11 @@ marketingskills-main/
 motion_skills/
 git_store.nosync/
 git_store_broken.nosync/
+
+# Exclude CMS
+src/pages/cms.astro
+src/pages/login.astro
+src/pages/api/
+src/components/cms/
+src/lib/cms-admin.ts
+src/styles/cms.css

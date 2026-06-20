@@ -1,8 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { projects } from "../../data/projects";
+import { getProjects } from "../../lib/cms";
 
-const sortedProjects = [...projects];
+const sortedProjects = await getProjects();
 ---
 
 <Layout
@@ -264,11 +264,6 @@ const sortedProjects = [...projects];
                 box-shadow 0.5s ease;
   }
 
-  .project-card-link:hover .project-card-img {
-    transform: scale(1.02);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-  }
-
   .card-logo-wrapper {
     position: absolute;
     inset: 0;
@@ -289,11 +284,7 @@ const sortedProjects = [...projects];
     height: 100%;
     object-fit: contain;
     border-radius: 0;
-    transition: transform 0.5s ease;
-  }
-
-  .project-card-link:hover .card-logo {
-    transform: scale(1.05);
+    transition: transform 0.5s ease, opacity 0.5s ease;
   }
 
   .card-overlay {
@@ -313,15 +304,6 @@ const sortedProjects = [...projects];
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .project-card-link:hover .card-overlay {
-    background: rgba(28, 28, 28, 0.55);
-  }
-
-  .project-card-link:hover .card-cta {
-    opacity: 1;
-    transform: translateY(0);
   }
 
   /* ── Divider ── */

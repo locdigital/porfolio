@@ -1,17 +1,19 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getWritingPosts } from "../../lib/writing";
+import { getCollection } from "astro:content";
 
-export async function getStaticPaths() {
-  const posts = await getWritingPosts();
+export const prerender = false;
 
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+const { slug } = Astro.params;
+
+// Fetch ALL writing posts dynamically (SSR — no rebuild needed for new CMS posts)
+const allPosts = await getCollection("writing", ({ data }) => !data.draft);
+const post = allPosts.find((p) => p.slug === slug);
+
+if (!post) {
+  return Astro.redirect("/404", 404);
 }
 
-const { post } = Astro.props;
 const { Content } = await post.render();
 const featuredImage = post.data.coverImage;
 
@@ -22,7 +24,7 @@ const publishDate = post.data.publishedAt.toLocaleDateString('en-US', {
   day: 'numeric' 
 });
 
-const tags = post.data.tags;
+const tags = post.data.tags ?? [];
 ---
 
 <Layout 

@@ -2,6 +2,8 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const pages = await getCollection("pages", ({ data }) => !data.draft);
 
@@ -12,6 +14,11 @@ export async function getStaticPaths() {
 }
 
 const { page } = Astro.props;
+
+if (!page) {
+  return Astro.redirect("/404", 404);
+}
+
 const { Content } = await page.render();
 ---
 

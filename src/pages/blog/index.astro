@@ -2,7 +2,12 @@
 import Layout from "../../layouts/Layout.astro";
 import { getWritingPosts } from "../../lib/writing";
 
-const posts = await getWritingPosts();
+let posts: Awaited<ReturnType<typeof getWritingPosts>> = [];
+try {
+  posts = await getWritingPosts();
+} catch (e) {
+  console.error("[blog/index] Failed to load writing posts:", e);
+}
 ---
 
 <Layout title="Writing | Lộc Digital" description="Journal & Essays">

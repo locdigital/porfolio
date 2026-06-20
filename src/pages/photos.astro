@@ -53,24 +53,25 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     </div>
 
     <!-- QUICK NAV -->
+    <div id="photos-nav-sentinel"></div>
     <div class="photos-nav-wrapper">
       <div class="container">
-        <nav class="photos-nav" aria-label="Locations navigation">
-          <ul class="photos-nav-list">
-            <li class="photos-nav-indicator" aria-hidden="true"></li>
+            <nav class="photos-nav" aria-label="Locations navigation">
+          <div class="photos-nav-list">
+            <!-- Hover background -->
+            <div class="photos-nav-hover-bg" id="photos-hover-bg"></div>
+            <!-- Active underline -->
+            <div class="photos-nav-active-line" id="photos-active-line"></div>
+
             {optimizedLocations.map((loc, i) => (
-              <li>
-                <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`} data-nav-target={loc.slug}>
-                  {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
-                Gallery <span class="photos-gallery-arrow">→</span>
+              <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`} data-nav-target={loc.slug}>
+                {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
               </a>
-            </li>
-          </ul>
+            ))}
+            <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
+              Gallery <span class="photos-gallery-arrow">→</span>
+            </a>
+          </div>
         </nav>
       </div>
     </div>
@@ -192,36 +193,34 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     line-height: 1.7;
   }
 
+  #photos-nav-sentinel {
+    height: 1px;
+    margin-bottom: -1px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* ── Nav wrapper ── */
   .photos-nav-wrapper {
-    position: sticky;
-    top: -1px; /* slightly offset to trigger intersection or top <= 0 consistently */
+    position: relative;
     z-index: 50;
     background: transparent;
-    padding: 28px 0;
+    padding: 24px 0 0;
     margin-bottom: 40px;
     margin-top: -1px;
-    transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
   }
 
-  .photos-nav-wrapper.is-stuck {
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.5);
-    padding: 20px 0; /* slightly thinner when stuck */
-  }
-
-  @supports (backdrop-filter: blur(10px)) {
-    .photos-nav-wrapper.is-stuck {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 100%);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-    }
+  /* ── Nav ── */
+  .photos-nav {
+    border-bottom: 1px solid var(--divider);
+    padding-bottom: 0;
   }
 
   .photos-nav-list {
-    position: relative; /* Anchor absolute indicator */
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 48px;
+    gap: 6px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -231,112 +230,84 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     cursor: grab;
   }
 
-  .photos-nav-list:active {
-    cursor: grabbing;
-  }
+  .photos-nav-list:active { cursor: grabbing; }
+  .photos-nav-list::-webkit-scrollbar { display: none; }
 
-  .photos-nav-list::-webkit-scrollbar {
-    display: none;
-  }
-
-  .photos-nav-indicator {
+  /* Hover highlight pill */
+  .photos-nav-hover-bg {
     position: absolute;
-    background: var(--text);
-    border-radius: 40px;
-    top: 0;
-    left: 0;
-    height: 0;
-    width: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 30px;
+    border-radius: 6px;
+    background: rgba(14, 15, 17, 0.08);
     pointer-events: none;
-    z-index: 1; /* Below text */
+    z-index: 1;
     opacity: 0;
-    transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1),
-                width 0.38s cubic-bezier(0.25, 1, 0.5, 1),
-                height 0.38s cubic-bezier(0.25, 1, 0.5, 1),
-                background-color 0.3s ease,
-                opacity 0.25s ease;
+    transition: left 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+                width 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.2s ease;
   }
 
-  .photos-nav-indicator.is-active-indicator {
-    background-color: var(--text);
-    opacity: 1;
+  /* Active underline */
+  .photos-nav-active-line {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background: var(--text);
+    pointer-events: none;
+    z-index: 2;
+    transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  .photos-nav-indicator.is-hover-indicator {
-    background-color: var(--text);
-    opacity: 0.08;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .photos-nav-indicator.is-hover-indicator {
-      opacity: 0.15;
-    }
-  }
-
+  /* Tab links */
   .photos-nav-link {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border-radius: 40px;
-    font-size: 15px;
-    font-family: var(--sans, system-ui, -apple-system, sans-serif);
-    color: var(--text);
+    gap: 7px;
+    padding: 6px 14px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: var(--sans, system-ui, sans-serif);
+    font-weight: 500;
+    color: rgba(14, 15, 17, 0.6);
     text-decoration: none;
     white-space: nowrap;
-    position: relative;
-    z-index: 2; /* Sit on top of the indicator */
-    transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    background: transparent;
+    transition: color 0.2s ease;
+    cursor: pointer;
+    user-select: none;
   }
 
-  /* Fallback active styling when JS is not enabled */
   .photos-nav-link.active {
-    background: var(--text);
-    color: var(--bg);
-  }
-  .photos-nav-link.active .photos-nav-count {
-    color: var(--bg);
-    opacity: 0.7;
-  }
-
-  /* Disable hover background when JS-managed indicator is enabled */
-  .photos-nav-list.js-active-nav .photos-nav-link {
-    background: transparent !important;
-  }
-
-  /* Text color logic when JS indicator is active */
-  .photos-nav-list.js-active-nav:not(.is-hovering) .photos-nav-link.active {
-    color: var(--bg);
-  }
-  .photos-nav-list.js-active-nav:not(.is-hovering) .photos-nav-link.active .photos-nav-count {
-    color: var(--bg);
-    opacity: 0.7;
-  }
-
-  .photos-nav-list.js-active-nav.is-hovering .photos-nav-link {
     color: var(--text);
   }
-  .photos-nav-list.js-active-nav.is-hovering .photos-nav-link .photos-nav-count {
-    color: var(--muted);
-    opacity: 1;
+
+  .photos-nav-link:hover {
+    color: var(--text);
   }
 
   .photos-nav-count {
-    color: var(--muted);
-    font-size: 11px;
+    color: inherit;
+    font-size: 10px;
     font-family: var(--mono, monospace);
+    opacity: 0.55;
     transform: translateY(-30%);
     display: inline-block;
-    transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .photos-nav-gallery-btn {
-    opacity: 0.85;
+    margin-left: 10px;
+    color: rgba(14, 15, 17, 0.5);
   }
 
   .photos-gallery-arrow {
     display: inline-block;
-    transition: transform 0.25s ease;
+    transition: transform 0.2s ease;
   }
 
   .photos-nav-gallery-btn:hover .photos-gallery-arrow {
@@ -368,6 +339,13 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     justify-content: space-between;
     gap: 24px;
     margin-bottom: 28px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  :global(.nav-is-stuck) .loc-header {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
   }
 
   .loc-meta {
@@ -498,48 +476,54 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
       }, { threshold: 0.05, rootMargin: '0px 0px -32px 0px' });
       document.querySelectorAll('.r').forEach(el => io.observe(el));
 
-      // Active state for sticky nav buttons and sliding indicator
-      const sections = document.querySelectorAll('.loc-section');
-      const navLinks = document.querySelectorAll('.photos-nav-link');
-      const navList = document.querySelector('.photos-nav-list');
-      const indicator = document.querySelector('.photos-nav-indicator');
-      let currentActiveLink = null;
+      // ── Vercel-style tabs: hover bg + active underline ──
+      const navLinks = document.querySelectorAll('.photos-nav-link[data-nav-target]');
+      const hoverBg   = document.getElementById('photos-hover-bg');
+      const activeLine = document.getElementById('photos-active-line');
+      const navList   = document.querySelector('.photos-nav-list');
+      let currentActiveLink = navLinks[0] || null;
 
-      const updateIndicator = (targetLink, isHover = false) => {
-        if (!targetLink || !indicator || !navList) return;
-        navList.classList.add('js-active-nav');
-        
-        const linkRect = targetLink.getBoundingClientRect();
+      function getOffset(el) {
+        if (!el || !navList) return { left: 0, width: 0 };
+        const elRect   = el.getBoundingClientRect();
         const listRect = navList.getBoundingClientRect();
-        
-        const offsetLeft = linkRect.left - listRect.left + navList.scrollLeft;
-        const offsetTop = linkRect.top - listRect.top + navList.scrollTop;
-        
-        indicator.style.width = `${linkRect.width}px`;
-        indicator.style.height = `${linkRect.height}px`;
-        indicator.style.transform = `translate3d(${offsetLeft}px, ${offsetTop}px, 0)`;
-        
-        if (isHover) {
-          indicator.classList.remove('is-active-indicator');
-          indicator.classList.add('is-hover-indicator');
-        } else {
-          indicator.classList.remove('is-hover-indicator');
-          indicator.classList.add('is-active-indicator');
-        }
-      };
+        return {
+          left:  elRect.left - listRect.left + navList.scrollLeft,
+          width: elRect.width,
+        };
+      }
 
-      // Tab switcher function
+      function moveActiveLine(link) {
+        if (!activeLine || !link) return;
+        const { left, width } = getOffset(link);
+        activeLine.style.left  = `${left}px`;
+        activeLine.style.width = `${width}px`;
+      }
+
+      function showHoverBg(link) {
+        if (!hoverBg || !link) return;
+        const { left, width } = getOffset(link);
+        hoverBg.style.left  = `${left}px`;
+        hoverBg.style.width = `${width}px`;
+        hoverBg.style.opacity = '1';
+      }
+
+      function hideHoverBg() {
+        if (hoverBg) hoverBg.style.opacity = '0';
+      }
+
+      // Hover
+      navLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => showHoverBg(link));
+        link.addEventListener('mouseleave', hideHoverBg);
+      });
+
+      // Tab switcher
+      const sections = document.querySelectorAll('.loc-section');
       const activateTab = (slug) => {
         const targetSection = document.getElementById(slug);
-        if (!targetSection) {
-          // If hash is invalid, default to the first section
-          if (sections.length > 0 && !slug) {
-            activateTab(sections[0].id);
-          }
-          return;
-        }
+        if (!targetSection) return;
 
-        // Hide other sections and deactivate links
         sections.forEach(sec => {
           if (sec.id !== slug) {
             sec.classList.remove('active', 'fade-in');
@@ -547,133 +531,77 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
           }
         });
 
-        // Show active section
         targetSection.style.display = 'block';
-        // Force reflow
-        targetSection.offsetHeight;
+        targetSection.offsetHeight; // force reflow
         targetSection.classList.add('active');
-        
-        // Wait a frame to trigger transition
-        requestAnimationFrame(() => {
-          targetSection.classList.add('fade-in');
-        });
+        requestAnimationFrame(() => targetSection.classList.add('fade-in'));
 
-        // Update nav links active class
-        let matchedLink = null;
         navLinks.forEach(link => {
-          const target = link.getAttribute('data-nav-target');
-          if (target === slug) {
+          if (link.getAttribute('data-nav-target') === slug) {
             link.classList.add('active');
-            matchedLink = link;
+            currentActiveLink = link;
+            moveActiveLine(link);
+            link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
           } else {
             link.classList.remove('active');
           }
         });
 
-        if (matchedLink) {
-          currentActiveLink = matchedLink;
-          if (navList && !navList.classList.contains('is-hovering')) {
-            updateIndicator(matchedLink, false);
-          }
-          // Scroll the nav link into view horizontally if needed
-          matchedLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
-
-        // Reset and trigger entrance animations for elements inside the active tab
         targetSection.querySelectorAll('.r').forEach(el => {
           el.classList.remove('in');
           io.observe(el);
         });
       };
 
-      // Reposition indicator on window resize
-      window.addEventListener('resize', () => {
-        if (currentActiveLink && navList && !navList.classList.contains('is-hovering')) {
-          updateIndicator(currentActiveLink, false);
-        }
-      });
-
-      // Hover effects
-      navLinks.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-          updateIndicator(link, true);
-          navLinks.forEach(l => {
-            if (l === link) {
-              l.classList.add('is-hovered-active');
-            } else {
-              l.classList.remove('is-hovered-active');
-            }
-          });
-          if (navList) navList.classList.add('is-hovering');
-        });
-      });
-
-      if (navList) {
-        navList.addEventListener('mouseleave', () => {
-          navList.classList.remove('is-hovering');
-          navLinks.forEach(l => l.classList.remove('is-hovered-active'));
-          if (currentActiveLink) {
-            updateIndicator(currentActiveLink, false);
-          }
-        });
-      }
-      
-      // Tab switcher clicks
       navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
           const href = this.getAttribute('href');
           if (href && href.startsWith('#')) {
             e.preventDefault();
             const slug = href.substring(1);
-            
-            // Update URL hash without causing a page jump
             history.pushState(null, null, href);
             activateTab(slug);
-            
-            // Scroll to the nav list wrapper if the user has scrolled past it
-            const navWrapper = document.querySelector('.photos-nav-wrapper');
-            if (navWrapper) {
-              const navRect = navWrapper.getBoundingClientRect();
-              if (navRect.top < 0) {
-                window.scrollTo({
-                  top: window.scrollY + navRect.top - 20,
-                  behavior: 'smooth'
-                });
-              }
-            }
           }
         });
       });
 
-      // Handle browser back/forward buttons (history popstate)
       window.addEventListener('popstate', () => {
         const hash = window.location.hash;
-        if (hash) {
-          activateTab(hash.substring(1));
-        } else if (sections.length > 0) {
-          activateTab(sections[0].id);
-        }
+        if (hash) activateTab(hash.substring(1));
+        else if (sections.length > 0) activateTab(sections[0].id);
       });
 
-      // Initial tab activation based on current hash, default to first tab
+      // Reposition on resize
+      window.addEventListener('resize', () => {
+        if (currentActiveLink) moveActiveLine(currentActiveLink);
+      });
+
+      // Init
       const initHash = window.location.hash;
       if (initHash) {
         activateTab(initHash.substring(1));
       } else if (sections.length > 0) {
         activateTab(sections[0].id);
       }
+      // Init active line position after first paint
+      requestAnimationFrame(() => moveActiveLine(currentActiveLink));
 
-      // Sticky nav glassmorphism effect
-      const navWrapper = document.querySelector('.photos-nav-wrapper');
-      if (navWrapper) {
-        window.addEventListener('scroll', () => {
-          // It's stuck when it hits top: -1px
-          if (navWrapper.getBoundingClientRect().top <= 0) {
-            navWrapper.classList.add('is-stuck');
-          } else {
-            navWrapper.classList.remove('is-stuck');
-          }
-        }, { passive: true });
+      // Navigation scroll effect (toggles body class when scrolled past sentinel)
+      const sentinel = document.getElementById('photos-nav-sentinel');
+      if (sentinel) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+              document.body.classList.add('nav-is-stuck');
+            } else {
+              document.body.classList.remove('nav-is-stuck');
+            }
+          });
+        }, {
+          threshold: [0],
+          rootMargin: '-1px 0px 0px 0px'
+        });
+        observer.observe(sentinel);
       }
 
       // Drag-to-scroll for nav list

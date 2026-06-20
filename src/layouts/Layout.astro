@@ -142,6 +142,11 @@ const pathname = Astro.url.pathname;
     </>
   )}
 
+  <!-- ============================================================
+       PAGE TRANSITION OVERLAY
+  ============================================================ -->
+  <div id="page-transition" aria-hidden="true"></div>
+
   <slot />
 
   <!-- ============================================================
@@ -174,6 +179,44 @@ const pathname = Astro.url.pathname;
       </div>
     </>
   )}
+
+  <!-- Scripts -->
+  <script is:inline>
+    /* ── Page Transition ── */
+    (function () {
+      const overlay = document.getElementById('page-transition');
+
+      // Fade OUT then navigate
+      function navigateTo(href) {
+        if (!overlay) { window.location.href = href; return; }
+        overlay.classList.add('pt-leaving');
+        setTimeout(() => { window.location.href = href; }, 480);
+      }
+
+      // Intercept ALL internal link clicks
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (!a) return;
+        const href = a.getAttribute('href');
+        if (!href) return;
+        // Skip: external, hash-only, download, new tab, or modifier key held
+        if (
+          a.target === '_blank' ||
+          a.rel?.includes('external') ||
+          href.startsWith('http') ||
+          href.startsWith('//') ||
+          href.startsWith('mailto:') ||
+          href.startsWith('tel:') ||
+          href.startsWith('#') ||
+          a.hasAttribute('download') ||
+          e.metaKey || e.ctrlKey || e.shiftKey || e.altKey
+        ) return;
+
+        e.preventDefault();
+        navigateTo(href);
+      }, true);
+    })();
+  </script>
 
   <!-- Scripts -->
   <script is:inline>
@@ -216,7 +259,59 @@ const pathname = Astro.url.pathname;
           if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
         });
       }, { threshold: 0.07, rootMargin: '0px 0px -36px 0px' });
+
+      // Observe existing manual reveal elements
       document.querySelectorAll('.r, .toki-r').forEach(el => io.observe(el));
+
+      // Auto-reveal: find all major content elements NOT already in a reveal or hero context
+      const AUTO_REVEAL_SELECTORS = [
+        'main section',
+        'main article',
+        'main h1:not(.hero-line)',
+        'main h2',
+        'main h3',
+        'main p:not(.hero-line)',
+        'main figure',
+        'main picture',
+        'main blockquote',
+        'main .card',
+        'main .gear-section',
+        'main .gear-item',
+        'main .timeline-row',
+        'main .project-row',
+        'main .writing-row',
+        'main .sh',
+        'main .about-layout',
+        'main .about-photo',
+        'main table',
+        'footer',
+      ].join(', ');
+
+      document.querySelectorAll(AUTO_REVEAL_SELECTORS).forEach((el) => {
+        // Skip if already has a reveal class or is inside hero
+        if (
+          el.classList.contains('r') ||
+          el.classList.contains('toki-r') ||
+          el.classList.contains('reveal') ||
+          el.closest('.hero') ||
+          el.closest('.hero-title') ||
+          el.classList.contains('hero-line') ||
+          el.classList.contains('hero-aside')
+        ) return;
+
+        el.classList.add('reveal');
+        io.observe(el);
+      });
+
+      // Auto-stagger items inside reveal-group containers
+      document.querySelectorAll('.reveal-group').forEach((group) => {
+        Array.from(group.children).forEach((child) => {
+          if (!child.classList.contains('reveal')) {
+            child.classList.add('reveal');
+            io.observe(child);
+          }
+        });
+      });
 
       /* ── Scroll: nav bg + progress bar + parallax ── */
       const header = document.getElementById('site-header');

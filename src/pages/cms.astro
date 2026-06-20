@@ -1,0 +1,27 @@
+---
+import CmsDashboard from "../components/cms/CmsDashboard";
+import Layout from "../layouts/Layout.astro";
+import { readCmsPayload } from "../lib/cms-admin";
+import "../styles/cms.css";
+
+export const prerender = false;
+
+if (import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env.VERCEL === "1") {
+  return Astro.redirect("/404");
+}
+
+if (Astro.cookies.get("session")?.value !== "admin") {
+  return Astro.redirect("/login");
+}
+
+const initialData = await readCmsPayload();
+---
+
+<Layout
+  title="CMS Dashboard | Lộc Digital"
+  description="Private content dashboard for Lộc Digital."
+  hideHeader
+  hideFooter
+>
+  <CmsDashboard initialData={initialData} client:load />
+</Layout>

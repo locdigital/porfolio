@@ -7,16 +7,27 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 ---
 
 <Layout title="About | Phuc Loc Nguyen">
-  <main class="gear-page">
-    <div class="gear-container">
+  <main class="about-minimal-page">
+    <div class="about-minimal-container">
       
       <!-- HERO SECTION -->
-      <section class="gear-hero toki-r" data-d="1" aria-label="About me">
-        <p class="gear-kicker">About me</p>
-        <h1>Digital marketer who scales brands with <em>data & code</em></h1>
-        <p class="gear-intro">
-          Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho Chi Minh City, Vietnam. My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.
-        </p>
+      <section class="about-min-hero toki-r" data-d="1" aria-label="About me">
+        <div class="hero-left">
+          <p class="gear-kicker">About me</p>
+          <h1 class="hero-main-title">Digital marketer who scales brands with <em>data & code</em></h1>
+          <div class="hero-bio">
+            <p>
+              Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho Chi Minh City, Vietnam. My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.
+            </p>
+          </div>
+          <div class="hero-links">
+            <a href="mailto:hi@loc.digital" class="min-link">Email me</a>
+            <a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer" class="min-link">LinkedIn</a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <Image src={heroAbout} alt="Phuc Loc Nguyen" loading="eager" decoding="async" />
+        </div>
       </section>
 
       <!-- EXPERIENCE SECTION -->
