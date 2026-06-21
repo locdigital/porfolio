@@ -12,54 +12,11 @@ import AboutHero from "../components/ui/about-hero";
         <AboutHero client:load />
       </section>
 
-      <!-- 01 EXPERIENCE -->
+      <!-- 01 SELECTED WORK -->
       <section class="figma-card toki-r" data-d="2">
         <div class="figma-card-header">
           <div class="card-num-kicker">
             <span class="card-num">01</span>
-            <span class="card-kicker">EXPERIENCE</span>
-          </div>
-          <h2 class="card-title">My Experience</h2>
-          <p class="card-desc">Selected roles spanning performance media buying, search strategy, and brand campaigns.</p>
-        </div>
-        <div class="figma-card-body">
-          <div class="card-container">
-            <div class="card-list">
-              <div class="card-list-item">
-                <div class="item-main">WorkFlow Space</div>
-                <div class="item-desc">Digital Marketing Specialist</div>
-                <div class="item-meta">2024 – Present</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">PlayAh!</div>
-                <div class="item-desc">Digital Marketing Specialist</div>
-                <div class="item-meta">2024 – Present</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">POPS Worldwide</div>
-                <div class="item-desc">SEO Executive</div>
-                <div class="item-meta">2023 – 2024</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">PNJ</div>
-                <div class="item-desc">Digital Marketing Specialist</div>
-                <div class="item-meta">2022 – 2023</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">Sony</div>
-                <div class="item-desc">Digital Marketing Specialist</div>
-                <div class="item-meta">2021 – 2022</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 02 SELECTED WORK -->
-      <section class="figma-card toki-r" data-d="3">
-        <div class="figma-card-header">
-          <div class="card-num-kicker">
-            <span class="card-num">02</span>
             <span class="card-kicker">SELECTED WORK</span>
           </div>
           <h2 class="card-title">What I Do</h2>
@@ -98,11 +55,11 @@ import AboutHero from "../components/ui/about-hero";
         </div>
       </section>
 
-      <!-- 03 TOOLSET & SKILLS -->
-      <section class="figma-card toki-r" data-d="4">
+      <!-- 02 TOOLSET & SKILLS -->
+      <section class="figma-card toki-r" data-d="3">
         <div class="figma-card-header">
           <div class="card-num-kicker">
-            <span class="card-num">03</span>
+            <span class="card-num">02</span>
             <span class="card-kicker">TOOLSET & SKILLS</span>
           </div>
           <h2 class="card-title">Toolset & Skills</h2>
@@ -156,11 +113,11 @@ import AboutHero from "../components/ui/about-hero";
         </div>
       </section>
 
-      <!-- 04 EDUCATION & CREDENTIALS -->
-      <section class="figma-card toki-r" data-d="5">
+      <!-- 03 EDUCATION & CREDENTIALS -->
+      <section class="figma-card toki-r" data-d="4">
         <div class="figma-card-header">
           <div class="card-num-kicker">
-            <span class="card-num">04</span>
+            <span class="card-num">03</span>
             <span class="card-kicker">EDUCATION</span>
           </div>
           <h2 class="card-title">Education & Credentials</h2>
@@ -288,6 +245,11 @@ import AboutHero from "../components/ui/about-hero";
     flex-direction: column;
   }
 
+  .card-list:hover .card-list-item:not(:hover) {
+    opacity: 0.35 !important;
+    filter: blur(2px) !important;
+  }
+
   .card-list-item {
     display: grid;
     grid-template-columns: 1.2fr 1.6fr 1.2fr;
@@ -298,6 +260,7 @@ import AboutHero from "../components/ui/about-hero";
     align-items: center;
     color: var(--text);
     transition: all 0.25s var(--ease-out);
+    will-change: opacity, filter;
   }
 
   .card-list-item:first-child {

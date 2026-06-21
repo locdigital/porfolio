@@ -375,7 +375,7 @@ function Sidebar({
           aria-label="Workspace"
         >
           <div className="cms-workspace-inner">
-            <div className="cms-workspace-avatar">L</div>
+            <div className="cms-workspace-avatar"></div>
             <div className="cms-workspace-info">
               <span className="cms-workspace-name">Lộc Digital</span>
               <span className="cms-workspace-sub">CMS Admin</span>

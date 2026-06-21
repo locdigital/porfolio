@@ -154,9 +154,8 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
     <>
       <header id="site-header" class={`${pathname.startsWith('/photos') ? 'absolute-header' : ''} ${pathname.startsWith('/gallery') ? 'gallery-glass-header' : ''}`.trim()}>
         <div class="header-inner">
-          <a href="/" class="header-name" aria-label="Phuc Loc Nguyen — back to home">
-            <span class="n-keep">P</span><span class="n-collapse">huc</span><span class="n-collapse">&nbsp;</span><span
-              class="n-keep">L</span><span class="n-collapse">oc</span>
+          <a href="/" class="header-logo" aria-label="Phuc Loc Nguyen — back to home">
+            <span class="logo-circle"></span>
           </a>
 
           <div class="header-nav-desktop">
@@ -240,6 +239,78 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = () => window.innerWidth < 768;
 
+      /* ── Image Loading Shimmer & Fade-in Loader ── */
+      function setupImageLoaders() {
+        const setupImage = (img) => {
+          if (img.dataset.loaderSetup) return;
+          img.dataset.loaderSetup = 'true';
+
+          // Exclude images in draggable-collage
+          if (img.closest('.draggable-collage-container') || img.closest('.mobile-about-panel')) return;
+
+          const wrapper = img.closest('picture') || 
+                          img.closest('.ratio-box') || 
+                          img.closest('.loc-photo-item') || 
+                          img.closest('.project-card-img') || 
+                          img.closest('.tl-logo') || 
+                          img.closest('.gallery-item') || 
+                          img.parentElement;
+
+          if (img.complete && img.naturalWidth > 0) {
+            img.classList.add('loaded');
+          } else {
+            if (wrapper) {
+              wrapper.classList.add('skeleton-loading');
+            }
+            img.classList.add('skeleton-loading-img');
+
+            const handleLoad = () => {
+              img.classList.add('loaded');
+              if (wrapper) {
+                wrapper.classList.remove('skeleton-loading');
+              }
+              img.removeEventListener('load', handleLoad);
+              img.removeEventListener('error', handleError);
+            };
+
+            const handleError = () => {
+              if (wrapper) {
+                wrapper.classList.remove('skeleton-loading');
+              }
+              img.removeEventListener('load', handleLoad);
+              img.removeEventListener('error', handleError);
+            };
+
+            img.addEventListener('load', handleLoad);
+            img.addEventListener('error', handleError);
+          }
+        };
+
+        document.querySelectorAll('img').forEach(setupImage);
+
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                if (node.tagName === 'IMG') {
+                  setupImage(node);
+                } else {
+                  node.querySelectorAll('img').forEach(setupImage);
+                }
+              }
+            });
+          });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+        return observer;
+      }
+
+      if (window.imageLoaderObserver) {
+        window.imageLoaderObserver.disconnect();
+      }
+      window.imageLoaderObserver = setupImageLoaders();
+
       /* ── Page load ── */
       document.body.classList.add('ready');
 
@@ -268,58 +339,61 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
         });
       }, { threshold: 0.07, rootMargin: '0px 0px -36px 0px' });
 
-      // Observe existing manual reveal elements
-      document.querySelectorAll('.r, .toki-r').forEach(el => io.observe(el));
+      // Observe existing manual reveal elements and auto-reveal elements after a brief delay
+      // to let the page entry fade/blur transition complete so animations are visible
+      setTimeout(() => {
+        document.querySelectorAll('.r, .toki-r').forEach(el => io.observe(el));
 
-      // Auto-reveal: find all major content elements NOT already in a reveal or hero context
-      const AUTO_REVEAL_SELECTORS = [
-        'main section',
-        'main article',
-        'main h1:not(.hero-line)',
-        'main h2',
-        'main h3',
-        'main p:not(.hero-line)',
-        'main figure',
-        'main picture',
-        'main blockquote',
-        'main .card',
-        'main .gear-section',
-        'main .gear-item',
-        'main .timeline-row',
-        'main .project-row',
-        'main .writing-row',
-        'main .sh',
-        'main .about-layout',
-        'main .about-photo',
-        'main table',
-        'footer',
-      ].join(', ');
+        // Auto-reveal: find all major content elements NOT already in a reveal or hero context
+        const AUTO_REVEAL_SELECTORS = [
+          'main section',
+          'main article',
+          'main h1:not(.hero-line)',
+          'main h2',
+          'main h3',
+          'main p:not(.hero-line)',
+          'main figure',
+          'main picture',
+          'main blockquote',
+          'main .card',
+          'main .gear-section',
+          'main .gear-item',
+          'main .timeline-row',
+          'main .project-row',
+          'main .writing-row',
+          'main .sh',
+          'main .about-layout',
+          'main .about-photo',
+          'main table',
+          'footer',
+        ].join(', ');
 
-      document.querySelectorAll(AUTO_REVEAL_SELECTORS).forEach((el) => {
-        // Skip if already has a reveal class or is inside hero
-        if (
-          el.classList.contains('r') ||
-          el.classList.contains('toki-r') ||
-          el.classList.contains('reveal') ||
-          el.closest('.hero') ||
-          el.closest('.hero-title') ||
-          el.classList.contains('hero-line') ||
-          el.classList.contains('hero-aside')
-        ) return;
+        document.querySelectorAll(AUTO_REVEAL_SELECTORS).forEach((el) => {
+          // Skip if already has a reveal class or is inside hero
+          if (
+            el.classList.contains('r') ||
+            el.classList.contains('toki-r') ||
+            el.classList.contains('reveal') ||
+            el.closest('.hero') ||
+            el.closest('.hero-title') ||
+            el.classList.contains('hero-line') ||
+            el.classList.contains('hero-aside')
+          ) return;
 
-        el.classList.add('reveal');
-        io.observe(el);
-      });
-
-      // Auto-stagger items inside reveal-group containers
-      document.querySelectorAll('.reveal-group').forEach((group) => {
-        Array.from(group.children).forEach((child) => {
-          if (!child.classList.contains('reveal')) {
-            child.classList.add('reveal');
-            io.observe(child);
-          }
+          el.classList.add('reveal');
+          io.observe(el);
         });
-      });
+
+        // Auto-stagger items inside reveal-group containers
+        document.querySelectorAll('.reveal-group').forEach((group) => {
+          Array.from(group.children).forEach((child) => {
+            if (!child.classList.contains('reveal')) {
+              child.classList.add('reveal');
+              io.observe(child);
+            }
+          });
+        });
+      }, 250);
 
       /* ── Scroll: nav bg + progress bar + parallax ── */
       const header = document.getElementById('site-header');

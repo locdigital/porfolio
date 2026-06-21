@@ -108,13 +108,13 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
       )}
     >
       {/* Layer 1: Subtle background grid (always visible) */}
-      <div className={cn("absolute inset-0 z-0", bgOnly ? "opacity-[0.03]" : "opacity-[0.05]")}>
+      <div className={cn("absolute inset-0 z-0", bgOnly ? "opacity-[0.02]" : "opacity-[0.05]")}>
         <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} size={gridSize} />
       </div>
 
       {/* Layer 2: Highlighted grid (revealed by mouse mask) */}
       <motion.div 
-        className={cn("absolute inset-0 z-0", bgOnly ? "opacity-25" : "opacity-40")}
+        className={cn("absolute inset-0 z-0", bgOnly ? "opacity-[0.15]" : "opacity-40")}
         style={{ maskImage, WebkitMaskImage: maskImage }}
       >
         <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} size={gridSize} />
@@ -122,9 +122,9 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
 
       {/* Decorative Blur Spheres */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute right-[-20%] top-[-20%] w-[40%] h-[40%] rounded-full bg-orange-500/30 dark:bg-orange-600/10 blur-[120px]" />
-        <div className="absolute right-[10%] top-[-10%] w-[20%] h-[20%] rounded-full bg-primary/20 blur-[100px]" />
-        <div className="absolute left-[-10%] bottom-[-20%] w-[40%] h-[40%] rounded-full bg-blue-500/30 dark:bg-blue-600/10 blur-[120px]" />
+        <div className="absolute right-[-20%] top-[-20%] w-[40%] h-[40%] rounded-full bg-orange-500/12 dark:bg-orange-600/5 blur-[120px]" />
+        <div className="absolute right-[10%] top-[-10%] w-[20%] h-[20%] rounded-full bg-primary/10 blur-[100px]" />
+        <div className="absolute left-[-10%] bottom-[-20%] w-[40%] h-[40%] rounded-full bg-blue-500/12 dark:bg-blue-600/5 blur-[120px]" />
       </div>
 
       {/* Grid Density Control Panel & content hidden if configured as bgOnly */}

@@ -145,8 +145,11 @@ const gearDescription = gear?.description ?? "A living list of the products in m
 >
   <main class="gear-page">
     <div class="gear-container">
-      <section class="gear-hero toki-r" data-d="1" aria-label="My Gear introduction">
-        <p class="gear-kicker">{gearTitle}</p>
+      <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="My Gear introduction">
+        <div class="page-kicker-wrapper">
+          <span class="page-kicker-num">00</span>
+          <span class="page-kicker-text">{gearTitle}</span>
+        </div>
         <h1 set:html={gearHeadline} />
         <p class="gear-intro">
           {gearDescription}
@@ -204,46 +207,7 @@ const gearDescription = gear?.description ?? "A living list of the products in m
 </Layout>
 
 <style>
-  .gear-page {
-    padding: calc(var(--hdr-h) + 64px) 0 120px;
-  }
-
-  .gear-container {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 0 var(--px);
-  }
-
-  .gear-hero {
-    max-width: 850px;
-    margin-bottom: 52px;
-  }
-
-  .gear-kicker {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--accent);
-    margin-bottom: 18px;
-    text-transform: uppercase;
-  }
-
-  .gear-hero h1 {
-    font-family: var(--serif);
-    font-size: clamp(42px, 7vw, 86px);
-    font-weight: 400;
-    line-height: 0.98;
-    letter-spacing: 0;
-    color: var(--text);
-    max-width: 790px;
-  }
-
-  .gear-intro {
-    max-width: 640px;
-    margin-top: 24px;
-    font-size: 15.5px;
-    line-height: 1.75;
-    color: var(--muted);
-  }
+  /* Shared layout and hero styles inherited from global.css */
 
   .gear-featured {
     display: grid;
@@ -506,15 +470,6 @@ const gearDescription = gear?.description ?? "A living list of the products in m
   @media (max-width: 620px) {
     .gear-page {
       padding-top: calc(var(--hdr-h) + 44px);
-    }
-
-    .gear-hero {
-      margin-bottom: 38px;
-    }
-
-    .gear-hero h1 {
-      font-size: clamp(40px, 12vw, 58px);
-      line-height: 1.02;
     }
 
     .gear-featured {

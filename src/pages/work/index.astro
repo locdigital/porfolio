@@ -13,8 +13,11 @@ const sortedProjects = await getProjects();
     <div class="gear-container">
 
       <!-- PAGE HERO -->
-      <section class="gear-hero toki-r" data-d="1" aria-label="My work">
-        <p class="gear-kicker">My work</p>
+      <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="My work">
+        <div class="page-kicker-wrapper">
+          <span class="page-kicker-num">00</span>
+          <span class="page-kicker-text">My work</span>
+        </div>
         <h1>Selected work & <em>case studies</em></h1>
         <p class="gear-intro">
           Performance marketing campaigns, brand growth strategy,
@@ -135,12 +138,13 @@ const sortedProjects = await getProjects();
 
   /* Hover effect: blur other rows when hovering one */
   .project-list:hover .project-row:not(:hover) {
-    opacity: 0.35;
-    filter: blur(3px);
+    opacity: 0.35 !important;
+    filter: blur(4px) !important;
   }
 
   .project-row {
-    transition: opacity 0.4s ease, filter 0.4s ease;
+    transition: opacity 0.4s ease, filter 0.4s ease, transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, filter, transform;
   }
 
   .project-row-inner {
