@@ -231,32 +231,30 @@ const pathname = Astro.url.pathname;
     }
     window.scrollTo(0, 0);
 
-    (function () {
+    document.addEventListener('astro:page-load', () => {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isMobile = () => window.innerWidth < 768;
 
       /* ── Page load ── */
-      window.addEventListener('DOMContentLoaded', () => {
-        document.body.classList.add('ready');
+      document.body.classList.add('ready');
 
-        // Nav: drop from above (spring CSS handles overshoot)
-        setTimeout(() => document.getElementById('site-header')?.classList.add('in'), 80);
+      // Nav: drop from above (spring CSS handles overshoot)
+      setTimeout(() => document.getElementById('site-header')?.classList.add('in'), 80);
 
-        // Prepare typing effect for hero lines
-        const heroLines = document.querySelectorAll('.hero-line');
-        
-        // Hero lines fade-in sequentially
-        if (heroLines.length > 0) {
-          heroLines.forEach((line, i) => {
-            setTimeout(() => {
-              line.classList.add('in');
-            }, reduced ? (280 + i * 130) : (280 + i * 150));
-          });
-        }
+      // Prepare typing effect for hero lines
+      const heroLines = document.querySelectorAll('.hero-line');
+      
+      // Hero lines fade-in sequentially
+      if (heroLines.length > 0) {
+        heroLines.forEach((line, i) => {
+          setTimeout(() => {
+            line.classList.add('in');
+          }, reduced ? (280 + i * 130) : (280 + i * 150));
+        });
+      }
 
-        // Hero aside
-        setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
-      });
+      // Hero aside
+      setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
 
       /* ── IntersectionObserver: section reveals ── */
       const io = new IntersectionObserver(entries => {
@@ -321,14 +319,13 @@ const pathname = Astro.url.pathname;
       /* ── Scroll: nav bg + progress bar + parallax ── */
       const header = document.getElementById('site-header');
       const parallax = document.querySelectorAll('[data-parallax]');
-      let ticking = false, idleTimer;
+      let ticking = false;
 
-      window.addEventListener('scroll', () => {
+      const onScroll = () => {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
           const sy = window.scrollY;
-          const max = document.documentElement.scrollHeight - window.innerHeight;
 
           if (header) header.classList.toggle('is-scrolled', sy > 50);
 
@@ -343,7 +340,14 @@ const pathname = Astro.url.pathname;
 
           ticking = false;
         });
-      }, { passive: true });
+      };
+
+      if (window._layoutOnScroll) {
+        window.removeEventListener('scroll', window._layoutOnScroll);
+      }
+      window._layoutOnScroll = onScroll;
+      window.addEventListener('scroll', window._layoutOnScroll, { passive: true });
+      onScroll();
 
       /* ── Hamburger / mobile menu ── */
       const hamburger = document.getElementById('hamburger');
@@ -375,7 +379,13 @@ const pathname = Astro.url.pathname;
       hamburger?.addEventListener('click', toggleMenu);
       backdrop?.addEventListener('click', () => menuOpen && toggleMenu());
       mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menuOpen && toggleMenu()));
-      document.addEventListener('keydown', e => e.key === 'Escape' && menuOpen && toggleMenu());
+
+      const onKeyDown = e => e.key === 'Escape' && menuOpen && toggleMenu();
+      if (window._layoutOnKeyDown) {
+        document.removeEventListener('keydown', window._layoutOnKeyDown);
+      }
+      window._layoutOnKeyDown = onKeyDown;
+      document.addEventListener('keydown', window._layoutOnKeyDown);
 
       /* ── Smooth scroll for anchor links ── */
       document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(a => {
@@ -483,6 +493,38 @@ const pathname = Astro.url.pathname;
           rafMove = 0;
         };
 
+        const onWindowMouseMove = e => {
+          if (!down) return;
+          e.preventDefault();
+          pendingX = e.pageX;
+          if (!rafMove) rafMove = requestAnimationFrame(applyMove);
+        };
+
+        if (window._layoutOnMouseMove) {
+          window.removeEventListener('mousemove', window._layoutOnMouseMove);
+        }
+        window._layoutOnMouseMove = onWindowMouseMove;
+        window.addEventListener('mousemove', window._layoutOnMouseMove);
+
+        const onWindowMouseUp = () => {
+          if (!down) return;
+          down = false;
+          stripOuter.classList.remove('is-dragging');
+          // Momentum glide
+          const coast = () => {
+            vel *= 0.95;
+            stripOuter.scrollLeft += vel * 16;
+            if (Math.abs(vel) > 0.03) rafG = requestAnimationFrame(coast);
+          };
+          if (Math.abs(vel) > 0.1) coast();
+        };
+
+        if (window._layoutOnMouseUp) {
+          window.removeEventListener('mouseup', window._layoutOnMouseUp);
+        }
+        window._layoutOnMouseUp = onWindowMouseUp;
+        window.addEventListener('mouseup', window._layoutOnMouseUp);
+
         stripOuter.addEventListener('mousedown', e => {
           if (e.button !== 0) return;
           down = true;
@@ -494,26 +536,6 @@ const pathname = Astro.url.pathname;
           lastT = Date.now();
           cancelAnimationFrame(rafG);
           stripOuter.classList.add('is-dragging');
-        });
-
-        window.addEventListener('mousemove', e => {
-          if (!down) return;
-          e.preventDefault();
-          pendingX = e.pageX;
-          if (!rafMove) rafMove = requestAnimationFrame(applyMove);
-        });
-
-        window.addEventListener('mouseup', () => {
-          if (!down) return;
-          down = false;
-          stripOuter.classList.remove('is-dragging');
-          // Momentum glide
-          const coast = () => {
-            vel *= 0.95;
-            stripOuter.scrollLeft += vel * 16;
-            if (Math.abs(vel) > 0.03) rafG = requestAnimationFrame(coast);
-          };
-          if (Math.abs(vel) > 0.1) coast();
         });
 
         // Block click (PhotoSwipe) after a drag gesture
@@ -532,7 +554,7 @@ const pathname = Astro.url.pathname;
           await navigator.clipboard.writeText('hi@loc.digital');
         } catch {
           const ta = document.createElement('textarea');
-          ta.value = 'hello@locnguyen.dev';
+          ta.value = 'hi@loc.digital';
           ta.style.cssText = 'position:fixed;opacity:0;';
           document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
         }
@@ -540,8 +562,7 @@ const pathname = Astro.url.pathname;
         copyBtn.classList.add('copied');
         setTimeout(() => { copyBtn.classList.remove('copied'); copyBtn.dataset.tip = 'Copy'; }, 2200);
       });
-
-    })();
+    });
   </script>
 
 </body>

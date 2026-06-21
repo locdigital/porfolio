@@ -13,14 +13,6 @@ const avatarAsset = getPhotoAsset("/assets/photos/img-portfolio/photo-1.webp");
   hideFooter={true}
   favicon="/favicon-404.svg"
 >
-  <!-- Floating Logo (like reference) -->
-  <div class="notfound-top-logo">
-    <a href="/">
-      <span class="logo-dot" aria-hidden="true"></span>
-      Phuc Loc
-    </a>
-  </div>
-
   <main class="notfound-main" id="main-content">
 
     <!-- Animated gradient background -->
@@ -165,7 +157,7 @@ const avatarAsset = getPhotoAsset("/assets/photos/img-portfolio/photo-1.webp");
 </Layout>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     const typing = document.getElementById("nf-typing");
     const title = document.getElementById("nf-title");
     const cards = document.getElementById("nf-cards");
@@ -206,41 +198,6 @@ const avatarAsset = getPhotoAsset("/assets/photos/img-portfolio/photo-1.webp");
     align-items: center;
     overflow: hidden;
     padding: calc(var(--hdr-h) + 48px) 0 80px;
-  }
-
-  /* ─────────────────────────────────────────────────────────
-     TOP LOGO
-  ───────────────────────────────────────────────────────── */
-  .notfound-top-logo {
-    position: absolute;
-    top: 20px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 10;
-  }
-
-  .notfound-top-logo a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--serif);
-    font-size: 16px;
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.25s ease;
-  }
-
-  .notfound-top-logo a:hover {
-    color: var(--accent);
-  }
-
-  .logo-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
   }
 
   /* ─────────────────────────────────────────────────────────

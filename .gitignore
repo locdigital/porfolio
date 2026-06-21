@@ -7,3 +7,5 @@ dist/
 .pnpm-store/
 git_store.nosync/
 git_store_broken.nosync/
+.agents/
+skills-lock.json

@@ -54,7 +54,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
 
     <!-- QUICK NAV -->
     <div id="photos-nav-sentinel"></div>
-    <div class="photos-nav-wrapper">
+    <div class="photos-nav-wrapper toki-r" data-d="2">
       <div class="container">
             <nav class="photos-nav" aria-label="Locations navigation">
           <div class="photos-nav-list">
@@ -467,7 +467,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
 <script is:inline>
   // PhotoSwipe per-gallery init
   (function () {
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('astro:page-load', () => {
       // Re-use IO from layout for .r elements on this page
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
@@ -565,16 +565,26 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
         });
       });
 
-      window.addEventListener('popstate', () => {
+      const onPopState = () => {
         const hash = window.location.hash;
         if (hash) activateTab(hash.substring(1));
         else if (sections.length > 0) activateTab(sections[0].id);
-      });
+      };
+      if (window._photosOnPopState) {
+        window.removeEventListener('popstate', window._photosOnPopState);
+      }
+      window._photosOnPopState = onPopState;
+      window.addEventListener('popstate', window._photosOnPopState);
 
       // Reposition on resize
-      window.addEventListener('resize', () => {
+      const onResize = () => {
         if (currentActiveLink) moveActiveLine(currentActiveLink);
-      });
+      };
+      if (window._photosOnResize) {
+        window.removeEventListener('resize', window._photosOnResize);
+      }
+      window._photosOnResize = onResize;
+      window.addEventListener('resize', window._photosOnResize);
 
       // Init
       const initHash = window.location.hash;

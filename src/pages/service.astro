@@ -250,7 +250,7 @@ const faqs = [
       </div>
 
       <!-- MAIN FEATURES GRID (SaaS Style) -->
-      <section class="features-section">
+      <section class="features-section toki-r" data-d="2">
         <div class="section-header">
           <h2 class="section-title">A complete stack of marketing & development services</h2>
           <p class="section-desc">Highly structured, data-driven frameworks designed to drive revenue without overhead.</p>
@@ -289,7 +289,7 @@ const faqs = [
       </section>
 
       <!-- CAPABILITIES SWITCHER (Interactive Product tab) -->
-      <section class="capabilities-dashboard">
+      <section class="capabilities-dashboard toki-r" data-d="3">
         <div class="section-header">
           <h2 class="section-title">Deep dive into operational capabilities</h2>
           <p class="section-desc">Select a core services category to explore specific tasks, procedures, and outputs.</p>
@@ -356,7 +356,7 @@ const faqs = [
       </section>
 
       <!-- PRICING TIERS SECTION -->
-      <section class="pricing-section" id="pricing-block">
+      <section class="pricing-section toki-r" data-d="4" id="pricing-block">
         <div class="section-header">
           <h2 class="section-title">Simple, flat-rate pricing models</h2>
           <p class="section-desc">No agency percentages. No complex sales loops. Pick the format that fits your pace.</p>
@@ -409,7 +409,7 @@ const faqs = [
       </section>
 
       <!-- FAQ ACCORDION -->
-      <section class="faq-section">
+      <section class="faq-section toki-r" data-d="5">
         <div class="section-header">
           <h2 class="section-title">Frequently Asked Questions</h2>
           <p class="section-desc">Clear answers about collaboration processes, scope, and technical setups.</p>
@@ -462,7 +462,7 @@ const faqs = [
       </section>
 
       <!-- CTA -->
-      <section class="services-cta">
+      <section class="services-cta toki-r" data-d="6">
         <div class="cta-card">
           <h2 class="cta-title">Ready to scale your next campaign?</h2>
           <p class="cta-desc">
@@ -481,7 +481,7 @@ const faqs = [
 
 <!-- Client scripts for interactivity -->
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     /* ── Tab Switcher Logic ── */
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPanes = document.querySelectorAll('.tab-pane');

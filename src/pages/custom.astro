@@ -402,7 +402,7 @@ const projects = [
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     const track = document.getElementById('carousel-track') as HTMLElement | null;
     const prevBtn = document.getElementById('carousel-prev') as HTMLButtonElement | null;
     const nextBtn = document.getElementById('carousel-next') as HTMLButtonElement | null;
@@ -499,9 +499,14 @@ const projects = [
 
     // Re-snap on resize
     let resizeTimer: ReturnType<typeof setTimeout>;
-    window.addEventListener('resize', () => {
+    const onResize = () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => goTo(current), 150);
-    });
+    };
+    if ((window as any)._customOnResize) {
+      window.removeEventListener('resize', (window as any)._customOnResize);
+    }
+    (window as any)._customOnResize = onResize;
+    window.addEventListener('resize', (window as any)._customOnResize);
   });
 </script>

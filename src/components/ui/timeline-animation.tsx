@@ -1,6 +1,6 @@
 "use client";
 import { motion, useInView } from "framer-motion";
-import React, { useRef, RefObject } from "react";
+import React, { useRef, type RefObject } from "react";
 
 type ValidTag = keyof JSX.IntrinsicElements;
 
@@ -44,10 +44,11 @@ export function TimelineContent<T extends ValidTag = "div">({
   };
 
   const variants = customVariants ?? defaultVariants;
-  const Tag = (as ?? "div") as React.ElementType;
+  const Tag = (as ?? "div") as string;
+  const MotionTag = (motion as any)[Tag] || motion.div;
 
   return (
-    <motion.div
+    <MotionTag
       className={className}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -56,6 +57,7 @@ export function TimelineContent<T extends ValidTag = "div">({
       {...(props as object)}
     >
       {children}
-    </motion.div>
+    </MotionTag>
   );
 }
+

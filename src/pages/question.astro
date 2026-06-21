@@ -494,150 +494,154 @@ import Layout from "../layouts/Layout.astro";
      SCRIPTS — chat logic
 ============================================================ -->
 <script>
-  // ── DOM references ──────────────────────────────────
-  const main      = document.getElementById('qp-main')!;
-  const form      = document.getElementById('qp-form') as HTMLFormElement;
-  const input     = document.getElementById('qp-input') as HTMLInputElement;
-  const submitBtn = document.getElementById('qp-submit') as HTMLButtonElement;
-  const messages  = document.getElementById('qp-messages')!;
-  const pills     = document.querySelectorAll<HTMLButtonElement>('.qp-pill[data-q]');
+  document.addEventListener('astro:page-load', () => {
+    // ── DOM references ──────────────────────────────────
+    const main      = document.getElementById('qp-main');
+    if (!main) return;
 
-  // ── Helpers ──────────────────────────────────────────
-  function addMessage(text: string, role: 'user' | 'ai'): HTMLDivElement {
-    const row = document.createElement('div');
-    row.className = `qp-msg qp-msg--${role}`;
+    const form      = document.getElementById('qp-form') as HTMLFormElement;
+    const input     = document.getElementById('qp-input') as HTMLInputElement;
+    const submitBtn = document.getElementById('qp-submit') as HTMLButtonElement;
+    const messages  = document.getElementById('qp-messages')!;
+    const pills     = document.querySelectorAll<HTMLButtonElement>('.qp-pill[data-q]');
 
-    if (role === 'ai') {
+    // ── Helpers ──────────────────────────────────────────
+    function addMessage(text: string, role: 'user' | 'ai'): HTMLDivElement {
+      const row = document.createElement('div');
+      row.className = `qp-msg qp-msg--${role}`;
+
+      if (role === 'ai') {
+        const avatar = document.createElement('div');
+        avatar.className = 'qp-chat-avatar';
+        avatar.innerHTML = '<span>👋</span>';
+        row.appendChild(avatar);
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = 'qp-bubble';
+      bubble.textContent = text;
+
+      row.appendChild(bubble);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+      return bubble;
+    }
+
+    function showTyping(): void {
+      const row = document.createElement('div');
+      row.className = 'qp-msg qp-msg--ai';
+      row.id = 'qp-typing';
+
       const avatar = document.createElement('div');
       avatar.className = 'qp-chat-avatar';
       avatar.innerHTML = '<span>👋</span>';
       row.appendChild(avatar);
+
+      const bubble = document.createElement('div');
+      bubble.className = 'qp-bubble';
+      bubble.innerHTML = '<div class="qp-typing"><span></span><span></span><span></span></div>';
+
+      row.appendChild(bubble);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
     }
 
-    const bubble = document.createElement('div');
-    bubble.className = 'qp-bubble';
-    bubble.textContent = text;
-
-    row.appendChild(bubble);
-    messages.appendChild(row);
-    messages.scrollTop = messages.scrollHeight;
-    return bubble;
-  }
-
-  function showTyping(): void {
-    const row = document.createElement('div');
-    row.className = 'qp-msg qp-msg--ai';
-    row.id = 'qp-typing';
-
-    const avatar = document.createElement('div');
-    avatar.className = 'qp-chat-avatar';
-    avatar.innerHTML = '<span>👋</span>';
-    row.appendChild(avatar);
-
-    const bubble = document.createElement('div');
-    bubble.className = 'qp-bubble';
-    bubble.innerHTML = '<div class="qp-typing"><span></span><span></span><span></span></div>';
-
-    row.appendChild(bubble);
-    messages.appendChild(row);
-    messages.scrollTop = messages.scrollHeight;
-  }
-
-  function removeTyping(): void {
-    document.getElementById('qp-typing')?.remove();
-  }
-
-  function setLoading(loading: boolean): void {
-    submitBtn.disabled = loading;
-    input.disabled = loading;
-    pills.forEach(p => { (p as HTMLButtonElement).disabled = loading; });
-  }
-
-  // ── Local Automated Responder ─────────────────────────────────
-  async function askLocalAgent(userText: string): Promise<void> {
-    setLoading(true);
-    showTyping();
-
-    // Simulate network delay for natural feel
-    await new Promise(r => setTimeout(r, 600 + Math.random() * 600));
-
-    const text = userText.toLowerCase();
-    let aiText = "";
-
-    if (text.includes("project") || text.includes("campaign") || text.includes("work") || text.includes("portfolio")) {
-      aiText = "Loc has worked on performance marketing, brand growth, and data-driven campaigns for brands like Sony, PNJ, POPS, PlayAh!, and WorkFlow Space. Check out the 'Work' section on this site for detailed case studies.";
-    } else if (text.includes("background") || text.includes("experience") || text.includes("history") || text.includes("past")) {
-      aiText = "Loc is a Senior Digital Marketing Specialist with 4+ years of experience driving growth and managing end-to-end campaigns in Ho Chi Minh City. He has worked across e-commerce, entertainment, and tech.";
-    } else if (text.includes("skill") || text.includes("expertise") || text.includes("expert") || text.includes("do you know") || text.includes("can you")) {
-      aiText = "Loc's key skills include Performance Marketing (Meta/Google/TikTok Ads), Data Analysis, SEO/SEM, Marketing Automation, and Growth Strategy.";
-    } else if (text.includes("hire") || text.includes("available") || text.includes("freelance") || text.includes("job") || text.includes("opportunity")) {
-      aiText = "Yes, Loc is currently open to new projects and full-time opportunities. You can email him at hi@loc.digital to discuss further.";
-    } else if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("touch") || text.includes("connect")) {
-      aiText = "You can reach Loc directly via email at hi@loc.digital or connect with him on LinkedIn.";
-    } else if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
-      aiText = "Hi there! I'm here to help you with questions about Loc's digital marketing work. What would you like to know about his projects, skills, or experience?";
-    } else {
-      aiText = "I'm only here to answer questions about Loc's work! Try asking about his digital marketing campaigns, skills, or professional background.";
+    function removeTyping(): void {
+      document.getElementById('qp-typing')?.remove();
     }
 
-    removeTyping();
-    addMessage(aiText, 'ai');
-    
-    setLoading(false);
-    input.focus();
-  }
+    function setLoading(loading: boolean): void {
+      submitBtn.disabled = loading;
+      input.disabled = loading;
+      pills.forEach(p => { (p as HTMLButtonElement).disabled = loading; });
+    }
 
-  // ── Form submit ─────────────────────────────────────
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-
-    triggerIntro(true); // force instant if they somehow submit before intro finishes
-    addMessage(text, 'user');
-    input.value = '';
-
-    await askLocalAgent(text);
-  });
-
-  // ── Auto Introduction ───────────────────────────────
-  let hasIntroduced = false;
-  function triggerIntro(instant = false) {
-    if (hasIntroduced) return;
-    hasIntroduced = true;
-    
-    const introEl = document.querySelector('.qp-intro') as HTMLElement;
-    if (introEl) introEl.style.display = 'none';
-
-    const introText = "I'm Loc — based in Ho Chi Minh City. I grow brands through digital marketing, turning data into results.";
-    
-    if (instant) {
-      addMessage(introText, 'ai');
-    } else {
+    // ── Local Automated Responder ─────────────────────────────────
+    async function askLocalAgent(userText: string): Promise<void> {
+      setLoading(true);
       showTyping();
-      setTimeout(() => {
-        removeTyping();
-        addMessage(introText, 'ai');
-      }, 600);
+
+      // Simulate network delay for natural feel
+      await new Promise(r => setTimeout(r, 600 + Math.random() * 600));
+
+      const text = userText.toLowerCase();
+      let aiText = "";
+
+      if (text.includes("project") || text.includes("campaign") || text.includes("work") || text.includes("portfolio")) {
+        aiText = "Loc has worked on performance marketing, brand growth, and data-driven campaigns for brands like Sony, PNJ, POPS, PlayAh!, and WorkFlow Space. Check out the 'Work' section on this site for detailed case studies.";
+      } else if (text.includes("background") || text.includes("experience") || text.includes("history") || text.includes("past")) {
+        aiText = "Loc is a Senior Digital Marketing Specialist with 4+ years of experience driving growth and managing end-to-end campaigns in Ho Chi Minh City. He has worked across e-commerce, entertainment, and tech.";
+      } else if (text.includes("skill") || text.includes("expertise") || text.includes("expert") || text.includes("do you know") || text.includes("can you")) {
+        aiText = "Loc's key skills include Performance Marketing (Meta/Google/TikTok Ads), Data Analysis, SEO/SEM, Marketing Automation, and Growth Strategy.";
+      } else if (text.includes("hire") || text.includes("available") || text.includes("freelance") || text.includes("job") || text.includes("opportunity")) {
+        aiText = "Yes, Loc is currently open to new projects and full-time opportunities. You can email him at hi@loc.digital to discuss further.";
+      } else if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("touch") || text.includes("connect")) {
+        aiText = "You can reach Loc directly via email at hi@loc.digital or connect with him on LinkedIn.";
+      } else if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+        aiText = "Hi there! I'm here to help you with questions about Loc's digital marketing work. What would you like to know about his projects, skills, or experience?";
+      } else {
+        aiText = "I'm only here to answer questions about Loc's work! Try asking about his digital marketing campaigns, skills, or professional background.";
+      }
+
+      removeTyping();
+      addMessage(aiText, 'ai');
+      
+      setLoading(false);
+      input.focus();
     }
-  }
 
-  input.addEventListener('focus', () => triggerIntro(false), { once: true });
+    // ── Form submit ─────────────────────────────────────
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
 
-  // ── Pill clicks ──────────────────────────────────────
-  pills.forEach((pill) => {
-    pill.addEventListener('click', async () => {
-      triggerIntro(true);
-      const q = pill.dataset.q!;
-      addMessage(q, 'user');
-      await askLocalAgent(q);
+      triggerIntro(true); // force instant if they somehow submit before intro finishes
+      addMessage(text, 'user');
+      input.value = '';
+
+      await askLocalAgent(text);
     });
+
+    // ── Auto Introduction ───────────────────────────────
+    let hasIntroduced = false;
+    function triggerIntro(instant = false) {
+      if (hasIntroduced) return;
+      hasIntroduced = true;
+      
+      const introEl = document.querySelector('.qp-intro') as HTMLElement;
+      if (introEl) introEl.style.display = 'none';
+
+      const introText = "I'm Loc — based in Ho Chi Minh City. I grow brands through digital marketing, turning data into results.";
+      
+      if (instant) {
+        addMessage(introText, 'ai');
+      } else {
+        showTyping();
+        setTimeout(() => {
+          removeTyping();
+          addMessage(introText, 'ai');
+        }, 600);
+      }
+    }
+
+    input.addEventListener('focus', () => triggerIntro(false), { once: true });
+
+    // ── Pill clicks ──────────────────────────────────────
+    pills.forEach((pill) => {
+      pill.addEventListener('click', async () => {
+        triggerIntro(true);
+        const q = pill.dataset.q!;
+        addMessage(q, 'user');
+        await askLocalAgent(q);
+      });
+    });
+
+    // ── Headline line reveal animation ──────────────────
+    setTimeout(() => {
+      document.querySelectorAll<HTMLElement>('.qhl').forEach((el, i) => {
+        setTimeout(() => el.classList.add('in'), i * 130 + 80);
+      });
+    }, 60);
   });
-
-  // ── Headline line reveal animation ──────────────────
-  setTimeout(() => {
-    document.querySelectorAll<HTMLElement>('.qhl').forEach((el, i) => {
-      setTimeout(() => el.classList.add('in'), i * 130 + 80);
-    });
-  }, 60);
 </script>

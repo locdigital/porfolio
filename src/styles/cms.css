@@ -1008,7 +1008,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  margin: 0 28px 14px;
+  margin: 16px 28px 14px;
   padding: 0 14px;
   border: 1px solid var(--divider);
   border-radius: var(--rounded-md, 8px);
@@ -1558,6 +1558,7 @@
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
   padding: 8px 12px;
   font-family: var(--sans);

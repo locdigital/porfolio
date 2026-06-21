@@ -69,15 +69,15 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     </section>
 
     <!-- EXPERIENCE ––––––––––––––––––––––––––––– -->
-    <section class="work" id="work" aria-label="Work experience">
+    <section class="work toki-r" id="work" data-d="2" aria-label="Work experience">
       <div class="container">
-        <div class="sh r">
+        <div class="sh">
           <span class="sh-title" data-parallax=".1">Experience</span>
           <span class="sh-number" data-parallax=".3">01</span>
         </div>
 
         <ul>
-          <li class="timeline-row r" data-d="1">
+          <li class="timeline-row">
             <div class="tl-left">
               <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-workflow.webp" alt="WorkFlow Space"
                   loading="lazy"></div>
@@ -89,7 +89,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
             </div>
             <span class="tl-dates">2024–Present</span>
           </li>
-          <li class="timeline-row r" data-d="2">
+          <li class="timeline-row">
             <div class="tl-left">
               <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-playah.webp" alt="PlayAh!"
                   loading="lazy"></div>
@@ -101,7 +101,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
             </div>
             <span class="tl-dates">2024–Present</span>
           </li>
-          <li class="timeline-row r" data-d="3">
+          <li class="timeline-row">
             <div class="tl-left">
               <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-pops.webp" alt="POPS Worldwide"
                   loading="lazy"></div>
@@ -113,7 +113,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
             </div>
             <span class="tl-dates">2023–2024</span>
           </li>
-          <li class="timeline-row r" data-d="4">
+          <li class="timeline-row">
             <div class="tl-left">
               <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-pnj.webp" alt="PNJ" loading="lazy">
               </div>
@@ -124,7 +124,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
             </div>
             <span class="tl-dates">2022–2023</span>
           </li>
-          <li class="timeline-row r" data-d="5">
+          <li class="timeline-row">
             <div class="tl-left">
               <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-sony.webp" alt="Sony" loading="lazy">
               </div>
@@ -143,7 +143,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 
 
     <!-- PHOTOGRAPHY –––––––––––––––––––––––––––– -->
-    <section class="gallery" id="photography" aria-label="Photography">
+    <section class="gallery toki-r" id="photography" data-d="3" aria-label="Photography">
 
 
       <div class="gallery-scroll-wrapper">
@@ -164,8 +164,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
                     {doubledRow.map((photo, i) => (
                       <a
                         href={photo.fullSrc}
-                        class={`gallery-item ${photo.w > photo.h ? "w-wide " : ""}r`}
-                        data-d={String((i % 5) + 1)}
+                        class={`gallery-item ${photo.w > photo.h ? "w-wide " : ""}`}
                         data-pswp-width={photo.fullWidth}
                         data-pswp-height={photo.fullHeight}
                         aria-label={photo.alt}
@@ -210,9 +209,9 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     </section>
 
     <!-- WRITING –––––––––––––––––––––––––––––––– -->
-    <section class="writing" id="writing" aria-label="Writing">
+    <section class="writing toki-r" id="writing" data-d="4" aria-label="Writing">
       <div class="container">
-        <div class="sh r">
+        <div class="sh">
           <span class="sh-title" data-parallax=".1">Writing</span>
           <span class="sh-number" data-parallax=".3">03</span>
         </div>
@@ -225,14 +224,14 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
                 year: 'numeric' 
               });
               return (
-                <a href={`/blog/${post.slug}`} class="post-item r" data-d={String(i + 1)} aria-label={`Read: ${post.data.title}`}>
+                <a href={`/blog/${post.slug}`} class="post-item" aria-label={`Read: ${post.data.title}`}>
                   <span class="post-date">{dateStr}</span>
                   <span class="post-title">{post.data.headline}</span>
                 </a>
               );
             })
           ) : (
-            <div class="py-10 text-[var(--muted)] r">
+            <div class="py-10 text-[var(--muted)]">
               <p>No writing entries found.</p>
             </div>
           )}
@@ -243,7 +242,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     </section>
 
     <!-- PLAYGROUND ––––––––––––––––––––––––––––– -->
-    <section class="relative w-full h-[100dvh] overflow-hidden" aria-label="Interactive collage">
+    <section class="relative w-full h-[100dvh] overflow-hidden toki-r" data-d="5" aria-label="Interactive collage">
       <DraggableCollage client:load portraitSrc={heroAbout.src} />
     </section>
 
@@ -258,15 +257,23 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
   <!-- Typed.js: defer = download parallel, execute after HTML parsed (non-blocking) -->
   <script defer src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
   <script is:inline>
-    // Wait for both DOM and Typed.js to be ready
     function initTyped() {
       if (typeof Typed === 'undefined') {
-        // Typed.js not yet loaded (deferred), wait a tick
         setTimeout(initTyped, 50);
         return;
       }
+      const el = document.getElementById('typed-text');
+      if (!el) return;
+
+      if (window.typedInstance) {
+        window.typedInstance.destroy();
+      }
+
       setTimeout(() => {
-        new Typed('#typed-text', {
+        const elCurrent = document.getElementById('typed-text');
+        if (!elCurrent) return;
+
+        window.typedInstance = new Typed('#typed-text', {
           strings: ['data.', 'automation.', 'ads.'],
           typeSpeed: 55,
           backSpeed: 35,
@@ -276,7 +283,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
         });
       }, 1100);
     }
-    document.addEventListener('DOMContentLoaded', initTyped);
+    document.addEventListener('astro:page-load', initTyped);
   </script>
 
 </Layout>

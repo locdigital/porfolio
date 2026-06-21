@@ -1,5 +1,8 @@
 ---
-return Astro.redirect("/", 302);
+import Layout from "../../layouts/Layout.astro";
+import { getWritingPosts } from "../../lib/writing";
+
+const posts = await getWritingPosts();
 ---
 
 <Layout title="Writing | Lộc Digital" description="Journal & Essays">
@@ -14,35 +17,36 @@ return Astro.redirect("/", 302);
         </p>
       </section>
 
-        {posts.length > 0 ? (
-          <div class="flex flex-col gap-y-[72px]">
-            {posts.map((post) => {
-              const dateStr = post.data.publishedAt.toLocaleDateString('en-US', { 
-                month: 'short', 
-                year: 'numeric' 
-              });
-              
-              return (
-                <a 
-                  href={`/blog/${post.slug}`} 
-                  class="group flex flex-col md:flex-row md:items-start md:gap-[60px] transition-opacity hover:opacity-70 duration-300"
-                >
-                  <div class="md:w-[120px] flex-shrink-0 font-mono text-[11px] text-[var(--muted)] uppercase pt-[14px] mb-2 md:mb-0 tracking-wider">
-                    {dateStr}
-                  </div>
-                  <div class="flex-grow max-w-none">
-                    <h2 class="text-[32px] md:text-[42px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] text-[var(--text)] leading-[1.1] mb-[12px]">{post.data.headline}</h2>
-                    <div class="text-[15px] text-[var(--muted)] leading-[1.6] line-clamp-2">{post.data.summary}</div>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        ) : (
-          <div class="py-10 text-[var(--muted)]">
-            <p>New writing is coming soon.</p>
-          </div>
-        )}
+      {posts.length > 0 ? (
+        <div class="flex flex-col gap-y-[72px]">
+          {posts.map((post, i) => {
+            const dateStr = post.data.publishedAt.toLocaleDateString('en-US', { 
+              month: 'short', 
+              year: 'numeric' 
+            });
+            
+            return (
+              <a 
+                href={`/blog/${post.slug}`} 
+                class="group flex flex-col md:flex-row md:items-start md:gap-[60px] transition-opacity hover:opacity-70 duration-300 toki-r"
+                data-d={String(i + 2)}
+              >
+                <div class="md:w-[120px] flex-shrink-0 font-mono text-[11px] text-[var(--muted)] uppercase pt-[14px] mb-2 md:mb-0 tracking-wider">
+                  {dateStr}
+                </div>
+                <div class="flex-grow max-w-none">
+                  <h2 class="text-[32px] md:text-[42px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] text-[var(--text)] leading-[1.1] mb-[12px]">{post.data.headline}</h2>
+                  <div class="text-[15px] text-[var(--muted)] leading-[1.6] line-clamp-2">{post.data.summary}</div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="py-10 text-[var(--muted)]">
+          <p>New writing is coming soon.</p>
+        </div>
+      )}
 
     </div>
   </main>
@@ -70,4 +74,3 @@ return Astro.redirect("/", 302);
     }
   }
 </style>
-
