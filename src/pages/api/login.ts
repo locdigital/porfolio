@@ -1,5 +1,10 @@
 // src/pages/api/login.ts
 import type { APIRoute } from 'astro';
+import {
+  createCmsSessionCookie,
+  getCmsAuthConfig,
+  isCmsDisabledInProduction,
+} from '../../lib/cms-auth';
 
 export const prerender = false;
 
@@ -20,8 +25,7 @@ async function readCredentials(request: Request) {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const isProduction = import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
-  if (isProduction) {
+  if (isCmsDisabledInProduction()) {
     return new Response("Not found", { status: 404 });
   }
 
@@ -37,12 +41,18 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const { username, password } = credentials;
+  const authConfig = getCmsAuthConfig();
 
-  // Hard‑coded admin credentials (replace with secure auth later)
-  if (username === 'admin' && password === '12051992aA@') {
+  if (!authConfig.configured) {
+    return new Response(JSON.stringify({ success: false, error: 'CMS auth is not configured.' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  if (username === authConfig.username && password === authConfig.password) {
     const headers = new Headers();
-    // Simple cookie, HttpOnly, same‑site strict
-    headers.append('Set-Cookie', `session=admin; HttpOnly; Path=/; SameSite=Strict; Max-Age=604800`);
+    headers.append('Set-Cookie', createCmsSessionCookie());
     headers.append('Content-Type', 'application/json');
     return new Response(JSON.stringify({ success: true }), { status: 200, headers });
   }

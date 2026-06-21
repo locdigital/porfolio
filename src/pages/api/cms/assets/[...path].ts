@@ -2,21 +2,16 @@ import type { APIRoute } from "astro";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { existsSync } from "node:fs";
+import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../../../../lib/cms-auth";
 
 export const prerender = false;
 
-function isAuthorized(request: Request) {
-  const cookie = request.headers.get("cookie") ?? "";
-  return /(?:^|;\s*)session=admin(?:;|$)/.test(cookie);
-}
-
 export const GET: APIRoute = async ({ params, request }) => {
-  const isProduction = import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
-  if (isProduction) {
+  if (isCmsDisabledInProduction()) {
     return new Response("Not found", { status: 404 });
   }
 
-  if (!isAuthorized(request)) {
+  if (!isCmsRequestAuthorized(request)) {
     return new Response("Unauthorized", { status: 401 });
   }
 

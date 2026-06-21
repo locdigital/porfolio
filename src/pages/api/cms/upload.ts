@@ -1,12 +1,8 @@
 import type { APIRoute } from "astro";
 import { readCmsPayload, uploadAssets } from "../../../lib/cms-admin";
+import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../../../lib/cms-auth";
 
 export const prerender = false;
-
-function isAuthorized(request: Request) {
-  const cookie = request.headers.get("cookie") ?? "";
-  return /(?:^|;\s*)session=admin(?:;|$)/.test(cookie);
-}
 
 function json(data: unknown, init: ResponseInit = {}) {
   const headers = new Headers(init.headers);
@@ -19,12 +15,11 @@ function isFile(value: FormDataEntryValue): value is File {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const isProduction = import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
-  if (isProduction) {
+  if (isCmsDisabledInProduction()) {
     return new Response("Not found", { status: 404 });
   }
 
-  if (!isAuthorized(request)) {
+  if (!isCmsRequestAuthorized(request)) {
     return json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 

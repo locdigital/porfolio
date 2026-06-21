@@ -3,15 +3,18 @@ import '../styles/global.css';
 import { MenuBar } from "../components/ui/glow-menu";
 import { InfiniteGrid } from "../components/ui/infinite-grid-integration";
 import { ViewTransitions } from 'astro:transitions';
+const SOCIAL_THUMBNAIL = "https://loc.digital/og-image.png";
 const { 
   title = "Phuc Loc Nguyen | Digital Marketing Specialist",
   description = "Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.",
-  ogImage = "https://loc.digital/og-image.jpg",
   hideHeader = false,
   hideFooter = false,
-  favicon
+  favicon,
+  ogImage
 } = Astro.props;
 const pathname = Astro.url.pathname;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCIAL_THUMBNAIL;
 ---
 
 <!DOCTYPE html>
@@ -25,18 +28,20 @@ const pathname = Astro.url.pathname;
   <!-- Open Graph / Social Media Thumbnail -->
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
-  <meta property="og:image" content={ogImage}>
-  <meta property="og:url" content="https://loc.digital/">
+  <meta property="og:image" content={socialThumbnail}>
+  <meta property="og:image:width" content="1774">
+  <meta property="og:image:height" content="887">
+  <meta property="og:url" content={canonicalUrl}>
   <meta property="og:type" content="website">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
-  <meta name="twitter:image" content={ogImage}>
+  <meta name="twitter:image" content={socialThumbnail}>
 
   <title>{title}</title>
   <meta name="theme-color" content="#FAFAF7">
-  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+  <link rel="canonical" href={canonicalUrl} />
   <meta name="google-site-verification" content="tYabJCSeApR0trq6VL7V6_JKbEKbBnznDtNmvaBehfY" />
   
   {favicon ? (

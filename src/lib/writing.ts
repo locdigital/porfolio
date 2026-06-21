@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import { existsSync, readdirSync } from "node:fs";
 
 const writingDir = new URL("../content/writing", import.meta.url);
 
@@ -11,6 +12,10 @@ export type WritingPost = LocalWritingPost;
 
 async function getLocalWritingPosts(): Promise<LocalWritingPost[]> {
   try {
+    if (!existsSync(writingDir) || !readdirSync(writingDir).some((file) => /\.(md|mdx)$/i.test(file))) {
+      return [];
+    }
+
     const entries = await getCollection("writing", ({ data }) => !data.draft);
     return entries
       .map((entry) => ({ ...entry, source: "local" as const, slug: entry.slug }))
@@ -24,4 +29,3 @@ async function getLocalWritingPosts(): Promise<LocalWritingPost[]> {
 export async function getWritingPosts(): Promise<WritingPost[]> {
   return getLocalWritingPosts();
 }
-

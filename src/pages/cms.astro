@@ -2,15 +2,16 @@
 import CmsDashboard from "../components/cms/CmsDashboard";
 import Layout from "../layouts/Layout.astro";
 import { readCmsPayload } from "../lib/cms-admin";
+import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../lib/cms-auth";
 import "../styles/cms.css";
 
 export const prerender = false;
 
-if (import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env.VERCEL === "1") {
+if (isCmsDisabledInProduction()) {
   return Astro.redirect("/404");
 }
 
-if (Astro.cookies.get("session")?.value !== "admin") {
+if (!isCmsRequestAuthorized(Astro.request)) {
   return Astro.redirect("/login");
 }
 
@@ -22,6 +23,7 @@ const initialData = await readCmsPayload();
   description="Private content dashboard for Lộc Digital."
   hideHeader
   hideFooter
+  favicon="/favicon-cms.svg"
 >
   <CmsDashboard initialData={initialData} client:load />
 </Layout>

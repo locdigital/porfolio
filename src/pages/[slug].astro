@@ -2,20 +2,13 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 
-export const prerender = true;
+export const prerender = false;
 
-export async function getStaticPaths() {
-  const pages = await getCollection("pages", ({ data }) => !data.draft);
+const { slug } = Astro.params;
+const pages = await getCollection("pages", ({ data }) => !data.draft);
+const page = pages.find((entry) => entry.slug === slug);
 
-  return pages.map((page) => ({
-    params: { slug: page.slug },
-    props: { page },
-  }));
-}
-
-const { page } = Astro.props;
-
-if (!page) {
+if (!slug || !page) {
   return Astro.redirect("/404", 404);
 }
 

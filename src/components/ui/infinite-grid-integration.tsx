@@ -5,6 +5,7 @@ import {
   useMotionTemplate, 
   useAnimationFrame 
 } from "framer-motion";
+import type { MotionValue } from "framer-motion";
 import { MousePointerClick, Info, Sun, Moon, Settings2 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -19,7 +20,7 @@ function cn(...inputs: ClassValue[]) {
 /**
  * Helper component for the SVG grid pattern.
  */
-const GridPattern = ({ offsetX, offsetY, size }: { offsetX: any; offsetY: any; size: number }) => {
+const GridPattern = ({ offsetX, offsetY, size }: { offsetX: MotionValue<number>; offsetY: MotionValue<number>; size: number }) => {
   return (
     <svg className="w-full h-full">
       <defs>
@@ -82,8 +83,8 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
   const gridOffsetX = useMotionValue(0);
   const gridOffsetY = useMotionValue(0);
 
-  const speedX = 0.5; 
-  const speedY = 0.5;
+  const speedX = 0.25; 
+  const speedY = 0.25;
 
   useAnimationFrame(() => {
     const currentX = gridOffsetX.get();

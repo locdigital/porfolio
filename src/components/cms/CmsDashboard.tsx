@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
-  Bell,
   Briefcase,
   Calendar,
   Camera,
@@ -14,7 +13,6 @@ import {
   Loader2,
   LogOut,
   MessageSquare,
-  Moon,
   MoreHorizontal,
   Package,
   Plus,
@@ -168,7 +166,7 @@ const statDefs: StatDef[] = [
     footer: ["Across sections"],
   },
   {
-    title: "Work Projects",
+    title: "What I Do",
     icon: Briefcase,
     accent: "amber",
     footer: ["Client work"],
@@ -492,26 +490,7 @@ function Topbar({
   darkMode: boolean;
   onToggleDarkMode: () => void;
 }) {
-  const label = navGroups.flatMap((g) => g.items).find((i) => i.id === activeTab)?.label ?? "Dashboard";
-  const [quickCreateOpen, setQuickCreateOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const qcRef = useRef<HTMLDivElement>(null);
-  const notifRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (qcRef.current && !qcRef.current.contains(e.target as Node)) {
-        setQuickCreateOpen(false);
-      }
-      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
-        setNotificationsOpen(false);
-      }
-    };
-    window.addEventListener("mousedown", handler);
-    return () => window.removeEventListener("mousedown", handler);
-  }, []);
 
   return (
     <header className="cms-topbar">
@@ -530,126 +509,7 @@ function Topbar({
 
       {/* Right actions */}
       <div className="cms-topbar-actions">
-        <button
-          type="button"
-          className="cms-topbar-btn"
-          id="cms-ask-ai-btn"
-          aria-label="Ask AI"
-          onClick={onOpenAskAi}
-        >
-          <Sparkles size={15} className="cms-topbar-ai-icon" />
-          Ask AI
-        </button>
-
-        {/* Quick Create Wrapper */}
-        <div className="cms-relative-wrapper" ref={qcRef}>
-          <button
-            type="button"
-            className="cms-topbar-btn cms-topbar-btn-primary"
-            id="cms-quick-create-btn"
-            aria-label="Quick create"
-            onClick={() => setQuickCreateOpen(!quickCreateOpen)}
-          >
-            <Plus size={15} />
-            Quick Create
-          </button>
-
-          {quickCreateOpen && (
-            <div className="cms-dropdown-menu" style={{ right: 0, width: 220 }}>
-              <button
-                type="button"
-                className="cms-dropdown-item"
-                onClick={() => {
-                  onQuickCreate("writing");
-                  setQuickCreateOpen(false);
-                }}
-              >
-                <FileText size={14} />
-                <span>New Writing Post</span>
-              </button>
-              <button
-                type="button"
-                className="cms-dropdown-item"
-                onClick={() => {
-                  onQuickCreate("gear");
-                  setQuickCreateOpen(false);
-                }}
-              >
-                <Package size={14} />
-                <span>New Gear Item</span>
-              </button>
-              <button
-                type="button"
-                className="cms-dropdown-item"
-                onClick={() => {
-                  onQuickCreate("work");
-                  setQuickCreateOpen(false);
-                }}
-              >
-                <Briefcase size={14} />
-                <span>New Work Project</span>
-              </button>
-              <button
-                type="button"
-                className="cms-dropdown-item"
-                onClick={() => {
-                  onQuickCreate("photos");
-                  setQuickCreateOpen(false);
-                }}
-              >
-                <Camera size={14} />
-                <span>New Photo Location</span>
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Notifications Wrapper */}
-        <div className="cms-relative-wrapper" ref={notifRef}>
-          <button
-            type="button"
-            className="cms-topbar-btn cms-topbar-btn-icon"
-            aria-label="Notifications"
-            onClick={() => setNotificationsOpen(!notificationsOpen)}
-          >
-            <Bell size={16} />
-            <span className="cms-notif-dot" aria-hidden="true" />
-          </button>
-
-          {notificationsOpen && (
-            <div className="cms-dropdown-menu" style={{ right: 0, width: 280, padding: "8px 0" }}>
-              <div className="cms-dropdown-header" style={{ padding: "8px 16px" }}>Notifications</div>
-              <div className="cms-dropdown-item-info" style={{ padding: "8px 16px", borderBottom: "1px solid var(--divider)" }}>
-                <strong style={{ display: "block", fontSize: 12 }}>System Status</strong>
-                <span style={{ display: "block", fontSize: 11, color: "var(--muted)", margin: "2px 0" }}>CMS database parsed successfully.</span>
-                <small style={{ fontSize: 9, color: "var(--muted)", opacity: 0.8 }}>Just now</small>
-              </div>
-              <div className="cms-dropdown-item-info" style={{ padding: "8px 16px" }}>
-                <strong style={{ display: "block", fontSize: 12 }}>Git Deploy</strong>
-                <span style={{ display: "block", fontSize: 11, color: "var(--muted)", margin: "2px 0" }}>Branch 'main' push completed.</span>
-                <small style={{ fontSize: 9, color: "var(--muted)", opacity: 0.8 }}>2 hours ago</small>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <button
-          type="button"
-          className="cms-topbar-btn cms-topbar-btn-icon"
-          aria-label="Toggle dark mode"
-          onClick={onToggleDarkMode}
-        >
-          {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-        </button>
-
-        <div
-          className="cms-topbar-avatar"
-          role="button"
-          aria-label="User menu"
-          title={`Viewing: ${label}`}
-        >
-          A
-        </div>
+        {/* Buttons deleted */}
       </div>
     </header>
   );
@@ -1066,7 +926,7 @@ function CategoriesPanel({ data }: { data: CmsData }) {
   const categories = [
     { name: "Writing",   count: data.writing.length  },
     { name: "Gear",      count: gearTotal             },
-    { name: "Projects",  count: data.projects.length  },
+    { name: "What I Do", count: data.projects.length  },
     { name: "Photos",    count: data.photos.length    },
   ];
 
@@ -1248,10 +1108,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
     if (!options.quiet) setStatus({ type: "success", text: "CMS data ready." });
   }
-
-  useEffect(() => {
-    console.log("CmsDashboard: mounted on client.");
-  }, []);
 
   useEffect(() => {
     if (darkMode) {
@@ -1625,7 +1481,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
         <section className="cms-editor-grid">
           <aside className="cms-list-panel">
             <div className="cms-panel-head">
-              <h2>Projects</h2>
+              <h2>What I Do</h2>
               <SmallButton
                 icon={<Plus size={14} />}
                 tone="secondary"
@@ -1845,7 +1701,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       <Sidebar
         activeTab={activeTab}
         onTabChange={(tab) => {
-          console.log("CmsDashboard: Tab button clicked:", tab);
           setActiveTab(tab);
         }}
         onLogout={logout}
