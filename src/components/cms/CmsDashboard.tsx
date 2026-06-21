@@ -1254,6 +1254,14 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   }, []);
 
   useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
     if (normalizedInitial) return;
     loadData().catch((err) =>
       setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to load CMS data." }),

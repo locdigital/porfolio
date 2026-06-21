@@ -112,7 +112,7 @@
       font-size: var(--fs-base);
       line-height: 1.65;
       color: var(--text);
-      background: var(--bg);
+      background: transparent;
       overflow-x: hidden;
     }
 

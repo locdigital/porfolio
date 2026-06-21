@@ -10,7 +10,7 @@
   min-height: 100svh;
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
-  background: var(--bg);
+  background: transparent;
   color: var(--text);
   font-family: var(--sans);
 }
