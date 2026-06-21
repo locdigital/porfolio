@@ -538,7 +538,7 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-top: -8px;
+  margin-top: 6px;
 }
 
 .cms-stat-footer {
@@ -1534,7 +1534,8 @@
 /* ── Relative wrapper & Dropdown Menu ─────────────────────────── */
 .cms-relative-wrapper {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 .cms-dropdown-menu {
