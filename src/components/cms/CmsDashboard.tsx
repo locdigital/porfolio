@@ -346,10 +346,12 @@ function Sidebar({
   activeTab,
   onTabChange,
   onLogout,
+  setStatus,
 }: {
   activeTab: Tab;
   onTabChange: (tab: Tab) => void;
   onLogout: () => void;
+  setStatus: (status: Status) => void;
 }) {
   const [workspaceOpen, setWorkspaceOpen] = useState(false);
   const wsRef = useRef<HTMLDivElement>(null);
@@ -405,7 +407,7 @@ function Sidebar({
               type="button"
               className="cms-dropdown-item"
               onClick={() => {
-                alert("Workspace settings are under development.");
+                setStatus({ type: "success", text: "Workspace settings are under development." });
                 setWorkspaceOpen(false);
               }}
             >
@@ -762,17 +764,36 @@ function StatCard({ def, value, footerValues }: {
 function TrafficChart() {
   const [timeRange, setTimeRange] = useState<"7days" | "30days" | "year">("7days");
   const [filterOpen, setFilterOpen] = useState(false);
+  const [dateRangeOpen, setDateRangeOpen] = useState(false);
+  const [startDate, setStartDate] = useState("2026-06-14");
+  const [endDate, setEndDate] = useState("2026-06-21");
+
   const filterRef = useRef<HTMLDivElement>(null);
+  const dateRangeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
         setFilterOpen(false);
       }
+      if (dateRangeRef.current && !dateRangeRef.current.contains(e.target as Node)) {
+        setDateRangeOpen(false);
+      }
     };
     window.addEventListener("mousedown", handler);
     return () => window.removeEventListener("mousedown", handler);
   }, []);
+
+  const formatDateLabel = (startStr: string, endStr: string) => {
+    try {
+      const opt: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" };
+      const s = new Date(startStr);
+      const e = new Date(endStr);
+      return `${s.toLocaleDateString("en-US", opt)} – ${e.toLocaleDateString("en-US", opt)}`;
+    } catch {
+      return "Jun 14 – Jun 21";
+    }
+  };
 
   const viewsPath =
     timeRange === "7days"
@@ -840,15 +861,72 @@ function TrafficChart() {
               </div>
             )}
           </div>
-          <button
-            type="button"
-            className="cms-filter-btn"
-            onClick={() => alert("Custom date ranges can be set under Pro settings.")}
-          >
-            <Calendar size={13} />
-            Jun 14 – Jun 21
-            <ChevronDown size={13} />
-          </button>
+
+          <div className="cms-relative-wrapper" ref={dateRangeRef}>
+            <button
+              type="button"
+              className="cms-filter-btn"
+              onClick={() => setDateRangeOpen(!dateRangeOpen)}
+            >
+              <Calendar size={13} />
+              {formatDateLabel(startDate, endDate)}
+              <ChevronDown size={13} />
+            </button>
+
+            {dateRangeOpen && (
+              <div className="cms-dropdown-menu" style={{ right: 0, top: "100%", width: 240, padding: 12 }}>
+                <div className="cms-dropdown-header" style={{ padding: "0 0 8px 0" }}>Custom Range</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  <label style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 11, color: "var(--muted)" }}>
+                    Start Date
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      style={{
+                        padding: "6px 8px",
+                        borderRadius: 6,
+                        border: "1px solid var(--divider)",
+                        fontSize: 12,
+                      }}
+                    />
+                  </label>
+                  <label style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 11, color: "var(--muted)" }}>
+                    End Date
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      style={{
+                        padding: "6px 8px",
+                        borderRadius: 6,
+                        border: "1px solid var(--divider)",
+                        fontSize: 12,
+                      }}
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setDateRangeOpen(false)}
+                    style={{
+                      width: "100%",
+                      padding: "8px 0",
+                      backgroundColor: "var(--text)",
+                      color: "var(--bg)",
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      border: "none",
+                      cursor: "pointer",
+                      marginTop: 4,
+                    }}
+                  >
+                    Apply Range
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -1763,6 +1841,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
           setActiveTab(tab);
         }}
         onLogout={logout}
+        setStatus={setStatus}
       />
 
       <main className="cms-main">
