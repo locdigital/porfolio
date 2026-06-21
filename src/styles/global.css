@@ -24,7 +24,7 @@
 
 /* ============================================================
    DESIGN TOKENS
-============================================================ */
+   ============================================================ */
     :root {
       --bg: #FAFAF7;
       --text: #1C1C1C;
@@ -32,6 +32,10 @@
       --divider: #E8E8E2;
       --accent: #0075de;
       --accent-solid: #0075de;
+      --background: 60 11% 98%;
+      --foreground: 0 0% 11%;
+      --border: 60 9% 91%;
+      --muted-foreground: 0 0% 43%;
       --hdr-h: 60px;
 
       --serif: 'Imbue', serif;
@@ -43,11 +47,52 @@
 
       --spring: cubic-bezier(0.28, 1.36, 0.54, 1);
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Typography Scale */
+      --fs-xs: 12px;
+      --fs-sm: 14px;
+      --fs-base: 15.5px;
+      --fs-lg: clamp(16px, 1.8vw, 20px);
+      --fs-xl: clamp(24px, 3.5vw, 34px);
+      --fs-display: clamp(38px, 5vw, 52px);
+      --fs-display-lg: clamp(42px, 7vw, 86px);
+      --fs-display-xl: clamp(42px, 6.5vw, 90px);
+
+      /* Icon Scale */
+      --icon-xs: 14px;
+      --icon-sm: 16px;
+      --icon-md: 20px;
+      --icon-lg: 24px;
+      --icon-xl: 32px;
+
+      /* Spacing System */
+      --space-xs: 8px;
+      --space-sm: 12px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-xxl: 48px;
+      --space-section: 96px;
+
+      /* Border Radius */
+      --rounded-xs: 4px;
+      --rounded-sm: 6px;
+      --rounded-md: 8px;
+      --rounded-lg: 12px;
+      --rounded-xl: 16px;
+      --rounded-full: 9999px;
     }
+
+    /* SVG Icon Helpers */
+    svg.icon-xs { width: var(--icon-xs); height: var(--icon-xs); }
+    svg.icon-sm { width: var(--icon-sm); height: var(--icon-sm); }
+    svg.icon-md { width: var(--icon-md); height: var(--icon-md); }
+    svg.icon-lg { width: var(--icon-lg); height: var(--icon-lg); }
+    svg.icon-xl { width: var(--icon-xl); height: var(--icon-xl); }
 
     /* ============================================================
        RESET
-    ============================================================ */
+       ============================================================ */
     *,
     *::before,
     *::after {
@@ -64,54 +109,11 @@
 
     body {
       font-family: var(--sans);
-      font-size: 15px;
+      font-size: var(--fs-base);
       line-height: 1.65;
       color: var(--text);
       background: var(--bg);
       overflow-x: hidden;
-      /* Page-load fade, rise & blur */
-      opacity: 0;
-      transform: translateY(12px);
-      filter: blur(4px);
-      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                  filter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    body.ready {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-
-    /* ============================================================
-       PAGE TRANSITION OVERLAY
-    ============================================================ */
-    #page-transition {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      background: var(--bg);
-      opacity: 0;
-      /* Entering a new page: fade from opaque → transparent */
-      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    /* When leaving: overlay fades IN fast (page goes dim) */
-    #page-transition.pt-leaving {
-      opacity: 1;
-      pointer-events: all;
-      transition: opacity 0.42s cubic-bezier(0.4, 0, 1, 1);
-    }
-
-    /* On page enter: start opaque, CSS transition → transparent */
-    body:not(.ready) #page-transition {
-      opacity: 1;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      #page-transition { transition: none; opacity: 0 !important; }
     }
 
     a {
@@ -237,7 +239,7 @@
 
     /* Name — collapses middle spans on small screens */
     .header-name {
-      font-size: 14px;
+      font-size: var(--fs-sm);
       font-weight: 700;
       letter-spacing: .01em;
       color: var(--text);
@@ -259,17 +261,17 @@
     }
 
     .header-nav-desktop a {
-      font-size: 13px;
+      font-size: var(--fs-xs);
       color: var(--muted);
       transition: color .25s ease;
     }
 
-    .header-nav-desktop a:hover,
-    .header-nav-desktop a.active {
-      color: var(--text);
+    .header-nav-desktop a:hover {
+      color: var(--accent);
     }
 
     .header-nav-desktop a.active {
+      color: var(--text);
       text-decoration: underline;
       text-underline-offset: 2px;
       text-decoration-thickness: 1px;
@@ -300,6 +302,13 @@
       border-color: rgba(0, 117, 222, 0.6);
       color: #0075de;
       text-decoration: none !important;
+    }
+
+    /* Glow Menu Isolation */
+    .header-nav-desktop .header-glow-menu a {
+      text-decoration: none !important;
+      font-size: inherit;
+      color: inherit;
     }
 
     /* Hamburger */
@@ -527,7 +536,7 @@
     .hero-line {
       display: block;
       font-family: var(--serif);
-      font-size: clamp(42px, 6.5vw, 90px);
+      font-size: var(--fs-display-xl);
       font-weight: 400;
       line-height: 1.06;
       letter-spacing: -.025em;
@@ -738,7 +747,7 @@
 
     .tl-company {
       display: block;
-      font-size: 19px;
+      font-size: var(--fs-lg);
       font-family: var(--serif);
       font-weight: 400;
     }
@@ -757,13 +766,13 @@
 
     .tl-desc {
       display: block;
-      font-size: 14px;
+      font-size: var(--fs-sm);
       color: var(--muted);
       margin-top: 6px;
     }
 
     .tl-dates {
-      font-size: 12px;
+      font-size: var(--fs-xs);
       color: var(--muted);
       font-family: var(--mono);
       white-space: nowrap;
@@ -979,7 +988,7 @@
     }
 
     .post-date {
-      font-size: 12px;
+      font-size: var(--fs-xs);
       color: var(--muted);
       font-family: var(--mono);
       min-width: 88px;
@@ -987,7 +996,7 @@
     }
 
     .post-title {
-      font-size: clamp(16px, 1.8vw, 20px);
+      font-size: var(--fs-lg);
       font-family: var(--serif);
       font-weight: 400;
       line-height: 1.35;
@@ -1002,7 +1011,7 @@
     .see-all {
       display: inline-block;
       margin-top: 24px;
-      font-size: 14px;
+      font-size: var(--fs-sm);
       font-weight: 500;
       color: var(--muted);
       transition: color .25s ease;
@@ -1029,7 +1038,7 @@
 
     .footer-contact {
       font-family: var(--serif);
-      font-size: clamp(24px, 3.5vw, 34px);
+      font-size: var(--fs-xl);
       font-style: italic;
       color: var(--text);
     }
@@ -1234,7 +1243,7 @@
 
 .gear-kicker {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   color: var(--accent);
   margin-bottom: 18px;
   text-transform: uppercase;
@@ -1242,7 +1251,7 @@
 
 .gear-hero h1 {
   font-family: var(--serif);
-  font-size: clamp(42px, 7vw, 86px);
+  font-size: var(--fs-display-lg);
   font-weight: 400;
   line-height: 0.98;
   letter-spacing: 0;
@@ -1258,7 +1267,7 @@
 .gear-intro {
   max-width: 640px;
   margin-top: 24px;
-  font-size: 15.5px;
+  font-size: var(--fs-base);
   line-height: 1.75;
   color: var(--muted);
 }

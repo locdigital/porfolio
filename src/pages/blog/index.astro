@@ -1,18 +1,10 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { getWritingPosts } from "../../lib/writing";
-
-let posts: Awaited<ReturnType<typeof getWritingPosts>> = [];
-try {
-  posts = await getWritingPosts();
-} catch (e) {
-  console.error("[blog/index] Failed to load writing posts:", e);
-}
+return Astro.redirect("/", 302);
 ---
 
 <Layout title="Writing | Lộc Digital" description="Journal & Essays">
-  <main class="gear-page">
-    <div class="gear-container">
+  <main class="blog-page">
+    <div class="blog-wrap">
       <!-- PAGE HERO -->
       <section class="gear-hero toki-r" data-d="1" aria-label="Writing">
         <p class="gear-kicker">Writing</p>
@@ -38,7 +30,7 @@ try {
                   <div class="md:w-[120px] flex-shrink-0 font-mono text-[11px] text-[var(--muted)] uppercase pt-[14px] mb-2 md:mb-0 tracking-wider">
                     {dateStr}
                   </div>
-                  <div class="flex-grow max-w-[800px]">
+                  <div class="flex-grow max-w-none">
                     <h2 class="text-[32px] md:text-[42px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] text-[var(--text)] leading-[1.1] mb-[12px]">{post.data.headline}</h2>
                     <div class="text-[15px] text-[var(--muted)] leading-[1.6] line-clamp-2">{post.data.summary}</div>
                   </div>
@@ -52,6 +44,30 @@ try {
           </div>
         )}
 
-      </div>
+    </div>
   </main>
 </Layout>
+
+<style>
+  .blog-page {
+    padding: calc(var(--hdr-h) + 64px) 0 120px;
+  }
+
+  .blog-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--px);
+  }
+
+  .blog-page .gear-hero {
+    max-width: none;
+    margin-bottom: 52px;
+  }
+
+  @media (max-width: 620px) {
+    .blog-page {
+      padding-top: calc(var(--hdr-h) + 44px);
+    }
+  }
+</style>
+

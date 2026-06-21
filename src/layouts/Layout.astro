@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import { MenuBar } from "../components/ui/glow-menu";
+import { InfiniteGrid } from "../components/ui/infinite-grid-integration";
+import { ViewTransitions } from 'astro:transitions';
 const { 
   title = "Phuc Loc Nguyen | Digital Marketing Specialist",
   description = "Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.",
@@ -89,9 +92,56 @@ const pathname = Astro.url.pathname;
       rel="stylesheet">
   </noscript>
 
+  <ViewTransitions />
+
+  <style is:global>
+    /* ── Page transition: fade + blur ── */
+    ::view-transition-old(root) {
+      animation: page-out 0.35s ease-in forwards;
+    }
+
+    ::view-transition-new(root) {
+      animation: page-in 0.5s ease-out 0.1s both;
+    }
+
+    @keyframes page-out {
+      from {
+        opacity: 1;
+        filter: blur(0px);
+      }
+      to {
+        opacity: 0;
+        filter: blur(6px);
+      }
+    }
+
+    @keyframes page-in {
+      from {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: none;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
+  {pathname !== '/demo' && pathname !== '/demo/' && (
+    <InfiniteGrid bgOnly={true} globalMouse={true} client:only="react" />
+  )}
   <!-- ============================================================
        HEADER
   ============================================================ -->
@@ -104,16 +154,9 @@ const pathname = Astro.url.pathname;
               class="n-keep">L</span><span class="n-collapse">oc</span>
           </a>
 
-          <nav class="header-nav-desktop" aria-label="Main navigation">
-            <ul>
-              <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
-              <li><a href="/work" class={pathname.startsWith('/work') ? 'active' : ''}>Work</a></li>
-              <li><a href="/blog" class={pathname.startsWith('/blog') ? 'active' : ''}>Writing</a></li>
-              <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
-              <li><a href="/gear" class={pathname.startsWith('/gear') ? 'active' : ''}>Gear</a></li>
-              <li><a href="/question" class={`ask-link ${pathname.startsWith('/question') ? 'active' : ''}`}>Ask ✦</a></li>
-            </ul>
-          </nav>
+          <div class="header-nav-desktop">
+            <MenuBar client:load pathname={pathname} className="header-glow-menu" />
+          </div>
 
           <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
             <span class="hamburger-line hamburger-line--top"></span>
@@ -132,7 +175,8 @@ const pathname = Astro.url.pathname;
           <ul class="mobile-nav">
             <li><a href="/about" class={pathname.startsWith('/about') ? 'active' : ''}>About</a></li>
             <li><a href="/work" class={pathname.startsWith('/work') ? 'active' : ''}>Work</a></li>
-            <li><a href="/blog" class={pathname.startsWith('/blog') ? 'active' : ''}>Writing</a></li>
+            <li><a href="/service" class={pathname.startsWith('/service') ? 'active' : ''}>Services</a></li>
+
             <li><a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''}>Photos</a></li>
             <li><a href="/gear" class={pathname.startsWith('/gear') ? 'active' : ''}>Gear</a></li>
             <li><a href="/question" class={pathname.startsWith('/question') ? 'active' : ''}>Ask ✦</a></li>
@@ -142,10 +186,7 @@ const pathname = Astro.url.pathname;
     </>
   )}
 
-  <!-- ============================================================
-       PAGE TRANSITION OVERLAY
-  ============================================================ -->
-  <div id="page-transition" aria-hidden="true"></div>
+
 
   <slot />
 
@@ -180,43 +221,7 @@ const pathname = Astro.url.pathname;
     </>
   )}
 
-  <!-- Scripts -->
-  <script is:inline>
-    /* ── Page Transition ── */
-    (function () {
-      const overlay = document.getElementById('page-transition');
 
-      // Fade OUT then navigate
-      function navigateTo(href) {
-        if (!overlay) { window.location.href = href; return; }
-        overlay.classList.add('pt-leaving');
-        setTimeout(() => { window.location.href = href; }, 480);
-      }
-
-      // Intercept ALL internal link clicks
-      document.addEventListener('click', (e) => {
-        const a = e.target.closest('a');
-        if (!a) return;
-        const href = a.getAttribute('href');
-        if (!href) return;
-        // Skip: external, hash-only, download, new tab, or modifier key held
-        if (
-          a.target === '_blank' ||
-          a.rel?.includes('external') ||
-          href.startsWith('http') ||
-          href.startsWith('//') ||
-          href.startsWith('mailto:') ||
-          href.startsWith('tel:') ||
-          href.startsWith('#') ||
-          a.hasAttribute('download') ||
-          e.metaKey || e.ctrlKey || e.shiftKey || e.altKey
-        ) return;
-
-        e.preventDefault();
-        navigateTo(href);
-      }, true);
-    })();
-  </script>
 
   <!-- Scripts -->
   <script is:inline>

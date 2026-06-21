@@ -1,21 +1,33 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
+  Bell,
   Briefcase,
+  Calendar,
   Camera,
   CheckCircle2,
-  Eye,
+  ChevronDown,
+  Clock3,
   FileText,
+  HardDrive,
   LayoutDashboard,
   Loader2,
   LogOut,
+  MessageSquare,
+  Moon,
+  MoreHorizontal,
   Package,
   Plus,
   Save,
+  Search,
+  Send,
+  Sparkles,
   Trash2,
   Upload,
+  UserPlus,
 } from "lucide-react";
 
+/* ── Types ──────────────────────────────────────────────────────── */
 type Tab = "overview" | "writing" | "gear" | "work" | "photos";
 
 type Status = {
@@ -107,23 +119,83 @@ type CmsData = {
   photos: PhotoLocation[];
 };
 
-const tabs: Array<{ id: Tab; label: string; icon: typeof LayoutDashboard }> = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "writing", label: "Writing", icon: FileText },
-  { id: "gear", label: "Gear", icon: Package },
-  { id: "work", label: "Work", icon: Briefcase },
-  { id: "photos", label: "Photos", icon: Camera },
+/* ── Nav structure ──────────────────────────────────────────────── */
+type NavGroup = {
+  label: string;
+  items: Array<{ id: Tab; label: string; icon: React.ElementType }>;
+};
+
+const navGroups: NavGroup[] = [
+  {
+    label: "MAIN",
+    items: [{ id: "overview", label: "Dashboard", icon: LayoutDashboard }],
+  },
+  {
+    label: "CONTENT",
+    items: [
+      { id: "writing", label: "Writing", icon: FileText },
+      { id: "gear",    label: "Gear",    icon: Package },
+    ],
+  },
+  {
+    label: "MEDIA",
+    items: [
+      { id: "work",   label: "Work",   icon: Briefcase },
+      { id: "photos", label: "Photos", icon: Camera },
+    ],
+  },
 ];
 
+/* ── Stat card data ─────────────────────────────────────────────── */
+type StatDef = {
+  title: string;
+  icon: React.ElementType;
+  accent: "blue" | "green" | "amber" | "purple";
+  footer: string[];
+};
+
+const statDefs: StatDef[] = [
+  {
+    title: "Writing Posts",
+    icon: FileText,
+    accent: "blue",
+    footer: ["Published", "Draft", "Scheduled"],
+  },
+  {
+    title: "Gear Items",
+    icon: Package,
+    accent: "green",
+    footer: ["Across sections"],
+  },
+  {
+    title: "Work Projects",
+    icon: Briefcase,
+    accent: "amber",
+    footer: ["Client work"],
+  },
+  {
+    title: "Photo Locations",
+    icon: Camera,
+    accent: "purple",
+    footer: ["With images"],
+  },
+];
+
+/* ── Activity feed (static) ─────────────────────────────────────── */
+const activities = [
+  { icon: CheckCircle2, text: "CMS data loaded successfully",  time: "just now"    },
+  { icon: UserPlus,     text: "New writing post ready to edit", time: "moments ago" },
+  { icon: MessageSquare,text: "Gear sections updated",          time: "earlier"     },
+  { icon: Send,         text: "Photos synced to build",         time: "last session"},
+];
+
+/* ── Helpers ─────────────────────────────────────────────────────── */
 function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
 function splitList(value: string) {
-  return value
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
+  return value.split(",").map((s) => s.trim()).filter(Boolean);
 }
 
 function listToString(value: string[] = []) {
@@ -132,121 +204,69 @@ function listToString(value: string[] = []) {
 
 function emptyWriting(): WritingPost {
   return {
-    slug: "",
-    title: "",
-    headline: "",
-    summary: "",
-    keyword: "",
-    metaDescription: "",
-    coverImage: "",
-    publishedAt: today(),
-    tags: [],
-    draft: false,
-    body: "Start writing here...",
+    slug: "", title: "", headline: "", summary: "", keyword: "",
+    metaDescription: "", coverImage: "", publishedAt: today(),
+    tags: [], draft: false, body: "Start writing here...",
   };
 }
 
 function emptyGear(): Gear {
-  return {
-    title: "My Gear",
-    headline: "Tools I actually use.",
-    description: "",
-    sections: [],
-  };
+  return { title: "My Gear", headline: "Tools I actually use.", description: "", sections: [] };
 }
 
 function emptyGearSection(): GearSection {
-  return {
-    title: "New Section",
-    slug: "",
-    headline: "",
-    description: "",
-    image: "",
-    items: [],
-  };
+  return { title: "New Section", slug: "", headline: "", description: "", image: "", items: [] };
 }
 
 function emptyGearItem(): GearItem {
-  return {
-    name: "New Gear Item",
-    slug: "",
-    headline: "",
-    description: "",
-    image: "",
-    url: "",
-    tag: "",
-  };
+  return { name: "New Gear Item", slug: "", headline: "", description: "", image: "", url: "", tag: "" };
 }
 
 function emptyProject(order = 99): Project {
   return {
-    slug: "",
-    order,
-    number: String(order).padStart(2, "0"),
-    title: "",
-    client: "",
-    year: "",
-    role: "",
-    summary: "",
-    description: "",
-    tools: [],
-    skills: [],
-    coverImage: "",
-    images: [],
-    link: "",
-    linkLabel: "",
-    caseStudyLink: "",
+    slug: "", order, number: String(order).padStart(2, "0"),
+    title: "", client: "", year: "", role: "", summary: "", description: "",
+    tools: [], skills: [], coverImage: "", images: [], link: "", linkLabel: "", caseStudyLink: "",
   };
 }
 
 function emptyPhotoLocation(order = 99): PhotoLocation {
-  return {
-    slug: "",
-    order,
-    location: "",
-    headline: "",
-    subheadline: "",
-    description: "",
-    images: [],
-  };
+  return { slug: "", order, location: "", headline: "", subheadline: "", description: "", images: [] };
 }
 
 function normalizeData(data: Partial<CmsData>): CmsData {
   return {
-    writing: Array.isArray(data.writing) ? data.writing : [],
-    gear: data.gear?.sections ? data.gear : emptyGear(),
-    projects: Array.isArray(data.projects) ? data.projects : [],
-    photos: Array.isArray(data.photos) ? data.photos : [],
+    writing:  Array.isArray(data.writing)  ? data.writing  : [],
+    gear:     data.gear?.sections          ? data.gear      : emptyGear(),
+    projects: Array.isArray(data.projects) ? data.projects  : [],
+    photos:   Array.isArray(data.photos)   ? data.photos    : [],
   };
 }
 
 function imagesToText(images: PhotoImage[] = []) {
   return images
-    .map((photo) => [photo.src, photo.alt, photo.width || "", photo.height || ""].join(" | "))
+    .map((p) => [p.src, p.alt, p.width || "", p.height || ""].join(" | "))
     .join("\n");
 }
 
 function textToImages(value: string): PhotoImage[] {
   return value
     .split("\n")
-    .map((line) => line.trim())
+    .map((l) => l.trim())
     .filter(Boolean)
     .map((line) => {
-      const [src = "", alt = "", width = "1600", height = "1200"] = line.split("|").map((part) => part.trim());
-      return {
-        src,
-        alt,
-        width: Number(width) || 1600,
-        height: Number(height) || 1200,
-      };
+      const [src = "", alt = "", width = "1600", height = "1200"] =
+        line.split("|").map((p) => p.trim());
+      return { src, alt, width: Number(width) || 1600, height: Number(height) || 1200 };
     })
-    .filter((photo) => photo.src);
+    .filter((p) => p.src);
 }
 
+/* ── Primitive UI components ─────────────────────────────────────── */
 function Field(props: {
   label: string;
   value: string | number;
-  onChange: (value: string) => void;
+  onChange: (v: string) => void;
   placeholder?: string;
   type?: string;
   required?: boolean;
@@ -259,7 +279,7 @@ function Field(props: {
         value={props.value}
         required={props.required}
         placeholder={props.placeholder}
-        onChange={(event) => props.onChange(event.target.value)}
+        onChange={(e) => props.onChange(e.target.value)}
       />
     </label>
   );
@@ -268,7 +288,7 @@ function Field(props: {
 function TextArea(props: {
   label: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (v: string) => void;
   rows?: number;
   placeholder?: string;
 }) {
@@ -279,16 +299,20 @@ function TextArea(props: {
         value={props.value}
         rows={props.rows ?? 5}
         placeholder={props.placeholder}
-        onChange={(event) => props.onChange(event.target.value)}
+        onChange={(e) => props.onChange(e.target.value)}
       />
     </label>
   );
 }
 
-function Toggle(props: { label: string; checked: boolean; onChange: (checked: boolean) => void }) {
+function Toggle(props: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <label className="cms-toggle">
-      <input type="checkbox" checked={props.checked} onChange={(event) => props.onChange(event.target.checked)} />
+      <input
+        type="checkbox"
+        checked={props.checked}
+        onChange={(e) => props.onChange(e.target.checked)}
+      />
       <span>{props.label}</span>
     </label>
   );
@@ -317,76 +341,505 @@ function SmallButton(props: {
   );
 }
 
+/* ── Sidebar ─────────────────────────────────────────────────────── */
+function Sidebar({
+  activeTab,
+  onTabChange,
+  onLogout,
+}: {
+  activeTab: Tab;
+  onTabChange: (tab: Tab) => void;
+  onLogout: () => void;
+}) {
+  return (
+    <aside className="cms-sidebar" aria-label="CMS navigation">
+      {/* Workspace block */}
+      <div className="cms-workspace" role="button" aria-label="Workspace">
+        <div className="cms-workspace-inner">
+          <div className="cms-workspace-avatar">L</div>
+          <div className="cms-workspace-info">
+            <span className="cms-workspace-name">Lộc Digital</span>
+            <span className="cms-workspace-sub">CMS Admin</span>
+          </div>
+        </div>
+        <ChevronDown size={15} className="cms-workspace-chevron" />
+      </div>
+
+      {/* Nav groups */}
+      <nav className="cms-nav-groups" aria-label="Content sections">
+        {navGroups.map((group) => (
+          <div key={group.label} className="cms-nav-group">
+            <p className="cms-nav-kicker">{group.label}</p>
+            {group.items.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`cms-nav-btn${activeTab === item.id ? " is-active" : ""}`}
+                  onClick={() => onTabChange(item.id)}
+                  aria-current={activeTab === item.id ? "page" : undefined}
+                >
+                  <Icon size={17} />
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </nav>
+
+      {/* Storage card */}
+      <div className="cms-sidebar-storage" aria-label="Storage usage">
+        <div className="cms-storage-head">
+          <span className="cms-storage-label">
+            <HardDrive size={14} />
+            Storage
+          </span>
+          <span className="cms-storage-pct">80%</span>
+        </div>
+        <div className="cms-storage-bar">
+          <div className="cms-storage-fill" style={{ width: "80%" }} />
+        </div>
+        <div className="cms-storage-meta">8.0 GB of 10 GB used</div>
+        <button type="button" className="cms-storage-upgrade">Upgrade Plan ↗</button>
+      </div>
+
+      {/* User row */}
+      <div className="cms-sidebar-user">
+        <div className="cms-sidebar-user-avatar">A</div>
+        <div className="cms-sidebar-user-info">
+          <div className="cms-sidebar-user-name">admin</div>
+          <div className="cms-sidebar-user-role">Administrator</div>
+        </div>
+        <button
+          type="button"
+          className="cms-sidebar-logout"
+          title="Log out"
+          onClick={onLogout}
+          aria-label="Log out"
+        >
+          <LogOut size={15} />
+        </button>
+      </div>
+    </aside>
+  );
+}
+
+/* ── Topbar ─────────────────────────────────────────────────────── */
+function Topbar({ activeTab }: { activeTab: Tab }) {
+  const label = navGroups.flatMap((g) => g.items).find((i) => i.id === activeTab)?.label ?? "Dashboard";
+
+  return (
+    <header className="cms-topbar">
+      {/* Search */}
+      <div className="cms-topbar-search" role="search">
+        <Search size={15} className="cms-topbar-search-icon" />
+        <input
+          type="search"
+          placeholder="Search content…"
+          aria-label="Search CMS content"
+        />
+        <kbd className="cms-topbar-kbd">⌘K</kbd>
+      </div>
+
+      {/* Right actions */}
+      <div className="cms-topbar-actions">
+        <button type="button" className="cms-topbar-btn" id="cms-ask-ai-btn" aria-label="Ask AI">
+          <Sparkles size={15} className="cms-topbar-ai-icon" />
+          Ask AI
+        </button>
+
+        <button type="button" className="cms-topbar-btn cms-topbar-btn-primary" id="cms-quick-create-btn" aria-label="Quick create">
+          <Plus size={15} />
+          Quick Create
+        </button>
+
+        <button type="button" className="cms-topbar-btn cms-topbar-btn-icon" aria-label="Notifications">
+          <Bell size={16} />
+          <span className="cms-notif-dot" aria-hidden="true" />
+        </button>
+
+        <button type="button" className="cms-topbar-btn cms-topbar-btn-icon" aria-label="Toggle dark mode">
+          <Moon size={16} />
+        </button>
+
+        <div
+          className="cms-topbar-avatar"
+          role="button"
+          aria-label="User menu"
+          title={`Viewing: ${label}`}
+        >
+          A
+        </div>
+      </div>
+    </header>
+  );
+}
+
+/* ── Stat card ──────────────────────────────────────────────────── */
+function StatCard({ def, value, footerValues }: {
+  def: StatDef;
+  value: string;
+  footerValues: string[];
+}) {
+  const Icon = def.icon;
+  return (
+    <article className="cms-stat-card">
+      <div className="cms-stat-head">
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div className={`cms-stat-icon-wrap ${def.accent}`}>
+            <Icon size={17} />
+          </div>
+          <span className="cms-stat-label">{def.title}</span>
+        </div>
+        <span className="cms-stat-growth">↗ live</span>
+      </div>
+
+      <div>
+        <div className="cms-stat-value">{value}</div>
+        <div className="cms-stat-meta">Total count</div>
+      </div>
+
+      <div className="cms-stat-footer">
+        {def.footer.map((label, i) => (
+          <span key={label} className="cms-stat-detail">
+            {label}: {footerValues[i] ?? "—"}
+          </span>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+/* ── Traffic chart (SVG) ────────────────────────────────────────── */
+function TrafficChart() {
+  return (
+    <div className="cms-chart-card">
+      <div className="cms-chart-header">
+        <h2 className="cms-chart-title">Website Traffic</h2>
+        <div className="cms-chart-filters">
+          <button type="button" className="cms-filter-btn">
+            Last 7 Days <ChevronDown size={13} />
+          </button>
+          <button type="button" className="cms-filter-btn">
+            <Calendar size={13} />
+            Jun 14 – Jun 21
+            <ChevronDown size={13} />
+          </button>
+        </div>
+      </div>
+
+      <div className="cms-chart-svg" aria-label="Website traffic chart">
+        <svg
+          viewBox="0 0 900 200"
+          preserveAspectRatio="none"
+          style={{ width: "100%", height: "100%", display: "block" }}
+          role="img"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="cms-grad-blue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stopColor="#0075de" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#0075de" stopOpacity="0"    />
+            </linearGradient>
+            <linearGradient id="cms-grad-green" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stopColor="#16a34a" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#16a34a" stopOpacity="0"    />
+            </linearGradient>
+          </defs>
+
+          {/* Grid lines */}
+          {[40, 80, 120, 160].map((y) => (
+            <line key={y} x1="0" y1={y} x2="900" y2={y}
+              stroke="#E8E8E2" strokeWidth="1" />
+          ))}
+
+          {/* Primary curve — views */}
+          <path
+            d="M0,140 C60,110 120,130 200,100 C280,70 320,90 400,60
+               C480,30 520,120 600,110 C680,100 720,40 800,60 C840,70 870,80 900,75
+               L900,200 L0,200 Z"
+            fill="url(#cms-grad-blue)"
+          />
+          <path
+            d="M0,140 C60,110 120,130 200,100 C280,70 320,90 400,60
+               C480,30 520,120 600,110 C680,100 720,40 800,60 C840,70 870,80 900,75"
+            fill="none" stroke="#0075de" strokeWidth="2.5" strokeLinecap="round"
+          />
+
+          {/* Secondary curve — writing */}
+          <path
+            d="M0,170 C80,165 140,175 220,160 C300,145 340,170 430,158
+               C510,148 550,172 640,162 C720,153 760,170 840,165 C865,163 882,162 900,165
+               L900,200 L0,200 Z"
+            fill="url(#cms-grad-green)"
+          />
+          <path
+            d="M0,170 C80,165 140,175 220,160 C300,145 340,170 430,158
+               C510,148 550,172 640,162 C720,153 760,170 840,165 C865,163 882,162 900,165"
+            fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      <div className="cms-chart-legend" aria-label="Chart legend">
+        <div className="cms-legend-item">
+          <div className="cms-legend-dot" style={{ background: "#0075de" }} />
+          Page views
+        </div>
+        <div className="cms-legend-item">
+          <div className="cms-legend-dot" style={{ background: "#16a34a" }} />
+          Writing reads
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Recent posts table ─────────────────────────────────────────── */
+function RecentPostsTable({ posts }: { posts: WritingPost[] }) {
+  const display = posts.slice(0, 5);
+
+  function statusBadge(post: WritingPost) {
+    if (post.draft)      return <span className="cms-badge cms-badge-draft">Draft</span>;
+    if (!post.publishedAt) return <span className="cms-badge cms-badge-scheduled">Scheduled</span>;
+    return <span className="cms-badge cms-badge-published">Published</span>;
+  }
+
+  return (
+    <div className="cms-table-card">
+      <div className="cms-table-head-bar">
+        <div>
+          <div className="cms-table-title">Recent Writing</div>
+          <div className="cms-table-sub">Your latest content updates</div>
+        </div>
+        <button type="button" className="cms-table-more" aria-label="More options">
+          <MoreHorizontal size={16} />
+        </button>
+      </div>
+
+      {display.length === 0 ? (
+        <div style={{ padding: "24px 20px", color: "var(--muted)", fontSize: 13 }}>
+          No posts yet. Create your first writing entry.
+        </div>
+      ) : (
+        <div style={{ overflowX: "auto" }}>
+          <table className="cms-table">
+            <thead>
+              <tr>
+                <th>Post</th>
+                <th>Status</th>
+                <th>Published</th>
+                <th>Tags</th>
+              </tr>
+            </thead>
+            <tbody>
+              {display.map((post) => (
+                <tr key={post.slug}>
+                  <td>
+                    <div className="cms-table-post-cell">
+                      <div className="cms-table-post-icon" aria-hidden="true">
+                        <FileText size={16} />
+                      </div>
+                      <span className="cms-table-post-title">
+                        {post.headline || post.title || post.slug || "(Untitled)"}
+                      </span>
+                    </div>
+                  </td>
+                  <td>{statusBadge(post)}</td>
+                  <td style={{ fontSize: 12, fontFamily: "var(--mono)", color: "var(--muted)" }}>
+                    {post.publishedAt || "—"}
+                  </td>
+                  <td style={{ fontSize: 12, color: "var(--muted)" }}>
+                    {post.tags.slice(0, 2).join(", ") || "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Categories panel ───────────────────────────────────────────── */
+function CategoriesPanel({ data }: { data: CmsData }) {
+  const gearTotal = data.gear.sections.reduce((s, sec) => s + sec.items.length, 0);
+  const total = data.writing.length + gearTotal + data.projects.length + data.photos.length;
+
+  const categories = [
+    { name: "Writing",   count: data.writing.length  },
+    { name: "Gear",      count: gearTotal             },
+    { name: "Projects",  count: data.projects.length  },
+    { name: "Photos",    count: data.photos.length    },
+  ];
+
+  return (
+    <div className="cms-panel">
+      <h2 className="cms-panel-title">Content Breakdown</h2>
+      <div className="cms-category-list">
+        {categories.map((cat) => {
+          const pct = total > 0 ? Math.round((cat.count / total) * 100) : 0;
+          return (
+            <div key={cat.name} className="cms-category-row">
+              <div className="cms-category-meta">
+                <span className="cms-category-name">{cat.name}</span>
+                <span className="cms-category-pct">{cat.count} items · {pct}%</span>
+              </div>
+              <div className="cms-category-bar">
+                <div
+                  className="cms-category-fill"
+                  style={{ width: `${pct}%` }}
+                  role="progressbar"
+                  aria-valuenow={pct}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ── Activity panel ─────────────────────────────────────────────── */
+function ActivityPanel() {
+  return (
+    <div className="cms-panel">
+      <h2 className="cms-panel-title">Recent Activity</h2>
+      <div className="cms-activity-list">
+        {activities.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.text} className="cms-activity-item">
+              <div className="cms-activity-icon" aria-hidden="true">
+                <Icon size={15} />
+              </div>
+              <div>
+                <div className="cms-activity-text">{item.text}</div>
+                <div className="cms-activity-time">
+                  <Clock3 size={10} />
+                  {item.time}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ── Dashboard / Overview ────────────────────────────────────────── */
+function Dashboard({ data }: { data: CmsData }) {
+  const gearTotal = data.gear.sections.reduce((s, sec) => s + sec.items.length, 0);
+  const draftCount  = data.writing.filter((p) => p.draft).length;
+  const publishedCount = data.writing.filter((p) => !p.draft).length;
+
+  const statValues: [string, string[]][] = [
+    [
+      String(data.writing.length),
+      [String(publishedCount), String(draftCount), "0"],
+    ],
+    [String(gearTotal), [String(data.gear.sections.length)]],
+    [String(data.projects.length), ["client"]],
+    [
+      String(data.photos.length),
+      [String(data.photos.reduce((s, p) => s + p.images.length, 0))],
+    ],
+  ];
+
+  return (
+    <div className="cms-content">
+      {/* Page header */}
+      <div className="cms-page-header">
+        <h1 className="cms-page-title">Dashboard</h1>
+        <p className="cms-page-subtitle">
+          Here&apos;s what&apos;s happening with your content today.
+        </p>
+      </div>
+
+      {/* Stat cards */}
+      <div className="cms-stat-grid">
+        {statDefs.map((def, i) => (
+          <StatCard
+            key={def.title}
+            def={def}
+            value={statValues[i][0]}
+            footerValues={statValues[i][1]}
+          />
+        ))}
+      </div>
+
+      {/* Chart + right col */}
+      <div className="cms-dashboard-grid">
+        <TrafficChart />
+        <div className="cms-right-col">
+          <CategoriesPanel data={data} />
+          <ActivityPanel />
+        </div>
+      </div>
+
+      {/* Recent posts table */}
+      <RecentPostsTable posts={data.writing} />
+    </div>
+  );
+}
+
+/* ── Props & main component ─────────────────────────────────────── */
 type CmsDashboardProps = {
   initialData?: CmsData;
 };
 
 export default function CmsDashboard({ initialData }: CmsDashboardProps) {
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
-  const normalizedInitialData = useMemo(() => (initialData ? normalizeData(initialData) : null), [initialData]);
+  const [activeTab,          setActiveTab]          = useState<Tab>("overview");
+  const normalizedInitial                            = useMemo(
+    () => (initialData ? normalizeData(initialData) : null),
+    [initialData],
+  );
   const [status, setStatus] = useState<Status>(
-    normalizedInitialData
+    normalizedInitial
       ? { type: "success", text: "CMS data ready." }
-      : { type: "loading", text: "Loading CMS data..." },
+      : { type: "loading", text: "Loading CMS data…" },
   );
-  const [data, setData] = useState<CmsData | null>(normalizedInitialData);
-  const [writingDraft, setWritingDraft] = useState<WritingPost>(normalizedInitialData?.writing[0] ?? emptyWriting());
-  const [projectDraft, setProjectDraft] = useState<Project>(
-    normalizedInitialData?.projects[0] ?? emptyProject((normalizedInitialData?.projects.length ?? 0) + 1),
+  const [data,              setData]              = useState<CmsData | null>(normalizedInitial);
+  const [writingDraft,      setWritingDraft]      = useState<WritingPost>(
+    normalizedInitial?.writing[0] ?? emptyWriting(),
   );
-  const [photoDraft, setPhotoDraft] = useState<PhotoLocation>(
-    normalizedInitialData?.photos[0] ?? emptyPhotoLocation((normalizedInitialData?.photos.length ?? 0) + 1),
+  const [projectDraft,      setProjectDraft]      = useState<Project>(
+    normalizedInitial?.projects[0] ??
+    emptyProject((normalizedInitial?.projects.length ?? 0) + 1),
   );
-  const [gearDraft, setGearDraft] = useState<Gear>(normalizedInitialData?.gear ?? emptyGear());
-  const [gearSectionIndex, setGearSectionIndex] = useState(0);
-  const [gearItemIndex, setGearItemIndex] = useState(0);
-  const [saving, setSaving] = useState(false);
-  const [uploadingImages, setUploadingImages] = useState<Array<{ url: string; name: string }>>([]);
-  const [previewImage, setPreviewImage] = useState<{ src: string; alt: string } | null>(null);
-  const gearUploadRef = useRef<HTMLInputElement>(null);
+  const [photoDraft,        setPhotoDraft]        = useState<PhotoLocation>(
+    normalizedInitial?.photos[0] ??
+    emptyPhotoLocation((normalizedInitial?.photos.length ?? 0) + 1),
+  );
+  const [gearDraft,         setGearDraft]         = useState<Gear>(normalizedInitial?.gear ?? emptyGear());
+  const [gearSectionIndex,  setGearSectionIndex]  = useState(0);
+  const [gearItemIndex,     setGearItemIndex]     = useState(0);
+  const [saving,            setSaving]            = useState(false);
+  const [uploadingImages,   setUploadingImages]   = useState<Array<{ url: string; name: string }>>([]);
+  const [previewImage,      setPreviewImage]      = useState<{ src: string; alt: string } | null>(null);
+  const gearUploadRef  = useRef<HTMLInputElement>(null);
   const photoUploadRef = useRef<HTMLInputElement>(null);
 
   const selectedGearSection = gearDraft.sections[gearSectionIndex];
-  const selectedGearItem = selectedGearSection?.items[gearItemIndex];
+  const selectedGearItem    = selectedGearSection?.items[gearItemIndex];
 
-  const metrics = useMemo(() => {
-    if (!data) {
-      return [
-        { label: "Writing", value: "0" },
-        { label: "Gear items", value: "0" },
-        { label: "Work projects", value: "0" },
-        { label: "Photo locations", value: "0" },
-      ];
-    }
-
-    return [
-      { label: "Writing", value: String(data.writing.length) },
-      {
-        label: "Gear items",
-        value: String(data.gear.sections.reduce((sum, section) => sum + section.items.length, 0)),
-      },
-      { label: "Work projects", value: String(data.projects.length) },
-      { label: "Photo locations", value: String(data.photos.length) },
-    ];
-  }, [data]);
-
+  /* ── Data loading ─────────────────────────────────────────────── */
   async function loadData(options: { quiet?: boolean } = {}) {
-    if (!options.quiet) {
-      setStatus({ type: "loading", text: "Loading CMS data..." });
-    }
+    if (!options.quiet) setStatus({ type: "loading", text: "Loading CMS data…" });
 
     const response = await fetch("/api/cms");
-
-    if (response.status === 401) {
-      window.location.href = "/login";
-      return;
-    }
+    if (response.status === 401) { window.location.href = "/login"; return; }
 
     const result = await response.json();
-
-    if (!response.ok || !result.success) {
+    if (!response.ok || !result.success)
       throw new Error(result.error || "Unable to load CMS data.");
-    }
 
     const nextData = normalizeData(result.data);
     setData(nextData);
@@ -397,31 +850,26 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     setGearSectionIndex(0);
     setGearItemIndex(0);
 
-    if (!options.quiet) {
-      setStatus({ type: "success", text: "CMS data ready." });
-    }
+    if (!options.quiet) setStatus({ type: "success", text: "CMS data ready." });
   }
 
   useEffect(() => {
-    if (normalizedInitialData) return;
-
-    loadData().catch((error) => {
-      setStatus({ type: "error", text: error instanceof Error ? error.message : "Unable to load CMS data." });
-    });
-  }, [normalizedInitialData]);
+    if (normalizedInitial) return;
+    loadData().catch((err) =>
+      setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to load CMS data." }),
+    );
+  }, [normalizedInitial]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setPreviewImage(null);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setPreviewImage(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  /* ── Save / Delete / Upload ───────────────────────────────────── */
   async function saveResource(resource: string, payload: unknown, successText: string) {
     setSaving(true);
-    setStatus({ type: "loading", text: "Saving changes..." });
-
+    setStatus({ type: "loading", text: "Saving changes…" });
     try {
       const response = await fetch("/api/cms", {
         method: "POST",
@@ -429,22 +877,14 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
         body: JSON.stringify({ resource, action: "save", data: payload }),
       });
       const result = await response.json();
-
-      if (response.status === 401) {
-        window.location.href = "/login";
-        return;
-      }
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || "Unable to save changes.");
-      }
-
+      if (response.status === 401) { window.location.href = "/login"; return; }
+      if (!response.ok || !result.success) throw new Error(result.error || "Unable to save changes.");
       const nextData = normalizeData(result.data);
       setData(nextData);
       if (resource === "gear") setGearDraft(nextData.gear);
       setStatus({ type: "success", text: successText });
-    } catch (error) {
-      setStatus({ type: "error", text: error instanceof Error ? error.message : "Unable to save changes." });
+    } catch (err) {
+      setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to save changes." });
     } finally {
       setSaving(false);
     }
@@ -452,10 +892,8 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
   async function deleteResource(resource: string, slug: string, successText: string) {
     if (!slug || !window.confirm(`Delete ${slug}?`)) return;
-
     setSaving(true);
-    setStatus({ type: "loading", text: "Deleting entry..." });
-
+    setStatus({ type: "loading", text: "Deleting entry…" });
     try {
       const response = await fetch("/api/cms", {
         method: "POST",
@@ -463,24 +901,16 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
         body: JSON.stringify({ resource, action: "delete", slug }),
       });
       const result = await response.json();
-
-      if (response.status === 401) {
-        window.location.href = "/login";
-        return;
-      }
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || "Unable to delete entry.");
-      }
-
+      if (response.status === 401) { window.location.href = "/login"; return; }
+      if (!response.ok || !result.success) throw new Error(result.error || "Unable to delete entry.");
       const nextData = normalizeData(result.data);
       setData(nextData);
       setWritingDraft(nextData.writing[0] ?? emptyWriting());
       setProjectDraft(nextData.projects[0] ?? emptyProject(nextData.projects.length + 1));
       setPhotoDraft(nextData.photos[0] ?? emptyPhotoLocation(nextData.photos.length + 1));
       setStatus({ type: "success", text: successText });
-    } catch (error) {
-      setStatus({ type: "error", text: error instanceof Error ? error.message : "Unable to delete entry." });
+    } catch (err) {
+      setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to delete entry." });
     } finally {
       setSaving(false);
     }
@@ -488,60 +918,33 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
   async function uploadFiles(target: "photos" | "gear", files: FileList | null, slug?: string) {
     if (!files?.length) return;
-
     setSaving(true);
-    setStatus({ type: "loading", text: "Uploading images..." });
-
+    setStatus({ type: "loading", text: "Uploading images…" });
     if (target === "photos") {
-      const previews = Array.from(files).map((file) => ({
-        url: URL.createObjectURL(file),
-        name: file.name,
-      }));
-      setUploadingImages(previews);
+      setUploadingImages(Array.from(files).map((f) => ({ url: URL.createObjectURL(f), name: f.name })));
     }
-
     try {
       const form = new FormData();
       form.append("target", target);
       if (slug) form.append("slug", slug);
-      Array.from(files).forEach((file) => form.append("files", file));
-
-      const response = await fetch("/api/cms/upload", {
-        method: "POST",
-        body: form,
-      });
+      Array.from(files).forEach((f) => form.append("files", f));
+      const response = await fetch("/api/cms/upload", { method: "POST", body: form });
       const result = await response.json();
-
-      if (response.status === 401) {
-        window.location.href = "/login";
-        return;
-      }
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || "Unable to upload images.");
-      }
-
+      if (response.status === 401) { window.location.href = "/login"; return; }
+      if (!response.ok || !result.success) throw new Error(result.error || "Unable to upload images.");
       const nextData = normalizeData(result.data);
       setData(nextData);
-
-      if (target === "gear" && result.uploaded?.[0]?.src) {
-        updateGearItem("image", result.uploaded[0].src);
-      }
-
+      if (target === "gear" && result.uploaded?.[0]?.src) updateGearItem("image", result.uploaded[0].src);
       if (target === "photos") {
-        const nextLocation = nextData.photos.find((location) => location.slug === slug);
-        if (nextLocation) setPhotoDraft(nextLocation);
+        const nextLoc = nextData.photos.find((l) => l.slug === slug);
+        if (nextLoc) setPhotoDraft(nextLoc);
       }
-
       setStatus({ type: "success", text: "Upload complete." });
-    } catch (error) {
-      setStatus({ type: "error", text: error instanceof Error ? error.message : "Unable to upload images." });
+    } catch (err) {
+      setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to upload images." });
     } finally {
       setSaving(false);
-      setUploadingImages((current) => {
-        current.forEach((img) => URL.revokeObjectURL(img.url));
-        return [];
-      });
+      setUploadingImages((cur) => { cur.forEach((img) => URL.revokeObjectURL(img.url)); return []; });
     }
   }
 
@@ -550,25 +953,25 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     window.location.href = "/login";
   }
 
+  /* ── Gear helpers ─────────────────────────────────────────────── */
   function updateGearSection<K extends keyof GearSection>(field: K, value: GearSection[K]) {
-    setGearDraft((current) => ({
-      ...current,
-      sections: current.sections.map((section, index) =>
-        index === gearSectionIndex ? { ...section, [field]: value } : section,
+    setGearDraft((cur) => ({
+      ...cur,
+      sections: cur.sections.map((sec, i) =>
+        i === gearSectionIndex ? { ...sec, [field]: value } : sec,
       ),
     }));
   }
 
   function updateGearItem<K extends keyof GearItem>(field: K, value: GearItem[K]) {
-    setGearDraft((current) => ({
-      ...current,
-      sections: current.sections.map((section, sectionIndex) => {
-        if (sectionIndex !== gearSectionIndex) return section;
-
+    setGearDraft((cur) => ({
+      ...cur,
+      sections: cur.sections.map((sec, si) => {
+        if (si !== gearSectionIndex) return sec;
         return {
-          ...section,
-          items: section.items.map((item, itemIndex) =>
-            itemIndex === gearItemIndex ? { ...item, [field]: value } : item,
+          ...sec,
+          items: sec.items.map((item, ii) =>
+            ii === gearItemIndex ? { ...item, [field]: value } : item,
           ),
         };
       }),
@@ -576,598 +979,479 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   }
 
   function addGearSection() {
-    setGearDraft((current) => ({
-      ...current,
-      sections: [...current.sections, emptyGearSection()],
-    }));
+    setGearDraft((cur) => ({ ...cur, sections: [...cur.sections, emptyGearSection()] }));
     setGearSectionIndex(gearDraft.sections.length);
     setGearItemIndex(0);
   }
 
   function addGearItem() {
     if (!selectedGearSection) return;
-
-    setGearDraft((current) => ({
-      ...current,
-      sections: current.sections.map((section, index) =>
-        index === gearSectionIndex ? { ...section, items: [...section.items, emptyGearItem()] } : section,
+    setGearDraft((cur) => ({
+      ...cur,
+      sections: cur.sections.map((sec, i) =>
+        i === gearSectionIndex ? { ...sec, items: [...sec.items, emptyGearItem()] } : sec,
       ),
     }));
     setGearItemIndex(selectedGearSection.items.length);
   }
 
   function removeGearItem() {
-    setGearDraft((current) => ({
-      ...current,
-      sections: current.sections.map((section, index) =>
-        index === gearSectionIndex
-          ? { ...section, items: section.items.filter((_, itemIndex) => itemIndex !== gearItemIndex) }
-          : section,
+    setGearDraft((cur) => ({
+      ...cur,
+      sections: cur.sections.map((sec, i) =>
+        i === gearSectionIndex
+          ? { ...sec, items: sec.items.filter((_, ii) => ii !== gearItemIndex) }
+          : sec,
       ),
     }));
     setGearItemIndex(0);
   }
 
   function removeGearSection() {
-    setGearDraft((current) => ({
-      ...current,
-      sections: current.sections.filter((_, index) => index !== gearSectionIndex),
-    }));
+    setGearDraft((cur) => ({ ...cur, sections: cur.sections.filter((_, i) => i !== gearSectionIndex) }));
     setGearSectionIndex(0);
     setGearItemIndex(0);
   }
 
+  /* ── Tab renderers ────────────────────────────────────────────── */
   function renderOverview() {
-    const recentWriting = data?.writing.slice(0, 3) ?? [];
-    const recentPhotos = data?.photos.slice(0, 3) ?? [];
-
-    return (
-      <section className="cms-section">
-        <div className="cms-section-head">
-          <div>
-            <p className="cms-kicker">Static content CMS</p>
-            <h1>Manage loc.digital content from one desk.</h1>
-          </div>
-          <a className="cms-link-button" href="/" target="_blank" rel="noreferrer">
-            <Eye size={16} />
-            View site
-          </a>
-        </div>
-
-        <div className="cms-metrics">
-          {metrics.map((metric) => (
-            <div className="cms-metric" key={metric.label}>
-              <span>{metric.label}</span>
-              <strong>{metric.value}</strong>
-            </div>
-          ))}
-        </div>
-
-        <div className="cms-overview-grid">
-          <div className="cms-panel">
-            <div className="cms-panel-head">
-              <h2>Content map</h2>
-              <span>From build summary</span>
-            </div>
-            <ul className="cms-path-list">
-              <li>
-                <FileText size={16} />
-                <span>Writing posts save to src/content/writing/*.md</span>
-              </li>
-              <li>
-                <Package size={16} />
-                <span>Gear products save to src/content/gear/setup.json</span>
-              </li>
-              <li>
-                <Briefcase size={16} />
-                <span>Work projects save to src/content/projects/*.json</span>
-              </li>
-              <li>
-                <Camera size={16} />
-                <span>Photo locations save to src/content/photos/*.json</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="cms-panel">
-            <div className="cms-panel-head">
-              <h2>Recent writing</h2>
-              <span>{recentWriting.length} entries</span>
-            </div>
-            <div className="cms-mini-list">
-              {recentWriting.length > 0 ? (
-                recentWriting.map((post) => (
-                  <button key={post.slug} type="button" onClick={() => { setActiveTab("writing"); setWritingDraft(post); }}>
-                    <span>{post.headline}</span>
-                    <small>{post.publishedAt}</small>
-                  </button>
-                ))
-              ) : (
-                <p>No posts yet.</p>
-              )}
-            </div>
-          </div>
-
-          <div className="cms-panel">
-            <div className="cms-panel-head">
-              <h2>Photo locations</h2>
-              <span>{recentPhotos.length} shown</span>
-            </div>
-            <div className="cms-mini-list">
-              {recentPhotos.length > 0 ? (
-                recentPhotos.map((location) => (
-                  <button key={location.slug} type="button" onClick={() => { setActiveTab("photos"); setPhotoDraft(location); }}>
-                    <span>{location.location}</span>
-                    <small>{location.images.length} photos</small>
-                  </button>
-                ))
-              ) : (
-                <p>No locations yet.</p>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    if (!data) return null;
+    return <Dashboard data={data} />;
   }
 
   function renderWriting() {
     return (
-      <section className="cms-editor-grid">
-        <aside className="cms-list-panel">
-          <div className="cms-panel-head">
-            <h2>Writing</h2>
-            <SmallButton icon={<Plus size={15} />} tone="secondary" onClick={() => setWritingDraft(emptyWriting())}>
-              New
-            </SmallButton>
-          </div>
-
-          <div className="cms-list">
-            {(data?.writing ?? []).map((post) => (
-              <button
-                className={post.slug === writingDraft.slug ? "is-active" : ""}
-                key={post.slug}
-                type="button"
-                onClick={() => setWritingDraft(post)}
-              >
-                <span>{post.headline}</span>
-                <small>{post.draft ? "Draft" : post.publishedAt}</small>
-              </button>
-            ))}
-          </div>
-        </aside>
-
-        <form
-          className="cms-editor"
-          onSubmit={(event) => {
-            event.preventDefault();
-            saveResource("writing", writingDraft, "Writing post saved.");
-          }}
-        >
-          <div className="cms-editor-head">
-            <div>
-              <p className="cms-kicker">Markdown entry</p>
-              <h2>{writingDraft.slug ? writingDraft.headline || writingDraft.slug : "New writing post"}</h2>
-            </div>
-            <div className="cms-actions">
-              <SmallButton icon={<Save size={16} />} type="submit" disabled={saving}>
-                Save
-              </SmallButton>
-              <SmallButton
-                icon={<Trash2 size={16} />}
-                tone="danger"
-                disabled={!writingDraft.slug || saving}
-                onClick={() => deleteResource("writing", writingDraft.slug, "Writing post deleted.")}
-              >
-                Delete
+      <div className="cms-content">
+        <div className="cms-page-header">
+          <h1 className="cms-page-title">Writing</h1>
+          <p className="cms-page-subtitle">Create and manage your blog posts and articles.</p>
+        </div>
+        <section className="cms-editor-grid">
+          <aside className="cms-list-panel">
+            <div className="cms-panel-head">
+              <h2>Posts</h2>
+              <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={() => setWritingDraft(emptyWriting())}>
+                New
               </SmallButton>
             </div>
-          </div>
+            <div className="cms-list">
+              {(data?.writing ?? []).map((post) => (
+                <button
+                  key={post.slug}
+                  type="button"
+                  className={post.slug === writingDraft.slug ? "is-active" : ""}
+                  onClick={() => setWritingDraft(post)}
+                >
+                  <span>{post.headline || post.title || "(Untitled)"}</span>
+                  <small>{post.draft ? "Draft" : post.publishedAt}</small>
+                </button>
+              ))}
+              {(data?.writing ?? []).length === 0 && (
+                <p className="cms-empty">No posts yet.</p>
+              )}
+            </div>
+          </aside>
 
-          <div className="cms-form-grid">
-            <Field label="Slug" value={writingDraft.slug} onChange={(value) => setWritingDraft({ ...writingDraft, slug: value })} />
-            <Field label="Published" type="date" value={writingDraft.publishedAt} onChange={(value) => setWritingDraft({ ...writingDraft, publishedAt: value })} />
-            <Field label="Title" required value={writingDraft.title} onChange={(value) => setWritingDraft({ ...writingDraft, title: value })} />
-            <Field label="Headline" required value={writingDraft.headline} onChange={(value) => setWritingDraft({ ...writingDraft, headline: value })} />
-            <Field label="Tags" value={listToString(writingDraft.tags)} onChange={(value) => setWritingDraft({ ...writingDraft, tags: splitList(value) })} />
-            <Field label="Cover image" value={writingDraft.coverImage} onChange={(value) => setWritingDraft({ ...writingDraft, coverImage: value })} />
-            <TextArea label="Summary" value={writingDraft.summary} rows={3} onChange={(value) => setWritingDraft({ ...writingDraft, summary: value })} />
-            <TextArea label="Meta description" value={writingDraft.metaDescription} rows={3} onChange={(value) => setWritingDraft({ ...writingDraft, metaDescription: value })} />
-            <TextArea label="Body markdown" value={writingDraft.body} rows={16} onChange={(value) => setWritingDraft({ ...writingDraft, body: value })} />
-          </div>
+          <form
+            className="cms-editor"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveResource("writing", writingDraft, "Writing post saved.");
+            }}
+          >
+            <div className="cms-editor-head">
+              <div>
+                <p className="cms-kicker">Markdown entry</p>
+                <h2>{writingDraft.slug ? writingDraft.headline || writingDraft.slug : "New writing post"}</h2>
+              </div>
+              <div className="cms-actions">
+                <SmallButton icon={<Save size={15} />} type="submit" disabled={saving}>Save</SmallButton>
+                <SmallButton
+                  icon={<Trash2 size={15} />}
+                  tone="danger"
+                  disabled={!writingDraft.slug || saving}
+                  onClick={() => deleteResource("writing", writingDraft.slug, "Writing post deleted.")}
+                >
+                  Delete
+                </SmallButton>
+              </div>
+            </div>
 
-          <Toggle label="Keep as draft" checked={writingDraft.draft} onChange={(checked) => setWritingDraft({ ...writingDraft, draft: checked })} />
-        </form>
-      </section>
+            <div className="cms-form-grid">
+              <Field label="Slug"       value={writingDraft.slug}            onChange={(v) => setWritingDraft({ ...writingDraft, slug: v })} />
+              <Field label="Published"  type="date" value={writingDraft.publishedAt} onChange={(v) => setWritingDraft({ ...writingDraft, publishedAt: v })} />
+              <Field label="Title"      required value={writingDraft.title}   onChange={(v) => setWritingDraft({ ...writingDraft, title: v })} />
+              <Field label="Headline"   required value={writingDraft.headline} onChange={(v) => setWritingDraft({ ...writingDraft, headline: v })} />
+              <Field label="Tags"       value={listToString(writingDraft.tags)} onChange={(v) => setWritingDraft({ ...writingDraft, tags: splitList(v) })} />
+              <Field label="Cover image" value={writingDraft.coverImage}      onChange={(v) => setWritingDraft({ ...writingDraft, coverImage: v })} />
+              <TextArea label="Summary"           value={writingDraft.summary}          rows={3}  onChange={(v) => setWritingDraft({ ...writingDraft, summary: v })} />
+              <TextArea label="Meta description"  value={writingDraft.metaDescription}  rows={3}  onChange={(v) => setWritingDraft({ ...writingDraft, metaDescription: v })} />
+              <TextArea label="Body markdown"     value={writingDraft.body}             rows={16} onChange={(v) => setWritingDraft({ ...writingDraft, body: v })} />
+            </div>
+            <Toggle label="Keep as draft" checked={writingDraft.draft} onChange={(v) => setWritingDraft({ ...writingDraft, draft: v })} />
+          </form>
+        </section>
+      </div>
     );
   }
 
   function renderGear() {
     return (
-      <section className="cms-editor-grid">
-        <aside className="cms-list-panel">
-          <div className="cms-panel-head">
-            <h2>Gear</h2>
-            <SmallButton icon={<Plus size={15} />} tone="secondary" onClick={addGearSection}>
-              Section
-            </SmallButton>
-          </div>
-
-          <div className="cms-list">
-            {gearDraft.sections.map((section, index) => (
-              <button
-                className={index === gearSectionIndex ? "is-active" : ""}
-                key={section.slug || `${section.title}-${index}`}
-                type="button"
-                onClick={() => { setGearSectionIndex(index); setGearItemIndex(0); }}
-              >
-                <span>{section.title}</span>
-                <small>{section.items.length} items</small>
-              </button>
-            ))}
-          </div>
-        </aside>
-
-        <div className="cms-editor">
-          <div className="cms-editor-head">
-            <div>
-              <p className="cms-kicker">Gear setup JSON</p>
-              <h2>{gearDraft.title}</h2>
-            </div>
-            <div className="cms-actions">
-              <SmallButton icon={<Save size={16} />} disabled={saving} onClick={() => saveResource("gear", gearDraft, "Gear saved.")}>
-                Save all
+      <div className="cms-content">
+        <div className="cms-page-header">
+          <h1 className="cms-page-title">Gear</h1>
+          <p className="cms-page-subtitle">Manage your tools, setup, and product recommendations.</p>
+        </div>
+        <section className="cms-editor-grid">
+          <aside className="cms-list-panel">
+            <div className="cms-panel-head">
+              <h2>Sections</h2>
+              <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={addGearSection}>
+                Section
               </SmallButton>
             </div>
-          </div>
+            <div className="cms-list">
+              {gearDraft.sections.map((sec, index) => (
+                <button
+                  key={sec.slug || `${sec.title}-${index}`}
+                  type="button"
+                  className={index === gearSectionIndex ? "is-active" : ""}
+                  onClick={() => { setGearSectionIndex(index); setGearItemIndex(0); }}
+                >
+                  <span>{sec.title}</span>
+                  <small>{sec.items.length} items</small>
+                </button>
+              ))}
+              {gearDraft.sections.length === 0 && <p className="cms-empty">No sections yet.</p>}
+            </div>
+          </aside>
 
-          <div className="cms-form-grid">
-            <Field label="Page title" value={gearDraft.title} onChange={(value) => setGearDraft({ ...gearDraft, title: value })} />
-            <Field label="Headline HTML" value={gearDraft.headline} onChange={(value) => setGearDraft({ ...gearDraft, headline: value })} />
-            <TextArea label="Description" value={gearDraft.description} rows={3} onChange={(value) => setGearDraft({ ...gearDraft, description: value })} />
-          </div>
-
-          {selectedGearSection ? (
-            <>
-              <div className="cms-subhead">
-                <h3>Section</h3>
-                <SmallButton icon={<Trash2 size={15} />} tone="danger" onClick={removeGearSection}>
-                  Remove section
+          <div className="cms-editor">
+            <div className="cms-editor-head">
+              <div>
+                <p className="cms-kicker">Gear setup JSON</p>
+                <h2>{gearDraft.title}</h2>
+              </div>
+              <div className="cms-actions">
+                <SmallButton icon={<Save size={15} />} disabled={saving} onClick={() => saveResource("gear", gearDraft, "Gear saved.")}>
+                  Save all
                 </SmallButton>
               </div>
+            </div>
 
-              <div className="cms-form-grid">
-                <Field label="Section title" value={selectedGearSection.title} onChange={(value) => updateGearSection("title", value)} />
-                <Field label="Section slug" value={selectedGearSection.slug} onChange={(value) => updateGearSection("slug", value)} />
-                <Field label="Section headline" value={selectedGearSection.headline} onChange={(value) => updateGearSection("headline", value)} />
-                <Field label="Section image" value={selectedGearSection.image} onChange={(value) => updateGearSection("image", value)} />
-                <TextArea label="Section description" value={selectedGearSection.description} rows={3} onChange={(value) => updateGearSection("description", value)} />
-              </div>
+            <div className="cms-form-grid">
+              <Field label="Page title"    value={gearDraft.title}       onChange={(v) => setGearDraft({ ...gearDraft, title: v })} />
+              <Field label="Headline HTML" value={gearDraft.headline}    onChange={(v) => setGearDraft({ ...gearDraft, headline: v })} />
+              <TextArea label="Description" value={gearDraft.description} rows={3} onChange={(v) => setGearDraft({ ...gearDraft, description: v })} />
+            </div>
 
-              <div className="cms-item-toolbar">
-                <select value={gearItemIndex} onChange={(event) => setGearItemIndex(Number(event.target.value))}>
-                  {selectedGearSection.items.map((item, index) => (
-                    <option value={index} key={item.slug || `${item.name}-${index}`}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-                <SmallButton icon={<Plus size={15} />} tone="secondary" onClick={addGearItem}>
-                  Item
-                </SmallButton>
-              </div>
+            {selectedGearSection ? (
+              <>
+                <div className="cms-subhead">
+                  <h3>Section</h3>
+                  <SmallButton icon={<Trash2 size={14} />} tone="danger" onClick={removeGearSection}>
+                    Remove section
+                  </SmallButton>
+                </div>
 
-              {selectedGearItem ? (
-                <>
-                  <div className="cms-form-grid">
-                    <Field label="Name" value={selectedGearItem.name} onChange={(value) => updateGearItem("name", value)} />
-                    <Field label="Slug" value={selectedGearItem.slug} onChange={(value) => updateGearItem("slug", value)} />
-                    <Field label="Headline" value={selectedGearItem.headline} onChange={(value) => updateGearItem("headline", value)} />
-                    <Field label="Tag" value={selectedGearItem.tag} onChange={(value) => updateGearItem("tag", value)} />
-                    <Field label="URL" value={selectedGearItem.url} onChange={(value) => updateGearItem("url", value)} />
-                    <Field label="Image path" value={selectedGearItem.image} onChange={(value) => updateGearItem("image", value)} />
-                    <TextArea label="Description" value={selectedGearItem.description} rows={4} onChange={(value) => updateGearItem("description", value)} />
-                  </div>
+                <div className="cms-form-grid">
+                  <Field label="Section title"    value={selectedGearSection.title}       onChange={(v) => updateGearSection("title", v)} />
+                  <Field label="Section slug"     value={selectedGearSection.slug}        onChange={(v) => updateGearSection("slug", v)} />
+                  <Field label="Section headline" value={selectedGearSection.headline}    onChange={(v) => updateGearSection("headline", v)} />
+                  <Field label="Section image"    value={selectedGearSection.image}       onChange={(v) => updateGearSection("image", v)} />
+                  <TextArea label="Section description" value={selectedGearSection.description} rows={3} onChange={(v) => updateGearSection("description", v)} />
+                </div>
 
-                  <div className="cms-upload-row">
-                    <input
-                      ref={gearUploadRef}
-                      type="file"
-                      accept="image/*"
-                      hidden
-                      onChange={(event) => uploadFiles("gear", event.target.files)}
-                    />
-                    <SmallButton icon={<Upload size={15} />} tone="secondary" onClick={() => gearUploadRef.current?.click()}>
-                      Upload product image
-                    </SmallButton>
-                    <SmallButton icon={<Trash2 size={15} />} tone="danger" onClick={removeGearItem}>
-                      Remove item
-                    </SmallButton>
-                  </div>
-                </>
-              ) : (
-                <p className="cms-empty">No item in this section yet.</p>
-              )}
-            </>
-          ) : (
-            <p className="cms-empty">Create a section to start adding gear.</p>
-          )}
-        </div>
-      </section>
+                <div className="cms-item-toolbar">
+                  <select
+                    value={gearItemIndex}
+                    onChange={(e) => setGearItemIndex(Number(e.target.value))}
+                    aria-label="Select gear item"
+                  >
+                    {selectedGearSection.items.map((item, i) => (
+                      <option key={item.slug || `${item.name}-${i}`} value={i}>{item.name}</option>
+                    ))}
+                  </select>
+                  <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={addGearItem}>Item</SmallButton>
+                </div>
+
+                {selectedGearItem ? (
+                  <>
+                    <div className="cms-form-grid">
+                      <Field label="Name"        value={selectedGearItem.name}        onChange={(v) => updateGearItem("name", v)} />
+                      <Field label="Slug"        value={selectedGearItem.slug}        onChange={(v) => updateGearItem("slug", v)} />
+                      <Field label="Headline"    value={selectedGearItem.headline}    onChange={(v) => updateGearItem("headline", v)} />
+                      <Field label="Tag"         value={selectedGearItem.tag}         onChange={(v) => updateGearItem("tag", v)} />
+                      <Field label="URL"         value={selectedGearItem.url}         onChange={(v) => updateGearItem("url", v)} />
+                      <Field label="Image path"  value={selectedGearItem.image}       onChange={(v) => updateGearItem("image", v)} />
+                      <TextArea label="Description" value={selectedGearItem.description} rows={4} onChange={(v) => updateGearItem("description", v)} />
+                    </div>
+                    <div className="cms-upload-row">
+                      <input ref={gearUploadRef} type="file" accept="image/*" hidden onChange={(e) => uploadFiles("gear", e.target.files)} />
+                      <SmallButton icon={<Upload size={14} />} tone="secondary" onClick={() => gearUploadRef.current?.click()}>
+                        Upload product image
+                      </SmallButton>
+                      <SmallButton icon={<Trash2 size={14} />} tone="danger" onClick={removeGearItem}>Remove item</SmallButton>
+                    </div>
+                  </>
+                ) : (
+                  <p className="cms-empty">No item in this section yet.</p>
+                )}
+              </>
+            ) : (
+              <p className="cms-empty">Create a section to start adding gear.</p>
+            )}
+          </div>
+        </section>
+      </div>
     );
   }
 
   function renderWork() {
     return (
-      <section className="cms-editor-grid">
-        <aside className="cms-list-panel">
-          <div className="cms-panel-head">
-            <h2>Work</h2>
-            <SmallButton icon={<Plus size={15} />} tone="secondary" onClick={() => setProjectDraft(emptyProject((data?.projects.length ?? 0) + 1))}>
-              New
-            </SmallButton>
-          </div>
-
-          <div className="cms-list">
-            {(data?.projects ?? []).map((project) => (
-              <button
-                className={project.slug === projectDraft.slug ? "is-active" : ""}
-                key={project.slug}
-                type="button"
-                onClick={() => setProjectDraft(project)}
-              >
-                <span>{project.title}</span>
-                <small>{project.number} / {project.year}</small>
-              </button>
-            ))}
-          </div>
-        </aside>
-
-        <form
-          className="cms-editor"
-          onSubmit={(event) => {
-            event.preventDefault();
-            saveResource("projects", projectDraft, "Work project saved.");
-          }}
-        >
-          <div className="cms-editor-head">
-            <div>
-              <p className="cms-kicker">Project JSON</p>
-              <h2>{projectDraft.title || "New work project"}</h2>
-            </div>
-            <div className="cms-actions">
-              <SmallButton icon={<Save size={16} />} type="submit" disabled={saving}>
-                Save
-              </SmallButton>
+      <div className="cms-content">
+        <div className="cms-page-header">
+          <h1 className="cms-page-title">Work</h1>
+          <p className="cms-page-subtitle">Manage your portfolio projects and case studies.</p>
+        </div>
+        <section className="cms-editor-grid">
+          <aside className="cms-list-panel">
+            <div className="cms-panel-head">
+              <h2>Projects</h2>
               <SmallButton
-                icon={<Trash2 size={16} />}
-                tone="danger"
-                disabled={!projectDraft.slug || saving}
-                onClick={() => deleteResource("projects", projectDraft.slug, "Work project deleted.")}
+                icon={<Plus size={14} />}
+                tone="secondary"
+                onClick={() => setProjectDraft(emptyProject((data?.projects.length ?? 0) + 1))}
               >
-                Delete
+                New
               </SmallButton>
             </div>
-          </div>
+            <div className="cms-list">
+              {(data?.projects ?? []).map((project) => (
+                <button
+                  key={project.slug}
+                  type="button"
+                  className={project.slug === projectDraft.slug ? "is-active" : ""}
+                  onClick={() => setProjectDraft(project)}
+                >
+                  <span>{project.title || "(Untitled)"}</span>
+                  <small>{project.number} / {project.year}</small>
+                </button>
+              ))}
+              {(data?.projects ?? []).length === 0 && <p className="cms-empty">No projects yet.</p>}
+            </div>
+          </aside>
 
-          <div className="cms-form-grid">
-            <Field label="Order" type="number" value={projectDraft.order} onChange={(value) => setProjectDraft({ ...projectDraft, order: Number(value) })} />
-            <Field label="Number" value={projectDraft.number} onChange={(value) => setProjectDraft({ ...projectDraft, number: value })} />
-            <Field label="Slug" value={projectDraft.slug} onChange={(value) => setProjectDraft({ ...projectDraft, slug: value })} />
-            <Field label="Title" required value={projectDraft.title} onChange={(value) => setProjectDraft({ ...projectDraft, title: value })} />
-            <Field label="Client" value={projectDraft.client} onChange={(value) => setProjectDraft({ ...projectDraft, client: value })} />
-            <Field label="Year" value={projectDraft.year} onChange={(value) => setProjectDraft({ ...projectDraft, year: value })} />
-            <Field label="Role" value={projectDraft.role} onChange={(value) => setProjectDraft({ ...projectDraft, role: value })} />
-            <Field label="Cover image" value={projectDraft.coverImage} onChange={(value) => setProjectDraft({ ...projectDraft, coverImage: value })} />
-            <Field label="Live link" value={projectDraft.link} onChange={(value) => setProjectDraft({ ...projectDraft, link: value })} />
-            <Field label="Link label" value={projectDraft.linkLabel} onChange={(value) => setProjectDraft({ ...projectDraft, linkLabel: value })} />
-            <Field label="Tools" value={listToString(projectDraft.tools)} onChange={(value) => setProjectDraft({ ...projectDraft, tools: splitList(value) })} />
-            <Field label="Skills" value={listToString(projectDraft.skills)} onChange={(value) => setProjectDraft({ ...projectDraft, skills: splitList(value) })} />
-            <TextArea label="Summary" value={projectDraft.summary} rows={3} onChange={(value) => setProjectDraft({ ...projectDraft, summary: value })} />
-            <TextArea label="Description" value={projectDraft.description} rows={9} onChange={(value) => setProjectDraft({ ...projectDraft, description: value })} />
-          </div>
-        </form>
-      </section>
+          <form
+            className="cms-editor"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveResource("projects", projectDraft, "Work project saved.");
+            }}
+          >
+            <div className="cms-editor-head">
+              <div>
+                <p className="cms-kicker">Project JSON</p>
+                <h2>{projectDraft.title || "New work project"}</h2>
+              </div>
+              <div className="cms-actions">
+                <SmallButton icon={<Save size={15} />} type="submit" disabled={saving}>Save</SmallButton>
+                <SmallButton
+                  icon={<Trash2 size={15} />}
+                  tone="danger"
+                  disabled={!projectDraft.slug || saving}
+                  onClick={() => deleteResource("projects", projectDraft.slug, "Work project deleted.")}
+                >
+                  Delete
+                </SmallButton>
+              </div>
+            </div>
+
+            <div className="cms-form-grid">
+              <Field label="Order"       type="number" value={projectDraft.order}       onChange={(v) => setProjectDraft({ ...projectDraft, order: Number(v) })} />
+              <Field label="Number"      value={projectDraft.number}                    onChange={(v) => setProjectDraft({ ...projectDraft, number: v })} />
+              <Field label="Slug"        value={projectDraft.slug}                      onChange={(v) => setProjectDraft({ ...projectDraft, slug: v })} />
+              <Field label="Title"       required value={projectDraft.title}            onChange={(v) => setProjectDraft({ ...projectDraft, title: v })} />
+              <Field label="Client"      value={projectDraft.client}                    onChange={(v) => setProjectDraft({ ...projectDraft, client: v })} />
+              <Field label="Year"        value={projectDraft.year}                      onChange={(v) => setProjectDraft({ ...projectDraft, year: v })} />
+              <Field label="Role"        value={projectDraft.role}                      onChange={(v) => setProjectDraft({ ...projectDraft, role: v })} />
+              <Field label="Cover image" value={projectDraft.coverImage}               onChange={(v) => setProjectDraft({ ...projectDraft, coverImage: v })} />
+              <Field label="Live link"   value={projectDraft.link}                     onChange={(v) => setProjectDraft({ ...projectDraft, link: v })} />
+              <Field label="Link label"  value={projectDraft.linkLabel}                onChange={(v) => setProjectDraft({ ...projectDraft, linkLabel: v })} />
+              <Field label="Tools"       value={listToString(projectDraft.tools)}       onChange={(v) => setProjectDraft({ ...projectDraft, tools: splitList(v) })} />
+              <Field label="Skills"      value={listToString(projectDraft.skills)}      onChange={(v) => setProjectDraft({ ...projectDraft, skills: splitList(v) })} />
+              <TextArea label="Summary"     value={projectDraft.summary}     rows={3} onChange={(v) => setProjectDraft({ ...projectDraft, summary: v })} />
+              <TextArea label="Description" value={projectDraft.description} rows={9} onChange={(v) => setProjectDraft({ ...projectDraft, description: v })} />
+            </div>
+          </form>
+        </section>
+      </div>
     );
   }
 
   function renderPhotos() {
     return (
-      <section className="cms-editor-grid">
-        <aside className="cms-list-panel">
-          <div className="cms-panel-head">
-            <h2>Photos</h2>
-            <SmallButton icon={<Plus size={15} />} tone="secondary" onClick={() => setPhotoDraft(emptyPhotoLocation((data?.photos.length ?? 0) + 1))}>
-              Location
-            </SmallButton>
-          </div>
-
-          <div className="cms-list">
-            {(data?.photos ?? []).map((location) => (
-              <button
-                className={location.slug === photoDraft.slug ? "is-active" : ""}
-                key={location.slug}
-                type="button"
-                onClick={() => setPhotoDraft(location)}
-              >
-                <span>{location.location}</span>
-                <small>{location.images.length} photos</small>
-              </button>
-            ))}
-          </div>
-        </aside>
-
-        <form
-          className="cms-editor"
-          onSubmit={(event) => {
-            event.preventDefault();
-            saveResource("photos", photoDraft, "Photo location saved.");
-          }}
-        >
-          <div className="cms-editor-head">
-            <div>
-              <p className="cms-kicker">Location JSON</p>
-              <h2>{photoDraft.location || "New photo location"}</h2>
-            </div>
-            <div className="cms-actions">
-              <SmallButton icon={<Save size={16} />} type="submit" disabled={saving}>
-                Save
-              </SmallButton>
+      <div className="cms-content">
+        <div className="cms-page-header">
+          <h1 className="cms-page-title">Photos</h1>
+          <p className="cms-page-subtitle">Manage your photo locations and image galleries.</p>
+        </div>
+        <section className="cms-editor-grid">
+          <aside className="cms-list-panel">
+            <div className="cms-panel-head">
+              <h2>Locations</h2>
               <SmallButton
-                icon={<Trash2 size={16} />}
-                tone="danger"
-                disabled={!photoDraft.slug || saving}
-                onClick={() => deleteResource("photos", photoDraft.slug, "Photo location deleted.")}
+                icon={<Plus size={14} />}
+                tone="secondary"
+                onClick={() => setPhotoDraft(emptyPhotoLocation((data?.photos.length ?? 0) + 1))}
               >
-                Delete
+                Location
               </SmallButton>
             </div>
-          </div>
-
-          <div className="cms-form-grid">
-            <Field label="Order" type="number" value={photoDraft.order} onChange={(value) => setPhotoDraft({ ...photoDraft, order: Number(value) })} />
-            <Field label="Slug" value={photoDraft.slug} onChange={(value) => setPhotoDraft({ ...photoDraft, slug: value })} />
-            <Field label="Location" required value={photoDraft.location} onChange={(value) => setPhotoDraft({ ...photoDraft, location: value })} />
-            <Field label="Headline" value={photoDraft.headline} onChange={(value) => setPhotoDraft({ ...photoDraft, headline: value })} />
-            <Field label="Subheadline" value={photoDraft.subheadline} onChange={(value) => setPhotoDraft({ ...photoDraft, subheadline: value })} />
-            <TextArea label="Description" value={photoDraft.description} rows={3} onChange={(value) => setPhotoDraft({ ...photoDraft, description: value })} />
-            <TextArea
-              label="Images: src | alt | width | height"
-              value={imagesToText(photoDraft.images)}
-              rows={9}
-              onChange={(value) => setPhotoDraft({ ...photoDraft, images: textToImages(value) })}
-            />
-          </div>
-
-          <div className="cms-upload-row">
-            <input
-              ref={photoUploadRef}
-              type="file"
-              accept="image/*"
-              multiple
-              hidden
-              onChange={(event) => uploadFiles("photos", event.target.files, photoDraft.slug)}
-            />
-            <SmallButton
-              icon={<Upload size={15} />}
-              tone="secondary"
-              disabled={!photoDraft.slug}
-              onClick={() => photoUploadRef.current?.click()}
-            >
-              Upload to location
-            </SmallButton>
-            <span className="cms-upload-note">
-              Saves files into src/assets/photos/{photoDraft.slug || "location-slug"}.
-            </span>
-          </div>
-
-          {(photoDraft.images.length > 0 || uploadingImages.length > 0) && (
-            <div className="cms-photo-grid">
-              {photoDraft.images.map((photo) => {
-                const displaySrc = photo.src.startsWith("/assets/photos/")
-                  ? photo.src.replace("/assets/photos/", "/api/cms/assets/")
-                  : photo.src;
-                return (
-                  <figure key={`${photo.src}-${photo.alt}`} onClick={() => setPreviewImage({ src: displaySrc, alt: photo.alt })}>
-                    <img src={displaySrc} alt={photo.alt} className="cms-photo-thumb" />
-                    <figcaption>{photo.alt || photo.src}</figcaption>
-                  </figure>
-                );
-              })}
-              {uploadingImages.map((img, index) => (
-                <figure key={`uploading-${index}`} className="is-uploading" onClick={() => setPreviewImage({ src: img.url, alt: img.name })}>
-                  <div className="cms-photo-loading-overlay">
-                    <Loader2 className="cms-spin" size={20} />
-                  </div>
-                  <img src={img.url} alt={img.name} className="cms-photo-thumb" />
-                  <figcaption>Uploading {img.name}...</figcaption>
-                </figure>
+            <div className="cms-list">
+              {(data?.photos ?? []).map((loc) => (
+                <button
+                  key={loc.slug}
+                  type="button"
+                  className={loc.slug === photoDraft.slug ? "is-active" : ""}
+                  onClick={() => setPhotoDraft(loc)}
+                >
+                  <span>{loc.location || "(Untitled)"}</span>
+                  <small>{loc.images.length} photos</small>
+                </button>
               ))}
+              {(data?.photos ?? []).length === 0 && <p className="cms-empty">No locations yet.</p>}
             </div>
-          )}
-        </form>
-      </section>
+          </aside>
+
+          <form
+            className="cms-editor"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveResource("photos", photoDraft, "Photo location saved.");
+            }}
+          >
+            <div className="cms-editor-head">
+              <div>
+                <p className="cms-kicker">Location JSON</p>
+                <h2>{photoDraft.location || "New photo location"}</h2>
+              </div>
+              <div className="cms-actions">
+                <SmallButton icon={<Save size={15} />} type="submit" disabled={saving}>Save</SmallButton>
+                <SmallButton
+                  icon={<Trash2 size={15} />}
+                  tone="danger"
+                  disabled={!photoDraft.slug || saving}
+                  onClick={() => deleteResource("photos", photoDraft.slug, "Photo location deleted.")}
+                >
+                  Delete
+                </SmallButton>
+              </div>
+            </div>
+
+            <div className="cms-form-grid">
+              <Field label="Order"       type="number" value={photoDraft.order}       onChange={(v) => setPhotoDraft({ ...photoDraft, order: Number(v) })} />
+              <Field label="Slug"        value={photoDraft.slug}                      onChange={(v) => setPhotoDraft({ ...photoDraft, slug: v })} />
+              <Field label="Location"    required value={photoDraft.location}         onChange={(v) => setPhotoDraft({ ...photoDraft, location: v })} />
+              <Field label="Headline"    value={photoDraft.headline}                  onChange={(v) => setPhotoDraft({ ...photoDraft, headline: v })} />
+              <Field label="Subheadline" value={photoDraft.subheadline}               onChange={(v) => setPhotoDraft({ ...photoDraft, subheadline: v })} />
+              <TextArea label="Description"               value={photoDraft.description}         rows={3}  onChange={(v) => setPhotoDraft({ ...photoDraft, description: v })} />
+              <TextArea
+                label="Images: src | alt | width | height"
+                value={imagesToText(photoDraft.images)}
+                rows={9}
+                onChange={(v) => setPhotoDraft({ ...photoDraft, images: textToImages(v) })}
+              />
+            </div>
+
+            <div className="cms-upload-row">
+              <input
+                ref={photoUploadRef}
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+                onChange={(e) => uploadFiles("photos", e.target.files, photoDraft.slug)}
+              />
+              <SmallButton
+                icon={<Upload size={14} />}
+                tone="secondary"
+                disabled={!photoDraft.slug}
+                onClick={() => photoUploadRef.current?.click()}
+              >
+                Upload to location
+              </SmallButton>
+              <span className="cms-upload-note">
+                Saves to src/assets/photos/{photoDraft.slug || "location-slug"}/
+              </span>
+            </div>
+
+            {(photoDraft.images.length > 0 || uploadingImages.length > 0) && (
+              <div className="cms-photo-grid">
+                {photoDraft.images.map((photo) => {
+                  const src = photo.src.startsWith("/assets/photos/")
+                    ? photo.src.replace("/assets/photos/", "/api/cms/assets/")
+                    : photo.src;
+                  return (
+                    <figure key={`${photo.src}-${photo.alt}`} onClick={() => setPreviewImage({ src, alt: photo.alt })}>
+                      <img src={src} alt={photo.alt} className="cms-photo-thumb" />
+                      <figcaption>{photo.alt || photo.src}</figcaption>
+                    </figure>
+                  );
+                })}
+                {uploadingImages.map((img, i) => (
+                  <figure key={`uploading-${i}`} className="is-uploading" onClick={() => setPreviewImage({ src: img.url, alt: img.name })}>
+                    <div className="cms-photo-loading-overlay"><Loader2 className="cms-spin" size={20} /></div>
+                    <img src={img.url} alt={img.name} className="cms-photo-thumb" />
+                    <figcaption>Uploading {img.name}…</figcaption>
+                  </figure>
+                ))}
+              </div>
+            )}
+          </form>
+        </section>
+      </div>
     );
   }
 
+  /* ── Active tab dispatcher ────────────────────────────────────── */
   function renderActiveTab() {
     if (!data && status.type === "loading") {
       return (
         <div className="cms-loading">
           <Loader2 size={24} className="cms-spin" />
-          <span>Loading CMS...</span>
+          <span>Loading CMS…</span>
         </div>
       );
     }
-
     if (activeTab === "writing") return renderWriting();
-    if (activeTab === "gear") return renderGear();
-    if (activeTab === "work") return renderWork();
-    if (activeTab === "photos") return renderPhotos();
+    if (activeTab === "gear")    return renderGear();
+    if (activeTab === "work")    return renderWork();
+    if (activeTab === "photos")  return renderPhotos();
     return renderOverview();
   }
 
+  /* ── Render ───────────────────────────────────────────────────── */
   return (
     <div className="cms-app">
-      <aside className="cms-sidebar" aria-label="CMS sections">
-        <a className="cms-logo" href="/" aria-label="Back to loc.digital">
-          <span>Lộc Digital</span>
-          <small>CMS</small>
-        </a>
-
-        <nav className="cms-nav">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                className={activeTab === tab.id ? "is-active" : ""}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                <Icon size={18} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        <div className="cms-sidebar-foot">
-          <span>Signed in as</span>
-          <strong>admin</strong>
-        </div>
-      </aside>
+      <Sidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onLogout={logout}
+      />
 
       <main className="cms-main">
-        <header className="cms-topbar">
-          <div>
-            <p>loc.digital/admin</p>
-            <strong>{tabs.find((tab) => tab.id === activeTab)?.label}</strong>
-          </div>
-          <div className="cms-topbar-actions">
-            <a href="/blog" target="_blank" rel="noreferrer">
-              Writing
-            </a>
-            <a href="/gear" target="_blank" rel="noreferrer">
-              Gear
-            </a>
-            <a href="/work" target="_blank" rel="noreferrer">
-              Work
-            </a>
-            <a href="/photos" target="_blank" rel="noreferrer">
-              Photos
-            </a>
-            <button type="button" onClick={logout} title="Log out">
-              <LogOut size={17} />
-            </button>
-          </div>
-        </header>
+        <Topbar activeTab={activeTab} />
 
         {status.text && (
-          <div className={`cms-status cms-status-${status.type}`} role="status" aria-live="polite">
-            {status.type === "loading" ? <Loader2 size={16} className="cms-spin" /> : null}
-            {status.type === "success" ? <CheckCircle2 size={16} /> : null}
-            {status.type === "error" ? <AlertCircle size={16} /> : null}
+          <div
+            className={`cms-status cms-status-${status.type}`}
+            role="status"
+            aria-live="polite"
+          >
+            {status.type === "loading" && <Loader2 size={15} className="cms-spin" />}
+            {status.type === "success" && <CheckCircle2 size={15} />}
+            {status.type === "error"   && <AlertCircle  size={15} />}
             <span>{status.text}</span>
           </div>
         )}
@@ -1175,9 +1459,17 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
         {renderActiveTab()}
       </main>
 
+      {/* Image lightbox */}
       {previewImage && (
         <div className="cms-modal-overlay" onClick={() => setPreviewImage(null)}>
-          <button type="button" className="cms-modal-close" onClick={() => setPreviewImage(null)}>✕</button>
+          <button
+            type="button"
+            className="cms-modal-close"
+            onClick={() => setPreviewImage(null)}
+            aria-label="Close preview"
+          >
+            ✕
+          </button>
           <div className="cms-modal-content" onClick={(e) => e.stopPropagation()}>
             <img src={previewImage.src} alt={previewImage.alt} />
           </div>

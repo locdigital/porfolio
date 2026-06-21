@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes } from "../lib/photo-assets";
+import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes, getPhotoAsset } from "../lib/photo-assets";
 import { getWritingPosts } from "../lib/writing";
+import DraggableCollage from "../components/ui/draggable-collage";
 
 const makePortfolioPhoto = (number: number) => ({
   src: `/assets/photos/img-portfolio/photo-${number}.webp`,
@@ -26,6 +27,7 @@ const homeGalleryRows = await Promise.all(
 );
 
 const posts = await getWritingPosts();
+const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 ---
 <Layout title="Phuc Loc Nguyen | Digital Marketing Specialist">
 
@@ -238,6 +240,11 @@ const posts = await getWritingPosts();
 
         <a href="/blog" class="see-all">All writing →</a>
       </div>
+    </section>
+
+    <!-- PLAYGROUND ––––––––––––––––––––––––––––– -->
+    <section class="relative w-full h-[100dvh] overflow-hidden" aria-label="Interactive collage">
+      <DraggableCollage client:load portraitSrc={heroAbout.src} />
     </section>
 
   </main>

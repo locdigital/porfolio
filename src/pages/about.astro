@@ -1,163 +1,185 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Picture, Image } from "astro:assets";
-import { getPhotoAsset } from "../lib/photo-assets";
-
-const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
+import AboutHero from "../components/ui/about-hero";
 ---
 
 <Layout title="About | Phuc Loc Nguyen">
   <main class="about-minimal-page">
     <div class="about-minimal-container">
       
-      <!-- HERO SECTION -->
-      <section class="about-min-hero toki-r" data-d="1" aria-label="About me">
-        <div class="hero-left">
-          <p class="gear-kicker">About me</p>
-          <h1 class="hero-main-title">Digital marketer who scales brands with <em>data & code</em></h1>
-          <div class="hero-bio">
-            <p>
-              Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho Chi Minh City, Vietnam. My passion is in creating data-driven campaigns and useful solutions to marketing problems that don't have obvious answers.
-            </p>
-          </div>
-          <div class="hero-links">
-            <a href="mailto:hi@loc.digital" class="min-link">Email me</a>
-            <a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer" class="min-link">LinkedIn</a>
-          </div>
-        </div>
-        <div class="hero-right">
-          <Image src={heroAbout} alt="Phuc Loc Nguyen" loading="eager" decoding="async" />
-        </div>
+      <!-- 00 INTRODUCTION -->
+      <section class="figma-intro toki-r" data-d="1" aria-label="About me">
+        <AboutHero client:load />
       </section>
 
-      <!-- EXPERIENCE SECTION -->
-      <section class="min-section toki-r" data-d="2">
-        <h2 class="min-section-title">My Experience</h2>
-        <p class="min-section-desc">Selected roles spanning performance media buying, search strategy, and brand campaigns.</p>
-        <div class="min-list">
-          <div class="min-row">
-            <div class="col-main">WorkFlow Space</div>
-            <div class="col-desc">Digital Marketing Specialist</div>
-            <div class="col-meta">2024 – Present</div>
+      <!-- 01 EXPERIENCE -->
+      <section class="figma-card toki-r" data-d="2">
+        <div class="figma-card-header">
+          <div class="card-num-kicker">
+            <span class="card-num">01</span>
+            <span class="card-kicker">EXPERIENCE</span>
           </div>
-          <div class="min-row">
-            <div class="col-main">PlayAh!</div>
-            <div class="col-desc">Digital Marketing Specialist</div>
-            <div class="col-meta">2024 – Present</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">POPS Worldwide</div>
-            <div class="col-desc">SEO Executive</div>
-            <div class="col-meta">2023 – 2024</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">PNJ</div>
-            <div class="col-desc">Digital Marketing Specialist</div>
-            <div class="col-meta">2022 – 2023</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">Sony</div>
-            <div class="col-desc">Digital Marketing Specialist</div>
-            <div class="col-meta">2021 – 2022</div>
+          <h2 class="card-title">My Experience</h2>
+          <p class="card-desc">Selected roles spanning performance media buying, search strategy, and brand campaigns.</p>
+        </div>
+        <div class="figma-card-body">
+          <div class="card-container">
+            <div class="card-list">
+              <div class="card-list-item">
+                <div class="item-main">WorkFlow Space</div>
+                <div class="item-desc">Digital Marketing Specialist</div>
+                <div class="item-meta">2024 – Present</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">PlayAh!</div>
+                <div class="item-desc">Digital Marketing Specialist</div>
+                <div class="item-meta">2024 – Present</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">POPS Worldwide</div>
+                <div class="item-desc">SEO Executive</div>
+                <div class="item-meta">2023 – 2024</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">PNJ</div>
+                <div class="item-desc">Digital Marketing Specialist</div>
+                <div class="item-meta">2022 – 2023</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Sony</div>
+                <div class="item-desc">Digital Marketing Specialist</div>
+                <div class="item-meta">2021 – 2022</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- FEATURED PROJECTS -->
-      <section class="min-section toki-r" data-d="3">
-        <h2 class="min-section-title">Featured Projects</h2>
-        <p class="min-section-desc">Campaigns and platforms built and managed for top consumer brands.</p>
-        <div class="min-list">
-          <a href="/work/playah" class="min-row is-link">
-            <div class="col-main">PlayAh!</div>
-            <div class="col-desc">Brand Growth & Performance Ads</div>
-            <div class="col-meta">playahvietnam.com →</div>
-          </a>
-          <a href="/work/workflow-space" class="min-row is-link">
-            <div class="col-main">WorkFlow Space</div>
-            <div class="col-desc">Community & Content Strategy</div>
-            <div class="col-meta">workflowspace.vn →</div>
-          </a>
-          <a href="/work/pnj" class="min-row is-link">
-            <div class="col-main">PNJ</div>
-            <div class="col-desc">E-commerce Campaigns & Shopping</div>
-            <div class="col-meta">pnj.com.vn →</div>
-          </a>
-          <a href="/work/pops-worldwide" class="min-row is-link">
-            <div class="col-main">POPS Worldwide</div>
-            <div class="col-desc">SEO & Search Strategy</div>
-            <div class="col-meta">pops.vn →</div>
-          </a>
-          <a href="/work/sony-vietnam" class="min-row is-link">
-            <div class="col-main">Sony Vietnam</div>
-            <div class="col-desc">Brand Awareness & Lead Gen</div>
-            <div class="col-meta">sony.com.vn →</div>
-          </a>
+      <!-- 02 SELECTED WORK -->
+      <section class="figma-card toki-r" data-d="3">
+        <div class="figma-card-header">
+          <div class="card-num-kicker">
+            <span class="card-num">02</span>
+            <span class="card-kicker">SELECTED WORK</span>
+          </div>
+          <h2 class="card-title">Featured Projects</h2>
+          <p class="card-desc">Campaigns and platforms built and managed for top consumer brands.</p>
         </div>
-      </section>
-
-      <!-- TOOLSET & SKILLS -->
-      <section class="min-section toki-r" data-d="4">
-        <h2 class="min-section-title">Toolset & Skills</h2>
-        <p class="min-section-desc">Technologies and skills I use to build workflows and run growth experiments.</p>
-        <div class="min-list">
-          <div class="min-row">
-            <div class="col-main">Meta Ads</div>
-            <div class="col-desc">Paid Social Campaigns</div>
-            <div class="col-meta">facebook.com ↗</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">Google Ads</div>
-            <div class="col-desc">Search, Shopping & Display</div>
-            <div class="col-meta">ads.google.com ↗</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">TikTok Ads</div>
-            <div class="col-desc">Paid Social Campaigns</div>
-            <div class="col-meta">ads.tiktok.com ↗</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">Google Analytics</div>
-            <div class="col-desc">Data Audits & GA4 Reporting</div>
-            <div class="col-meta">analytics.google.com ↗</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">Figma</div>
-            <div class="col-desc">Interface Design & Creative Mockups</div>
-            <div class="col-meta">figma.com ↗</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">Zapier</div>
-            <div class="col-desc">Marketing & Workflow Automation</div>
-            <div class="col-meta">zapier.com ↗</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">Ahrefs</div>
-            <div class="col-desc">SEO Keyword & Competitor Research</div>
-            <div class="col-meta">ahrefs.com ↗</div>
-          </div>
-          <div class="min-row">
-            <div class="col-main">Notion</div>
-            <div class="col-desc">Docs, Wiki & Project Hub</div>
-            <div class="col-meta">notion.so ↗</div>
+        <div class="figma-card-body">
+          <div class="card-container">
+            <div class="card-list">
+              <a href="/work/playah" class="card-list-item is-link">
+                <div class="item-main">PlayAh!</div>
+                <div class="item-desc">Brand Growth & Performance Ads</div>
+                <div class="item-meta">playahvietnam.com →</div>
+              </a>
+              <a href="/work/workflow-space" class="card-list-item is-link">
+                <div class="item-main">WorkFlow Space</div>
+                <div class="item-desc">Community & Content Strategy</div>
+                <div class="item-meta">workflowspace.vn →</div>
+              </a>
+              <a href="/work/pnj" class="card-list-item is-link">
+                <div class="item-main">PNJ</div>
+                <div class="item-desc">E-commerce Campaigns & Shopping</div>
+                <div class="item-meta">pnj.com.vn →</div>
+              </a>
+              <a href="/work/pops-worldwide" class="card-list-item is-link">
+                <div class="item-main">POPS Worldwide</div>
+                <div class="item-desc">SEO & Search Strategy</div>
+                <div class="item-meta">pops.vn →</div>
+              </a>
+              <a href="/work/sony-vietnam" class="card-list-item is-link">
+                <div class="item-main">Sony Vietnam</div>
+                <div class="item-desc">Brand Awareness & Lead Gen</div>
+                <div class="item-meta">sony.com.vn →</div>
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- EDUCATION & CREDENTIALS -->
-      <section class="min-section toki-r" data-d="5">
-        <h2 class="min-section-title">Education & Credentials</h2>
-        <p class="min-section-desc">Formal degree and professional marketing certifications.</p>
-        <div class="min-list">
-          <div class="min-row">
-            <div class="col-main">University Name</div>
-            <div class="col-desc">Bachelor's Degree</div>
-            <div class="col-meta">2017 – 2021</div>
+      <!-- 03 TOOLSET & SKILLS -->
+      <section class="figma-card toki-r" data-d="4">
+        <div class="figma-card-header">
+          <div class="card-num-kicker">
+            <span class="card-num">03</span>
+            <span class="card-kicker">TOOLSET & SKILLS</span>
           </div>
-          <div class="min-row">
-            <div class="col-main">Google</div>
-            <div class="col-desc">Digital Marketing Specialization</div>
-            <div class="col-meta">Issued 2022 ↗</div>
+          <h2 class="card-title">Toolset & Skills</h2>
+          <p class="card-desc">Technologies and skills I use to build workflows and run growth experiments.</p>
+        </div>
+        <div class="figma-card-body">
+          <div class="card-container">
+            <div class="card-list">
+              <div class="card-list-item">
+                <div class="item-main">Meta Ads</div>
+                <div class="item-desc">Paid Social Campaigns</div>
+                <div class="item-meta">facebook.com ↗</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Google Ads</div>
+                <div class="item-desc">Search, Shopping & Display</div>
+                <div class="item-meta">ads.google.com ↗</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">TikTok Ads</div>
+                <div class="item-desc">Paid Social Campaigns</div>
+                <div class="item-meta">ads.tiktok.com ↗</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Google Analytics</div>
+                <div class="item-desc">Data Audits & GA4 Reporting</div>
+                <div class="item-meta">analytics.google.com ↗</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Figma</div>
+                <div class="item-desc">Interface Design & Creative Mockups</div>
+                <div class="item-meta">figma.com ↗</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Zapier</div>
+                <div class="item-desc">Marketing & Workflow Automation</div>
+                <div class="item-meta">zapier.com ↗</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Ahrefs</div>
+                <div class="item-desc">SEO Keyword & Competitor Research</div>
+                <div class="item-meta">ahrefs.com ↗</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Notion</div>
+                <div class="item-desc">Docs, Wiki & Project Hub</div>
+                <div class="item-meta">notion.so ↗</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 EDUCATION & CREDENTIALS -->
+      <section class="figma-card toki-r" data-d="5">
+        <div class="figma-card-header">
+          <div class="card-num-kicker">
+            <span class="card-num">04</span>
+            <span class="card-kicker">EDUCATION</span>
+          </div>
+          <h2 class="card-title">Education & Credentials</h2>
+          <p class="card-desc">Formal degree and professional marketing certifications.</p>
+        </div>
+        <div class="figma-card-body">
+          <div class="card-container">
+            <div class="card-list">
+              <div class="card-list-item">
+                <div class="item-main">University Name</div>
+                <div class="item-desc">Bachelor's Degree</div>
+                <div class="item-meta">2017 – 2021</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-main">Google</div>
+                <div class="item-desc">Digital Marketing Specialization</div>
+                <div class="item-meta">Issued 2022 ↗</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -178,48 +200,182 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     padding: 0 var(--px);
   }
 
-  /* ── Hero section ── */
-  .about-min-hero {
+  /* ── Figma Slide Grid ── */
+  .figma-card {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 48px;
-    align-items: start;
+    grid-template-columns: 1fr 1.3fr;
+    gap: clamp(32px, 6vw, 84px);
     margin-bottom: 96px;
+    align-items: start;
   }
 
-  .hero-left {
+  /* ── Intro section (no image, full width) ── */
+  .figma-intro {
+    margin-bottom: 96px;
+    padding-bottom: 72px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .figma-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: calc(var(--hdr-h) + 32px);
+  }
+
+  .card-num-kicker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .card-num {
+    padding: 2px 8px;
+    border: 1px solid rgba(0, 117, 222, 0.25);
+    border-radius: 4px;
+    background: rgba(0, 117, 222, 0.05);
+    font-size: 10px;
+  }
+
+  .card-kicker {
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.15;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .figma-card-body {
+    width: 100%;
+  }
+
+  /* ── Card Container ── */
+  .card-container {
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.015), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-container:hover {
+    border-color: rgba(0, 117, 222, 0.25);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  /* ── List Items ── */
+  .card-list {
     display: flex;
     flex-direction: column;
   }
 
-  .hero-main-title {
-    font-family: var(--serif);
-    font-size: clamp(38px, 5.5vw, 64px);
-    font-weight: 400;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
+  .card-list-item {
+    display: grid;
+    grid-template-columns: 1.2fr 1.6fr 1.2fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--divider);
+    font-size: 14px;
+    align-items: center;
     color: var(--text);
-    margin-bottom: 24px;
+    transition: all 0.25s var(--ease-out);
   }
 
-  .hero-sub {
-    font-size: 16px;
+  .card-list-item:first-child {
+    padding-top: 0;
+  }
+
+  .card-list-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  a.card-list-item {
+    text-decoration: none;
+  }
+
+  a.card-list-item:hover {
+    color: var(--accent);
+    padding-left: 8px;
+    background: rgba(0, 117, 222, 0.02);
+    border-radius: 6px;
+  }
+
+  .item-main {
     font-weight: 600;
+  }
+
+  .item-desc {
+    color: var(--muted);
+    transition: color 0.25s ease;
+  }
+
+  a.card-list-item:hover .item-desc {
     color: var(--text);
-    margin-bottom: 16px;
+  }
+
+  .item-meta {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    text-align: right;
+    transition: color 0.25s ease;
+  }
+
+  a.card-list-item:hover .item-meta {
+    color: var(--accent);
+  }
+
+  /* ── Hero Customization ── */
+  .hero-main-title {
+    font-family: var(--serif);
+    font-size: clamp(38px, 5vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .hero-main-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-family: var(--serif);
+  }
+
+  .hero-bio {
+    margin-top: 12px;
   }
 
   .hero-bio p {
-    font-size: 15px;
-    line-height: 1.72;
+    font-size: 14.5px;
+    line-height: 1.65;
     color: var(--muted);
-    margin-bottom: 16px;
   }
 
   .hero-links {
     display: flex;
     gap: 24px;
-    margin-top: 16px;
+    margin-top: 8px;
   }
 
   .min-link {
@@ -228,7 +384,6 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     color: var(--text);
     text-decoration: underline;
     text-underline-offset: 4px;
-    text-decoration-thickness: 1px;
     text-decoration-color: var(--divider);
     transition: all 0.25s ease;
   }
@@ -238,122 +393,141 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     text-decoration-color: var(--accent);
   }
 
-  .hero-right {
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
+    padding: 12px;
   }
 
-  .hero-right img {
+  .hero-image-wrapper {
+    position: relative;
     width: 100%;
-    height: auto;
+    max-width: 380px;
     aspect-ratio: 4 / 5;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+  }
+
+  .hero-image-wrapper img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 16px;
     border: 1px solid var(--divider);
-    filter: grayscale(0.15);
+    filter: grayscale(0.1);
     transition: filter 0.3s ease;
   }
 
-  .hero-right img:hover {
+  .hero-image-wrapper:hover img {
     filter: grayscale(0);
   }
 
-  /* ── Sections ── */
-  .min-section {
-    margin-bottom: 72px;
-  }
-
-  .min-section-title {
-    font-size: 16px;
+  /* ── Floating Chips ── */
+  .floating-chip {
+    position: absolute;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 999px;
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-
-  .min-section-desc {
-    font-size: 13.5px;
-    color: var(--muted);
-    margin-bottom: 24px;
-  }
-
-  /* ── Rows ── */
-  .min-list {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--divider);
-  }
-
-  .min-row {
-    display: grid;
-    grid-template-columns: 1.2fr 1.6fr 1.2fr;
-    gap: 16px;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--divider);
-    font-size: 14.5px;
-    align-items: center;
-    color: var(--text);
-    transition: all 0.2s ease;
-  }
-
-  a.min-row {
-    text-decoration: none;
-  }
-
-  a.min-row:hover {
-    background: rgba(0, 0, 0, 0.015);
-    padding-left: 8px;
-    padding-right: 8px;
-    color: var(--accent);
-  }
-
-  .col-main {
-    font-weight: 600;
-  }
-
-  .col-desc {
-    color: var(--muted);
-    transition: color 0.2s ease;
-  }
-
-  a.min-row:hover .col-desc {
-    color: var(--text);
-  }
-
-  .col-meta {
     font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    text-align: right;
-    transition: color 0.2s ease;
+    color: var(--text);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+    transition: transform 0.3s ease;
+    animation: chipFloat 6s ease-in-out infinite;
+    z-index: 10;
+    white-space: nowrap;
   }
 
-  a.min-row:hover .col-meta {
-    color: var(--accent);
+  .chip-1 {
+    top: 15%;
+    left: -35px;
+    animation-delay: 0s;
+  }
+
+  .chip-2 {
+    bottom: 25%;
+    right: -45px;
+    animation-delay: 1.5s;
+  }
+
+  .chip-3 {
+    bottom: 10%;
+    left: -20px;
+    animation-delay: 3s;
+  }
+
+  @keyframes chipFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Hover interactivity for chips */
+  .hero-image-wrapper:hover .chip-1 {
+    transform: translate(-6px, -4px);
+  }
+  .hero-image-wrapper:hover .chip-2 {
+    transform: translate(6px, -4px);
+  }
+  .hero-image-wrapper:hover .chip-3 {
+    transform: translate(-4px, 4px);
   }
 
   /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .about-min-hero {
+  @media (max-width: 992px) {
+    .figma-card {
       grid-template-columns: 1fr;
       gap: 32px;
       margin-bottom: 64px;
     }
 
-    .hero-right {
-      order: -1;
-      max-width: 300px;
+    .figma-card-header {
+      position: static;
     }
 
-    .min-row {
-      grid-template-columns: 1fr 1fr;
+    .hero-visual {
+      order: -1;
+      margin-bottom: 16px;
+    }
+
+    .hero-image-wrapper {
+      max-width: 320px;
+    }
+
+    .chip-1 { left: -15px; }
+    .chip-2 { right: -20px; }
+    .chip-3 { left: -10px; }
+  }
+
+  @media (max-width: 640px) {
+    .card-container {
+      padding: 24px 16px;
+    }
+
+    .card-list-item {
+      grid-template-columns: 1fr;
       gap: 8px;
       padding: 16px 0;
     }
 
-    .col-meta {
-      grid-column: 1 / -1;
+    .item-meta {
       text-align: left;
-      margin-top: 2px;
+      margin-top: 4px;
+    }
+
+    .floating-chip {
+      display: none; /* Hide chips on small mobile to avoid layout clipping */
     }
   }
 </style>
+

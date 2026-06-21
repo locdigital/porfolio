@@ -431,6 +431,10 @@ const gearDescription = gear?.description ?? "A living list of the products in m
     background: rgba(255, 255, 255, 0.6);
   }
 
+  .gear-card:hover h3 {
+    color: var(--accent);
+  }
+
   .gear-card-visual {
     display: flex;
     align-items: center;
@@ -471,6 +475,7 @@ const gearDescription = gear?.description ?? "A living list of the products in m
     line-height: 1.35;
     font-weight: 600;
     color: var(--text);
+    transition: color 0.2s ease;
   }
 
 
