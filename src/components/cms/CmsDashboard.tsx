@@ -351,18 +351,68 @@ function Sidebar({
   onTabChange: (tab: Tab) => void;
   onLogout: () => void;
 }) {
+  const [workspaceOpen, setWorkspaceOpen] = useState(false);
+  const wsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (wsRef.current && !wsRef.current.contains(e.target as Node)) {
+        setWorkspaceOpen(false);
+      }
+    };
+    window.addEventListener("mousedown", handler);
+    return () => window.removeEventListener("mousedown", handler);
+  }, []);
+
   return (
     <aside className="cms-sidebar" aria-label="CMS navigation">
       {/* Workspace block */}
-      <div className="cms-workspace" role="button" aria-label="Workspace">
-        <div className="cms-workspace-inner">
-          <div className="cms-workspace-avatar">L</div>
-          <div className="cms-workspace-info">
-            <span className="cms-workspace-name">Lộc Digital</span>
-            <span className="cms-workspace-sub">CMS Admin</span>
+      <div className="cms-relative-wrapper" ref={wsRef} style={{ width: "100%", marginBottom: 20 }}>
+        <div
+          className="cms-workspace"
+          role="button"
+          onClick={() => setWorkspaceOpen(!workspaceOpen)}
+          aria-label="Workspace"
+        >
+          <div className="cms-workspace-inner">
+            <div className="cms-workspace-avatar">L</div>
+            <div className="cms-workspace-info">
+              <span className="cms-workspace-name">Lộc Digital</span>
+              <span className="cms-workspace-sub">CMS Admin</span>
+            </div>
           </div>
+          <ChevronDown
+            size={15}
+            className="cms-workspace-chevron"
+            style={{
+              transform: workspaceOpen ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.2s ease",
+            }}
+          />
         </div>
-        <ChevronDown size={15} className="cms-workspace-chevron" />
+
+        {workspaceOpen && (
+          <div className="cms-dropdown-menu" style={{ width: "100%", top: "100%", marginTop: -15, zIndex: 60 }}>
+            <div className="cms-dropdown-header">Workspaces</div>
+            <button
+              type="button"
+              className="cms-dropdown-item is-active"
+              onClick={() => setWorkspaceOpen(false)}
+            >
+              Lộc Digital (Primary)
+            </button>
+            <button
+              type="button"
+              className="cms-dropdown-item"
+              onClick={() => {
+                alert("Workspace settings are under development.");
+                setWorkspaceOpen(false);
+              }}
+            >
+              Workspace Settings
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Nav groups */}
@@ -427,8 +477,39 @@ function Sidebar({
 }
 
 /* ── Topbar ─────────────────────────────────────────────────────── */
-function Topbar({ activeTab }: { activeTab: Tab }) {
+function Topbar({
+  activeTab,
+  onQuickCreate,
+  onOpenAskAi,
+  darkMode,
+  onToggleDarkMode,
+}: {
+  activeTab: Tab;
+  onQuickCreate: (type: "writing" | "gear" | "work" | "photos") => void;
+  onOpenAskAi: () => void;
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
+}) {
   const label = navGroups.flatMap((g) => g.items).find((i) => i.id === activeTab)?.label ?? "Dashboard";
+  const [quickCreateOpen, setQuickCreateOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const qcRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (qcRef.current && !qcRef.current.contains(e.target as Node)) {
+        setQuickCreateOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotificationsOpen(false);
+      }
+    };
+    window.addEventListener("mousedown", handler);
+    return () => window.removeEventListener("mousedown", handler);
+  }, []);
 
   return (
     <header className="cms-topbar">
@@ -439,29 +520,124 @@ function Topbar({ activeTab }: { activeTab: Tab }) {
           type="search"
           placeholder="Search content…"
           aria-label="Search CMS content"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <kbd className="cms-topbar-kbd">⌘K</kbd>
       </div>
 
       {/* Right actions */}
       <div className="cms-topbar-actions">
-        <button type="button" className="cms-topbar-btn" id="cms-ask-ai-btn" aria-label="Ask AI">
+        <button
+          type="button"
+          className="cms-topbar-btn"
+          id="cms-ask-ai-btn"
+          aria-label="Ask AI"
+          onClick={onOpenAskAi}
+        >
           <Sparkles size={15} className="cms-topbar-ai-icon" />
           Ask AI
         </button>
 
-        <button type="button" className="cms-topbar-btn cms-topbar-btn-primary" id="cms-quick-create-btn" aria-label="Quick create">
-          <Plus size={15} />
-          Quick Create
-        </button>
+        {/* Quick Create Wrapper */}
+        <div className="cms-relative-wrapper" ref={qcRef}>
+          <button
+            type="button"
+            className="cms-topbar-btn cms-topbar-btn-primary"
+            id="cms-quick-create-btn"
+            aria-label="Quick create"
+            onClick={() => setQuickCreateOpen(!quickCreateOpen)}
+          >
+            <Plus size={15} />
+            Quick Create
+          </button>
 
-        <button type="button" className="cms-topbar-btn cms-topbar-btn-icon" aria-label="Notifications">
-          <Bell size={16} />
-          <span className="cms-notif-dot" aria-hidden="true" />
-        </button>
+          {quickCreateOpen && (
+            <div className="cms-dropdown-menu" style={{ right: 0, width: 220 }}>
+              <button
+                type="button"
+                className="cms-dropdown-item"
+                onClick={() => {
+                  onQuickCreate("writing");
+                  setQuickCreateOpen(false);
+                }}
+              >
+                <FileText size={14} />
+                <span>New Writing Post</span>
+              </button>
+              <button
+                type="button"
+                className="cms-dropdown-item"
+                onClick={() => {
+                  onQuickCreate("gear");
+                  setQuickCreateOpen(false);
+                }}
+              >
+                <Package size={14} />
+                <span>New Gear Item</span>
+              </button>
+              <button
+                type="button"
+                className="cms-dropdown-item"
+                onClick={() => {
+                  onQuickCreate("work");
+                  setQuickCreateOpen(false);
+                }}
+              >
+                <Briefcase size={14} />
+                <span>New Work Project</span>
+              </button>
+              <button
+                type="button"
+                className="cms-dropdown-item"
+                onClick={() => {
+                  onQuickCreate("photos");
+                  setQuickCreateOpen(false);
+                }}
+              >
+                <Camera size={14} />
+                <span>New Photo Location</span>
+              </button>
+            </div>
+          )}
+        </div>
 
-        <button type="button" className="cms-topbar-btn cms-topbar-btn-icon" aria-label="Toggle dark mode">
-          <Moon size={16} />
+        {/* Notifications Wrapper */}
+        <div className="cms-relative-wrapper" ref={notifRef}>
+          <button
+            type="button"
+            className="cms-topbar-btn cms-topbar-btn-icon"
+            aria-label="Notifications"
+            onClick={() => setNotificationsOpen(!notificationsOpen)}
+          >
+            <Bell size={16} />
+            <span className="cms-notif-dot" aria-hidden="true" />
+          </button>
+
+          {notificationsOpen && (
+            <div className="cms-dropdown-menu" style={{ right: 0, width: 280, padding: "8px 0" }}>
+              <div className="cms-dropdown-header" style={{ padding: "8px 16px" }}>Notifications</div>
+              <div className="cms-dropdown-item-info" style={{ padding: "8px 16px", borderBottom: "1px solid var(--divider)" }}>
+                <strong style={{ display: "block", fontSize: 12 }}>System Status</strong>
+                <span style={{ display: "block", fontSize: 11, color: "var(--muted)", margin: "2px 0" }}>CMS database parsed successfully.</span>
+                <small style={{ fontSize: 9, color: "var(--muted)", opacity: 0.8 }}>Just now</small>
+              </div>
+              <div className="cms-dropdown-item-info" style={{ padding: "8px 16px" }}>
+                <strong style={{ display: "block", fontSize: 12 }}>Git Deploy</strong>
+                <span style={{ display: "block", fontSize: 11, color: "var(--muted)", margin: "2px 0" }}>Branch 'main' push completed.</span>
+                <small style={{ fontSize: 9, color: "var(--muted)", opacity: 0.8 }}>2 hours ago</small>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button
+          type="button"
+          className="cms-topbar-btn cms-topbar-btn-icon"
+          aria-label="Toggle dark mode"
+          onClick={onToggleDarkMode}
+        >
+          {darkMode ? <Sun size={16} /> : <Moon size={16} />}
         </button>
 
         <div
@@ -474,6 +650,77 @@ function Topbar({ activeTab }: { activeTab: Tab }) {
         </div>
       </div>
     </header>
+  );
+}
+
+/* ── Ask AI Drawer ───────────────────────────────────────────────── */
+function AskAiDrawer({ onClose }: { onClose: () => void }) {
+  const [messages, setMessages] = useState<Array<{ sender: "user" | "ai"; text: string }>>([
+    { sender: "ai", text: "Xin chào! Tôi là trợ lý AI của Lộc Digital. Bạn cần tôi giúp gì về quản lý nội dung portfolio hôm nay?" },
+  ]);
+  const [input, setInput] = useState("");
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const userMsg = input.trim();
+    setMessages((prev) => [...prev, { sender: "user", text: userMsg }]);
+    setInput("");
+
+    // Simulate AI response based on keywords
+    setTimeout(() => {
+      let reply = "Tôi có thể giúp bạn viết bài đăng, tìm kiếm các phần trong Gear hoặc tối ưu hóa dự án. Hãy cho tôi biết cụ thể nhé!";
+      const query = userMsg.toLowerCase();
+      if (query.includes("gear")) {
+        reply = "Hệ thống đang lưu trữ 28 món đồ Gear chia làm 7 danh mục khác nhau. Bạn có thể thêm món mới bằng cách bấm 'Quick Create' -> 'New Gear Item'.";
+      } else if (query.includes("writing") || query.includes("bài viết")) {
+        reply = "Hiện tại bạn chưa có bài viết blog nào hoạt động. Bạn muốn tôi gợi ý một số chủ đề SEO về Digital Marketing không?";
+      } else if (query.includes("project") || query.includes("dự án") || query.includes("work")) {
+        reply = "Có 5 dự án Work đã được cấu hình trong hệ thống (như PNJ, Sony Vietnam, Playah...). Bạn có thể chỉnh sửa mô tả của từng dự án ở tab 'Work'.";
+      } else if (query.includes("photo") || query.includes("ảnh")) {
+        reply = "Thư mục Photos của bạn đang chứa 4 địa điểm chụp ảnh với tổng số 17 hình ảnh đã đồng bộ.";
+      }
+      setMessages((prev) => [...prev, { sender: "ai", text: reply }]);
+    }, 800);
+  };
+
+  return (
+    <div className="cms-drawer-overlay" onClick={onClose}>
+      <div className="cms-drawer-content" onClick={(e) => e.stopPropagation()}>
+        <div className="cms-drawer-header">
+          <div className="cms-drawer-title">
+            <Sparkles size={16} className="cms-accent-color" style={{ color: "var(--accent)" }} />
+            <h3 style={{ margin: 0, fontSize: 16 }}>Trợ lý AI</h3>
+          </div>
+          <button type="button" className="cms-drawer-close" onClick={onClose}>✕</button>
+        </div>
+        <div className="cms-drawer-body">
+          <div className="cms-chat-messages">
+            {messages.map((m, i) => (
+              <div key={i} className={`cms-chat-bubble-wrapper is-${m.sender}`}>
+                <div className="cms-chat-bubble">{m.text}</div>
+              </div>
+            ))}
+            <div ref={chatEndRef} />
+          </div>
+        </div>
+        <form className="cms-drawer-footer" onSubmit={handleSend}>
+          <input
+            type="text"
+            placeholder="Hỏi AI bất kỳ điều gì…"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button type="submit" className="cms-chat-send-btn">Gửi</button>
+        </form>
+      </div>
+    </div>
   );
 }
 
@@ -512,17 +759,92 @@ function StatCard({ def, value, footerValues }: {
   );
 }
 
-/* ── Traffic chart (SVG) ────────────────────────────────────────── */
 function TrafficChart() {
+  const [timeRange, setTimeRange] = useState<"7days" | "30days" | "year">("7days");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
+        setFilterOpen(false);
+      }
+    };
+    window.addEventListener("mousedown", handler);
+    return () => window.removeEventListener("mousedown", handler);
+  }, []);
+
+  const viewsPath =
+    timeRange === "7days"
+      ? "M0,140 C60,110 120,130 200,100 C280,70 320,90 400,60 C480,30 520,120 600,110 C680,100 720,40 800,60 C840,70 870,80 900,75"
+      : timeRange === "30days"
+      ? "M0,100 C100,150 200,80 300,120 C400,90 500,40 600,80 C700,60 800,110 900,50"
+      : "M0,60 C150,110 300,40 450,130 C600,80 750,120 900,40";
+
+  const readsPath =
+    timeRange === "7days"
+      ? "M0,170 C80,165 140,175 220,160 C300,145 340,170 430,158 C510,148 550,172 640,162 C720,153 760,170 840,165 C865,163 882,162 900,165"
+      : timeRange === "30days"
+      ? "M0,150 C100,160 200,130 300,145 C400,130 500,120 600,140 C700,135 800,155 900,130"
+      : "M0,120 C150,130 300,110 450,140 C600,125 750,135 900,115";
+
   return (
     <div className="cms-chart-card">
       <div className="cms-chart-header">
         <h2 className="cms-chart-title">Website Traffic</h2>
-        <div className="cms-chart-filters">
-          <button type="button" className="cms-filter-btn">
-            Last 7 Days <ChevronDown size={13} />
-          </button>
-          <button type="button" className="cms-filter-btn">
+        <div className="cms-chart-filters" style={{ display: "flex", gap: 10 }}>
+          <div className="cms-relative-wrapper" ref={filterRef}>
+            <button
+              type="button"
+              className="cms-filter-btn"
+              onClick={() => setFilterOpen(!filterOpen)}
+            >
+              {timeRange === "7days" && "Last 7 Days"}
+              {timeRange === "30days" && "Last 30 Days"}
+              {timeRange === "year" && "Last Year"}
+              <ChevronDown size={13} />
+            </button>
+
+            {filterOpen && (
+              <div className="cms-dropdown-menu" style={{ left: 0, top: "100%", width: 140 }}>
+                <button
+                  type="button"
+                  className={`cms-dropdown-item${timeRange === "7days" ? " is-active" : ""}`}
+                  onClick={() => {
+                    setTimeRange("7days");
+                    setFilterOpen(false);
+                  }}
+                >
+                  Last 7 Days
+                </button>
+                <button
+                  type="button"
+                  className={`cms-dropdown-item${timeRange === "30days" ? " is-active" : ""}`}
+                  onClick={() => {
+                    setTimeRange("30days");
+                    setFilterOpen(false);
+                  }}
+                >
+                  Last 30 Days
+                </button>
+                <button
+                  type="button"
+                  className={`cms-dropdown-item${timeRange === "year" ? " is-active" : ""}`}
+                  onClick={() => {
+                    setTimeRange("year");
+                    setFilterOpen(false);
+                  }}
+                >
+                  Last Year
+                </button>
+              </div>
+            )}
+          </div>
+          <button
+            type="button"
+            className="cms-filter-btn"
+            onClick={() => alert("Custom date ranges can be set under Pro settings.")}
+          >
             <Calendar size={13} />
             Jun 14 – Jun 21
             <ChevronDown size={13} />
@@ -557,27 +879,21 @@ function TrafficChart() {
 
           {/* Primary curve — views */}
           <path
-            d="M0,140 C60,110 120,130 200,100 C280,70 320,90 400,60
-               C480,30 520,120 600,110 C680,100 720,40 800,60 C840,70 870,80 900,75
-               L900,200 L0,200 Z"
+            d={`${viewsPath} L900,200 L0,200 Z`}
             fill="url(#cms-grad-blue)"
           />
           <path
-            d="M0,140 C60,110 120,130 200,100 C280,70 320,90 400,60
-               C480,30 520,120 600,110 C680,100 720,40 800,60 C840,70 870,80 900,75"
+            d={viewsPath}
             fill="none" stroke="#0075de" strokeWidth="2.5" strokeLinecap="round"
           />
 
           {/* Secondary curve — writing */}
           <path
-            d="M0,170 C80,165 140,175 220,160 C300,145 340,170 430,158
-               C510,148 550,172 640,162 C720,153 760,170 840,165 C865,163 882,162 900,165
-               L900,200 L0,200 Z"
+            d={`${readsPath} L900,200 L0,200 Z`}
             fill="url(#cms-grad-green)"
           />
           <path
-            d="M0,170 C80,165 140,175 220,160 C300,145 340,170 430,158
-               C510,148 550,172 640,162 C720,153 760,170 840,165 C865,163 882,162 900,165"
+            d={readsPath}
             fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"
           />
         </svg>
@@ -826,6 +1142,8 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   const [previewImage,      setPreviewImage]      = useState<{ src: string; alt: string } | null>(null);
   const gearUploadRef  = useRef<HTMLInputElement>(null);
   const photoUploadRef = useRef<HTMLInputElement>(null);
+  const [darkMode, setDarkMode] = useState(false);
+  const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
 
   const selectedGearSection = gearDraft.sections[gearSectionIndex];
   const selectedGearItem    = selectedGearSection?.items[gearItemIndex];
@@ -852,6 +1170,10 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
     if (!options.quiet) setStatus({ type: "success", text: "CMS data ready." });
   }
+
+  useEffect(() => {
+    console.log("CmsDashboard: mounted on client.");
+  }, []);
 
   useEffect(() => {
     if (normalizedInitial) return;
@@ -1433,15 +1755,38 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
   /* ── Render ───────────────────────────────────────────────────── */
   return (
-    <div className="cms-app">
+    <div className={`cms-app${darkMode ? " cms-dark-mode" : ""}`}>
       <Sidebar
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={(tab) => {
+          console.log("CmsDashboard: Tab button clicked:", tab);
+          setActiveTab(tab);
+        }}
         onLogout={logout}
       />
 
       <main className="cms-main">
-        <Topbar activeTab={activeTab} />
+        <Topbar
+          activeTab={activeTab}
+          onQuickCreate={(type) => {
+            if (type === "writing") {
+              setWritingDraft(emptyWriting());
+              setActiveTab("writing");
+            } else if (type === "gear") {
+              setGearDraft(emptyGear());
+              setActiveTab("gear");
+            } else if (type === "work") {
+              setProjectDraft(emptyProject((data?.projects.length ?? 0) + 1));
+              setActiveTab("work");
+            } else if (type === "photos") {
+              setPhotoDraft(emptyPhotoLocation((data?.photos.length ?? 0) + 1));
+              setActiveTab("photos");
+            }
+          }}
+          onOpenAskAi={() => setAiDrawerOpen(true)}
+          darkMode={darkMode}
+          onToggleDarkMode={() => setDarkMode(!darkMode)}
+        />
 
         {status.text && (
           <div
@@ -1474,6 +1819,11 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
             <img src={previewImage.src} alt={previewImage.alt} />
           </div>
         </div>
+      )}
+
+      {/* Ask AI slide-out drawer */}
+      {aiDrawerOpen && (
+        <AskAiDrawer onClose={() => setAiDrawerOpen(false)} />
       )}
     </div>
   );
