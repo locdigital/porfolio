@@ -64,8 +64,6 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
       <div class="container">
             <nav class="photos-nav" aria-label="Locations navigation">
           <div class="photos-nav-list">
-            <!-- Hover background -->
-            <div class="photos-nav-hover-bg" id="photos-hover-bg"></div>
             <!-- Active underline -->
             <div class="photos-nav-active-line" id="photos-active-line"></div>
 
@@ -239,21 +237,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
   .photos-nav-list:active { cursor: grabbing; }
   .photos-nav-list::-webkit-scrollbar { display: none; }
 
-  /* Hover highlight pill */
-  .photos-nav-hover-bg {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 30px;
-    border-radius: 6px;
-    background: rgba(14, 15, 17, 0.08);
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0;
-    transition: left 0.25s cubic-bezier(0.25, 1, 0.5, 1),
-                width 0.25s cubic-bezier(0.25, 1, 0.5, 1),
-                opacity 0.2s ease;
-  }
+
 
   /* Active underline */
   .photos-nav-active-line {
@@ -403,8 +387,6 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
   .loc-grid {
     column-count: 3;
     column-gap: 4px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 1200px;
   }
 
   .loc-photo-item {
@@ -482,9 +464,8 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
       }, { threshold: 0.05, rootMargin: '0px 0px -32px 0px' });
       document.querySelectorAll('.r').forEach(el => io.observe(el));
 
-      // ── Vercel-style tabs: hover bg + active underline ──
+      // ── Vercel-style tabs: active underline ──
       const navLinks = document.querySelectorAll('.photos-nav-link[data-nav-target]');
-      const hoverBg   = document.getElementById('photos-hover-bg');
       const activeLine = document.getElementById('photos-active-line');
       const navList   = document.querySelector('.photos-nav-list');
       let currentActiveLink = navLinks[0] || null;
@@ -506,23 +487,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
         activeLine.style.width = `${width}px`;
       }
 
-      function showHoverBg(link) {
-        if (!hoverBg || !link) return;
-        const { left, width } = getOffset(link);
-        hoverBg.style.left  = `${left}px`;
-        hoverBg.style.width = `${width}px`;
-        hoverBg.style.opacity = '1';
-      }
 
-      function hideHoverBg() {
-        if (hoverBg) hoverBg.style.opacity = '0';
-      }
-
-      // Hover
-      navLinks.forEach(link => {
-        link.addEventListener('mouseenter', () => showHoverBg(link));
-        link.addEventListener('mouseleave', hideHoverBg);
-      });
 
       // Tab switcher
       const sections = document.querySelectorAll('.loc-section');

@@ -75,7 +75,7 @@ function DraggableCard({
 // ----------------------------------------------------
 // MAIN DRAGGABLE COLLAGE
 // ----------------------------------------------------
-export default function DraggableCollage({ portraitSrc = "/leah-portrait.jpg" }: DraggableCollageProps) {
+export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }: DraggableCollageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Stacking z-index tracking
@@ -293,7 +293,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.jpg" }:
           <div className="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <div className="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-                <img src="https://upload.wikimedia.org/wikipedia/en/a/ad/X_cover.png" alt="Photograph" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+                <img src="/images/X_cover.webp" alt="Photograph" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] font-semibold text-background truncate">Photograph</p>
@@ -481,7 +481,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.jpg" }:
           <div className="bg-foreground text-background rounded-2xl p-4 w-[220px] 3xl:w-[280px] 4xl:w-[320px] shadow-xl">
             <div className="flex items-center gap-3 mb-3">
               <div className="shrink-0 w-10 h-10 rounded-lg overflow-hidden">
-                <img src="https://upload.wikimedia.org/wikipedia/en/a/ad/X_cover.png" alt="Photograph album art" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+                <img src="/images/X_cover.webp" alt="Photograph album art" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0" style={{ fontFamily: 'var(--sans)' }}>
                 <p className="text-xs font-semibold text-background truncate">Photograph</p>
@@ -542,7 +542,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.jpg" }:
           <div className="bg-card border border-border/60 rounded-xl p-4 w-[180px] 3xl:w-[230px] 4xl:w-[270px] shadow-sm">
             <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-2.5" style={{ fontFamily: 'var(--sans)' }}>currently watching</p>
             <div className="w-full rounded-lg overflow-hidden mb-3" style={{ aspectRatio: '2 / 3' }}>
-              <img src="https://upload.wikimedia.org/wikipedia/en/d/d8/The_Wolf_of_Wall_Street_%282013%29.png" alt="The Wolf of Wall Street movie poster" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+              <img src="/images/The_Wolf_of_Wall_Street_2013.webp" alt="The Wolf of Wall Street movie poster" draggable="false" className="w-full h-full object-cover pointer-events-none" />
             </div>
             <div className="flex items-center gap-2">
               <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">

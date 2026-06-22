@@ -52,7 +52,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
                 <span class="hero-line hero-line-1">Performance.</span>
                 <span class="hero-line hero-line-2">Strategy.</span>
                 <span class="hero-line hero-line-3"><em>Scaling revenue</em></span>
-                <span class="hero-line hero-line-4"><em>with <span id="typed-text">data, automation & ads.</span></em></span>
+                <span class="hero-line hero-line-4"><em>with <span id="typed-text">data.</span></em></span>
               </h1>
             </BlurFade>
           </div>
@@ -166,11 +166,8 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
                 return (
                   <div class="gallery-row">
                     {doubledRow.map((photo, i) => (
-                      <a
-                        href={photo.fullSrc}
+                      <div
                         class={`gallery-item ${photo.w > photo.h ? "w-wide " : ""}`}
-                        data-pswp-width={photo.fullWidth}
-                        data-pswp-height={photo.fullHeight}
                         aria-label={photo.alt}
                       >
                         <!-- AVIF primary → WebP fallback for old browsers -->
@@ -196,7 +193,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
                             decoding="async"
                           />
                         </picture>
-                      </a>
+                      </div>
                     ))}
                   </div>
                 );
@@ -246,7 +243,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     </section>
 
     <!-- PLAYGROUND ––––––––––––––––––––––––––––– -->
-    <section class="relative w-full h-[100dvh] overflow-hidden toki-r" data-d="5" aria-label="Interactive collage">
+    <section class="relative w-full h-auto md:h-[100dvh] overflow-visible md:overflow-hidden toki-r" data-d="5" aria-label="Interactive collage">
       <MobileAboutPanel portraitSrc={heroAbout.src} />
       <div class="hidden md:block h-full w-full">
         <DraggableCollage client:media="(min-width: 768px)" portraitSrc={heroAbout.src} />
@@ -254,6 +251,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     </section>
 
   </main>
+
 
   <!-- Typed.js: defer = download parallel, execute after HTML parsed (non-blocking) -->
   <script defer src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
@@ -282,7 +280,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
           loop: true,
           showCursor: false
         });
-      }, 500); // Reduced delay from 1100ms to 500ms for faster initial appearance
+      }, 500);
     }
     document.addEventListener('DOMContentLoaded', initTyped);
     document.addEventListener('astro:page-load', initTyped);

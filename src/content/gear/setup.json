@@ -15,7 +15,7 @@
           "slug": "macbook-pro-m4-max",
           "headline": "Main Laptop",
           "description": "Maxed out M4 Max for heavy development, design work, and containerized local environments.",
-          "image": "/uploads/macbook_pro_m4_max.png",
+          "image": "/uploads/macbook_pro_m4_max.webp",
           "url": "https://www.apple.com/macbook-pro/",
           "tag": "Laptop"
         },
@@ -24,7 +24,7 @@
           "slug": "mac-mini-m4-pro",
           "headline": "Desktop Powerhouse",
           "description": "Compact desktop serving as the main stationary node in my office workstation setup.",
-          "image": "/uploads/mac_mini_m4_pro.png",
+          "image": "/uploads/mac_mini_m4_pro.webp",
           "url": "https://www.apple.com/mac-mini/",
           "tag": "Desktop"
         },
@@ -33,7 +33,7 @@
           "slug": "asus-rog-scar-iii",
           "headline": "Gaming Laptop",
           "description": "Dedicated Windows machine for high-performance gaming, cooling, and VR testing.",
-          "image": "/uploads/asus_rog_scar_iii.png",
+          "image": "/uploads/asus_rog_scar_iii.webp",
           "url": "https://rog.asus.com/laptops/rog-strix-series/",
           "tag": "Gaming"
         },
@@ -42,7 +42,7 @@
           "slug": "iphone-14-pro-max",
           "headline": "Primary Phone",
           "description": "Daily driver for testing responsive layouts, quick photography, and staying connected on the go.",
-          "image": "/uploads/iphone_14_pro_max.png",
+          "image": "/uploads/iphone_14_pro_max.webp",
           "url": "https://www.apple.com/iphone/",
           "tag": "Phone"
         },
@@ -51,7 +51,7 @@
           "slug": "iphone-air",
           "headline": "Secondary Phone",
           "description": "Daily mobile device companion in my setup.",
-          "image": "/uploads/iphone_air.png",
+          "image": "/uploads/iphone_air.webp",
           "url": "https://www.apple.com/vn/iphone-air",
           "tag": "Phone"
         },
@@ -60,7 +60,7 @@
           "slug": "ipad-air",
           "headline": "Tablet & Digital Sketchbook",
           "description": "Perfect for reading documentation, wireframing, sketching UI flows, and taking notes.",
-          "image": "/uploads/ipad_air.png",
+          "image": "/uploads/ipad_air.webp",
           "url": "https://www.apple.com/ipad-air/",
           "tag": "Tablet"
         }
@@ -78,7 +78,7 @@
           "slug": "lg-27up850k-w",
           "headline": "Primary 4K Monitor",
           "description": "Excellent color accuracy, USB-C single-cable connectivity for power delivery and video.",
-          "image": "/uploads/lg_27_monitor.png",
+          "image": "/uploads/lg_27_monitor.webp",
           "url": "https://www.lg.com/us/monitors",
           "tag": "Display"
         },
@@ -87,7 +87,7 @@
           "slug": "lg-24qp550",
           "headline": "Secondary 2K Monitor",
           "description": "Compact QHD screen used vertically for reading logs, long documentation, and code reviews.",
-          "image": "/uploads/lg_24_monitor.png",
+          "image": "/uploads/lg_24_monitor.webp",
           "url": "https://www.lg.com/us/monitors",
           "tag": "Display"
         }
@@ -105,7 +105,7 @@
           "slug": "filco-majestouch-minila",
           "headline": "Mechanical Keyboard",
           "description": "Compact mechanical keyboard with unique thumb-key layouts and absolute durability.",
-          "image": "/uploads/filco_minila.png",
+          "image": "/uploads/filco_minila.webp",
           "url": "https://www.diatec.co.jp/en/det.php?prod_c=1432",
           "tag": "Keyboard"
         },
@@ -114,7 +114,7 @@
           "slug": "akko-spr67",
           "headline": "Custom Keyboard Kit",
           "description": "65% layout keyboard featuring a premium spring-mount structure for flexible typing feel.",
-          "image": "/uploads/akko_spr67.png",
+          "image": "/uploads/akko_spr67.webp",
           "url": "https://en.akkogear.com/",
           "tag": "Keyboard"
         },
@@ -123,7 +123,7 @@
           "slug": "flux60-he-pcb-whisper-switch",
           "headline": "Hall Effect Keyboard Bundle",
           "description": "Magnetic switch PCB bundle with WS Flux Ocean Whisper HE switches for custom actuation points.",
-          "image": "/uploads/flux60_pcb.png",
+          "image": "/uploads/flux60_pcb.webp",
           "url": "https://flux.keyboard.com",
           "tag": "Keyboard"
         },
@@ -132,7 +132,7 @@
           "slug": "gmk-cyl-tiramisu",
           "headline": "Cherry Profile ABS Keycaps",
           "description": "GMK Tiramisu doubleshot ABS keycap set, featuring warm tones resembling the Italian dessert.",
-          "image": "/uploads/gmk_tiramisu.png",
+          "image": "/uploads/gmk_tiramisu.webp",
           "url": "https://gmkkeycap.com",
           "tag": "Keycaps"
         },
@@ -141,7 +141,7 @@
           "slug": "logitech-mx-anywhere-3s",
           "headline": "Mobile Wireless Mouse",
           "description": "Compact mouse with MagSpeed electromagnetic scrolling and ultra-quiet clicking for focus.",
-          "image": "/uploads/logitech_mx_anywhere_3s.png",
+          "image": "/uploads/logitech_mx_anywhere_3s.webp",
           "url": "https://www.logitech.com/products/mice/mx-anywhere-3s.html",
           "tag": "Mouse"
         },
@@ -150,7 +150,7 @@
           "slug": "logitech-m650",
           "headline": "Everyday Mouse",
           "description": "Reliable wireless mouse with SmartWheel scrolling, designed for comfortable everyday navigation.",
-          "image": "/uploads/logitech_m650.png",
+          "image": "/uploads/logitech_m650.webp",
           "url": "https://www.logitech.com/products/mice/signature-m650.html",
           "tag": "Mouse"
         },
@@ -159,7 +159,7 @@
           "slug": "epione-essentials-pad",
           "headline": "Minimalist Desk Mat",
           "description": "Clean desk pad providing a smooth surface for mice and a comfortable rest for wrists.",
-          "image": "/images/gear/epione-essentials-pad.png",
+          "image": "/images/gear/epione-essentials-pad.webp",
           "url": "https://epione.store/",
           "tag": "Desk Mat"
         }
@@ -195,7 +195,7 @@
           "slug": "nikon-zf",
           "headline": "Mirrorless Camera Body",
           "description": "Full-frame mirrorless camera combining classic vintage design with state-of-the-art autofocus and sensor.",
-          "image": "/uploads/nikon_zf.png",
+          "image": "/uploads/nikon_zf.webp",
           "url": "https://www.nikonusa.com/p/zf/1761",
           "tag": "Camera"
         },
@@ -249,7 +249,7 @@
           "slug": "canyon-grizl-6",
           "headline": "Gravel Adventure Bike",
           "description": "Durable gravel bike built for rough gravel roads, light singletracks, and bikepacking trips.",
-          "image": "/uploads/canyon_grizl_6.png",
+          "image": "/uploads/canyon_grizl_6.webp",
           "url": "https://www.canyon.com/en-us/gravel-bikes/adventure/grizl/",
           "tag": "Bike"
         }
@@ -276,7 +276,7 @@
           "slug": "adidas-adizero-takumi-sen-10",
           "headline": "Road Racing Shoes",
           "description": "Carbon-plated super shoe optimized for peak performance in 5K to half-marathon distances.",
-          "image": "/uploads/takumi_sen_10.png",
+          "image": "/uploads/takumi_sen_10.webp",
           "url": "https://www.adidas.com/us/running-shoes",
           "tag": "Shoes"
         },

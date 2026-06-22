@@ -3,10 +3,10 @@ interface Props {
   portraitSrc?: string;
 }
 
-const { portraitSrc = "/leah-portrait.jpg" } = Astro.props;
+const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
 ---
 
-<div class="mobile-about-panel md:hidden h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10" style="font-family: var(--sans);">
+<div class="mobile-about-panel md:hidden h-auto flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10" style="font-family: var(--sans);">
   <h2 class="italic text-[clamp(2.2rem,11vw,5rem)] leading-[1.05] mb-2 font-light" style="font-family: var(--serif);">
     I design and ship. Fast.
   </h2>
@@ -46,7 +46,7 @@ const { portraitSrc = "/leah-portrait.jpg" } = Astro.props;
     <div class="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2" id="mobile-spotify">
       <div class="flex items-center gap-2">
         <div class="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-          <img src="https://upload.wikimedia.org/wikipedia/en/a/ad/X_cover.png" alt="Photograph" draggable="false" class="w-full h-full object-cover pointer-events-none" />
+          <img src="/images/X_cover.webp" alt="Photograph" draggable="false" class="w-full h-full object-cover pointer-events-none" />
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-[10px] font-semibold text-background truncate">Photograph</p>
