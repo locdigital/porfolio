@@ -4,44 +4,30 @@ import BlurFade from "./BlurFade.astro";
 
 <div class="w-full">
   <!-- Kicker -->
-  <div class="flex items-center gap-3 mb-6">
-    <span
-      style="font-family: var(--mono); font-size: 10px; padding: 2px 8px; border: 1px solid rgba(0,117,222,0.25); border-radius: 4px; background: rgba(0,117,222,0.05); color: var(--accent); font-weight: 600;"
-    >
+  <div class="page-kicker-wrapper">
+    <span class="page-kicker-num">
       00
     </span>
-    <span
-      style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); font-weight: 600; text-transform: uppercase;"
-    >
+    <span class="page-kicker-text">
       Introduction
     </span>
   </div>
 
   <!-- Main headline with BlurFade -->
   <BlurFade delay={0.15}>
-    <h1
-      style="font-family: var(--serif); font-size: clamp(38px, 5vw, 52px); font-weight: 400; lineHeight: 1.1; letter-spacing: -0.02em; color: var(--text); margin-bottom: 24px;"
-    >
-      Digital marketer who{" "}
-      <span
-        style="font-style: italic; color: var(--accent); border: 1.5px dashed rgba(0,117,222,0.4); border-radius: 6px; padding: 0 6px; display: inline;"
-      >
-        scales brands
-      </span>{" "}
-      with data &{" "}
-      <span
-        style="font-style: italic; color: #e07b39; border: 1.5px dashed rgba(224,123,57,0.4); border-radius: 6px; padding: 0 6px; display: inline;"
-      >
-        code.
+    <h1>
+      <span class="hero-headline-line">
+        Digital marketer who <em>scales brands</em>
+      </span>
+      <span class="hero-headline-line">
+        with data & <em>code.</em>
       </span>
     </h1>
   </BlurFade>
 
   <!-- Bio -->
-  <div style="margin-bottom: 32px;">
-    <p
-      style="font-size: 14.5px; line-height: 1.75; color: var(--muted); max-width: 620px;"
-    >
+  <div class="about-hero-bio">
+    <p class="gear-intro">
       Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho
       Chi Minh City, Vietnam. My passion is in creating data-driven
       campaigns and useful solutions to marketing problems that don't have
@@ -84,6 +70,10 @@ import BlurFade from "./BlurFade.astro";
 </div>
 
 <style>
+  .about-hero-bio {
+    margin-bottom: 32px;
+  }
+
   .about-cta-link {
     font-size: 13.5px;
     font-weight: 500;

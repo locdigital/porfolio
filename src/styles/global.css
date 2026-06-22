@@ -237,9 +237,6 @@
       transform: scale(1.2);
     }
 
-    .n-collapse {
-      transition: opacity .3s ease;
-    }
 
     /* Desktop nav */
     .header-nav-desktop ul {
@@ -1367,6 +1364,14 @@
   margin-bottom: 24px;
 }
 
+.hero-headline-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.18em;
+  white-space: nowrap;
+  width: fit-content;
+}
+
 /* Dynamic dashed borders matching about page highlights */
 .gear-hero h1 em:nth-of-type(odd) {
   font-style: italic !important;
@@ -1391,7 +1396,7 @@
 .gear-intro {
   max-width: 640px;
   margin-top: 24px;
-  font-size: var(--fs-base);
+  font-size: 14.5px;
   line-height: 1.75;
   color: var(--muted);
 }
@@ -1407,6 +1412,11 @@
 
   .gear-hero h1 {
     line-height: 1.1;
+  }
+
+  .hero-headline-line {
+    flex-wrap: wrap;
+    white-space: normal;
   }
 }
 
@@ -1447,18 +1457,4 @@
 
 .skeleton-loading-img.loaded {
   opacity: 1 !important;
-}
-
-/* ============================================================
-   GLOBAL OVERRIDE: DISABLE ALL TRANSITIONS & ANIMATIONS
-   ============================================================ */
-*:not(.marquee-track):not(.marquee-container):not(.marquee-group):not(.marquee-group *),
-*::before,
-*::after {
-  animation: none !important;
-  animation-duration: 0s !important;
-  animation-delay: 0s !important;
-  transition: none !important;
-  transition-duration: 0s !important;
-  transition-delay: 0s !important;
 }

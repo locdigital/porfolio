@@ -136,7 +136,6 @@ const gearSections = gear?.sections ?? fallbackGearSections.map((section) => ({
   })),
 }));
 const gearTitle = gear?.title ?? "My Gear";
-const gearHeadline = gear?.headline ?? "Tools I actually use to <em>work</em>, <em>shoot</em>, <em>write</em>, and <em>build</em>.";
 const gearDescription = gear?.description ?? "A living list of the products in my everyday setup. Each item links out to the product page so it is easy to reference, replace, or share.";
 ---
 
@@ -152,7 +151,10 @@ const gearDescription = gear?.description ?? "A living list of the products in m
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
         <BlurFade>
-          <h1 set:html={gearHeadline} />
+          <h1>
+            <span class="hero-headline-line">Tools for <em>focused work</em></span>
+            <span class="hero-headline-line">and faster <em>building.</em></span>
+          </h1>
         </BlurFade>
         <p class="gear-intro">
           {gearDescription}
