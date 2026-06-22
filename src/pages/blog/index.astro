@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getWritingPosts } from "../../lib/writing";
+import BlurFade from "../../components/ui/blur-fade";
 
 const posts = await getWritingPosts();
 ---
@@ -14,7 +15,9 @@ const posts = await getWritingPosts();
           <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">Writing</span>
         </div>
-        <h1>Journal & <em>Essays</em></h1>
+        <BlurFade client:load>
+          <h1>Journal & <em>Essays</em></h1>
+        </BlurFade>
         <p class="gear-intro">
           A collection of thoughts, tutorials, and reflections on marketing, code, and life.
         </p>

@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getPhotoAsset } from "../lib/photo-assets";
+import BlurFade from "../components/ui/blur-fade";
 
 // Import optimized images for service cards/tabs
 const performanceImg = getPhotoAsset("/assets/photos/img-portfolio/photo-10.webp");
@@ -206,9 +207,11 @@ const faqs = [
           <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">My Services</span>
         </div>
-        <h1>
-          Scale your digital footprint with <em>high-velocity marketing</em> and <em>robust code.</em>
-        </h1>
+        <BlurFade client:load>
+          <h1>
+            Scale your digital footprint with <em>high-velocity marketing</em> and <em>robust code.</em>
+          </h1>
+        </BlurFade>
         <p class="gear-intro">
           I partner with growth-focused brands and startups to run conversion ads, deploy organic forum seeding, map creative positioning, and build headless static sites.
         </p>
@@ -345,12 +348,7 @@ const faqs = [
                     </div>
                   </div>
 
-                  <div class="pane-media">
-                    <div class="media-container">
-                      <Image src={service.img} alt={service.alt} loading="lazy" decoding="async" />
-                      <div class="media-label">Sample Work Environment</div>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             ))}
@@ -676,9 +674,9 @@ const faqs = [
   }
 
   .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marquee 30s linear infinite;
+    display: flex !important;
+    width: max-content !important;
+    animation: marquee 24000ms linear infinite !important;
   }
 
   .marquee-group {
@@ -943,10 +941,7 @@ const faqs = [
   }
 
   .pane-split {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 32px;
-    align-items: start;
+    display: block;
   }
 
   .pane-meta {
@@ -1265,7 +1260,7 @@ const faqs = [
   }
 
   .faq-accordion-container {
-    max-width: 780px;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
   }

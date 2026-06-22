@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { getPhotoLocations } from "../lib/cms";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
+import BlurFade from "../components/ui/blur-fade";
 
 const sourceLocations = await getPhotoLocations();
 const optimizedLocations = await Promise.all(
@@ -48,7 +49,9 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
           <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">My photos</span>
         </div>
-        <h1>Places I've <em>wandered.</em></h1>
+        <BlurFade client:load>
+          <h1>Places I've <em>wandered.</em></h1>
+        </BlurFade>
         <p class="gear-intro">
           Shot on whatever was in my pocket. These are the places that stayed with me.
         </p>

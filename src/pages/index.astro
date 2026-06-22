@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes, getPhotoAsset } from "../lib/photo-assets";
 import { getWritingPosts } from "../lib/writing";
 import DraggableCollage from "../components/ui/draggable-collage";
+import BlurFade from "../components/ui/blur-fade";
 
 const makePortfolioPhoto = (number: number) => ({
   src: `/assets/photos/img-portfolio/photo-${number}.webp`,
@@ -45,12 +46,14 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
         <div class="hero-layout">
 
           <div>
-            <h1 class="hero-title">
-              <span class="hero-line hero-line-1">Performance.</span>
-              <span class="hero-line hero-line-2">Strategy.</span>
-              <span class="hero-line hero-line-3"><em>Scaling revenue</em></span>
-              <span class="hero-line hero-line-4"><em>with <span id="typed-text"></span></em></span>
-            </h1>
+            <BlurFade client:load>
+              <h1 class="hero-title">
+                <span class="hero-line hero-line-1">Performance.</span>
+                <span class="hero-line hero-line-2">Strategy.</span>
+                <span class="hero-line hero-line-3"><em>Scaling revenue</em></span>
+                <span class="hero-line hero-line-4"><em>with <span id="typed-text">data, automation & ads.</span></em></span>
+              </h1>
+            </BlurFade>
           </div>
 
           <div class="hero-aside">
@@ -248,12 +251,6 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 
   </main>
 
-
-
-
-  <!-- ============================================================
-       SCRIPTS
-  ============================================================ -->
   <!-- Typed.js: defer = download parallel, execute after HTML parsed (non-blocking) -->
   <script defer src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
   <script is:inline>
@@ -277,12 +274,13 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
           strings: ['data.', 'automation.', 'ads.'],
           typeSpeed: 55,
           backSpeed: 35,
-          backDelay: 2500,
+          backDelay: 1200,
           loop: true,
-          cursorChar: '|',
+          showCursor: false
         });
-      }, 1100);
+      }, 500); // Reduced delay from 1100ms to 500ms for faster initial appearance
     }
+    document.addEventListener('DOMContentLoaded', initTyped);
     document.addEventListener('astro:page-load', initTyped);
   </script>
 

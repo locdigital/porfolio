@@ -1,6 +1,7 @@
 "use client";
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import { useRef } from "react";
+import BlurFade from "./blur-fade";
 
 export default function AboutHero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -77,13 +78,8 @@ export default function AboutHero() {
         </span>
       </TimelineContent>
 
-      {/* Main headline */}
-      <TimelineContent
-        as="div"
-        animationNum={1}
-        timelineRef={heroRef}
-        customVariants={revealVariants}
-      >
+      {/* Main headline with BlurFade */}
+      <BlurFade delay={0.15}>
         <h1
           style={{
             fontFamily: "var(--serif)",
@@ -130,7 +126,7 @@ export default function AboutHero() {
             code.
           </TimelineContent>
         </h1>
-      </TimelineContent>
+      </BlurFade>
 
       {/* Bio */}
       <TimelineContent

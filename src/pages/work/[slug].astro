@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
+import BlurFade from "../../components/ui/blur-fade";
 
 export const prerender = true;
 
@@ -49,7 +50,9 @@ const paragraphs = project.description.split("\n\n").filter(Boolean);
           <span class="detail-year">{project.year}</span>
         </div>
 
-        <h1 class="detail-title r" data-d="1">{project.title}</h1>
+        <BlurFade client:load>
+          <h1 class="detail-title r" data-d="1">{project.title}</h1>
+        </BlurFade>
 
         <div class="detail-meta r" data-d="2">
           <div class="meta-item">

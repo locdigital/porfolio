@@ -83,9 +83,11 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
   const gridOffsetX = useMotionValue(0);
   const gridOffsetY = useMotionValue(0);
 
-  const speedX = 0.25; 
-  const speedY = 0.25;
+  const speedX = 0; 
+  const speedY = 0;
 
+  // Animation loop disabled to make background grid static
+  /*
   useAnimationFrame(() => {
     const currentX = gridOffsetX.get();
     const currentY = gridOffsetY.get();
@@ -93,6 +95,7 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
     gridOffsetX.set((currentX + speedX) % gridSize);
     gridOffsetY.set((currentY + speedY) % gridSize);
   });
+  */
 
   // Create a dynamic radial mask for the "flashlight" effect
   const maskImage = useMotionTemplate`radial-gradient(300px circle at ${mouseX}px ${mouseY}px, black, transparent)`;

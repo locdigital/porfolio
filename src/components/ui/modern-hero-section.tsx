@@ -92,21 +92,13 @@ const HeroCollage = React.forwardRef<HTMLDivElement, HeroCollageProps>(
                 <motion.div
                   key={idx}
                   className={cn("h-auto rounded-2xl shadow-2xl object-cover", config.className)}
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 1, scale: 1 }}
                   animate={{ 
                     opacity: 1, 
                     scale: 1,
-                    y: [0, config.yOffset, 0]
                   }}
                   transition={{ 
-                    opacity: { duration: 0.4, delay: idx * 0.05 },
-                    scale: { duration: 0.4, delay: idx * 0.05, type: "spring", bounce: 0.4 },
-                    y: {
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: config.delay
-                    }
+                    duration: 0
                   }}
                 >
                   <img
@@ -127,10 +119,8 @@ const HeroCollage = React.forwardRef<HTMLDivElement, HeroCollageProps>(
           <div className="flex flex-col items-center justify-center gap-8 sm:flex-row sm:gap-16">
             {stats.map((stat, index) => (
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.25, delay: index * 0.05 }}
+                initial={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 key={index} 
                 className="text-center"
               >

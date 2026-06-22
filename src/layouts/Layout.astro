@@ -100,44 +100,10 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
   <ViewTransitions />
 
   <style is:global>
-    /* ── Page transition: fade + blur ── */
-    ::view-transition-old(root) {
-      animation: page-out 0.35s ease-in forwards;
-    }
-
+    /* ── Page transition: fade + blur disabled ── */
+    ::view-transition-old(root),
     ::view-transition-new(root) {
-      animation: page-in 0.5s ease-out 0.1s both;
-    }
-
-    @keyframes page-out {
-      from {
-        opacity: 1;
-        filter: blur(0px);
-      }
-      to {
-        opacity: 0;
-        filter: blur(6px);
-      }
-    }
-
-    @keyframes page-in {
-      from {
-        opacity: 0;
-        filter: blur(8px);
-        transform: translateY(8px);
-      }
-      to {
-        opacity: 1;
-        filter: blur(0px);
-        transform: translateY(0);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation: none;
-      }
+      animation: none !important;
     }
   </style>
 
@@ -548,7 +514,8 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
           stripOuter.addEventListener('touchend', () => { isHovered = false; }, { passive: true });
         }
 
-        // Auto scroll marquee loop
+        // Auto scroll marquee loop disabled as per user request to turn off animations
+        /*
         const scrollSpeed = 0.5; // px per frame
         function tickAutoScroll() {
           if (!down && !isHovered) {
@@ -568,6 +535,7 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
         setTimeout(() => {
           requestAnimationFrame(tickAutoScroll);
         }, 1000);
+        */
 
         // Drag-to-scroll (mouse only — touch uses native scroll which is smoother)
         let startX, startSL, vel = 0, lastX, lastT, rafG, rafMove;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useTransform, useVelocity, useSpring } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
 interface DraggableCollageProps {
@@ -41,17 +41,14 @@ function DraggableCard({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const xVelocity = useVelocity(x);
-  const rotateVelocity = useTransform(xVelocity, [-3000, 3000], [-22, 22]);
-  const rotateSpring = useSpring(rotateVelocity, { damping: 20, stiffness: 120 });
-  const rotate = useTransform(rotateSpring, (v) => v + initialRotate);
+  const rotate = initialRotate;
 
   return (
     <motion.div
       drag
       dragConstraints={dragConstraints}
-      dragElastic={0.22}
-      dragTransition={{ power: 0.22, timeConstant: 280 }}
+      dragElastic={0}
+      dragTransition={{ power: 0, timeConstant: 0 }}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onMouseEnter={onMouseEnter}
@@ -67,7 +64,7 @@ function DraggableCard({
         scale: initialScale * 1.03,
         boxShadow: "0 15px 30px -8px rgba(0, 0, 0, 0.12)",
       }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+      transition={{ duration: 0 }}
       className={cn("absolute cursor-grab active:cursor-grabbing select-none", className)}
     >
       {children}
@@ -129,8 +126,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.jpg" }:
   const [cursorText, setCursorText] = useState('grab & drag ✦');
   const [isDraggingAny, setIsDraggingAny] = useState(false);
 
-  const cursorXSpring = useSpring(cursorX, { damping: 42, stiffness: 280 });
-  const cursorYSpring = useSpring(cursorY, { damping: 42, stiffness: 280 });
+
 
   // Clock tick effect (ICT)
   useEffect(() => {
@@ -777,12 +773,12 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.jpg" }:
         <motion.div 
           className="absolute pointer-events-none z-[200] -translate-x-1/2 -translate-y-1/2"
           style={{
-            x: cursorXSpring,
-            y: cursorYSpring,
+            x: cursorX,
+            y: cursorY,
             opacity: cursorOpacity,
             scale: isDraggingAny ? 0.65 : 0.95,
           }}
-          transition={{ opacity: { duration: 0.2 }, scale: { duration: 0.18 } }}
+          transition={{ duration: 0 }}
         >
           <div className="bg-[#0075de] text-white rounded-full px-[22px] py-[8px] text-[13px] font-medium tracking-tight whitespace-nowrap shadow-lg flex items-center gap-1.5" style={{ fontFamily: 'var(--sans)' }}>
             {cursorText}

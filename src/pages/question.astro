@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import BlurFade from "../components/ui/blur-fade";
 ---
 
 <Layout
@@ -16,9 +17,11 @@ import Layout from "../layouts/Layout.astro";
         <div class="qp-avatar" aria-hidden="true">
           <span>👋</span>
         </div>
-        <h1 class="qp-headline">
-          <span class="qhl qhl-1">Ask <span class="name-highlight"><span class="name-hl-bg"></span><span class="name-hl-dot name-hl-dot-tl"></span><span class="name-hl-dot name-hl-dot-br"></span><span class="name-hl-text">Loc</span></span> anything.</span>
-        </h1>
+        <BlurFade client:load>
+          <h1 class="qp-headline">
+            <span>Ask <span class="name-highlight"><span class="name-hl-bg"></span><span class="name-hl-dot name-hl-dot-tl"></span><span class="name-hl-dot name-hl-dot-br"></span><span class="name-hl-text">Loc</span></span> anything.</span>
+          </h1>
+        </BlurFade>
       </header>
 
       <!-- Chat messages (hidden when empty) -->
