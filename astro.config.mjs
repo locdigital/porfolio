@@ -9,6 +9,12 @@ export default defineConfig({
   output: 'server',
   adapter: vercel({
     imageService: true,
+    imagesConfig: {
+      sizes: [16, 32, 48, 56, 64, 80, 96, 112, 128, 240, 256, 320, 360, 384, 400, 480, 520, 640, 720, 750, 760, 828, 960, 1080, 1200, 1280, 1920, 2048, 3840],
+      domains: [],
+      formats: ["image/avif", "image/webp"],
+      minimumCacheTTL: 60,
+    },
   }),
   integrations: [tailwind(), sitemap(), react()],
   prefetch: {
