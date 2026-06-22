@@ -111,7 +111,7 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
 
 <body>
   {pathname !== '/demo' && pathname !== '/demo/' && (
-    <InfiniteGrid bgOnly={true} globalMouse={true} client:only="react" />
+    <InfiniteGrid bgOnly={true} globalMouse={true} client:media="(min-width: 768px)" />
   )}
   <!-- ============================================================
        HEADER
@@ -125,7 +125,7 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
           </a>
 
           <div class="header-nav-desktop">
-            <MenuBar client:load pathname={pathname} className="header-glow-menu" />
+            <MenuBar client:media="(min-width: 768px)" pathname={pathname} className="header-glow-menu" />
           </div>
 
         </div>

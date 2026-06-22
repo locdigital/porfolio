@@ -67,9 +67,19 @@ export function getPhotoAsset(src: string) {
   return match.default;
 }
 
+const ALLOWED_VERCEL_SIZES = [
+  16, 32, 48, 56, 64, 80, 96, 112, 128, 240, 256, 320, 360, 384, 400, 480, 520,
+  640, 720, 750, 760, 828, 960, 1080, 1200, 1280, 1920, 2048, 3840
+];
+
+function getClosestAllowedWidth(width: number): number {
+  const closest = ALLOWED_VERCEL_SIZES.find((size) => size >= width);
+  return closest ?? ALLOWED_VERCEL_SIZES[ALLOWED_VERCEL_SIZES.length - 1];
+}
+
 function clampWidths(widths: number[], maxWidth: number) {
   const usableWidths = widths
-    .map((width) => Math.min(width, maxWidth))
+    .map((width) => getClosestAllowedWidth(Math.min(width, maxWidth)))
     .filter((width) => width > 0);
 
   return [...new Set(usableWidths)].sort((a, b) => a - b);
@@ -98,7 +108,7 @@ async function buildImage(
 ) {
   return getImage({
     src: asset,
-    width: Math.min(width, asset.width),
+    width: getClosestAllowedWidth(Math.min(width, asset.width)),
     widths: clampWidths(widths, asset.width),
     format,
     quality,
@@ -144,7 +154,7 @@ export async function optimizePhoto(
     const targetFullWidth = isDev ? Math.min(fullWidth, 1024) : fullWidth;
     const full = await getImage({
       src: asset,
-      width: targetFullWidth,
+      width: getClosestAllowedWidth(targetFullWidth),
       format: options.fullFormat ?? "webp",
       quality: options.fullQuality ?? 75,
     });

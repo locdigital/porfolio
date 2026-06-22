@@ -1,0 +1,100 @@
+---
+import BlurFade from "./BlurFade.astro";
+---
+
+<div class="w-full">
+  <!-- Kicker -->
+  <div class="flex items-center gap-3 mb-6">
+    <span
+      style="font-family: var(--mono); font-size: 10px; padding: 2px 8px; border: 1px solid rgba(0,117,222,0.25); border-radius: 4px; background: rgba(0,117,222,0.05); color: var(--accent); font-weight: 600;"
+    >
+      00
+    </span>
+    <span
+      style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent); font-weight: 600; text-transform: uppercase;"
+    >
+      Introduction
+    </span>
+  </div>
+
+  <!-- Main headline with BlurFade -->
+  <BlurFade delay={0.15}>
+    <h1
+      style="font-family: var(--serif); font-size: clamp(38px, 5vw, 52px); font-weight: 400; lineHeight: 1.1; letter-spacing: -0.02em; color: var(--text); margin-bottom: 24px;"
+    >
+      Digital marketer who{" "}
+      <span
+        style="font-style: italic; color: var(--accent); border: 1.5px dashed rgba(0,117,222,0.4); border-radius: 6px; padding: 0 6px; display: inline;"
+      >
+        scales brands
+      </span>{" "}
+      with data &{" "}
+      <span
+        style="font-style: italic; color: #e07b39; border: 1.5px dashed rgba(224,123,57,0.4); border-radius: 6px; padding: 0 6px; display: inline;"
+      >
+        code.
+      </span>
+    </h1>
+  </BlurFade>
+
+  <!-- Bio -->
+  <div style="margin-bottom: 32px;">
+    <p
+      style="font-size: 14.5px; line-height: 1.75; color: var(--muted); max-width: 620px;"
+    >
+      Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho
+      Chi Minh City, Vietnam. My passion is in creating data-driven
+      campaigns and useful solutions to marketing problems that don't have
+      obvious answers.
+    </p>
+  </div>
+
+  <!-- Bottom row: tagline + CTA -->
+  <div class="flex items-center justify-between gap-6 flex-wrap">
+    <div>
+      <div
+        style="font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 4px;"
+      >
+        Based in Ho Chi Minh City
+      </div>
+      <div
+        style="font-family: var(--mono); font-size: 11px; color: var(--text); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;"
+      >
+        Open to new projects
+      </div>
+    </div>
+
+    <div class="flex gap-4 items-center">
+      <a
+        href="mailto:hi@loc.digital"
+        class="about-cta-link"
+      >
+        Email me
+      </a>
+      <a
+        href="https://www.linkedin.com/in/phucloc"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="about-cta-link"
+      >
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .about-cta-link {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--divider);
+    transition: all 0.25s ease;
+  }
+  .about-cta-link:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+</style>

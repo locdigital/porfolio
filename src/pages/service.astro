@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getPhotoAsset } from "../lib/photo-assets";
-import BlurFade from "../components/ui/blur-fade";
+import BlurFade from "../components/ui/BlurFade.astro";
 
 // Import optimized images for service cards/tabs
 const performanceImg = getPhotoAsset("/assets/photos/img-portfolio/photo-10.webp");
@@ -207,7 +207,7 @@ const faqs = [
           <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">My Services</span>
         </div>
-        <BlurFade client:load>
+        <BlurFade>
           <h1>
             Scale your digital footprint with <em>high-velocity marketing</em> and <em>robust code.</em>
           </h1>

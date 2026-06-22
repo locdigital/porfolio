@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
-import BlurFade from "../../components/ui/blur-fade";
+import BlurFade from "../../components/ui/BlurFade.astro";
 
 const sortedProjects = await getProjects();
 ---
@@ -19,7 +19,7 @@ const sortedProjects = await getProjects();
           <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">My work</span>
         </div>
-        <BlurFade client:load>
+        <BlurFade>
           <h1>Selected work & <em>case studies</em></h1>
         </BlurFade>
         <p class="gear-intro">

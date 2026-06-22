@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import BlurFade from "../components/ui/blur-fade";
+import BlurFade from "../components/ui/BlurFade.astro";
 ---
 
 <Layout
@@ -17,7 +17,7 @@ import BlurFade from "../components/ui/blur-fade";
         <div class="qp-avatar" aria-hidden="true">
           <span>👋</span>
         </div>
-        <BlurFade client:load>
+        <BlurFade>
           <h1 class="qp-headline">
             <span>Ask <span class="name-highlight"><span class="name-hl-bg"></span><span class="name-hl-dot name-hl-dot-tl"></span><span class="name-hl-dot name-hl-dot-br"></span><span class="name-hl-text">Loc</span></span> anything.</span>
           </h1>

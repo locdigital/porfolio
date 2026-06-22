@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getGear } from "../lib/cms";
-import BlurFade from "../components/ui/blur-fade";
+import BlurFade from "../components/ui/BlurFade.astro";
 
 const fallbackGearSections = [
   {
@@ -151,7 +151,7 @@ const gearDescription = gear?.description ?? "A living list of the products in m
           <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
-        <BlurFade client:load>
+        <BlurFade>
           <h1 set:html={gearHeadline} />
         </BlurFade>
         <p class="gear-intro">

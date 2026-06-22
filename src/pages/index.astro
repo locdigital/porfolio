@@ -3,7 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import { STRIP_GALLERY_SIZES, optimizePhotos, toImgAttributes, getPhotoAsset } from "../lib/photo-assets";
 import { getWritingPosts } from "../lib/writing";
 import DraggableCollage from "../components/ui/draggable-collage";
-import BlurFade from "../components/ui/blur-fade";
+import BlurFade from "../components/ui/BlurFade.astro";
+import MobileAboutPanel from "../components/ui/MobileAboutPanel.astro";
 
 const makePortfolioPhoto = (number: number) => ({
   src: `/assets/photos/img-portfolio/photo-${number}.webp`,
@@ -46,7 +47,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
         <div class="hero-layout">
 
           <div>
-            <BlurFade client:load>
+            <BlurFade>
               <h1 class="hero-title">
                 <span class="hero-line hero-line-1">Performance.</span>
                 <span class="hero-line hero-line-2">Strategy.</span>
@@ -246,7 +247,10 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 
     <!-- PLAYGROUND ––––––––––––––––––––––––––––– -->
     <section class="relative w-full h-[100dvh] overflow-hidden toki-r" data-d="5" aria-label="Interactive collage">
-      <DraggableCollage client:load portraitSrc={heroAbout.src} />
+      <MobileAboutPanel portraitSrc={heroAbout.src} />
+      <div class="hidden md:block h-full w-full">
+        <DraggableCollage client:media="(min-width: 768px)" portraitSrc={heroAbout.src} />
+      </div>
     </section>
 
   </main>

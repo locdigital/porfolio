@@ -1,0 +1,57 @@
+---
+interface Props {
+  className?: string;
+  duration?: number;
+  delay?: number;
+  yOffset?: number;
+  blur?: string;
+}
+
+const {
+  className = "",
+  duration = 0.4,
+  delay = 0,
+  yOffset = 6,
+  blur = "6px",
+} = Astro.props;
+---
+
+<div 
+  class={`blur-fade-container ${className}`} 
+  style={`--bf-duration: ${duration}s; --bf-delay: ${delay}s; --bf-y-offset: ${yOffset}px; --bf-blur: ${blur};`}
+>
+  <slot />
+</div>
+
+<style>
+  .blur-fade-container {
+    animation: blurFadeIn var(--bf-duration) cubic-bezier(0.22, 1, 0.36, 1) var(--bf-delay) both;
+    will-change: transform, opacity, filter;
+  }
+
+  @keyframes blurFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(var(--bf-y-offset));
+      filter: blur(var(--bf-blur));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(calc(-1 * var(--bf-y-offset)));
+      filter: blur(0px);
+    }
+  }
+
+  /* Support prefers-reduced-motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .blur-fade-container {
+      animation: fadeIn var(--bf-duration) ease-out var(--bf-delay) both;
+      transform: none !important;
+      filter: none !important;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  }
+</style>

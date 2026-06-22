@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import BlurFade from "../../components/ui/blur-fade";
+import BlurFade from "../../components/ui/BlurFade.astro";
 
 export const prerender = false;
 
@@ -39,7 +39,7 @@ const tags = post.data.tags ?? [];
     </a>
     
     <header class="mb-[64px]">
-      <BlurFade client:load>
+      <BlurFade>
         <h1 class="text-[44px] md:text-[64px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] leading-[1.05] text-[var(--text)] mb-[24px]">{post.data.headline}</h1>
       </BlurFade>
       
