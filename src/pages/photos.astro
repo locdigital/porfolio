@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { getPhotoLocations } from "../lib/cms";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
-import BlurFade from "../components/ui/BlurFade.astro";
+import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
 
 const sourceLocations = await getPhotoLocations();
 const optimizedLocations = await Promise.all(
@@ -46,18 +46,12 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
       <!-- PAGE HERO -->
       <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="Photos introduction">
         <div class="page-kicker-wrapper">
-          <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">My photos</span>
         </div>
-        <BlurFade>
-          <h1>
-            <span class="hero-headline-line">Places I've <em>wandered</em></span>
-            <span class="hero-headline-line">moments I <em>remembered.</em></span>
-          </h1>
-        </BlurFade>
-        <p class="gear-intro">
+        <AnimatedPageHeadline client:load headline="Places I've <em>wandered.</em>" />
+        <AnimatedPageDescription client:load className="gear-intro">
           Shot on whatever was in my pocket. These are the places that stayed with me.
-        </p>
+        </AnimatedPageDescription>
       </section>
     </div>
 

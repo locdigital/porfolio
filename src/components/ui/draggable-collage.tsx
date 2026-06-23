@@ -262,7 +262,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
         <div className="grid grid-cols-2 gap-3" style={{ fontFamily: 'var(--sans)' }}>
           <div className="bg-card border border-border/60 rounded-xl p-2.5 pb-6 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)] -rotate-[2deg]">
             <div className="overflow-hidden rounded-lg w-full">
-              <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" draggable="false" />
+              <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
             <p className="mt-2.5 text-[9px] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
           </div>
@@ -277,7 +277,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
                 <span className="text-[8px] uppercase tracking-widest opacity-60" style={{ fontFamily: 'var(--mono)' }}>available now</span>
               </div>
               <div className="h-px bg-[#0a2e22]/20 mb-2.5"></div>
-              <p className="italic text-lg leading-tight mb-2.5" style={{ fontFamily: 'var(--serif)' }}>Marketing Engineer</p>
+              <p className="italic text-lg leading-tight mb-2.5" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             </div>
             <div className="space-y-1" style={{ fontFamily: 'var(--sans)' }}>
               <div className="flex items-center gap-1.5"><span className="opacity-50">→</span><span className="text-[9px]">Ho Chi Minh City</span></div>
@@ -293,7 +293,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           <div className="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <div className="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-                <img src="/images/X_cover.webp" alt="Photograph" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+                <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] font-semibold text-background truncate">Photograph</p>
@@ -430,7 +430,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
         >
           <div className="bg-card border border-border/60 rounded-xl p-3 pb-8 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)]">
             <div className="overflow-hidden rounded-lg w-[140px] md:w-[160px] 3xl:w-[200px] 4xl:w-[240px]">
-              <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" draggable="false" />
+              <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
             <p className="mt-3 text-xs text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
           </div>
@@ -457,7 +457,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
               <span className="text-[9px] uppercase tracking-widest opacity-60" style={{ fontFamily: 'var(--mono)' }}>available now</span>
             </div>
             <div className="h-px bg-[#0a2e22]/20 mb-3"></div>
-            <p className="italic text-xl leading-tight mb-3" style={{ fontFamily: 'var(--serif)' }}>Marketing Engineer</p>
+            <p className="italic text-xl leading-tight mb-3" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             <div className="space-y-1.5" style={{ fontFamily: 'var(--sans)' }}>
               <div className="flex items-center gap-2"><span className="opacity-50">→</span><span className="text-[10px]">Ho Chi Minh City</span></div>
               <div className="flex items-center gap-2"><span className="opacity-50">→</span><span className="text-[10px]">Remote Vietnam</span></div>
@@ -481,7 +481,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           <div className="bg-foreground text-background rounded-2xl p-4 w-[220px] 3xl:w-[280px] 4xl:w-[320px] shadow-xl">
             <div className="flex items-center gap-3 mb-3">
               <div className="shrink-0 w-10 h-10 rounded-lg overflow-hidden">
-                <img src="/images/X_cover.webp" alt="Photograph album art" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+                <img src="/images/X_cover.webp" alt="Photograph album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0" style={{ fontFamily: 'var(--sans)' }}>
                 <p className="text-xs font-semibold text-background truncate">Photograph</p>
@@ -542,7 +542,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           <div className="bg-card border border-border/60 rounded-xl p-4 w-[180px] 3xl:w-[230px] 4xl:w-[270px] shadow-sm">
             <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-2.5" style={{ fontFamily: 'var(--sans)' }}>currently watching</p>
             <div className="w-full rounded-lg overflow-hidden mb-3" style={{ aspectRatio: '2 / 3' }}>
-              <img src="/images/The_Wolf_of_Wall_Street_2013.webp" alt="The Wolf of Wall Street movie poster" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+              <img src="/images/The_Wolf_of_Wall_Street_2013.webp" alt="The Wolf of Wall Street movie poster" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
             </div>
             <div className="flex items-center gap-2">
               <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">

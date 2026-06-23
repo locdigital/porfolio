@@ -15,7 +15,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
   <div class="grid grid-cols-2 gap-3">
     <div class="bg-card border border-border/60 rounded-xl p-2.5 pb-6 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)] -rotate-[2deg]">
       <div class="overflow-hidden rounded-lg w-full">
-        <img src={portraitSrc} alt="Phuc Loc" class="aspect-square w-full object-cover object-center pointer-events-none" draggable="false" />
+        <img src={portraitSrc} alt="Phuc Loc" class="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
       </div>
       <p class="mt-2.5 text-[9px] text-muted-foreground tracking-widest text-center">Phuc Loc · Saigon</p>
     </div>
@@ -30,7 +30,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
           <span class="text-[8px] uppercase tracking-widest opacity-60" style="font-family: var(--mono);">available now</span>
         </div>
         <div class="h-px bg-[#0a2e22]/20 mb-2.5"></div>
-        <p class="italic text-lg leading-tight mb-2.5" style="font-family: var(--serif);">Marketing Engineer</p>
+        <p class="italic text-lg leading-tight mb-2.5" style="font-family: var(--serif);">Performance Marketer</p>
       </div>
       <div class="space-y-1">
         <div class="flex items-center gap-1.5"><span class="opacity-50">→</span><span class="text-[9px]">Ho Chi Minh City</span></div>
@@ -46,7 +46,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
     <div class="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2" id="mobile-spotify">
       <div class="flex items-center gap-2">
         <div class="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-          <img src="/images/X_cover.webp" alt="Photograph" draggable="false" class="w-full h-full object-cover pointer-events-none" />
+          <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" class="w-full h-full object-cover pointer-events-none" />
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-[10px] font-semibold text-background truncate">Photograph</p>

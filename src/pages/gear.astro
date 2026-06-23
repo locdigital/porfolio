@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getGear } from "../lib/cms";
-import BlurFade from "../components/ui/BlurFade.astro";
+import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
+import { absoluteUrl, pageSchema } from "../lib/seo";
 
 const fallbackGearSections = [
   {
@@ -137,38 +138,53 @@ const gearSections = gear?.sections ?? fallbackGearSections.map((section) => ({
 }));
 const gearTitle = gear?.title ?? "My Gear";
 const gearDescription = gear?.description ?? "A living list of the products in my everyday setup. Each item links out to the product page so it is easy to reference, replace, or share.";
+const gearPageTitle = "My Gear | Phuc Loc Nguyen";
+const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc Loc Nguyen uses for marketing, content, and creative work.";
 ---
 
 <Layout
-  title="My Gear | Phuc Loc Nguyen"
-  description="The hardware, camera kit, audio gear, and apps Phuc Loc Nguyen uses for marketing, content, and creative work."
+  title={gearPageTitle}
+  description={gearPageDescription}
+  schema={[
+    pageSchema({
+      url: absoluteUrl("/gear"),
+      title: gearPageTitle,
+      description: gearPageDescription,
+      type: "CollectionPage",
+    }),
+    {
+      "@type": "ItemList",
+      "@id": `${absoluteUrl("/gear")}#gear`,
+      name: "Gear and tools",
+      itemListElement: gearSections.flatMap((section) => section.items).map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Product",
+          name: item.name,
+          description: item.description,
+          category: item.tag,
+          url: item.url,
+        },
+      })),
+    },
+  ]}
 >
   <main class="gear-page">
     <div class="gear-container">
       <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="My Gear introduction">
         <div class="page-kicker-wrapper">
-          <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
-        <BlurFade>
-          <h1>
-            <span class="hero-headline-line">Tools for <em>focused work</em></span>
-            <span class="hero-headline-line">and faster <em>building.</em></span>
-          </h1>
-        </BlurFade>
-        <p class="gear-intro">
+        <AnimatedPageHeadline client:load headline={gearHeadline} />
+        <AnimatedPageDescription client:load className="gear-intro">
           {gearDescription}
-        </p>
+        </AnimatedPageDescription>
       </section>
 
       <section class="gear-featured toki-r" data-d="2" aria-label="Featured setup">
-        <div class="desk-visual" aria-hidden="true">
-          <div class="desk-monitor"></div>
-          <div class="desk-base"></div>
-          <div class="desk-laptop"></div>
-          <div class="desk-phone"></div>
-          <div class="desk-keyboard"></div>
-          <div class="desk-mouse"></div>
+        <div class="desk-visual">
+          <img src="/images/gear/gear-future.webp" alt="Future desk setup" loading="eager" decoding="async" />
         </div>
         <div class="gear-featured-copy">
           <span class="gear-count">{gearSections.reduce((sum, section) => sum + section.items.length, 0)} items</span>
@@ -191,9 +207,9 @@ const gearDescription = gear?.description ?? "A living list of the products in m
 
           <div class="gear-grid">
             {section.items.map((item) => (
-              <div class="gear-card" aria-label={`${item.name}: ${item.headline}`}>
-                <div class="gear-card-visual" aria-hidden="true">
-                  {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span>{item.tag}</span>}
+              <div class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
+                <div class="gear-card-visual">
+                  {item.image ? <img src={item.image} alt={item.name} loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
                 </div>
                 <div class="gear-card-copy">
                   <div class="gear-card-title">
@@ -231,90 +247,16 @@ const gearDescription = gear?.description ?? "A living list of the products in m
     overflow: hidden;
     border: 1px solid var(--divider);
     border-radius: 8px;
-    background:
-      linear-gradient(90deg, rgba(28, 28, 28, 0.035) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(28, 28, 28, 0.035) 1px, transparent 1px),
-      #f4f4ef;
-    background-size: 42px 42px;
+    background: #f4f4ef;
   }
 
-  .desk-visual > div {
-    position: absolute;
-    border: 1px solid rgba(28, 28, 28, 0.22);
-    background: #fafaf7;
-    box-shadow: 0 18px 40px rgba(28, 28, 28, 0.08);
-  }
-
-  .desk-monitor {
-    left: 9%;
-    top: 13%;
-    width: 46%;
-    height: 44%;
-    border-radius: 6px;
-  }
-
-  .desk-monitor::after {
-    content: "";
-    position: absolute;
-    inset: 18px;
-    border-radius: 4px;
-    background: linear-gradient(135deg, #0075de 0%, #1c1c1c 100%);
-    opacity: 0.82;
-  }
-
-  .desk-base {
-    left: 27%;
-    top: 57%;
-    width: 10%;
-    height: 12%;
-    border-radius: 3px;
-  }
-
-  .desk-laptop {
-    right: 9%;
-    top: 25%;
-    width: 31%;
-    height: 34%;
-    border-radius: 6px;
-    transform: rotate(-2deg);
-  }
-
-  .desk-laptop::after {
-    content: "";
-    position: absolute;
-    left: -4%;
-    right: -4%;
-    bottom: -17px;
-    height: 16px;
-    border: 1px solid rgba(28, 28, 28, 0.2);
-    border-radius: 3px 3px 7px 7px;
-    background: #e9e9e2;
-  }
-
-  .desk-phone {
-    right: 12%;
-    bottom: 16%;
-    width: 7%;
-    min-width: 42px;
-    height: 24%;
-    border-radius: 8px;
-    transform: rotate(8deg);
-  }
-
-  .desk-keyboard {
-    left: 12%;
-    bottom: 14%;
-    width: 38%;
-    height: 13%;
-    border-radius: 7px;
-  }
-
-  .desk-mouse {
-    left: 55%;
-    bottom: 15%;
-    width: 11%;
-    height: 15%;
-    border-radius: 50%;
+  .desk-visual img {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    display: block;
+    object-fit: cover;
+    object-position: center;
   }
 
   .gear-featured-copy {
@@ -415,9 +357,26 @@ const gearDescription = gear?.description ?? "A living list of the products in m
   }
 
   .gear-card-visual img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+  }
+
+  .gear-card-adidas-adizero-evo-sl .gear-card-visual img {
+    transform: translateX(2px) rotate(0deg) scale(1.04);
+  }
+
+  .gear-card-kailas-fuga-ex-330 .gear-card-visual img {
+    transform: translateX(2px) scaleX(-1) scale(1.04);
+  }
+
+  .gear-card-coros-apex-4 .gear-card-visual img {
+    transform: translateX(2px) scaleX(-1) scale(1.04);
+  }
+
+  .gear-card-gami-crom-pro .gear-card-visual img {
+    transform: scale(2);
+    transform-origin: center;
   }
 
   .gear-card-visual span {

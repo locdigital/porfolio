@@ -24,6 +24,7 @@ const initialData = await readCmsPayload();
   hideHeader
   hideFooter
   favicon="/favicon-cms.svg"
+  robots="noindex, nofollow"
 >
   <CmsDashboard initialData={initialData} client:load />
 </Layout>

@@ -169,7 +169,16 @@
       color: #fff;
     }
 
-
+    @supports (content-visibility: auto) {
+      main > section:not(.hero):not(.gear-hero):not(:first-child),
+      .project-row,
+      .gear-featured,
+      .gear-section,
+      .loc-section {
+        content-visibility: auto;
+        contain-intrinsic-size: 1px 720px;
+      }
+    }
 
     /* ============================================================
        HEADER
@@ -1051,6 +1060,57 @@
       display: none;
     }
 
+    .back-to-top {
+      position: fixed;
+      right: clamp(18px, 3vw, 34px);
+      bottom: clamp(18px, 3vw, 34px);
+      z-index: 998;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(232, 232, 226, 0.86);
+      border-radius: 999px;
+      background: rgba(250, 250, 247, 0.74);
+      color: var(--text);
+      box-shadow: 0 12px 32px rgba(28, 28, 28, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px) scale(0.96);
+      transition:
+        opacity 0.24s var(--ease-out),
+        transform 0.24s var(--ease-out),
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .back-to-top.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .back-to-top:hover,
+    .back-to-top:focus-visible {
+      color: var(--accent);
+      border-color: rgba(0, 117, 222, 0.24);
+      background: rgba(255, 255, 255, 0.86);
+      transform: translateY(-2px) scale(1);
+    }
+
+    .back-to-top svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     /* ============================================================
        RESPONSIVE — mobile
     ============================================================ */
@@ -1096,6 +1156,13 @@
         transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
       }
 
+      .back-to-top {
+        right: 18px;
+        bottom: 104px;
+        width: 36px;
+        height: 36px;
+      }
+
       .mobile-bottom-nav-list {
         display: flex;
         justify-content: space-between;
@@ -1125,6 +1192,14 @@
         font-family: var(--sans);
         transition: all 0.25s var(--ease-out);
         text-decoration: none !important;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .mobile-bottom-nav-list a:focus,
+      .mobile-bottom-nav-list a:focus-visible {
+        outline: none;
+        border: none;
+        box-shadow: none;
       }
 
       .mobile-bottom-nav-list a .nav-icon {
@@ -1153,7 +1228,7 @@
 
       /* Target exact active item styles to match desktop glow menu */
       .mobile-bottom-nav-list a[href="/about"].active {
-        background: rgba(249, 115, 22, 0.08);
+        background: transparent;
         color: #ea580c; /* text-orange-600 */
       }
       .mobile-bottom-nav-list a[href="/about"].active .nav-icon {
@@ -1161,7 +1236,7 @@
       }
 
       .mobile-bottom-nav-list a[href="/work"].active {
-        background: rgba(59, 130, 246, 0.08);
+        background: transparent;
         color: #2563eb; /* text-blue-600 */
       }
       .mobile-bottom-nav-list a[href="/work"].active .nav-icon {
@@ -1169,7 +1244,7 @@
       }
 
       .mobile-bottom-nav-list a[href="/service"].active {
-        background: rgba(168, 85, 247, 0.08);
+        background: transparent;
         color: #9333ea; /* text-purple-600 */
       }
       .mobile-bottom-nav-list a[href="/service"].active .nav-icon {
@@ -1177,7 +1252,7 @@
       }
 
       .mobile-bottom-nav-list a[href="/photos"].active {
-        background: rgba(239, 68, 68, 0.08);
+        background: transparent;
         color: #dc2626; /* text-red-600 */
       }
       .mobile-bottom-nav-list a[href="/photos"].active .nav-icon {
@@ -1185,7 +1260,7 @@
       }
 
       .mobile-bottom-nav-list a[href="/gear"].active {
-        background: rgba(20, 184, 166, 0.08);
+        background: transparent;
         color: #0d9488; /* text-teal-600 */
       }
       .mobile-bottom-nav-list a[href="/gear"].active .nav-icon {
@@ -1193,7 +1268,7 @@
       }
 
       .mobile-bottom-nav-list a[href="/question"].active {
-        background: rgba(0, 117, 222, 0.08);
+        background: transparent;
         color: #0075de;
       }
       .mobile-bottom-nav-list a[href="/question"].active .nav-icon {
@@ -1207,6 +1282,9 @@
       /* Micro-interactions: scale down on press */
       .mobile-bottom-nav-list a:active {
         transform: scale(0.92);
+        outline: none;
+        border: none;
+        box-shadow: none;
       }
 
       .n-collapse {

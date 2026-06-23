@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   motion, 
   useMotionValue, 
-  useMotionTemplate, 
-  useAnimationFrame 
+  useMotionTemplate
 } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 import { MousePointerClick, Info, Sun, Moon, Settings2 } from 'lucide-react';

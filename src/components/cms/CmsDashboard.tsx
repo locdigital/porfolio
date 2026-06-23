@@ -544,7 +544,7 @@ function AskAiDrawer({ onClose }: { onClose: () => void }) {
       } else if (query.includes("writing") || query.includes("bài viết")) {
         reply = "Hiện tại bạn chưa có bài viết blog nào hoạt động. Bạn muốn tôi gợi ý một số chủ đề SEO về Digital Marketing không?";
       } else if (query.includes("project") || query.includes("dự án") || query.includes("work")) {
-        reply = "Có 5 dự án Work đã được cấu hình trong hệ thống (như PNJ, Sony Vietnam, Playah...). Bạn có thể chỉnh sửa mô tả của từng dự án ở tab 'Work'.";
+        reply = "Có 5 dự án Work đã được cấu hình trong hệ thống (như PlayAh!, WorkFlow Space, TOMATO Children's Home, POPS Worldwide...). Bạn có thể chỉnh sửa mô tả của từng dự án ở tab 'Work'.";
       } else if (query.includes("photo") || query.includes("ảnh")) {
         reply = "Thư mục Photos của bạn đang chứa 4 địa điểm chụp ảnh với tổng số 17 hình ảnh đã đồng bộ.";
       }

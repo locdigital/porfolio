@@ -1,14 +1,37 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
-import BlurFade from "../../components/ui/BlurFade.astro";
+import AnimatedPageHeadline, { AnimatedPageDescription } from "../../components/ui/animated-page-headline";
+import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const sortedProjects = await getProjects();
+const workTitle = "Work | Phuc Loc Nguyen";
+const workDescription = "Selected projects by Phuc Loc Nguyen — paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
 ---
 
 <Layout
-  title="Work | Phuc Loc Nguyen"
-  description="Selected projects by Phuc Loc Nguyen — performance marketing, brand campaigns, and growth strategy across Vietnam's top brands."
+  title={workTitle}
+  description={workDescription}
+  schema={[
+    pageSchema({
+      url: absoluteUrl("/work"),
+      title: workTitle,
+      description: workDescription,
+      type: "CollectionPage",
+    }),
+    {
+      "@type": "ItemList",
+      "@id": `${absoluteUrl("/work")}#projects`,
+      name: "Selected case studies",
+      itemListElement: sortedProjects.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: absoluteUrl(`/work/${project.slug}`),
+        name: project.title,
+        description: project.summary,
+      })),
+    },
+  ]}
 >
   <main class="gear-page">
     <div class="gear-container">
@@ -16,20 +39,14 @@ const sortedProjects = await getProjects();
       <!-- PAGE HERO -->
       <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="My work">
         <div class="page-kicker-wrapper">
-          <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">My work</span>
         </div>
-        <BlurFade>
-          <h1>
-            <span class="hero-headline-line">Selected work & <em>case studies</em></span>
-            <span class="hero-headline-line">built for <em>growth.</em></span>
-          </h1>
-        </BlurFade>
-        <p class="gear-intro">
-          Performance marketing campaigns, brand growth strategy,
-          and data-driven results across e-commerce, entertainment,
-          and consumer brands.
-        </p>
+        <AnimatedPageHeadline client:load headline="Selected work & <em>case studies</em>" />
+        <AnimatedPageDescription client:load className="gear-intro">
+          Paid media scaling, TikTok Shop growth, technical SEO,
+          lead generation, and community work across e-commerce,
+          education, and entertainment.
+        </AnimatedPageDescription>
       </section>
 
 
@@ -37,7 +54,7 @@ const sortedProjects = await getProjects();
       <div class="project-list">
         {sortedProjects.map((project, i) => (
           <article class="project-row r" data-d={String((i % 5) + 1)}>
-            <div class="project-row-inner">
+            <div class:list={["project-row-inner", !project.coverImage && "project-row-inner--text-only"]}>
 
               <!-- Left: text -->
               <div class="project-text">
@@ -65,25 +82,27 @@ const sortedProjects = await getProjects();
                 </div>
               </div>
 
-              <!-- Right: visual card -->
-              <div class="project-visual">
-                <a href={`/work/${project.slug}`} class="project-card-link" aria-label={`View ${project.title}`}>
-                  <div class="project-card-img">
-                    <div class="card-logo-wrapper">
-                      <img
-                        src={project.coverImage}
-                        alt={project.client}
-                        class="card-logo"
-                        loading="lazy"
-                        decoding="async"
-                      />
+              {project.coverImage && (
+                <!-- Right: visual card -->
+                <div class="project-visual">
+                  <a href={`/work/${project.slug}`} class="project-card-link" aria-label={`View ${project.title}`}>
+                    <div class="project-card-img">
+                      <div class="card-logo-wrapper">
+                        <img
+                          src={project.coverImage}
+                          alt={project.client}
+                          class="card-logo"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <div class="card-overlay">
+                        <span class="card-cta">View project →</span>
+                      </div>
                     </div>
-                    <div class="card-overlay">
-                      <span class="card-cta">View project →</span>
-                    </div>
-                  </div>
-                </a>
-              </div>
+                  </a>
+                </div>
+              )}
 
             </div>
             <div class="project-divider"></div>
@@ -159,6 +178,10 @@ const sortedProjects = await getProjects();
     gap: 64px;
     align-items: center;
     padding: 64px 0;
+  }
+
+  .project-row-inner--text-only {
+    grid-template-columns: minmax(0, 720px);
   }
 
   /* ── Text side ── */
@@ -269,7 +292,7 @@ const sortedProjects = await getProjects();
     background: transparent;
     border-radius: 16px;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1.5px solid rgba(0, 0, 0, 0.06);
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.5s ease;
   }

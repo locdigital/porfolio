@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1774 887" role="img" aria-labelledby="title" preserveAspectRatio="xMidYMid meet">
+  <title id="title">TOMATO Children's Home</title>
+  <rect width="1774" height="887" fill="#ffffff"/>
+
+  <g transform="translate(0 16)">
+    <text
+      x="162"
+      y="462"
+      fill="#6fbd44"
+      font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif"
+      font-size="318"
+      font-weight="900"
+      letter-spacing="-8"
+    >T</text>
+
+    <g transform="translate(474 348)">
+      <circle cx="0" cy="0" r="127" fill="#ff5538"/>
+      <circle cx="19" cy="-9" r="112" fill="none" stroke="#f46b4d" stroke-width="10"/>
+      <path d="M61 -116c21 -12 45 -14 66 -5c-5 20 -18 39 -38 52c-4 -22 -13 -37 -28 -47Z" fill="#6fbd44"/>
+      <path d="M82 -100c2 -32 13 -54 32 -70c14 22 17 49 7 80c-11 -11 -24 -14 -39 -10Z" fill="#6fbd44"/>
+      <path d="M101 -110c28 -15 54 -16 78 -2c-12 21 -33 36 -65 43c2 -17 -2 -31 -13 -41Z" fill="#6fbd44"/>
+    </g>
+
+    <text
+      x="627"
+      y="462"
+      fill="#6fbd44"
+      font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif"
+      font-size="318"
+      font-weight="900"
+      letter-spacing="-10"
+      textLength="950"
+      lengthAdjust="spacingAndGlyphs"
+    >MATO</text>
+
+    <text
+      x="219"
+      y="632"
+      fill="#58595b"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="82"
+      font-weight="700"
+      letter-spacing="44"
+      textLength="1340"
+      lengthAdjust="spacing"
+    >CHILDREN'S HOME</text>
+  </g>
+</svg>

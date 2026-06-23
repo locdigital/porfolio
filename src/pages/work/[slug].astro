@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
 import BlurFade from "../../components/ui/BlurFade.astro";
+import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 export const prerender = true;
 
@@ -25,11 +26,37 @@ const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex +
 
 // Split description into paragraphs
 const paragraphs = project.description.split("\n\n").filter(Boolean);
+const projectUrl = absoluteUrl(`/work/${project.slug}`);
+const creativeWorkSchema = {
+  "@type": "CreativeWork",
+  "@id": `${projectUrl}#case-study`,
+  name: project.title,
+  description: project.summary,
+  ...(project.coverImage ? { image: absoluteUrl(project.coverImage) } : {}),
+  url: projectUrl,
+  dateCreated: project.year,
+  creator: { "@id": `${absoluteUrl("/")}#person` },
+  keywords: project.tags,
+  mentions: {
+    "@type": "Organization",
+    name: project.client,
+    url: project.link,
+  },
+};
 ---
 
 <Layout
   title={`${project.title} | Phuc Loc Nguyen`}
   description={project.summary}
+  schema={[
+    pageSchema({
+      url: projectUrl,
+      title: `${project.title} | Phuc Loc Nguyen`,
+      description: project.summary,
+      type: "WebPage",
+    }),
+    creativeWorkSchema,
+  ]}
 >
   <main class="project-detail-page">
     <div class="container">
@@ -70,19 +97,23 @@ const paragraphs = project.description.split("\n\n").filter(Boolean);
         </div>
       </header>
 
-      <!-- Hero visual -->
-      <div class="detail-hero r" data-d="3">
-        <div class="detail-hero-img">
-          <div class="hero-logo-wrapper">
-            <img
-              src={project.coverImage}
-              alt={project.client}
-              class="hero-logo"
-              loading="eager"
-            />
+      {project.coverImage && (
+        <!-- Hero visual -->
+        <div class="detail-hero r" data-d="3">
+          <div class="detail-hero-img">
+            <div class="hero-logo-wrapper">
+              <img
+                src={project.coverImage}
+                alt={project.client}
+                class="hero-logo"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <!-- Content grid -->
       <div class="detail-content r" data-d="4">

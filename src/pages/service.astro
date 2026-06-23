@@ -2,7 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getPhotoAsset } from "../lib/photo-assets";
-import BlurFade from "../components/ui/BlurFade.astro";
+import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
+import { absoluteUrl, pageSchema } from "../lib/seo";
 
 // Import optimized images for service cards/tabs
 const performanceImg = getPhotoAsset("/assets/photos/img-portfolio/photo-10.webp");
@@ -192,11 +193,48 @@ const faqs = [
     iconName: "message"
   }
 ];
+const serviceTitle = "Digital Services | Phuc Loc Nguyen";
+const serviceDescription = "Scale conversions, build community trust, and deploy lightning-fast headless websites. Explore my modern digital marketing and engineering services.";
 ---
 
 <Layout
-  title="Digital Services | Phuc Loc Nguyen"
-  description="Scale conversions, build community trust, and deploy lightning-fast headless websites. Explore my modern digital marketing and engineering services."
+  title={serviceTitle}
+  description={serviceDescription}
+  schema={[
+    pageSchema({
+      url: absoluteUrl("/service"),
+      title: serviceTitle,
+      description: serviceDescription,
+      type: "WebPage",
+    }),
+    {
+      "@type": "OfferCatalog",
+      "@id": `${absoluteUrl("/service")}#services`,
+      name: "Digital marketing and web services",
+      itemListElement: services.map((service) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: service.title,
+          description: service.desc,
+          serviceType: service.kicker,
+          provider: { "@id": `${absoluteUrl("/")}#person` },
+        },
+      })),
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${absoluteUrl("/service")}#faq`,
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.a,
+        },
+      })),
+    },
+  ]}
 >
   <main class="gear-page">
     <div class="gear-container">
@@ -204,18 +242,15 @@ const faqs = [
       <!-- HERO -->
       <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="Services introduction">
         <div class="page-kicker-wrapper">
-          <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">My Services</span>
         </div>
-        <BlurFade>
-          <h1>
-            <span class="hero-headline-line">Marketing that <em>moves fast</em></span>
-            <span class="hero-headline-line">backed by <em>robust code.</em></span>
-          </h1>
-        </BlurFade>
-        <p class="gear-intro">
+        <AnimatedPageHeadline
+          client:load
+          headline="Scale your digital footprint with <em>high-velocity marketing</em> and <em>robust code.</em>"
+        />
+        <AnimatedPageDescription client:load className="gear-intro">
           I partner with growth-focused brands and startups to run conversion ads, deploy organic forum seeding, map creative positioning, and build headless static sites.
-        </p>
+        </AnimatedPageDescription>
         <div class="hero-ctas">
           <a href="mailto:hi@loc.digital" class="btn btn-primary">Book a Discovery Call</a>
           <button class="btn btn-secondary" id="scroll-to-pricing">Explore Retainers</button>

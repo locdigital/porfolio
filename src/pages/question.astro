@@ -571,13 +571,13 @@ import BlurFade from "../components/ui/BlurFade.astro";
       let aiText = "";
 
       if (text.includes("project") || text.includes("campaign") || text.includes("work") || text.includes("portfolio")) {
-        aiText = "Loc has worked on performance marketing, brand growth, and data-driven campaigns for brands like Sony, PNJ, POPS, PlayAh!, and WorkFlow Space. Check out the 'Work' section on this site for detailed case studies.";
+        aiText = "Loc has worked on performance marketing, SEO, lead generation, and community growth for PlayAh!, WorkFlow Space, TOMATO Children's Home, POPS Worldwide, and education communities. Check out the Work section for detailed case studies.";
       } else if (text.includes("background") || text.includes("experience") || text.includes("history") || text.includes("past")) {
-        aiText = "Loc is a Senior Digital Marketing Specialist with 4+ years of experience driving growth and managing end-to-end campaigns in Ho Chi Minh City. He has worked across e-commerce, entertainment, and tech.";
+        aiText = "Loc is a Senior Performance Marketing Executive with 4+ years of experience scaling e-commerce, education, and consumer brands. His resume includes 10x website revenue growth, 30x+ TikTok Shop GMV growth, and 10x organic traffic growth.";
       } else if (text.includes("skill") || text.includes("expertise") || text.includes("expert") || text.includes("do you know") || text.includes("can you")) {
-        aiText = "Loc's key skills include Performance Marketing (Meta/Google/TikTok Ads), Data Analysis, SEO/SEM, Marketing Automation, and Growth Strategy.";
+        aiText = "Loc's key skills include Performance Marketing on Meta, Google, and TikTok; TikTok Shop GMV scaling; SEO/SEM; GA4/GTM/Looker Studio analytics; n8n and email automation; and ROAS, CPA, and CPL optimization.";
       } else if (text.includes("hire") || text.includes("available") || text.includes("freelance") || text.includes("job") || text.includes("opportunity")) {
-        aiText = "Yes, Loc is currently open to new projects and full-time opportunities. You can email him at hi@loc.digital to discuss further.";
+        aiText = "Yes, Loc is open to performance marketing, growth, and full-time opportunities. You can email him at hi@loc.digital to discuss further.";
       } else if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("touch") || text.includes("connect")) {
         aiText = "You can reach Loc directly via email at hi@loc.digital or connect with him on LinkedIn.";
       } else if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
@@ -615,7 +615,7 @@ import BlurFade from "../components/ui/BlurFade.astro";
       const introEl = document.querySelector('.qp-intro') as HTMLElement;
       if (introEl) introEl.style.display = 'none';
 
-      const introText = "I'm Loc — based in Ho Chi Minh City. I grow brands through digital marketing, turning data into results.";
+      const introText = "I'm Loc — based in Ho Chi Minh City. I grow revenue through performance marketing, SEO, and automation.";
       
       if (instant) {
         addMessage(introText, 'ai');

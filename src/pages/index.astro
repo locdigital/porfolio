@@ -5,6 +5,7 @@ import { getWritingPosts } from "../lib/writing";
 import DraggableCollage from "../components/ui/draggable-collage";
 import BlurFade from "../components/ui/BlurFade.astro";
 import MobileAboutPanel from "../components/ui/MobileAboutPanel.astro";
+import { absoluteUrl, pageSchema } from "../lib/seo";
 
 const makePortfolioPhoto = (number: number) => ({
   src: `/assets/photos/img-portfolio/photo-${number}.webp`,
@@ -30,8 +31,37 @@ const homeGalleryRows = await Promise.all(
 
 const posts = await getWritingPosts();
 const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
+const pageTitle = "Nguyen Phuc Loc | Senior Performance Marketing Executive";
+const pageDescription = "Senior Performance Marketing Executive scaling multi-channel paid media, TikTok Shop GMV, SEO growth, and AI-powered conversion funnels.";
 ---
-<Layout title="Phuc Loc Nguyen | Digital Marketing Specialist">
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  schema={[
+    pageSchema({
+      url: absoluteUrl("/"),
+      title: pageTitle,
+      description: pageDescription,
+      type: "ProfilePage",
+    }),
+    {
+      "@type": "ItemList",
+      "@id": `${absoluteUrl("/")}#selected-work`,
+      name: "Selected work experience",
+      itemListElement: [
+        "WorkFlow Space",
+        "PlayAh! Vietnam",
+        "POPS Worldwide",
+        "TOMATO Children's Home",
+        "Dai Hoc Dung Hoc Dai",
+      ].map((name, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name,
+      })),
+    },
+  ]}
+>
 
 
 
@@ -58,13 +88,13 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
           </div>
 
           <div class="hero-aside">
-            <p>Performance-driven Digital Marketer with 4+ years of experience scaling e-commerce, education, and consumer brands.</p>
-            <p>I specialize in multi-channel paid media (TikTok, Meta, Google), SEO, and AI-automated funnels with a rigorous focus on ROAS and scalable profitability.</p>
+            <p>Senior Performance Marketing Executive with 4+ years of experience scaling e-commerce, education, and consumer brands.</p>
+            <p>I specialize in multi-channel paid media, TikTok Shop growth, SEO, and AI-powered funnels with a rigorous focus on ROAS and scalable profitability.</p>
             <p>If you're building something and need a marketer who delivers measurable growth, let's <a
                 href="mailto:hi@loc.digital">talk</a>.</p>
             <div class="location">
               <span class="loc-dot" aria-hidden="true"></span>
-              BangKok, Thailand
+              Ho Chi Minh City, Vietnam
             </div>
           </div>
 
@@ -88,7 +118,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
               <div class="tl-info">
                 <span class="tl-company"><a href="https://www.workflowspace.vn/" target="_blank" rel="noopener">WorkFlow
                     Space</a></span>
-                <span class="tl-desc">Digital Marketing Specialist — content, ads &amp; community growth.</span>
+                <span class="tl-desc">Digital Marketing Executive — paid launches, leads &amp; creative systems.</span>
               </div>
             </div>
             <span class="tl-dates">2024–Present</span>
@@ -100,10 +130,10 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
               <div class="tl-info">
                 <span class="tl-company"><a href="https://playahvietnam.com/" target="_blank"
                     rel="noopener">PlayAh!</a></span>
-                <span class="tl-desc">Digital Marketing Specialist — brand campaigns &amp; performance.</span>
+                <span class="tl-desc">Performance Senior Executive — TikTok, Meta &amp; Google revenue growth.</span>
               </div>
             </div>
-            <span class="tl-dates">2024–Present</span>
+            <span class="tl-dates">Dec 2024–Present</span>
           </li>
           <li class="timeline-row">
             <div class="tl-left">
@@ -112,33 +142,32 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
               <div class="tl-info">
                 <span class="tl-company"><a href="https://pops.vn/" target="_blank" rel="noopener">POPS
                     Worldwide</a></span>
-                <span class="tl-desc">SEO Executive — search strategy &amp; organic growth.</span>
-              </div>
-            </div>
-            <span class="tl-dates">2023–2024</span>
-          </li>
-          <li class="timeline-row">
-            <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-pnj.webp" alt="PNJ" loading="lazy">
-              </div>
-              <div class="tl-info">
-                <span class="tl-company"><a href="https://www.pnj.com.vn/" target="_blank" rel="noopener">PNJ</a></span>
-                <span class="tl-desc">Digital Marketing Specialist — e-commerce &amp; retail campaigns.</span>
+                <span class="tl-desc">SEO Executive — technical roadmap &amp; organic user growth.</span>
               </div>
             </div>
             <span class="tl-dates">2022–2023</span>
           </li>
           <li class="timeline-row">
             <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-sony.webp" alt="Sony" loading="lazy">
+              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-tomato.webp" alt="TOMATO Children's Home" loading="lazy">
               </div>
               <div class="tl-info">
-                <span class="tl-company"><a href="https://www.sony.com.vn/" target="_blank"
-                    rel="noopener">Sony</a></span>
-                <span class="tl-desc">Digital Marketing Specialist — brand awareness &amp; lead gen.</span>
+                <span class="tl-company"><a href="/work/tomato-childrens-home">TOMATO Children's Home</a></span>
+                <span class="tl-desc">Digital Marketing Executive — integrated Marketing 360 &amp; enrollment growth.</span>
               </div>
             </div>
-            <span class="tl-dates">2021–2022</span>
+            <span class="tl-dates">2023–2024</span>
+          </li>
+          <li class="timeline-row">
+            <div class="tl-left">
+              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-community.svg" alt="Education communities" loading="lazy">
+              </div>
+              <div class="tl-info">
+                <span class="tl-company"><a href="/work/education-communities">Education Communities</a></span>
+                <span class="tl-desc">Founding Member — community growth for students &amp; early-career professionals.</span>
+              </div>
+            </div>
+            <span class="tl-dates">2021–Present</span>
           </li>
         </ul>
       </div>
@@ -246,7 +275,7 @@ const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
     <section class="relative w-full h-auto md:h-[100dvh] overflow-visible md:overflow-hidden toki-r" data-d="5" aria-label="Interactive collage">
       <MobileAboutPanel portraitSrc={heroAbout.src} />
       <div class="hidden md:block h-full w-full">
-        <DraggableCollage client:media="(min-width: 768px)" portraitSrc={heroAbout.src} />
+        <DraggableCollage client:visible portraitSrc={heroAbout.src} />
       </div>
     </section>
 

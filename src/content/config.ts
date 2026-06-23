@@ -42,7 +42,7 @@ const projects = defineCollection({
     description: z.string(),
     tools: z.array(z.string()).default([]),
     skills: z.array(z.string()).default([]),
-    coverImage: z.string(),
+    coverImage: z.string().optional().default(""),
     images: z.array(z.string()).default([]),
     link: z.string().optional(),
     linkLabel: z.string().optional(),

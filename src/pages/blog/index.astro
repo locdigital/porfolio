@@ -2,17 +2,42 @@
 import Layout from "../../layouts/Layout.astro";
 import { getWritingPosts } from "../../lib/writing";
 import BlurFade from "../../components/ui/BlurFade.astro";
+import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const posts = await getWritingPosts();
+const blogTitle = "Writing | Lộc Digital";
+const blogDescription = "Essays and notes on digital marketing, SEO, code, creative systems, and life.";
 ---
 
-<Layout title="Writing | Lộc Digital" description="Journal & Essays">
+<Layout
+  title={blogTitle}
+  description={blogDescription}
+  schema={[
+    pageSchema({
+      url: absoluteUrl("/blog"),
+      title: blogTitle,
+      description: blogDescription,
+      type: "Blog",
+    }),
+    {
+      "@type": "ItemList",
+      "@id": `${absoluteUrl("/blog")}#posts`,
+      name: "Writing posts",
+      itemListElement: posts.map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: absoluteUrl(`/blog/${post.slug}`),
+        name: post.data.title,
+        description: post.data.summary || post.data.metaDescription,
+      })),
+    },
+  ]}
+>
   <main class="blog-page">
     <div class="blog-wrap">
       <!-- PAGE HERO -->
       <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="Writing">
         <div class="page-kicker-wrapper">
-          <span class="page-kicker-num">00</span>
           <span class="page-kicker-text">Writing</span>
         </div>
         <BlurFade>

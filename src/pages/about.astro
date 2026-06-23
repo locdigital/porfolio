@@ -1,15 +1,28 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import AboutHero from "../components/ui/AboutHero.astro";
+import AboutHero from "../components/ui/about-hero";
+import { absoluteUrl, pageSchema } from "../lib/seo";
+
+const aboutTitle = "About | Phuc Loc Nguyen";
+const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance Marketing Executive focused on paid media, TikTok Shop growth, SEO, automation, and full-funnel execution.";
 ---
 
-<Layout title="About | Phuc Loc Nguyen">
+<Layout
+  title={aboutTitle}
+  description={aboutDescription}
+  schema={pageSchema({
+    url: absoluteUrl("/about"),
+    title: aboutTitle,
+    description: aboutDescription,
+    type: "AboutPage",
+  })}
+>
   <main class="about-minimal-page">
     <div class="about-minimal-container">
       
       <!-- 00 INTRODUCTION -->
       <section class="figma-intro gear-hero about-reveal-hero toki-r" data-d="1" aria-label="About me">
-        <AboutHero />
+        <AboutHero client:load />
       </section>
 
       <!-- 01 SELECTED WORK -->
@@ -20,35 +33,35 @@ import AboutHero from "../components/ui/AboutHero.astro";
             <span class="card-kicker">SELECTED WORK</span>
           </div>
           <h2 class="card-title">What I Do</h2>
-          <p class="card-desc">Campaigns and platforms built and managed for top consumer brands.</p>
+          <p class="card-desc">Campaigns, funnels, and communities scaled across e-commerce, education, and entertainment.</p>
         </div>
         <div class="figma-card-body">
           <div class="card-container">
             <div class="card-list">
               <a href="/work/playah" class="card-list-item is-link">
                 <div class="item-main">PlayAh!</div>
-                <div class="item-desc">Brand Growth & Performance Ads</div>
+                <div class="item-desc">Revenue Scaling & TikTok Shop GMV</div>
                 <div class="item-meta">playahvietnam.com →</div>
               </a>
               <a href="/work/workflow-space" class="card-list-item is-link">
                 <div class="item-main">WorkFlow Space</div>
-                <div class="item-desc">Community & Content Strategy</div>
+                <div class="item-desc">Branch Launches & Lead Generation</div>
                 <div class="item-meta">workflowspace.vn →</div>
               </a>
-              <a href="/work/pnj" class="card-list-item is-link">
-                <div class="item-main">PNJ</div>
-                <div class="item-desc">E-commerce Campaigns & Shopping</div>
-                <div class="item-meta">pnj.com.vn →</div>
+              <a href="/work/tomato-childrens-home" class="card-list-item is-link">
+                <div class="item-main">TOMATO Children's Home</div>
+                <div class="item-desc">Marketing 360 & Enrollment Growth</div>
+                <div class="item-meta">education growth →</div>
               </a>
               <a href="/work/pops-worldwide" class="card-list-item is-link">
                 <div class="item-main">POPS Worldwide</div>
-                <div class="item-desc">SEO & Search Strategy</div>
+                <div class="item-desc">Technical SEO & Organic Growth</div>
                 <div class="item-meta">pops.vn →</div>
               </a>
-              <a href="/work/sony-vietnam" class="card-list-item is-link">
-                <div class="item-main">Sony Vietnam</div>
-                <div class="item-desc">Brand Awareness & Lead Gen</div>
-                <div class="item-meta">sony.com.vn →</div>
+              <a href="/work/education-communities" class="card-list-item is-link">
+                <div class="item-main">Education Communities</div>
+                <div class="item-desc">3M+ and 1M Member Communities</div>
+                <div class="item-meta">founding member →</div>
               </a>
             </div>
           </div>
@@ -63,7 +76,7 @@ import AboutHero from "../components/ui/AboutHero.astro";
             <span class="card-kicker">TOOLSET & SKILLS</span>
           </div>
           <h2 class="card-title">Toolset & Skills</h2>
-          <p class="card-desc">Technologies and skills I use to build workflows and run growth experiments.</p>
+          <p class="card-desc">Platforms and systems I use to scale performance, attribution, SEO, and automation.</p>
         </div>
         <div class="figma-card-body">
           <div class="card-container">
@@ -75,12 +88,12 @@ import AboutHero from "../components/ui/AboutHero.astro";
               </div>
               <div class="card-list-item">
                 <div class="item-main">Google Ads</div>
-                <div class="item-desc">Search, Shopping & Display</div>
+                <div class="item-desc">Performance Max, Search & Web Conversion</div>
                 <div class="item-meta">ads.google.com ↗</div>
               </div>
               <div class="card-list-item">
                 <div class="item-main">TikTok Ads</div>
-                <div class="item-desc">Paid Social Campaigns</div>
+                <div class="item-desc">Spark Ads, GMV Max & TikTok Shop</div>
                 <div class="item-meta">ads.tiktok.com ↗</div>
               </div>
               <div class="card-list-item">
@@ -94,9 +107,9 @@ import AboutHero from "../components/ui/AboutHero.astro";
                 <div class="item-meta">figma.com ↗</div>
               </div>
               <div class="card-list-item">
-                <div class="item-main">Zapier</div>
-                <div class="item-desc">Marketing & Workflow Automation</div>
-                <div class="item-meta">zapier.com ↗</div>
+                <div class="item-main">n8n</div>
+                <div class="item-desc">AI-powered Funnel Automation</div>
+                <div class="item-meta">n8n.io ↗</div>
               </div>
               <div class="card-list-item">
                 <div class="item-main">Ahrefs</div>
@@ -104,9 +117,9 @@ import AboutHero from "../components/ui/AboutHero.astro";
                 <div class="item-meta">ahrefs.com ↗</div>
               </div>
               <div class="card-list-item">
-                <div class="item-main">Notion</div>
-                <div class="item-desc">Docs, Wiki & Project Hub</div>
-                <div class="item-meta">notion.so ↗</div>
+                <div class="item-main">Looker Studio</div>
+                <div class="item-desc">Dashboarding & Performance Reporting</div>
+                <div class="item-meta">lookerstudio.google.com ↗</div>
               </div>
             </div>
           </div>
@@ -127,9 +140,9 @@ import AboutHero from "../components/ui/AboutHero.astro";
           <div class="card-container">
             <div class="card-list">
               <div class="card-list-item">
-                <div class="item-main">University Name</div>
-                <div class="item-desc">Bachelor's Degree</div>
-                <div class="item-meta">2017 – 2021</div>
+                <div class="item-main">FPT University</div>
+                <div class="item-desc">Bachelor of Digital Marketing, Graduated with Honors</div>
+                <div class="item-meta">2019 – 2023 · GPA 9.4/10</div>
               </div>
               <div class="card-list-item">
                 <div class="item-main">Google</div>

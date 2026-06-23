@@ -3,18 +3,23 @@ import '../styles/global.css';
 import { MenuBar } from "../components/ui/glow-menu";
 import { InfiniteGrid } from "../components/ui/infinite-grid-integration";
 import { ViewTransitions } from 'astro:transitions';
-const SOCIAL_THUMBNAIL = "https://loc.digital/og-image.jpg";
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
 const { 
-  title = "Phuc Loc Nguyen | Digital Marketing Specialist",
-  description = "Digital Marketing Specialist based in Ho Chi Minh City. Helping brands grow through SEO, social media, paid ads, and full-funnel campaigns.",
+  title = "Phuc Loc Nguyen | Senior Performance Marketing Executive",
+  description = DEFAULT_DESCRIPTION,
   hideHeader = false,
   hideFooter = false,
   favicon,
-  ogImage
+  ogImage,
+  ogType = "website",
+  robots = "index, follow",
+  schema = [],
 } = Astro.props;
 const pathname = Astro.url.pathname;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCIAL_THUMBNAIL;
+const socialThumbnail = DEFAULT_OG_IMAGE;
+const pageSchemas = Array.isArray(schema) ? schema : [schema];
+const jsonLd = safeJsonLd(graphSchema(pageSchemas));
 ---
 
 <!DOCTYPE html>
@@ -24,15 +29,18 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
   <meta name="description" content={description}>
+  <meta name="robots" content={robots}>
   
   <!-- Open Graph / Social Media Thumbnail -->
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
   <meta property="og:image" content={socialThumbnail}>
+  <meta property="og:image:alt" content={title}>
   <meta property="og:image:width" content="1774">
   <meta property="og:image:height" content="887">
   <meta property="og:url" content={canonicalUrl}>
-  <meta property="og:type" content="website">
+  <meta property="og:type" content={ogType}>
+  <meta property="og:site_name" content="Lộc Digital">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
@@ -43,6 +51,9 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
   <meta name="theme-color" content="#FAFAF7">
   <link rel="canonical" href={canonicalUrl} />
   <meta name="google-site-verification" content="tYabJCSeApR0trq6VL7V6_JKbEKbBnznDtNmvaBehfY" />
+  <link rel="alternate" type="application/rss+xml" title="Lộc Digital writing" href={new URL("/rss.xml", Astro.site)} />
+  <link rel="preload" href="/assets/fonts/ppeditorialold-regular.otf" as="font" type="font/otf" crossorigin>
+  <link rel="preload" href="/assets/fonts/ppeditorialold-italic.otf" as="font" type="font/otf" crossorigin>
   
   {favicon ? (
     <link rel="icon" href={favicon} />
@@ -67,14 +78,29 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
     </>
   )}
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DYB5FLYNH4"></script>
-  <script>
+  <!-- Google tag (gtag.js): loaded after idle so analytics does not compete with first paint -->
+  <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
 
-    gtag('config', 'G-DYB5FLYNH4');
+    function loadAnalytics() {
+      if (window.__locAnalyticsLoaded) return;
+      window.__locAnalyticsLoaded = true;
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-DYB5FLYNH4";
+      document.head.appendChild(script);
+      gtag("js", new Date());
+      gtag("config", "G-DYB5FLYNH4");
+    }
+
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(loadAnalytics, { timeout: 3000 });
+    } else {
+      window.addEventListener("load", function () {
+        setTimeout(loadAnalytics, 1200);
+      }, { once: true });
+    }
   </script>
 
   <!-- Resource Hints: preconnect + dns-prefetch for external CDNs -->
@@ -98,6 +124,7 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
   </noscript>
 
   <ViewTransitions />
+  <script type="application/ld+json" set:html={jsonLd}></script>
 
   <style is:global>
     /* ── Page transition: fade + blur disabled ── */
@@ -179,6 +206,14 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
 
   <slot />
 
+  {!hideFooter && (
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" title="Back to top">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </button>
+  )}
+
   <!-- ============================================================
        FOOTER
   ============================================================ -->
@@ -226,12 +261,31 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
 
       /* ── Image Loading Shimmer & Fade-in Loader ── */
       function setupImageLoaders() {
+        const fallbackImageSrc = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Image unavailable">
+            <defs>
+              <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f8f6ef"/>
+                <stop offset="1" stop-color="#e7e3d8"/>
+              </linearGradient>
+              <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+                <path d="M56 0H0v56" fill="none" stroke="#d8d2c2" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="1200" height="800" fill="url(#bg)"/>
+            <rect width="1200" height="800" fill="url(#grid)" opacity=".55"/>
+            <g transform="translate(600 400)" text-anchor="middle">
+              <rect x="-170" y="-118" width="340" height="236" rx="8" fill="#fafaf7" stroke="#222" stroke-width="7"/>
+              <circle cx="-64" cy="-42" r="30" fill="#222"/>
+              <path d="M-130 78 2-42l58 58 42-38 88 100z" fill="#222"/>
+              <text y="190" fill="#222" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" letter-spacing="2">IMAGE UNAVAILABLE</text>
+            </g>
+          </svg>
+        `);
+
         const setupImage = (img) => {
           if (img.dataset.loaderSetup) return;
           img.dataset.loaderSetup = 'true';
-
-          // Exclude images in draggable-collage
-          if (img.closest('.draggable-collage-container') || img.closest('.mobile-about-panel')) return;
 
           const wrapper = img.closest('picture') || 
                           img.closest('.ratio-box') || 
@@ -241,8 +295,26 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
                           img.closest('.gallery-item') || 
                           img.parentElement;
 
+          const showFallbackImage = () => {
+            if (img.dataset.fallbackApplied === 'true') return;
+            img.dataset.fallbackApplied = 'true';
+            img.src = fallbackImageSrc;
+            img.classList.add('loaded');
+            img.classList.remove('skeleton-loading-img');
+            if (wrapper) {
+              wrapper.classList.remove('skeleton-loading');
+            }
+          };
+
+          img.addEventListener('error', showFallbackImage, { once: true });
+
+          // Exclude images in draggable-collage
+          if (img.closest('.draggable-collage-container') || img.closest('.mobile-about-panel')) return;
+
           if (img.complete && img.naturalWidth > 0) {
             img.classList.add('loaded');
+          } else if (img.complete && img.naturalWidth === 0) {
+            showFallbackImage();
           } else {
             if (wrapper) {
               wrapper.classList.add('skeleton-loading');
@@ -255,19 +327,9 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
                 wrapper.classList.remove('skeleton-loading');
               }
               img.removeEventListener('load', handleLoad);
-              img.removeEventListener('error', handleError);
-            };
-
-            const handleError = () => {
-              if (wrapper) {
-                wrapper.classList.remove('skeleton-loading');
-              }
-              img.removeEventListener('load', handleLoad);
-              img.removeEventListener('error', handleError);
             };
 
             img.addEventListener('load', handleLoad);
-            img.addEventListener('error', handleError);
           }
         };
 
@@ -359,6 +421,7 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
             el.classList.contains('r') ||
             el.classList.contains('toki-r') ||
             el.classList.contains('reveal') ||
+            el.classList.contains('gear-intro') ||
             el.closest('.hero') ||
             el.closest('.hero-title') ||
             el.classList.contains('hero-line') ||
@@ -412,6 +475,24 @@ const socialThumbnail = ogImage ? new URL(ogImage, Astro.site).toString() : SOCI
       window._layoutOnScroll = onScroll;
       window.addEventListener('scroll', window._layoutOnScroll, { passive: true });
       onScroll();
+
+      /* ── Back to top ── */
+      const backToTop = document.getElementById('back-to-top');
+      const syncBackToTop = () => {
+        backToTop?.classList.toggle('is-visible', window.scrollY > Math.min(window.innerHeight * 0.75, 720));
+      };
+      if (window._layoutBackToTopScroll) {
+        window.removeEventListener('scroll', window._layoutBackToTopScroll);
+      }
+      window._layoutBackToTopScroll = syncBackToTop;
+      window.addEventListener('scroll', window._layoutBackToTopScroll, { passive: true });
+      syncBackToTop();
+      backToTop?.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: reduced ? 'auto' : 'smooth',
+        });
+      });
 
       /* ── Hamburger / mobile menu ── */
       const hamburger = document.getElementById('hamburger');

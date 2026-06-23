@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+  <title id="title">Education Communities</title>
+  <rect width="240" height="240" rx="48" fill="#eef7ff"/>
+  <path d="M54 83h132v90H54z" fill="#ffffff" stroke="#1d4ed8" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M120 83v90" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round"/>
+  <path d="M73 105h30M73 128h30M137 105h30M137 128h30" stroke="#0f172a" stroke-width="8" stroke-linecap="round"/>
+  <path d="M120 55 42 86l78 31 78-31-78-31Z" fill="#facc15" stroke="#0f172a" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M182 98v40" stroke="#0f172a" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="182" cy="151" r="9" fill="#1d4ed8"/>
+</svg>

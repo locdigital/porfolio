@@ -53,20 +53,6 @@ export default function AboutHero() {
         <span
           style={{
             fontFamily: "var(--mono)",
-            fontSize: "10px",
-            padding: "2px 8px",
-            border: "1px solid rgba(0,117,222,0.25)",
-            borderRadius: "4px",
-            background: "rgba(0,117,222,0.05)",
-            color: "var(--accent)",
-            fontWeight: 600,
-          }}
-        >
-          00
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--mono)",
             fontSize: "11px",
             letterSpacing: "0.1em",
             color: "var(--accent)",
@@ -91,7 +77,7 @@ export default function AboutHero() {
             marginBottom: "24px",
           }}
         >
-          Digital marketer who{" "}
+          Performance marketer who{" "}
           <TimelineContent
             as="span"
             animationNum={2}
@@ -106,9 +92,9 @@ export default function AboutHero() {
               display: "inline",
             }}
           >
-            scales brands
+            scales revenue
           </TimelineContent>{" "}
-          with data &{" "}
+          with media &{" "}
           <TimelineContent
             as="span"
             animationNum={3}
@@ -123,7 +109,7 @@ export default function AboutHero() {
               display: "inline",
             }}
           >
-            code.
+            automation.
           </TimelineContent>
         </h1>
       </BlurFade>
@@ -144,10 +130,10 @@ export default function AboutHero() {
             maxWidth: "620px",
           }}
         >
-          Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho
-          Chi Minh City, Vietnam. My passion is in creating data-driven
-          campaigns and useful solutions to marketing problems that don't have
-          obvious answers.
+          Hi, I'm Loc, a Senior Performance Marketing Executive based in Ho
+          Chi Minh City, Vietnam. I scale multi-channel paid media across Meta,
+          Google, and TikTok, connect creative to conversion, and build
+          AI-powered systems that turn marketing spend into measurable growth.
         </p>
       </TimelineContent>
 
@@ -181,7 +167,7 @@ export default function AboutHero() {
               textTransform: "uppercase",
             }}
           >
-            Open to new projects
+            Performance Senior Executive
           </div>
         </div>
 

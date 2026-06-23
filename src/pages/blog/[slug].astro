@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import BlurFade from "../../components/ui/BlurFade.astro";
+import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 export const prerender = false;
 
@@ -26,12 +27,38 @@ const publishDate = post.data.publishedAt.toLocaleDateString('en-US', {
 });
 
 const tags = post.data.tags ?? [];
+const postUrl = absoluteUrl(`/blog/${post.slug}`);
+const postDescription = post.data.metaDescription || post.data.summary || post.data.headline;
 ---
 
 <Layout 
   title={`${post.data.title} | Lộc Digital`} 
-  description={post.data.metaDescription || post.data.summary} 
+  description={postDescription} 
   ogImage={featuredImage}
+  ogType="article"
+  schema={[
+    pageSchema({
+      url: postUrl,
+      title: `${post.data.title} | Lộc Digital`,
+      description: postDescription,
+      type: "WebPage",
+    }),
+    {
+      "@type": "BlogPosting",
+      "@id": `${postUrl}#article`,
+      headline: post.data.headline,
+      name: post.data.title,
+      description: postDescription,
+      image: featuredImage ? absoluteUrl(featuredImage) : absoluteUrl("/og-image.jpg"),
+      url: postUrl,
+      datePublished: post.data.publishedAt.toISOString(),
+      dateModified: post.data.publishedAt.toISOString(),
+      author: { "@id": `${absoluteUrl("/")}#person` },
+      publisher: { "@id": `${absoluteUrl("/")}#person` },
+      keywords: tags,
+      mainEntityOfPage: { "@id": `${postUrl}#webpage` },
+    },
+  ]}
 >
   <article class="container mx-auto pb-32 px-4 max-w-[880px] toki-r" data-d="1" style="padding-top: 140px;">
     <a href="/blog" class="group inline-flex items-center font-sans text-[11px] font-bold tracking-[0.15em] text-[var(--muted)] hover:text-[var(--text)] transition-colors mb-8 uppercase">
