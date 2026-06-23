@@ -603,18 +603,18 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           className="top-[46%] right-[5%]"
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("open resume pdf ✦")}
+          onMouseEnter={enterCard("resume ✦")}
           onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('resume')}
           zIndex={cardZIndices.resume}
         >
-          <a href="https://phucloc.digital/resume" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-xl px-5 py-4 w-[180px] 3xl:w-[230px] 4xl:w-[270px] shadow-lg hover:opacity-95 transition-all" style={{ fontFamily: 'var(--sans)' }}>
+          <div className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-xl px-5 py-4 w-[180px] 3xl:w-[230px] 4xl:w-[270px] shadow-lg" style={{ fontFamily: 'var(--sans)' }}>
             <p className="text-[9px] uppercase tracking-widest opacity-60 mb-2">cv</p>
             <div className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
               <p className="text-xs font-medium leading-snug">Resume<br /><span className="opacity-60 text-[9px]">Web format</span></p>
             </div>
-          </a>
+          </div>
         </DraggableCard>
 
         {/* 8. Book a Call Card */}
