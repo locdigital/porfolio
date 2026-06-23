@@ -82,7 +82,7 @@ export const GET: APIRoute = async ({ params, request }) => {
   return new Response(fileBuffer, {
     headers: {
       "Content-Type": contentType,
-      "Cache-Control": "public, max-age=31536000, immutable",
+      "Cache-Control": "no-store, no-cache, max-age=0, must-revalidate, proxy-revalidate",
     },
   });
 };
