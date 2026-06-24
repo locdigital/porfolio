@@ -106,7 +106,7 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
       className={cn(
         bgOnly 
           ? "fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-[-1] bg-transparent" 
-          : "relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-background"
+          : "relative w-full min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background"
       )}
     >
       {/* Layer 1: Subtle background grid (always visible) */}
@@ -222,7 +222,7 @@ const App: React.FC = () => {
   }, [isDark]);
 
   return (
-    <div className="w-full relative min-h-screen">
+    <div className="w-full relative min-h-[100dvh]">
       {/* Sticky Theme Toggle */}
       <button
         onClick={() => setIsDark(!isDark)}

@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import BentoInfiniteGallery from "../components/ui/bento-infinite-gallery";
+import { optimizePhotos } from "../lib/photo-assets";
+
+const makePortfolioPhoto = (number: number) => ({
+  src: `/assets/photos/img-portfolio/photo-${number}.webp`,
+  alt: `Photo ${number}`,
+  w: 0,
+  h: 0,
+});
+
+const demoBentoPhotos = await optimizePhotos(
+  Array.from({ length: 20 }, (_, index) => index + 1).map(makePortfolioPhoto),
+  {
+    previewWidth: 960,
+    previewWidths: [320, 480, 720, 960, 1200],
+    previewSizes: "(max-width: 760px) 76vw, 32rem",
+    fullWidth: 1920,
+    fullQuality: 80,
+    withWebpFallback: false,
+  },
+);
+
+const spanCycle = [
+  "hero",
+  "standard",
+  "standard",
+  "tall",
+  "wide",
+  "standard",
+  "tall",
+  "standard",
+  "wide",
+  "standard",
+  "standard",
+  "tall",
+  "wide",
+  "standard",
+  "standard",
+  "hero",
+  "standard",
+  "wide",
+  "tall",
+  "standard",
+] as const;
+
+const demoBentoItems = demoBentoPhotos.map((photo, index) => ({
+  id: index + 1,
+  title: `Photo ${String(index + 1).padStart(2, "0")}`,
+  desc: "A frame from my travel archive.",
+  url: photo.previewSrc,
+  fullUrl: photo.fullSrc,
+  span: spanCycle[index] ?? "standard",
+}));
+---
+
+<Layout title="Bento Gallery Demo --- Phuc Loc Nguyen" hideHeader={true} hideFooter={true} robots="noindex, nofollow">
+  <BentoInfiniteGallery items={demoBentoItems} client:load />
+</Layout>

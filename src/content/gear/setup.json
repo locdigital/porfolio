@@ -90,6 +90,15 @@
           "image": "/uploads/lg_24_monitor.webp",
           "url": "https://www.lg.com/us/monitors",
           "tag": "Display"
+        },
+        {
+          "name": "Arm Visionx Stealth",
+          "slug": "arm-visionx-stealth",
+          "headline": "Display for daily work",
+          "description": "Arm Hyper Work is part of my Monitors setup. I use it for reliable day-to-day work, cleaner desk organization, and a smoother creative workflow.",
+          "image": "/uploads/1782275995073-arm-visionx-stealth.webp",
+          "url": "",
+          "tag": "Display"
         }
       ]
     },

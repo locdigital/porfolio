@@ -40,7 +40,7 @@ export const MASONRY_GRID_SIZES =
 export const STRIP_GALLERY_SIZES =
   "(max-width: 700px) 70vw, 360px";
 
-// Removed 1280 — grid thumbnails never render that wide; saves bandwidth
+// Removed 1280 --- grid thumbnails never render that wide; saves bandwidth
 const DEFAULT_PREVIEW_WIDTHS = [240, 400, 640, 960];
 const photoModules = import.meta.glob<ImageModule>("../assets/photos/**/*.{jpg,jpeg,png,webp}", {
   eager: true,
@@ -128,7 +128,7 @@ export async function optimizePhoto(
     const targetWidths = isDev ? [previewWidth] : (options.previewWidths ?? DEFAULT_PREVIEW_WIDTHS);
     const shouldFallback = isDev ? false : (options.withWebpFallback ?? true);
 
-    // Primary: AVIF (≈30% smaller than WebP, supported by 93%+ browsers as of 2025)
+    // Primary: AVIF (-30% smaller than WebP, supported by 93%+ browsers as of 2025)
     const preview = await buildImage(
       asset,
       previewWidth,

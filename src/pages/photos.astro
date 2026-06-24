@@ -39,7 +39,7 @@ const optimizedLocations = await Promise.all(
 const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photos.length, 0);
 ---
 
-<Layout title="Photos — Phuc Loc Nguyen">
+<Layout title="Photos --- Phuc Loc Nguyen">
 
   <main class="gear-page">
     <div class="gear-container">
@@ -65,12 +65,12 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
             <div class="photos-nav-active-line" id="photos-active-line"></div>
 
             {optimizedLocations.map((loc, i) => (
-              <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`} data-nav-target={loc.slug}>
+              <a href="/photos" class={`photos-nav-link ${i === 0 ? 'active' : ''}`} data-nav-target={loc.slug}>
                 {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
               </a>
             ))}
             <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
-              Gallery <span class="photos-gallery-arrow">→</span>
+              Gallery <span class="photos-gallery-arrow">-></span>
             </a>
           </div>
         </nav>
@@ -98,7 +98,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
           </div>
         </div>
 
-        <!-- Photo grid — full-bleed inside container -->
+        <!-- Photo grid --- full-bleed inside container -->
         <div class="container">
           <div class="loc-grid" data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
             {loc.photos.map((photo, i) => (
@@ -161,12 +161,12 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
 </Layout>
 
 <style>
-  /* ── Page ── */
+  /* ------ Page ------ */
   .photos-page {
     padding-top: var(--hdr-h);
   }
 
-  /* ── Hero ── */
+  /* ------ Hero ------ */
   .photos-hero {
     padding: 80px 0 clamp(32px, 4vw, 52px);
   }
@@ -201,7 +201,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     opacity: 0;
   }
 
-  /* ── Nav wrapper ── */
+  /* ------ Nav wrapper ------ */
   .photos-nav-wrapper {
     position: relative;
     z-index: 50;
@@ -211,7 +211,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     margin-top: -1px;
   }
 
-  /* ── Nav ── */
+  /* ------ Nav ------ */
   .photos-nav {
     border-bottom: 1px solid var(--divider);
     padding-bottom: 0;
@@ -301,23 +301,17 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     transform: translateX(3px);
   }
 
-  /* ── Location section ── */
+  /* ------ Location section ------ */
   .loc-section {
     display: none;
     opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.5s var(--ease-out, ease), transform 0.5s var(--ease-out, ease);
     padding: clamp(24px, 4vw, 40px) 0 clamp(60px, 8vw, 100px) 0;
     scroll-margin-top: calc(var(--hdr-h, 80px) + 70px);
   }
 
   .loc-section.active {
     display: block;
-  }
-
-  .loc-section.active.fade-in {
     opacity: 1;
-    transform: translateY(0);
   }
 
   .loc-header {
@@ -377,7 +371,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     letter-spacing: .06em;
   }
 
-  /* ── Image Grid ── */
+  /* ------ Image Grid ------ */
   /*
     Masonry layout to display photos in full size / original aspect ratio
   */
@@ -429,7 +423,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     letter-spacing: .1em;
   }
 
-  /* ── Responsive ── */
+  /* ------ Responsive ------ */
   @media (max-width: 900px) {
     .loc-grid {
       column-count: 2;
@@ -449,7 +443,12 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
   }
 </style>
 
-<script is:inline>
+<script>
+  import { gsap } from "gsap";
+  import { Flip } from "gsap/Flip";
+
+  gsap.registerPlugin(Flip);
+
   // PhotoSwipe per-gallery init
   (function () {
     document.addEventListener('astro:page-load', () => {
@@ -461,7 +460,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
       }, { threshold: 0.05, rootMargin: '0px 0px -32px 0px' });
       document.querySelectorAll('.r').forEach(el => io.observe(el));
 
-      // ── Vercel-style tabs: active underline ──
+      // ------ Vercel-style tabs: active underline ------
       const navLinks = document.querySelectorAll('.photos-nav-link[data-nav-target]');
       const activeLine = document.getElementById('photos-active-line');
       const navList   = document.querySelector('.photos-nav-list');
@@ -488,21 +487,170 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
 
       // Tab switcher
       const sections = document.querySelectorAll('.loc-section');
-      const activateTab = (slug) => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let activeSlug = '';
+      let tabTween = null;
+
+      function getSectionPieces(section) {
+        if (!section) return [];
+        return gsap.utils.toArray(section.querySelectorAll('.loc-header, .loc-photo-item'));
+      }
+
+      function setSectionVisible(section, isVisible, { keepMinHeight = false } = {}) {
+        if (!section) return;
+        section.classList.toggle('active', isVisible);
+        section.style.display = isVisible ? 'block' : 'none';
+        section.style.opacity = isVisible ? '1' : '0';
+        if (!keepMinHeight) {
+          section.style.minHeight = '';
+        }
+
+        section.querySelectorAll('.r').forEach(el => {
+          el.classList.toggle('in', isVisible);
+        });
+      }
+
+      function settleTab(slug, { keepActiveMinHeight = false } = {}) {
+        sections.forEach(sec => {
+          const isActiveSection = sec.id === slug;
+          setSectionVisible(sec, isActiveSection, { keepMinHeight: isActiveSection && keepActiveMinHeight });
+          gsap.set(sec, { clearProps: 'transform,scale,opacity,visibility' });
+          gsap.set(getSectionPieces(sec), { clearProps: 'transform,scale,opacity,visibility' });
+        });
+      }
+
+      function measureHiddenSectionHeight(section) {
+        if (!section) return 0;
+        const previousDisplay = section.style.display;
+        const previousOpacity = section.style.opacity;
+        const previousVisibility = section.style.visibility;
+        const previousPosition = section.style.position;
+        const previousPointerEvents = section.style.pointerEvents;
+        const previousWidth = section.style.width;
+        const previousLeft = section.style.left;
+
+        section.style.display = 'block';
+        section.style.opacity = '0';
+        section.style.visibility = 'hidden';
+        section.style.position = 'absolute';
+        section.style.pointerEvents = 'none';
+        section.style.width = `${section.parentElement?.getBoundingClientRect().width || document.documentElement.clientWidth}px`;
+        section.style.left = '0';
+
+        const height = section.scrollHeight;
+
+        section.style.display = previousDisplay;
+        section.style.opacity = previousOpacity;
+        section.style.visibility = previousVisibility;
+        section.style.position = previousPosition;
+        section.style.pointerEvents = previousPointerEvents;
+        section.style.width = previousWidth;
+        section.style.left = previousLeft;
+
+        return height;
+      }
+
+      function ensureScrollRoom(section, desiredScrollY, activeSection = document.querySelector('.loc-section.active')) {
+        if (!section) return 0;
+        const referenceSection = activeSection || section;
+        const sectionTop = referenceSection.getBoundingClientRect().top + window.scrollY;
+        const minHeightForViewport = Math.ceil(desiredScrollY + window.innerHeight - sectionTop + 2);
+        const targetHeight = section.offsetHeight || measureHiddenSectionHeight(section);
+        const currentHeight = Math.max(referenceSection.offsetHeight, referenceSection.scrollHeight, targetHeight);
+
+        const lockHeight = Math.max(currentHeight, minHeightForViewport, 0);
+        referenceSection.style.minHeight = `${lockHeight}px`;
+        section.style.minHeight = `${lockHeight}px`;
+
+        return lockHeight;
+      }
+
+      function restoreScrollY(scrollY) {
+        window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
+          requestAnimationFrame(() => {
+            window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
+          });
+        });
+      }
+
+      function clearLocationHash() {
+        if (!window.location.hash) return;
+        history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+      }
+
+      const activateTab = (slug, options = {}) => {
         const targetSection = document.getElementById(slug);
         if (!targetSection) return;
+        if (slug === activeSlug && targetSection.classList.contains('active')) return;
 
-        sections.forEach(sec => {
-          if (sec.id !== slug) {
-            sec.classList.remove('active', 'fade-in');
-            sec.style.display = 'none';
-          }
-        });
+        const shouldPreserveScroll = options.preserveScroll === true;
+        const previousScrollY = window.scrollY;
+        const activeSection = document.querySelector('.loc-section.active');
+        const outgoingPieces = getSectionPieces(activeSection);
+        const incomingPieces = getSectionPieces(targetSection);
+        const flipState = reduceMotion || !activeSection ? null : Flip.getState(outgoingPieces);
 
-        targetSection.style.display = 'block';
-        targetSection.offsetHeight; // force reflow
-        targetSection.classList.add('active');
-        requestAnimationFrame(() => targetSection.classList.add('fade-in'));
+        if (tabTween) {
+          tabTween.kill();
+          tabTween = null;
+        }
+
+        if (shouldPreserveScroll) {
+          ensureScrollRoom(targetSection, previousScrollY, activeSection);
+        }
+
+        if (reduceMotion || !activeSection || activeSection === targetSection) {
+          settleTab(slug, { keepActiveMinHeight: shouldPreserveScroll });
+        } else {
+          setSectionVisible(activeSection, true, { keepMinHeight: shouldPreserveScroll });
+          setSectionVisible(targetSection, false, { keepMinHeight: shouldPreserveScroll });
+
+          tabTween = gsap.timeline({
+            onComplete: () => {
+              tabTween = null;
+              settleTab(slug, { keepActiveMinHeight: shouldPreserveScroll });
+              if (shouldPreserveScroll) {
+                restoreScrollY(previousScrollY);
+              }
+            },
+          });
+
+          tabTween
+            .add(Flip.from(flipState, {
+              targets: outgoingPieces,
+              duration: 0.6,
+              scale: true,
+              ease: 'power1.inOut',
+              stagger: 0.05,
+              absolute: true,
+              prune: true,
+            }), 0)
+            .to(outgoingPieces, {
+              opacity: 0,
+              scale: 0,
+              duration: 0.8,
+              ease: 'power1.inOut',
+              stagger: 0.05,
+              overwrite: true,
+            }, 0)
+            .set(activeSection, { display: 'none', opacity: 0 }, 0.42)
+            .set(targetSection, { display: 'block', opacity: 1 }, 0.42)
+            .fromTo(incomingPieces, {
+              opacity: 0,
+              scale: 0,
+            }, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.8,
+              ease: 'power1.inOut',
+              stagger: 0.05,
+              overwrite: true,
+            }, 0.42);
+        }
+
+        activeSlug = slug;
 
         navLinks.forEach(link => {
           if (link.getAttribute('data-nav-target') === slug) {
@@ -516,48 +664,57 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
         });
 
         targetSection.querySelectorAll('.r').forEach(el => {
-          el.classList.remove('in');
+          el.classList.add('in');
           io.observe(el);
         });
+
+        if (shouldPreserveScroll) {
+          restoreScrollY(previousScrollY);
+        }
       };
 
       navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-          const href = this.getAttribute('href');
-          if (href && href.startsWith('#')) {
+          const slug = this.getAttribute('data-nav-target');
+          if (slug) {
             e.preventDefault();
-            const slug = href.substring(1);
-            history.pushState(null, null, href);
-            activateTab(slug);
+            activateTab(slug, { preserveScroll: true });
+            clearLocationHash();
           }
         });
       });
 
       const onPopState = () => {
         const hash = window.location.hash;
-        if (hash) activateTab(hash.substring(1));
-        else if (sections.length > 0) activateTab(sections[0].id);
+        if (hash) {
+          activateTab(hash.substring(1));
+          clearLocationHash();
+        } else if (sections.length > 0) {
+          activateTab(sections[0].id);
+        }
       };
-      if (window._photosOnPopState) {
-        window.removeEventListener('popstate', window._photosOnPopState);
+      const photosWindow = window;
+      if (photosWindow._photosOnPopState) {
+        window.removeEventListener('popstate', photosWindow._photosOnPopState);
       }
-      window._photosOnPopState = onPopState;
-      window.addEventListener('popstate', window._photosOnPopState);
+      photosWindow._photosOnPopState = onPopState;
+      window.addEventListener('popstate', photosWindow._photosOnPopState);
 
       // Reposition on resize
       const onResize = () => {
         if (currentActiveLink) moveActiveLine(currentActiveLink);
       };
-      if (window._photosOnResize) {
-        window.removeEventListener('resize', window._photosOnResize);
+      if (photosWindow._photosOnResize) {
+        window.removeEventListener('resize', photosWindow._photosOnResize);
       }
-      window._photosOnResize = onResize;
-      window.addEventListener('resize', window._photosOnResize);
+      photosWindow._photosOnResize = onResize;
+      window.addEventListener('resize', photosWindow._photosOnResize);
 
       // Init
       const initHash = window.location.hash;
       if (initHash) {
         activateTab(initHash.substring(1));
+        clearLocationHash();
       } else if (sections.length > 0) {
         activateTab(sections[0].id);
       }

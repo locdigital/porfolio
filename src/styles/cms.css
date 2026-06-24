@@ -1,11 +1,11 @@
 /* ============================================================
-   CMS DASHBOARD — loc.digital style guide applied
+   CMS DASHBOARD --- loc.digital style guide applied
    Inspired by 21st.dev template; 100% original code.
    Tokens: --bg #FAFAF7 | --text #1C1C1C | --accent #0075de
    Fonts: Imbue (serif) | Plus Jakarta Sans (sans) | DM Mono (mono)
    ============================================================ */
 
-/* ── Layout shell ─────────────────────────────────────────── */
+/* ------ Layout shell --------------------------------------------------------------------------------------------------------------------------------- */
 .cms-app {
   min-height: 100svh;
   display: grid;
@@ -15,7 +15,7 @@
   font-family: var(--sans);
 }
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* ------ Sidebar ------------------------------------------------------------------------------------------------------------------------------------------------ */
 .cms-sidebar {
   position: sticky;
   top: 0;
@@ -161,7 +161,7 @@
   opacity: 1;
 }
 
-/* Sidebar footer — storage card */
+/* Sidebar footer --- storage card */
 .cms-sidebar-storage {
   margin-top: 16px;
   padding: 14px 16px;
@@ -285,7 +285,7 @@
   background: rgba(180, 35, 24, 0.08);
 }
 
-/* ── Topbar ───────────────────────────────────────────────── */
+/* ------ Topbar --------------------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-main {
   min-width: 0;
   display: flex;
@@ -441,13 +441,13 @@
   border-color: var(--accent);
 }
 
-/* ── Page content wrapper ─────────────────────────────────── */
+/* ------ Page content wrapper --------------------------------------------------------------------------------------------------------- */
 .cms-content {
   flex: 1;
   padding: 28px 28px 48px;
 }
 
-/* ── Page header ──────────────────────────────────────────── */
+/* ------ Page header ------------------------------------------------------------------------------------------------------------------------------------ */
 .cms-page-header {
   margin-bottom: 24px;
 }
@@ -466,7 +466,7 @@
   color: var(--muted);
 }
 
-/* ── Stat cards ───────────────────────────────────────────── */
+/* ------ Stat cards --------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-stat-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -554,7 +554,7 @@
   color: var(--muted);
 }
 
-/* ── Dashboard 2-col grid ─────────────────────────────────── */
+/* ------ Dashboard 2-col grid --------------------------------------------------------------------------------------------------------- */
 .cms-dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
@@ -562,7 +562,7 @@
   margin-bottom: 22px;
 }
 
-/* ── Chart card ───────────────────────────────────────────── */
+/* ------ Chart card --------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-chart-card {
   padding: 20px;
   border: 1px solid var(--divider);
@@ -646,7 +646,7 @@
   border-radius: 2px;
 }
 
-/* ── Recent posts table ───────────────────────────────────── */
+/* ------ Recent posts table --------------------------------------------------------------------------------------------------------------- */
 .cms-table-card {
   border: 1px solid var(--divider);
   border-radius: var(--rounded-lg, 12px);
@@ -767,7 +767,7 @@
 .cms-badge-draft     { background: rgba(217, 119, 6, 0.1);  color: #b45309; }
 .cms-badge-scheduled { background: rgba(0, 117, 222, 0.1);  color: var(--accent); }
 
-/* ── Right panels grid ────────────────────────────────────── */
+/* ------ Right panels grid ------------------------------------------------------------------------------------------------------------------ */
 .cms-right-col {
   display: flex;
   flex-direction: column;
@@ -874,7 +874,7 @@
   color: var(--muted);
 }
 
-/* ── Metrics (legacy / overview fallback) ─────────────────── */
+/* ------ Metrics (legacy / overview fallback) --------------------------------------------------------- */
 .cms-metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -908,14 +908,14 @@
   color: var(--muted);
 }
 
-/* ── Overview grid ────────────────────────────────────────── */
+/* ------ Overview grid ------------------------------------------------------------------------------------------------------------------------------ */
 .cms-overview-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
 }
 
-/* ── Section + Editor layouts (preserved) ────────────────── */
+/* ------ Section + Editor layouts (preserved) ------------------------------------------------------ */
 .cms-section,
 .cms-editor-grid {
   width: 100%;
@@ -939,7 +939,7 @@
   letter-spacing: -0.02em;
 }
 
-/* ── Kicker ───────────────────────────────────────────────── */
+/* ------ Kicker --------------------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-kicker {
   font-family: var(--mono);
   font-size: 10px;
@@ -949,7 +949,7 @@
   margin-bottom: 6px;
 }
 
-/* ── Buttons (shared action buttons) ─────────────────────── */
+/* ------ Buttons (shared action buttons) --------------------------------------------------------------------- */
 .cms-link-button,
 .cms-button {
   min-height: 36px;
@@ -1002,7 +1002,7 @@
   transform: none;
 }
 
-/* ── Status bar ───────────────────────────────────────────── */
+/* ------ Status bar --------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-status {
   min-height: 40px;
   display: flex;
@@ -1027,7 +1027,7 @@
   color: #b42318;
 }
 
-/* ── Spin animation ───────────────────────────────────────── */
+/* ------ Spin animation --------------------------------------------------------------------------------------------------------------------------- */
 .cms-spin {
   animation: cms-spin 0.8s linear infinite;
 }
@@ -1036,7 +1036,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Editor layout ────────────────────────────────────────── */
+/* ------ Editor layout ------------------------------------------------------------------------------------------------------------------------------ */
 .cms-editor-grid {
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
@@ -1101,7 +1101,16 @@
   letter-spacing: -0.01em;
 }
 
-/* ── Path list ────────────────────────────────────────────── */
+.cms-subtitle-small {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ------ Path list ------------------------------------------------------------------------------------------------------------------------------------------ */
 .cms-path-list {
   display: grid;
   gap: 12px;
@@ -1122,15 +1131,17 @@
   margin-top: 2px;
 }
 
-/* ── List (post/item selectors) ───────────────────────────── */
+/* ------ List (post/item selectors) --------------------------------------------------------------------------------------- */
 .cms-mini-list,
-.cms-list {
+.cms-list,
+.cms-gear-item-list {
   display: grid;
   gap: 6px;
 }
 
 .cms-mini-list button,
-.cms-list button {
+.cms-list button,
+.cms-gear-item-list button {
   width: 100%;
   min-height: 52px;
   display: grid;
@@ -1148,13 +1159,16 @@
 
 .cms-mini-list button:hover,
 .cms-list button:hover,
-.cms-list button.is-active {
+.cms-list button.is-active,
+.cms-gear-item-list button:hover,
+.cms-gear-item-list button.is-active {
   border-color: rgba(0, 117, 222, 0.4);
   background: rgba(0, 117, 222, 0.06);
 }
 
 .cms-mini-list button span,
-.cms-list button span {
+.cms-list button span,
+.cms-gear-item-list button span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1165,6 +1179,7 @@
 
 .cms-mini-list button small,
 .cms-list button small,
+.cms-gear-item-list button small,
 .cms-list-label {
   font-family: var(--mono);
   font-size: 10px;
@@ -1180,7 +1195,12 @@
   padding: 8px 4px;
 }
 
-/* ── Form elements ────────────────────────────────────────── */
+.cms-gear-item-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+/* ------ Form elements ------------------------------------------------------------------------------------------------------------------------------ */
 .cms-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1261,6 +1281,10 @@
   border-top: 1px solid var(--divider);
 }
 
+.cms-subhead-compact {
+  margin-bottom: 12px;
+}
+
 .cms-item-toolbar {
   justify-content: flex-start;
 }
@@ -1277,7 +1301,7 @@
   color: var(--muted);
 }
 
-/* ── Photo grid ───────────────────────────────────────────── */
+/* ------ Photo grid --------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-photo-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1338,7 +1362,7 @@
   color: var(--muted);
 }
 
-/* ── Modal lightbox ───────────────────────────────────────── */
+/* ------ Modal lightbox --------------------------------------------------------------------------------------------------------------------------- */
 .cms-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1396,7 +1420,7 @@
   to   { opacity: 1; }
 }
 
-/* ── Loading state ────────────────────────────────────────── */
+/* ------ Loading state ------------------------------------------------------------------------------------------------------------------------------ */
 .cms-loading {
   min-height: 320px;
   display: grid;
@@ -1405,7 +1429,7 @@
   color: var(--muted);
 }
 
-/* ── Topbar nav links ─────────────────────────────────────── */
+/* ------ Topbar nav links --------------------------------------------------------------------------------------------------------------------- */
 .cms-topbar-actions a,
 .cms-topbar-actions button {
   display: inline-flex;
@@ -1415,7 +1439,7 @@
   cursor: pointer;
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
+/* ------ Responsive --------------------------------------------------------------------------------------------------------------------------------------- */
 @media (max-width: 1200px) {
   .cms-stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1489,7 +1513,8 @@
 
   .cms-editor-grid,
   .cms-overview-grid,
-  .cms-form-grid {
+  .cms-form-grid,
+  .cms-gear-item-list {
     grid-template-columns: 1fr;
   }
 
@@ -1531,7 +1556,7 @@
   }
 }
 
-/* ── Relative wrapper & Dropdown Menu ─────────────────────────── */
+/* ------ Relative wrapper & Dropdown Menu --------------------------------------------------------------------------------- */
 .cms-relative-wrapper {
   position: relative;
   display: inline-flex;
@@ -1598,7 +1623,7 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Ask AI Drawer ────────────────────────────────────────────── */
+/* ------ Ask AI Drawer ------------------------------------------------------------------------------------------------------------------------------------------ */
 .cms-drawer-overlay {
   position: fixed;
   inset: 0;
@@ -1744,7 +1769,7 @@
   to   { transform: translateX(0); }
 }
 
-/* ── Dark Mode styling ────────────────────────────────────────── */
+/* ------ Dark Mode styling ------------------------------------------------------------------------------------------------------------------------------ */
 .cms-app.cms-dark-mode {
   --bg: #121210;
   --text: #fafaf7;
@@ -1799,4 +1824,3 @@
 .cms-app.cms-dark-mode .cms-filter-btn:hover {
   background: rgba(250, 250, 247, 0.06);
 }
-

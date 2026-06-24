@@ -7,7 +7,7 @@ import { MASONRY_GRID_SIZES, optimizePhotos } from "../lib/photo-assets";
 const allPhotos = locations.flatMap(loc =>
   loc.photos.map((photo, i) => ({
     ...photo,
-    alt: `${loc.name} — photo ${i + 1}`
+    alt: `${loc.name} --- photo ${i + 1}`
   }))
 );
 
@@ -18,14 +18,14 @@ const uniqueRawPhotos = Array.from(
 
 const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
   previewWidth: 520,
-  previewWidths: [240, 360, 520, 760],   // tighter — masonry columns max ~520px each
+  previewWidths: [240, 360, 520, 760],   // tighter --- masonry columns max ~520px each
   previewSizes: MASONRY_GRID_SIZES,
   fullQuality: 75,
   withWebpFallback: true,
 });
 ---
 
-<Layout title="Gallery — Phuc Loc Nguyen">
+<Layout title="Gallery --- Phuc Loc Nguyen">
   <main class="gallery-page">
     <div id="gallery-grid" class="gallery-grid"></div>
     <div id="loading-trigger" style="height:1px;width:100%;"></div>
@@ -63,7 +63,7 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
       background: #ddd;
     }
 
-    /* The aspect-ratio box — padding-bottom locks each image to its real ratio */
+    /* The aspect-ratio box --- padding-bottom locks each image to its real ratio */
     :global(.gal-item .ratio-box) {
       position: relative;
       width: 100%;
@@ -134,7 +134,7 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
 
           var pw = photo.previewWidth || photo.w || 1280;
           var ph = photo.previewHeight || photo.h || 853;
-          var ratio = ph / pw;                    // e.g. portrait → 1.5, landscape → 0.667
+          var ratio = ph / pw;                    // e.g. portrait -> 1.5, landscape -> 0.667
           var pb = (ratio * 100).toFixed(3) + '%'; // padding-bottom %
 
           var item = document.createElement('div');
@@ -142,7 +142,7 @@ const uniquePhotos = await optimizePhotos(uniqueRawPhotos, {
 
           var box = document.createElement('div');
           box.className = 'ratio-box';
-          box.style.paddingBottom = pb;          // ← this locks in natural height
+          box.style.paddingBottom = pb;          // - this locks in natural height
 
           var img = document.createElement('img');
           img.src = photo.previewSrc || photo.src;

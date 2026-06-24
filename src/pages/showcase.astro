@@ -1,5 +1,5 @@
 ---
-// showcase.astro — Scroll-driven 3D photo card animation
+// showcase.astro --- Scroll-driven 3D photo card animation
 import { optimizePhotos } from "../lib/photo-assets";
 
 const showcaseSrcs = (
@@ -24,7 +24,7 @@ const showcaseSrcs = (
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Showcase — Phuc Loc Nguyen</title>
+  <title>Showcase --- Phuc Loc Nguyen</title>
   <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="/favicon-active.svg" />
   <script is:inline>
     function syncFavicon() {
@@ -52,13 +52,13 @@ const showcaseSrcs = (
       overflow-x: hidden;
     }
 
-    /* ── Scroll driver: 500vh gives plenty of scroll room ── */
+    /* ------ Scroll driver: 500vh gives plenty of scroll room ------ */
     #scroll-driver {
       height: 500vh;
       position: relative;
     }
 
-    /* ── Sticky viewport ── */
+    /* ------ Sticky viewport ------ */
     #sticky {
       position: sticky;
       top: 0;
@@ -74,7 +74,7 @@ const showcaseSrcs = (
       height: 100%;
     }
 
-    /* ── HUD ── */
+    /* ------ HUD ------ */
     #hud {
       position: absolute;
       inset: 0;
@@ -191,7 +191,7 @@ const showcaseSrcs = (
 </head>
 <body>
 
-  <a href="/gallery" id="back">← Gallery</a>
+  <a href="/gallery" id="back">- Gallery</a>
 
   <div id="phases">
     <div class="phase-dot active" data-ph="0"></div>
@@ -217,14 +217,14 @@ const showcaseSrcs = (
 
   <div id="loading"><div id="loading-ring"></div></div>
 
-  <!-- Three.js r165 UMD — works in all browsers without importmap -->
+  <!-- Three.js r165 UMD --- works in all browsers without importmap -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.min.js"></script>
 
   <script is:inline define:vars={{ showcaseSrcs }}>
   (function () {
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        CONFIG
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     var SRCS = showcaseSrcs;
 
     var N        = SRCS.length;
@@ -232,9 +232,9 @@ const showcaseSrcs = (
     var CH       = 1.00;   // card height (landscape)
     var PHASES   = ['Scatter','Alignment','Circle','Arc','Gallery'];
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        RENDERER
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     var canvas   = document.getElementById('c');
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -250,9 +250,9 @@ const showcaseSrcs = (
     var camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 120);
     camera.position.set(0, 0, 10);
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        LIGHTS
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     scene.add(new THREE.AmbientLight(0xffffff, 0.18));
 
     var key = new THREE.DirectionalLight(0xd6ecff, 1.4);
@@ -267,9 +267,9 @@ const showcaseSrcs = (
     fill.position.set(0, 0, 8);
     scene.add(fill);
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        SEEDED RNG
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     function rng(seed) {
       var s = seed | 0;
       return function () {
@@ -280,9 +280,9 @@ const showcaseSrcs = (
       };
     }
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        TARGET POSITIONS PER PHASE
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     function posScatter(i) {
       var r = rng(i * 3571 + 17);
       return new THREE.Vector3(
@@ -338,9 +338,9 @@ const showcaseSrcs = (
       );
     }
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        BUILD CARDS
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     var geo     = new THREE.PlaneGeometry(CW, CH, 1, 1);
     var loader  = new THREE.TextureLoader();
     var cards   = [];
@@ -384,27 +384,27 @@ const showcaseSrcs = (
 
         loaded++;
         if (loaded === N) {
-          // All textures ready → fade out loading screen
+          // All textures ready - fade out loading screen
           loading.classList.add('out');
         }
       });
     });
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        SCROLL
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     var scrollT  = 0;   // raw 0..1
     var smoothT  = 0;   // low-pass filtered
 
-    window.addEventListener('scroll', function () {
+    function syncScrollProgress() {
       var el  = document.getElementById('scroll-driver');
       var max = el.scrollHeight - window.innerHeight;
       scrollT = max > 0 ? window.scrollY / max : 0;
-    }, { passive: true });
+    }
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        HELPERS
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     function lerp(a, b, t) { return a + (b - a) * t; }
 
     function easeIO(t) {
@@ -420,9 +420,9 @@ const showcaseSrcs = (
       return { val: cur + nv, vel: nv };
     }
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        PHASE HUD
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     var dots      = document.querySelectorAll('.phase-dot');
     var phLabel   = document.getElementById('phase-label');
     var lastPhIdx = -1;
@@ -437,15 +437,15 @@ const showcaseSrcs = (
       if (phIdx > 0) hint.classList.add('gone');
     }
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        CAMERA SPRING STATE
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     var cam = { x: 0, y: 0, z: 10, lx: 0, ly: 0 };
     var camV = { x: 0, y: 0, z: 0 };
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        ANIMATION LOOP
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     var clock = new THREE.Clock();
 
     function animate() {
@@ -457,14 +457,15 @@ const showcaseSrcs = (
       if (loaded < N) { renderer.render(scene, camera); return; }
 
       /* Smooth scroll time */
+      syncScrollProgress();
       smoothT += (scrollT - smoothT) * 0.055;
 
-      /* phaseBlend: 0 = scatter … 4 = gallery (continuous float) */
+      /* phaseBlend: 0 = scatter -- 4 = gallery (continuous float) */
       var pb = smoothT * 4;
       var phIdx = Math.min(Math.floor(pb + 0.1), 4);
       updateHUD(phIdx);
 
-      /* ── Camera target ── */
+      /* ------ Camera target ------ */
       var ctX, ctY, ctZ, lookY;
 
       if (pb < 1) {
@@ -514,7 +515,7 @@ const showcaseSrcs = (
       camera.position.set(cam.x, cam.y, cam.z);
       camera.lookAt(0, lookY || 0, 0);
 
-      /* ── Update each card ── */
+      /* ------ Update each card ------ */
       cards.forEach(function (card) {
         if (!card) return;
         var i = card.i;
@@ -565,10 +566,10 @@ const showcaseSrcs = (
           try_ = lerp(try_, gRotY, gf);
         }
 
-        /* Scale: cards grow slightly in arc → gallery */
+        /* Scale: cards grow slightly in arc - gallery */
         var targetScale = pb < 2.5 ? 1.0 : lerp(1.0, 1.14, (pb - 2.5) / 1.5);
 
-        /* Spring toward targets — tighter spring after scatter */
+        /* Spring toward targets --- tighter spring after scatter */
         var k = pb < 0.5 ? 0.032 : 0.062;
         var d = 0.87;
 
@@ -591,9 +592,9 @@ const showcaseSrcs = (
 
     animate();
 
-    /* ─────────────────────────────────────────────────────────────
+    /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
        RESIZE
-    ───────────────────────────────────────────────────────────── */
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
     window.addEventListener('resize', function () {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();

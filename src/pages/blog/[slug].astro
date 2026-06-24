@@ -8,7 +8,7 @@ export const prerender = false;
 
 const { slug } = Astro.params;
 
-// Fetch ALL writing posts dynamically (SSR — no rebuild needed for new CMS posts)
+// Fetch ALL writing posts dynamically (SSR --- no rebuild needed for new CMS posts)
 const allPosts = await getCollection("writing", ({ data }) => !data.draft);
 const post = allPosts.find((p) => p.slug === slug);
 
@@ -62,7 +62,7 @@ const postDescription = post.data.metaDescription || post.data.summary || post.d
 >
   <article class="container mx-auto pb-32 px-4 max-w-[880px] toki-r" data-d="1" style="padding-top: 140px;">
     <a href="/blog" class="group inline-flex items-center font-sans text-[11px] font-bold tracking-[0.15em] text-[var(--muted)] hover:text-[var(--text)] transition-colors mb-8 uppercase">
-      <span class="mr-2 transition-transform group-hover:-translate-x-1">←</span> WRITING
+      <span class="mr-2 transition-transform group-hover:-translate-x-1">-</span> WRITING
     </a>
     
     <header class="mb-[64px]">
@@ -110,7 +110,7 @@ const postDescription = post.data.metaDescription || post.data.summary || post.d
 
     <div class="mt-24 pt-8 border-t border-[var(--divider)]">
       <a href="/blog" class="group inline-flex items-center font-sans text-[13px] font-bold tracking-[0.1em] text-[var(--text)] hover:text-[var(--accent)] transition-colors uppercase">
-        <span class="mr-2 transition-transform group-hover:-translate-x-1">←</span> BACK TO WRITING
+        <span class="mr-2 transition-transform group-hover:-translate-x-1">-</span> BACK TO WRITING
       </a>
     </div>
   </article>

@@ -102,8 +102,8 @@ export default function AboutHero() {
             customVariants={textVariants}
             style={{
               fontStyle: "italic",
-              color: "#e07b39",
-              border: "1.5px dashed rgba(224,123,57,0.4)",
+              color: "var(--accent)",
+              border: "1.5px dashed rgba(0,117,222,0.32)",
               borderRadius: "6px",
               padding: "0 6px",
               display: "inline",

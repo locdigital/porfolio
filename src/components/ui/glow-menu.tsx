@@ -1,5 +1,4 @@
 import * as React from "react"
-import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { User, Briefcase, Zap, Camera, Laptop, Sparkles } from "lucide-react"
@@ -23,24 +22,24 @@ const menuItems: MenuItem[] = [
     label: "About",
     href: "/about",
     gradient:
-      "radial-gradient(circle, rgba(249,115,22,0.15) 0%, rgba(234,88,12,0.06) 50%, rgba(194,65,12,0) 100%)",
-    iconColor: "text-orange-500",
+      "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
+    iconColor: "text-[#0075de]",
   },
   {
     icon: Briefcase,
     label: "Work",
     href: "/work",
     gradient:
-      "radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.06) 50%, rgba(29,78,216,0) 100%)",
-    iconColor: "text-blue-500",
+      "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
+    iconColor: "text-[#0075de]",
   },
   {
     icon: Zap,
     label: "Services",
     href: "/service",
     gradient:
-      "radial-gradient(circle, rgba(168,85,247,0.15) 0%, rgba(147,51,234,0.06) 50%, rgba(126,34,206,0) 100%)",
-    iconColor: "text-purple-500",
+      "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
+    iconColor: "text-[#0075de]",
   },
 
   {
@@ -48,20 +47,20 @@ const menuItems: MenuItem[] = [
     label: "Photos",
     href: "/photos",
     gradient:
-      "radial-gradient(circle, rgba(239,68,68,0.15) 0%, rgba(220,38,38,0.06) 50%, rgba(185,28,28,0) 100%)",
-    iconColor: "text-red-500",
+      "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
+    iconColor: "text-[#0075de]",
   },
   {
     icon: Laptop,
     label: "Gear",
     href: "/gear",
     gradient:
-      "radial-gradient(circle, rgba(20,184,166,0.15) 0%, rgba(13,148,136,0.06) 50%, rgba(15,118,110,0) 100%)",
-    iconColor: "text-teal-500",
+      "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
+    iconColor: "text-[#0075de]",
   },
   {
     icon: Sparkles,
-    label: "Ask ✦",
+    label: "Ask",
     href: "/question",
     gradient:
       "radial-gradient(circle, rgba(0,117,222,0.15) 0%, rgba(0,117,222,0.06) 50%, rgba(0,117,222,0) 100%)",
@@ -111,7 +110,7 @@ const getActiveItem = (path: string) => {
   if (path.startsWith('/blog')) return "Writing";
   if (path.startsWith('/photos') || path.startsWith('/gallery')) return "Photos";
   if (path.startsWith('/gear')) return "Gear";
-  if (path.startsWith('/question')) return "Ask ✦";
+  if (path.startsWith('/question')) return "Ask";
   return "";
 }
 
@@ -133,7 +132,7 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
         <motion.div
           className="absolute -inset-2 rounded-3xl z-0 pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(circle at center, rgba(0, 117, 222, 0.08) 0%, rgba(168, 85, 247, 0.05) 50%, rgba(239, 68, 68, 0.02) 80%, transparent 100%)"
+            backgroundImage: "radial-gradient(circle at center, rgba(0, 117, 222, 0.08) 0%, rgba(0, 117, 222, 0.035) 55%, transparent 100%)"
           }}
           variants={navGlowVariants}
         />

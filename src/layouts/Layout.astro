@@ -48,6 +48,9 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
   <meta name="twitter:image" content={socialThumbnail}>
 
   <title>{title}</title>
+  <script is:inline>
+    document.documentElement.classList.add("js");
+  </script>
   <meta name="theme-color" content="#FAFAF7">
   <link rel="canonical" href={canonicalUrl} />
   <meta name="google-site-verification" content="tYabJCSeApR0trq6VL7V6_JKbEKbBnznDtNmvaBehfY" />
@@ -147,7 +150,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
     <>
       <header id="site-header" class={`${pathname.startsWith('/photos') ? 'absolute-header' : ''} ${pathname.startsWith('/gallery') ? 'gallery-glass-header' : ''}`.trim()}>
         <div class="header-inner">
-          <a href="/" class="header-logo" aria-label="Phuc Loc Nguyen — back to home">
+          <a href="/" class="header-logo" aria-label="Phuc Loc Nguyen, back to home">
             <span class="logo-circle"></span>
           </a>
 
@@ -194,7 +197,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
           <li>
             <a href="/question" class={pathname.startsWith('/question') ? 'active' : ''} aria-label="Ask">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon sparkles-icon"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5 5 3Z"/><path d="m19 17 1 2.5 2.5.5-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1 1-2.5Z"/></svg>
-              <span class="nav-label">Ask ✦</span>
+              <span class="nav-label">Ask</span>
             </a>
           </li>
         </ul>
@@ -223,7 +226,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
       <div class="container">
         <footer class="footer r" aria-label="Footer">
           <div class="footer-contact">
-            Let's connect —
+            Let's connect.
             <button class="email-copy" id="copy-email" aria-label="Copy email address" data-tip="Copy">
               hi@loc.digital
             </button>
@@ -239,7 +242,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
         </footer>
         <div class="colophon">
           <span>© 2026 Phuc Loc Nguyen</span>
-          <span>Astro · Static HTML · WCAG 2.2 AA</span>
+          <span>Astro / Static HTML / WCAG 2.2 AA</span>
         </div>
       </div>
     </>
@@ -257,8 +260,6 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
 
     document.addEventListener('astro:page-load', () => {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const isMobile = () => window.innerWidth < 768;
-
       /* ── Image Loading Shimmer & Fade-in Loader ── */
       function setupImageLoaders() {
         const fallbackImageSrc = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
@@ -361,6 +362,86 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
       /* ── Page load ── */
       document.body.classList.add('ready');
 
+      function setupOrderedCardAnimations() {
+        const cards = Array.from(document.querySelectorAll('.animated-card'));
+        if (!cards.length) return;
+
+        if (reduced) {
+          cards.forEach((card) => card.classList.add('card-in'));
+          return;
+        }
+
+        const headlineTypes = new Set(['headline', 'featured', 'title']);
+        const rowTolerance = 24;
+
+        const getCardPriority = (card) => {
+          const type = (card.dataset.cardType || '').toLowerCase();
+          return headlineTypes.has(type) ||
+            card.classList.contains('headline-card') ||
+            card.classList.contains('featured-card') ||
+            card.classList.contains('title-card')
+            ? 0
+            : 1;
+        };
+
+        const sortedCards = cards
+          .map((card, originalIndex) => {
+            const rect = card.getBoundingClientRect();
+            return {
+              card,
+              originalIndex,
+              priority: getCardPriority(card),
+              top: rect.top + window.scrollY,
+              left: rect.left + window.scrollX,
+            };
+          })
+          .sort((a, b) => {
+            const sameRow = Math.abs(a.top - b.top) <= rowTolerance;
+            if (!sameRow) return a.top - b.top;
+            if (a.priority !== b.priority) return a.priority - b.priority;
+            if (Math.abs(a.left - b.left) > 2) return a.left - b.left;
+            return a.originalIndex - b.originalIndex;
+          });
+
+        sortedCards.forEach(({ card }, index) => {
+          card.classList.remove('card-in');
+          card.style.setProperty('--card-delay', `${Math.min(index * 100, 1200)}ms`);
+        });
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            sortedCards.forEach(({ card }) => card.classList.add('card-in'));
+          });
+        });
+      }
+
+      let orderedCardAnimationFrame = 0;
+      function queueOrderedCardAnimations() {
+        if (orderedCardAnimationFrame) cancelAnimationFrame(orderedCardAnimationFrame);
+        orderedCardAnimationFrame = requestAnimationFrame(() => {
+          orderedCardAnimationFrame = requestAnimationFrame(setupOrderedCardAnimations);
+        });
+      }
+
+      queueOrderedCardAnimations();
+      window.addEventListener('load', queueOrderedCardAnimations, { once: true });
+      if (window._orderedCardObserver) {
+        window._orderedCardObserver.disconnect();
+      }
+      window._orderedCardObserver = new MutationObserver((mutations) => {
+        const hasAnimatedCardChange = mutations.some((mutation) =>
+          Array.from(mutation.addedNodes).some((node) =>
+            node.nodeType === Node.ELEMENT_NODE &&
+            (node.classList?.contains('animated-card') || node.querySelector?.('.animated-card'))
+          )
+        );
+
+        if (hasAnimatedCardChange) {
+          queueOrderedCardAnimations();
+        }
+      });
+      window._orderedCardObserver.observe(document.body, { childList: true, subtree: true });
+
       // Nav: drop from above (spring CSS handles overshoot)
       setTimeout(() => document.getElementById('site-header')?.classList.add('in'), 80);
 
@@ -443,56 +524,49 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
         });
       }, 40);
 
-      /* ── Scroll: nav bg + progress bar + parallax ── */
+      /* ── Viewport observers: header and back-to-top state ── */
       const header = document.getElementById('site-header');
-      const parallax = document.querySelectorAll('[data-parallax]');
-      let ticking = false;
+      const backToTop = document.getElementById('back-to-top');
 
-      const onScroll = () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          const sy = window.scrollY;
-
-          if (header) header.classList.toggle('is-scrolled', sy > 50);
-
-          // Parallax gravity inversion
-          if (!reduced && !isMobile()) {
-            parallax.forEach(el => {
-              const speed = parseFloat(el.dataset.parallax) || 0.1;
-              const mid = el.getBoundingClientRect().top + el.offsetHeight / 2;
-              el.style.transform = `translateY(${(mid - window.innerHeight / 2) * speed * -1}px)`;
-            });
-          }
-
-          ticking = false;
-        });
-      };
-
-      if (window._layoutOnScroll) {
-        window.removeEventListener('scroll', window._layoutOnScroll);
+      if (window._layoutHeaderObserver) {
+        window._layoutHeaderObserver.disconnect();
       }
-      window._layoutOnScroll = onScroll;
-      window.addEventListener('scroll', window._layoutOnScroll, { passive: true });
-      onScroll();
+      if (window._layoutBackToTopObserver) {
+        window._layoutBackToTopObserver.disconnect();
+      }
+      document.querySelectorAll('.viewport-sentinel').forEach((node) => node.remove());
+
+      const headerSentinel = document.createElement('span');
+      headerSentinel.setAttribute('aria-hidden', 'true');
+      headerSentinel.className = 'viewport-sentinel viewport-sentinel--header';
+      document.body.prepend(headerSentinel);
+
+      window._layoutHeaderObserver = new IntersectionObserver(([entry]) => {
+        header?.classList.toggle('is-scrolled', !entry.isIntersecting);
+      }, { threshold: 0 });
+      window._layoutHeaderObserver.observe(headerSentinel);
+
+      const topSentinel = document.createElement('span');
+      topSentinel.setAttribute('aria-hidden', 'true');
+      topSentinel.className = 'viewport-sentinel viewport-sentinel--top';
+      document.body.prepend(topSentinel);
+
+      window._layoutBackToTopObserver = new IntersectionObserver(([entry]) => {
+        backToTop?.classList.toggle('is-visible', !entry.isIntersecting);
+      }, { threshold: 0, rootMargin: '-72% 0px 0px 0px' });
+      window._layoutBackToTopObserver.observe(topSentinel);
 
       /* ── Back to top ── */
-      const backToTop = document.getElementById('back-to-top');
-      const syncBackToTop = () => {
-        backToTop?.classList.toggle('is-visible', window.scrollY > Math.min(window.innerHeight * 0.75, 720));
-      };
-      if (window._layoutBackToTopScroll) {
-        window.removeEventListener('scroll', window._layoutBackToTopScroll);
+      if (window._layoutBackToTopClick) {
+        backToTop?.removeEventListener('click', window._layoutBackToTopClick);
       }
-      window._layoutBackToTopScroll = syncBackToTop;
-      window.addEventListener('scroll', window._layoutBackToTopScroll, { passive: true });
-      syncBackToTop();
-      backToTop?.addEventListener('click', () => {
+      window._layoutBackToTopClick = () => {
         window.scrollTo({
           top: 0,
           behavior: reduced ? 'auto' : 'smooth',
         });
-      });
+      };
+      backToTop?.addEventListener('click', window._layoutBackToTopClick);
 
       /* ── Hamburger / mobile menu ── */
       const hamburger = document.getElementById('hamburger');
@@ -543,7 +617,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
           const t = document.querySelector(targetId);
           if (!t) return;
           e.preventDefault();
-          window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 56, behavior: 'smooth' });
+          window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 56, behavior: reduced ? 'auto' : 'smooth' });
           if (menuOpen) toggleMenu(); // Close mobile menu on click
         });
       });
@@ -618,7 +692,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
         }, 1000);
         */
 
-        // Drag-to-scroll (mouse only — touch uses native scroll which is smoother)
+        // Drag-to-scroll (mouse only - touch uses native scroll which is smoother)
         let startX, startSL, vel = 0, lastX, lastT, rafG, rafMove;
         let isDragging = false;
         let pendingX = 0;

@@ -599,6 +599,12 @@ function sanitizeFileName(name: string) {
   return `${base || "asset"}${ext || ".webp"}`;
 }
 
+function gearUploadFileName(name: string) {
+  const parsed = path.parse(name);
+  const base = slugify(parsed.name).slice(0, 80) || "gear-product";
+  return `${base}.webp`;
+}
+
 async function imageMetadata(buffer: Buffer) {
   try {
     const metadata = await sharp(buffer).metadata();
@@ -609,6 +615,108 @@ async function imageMetadata(buffer: Buffer) {
   } catch {
     return {};
   }
+}
+
+async function processGearImage(buffer: Buffer) {
+  const metadata = await sharp(buffer, { failOn: "none" }).metadata();
+  const { data, info } = await sharp(buffer, { failOn: "none" })
+    .rotate()
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  let transparentBuffer: Buffer;
+  const hasUsefulAlpha = Boolean(metadata.hasAlpha) && data.some((value, index) => index % 4 === 3 && value < 250);
+
+  if (hasUsefulAlpha) {
+    transparentBuffer = await sharp(data, {
+      raw: {
+        width: info.width,
+        height: info.height,
+        channels: 4,
+      },
+    })
+      .png()
+      .toBuffer();
+  } else {
+    const samplePoints = [
+      [0, 0],
+      [info.width - 1, 0],
+      [0, info.height - 1],
+      [info.width - 1, info.height - 1],
+      [Math.floor(info.width / 2), 0],
+      [Math.floor(info.width / 2), info.height - 1],
+      [0, Math.floor(info.height / 2)],
+      [info.width - 1, Math.floor(info.height / 2)],
+    ];
+
+    const bg = samplePoints.reduce(
+      (acc, [x, y]) => {
+        const idx = (y * info.width + x) * 4;
+        acc.r += data[idx] ?? 255;
+        acc.g += data[idx + 1] ?? 255;
+        acc.b += data[idx + 2] ?? 255;
+        return acc;
+      },
+      { r: 0, g: 0, b: 0 },
+    );
+
+    bg.r /= samplePoints.length;
+    bg.g /= samplePoints.length;
+    bg.b /= samplePoints.length;
+
+    const hardThreshold = 28;
+    const softThreshold = 72;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const dr = (data[i] ?? 0) - bg.r;
+      const dg = (data[i + 1] ?? 0) - bg.g;
+      const db = (data[i + 2] ?? 0) - bg.b;
+      const distance = Math.sqrt(dr * dr + dg * dg + db * db);
+
+      if (distance <= hardThreshold) {
+        data[i + 3] = 0;
+      } else if (distance < softThreshold) {
+        const alpha = Math.round(((distance - hardThreshold) / (softThreshold - hardThreshold)) * 255);
+        data[i + 3] = Math.min(data[i + 3] ?? 255, alpha);
+      }
+    }
+
+    transparentBuffer = await sharp(data, {
+      raw: {
+        width: info.width,
+        height: info.height,
+        channels: 4,
+      },
+    })
+      .png()
+      .toBuffer();
+  }
+
+  const productBuffer = await sharp(transparentBuffer, { failOn: "none" })
+    .trim({ background: { r: 0, g: 0, b: 0, alpha: 0 }, threshold: 8 })
+    .resize(560, 390, {
+      fit: "inside",
+      withoutEnlargement: false,
+    })
+    .png()
+    .toBuffer();
+
+  const productMetadata = await sharp(productBuffer).metadata();
+  const left = Math.max(0, Math.round((640 - (productMetadata.width ?? 0)) / 2));
+  const top = Math.max(0, Math.round((480 - (productMetadata.height ?? 0)) / 2));
+
+  return sharp({
+    create: {
+      width: 640,
+      height: 480,
+      channels: 4,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    },
+  })
+    .composite([{ input: productBuffer, left, top }])
+    .webp({ quality: 90, alphaQuality: 95 })
+    .toBuffer();
 }
 
 export async function uploadAssets(options: {
@@ -633,9 +741,14 @@ export async function uploadAssets(options: {
   }
 
   for (const file of options.files) {
-    const originalName = sanitizeFileName(file.name);
+    const originalName = options.target === "gear"
+      ? gearUploadFileName(file.name)
+      : sanitizeFileName(file.name);
     const uniqueName = `${Date.now()}-${originalName}`;
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const originalBuffer = Buffer.from(await file.arrayBuffer());
+    const buffer = options.target === "gear"
+      ? await processGearImage(originalBuffer)
+      : originalBuffer;
     const metadata = await imageMetadata(buffer);
     const filePath = path.join(folder, uniqueName);
 

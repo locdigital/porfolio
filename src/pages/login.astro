@@ -19,7 +19,9 @@ if (import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env
   <main class="login-shell" aria-label="CMS login">
     <section class="login-panel toki-r" data-d="1">
       <div>
-        <a href="/" class="login-brand" aria-label="Back to homepage">Lộc Digital</a>
+        <a href="/" class="login-brand" aria-label="Back to homepage">
+          <span aria-hidden="true"></span>
+        </a>
         <p class="login-kicker">Private CMS</p>
         <h1>Content desk for writing, gear, work, and photos.</h1>
         <p class="login-copy">
@@ -86,12 +88,29 @@ if (import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env
 
   .login-brand {
     display: inline-flex;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text);
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
     margin-bottom: 54px;
+  }
+
+  .login-brand span {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: block;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .login-brand:hover span,
+  .login-brand:focus-visible span {
+    transform: scale(1.2);
+  }
+
+  .login-brand:active span {
+    transform: scale(0.94);
   }
 
   .login-kicker {

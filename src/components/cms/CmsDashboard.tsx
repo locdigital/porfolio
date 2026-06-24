@@ -25,7 +25,7 @@ import {
   UserPlus,
 } from "lucide-react";
 
-/* ── Types ──────────────────────────────────────────────────────── */
+/* ------ Types ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */
 type Tab = "overview" | "writing" | "gear" | "work" | "photos";
 
 type Status = {
@@ -54,7 +54,6 @@ type GearItem = {
   headline: string;
   description: string;
   image: string;
-  url: string;
   tag: string;
 };
 
@@ -117,7 +116,7 @@ type CmsData = {
   photos: PhotoLocation[];
 };
 
-/* ── Nav structure ──────────────────────────────────────────────── */
+/* ------ Nav structure ------------------------------------------------------------------------------------------------------------------------------------------------ */
 type NavGroup = {
   label: string;
   items: Array<{ id: Tab; label: string; icon: React.ElementType }>;
@@ -144,7 +143,7 @@ const navGroups: NavGroup[] = [
   },
 ];
 
-/* ── Stat card data ─────────────────────────────────────────────── */
+/* ------ Stat card data --------------------------------------------------------------------------------------------------------------------------------------------- */
 type StatDef = {
   title: string;
   icon: React.ElementType;
@@ -179,7 +178,7 @@ const statDefs: StatDef[] = [
   },
 ];
 
-/* ── Activity feed (static) ─────────────────────────────────────── */
+/* ------ Activity feed (static) --------------------------------------------------------------------------------------------------------------------- */
 const activities = [
   { icon: CheckCircle2, text: "CMS data loaded successfully",  time: "just now"    },
   { icon: UserPlus,     text: "New writing post ready to edit", time: "moments ago" },
@@ -187,7 +186,7 @@ const activities = [
   { icon: Send,         text: "Photos synced to build",         time: "last session"},
 ];
 
-/* ── Helpers ─────────────────────────────────────────────────────── */
+/* ------ Helpers --------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 function today() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -198,6 +197,16 @@ function splitList(value: string) {
 
 function listToString(value: string[] = []) {
   return value.join(", ");
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
 }
 
 function emptyWriting(): WritingPost {
@@ -217,7 +226,19 @@ function emptyGearSection(): GearSection {
 }
 
 function emptyGearItem(): GearItem {
-  return { name: "New Gear Item", slug: "", headline: "", description: "", image: "", url: "", tag: "" };
+  return { name: "New Gear Item", slug: "", headline: "", description: "", image: "", tag: "" };
+}
+
+function newGearItem(section?: GearSection): GearItem {
+  const itemNumber = (section?.items.length ?? 0) + 1;
+  const sectionPrefix = slugify(section?.slug || section?.title || "gear");
+  return {
+    ...emptyGearItem(),
+    name: `New Product ${itemNumber}`,
+    slug: `${sectionPrefix}-product-${itemNumber}`,
+    headline: "Product headline",
+    tag: "Gear",
+  };
 }
 
 function emptyProject(order = 99): Project {
@@ -260,7 +281,7 @@ function textToImages(value: string): PhotoImage[] {
     .filter((p) => p.src);
 }
 
-/* ── Primitive UI components ─────────────────────────────────────── */
+/* ------ Primitive UI components --------------------------------------------------------------------------------------------------------------------- */
 function Field(props: {
   label: string;
   value: string | number;
@@ -339,7 +360,7 @@ function SmallButton(props: {
   );
 }
 
-/* ── Sidebar ─────────────────────────────────────────────────────── */
+/* ------ Sidebar --------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 function Sidebar({
   activeTab,
   onTabChange,
@@ -452,7 +473,7 @@ function Sidebar({
           <div className="cms-storage-fill" style={{ width: "80%" }} />
         </div>
         <div className="cms-storage-meta">8.0 GB of 10 GB used</div>
-        <button type="button" className="cms-storage-upgrade">Upgrade Plan ↗</button>
+        <button type="button" className="cms-storage-upgrade">Upgrade Plan</button>
       </div>
 
       {/* User row */}
@@ -476,7 +497,7 @@ function Sidebar({
   );
 }
 
-/* ── Topbar ─────────────────────────────────────────────────────── */
+/* ------ Topbar --------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 function Topbar({
   activeTab,
   onQuickCreate,
@@ -499,12 +520,12 @@ function Topbar({
         <Search size={15} className="cms-topbar-search-icon" />
         <input
           type="search"
-          placeholder="Search content…"
+          placeholder="Search content"
           aria-label="Search CMS content"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <kbd className="cms-topbar-kbd">⌘K</kbd>
+        <kbd className="cms-topbar-kbd">K</kbd>
       </div>
 
       {/* Right actions */}
@@ -515,7 +536,7 @@ function Topbar({
   );
 }
 
-/* ── Ask AI Drawer ───────────────────────────────────────────────── */
+/* ------ Ask AI Drawer --------------------------------------------------------------------------------------------------------------------------------------------------- */
 function AskAiDrawer({ onClose }: { onClose: () => void }) {
   const [messages, setMessages] = useState<Array<{ sender: "user" | "ai"; text: string }>>([
     { sender: "ai", text: "Xin chào! Tôi là trợ lý AI của Lộc Digital. Bạn cần tôi giúp gì về quản lý nội dung portfolio hôm nay?" },
@@ -540,7 +561,7 @@ function AskAiDrawer({ onClose }: { onClose: () => void }) {
       let reply = "Tôi có thể giúp bạn viết bài đăng, tìm kiếm các phần trong Gear hoặc tối ưu hóa dự án. Hãy cho tôi biết cụ thể nhé!";
       const query = userMsg.toLowerCase();
       if (query.includes("gear")) {
-        reply = "Hệ thống đang lưu trữ 28 món đồ Gear chia làm 7 danh mục khác nhau. Bạn có thể thêm món mới bằng cách bấm 'Quick Create' -> 'New Gear Item'.";
+        reply = "Hệ thống đang lưu trữ 28 món đồ Gear chia làm 7 danh mục khác nhau. Vào tab Gear, chọn một section, rồi bấm 'Add product' để thêm sản phẩm vào đúng section đó.";
       } else if (query.includes("writing") || query.includes("bài viết")) {
         reply = "Hiện tại bạn chưa có bài viết blog nào hoạt động. Bạn muốn tôi gợi ý một số chủ đề SEO về Digital Marketing không?";
       } else if (query.includes("project") || query.includes("dự án") || query.includes("work")) {
@@ -560,7 +581,7 @@ function AskAiDrawer({ onClose }: { onClose: () => void }) {
             <Sparkles size={16} className="cms-accent-color" style={{ color: "var(--accent)" }} />
             <h3 style={{ margin: 0, fontSize: 16 }}>Trợ lý AI</h3>
           </div>
-          <button type="button" className="cms-drawer-close" onClick={onClose}>✕</button>
+          <button type="button" className="cms-drawer-close" onClick={onClose}>Close</button>
         </div>
         <div className="cms-drawer-body">
           <div className="cms-chat-messages">
@@ -575,7 +596,7 @@ function AskAiDrawer({ onClose }: { onClose: () => void }) {
         <form className="cms-drawer-footer" onSubmit={handleSend}>
           <input
             type="text"
-            placeholder="Hỏi AI bất kỳ điều gì…"
+            placeholder="Hỏi AI bất kỳ điều gì..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -586,7 +607,7 @@ function AskAiDrawer({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ── Stat card ──────────────────────────────────────────────────── */
+/* ------ Stat card ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
 function StatCard({ def, value, footerValues }: {
   def: StatDef;
   value: string;
@@ -602,7 +623,7 @@ function StatCard({ def, value, footerValues }: {
           </div>
           <span className="cms-stat-label">{def.title}</span>
         </div>
-        <span className="cms-stat-growth">↗ live</span>
+        <span className="cms-stat-growth">live</span>
       </div>
 
       <div>
@@ -613,7 +634,7 @@ function StatCard({ def, value, footerValues }: {
       <div className="cms-stat-footer">
         {def.footer.map((label, i) => (
           <span key={label} className="cms-stat-detail">
-            {label}: {footerValues[i] ?? "—"}
+            {label}: {footerValues[i] ?? "None"}
           </span>
         ))}
       </div>
@@ -649,9 +670,9 @@ function TrafficChart() {
       const opt: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" };
       const s = new Date(startStr);
       const e = new Date(endStr);
-      return `${s.toLocaleDateString("en-US", opt)} – ${e.toLocaleDateString("en-US", opt)}`;
+      return `${s.toLocaleDateString("en-US", opt)} - ${e.toLocaleDateString("en-US", opt)}`;
     } catch {
-      return "Jun 14 – Jun 21";
+      return "Jun 14 - Jun 21";
     }
   };
 
@@ -815,7 +836,7 @@ function TrafficChart() {
               stroke="#E8E8E2" strokeWidth="1" />
           ))}
 
-          {/* Primary curve — views */}
+          {/* Primary curve --- views */}
           <path
             d={`${viewsPath} L900,200 L0,200 Z`}
             fill="url(#cms-grad-blue)"
@@ -825,7 +846,7 @@ function TrafficChart() {
             fill="none" stroke="#0075de" strokeWidth="2.5" strokeLinecap="round"
           />
 
-          {/* Secondary curve — writing */}
+          {/* Secondary curve --- writing */}
           <path
             d={`${readsPath} L900,200 L0,200 Z`}
             fill="url(#cms-grad-green)"
@@ -851,7 +872,7 @@ function TrafficChart() {
   );
 }
 
-/* ── Recent posts table ─────────────────────────────────────────── */
+/* ------ Recent posts table --------------------------------------------------------------------------------------------------------------------------------- */
 function RecentPostsTable({ posts }: { posts: WritingPost[] }) {
   const display = posts.slice(0, 5);
 
@@ -903,10 +924,10 @@ function RecentPostsTable({ posts }: { posts: WritingPost[] }) {
                   </td>
                   <td>{statusBadge(post)}</td>
                   <td style={{ fontSize: 12, fontFamily: "var(--mono)", color: "var(--muted)" }}>
-                    {post.publishedAt || "—"}
+                    {post.publishedAt || "None"}
                   </td>
                   <td style={{ fontSize: 12, color: "var(--muted)" }}>
-                    {post.tags.slice(0, 2).join(", ") || "—"}
+                    {post.tags.slice(0, 2).join(", ") || "None"}
                   </td>
                 </tr>
               ))}
@@ -918,7 +939,7 @@ function RecentPostsTable({ posts }: { posts: WritingPost[] }) {
   );
 }
 
-/* ── Categories panel ───────────────────────────────────────────── */
+/* ------ Categories panel --------------------------------------------------------------------------------------------------------------------------------------- */
 function CategoriesPanel({ data }: { data: CmsData }) {
   const gearTotal = data.gear.sections.reduce((s, sec) => s + sec.items.length, 0);
   const total = data.writing.length + gearTotal + data.projects.length + data.photos.length;
@@ -960,7 +981,7 @@ function CategoriesPanel({ data }: { data: CmsData }) {
   );
 }
 
-/* ── Activity panel ─────────────────────────────────────────────── */
+/* ------ Activity panel --------------------------------------------------------------------------------------------------------------------------------------------- */
 function ActivityPanel() {
   return (
     <div className="cms-panel">
@@ -988,7 +1009,7 @@ function ActivityPanel() {
   );
 }
 
-/* ── Dashboard / Overview ────────────────────────────────────────── */
+/* ------ Dashboard / Overview ------------------------------------------------------------------------------------------------------------------------------ */
 function Dashboard({ data }: { data: CmsData }) {
   const gearTotal = data.gear.sections.reduce((s, sec) => s + sec.items.length, 0);
   const draftCount  = data.writing.filter((p) => p.draft).length;
@@ -1044,7 +1065,7 @@ function Dashboard({ data }: { data: CmsData }) {
   );
 }
 
-/* ── Props & main component ─────────────────────────────────────── */
+/* ------ Props & main component --------------------------------------------------------------------------------------------------------------------- */
 type CmsDashboardProps = {
   initialData?: CmsData;
 };
@@ -1058,7 +1079,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   const [status, setStatus] = useState<Status>(
     normalizedInitial
       ? { type: "success", text: "CMS data ready." }
-      : { type: "loading", text: "Loading CMS data…" },
+      : { type: "loading", text: "Loading CMS data--" },
   );
   const [data,              setData]              = useState<CmsData | null>(normalizedInitial);
   const [writingDraft,      setWritingDraft]      = useState<WritingPost>(
@@ -1076,6 +1097,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   const [gearSectionIndex,  setGearSectionIndex]  = useState(0);
   const [gearItemIndex,     setGearItemIndex]     = useState(0);
   const [saving,            setSaving]            = useState(false);
+  const [gearAiFilling,     setGearAiFilling]     = useState(false);
   const [uploadingImages,   setUploadingImages]   = useState<Array<{ url: string; name: string }>>([]);
   const [previewImage,      setPreviewImage]      = useState<{ src: string; alt: string } | null>(null);
   const gearUploadRef  = useRef<HTMLInputElement>(null);
@@ -1086,9 +1108,9 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   const selectedGearSection = gearDraft.sections[gearSectionIndex];
   const selectedGearItem    = selectedGearSection?.items[gearItemIndex];
 
-  /* ── Data loading ─────────────────────────────────────────────── */
+  /* ------ Data loading --------------------------------------------------------------------------------------------------------------------------------------------- */
   async function loadData(options: { quiet?: boolean } = {}) {
-    if (!options.quiet) setStatus({ type: "loading", text: "Loading CMS data…" });
+    if (!options.quiet) setStatus({ type: "loading", text: "Loading CMS data--" });
 
     const response = await fetch("/api/cms");
     if (response.status === 401) { window.location.href = "/login"; return; }
@@ -1130,10 +1152,10 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  /* ── Save / Delete / Upload ───────────────────────────────────── */
+  /* ------ Save / Delete / Upload --------------------------------------------------------------------------------------------------------------- */
   async function saveResource(resource: string, payload: unknown, successText: string) {
     setSaving(true);
-    setStatus({ type: "loading", text: "Saving changes…" });
+    setStatus({ type: "loading", text: "Saving changes--" });
     try {
       const response = await fetch("/api/cms", {
         method: "POST",
@@ -1157,7 +1179,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   async function deleteResource(resource: string, slug: string, successText: string) {
     if (!slug || !window.confirm(`Delete ${slug}?`)) return;
     setSaving(true);
-    setStatus({ type: "loading", text: "Deleting entry…" });
+    setStatus({ type: "loading", text: "Deleting entry--" });
     try {
       const response = await fetch("/api/cms", {
         method: "POST",
@@ -1183,7 +1205,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   async function uploadFiles(target: "photos" | "gear", files: FileList | null, slug?: string) {
     if (!files?.length) return;
     setSaving(true);
-    setStatus({ type: "loading", text: "Uploading images…" });
+    setStatus({ type: "loading", text: "Uploading images--" });
     if (target === "photos") {
       setUploadingImages(Array.from(files).map((f) => ({ url: URL.createObjectURL(f), name: f.name })));
     }
@@ -1217,7 +1239,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     window.location.href = "/login";
   }
 
-  /* ── Gear helpers ─────────────────────────────────────────────── */
+  /* ------ Gear helpers --------------------------------------------------------------------------------------------------------------------------------------------- */
   function updateGearSection<K extends keyof GearSection>(field: K, value: GearSection[K]) {
     setGearDraft((cur) => ({
       ...cur,
@@ -1242,6 +1264,83 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     }));
   }
 
+  function updateGearItemName(name: string) {
+    setGearDraft((cur) => ({
+      ...cur,
+      sections: cur.sections.map((sec, si) => {
+        if (si !== gearSectionIndex) return sec;
+        return {
+          ...sec,
+          items: sec.items.map((item, ii) =>
+            ii === gearItemIndex ? { ...item, name, slug: slugify(name) } : item,
+          ),
+        };
+      }),
+    }));
+  }
+
+  async function fillGearItemWithAi() {
+    if (!selectedGearItem || !selectedGearSection) return;
+    const name = selectedGearItem.name.trim();
+
+    if (!name) {
+      setStatus({ type: "error", text: "Enter a product name before using AI fill." });
+      return;
+    }
+
+    setGearAiFilling(true);
+    setStatus({ type: "loading", text: `Filling ${name} with AI...` });
+
+    try {
+      const response = await fetch("/api/cms/gear-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, sectionTitle: selectedGearSection.title }),
+      });
+      const result = await response.json();
+
+      if (response.status === 401) {
+        window.location.href = "/login";
+        return;
+      }
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Unable to fill product details.");
+      }
+
+      const aiItem = result.item ?? {};
+      setGearDraft((cur) => ({
+        ...cur,
+        sections: cur.sections.map((sec, si) => {
+          if (si !== gearSectionIndex) return sec;
+          return {
+            ...sec,
+            items: sec.items.map((item, ii) =>
+              ii === gearItemIndex
+                ? {
+                    ...item,
+                    headline: String(aiItem.headline || item.headline),
+                    tag: String(aiItem.tag || item.tag),
+                    description: String(aiItem.description || item.description),
+                  }
+                : item,
+            ),
+          };
+        }),
+      }));
+
+      setStatus({
+        type: "success",
+        text: result.item?.source === "gemini"
+          ? "AI filled product fields."
+          : "Filled product fields with local fallback. Add GEMINI_API_KEY for richer AI results.",
+      });
+    } catch (err) {
+      setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to fill product details." });
+    } finally {
+      setGearAiFilling(false);
+    }
+  }
+
   function addGearSection() {
     setGearDraft((cur) => ({ ...cur, sections: [...cur.sections, emptyGearSection()] }));
     setGearSectionIndex(gearDraft.sections.length);
@@ -1250,13 +1349,16 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
   function addGearItem() {
     if (!selectedGearSection) return;
+    const nextItem = newGearItem(selectedGearSection);
+    const nextIndex = selectedGearSection.items.length;
     setGearDraft((cur) => ({
       ...cur,
       sections: cur.sections.map((sec, i) =>
-        i === gearSectionIndex ? { ...sec, items: [...sec.items, emptyGearItem()] } : sec,
+        i === gearSectionIndex ? { ...sec, items: [...sec.items, nextItem] } : sec,
       ),
     }));
-    setGearItemIndex(selectedGearSection.items.length);
+    setGearItemIndex(nextIndex);
+    setStatus({ type: "success", text: `Added ${nextItem.name} to ${selectedGearSection.title}. Save all to publish.` });
   }
 
   function removeGearItem() {
@@ -1277,7 +1379,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     setGearItemIndex(0);
   }
 
-  /* ── Tab renderers ────────────────────────────────────────────── */
+  /* ------ Tab renderers ------------------------------------------------------------------------------------------------------------------------------------------ */
   function renderOverview() {
     if (!data) return null;
     return <Dashboard data={data} />;
@@ -1426,32 +1528,53 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                   <TextArea label="Section description" value={selectedGearSection.description} rows={3} onChange={(v) => updateGearSection("description", v)} />
                 </div>
 
-                <div className="cms-item-toolbar">
-                  <select
-                    value={gearItemIndex}
-                    onChange={(e) => setGearItemIndex(Number(e.target.value))}
-                    aria-label="Select gear item"
-                  >
-                    {selectedGearSection.items.map((item, i) => (
-                      <option key={item.slug || `${item.name}-${i}`} value={i}>{item.name}</option>
-                    ))}
-                  </select>
-                  <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={addGearItem}>Item</SmallButton>
+                <div className="cms-subhead cms-subhead-compact">
+                  <div>
+                    <h3>Products in {selectedGearSection.title}</h3>
+                    <p className="cms-subtitle-small">{selectedGearSection.items.length} items in this section</p>
+                  </div>
+                  <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={addGearItem}>
+                    Add product
+                  </SmallButton>
+                </div>
+
+                <div className="cms-gear-item-list" aria-label={`Products in ${selectedGearSection.title}`}>
+                  {selectedGearSection.items.map((item, i) => (
+                    <button
+                      key={item.slug || `${item.name}-${i}`}
+                      type="button"
+                      className={i === gearItemIndex ? "is-active" : ""}
+                      onClick={() => setGearItemIndex(i)}
+                    >
+                      <span>{item.name || `Product ${i + 1}`}</span>
+                      <small>{item.tag || item.slug || "No tag"}</small>
+                    </button>
+                  ))}
+                  {selectedGearSection.items.length === 0 && (
+                    <p className="cms-empty">No products in this section yet. Add one above.</p>
+                  )}
                 </div>
 
                 {selectedGearItem ? (
                   <>
                     <div className="cms-form-grid">
-                      <Field label="Name"        value={selectedGearItem.name}        onChange={(v) => updateGearItem("name", v)} />
+                      <Field label="Name"        value={selectedGearItem.name}        onChange={updateGearItemName} />
                       <Field label="Slug"        value={selectedGearItem.slug}        onChange={(v) => updateGearItem("slug", v)} />
                       <Field label="Headline"    value={selectedGearItem.headline}    onChange={(v) => updateGearItem("headline", v)} />
                       <Field label="Tag"         value={selectedGearItem.tag}         onChange={(v) => updateGearItem("tag", v)} />
-                      <Field label="URL"         value={selectedGearItem.url}         onChange={(v) => updateGearItem("url", v)} />
                       <Field label="Image path"  value={selectedGearItem.image}       onChange={(v) => updateGearItem("image", v)} />
                       <TextArea label="Description" value={selectedGearItem.description} rows={4} onChange={(v) => updateGearItem("description", v)} />
                     </div>
                     <div className="cms-upload-row">
                       <input ref={gearUploadRef} type="file" accept="image/*" hidden onChange={(e) => uploadFiles("gear", e.target.files)} />
+                      <SmallButton
+                        icon={gearAiFilling ? <Loader2 size={14} className="cms-spin" /> : <Sparkles size={14} />}
+                        tone="secondary"
+                        disabled={gearAiFilling || saving || !selectedGearItem.name.trim()}
+                        onClick={fillGearItemWithAi}
+                      >
+                        {gearAiFilling ? "Filling" : "AI fill"}
+                      </SmallButton>
                       <SmallButton icon={<Upload size={14} />} tone="secondary" onClick={() => gearUploadRef.current?.click()}>
                         Upload product image
                       </SmallButton>
@@ -1667,7 +1790,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                   <figure key={`uploading-${i}`} className="is-uploading" onClick={() => setPreviewImage({ src: img.url, alt: img.name })}>
                     <div className="cms-photo-loading-overlay"><Loader2 className="cms-spin" size={20} /></div>
                     <img src={img.url} alt={img.name} className="cms-photo-thumb" />
-                    <figcaption>Uploading {img.name}…</figcaption>
+                    <figcaption>Uploading {img.name}--</figcaption>
                   </figure>
                 ))}
               </div>
@@ -1678,13 +1801,13 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     );
   }
 
-  /* ── Active tab dispatcher ────────────────────────────────────── */
+  /* ------ Active tab dispatcher ------------------------------------------------------------------------------------------------------------------ */
   function renderActiveTab() {
     if (!data && status.type === "loading") {
       return (
         <div className="cms-loading">
           <Loader2 size={24} className="cms-spin" />
-          <span>Loading CMS…</span>
+          <span>Loading CMS--</span>
         </div>
       );
     }
@@ -1695,7 +1818,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     return renderOverview();
   }
 
-  /* ── Render ───────────────────────────────────────────────────── */
+  /* ------ Render --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
   return (
     <div className={`cms-app${darkMode ? " cms-dark-mode" : ""}`}>
       <Sidebar
@@ -1755,7 +1878,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
             onClick={() => setPreviewImage(null)}
             aria-label="Close preview"
           >
-            ✕
+            -
           </button>
           <div className="cms-modal-content" onClick={(e) => e.stopPropagation()}>
             <img src={previewImage.src} alt={previewImage.alt} />

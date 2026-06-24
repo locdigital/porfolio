@@ -11,6 +11,7 @@ type HeadlinePart = {
 
 interface AnimatedPageHeadlineProps {
   headline: string;
+  className?: string;
 }
 
 interface AnimatedPageDescriptionProps {
@@ -66,7 +67,7 @@ function parseHeadline(headline: string): HeadlinePart[] {
   return parts;
 }
 
-export default function AnimatedPageHeadline({ headline }: AnimatedPageHeadlineProps) {
+export default function AnimatedPageHeadline({ headline, className }: AnimatedPageHeadlineProps) {
   const heroRef = useRef<HTMLHeadingElement>(null);
   const parts = useMemo(() => parseHeadline(headline), [headline]);
 
@@ -74,15 +75,13 @@ export default function AnimatedPageHeadline({ headline }: AnimatedPageHeadlineP
 
   return (
     <BlurFade delay={0.15}>
-      <h1 ref={heroRef}>
+      <h1 ref={heroRef} className={className}>
         {parts.map((part, index) => {
           if (!part.emphasized) {
             return part.text;
           }
 
           const currentHighlightIndex = highlightIndex++;
-          const isBlue = currentHighlightIndex % 2 === 0;
-
           return (
             <TimelineContent
               as="em"
@@ -92,10 +91,8 @@ export default function AnimatedPageHeadline({ headline }: AnimatedPageHeadlineP
               customVariants={textVariants}
               style={{
                 fontStyle: "italic",
-                color: isBlue ? "var(--accent)" : "#e07b39",
-                border: isBlue
-                  ? "1.5px dashed rgba(0,117,222,0.4)"
-                  : "1.5px dashed rgba(224,123,57,0.4)",
+                color: "var(--accent)",
+                border: "1.5px dashed rgba(0,117,222,0.38)",
                 borderRadius: "6px",
                 padding: "0 6px",
                 display: "inline-block",
