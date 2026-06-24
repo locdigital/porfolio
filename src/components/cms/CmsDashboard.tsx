@@ -1498,11 +1498,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                 <p className="cms-kicker">Gear setup JSON</p>
                 <h2>{gearDraft.title}</h2>
               </div>
-              <div className="cms-actions">
-                <SmallButton icon={<Save size={15} />} disabled={saving} onClick={() => saveResource("gear", gearDraft, "Gear saved.")}>
-                  Save all
-                </SmallButton>
-              </div>
             </div>
 
             <div className="cms-form-grid">
@@ -1588,6 +1583,12 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
             ) : (
               <p className="cms-empty">Create a section to start adding gear.</p>
             )}
+
+            <div className="cms-editor-save-row">
+              <SmallButton icon={<Save size={15} />} disabled={saving} onClick={() => saveResource("gear", gearDraft, "Gear saved.")}>
+                Save all
+              </SmallButton>
+            </div>
           </div>
         </section>
       </div>

@@ -1082,6 +1082,14 @@
   gap: 8px;
 }
 
+.cms-editor-save-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  margin-top: 2px;
+  border-top: 1px solid var(--divider);
+}
+
 .cms-panel-head {
   display: flex;
   align-items: center;
