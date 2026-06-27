@@ -1,12 +1,19 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getWritingPosts } from "../../lib/writing";
-import BlurFade from "../../components/ui/BlurFade.astro";
+import AnimatedPageHeadline, { AnimatedPageDescription } from "../../components/ui/animated-page-headline";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const posts = await getWritingPosts();
 const blogTitle = "Writing | Lộc Digital";
 const blogDescription = "Essays and notes on digital marketing, SEO, code, creative systems, and life.";
+const fallbackPreviewImage = "/og-image.jpg";
+
+function previewImageFor(image?: string) {
+  if (!image) return fallbackPreviewImage;
+  if (/^https?:\/\//i.test(image)) return image;
+  return image.startsWith("/") ? image : `/${image}`;
+}
 ---
 
 <Layout
@@ -40,37 +47,38 @@ const blogDescription = "Essays and notes on digital marketing, SEO, code, creat
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">Writing</span>
         </div>
-        <BlurFade>
-          <h1>
-            <span class="hero-headline-line">Notes on <em>marketing</em></span>
-            <span class="hero-headline-line">code & <em>growth.</em></span>
-          </h1>
-        </BlurFade>
-        <p class="gear-intro">
+        <AnimatedPageHeadline client:load headline={"Notes on <em>marketing</em>\ncode & <em>growth.</em>"} />
+        <AnimatedPageDescription client:load className="gear-intro">
           A collection of thoughts, tutorials, and reflections on marketing, code, and life.
-        </p>
+        </AnimatedPageDescription>
       </section>
 
       {posts.length > 0 ? (
-        <div class="flex flex-col gap-y-[72px]">
+        <div class="blog-posts-list">
           {posts.map((post, i) => {
             const dateStr = post.data.publishedAt.toLocaleDateString('en-US', { 
               month: 'short', 
               year: 'numeric' 
             });
+            const previewImage = previewImageFor(post.data.coverImage);
+            const previewSummary = post.data.summary || post.data.metaDescription || "Open this note";
             
             return (
               <a 
                 href={`/blog/${post.slug}`} 
-                class="group flex flex-col md:flex-row md:items-start md:gap-[60px] transition-opacity hover:opacity-70 duration-300 toki-r"
+                class="blog-post-link group toki-r"
                 data-d={String(i + 2)}
+                data-preview-image={previewImage}
+                data-preview-title={post.data.headline}
+                data-preview-summary={previewSummary}
+                data-preview-date={dateStr}
               >
-                <div class="md:w-[120px] flex-shrink-0 font-mono text-[11px] text-[var(--muted)] uppercase pt-[14px] mb-2 md:mb-0 tracking-wider">
+                <div class="blog-post-date">
                   {dateStr}
                 </div>
-                <div class="flex-grow max-w-none">
-                  <h2 class="text-[32px] md:text-[42px] font-['PP_Editorial_Old'] font-normal tracking-[-0.02em] text-[var(--text)] leading-[1.1] mb-[12px]">{post.data.headline}</h2>
-                  <div class="text-[15px] text-[var(--muted)] leading-[1.6] line-clamp-2">{post.data.summary}</div>
+                <div class="blog-post-copy">
+                  <h2 class="blog-post-headline">{post.data.headline}</h2>
+                  <div class="blog-post-summary">{post.data.summary}</div>
                 </div>
               </a>
             );
@@ -81,6 +89,19 @@ const blogDescription = "Essays and notes on digital marketing, SEO, code, creat
           <p>New writing is coming soon.</p>
         </div>
       )}
+
+      <div class="post-hover-preview" aria-hidden="true">
+        <div class="post-hover-preview__inner">
+          <div class="post-hover-preview__image-wrap">
+            <img src={fallbackPreviewImage} alt="" decoding="async" loading="eager" />
+          </div>
+          <div class="post-hover-preview__body">
+            <span class="post-hover-preview__date"></span>
+            <strong class="post-hover-preview__title"></strong>
+            <span class="post-hover-preview__summary"></span>
+          </div>
+        </div>
+      </div>
 
     </div>
   </main>
@@ -102,9 +123,356 @@ const blogDescription = "Essays and notes on digital marketing, SEO, code, creat
     margin-bottom: 52px;
   }
 
+  .blog-page .gear-hero :global(h1) {
+    white-space: pre-line;
+  }
+
+  .blog-posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+  }
+
+  .blog-post-link {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition:
+      opacity 220ms var(--ease-out),
+      transform 220ms var(--ease-out);
+  }
+
+  .blog-post-link:hover,
+  .blog-post-link:focus-visible {
+    opacity: 0.82;
+    transform: translateX(4px);
+  }
+
+  .blog-post-date {
+    flex-shrink: 0;
+    margin-bottom: 8px;
+    padding-top: 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .blog-post-copy {
+    flex-grow: 1;
+    max-width: none;
+  }
+
+  .blog-post-headline {
+    font-family: 'Imbue', serif;
+    margin-bottom: 12px;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  .blog-post-summary {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .post-hover-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    width: min(330px, calc(100vw - 40px));
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .post-hover-preview__inner {
+    width: 100%;
+    opacity: 0;
+    transform:
+      translate3d(24px, -52%, 0)
+      scale(0.92)
+      rotate(-1.5deg);
+    transform-origin: 20% 50%;
+    transition:
+      opacity 160ms var(--ease-out),
+      transform 360ms var(--spring);
+    will-change: transform, opacity;
+  }
+
+  .post-hover-preview.is-visible .post-hover-preview__inner {
+    opacity: 1;
+    transform:
+      translate3d(24px, -52%, 0)
+      scale(1)
+      rotate(-1.5deg);
+  }
+
+  .post-hover-preview.is-left .post-hover-preview__inner {
+    transform-origin: 80% 50%;
+    transform:
+      translate3d(-354px, -52%, 0)
+      scale(1)
+      rotate(1.5deg);
+  }
+
+  .post-hover-preview__image-wrap {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: var(--rounded-xl);
+    border: 1px solid rgba(28, 28, 28, 0.12);
+    background: #f2f2ec;
+    box-shadow:
+      0 24px 70px rgba(28, 28, 28, 0.18),
+      0 3px 10px rgba(28, 28, 28, 0.08);
+  }
+
+  .post-hover-preview__image-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 34%),
+      linear-gradient(0deg, rgba(28, 28, 28, 0.1), rgba(28, 28, 28, 0));
+    pointer-events: none;
+  }
+
+  .post-hover-preview img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+    transform: scale(1.035);
+    transition: transform 500ms var(--ease-out);
+  }
+
+  .post-hover-preview.is-visible img {
+    transform: scale(1);
+  }
+
+  .post-hover-preview__body {
+    position: relative;
+    margin: -28px 16px 0;
+    padding: 14px 14px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: var(--rounded-lg);
+    background: rgba(250, 250, 247, 0.86);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 12px 32px rgba(28, 28, 28, 0.12);
+  }
+
+  .post-hover-preview__date {
+    display: block;
+    margin-bottom: 5px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--accent-solid);
+  }
+
+  .post-hover-preview__title {
+    display: block;
+    overflow: hidden;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .post-hover-preview__summary {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 4px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  @media (min-width: 768px) {
+    .blog-post-link {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 60px;
+    }
+
+    .blog-post-date {
+      width: 120px;
+      margin-bottom: 0;
+    }
+
+    .blog-post-headline {
+      font-size: 42px;
+    }
+  }
+
+  @media (max-width: 767px), (hover: none), (pointer: coarse) {
+    .post-hover-preview {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-post-link,
+    .post-hover-preview,
+    .post-hover-preview__inner,
+    .post-hover-preview img {
+      transition: none;
+    }
+  }
+
   @media (max-width: 620px) {
     .blog-page {
       padding-top: calc(var(--hdr-h) + 44px);
     }
   }
 </style>
+
+<script>
+  function initBlogPreview() {
+    const preview = document.querySelector<HTMLElement>(".post-hover-preview");
+    if (!preview || preview.dataset.bound === "1") return;
+    preview.dataset.bound = "1";
+
+    const previewImage = preview.querySelector<HTMLImageElement>("img");
+    const previewDate = preview.querySelector<HTMLElement>(".post-hover-preview__date");
+    const previewTitle = preview.querySelector<HTMLElement>(".post-hover-preview__title");
+    const previewSummary = preview.querySelector<HTMLElement>(".post-hover-preview__summary");
+    const postLinks = document.querySelectorAll<HTMLElement>(".blog-post-link");
+    const canHover = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches;
+    let hideTimer: number | undefined;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let isMoving = false;
+    let isVisible = false;
+
+    function setPreviewContent(link: HTMLElement) {
+      if (!previewImage || !previewDate || !previewTitle || !previewSummary) return;
+
+      const image = link.dataset.previewImage;
+      const title = link.dataset.previewTitle || "";
+      const summary = link.dataset.previewSummary || "";
+      const date = link.dataset.previewDate || "";
+
+      if (image && previewImage.getAttribute("src") !== image) {
+        previewImage.src = image;
+      }
+
+      previewImage.alt = "";
+      previewDate.textContent = date;
+      previewTitle.textContent = title;
+      previewSummary.textContent = summary;
+    }
+
+    function updatePosition() {
+      if (!isVisible) {
+        isMoving = false;
+        return;
+      }
+
+      // Linear interpolation for smooth lag effect
+      const dx = targetX - currentX;
+      const dy = targetY - currentY;
+      
+      currentX += dx * 0.15;
+      currentY += dy * 0.15;
+
+      if (preview) {
+        preview.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      }
+
+      requestAnimationFrame(updatePosition);
+    }
+
+    function showPreview(link: HTMLElement, clientX: number, clientY: number) {
+      if (!canHover || !preview) return;
+
+      window.clearTimeout(hideTimer);
+      setPreviewContent(link);
+      
+      targetX = clientX;
+      targetY = clientY;
+
+      if (!isVisible) {
+        // Start from exact client coords to prevent jumping
+        currentX = clientX;
+        currentY = clientY;
+        preview.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        isVisible = true;
+      }
+
+      // Toggle flipped orientation if preview is close to the right side of the screen
+      const previewWidth = preview.offsetWidth || 330;
+      const shouldFlip = clientX + previewWidth + 44 > window.innerWidth;
+      preview.classList.toggle("is-left", shouldFlip);
+
+      preview.classList.add("is-visible");
+
+      if (!isMoving) {
+        isMoving = true;
+        requestAnimationFrame(updatePosition);
+      }
+    }
+
+    function hidePreview() {
+      hideTimer = window.setTimeout(() => {
+        if (preview) {
+          preview.classList.remove("is-visible");
+          isVisible = false;
+        }
+      }, 90);
+    }
+
+    postLinks.forEach((link) => {
+      link.addEventListener("pointerenter", (event) => {
+        const pointerEvent = event as PointerEvent;
+        showPreview(link, pointerEvent.clientX, pointerEvent.clientY);
+      });
+
+      link.addEventListener("pointermove", (event) => {
+        if (!canHover || !isVisible) return;
+        const pointerEvent = event as PointerEvent;
+        targetX = pointerEvent.clientX;
+        targetY = pointerEvent.clientY;
+
+        // Also check if flip is needed dynamically as mouse moves
+        const previewWidth = preview.offsetWidth || 330;
+        const shouldFlip = targetX + previewWidth + 44 > window.innerWidth;
+        preview.classList.toggle("is-left", shouldFlip);
+      });
+
+      link.addEventListener("pointerleave", hidePreview);
+
+      link.addEventListener("focus", () => {
+        const rect = link.getBoundingClientRect();
+        showPreview(link, rect.right - 28, rect.top + rect.height / 2);
+      });
+
+      link.addEventListener("blur", hidePreview);
+    });
+  }
+
+  initBlogPreview();
+  document.addEventListener("astro:page-load", initBlogPreview);
+</script>

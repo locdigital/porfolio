@@ -1,16 +1,26 @@
-.vercel
+# Dependencies and package-manager cache
 node_modules/
+.pnpm-store/
+
+# Build outputs and framework cache
 dist/
 .astro/
-.DS_Store
+.vercel/
+
+# Local environment files
 .env
-.pnpm-store/
+.env.*
+!.env.example
+
+# macOS and local-only workspace files
+.DS_Store
+_local/
+*.dmg
+Go Vap 1 - 9m5 v2/
+
+# Local agent/git stores
 git_store.nosync/
 git_store_broken.nosync/
 .agents/
 skills-lock.json
-*.dmg
-Go Vap 1 - 9m5 v2/
-Arm VisionX Stealth .webp
-ChatGPT Image Jun 21, 2026, 10_31_02 PM.png
-.env*
+.gstack/

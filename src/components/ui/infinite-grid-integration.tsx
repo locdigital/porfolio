@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   motion, 
-  useMotionValue, 
-  useMotionTemplate
+  useMotionValue
 } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 import { MousePointerClick, Info, Sun, Moon, Settings2 } from 'lucide-react';
@@ -47,43 +46,16 @@ const GridPattern = ({ offsetX, offsetY, size }: { offsetX: MotionValue<number>;
 
 /**
  * The Infinite Grid Component
- * Displays a scrolling background grid that reveals an active layer on mouse hover.
+ * Displays a static background grid.
  */
-export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?: boolean; globalMouse?: boolean }) => {
+export const InfiniteGrid = ({ bgOnly = false }: { bgOnly?: boolean }) => {
   const [count, setCount] = useState(0);
   const [gridSize, setGridSize] = useState(40);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Track mouse position with Motion Values for performance (avoids React re-renders)
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Global mouse tracking when globalMouse is enabled
-  useEffect(() => {
-    if (!globalMouse) return;
-
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-
-    window.addEventListener('mousemove', handleGlobalMouseMove);
-    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
-  }, [globalMouse, mouseX, mouseY]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (globalMouse) return;
-    const { left, top } = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
-  };
-
   // Grid offsets for infinite scroll animation
   const gridOffsetX = useMotionValue(0);
   const gridOffsetY = useMotionValue(0);
-
-  const speedX = 0; 
-  const speedY = 0;
 
   // Animation loop disabled to make background grid static
   /*
@@ -96,13 +68,9 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
   });
   */
 
-  // Create a dynamic radial mask for the "flashlight" effect
-  const maskImage = useMotionTemplate`radial-gradient(300px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
-
   return (
     <div
       ref={containerRef}
-      onMouseMove={handleMouseMove}
       className={cn(
         bgOnly 
           ? "fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-[-1] bg-transparent" 
@@ -113,14 +81,6 @@ export const InfiniteGrid = ({ bgOnly = false, globalMouse = false }: { bgOnly?:
       <div className={cn("absolute inset-0 z-0", bgOnly ? "opacity-[0.02]" : "opacity-[0.05]")}>
         <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} size={gridSize} />
       </div>
-
-      {/* Layer 2: Highlighted grid (revealed by mouse mask) */}
-      <motion.div 
-        className={cn("absolute inset-0 z-0", bgOnly ? "opacity-[0.15]" : "opacity-40")}
-        style={{ maskImage, WebkitMaskImage: maskImage }}
-      >
-        <GridPattern offsetX={gridOffsetX} offsetY={gridOffsetY} size={gridSize} />
-      </motion.div>
 
       {/* Decorative Blur Spheres */}
       <div className="absolute inset-0 pointer-events-none z-0">

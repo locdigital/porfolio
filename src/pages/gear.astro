@@ -197,7 +197,7 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
       </section>
 
       {gearSections.map((section, sectionIndex) => (
-        <section class="gear-section toki-r" data-d={String(sectionIndex + 3)}>
+        <section class="gear-section toki-r" id={section.slug} data-d={String(sectionIndex + 3)}>
           <div class="gear-section-head">
             <div>
               <h2>{section.title}</h2>
@@ -208,7 +208,7 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 
           <div class="gear-grid">
             {section.items.map((item) => (
-              <div class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
+              <div id={item.slug} class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
                 <div class="gear-card-visual">
                   {item.image ? <img src={item.image} alt={item.name} loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
                 </div>
@@ -354,6 +354,7 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
     padding: 12px;
     background: transparent;
     border-right: 1px solid var(--divider);
+    border-radius: var(--image-radius) 0 0 var(--image-radius) !important;
     overflow: hidden;
   }
 

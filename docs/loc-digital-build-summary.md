@@ -25,7 +25,10 @@ porfolio/
 ├── astro.config.mjs          # Cấu hình chính của Astro (site URL, các integration, tối ưu Sharp, Vite)
 ├── tailwind.config.mjs       # Cấu hình Tailwind (Đặc biệt: Tắt preflight để bảo vệ styles Vanilla)
 ├── package.json              # Danh sách dependencies (Astro, React, Framer Motion, Sharp...)
-├── animation-effects.md      # Tài liệu chi tiết về các hiệu ứng chuyển động trên web
+├── docs/                     # Tài liệu dự án, design system, animation notes, build summary
+│   ├── animation-effects.md  # Tài liệu chi tiết về các hiệu ứng chuyển động trên web
+│   ├── design-rules.md       # Quy chuẩn thiết kế và style guideline của loc.digital
+│   └── loc-digital-build-summary.md
 ├── public/                   # Thư mục chứa các tài nguyên tĩnh trực tiếp (logos, favicons...)
 └── src/
     ├── assets/

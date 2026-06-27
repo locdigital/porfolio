@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
 import BlurFade from "../../components/ui/BlurFade.astro";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 
 export const prerender = true;
 
@@ -27,6 +28,7 @@ const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex +
 // Split description into paragraphs
 const paragraphs = project.description.split("\n\n").filter(Boolean);
 const projectUrl = absoluteUrl(`/work/${project.slug}`);
+const projectLinkLabel = project.linkLabel?.replace(/\s*->\s*$/, "") ?? "Visit site";
 const creativeWorkSchema = {
   "@type": "CreativeWork",
   "@id": `${projectUrl}#case-study`,
@@ -63,10 +65,7 @@ const creativeWorkSchema = {
 
       <!-- Back link -->
       <a href="/work" class="back-link r">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"/>
-          <polyline points="12 19 5 12 12 5"/>
-        </svg>
+        <ArrowLeft size={14} strokeWidth={1.8} aria-hidden="true" />
         All work
       </a>
 
@@ -133,7 +132,8 @@ const creativeWorkSchema = {
               rel="noopener noreferrer"
               class="detail-link"
             >
-              {project.linkLabel ?? "Visit site ↗"}
+              <span>{projectLinkLabel}</span>
+              <ExternalLink size={14} strokeWidth={1.8} aria-hidden="true" />
             </a>
           )}
         </div>
@@ -168,7 +168,8 @@ const creativeWorkSchema = {
                 rel="noopener noreferrer"
                 class="sidebar-link"
               >
-                {project.linkLabel ?? "Visit site ↗"}
+                <span>{projectLinkLabel}</span>
+                <ExternalLink size={13} strokeWidth={1.8} aria-hidden="true" />
               </a>
             </div>
           )}
@@ -184,7 +185,7 @@ const creativeWorkSchema = {
         <div class="project-nav-inner">
           {prevProject ? (
             <a href={`/work/${prevProject.slug}`} class="pnav-item pnav-prev r">
-              <span class="pnav-dir">← Previous</span>
+              <span class="pnav-dir"><ArrowLeft size={13} strokeWidth={1.8} aria-hidden="true" />Previous</span>
               <span class="pnav-title">{prevProject.title}</span>
             </a>
           ) : (
@@ -193,7 +194,7 @@ const creativeWorkSchema = {
 
           {nextProject ? (
             <a href={`/work/${nextProject.slug}`} class="pnav-item pnav-next r" data-d="2">
-              <span class="pnav-dir">Next →</span>
+              <span class="pnav-dir">Next<ArrowRight size={13} strokeWidth={1.8} aria-hidden="true" /></span>
               <span class="pnav-title">{nextProject.title}</span>
             </a>
           ) : (
@@ -260,13 +261,13 @@ const creativeWorkSchema = {
 
   .detail-title {
     font-family: var(--serif);
-    font-size: clamp(42px, 6.5vw, 90px);
+    font-size: var(--fs-display);
     font-weight: 400;
-    line-height: 1.08;
-    letter-spacing: -0.025em;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     color: var(--text);
     margin-bottom: 40px;
-    max-width: 820px;
+    max-width: 790px;
   }
 
   /* ── Meta row ── */
@@ -361,7 +362,9 @@ const creativeWorkSchema = {
   }
 
   .detail-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     margin-top: 12px;
     font-size: 14px;
     font-weight: 500;
@@ -430,6 +433,9 @@ const creativeWorkSchema = {
   }
 
   .sidebar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 13px;
     color: var(--muted);
     text-decoration: underline;
@@ -475,6 +481,9 @@ const creativeWorkSchema = {
   }
 
   .pnav-dir {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     font-family: var(--mono);
     font-size: 11px;
     color: var(--muted);

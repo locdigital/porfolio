@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
 import { cn } from '../../lib/utils';
+import { FolderOpen, Globe2, Laptop, MapPin, Pause, Play, SkipBack, SkipForward } from 'lucide-react';
 
 interface DraggableCollageProps {
   portraitSrc?: string;
@@ -13,7 +14,7 @@ interface CardProps {
   children: React.ReactNode;
   className: string;
   style?: React.CSSProperties;
-  dragConstraints: React.RefObject<HTMLDivElement>;
+  dragConstraints: React.RefObject<HTMLDivElement | null>;
   initialRotate: number;
   initialScale?: number;
   onDragStart?: () => void;
@@ -93,7 +94,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
     rating: 11,
     folder: 12,
   });
-  const [maxZIndex, setMaxZIndex] = useState(15);
+  const [, setMaxZIndex] = useState(15);
 
   const bringToFront = (id: string) => {
     setMaxZIndex(prev => {
@@ -118,13 +119,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
   // Star ratings
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
-
-  // Custom cursor variables
-  const cursorX = useMotionValue(-150);
-  const cursorY = useMotionValue(-150);
-  const [cursorOpacity, setCursorOpacity] = useState(0);
-  const [cursorText, setCursorText] = useState('grab & drag ✦');
-  const [isDraggingAny, setIsDraggingAny] = useState(false);
 
 
 
@@ -171,14 +165,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  // Track cursor
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    cursorX.set(e.clientX - rect.left);
-    cursorY.set(e.clientY - rect.top);
-  };
-
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);
     const s = Math.floor(secs % 60);
@@ -186,23 +172,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
   };
 
   const staticVisualizer = [0.25, 0.69, 0.62, 0.41, 0.59];
-
-  // Helper callbacks to update cursor text
-  const enterCard = (text: string) => () => {
-    if (!isDraggingAny) setCursorText(text);
-  };
-  const leaveCard = () => {
-    if (!isDraggingAny) setCursorText('grab & drag ✦');
-  };
-
-  const handleDragStart = () => {
-    setIsDraggingAny(true);
-    setCursorText('tossing ✦');
-  };
-  const handleDragEnd = () => {
-    setIsDraggingAny(false);
-    setCursorText('grab & drag ✦');
-  };
 
   return (
     <div className="draggable-collage-container relative w-full h-[100dvh] overflow-hidden bg-secondary text-foreground select-none" style={{ fontFamily: 'var(--sans)' }}>
@@ -255,7 +224,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           ============================================== */}
       <div className="mobile-about-panel md:hidden h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10">
         <h2 className="italic text-[clamp(2.2rem,11vw,5rem)] leading-[1.05] mb-2 font-light" style={{ fontFamily: 'var(--serif)' }}>
-          I design and ship. Fast.
+          I turn paid traffic into profit.
         </h2>
 
         {/* Sub-grid 1: Profile and Available status */}
@@ -280,9 +249,9 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
               <p className="italic text-lg leading-tight mb-2.5" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             </div>
             <div className="space-y-1" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-1.5"><span className="opacity-50">→</span><span className="text-[9px]">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-1.5"><span className="opacity-50">→</span><span className="text-[9px]">Remote Vietnam</span></div>
-              <div className="flex items-center gap-1.5"><span className="opacity-50">→</span><span className="text-[9px]">Global remote</span></div>
+              <div className="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[9px]">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[9px]">Remote Vietnam</span></div>
+              <div className="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[9px]">Global remote</span></div>
             </div>
           </div>
         </div>
@@ -321,15 +290,19 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
               <span className="text-[8px] text-background/30">{formatTime(spotifyTotalSeconds)}</span>
             </div>
             <div className="flex items-center justify-center gap-3">
-              <button aria-label="Previous track" className="text-background/40 text-xs">⏮</button>
+              <button aria-label="Previous track" className="text-background/40 transition-colors hover:text-background/70">
+                <SkipBack size={14} strokeWidth={1.8} aria-hidden="true" />
+              </button>
               <button 
                 onClick={() => setIsPlaying(!isPlaying)} 
                 aria-label={isPlaying ? "Pause" : "Play"} 
-                className="w-7 h-7 rounded-full bg-background flex items-center justify-center text-foreground text-xs"
+                className="w-7 h-7 rounded-full bg-background flex items-center justify-center text-foreground"
               >
-                {isPlaying ? "||" : "▶"}
+                {isPlaying ? <Pause size={13} strokeWidth={2} fill="currentColor" aria-hidden="true" /> : <Play size={13} strokeWidth={2} fill="currentColor" aria-hidden="true" />}
               </button>
-              <button aria-label="Next track" className="text-background/40 text-xs">⏭</button>
+              <button aria-label="Next track" className="text-background/40 transition-colors hover:text-background/70">
+                <SkipForward size={14} strokeWidth={1.8} aria-hidden="true" />
+              </button>
             </div>
           </div>
 
@@ -390,7 +363,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
         {/* Writings Folder */}
         <div className="flex flex-col items-center mt-4">
           <a href="/blog" className="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-xs" style={{ fontFamily: 'var(--sans)' }}>
-            📂 View My Writings
+            <FolderOpen size={15} strokeWidth={1.8} aria-hidden="true" /> View My Writings
           </a>
         </div>
       </div>
@@ -401,15 +374,12 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           ============================================== */}
       <div 
         ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setCursorOpacity(1)}
-        onMouseLeave={() => setCursorOpacity(0)}
         className="hidden md:block absolute inset-0 z-10 overflow-hidden w-full h-full"
       >
         {/* Background Center Header */}
         <div className="absolute inset-0 z-0 flex flex-col items-center justify-center px-8 -translate-y-[4%] pointer-events-none">
           <h2 className="italic text-[clamp(2.5rem,8vw,4.5rem)] md:text-[clamp(3rem,5.5vw,7.5rem)] leading-[1.08] text-center whitespace-nowrap font-light" style={{ fontFamily: 'var(--serif)' }}>
-            I design and ship. Fast.
+            I turn paid traffic into profit.
           </h2>
         </div>
 
@@ -421,10 +391,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={-5}
           className="top-[10%] left-[5%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("it's me ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('portrait')}
           zIndex={cardZIndices.portrait}
         >
@@ -441,10 +407,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={4}
           className="top-[8%] right-[7%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("status ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('available')}
           zIndex={cardZIndices.available}
         >
@@ -459,9 +421,9 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
             <div className="h-px bg-[#0a2e22]/20 mb-3"></div>
             <p className="italic text-xl leading-tight mb-3" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             <div className="space-y-1.5" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-2"><span className="opacity-50">→</span><span className="text-[10px]">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-2"><span className="opacity-50">→</span><span className="text-[10px]">Remote Vietnam</span></div>
-              <div className="flex items-center gap-2"><span className="opacity-50">→</span><span className="text-[10px]">Global remote</span></div>
+              <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[10px]">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-2"><Laptop className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[10px]">Remote Vietnam</span></div>
+              <div className="flex items-center gap-2"><Globe2 className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[10px]">Global remote</span></div>
             </div>
           </div>
         </DraggableCard>
@@ -471,10 +433,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={-2}
           className="top-[9%] left-[36%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard(isPlaying ? "pause music ✦" : "play music ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('spotify')}
           zIndex={cardZIndices.spotify}
         >
@@ -511,18 +469,21 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
             
             {/* Controls */}
             <div className="flex items-center justify-center gap-5 mt-2.5">
-              <button aria-label="Previous track" className="text-background/40 hover:text-background/70 transition-colors text-xs">⏮</button>
+              <button aria-label="Previous track" className="text-background/40 hover:text-background/70 transition-colors">
+                <SkipBack size={15} strokeWidth={1.8} aria-hidden="true" />
+              </button>
               <button 
                 onClick={() => {
                   setIsPlaying(!isPlaying);
-                  setCursorText(!isPlaying ? "pause music ✦" : "play music ✦");
                 }} 
                 aria-label={isPlaying ? "Pause" : "Play"} 
                 className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-foreground text-xs hover:scale-105 transition-transform"
               >
-                {isPlaying ? "||" : "▶"}
+                  {isPlaying ? <Pause size={14} strokeWidth={2} fill="currentColor" aria-hidden="true" /> : <Play size={14} strokeWidth={2} fill="currentColor" aria-hidden="true" />}
+                </button>
+              <button aria-label="Next track" className="text-background/40 hover:text-background/70 transition-colors">
+                <SkipForward size={15} strokeWidth={1.8} aria-hidden="true" />
               </button>
-              <button aria-label="Next track" className="text-background/40 hover:text-background/70 transition-colors text-xs">⏭</button>
             </div>
           </div>
         </DraggableCard>
@@ -532,10 +493,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={3}
           className="bottom-[9%] left-[57%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("watching movie ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('movie')}
           zIndex={cardZIndices.movie}
         >
@@ -558,10 +515,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={3}
           className="bottom-[8%] left-[5%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("interests ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('interests')}
           zIndex={cardZIndices.interests}
         >
@@ -580,10 +533,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={-4}
           className="bottom-[10%] right-[7%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("connect linkedin ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('linkedin')}
           zIndex={cardZIndices.linkedin}
         >
@@ -601,10 +550,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={3}
           className="top-[46%] right-[5%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("resume ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('resume')}
           zIndex={cardZIndices.resume}
         >
@@ -622,10 +567,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={-3}
           className="top-[16%] right-[30%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("email phuc loc ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('notion')}
           zIndex={cardZIndices.notion}
         >
@@ -643,10 +584,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={5}
           className="top-[62%] left-[6%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("japanese for fun ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('learning')}
           zIndex={cardZIndices.learning}
         >
@@ -661,10 +598,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           initialRotate={-3}
           style={{ x: 30.5, y: -12.5 }}
           className="top-[44%] left-[5%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("saigon time ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('clock')}
           zIndex={cardZIndices.clock}
         >
@@ -685,10 +618,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           dragConstraints={containerRef}
           initialRotate={-4}
           className="bottom-[22%] left-[25%]"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("give rating! ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('rating')}
           zIndex={cardZIndices.rating}
         >
@@ -726,10 +655,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           initialRotate={-2}
           initialScale={0.5}
           className="bottom-[25%] left-[40%] flex flex-col items-center group origin-bottom"
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={enterCard("open writings ✦")}
-          onMouseLeave={leaveCard}
           onPointerDown={() => bringToFront('folder')}
           zIndex={cardZIndices.folder}
         >
@@ -768,22 +693,6 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
         </DraggableCard>
 
         {/* -------------------- END DYNAMIC CARDS -------------------- */}
-
-        {/* Custom Morphing Cursor Follower Tooltip */}
-        <motion.div 
-          className="absolute pointer-events-none z-[200] -translate-x-1/2 -translate-y-1/2"
-          style={{
-            x: cursorX,
-            y: cursorY,
-            opacity: cursorOpacity,
-            scale: isDraggingAny ? 0.65 : 0.95,
-          }}
-          transition={{ duration: 0 }}
-        >
-          <div className="bg-[#0075de] text-white rounded-full px-[22px] py-[8px] text-[13px] font-medium tracking-tight whitespace-nowrap shadow-lg flex items-center gap-1.5" style={{ fontFamily: 'var(--sans)' }}>
-            {cursorText}
-          </div>
-        </motion.div>
 
       </div>
     </div>

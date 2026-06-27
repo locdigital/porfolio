@@ -1,7 +1,5 @@
 ---
 import '../styles/global.css';
-import { MenuBar } from "../components/ui/glow-menu";
-import { InfiniteGrid } from "../components/ui/infinite-grid-integration";
 import { ViewTransitions } from 'astro:transitions';
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
 const { 
@@ -17,9 +15,47 @@ const {
 } = Astro.props;
 const pathname = Astro.url.pathname;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const socialThumbnail = DEFAULT_OG_IMAGE;
+const socialThumbnail = ogImage || DEFAULT_OG_IMAGE;
 const pageSchemas = Array.isArray(schema) ? schema : [schema];
 const jsonLd = safeJsonLd(graphSchema(pageSchemas));
+const desktopNavItems = [
+  {
+    label: "Work",
+    href: "/work",
+    active: pathname.startsWith("/work"),
+    icon: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+  },
+  {
+    label: "Services",
+    href: "/service",
+    active: pathname.startsWith("/service"),
+    icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  },
+  {
+    label: "Writing",
+    href: "/blog",
+    active: pathname.startsWith("/blog"),
+    icon: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+  },
+  {
+    label: "Gear",
+    href: "/gear",
+    active: pathname.startsWith("/gear"),
+    icon: '<rect width="18" height="12" x="3" y="4" rx="2" ry="2"/><line x1="2" x2="22" y1="20" y2="20"/><line x1="5" x2="19" y1="16" y2="16"/>',
+  },
+  {
+    label: "Photos",
+    href: "/photos",
+    active: pathname.startsWith("/photos") || pathname.startsWith("/gallery"),
+    icon: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+  },
+  {
+    label: "Ask",
+    href: "/question",
+    active: pathname.startsWith("/question"),
+    icon: '<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>',
+  },
+];
 ---
 
 <!DOCTYPE html>
@@ -27,6 +63,15 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
 
 <head>
   <meta charset="UTF-8">
+  {import.meta.env.DEV && (
+    <script type="module" is:inline>
+      import RefreshRuntime from "/@react-refresh"
+      RefreshRuntime.injectIntoGlobalHook(window)
+      window.$RefreshReg$ = () => {}
+      window.$RefreshSig$ = () => (type) => type
+      window.__vite_plugin_react_preamble_installed__ = true
+    </script>
+  )}
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
   <meta name="description" content={description}>
   <meta name="robots" content={robots}>
@@ -127,7 +172,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
   </noscript>
 
   <ViewTransitions />
-  <script type="application/ld+json" set:html={jsonLd}></script>
+  <script is:inline type="application/ld+json" set:html={jsonLd}></script>
 
   <style is:global>
     /* ── Page transition: fade + blur disabled ── */
@@ -140,9 +185,7 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
 </head>
 
 <body>
-  {pathname !== '/demo' && pathname !== '/demo/' && (
-    <InfiniteGrid bgOnly={true} globalMouse={true} client:media="(min-width: 768px)" />
-  )}
+  <div class="site-grid-bg" aria-hidden="true"></div>
   <!-- ============================================================
        HEADER
   ============================================================ -->
@@ -155,7 +198,18 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
           </a>
 
           <div class="header-nav-desktop">
-            <MenuBar client:media="(min-width: 768px)" pathname={pathname} className="header-glow-menu" />
+            <nav class="header-menu" aria-label="Primary navigation">
+              <ul>
+                {desktopNavItems.map((item) => (
+                  <li>
+                    <a href={item.href} class={item.active ? "active" : ""} aria-current={item.active ? "page" : undefined}>
+                      <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={item.icon}></svg>
+                      <span>{item.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
         </div>
@@ -164,12 +218,6 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
       <!-- Mobile Bottom Navigation Bar -->
       <nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
         <ul class="mobile-bottom-nav-list">
-          <li>
-            <a href="/about" class={pathname.startsWith('/about') ? 'active' : ''} aria-label="About">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span class="nav-label">About</span>
-            </a>
-          </li>
           <li>
             <a href="/work" class={pathname.startsWith('/work') ? 'active' : ''} aria-label="Work">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
@@ -183,15 +231,21 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
             </a>
           </li>
           <li>
-            <a href="/photos" class={pathname.startsWith('/photos') || pathname.startsWith('/gallery') ? 'active' : ''} aria-label="Photos">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-              <span class="nav-label">Photos</span>
+            <a href="/blog" class={pathname.startsWith('/blog') ? 'active' : ''} aria-label="Writing">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+              <span class="nav-label">Writing</span>
             </a>
           </li>
           <li>
             <a href="/gear" class={pathname.startsWith('/gear') ? 'active' : ''} aria-label="Gear">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect width="18" height="12" x="3" y="4" rx="2" ry="2"/><line x1="2" x2="22" y1="20" y2="20"/><line x1="5" x2="19" y1="16" y2="16"/></svg>
               <span class="nav-label">Gear</span>
+            </a>
+          </li>
+          <li>
+            <a href="/photos" class={pathname.startsWith('/photos') || pathname.startsWith('/gallery') ? 'active' : ''} aria-label="Photos">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              <span class="nav-label">Photos</span>
             </a>
           </li>
           <li>
@@ -232,12 +286,12 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
             </button>
           </div>
           <ul class="footer-links">
+            <li><a href="https://www.instagram.com/henrygoodkid" target="_blank" rel="noopener noreferrer"
+                aria-label="Instagram">Instagram ↗</a></li>
             <li><a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer"
                 aria-label="LinkedIn">LinkedIn ↗</a></li>
-            <li><a href="https://github.com/phucloc" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub ↗</a></li>
-            <li><a href="https://phucloc.digital/resume" target="_blank" rel="noopener noreferrer"
-                aria-label="Resume">Resume ↗</a></li>
-            <li><a href="/rss.xml">RSS</a></li>
+            <li><a href="https://www.pexels.com/@henrygoodkid" target="_blank" rel="noopener noreferrer"
+                aria-label="Pexels">Pexels ↗</a></li>
           </ul>
         </footer>
         <div class="colophon">
@@ -257,6 +311,8 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
       history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
+
+
 
     document.addEventListener('astro:page-load', () => {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -637,7 +693,6 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
         const fadeL = stripOuter.parentElement.querySelector('.gallery-fade-left');
 
         let down = false;
-        let isHovered = false;
 
         const updateArrows = () => {
           const half = stripOuter.scrollWidth / 2;
@@ -659,15 +714,6 @@ const jsonLd = safeJsonLd(graphSchema(pageSchemas));
         arrowR.addEventListener('click', () => stripOuter.scrollBy({ left: step(), behavior: 'smooth' }));
         stripOuter.addEventListener('scroll', updateArrows, { passive: true });
         updateArrows();
-
-        // Hover & Touch state monitoring for Auto-scroll pausing
-        const wrapper = document.querySelector('.gallery-scroll-wrapper');
-        if (wrapper) {
-          wrapper.addEventListener('mouseenter', () => { isHovered = true; });
-          wrapper.addEventListener('mouseleave', () => { isHovered = false; });
-          stripOuter.addEventListener('touchstart', () => { isHovered = true; }, { passive: true });
-          stripOuter.addEventListener('touchend', () => { isHovered = false; }, { passive: true });
-        }
 
         // Auto scroll marquee loop disabled as per user request to turn off animations
         /*

@@ -1,7 +1,8 @@
 import * as React from "react"
 import { motion } from "framer-motion"
+import type { HTMLMotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
-import { User, Briefcase, Zap, Camera, Laptop, Sparkles } from "lucide-react"
+import { Briefcase, FileText, Zap, Camera, Laptop, Sparkles } from "lucide-react"
 
 interface MenuItem {
   icon: React.ComponentType<{ className?: string }>
@@ -11,20 +12,12 @@ interface MenuItem {
   iconColor: string
 }
 
-interface MenuBarProps extends React.HTMLAttributes<HTMLDivElement> {
+interface MenuBarProps extends HTMLMotionProps<"nav"> {
   pathname?: string
   onItemClick?: (label: string) => void
 }
 
 const menuItems: MenuItem[] = [
-  {
-    icon: User,
-    label: "About",
-    href: "/about",
-    gradient:
-      "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
-    iconColor: "text-[#0075de]",
-  },
   {
     icon: Briefcase,
     label: "Work",
@@ -41,11 +34,10 @@ const menuItems: MenuItem[] = [
       "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
     iconColor: "text-[#0075de]",
   },
-
   {
-    icon: Camera,
-    label: "Photos",
-    href: "/photos",
+    icon: FileText,
+    label: "Writing",
+    href: "/blog",
     gradient:
       "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
     iconColor: "text-[#0075de]",
@@ -54,6 +46,15 @@ const menuItems: MenuItem[] = [
     icon: Laptop,
     label: "Gear",
     href: "/gear",
+    gradient:
+      "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
+    iconColor: "text-[#0075de]",
+  },
+
+  {
+    icon: Camera,
+    label: "Photos",
+    href: "/photos",
     gradient:
       "radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%)",
     iconColor: "text-[#0075de]",
@@ -104,17 +105,16 @@ const sharedTransition = {
 }
 
 const getActiveItem = (path: string) => {
-  if (path.startsWith('/about')) return "About";
+  if (path.startsWith('/blog')) return "Writing";
   if (path.startsWith('/work')) return "Work";
   if (path.startsWith('/service')) return "Services";
-  if (path.startsWith('/blog')) return "Writing";
   if (path.startsWith('/photos') || path.startsWith('/gallery')) return "Photos";
   if (path.startsWith('/gear')) return "Gear";
   if (path.startsWith('/question')) return "Ask";
   return "";
 }
 
-export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
+export const MenuBar = React.forwardRef<HTMLElement, MenuBarProps>(
   ({ className, pathname = "", onItemClick, ...props }, ref) => {
     const activeItem = getActiveItem(pathname)
 

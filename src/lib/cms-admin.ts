@@ -2,6 +2,8 @@ import { existsSync } from "node:fs";
 import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
+import type { Filter } from "mongodb";
+import { createMongoDocument, getCmsCollection } from "./cms-db";
 
 const rootDir = process.cwd();
 const contentDir = path.join(rootDir, "src", "content");
@@ -11,6 +13,11 @@ const projectsDir = path.join(contentDir, "projects");
 const photosDir = path.join(contentDir, "photos");
 const photoAssetsDir = path.join(rootDir, "src", "assets", "photos");
 const publicUploadsDir = path.join(rootDir, "public", "uploads");
+const uploadImageSettings = {
+  photos: { maxEdge: 1600, quality: 75 },
+  writing: { maxEdge: 1400, quality: 75 },
+} as const;
+const MONGO_GEAR_ID = "setup";
 
 // --- GitHub API Configuration ---
 const githubConfig = {
@@ -30,9 +37,9 @@ function toGitPath(fullPath: string): string {
 
 function checkWriteAccess() {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") {
-    if (!isGithubEnabled) {
+    if (!isGithubEnabled && !process.env.MONGODB_URI) {
       throw new Error(
-        "CMS is read-only in production. To enable writes, please add the GITHUB_TOKEN environment variable in your Vercel settings and link your repository."
+        "CMS is read-only in production. Add MONGODB_URI for database writes or GITHUB_TOKEN for file writes."
       );
     }
   }
@@ -169,11 +176,72 @@ export type CmsWritingPost = {
   updatedAt?: string;
 };
 
+export type CmsGearItem = {
+  name: string;
+  slug: string;
+  headline: string;
+  description: string;
+  image: string;
+  tag: string;
+};
+
+export type CmsGearSection = {
+  title: string;
+  slug: string;
+  headline: string;
+  description: string;
+  image: string;
+  items: CmsGearItem[];
+};
+
+export type CmsGear = {
+  title: string;
+  headline: string;
+  description: string;
+  sections: CmsGearSection[];
+};
+
+export type CmsProject = {
+  slug: string;
+  order: number;
+  number: string;
+  title: string;
+  client: string;
+  year: string;
+  role: string;
+  summary: string;
+  description: string;
+  tools: string[];
+  skills: string[];
+  coverImage: string;
+  images: string[];
+  link: string;
+  linkLabel: string;
+  caseStudyLink: string;
+};
+
+export type CmsPhotoImage = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+export type CmsPhotoLocation = {
+  slug: string;
+  order: number;
+  location: string;
+  headline: string;
+  subheadline: string;
+  description: string;
+  images: CmsPhotoImage[];
+};
+
 export type CmsPayload = {
   writing: CmsWritingPost[];
-  gear: Record<string, unknown>;
-  projects: Array<Record<string, unknown>>;
-  photos: Array<Record<string, unknown>>;
+  gear: CmsGear;
+  projects: CmsProject[];
+  photos: CmsPhotoLocation[];
 };
 
 export type UploadedAsset = {
@@ -275,7 +343,7 @@ function parseMarkdown(raw: string) {
   for (const line of lines) {
     if (/^\s+-\s+/.test(line) && activeArrayKey) {
       const value = line.replace(/^\s+-\s+/, "");
-      const current = Array.isArray(data[activeArrayKey]) ? data[activeArrayKey] : [];
+      const current = Array.isArray(data[activeArrayKey]) ? data[activeArrayKey] as unknown[] : [];
       current.push(parseScalar(value));
       data[activeArrayKey] = current;
       continue;
@@ -368,7 +436,12 @@ async function writeJsonFile(filePath: string, value: unknown) {
   await writeFile(filePath, jsonContent, "utf8");
 }
 
-async function readJsonCollection(dir: string) {
+type OrderedJsonEntry = Record<string, unknown> & {
+  slug: string;
+  order?: unknown;
+};
+
+async function readJsonCollection<T extends OrderedJsonEntry>(dir: string): Promise<T[]> {
   let files: string[] = [];
   if (useGithub) {
     files = await readGithubDir(dir);
@@ -381,14 +454,65 @@ async function readJsonCollection(dir: string) {
     files.map(async (file) => {
       const fullPath = path.join(dir, file);
       const data = await readJsonFile<Record<string, unknown>>(fullPath, {});
-      return { ...data, slug: asString(data.slug, file.replace(/\.json$/, "")) };
+      return { ...data, slug: asString(data.slug, file.replace(/\.json$/, "")) } as T;
     }),
   );
 
   return entries.sort((a, b) => asNumber(a.order) - asNumber(b.order));
 }
 
+function stripMongoDocument<T extends object>(document: T & { _id: string }) {
+  const { _id, ...rest } = document;
+  return rest as T;
+}
+
+async function readMongoSingle<T extends object>(
+  collectionName: string,
+  id: string,
+  fallback: T,
+): Promise<T> {
+  const collection = await getCmsCollection<T>(collectionName);
+  if (!collection) return fallback;
+
+  const document = await collection.findOne({ _id: id } as any);
+  return document ? (stripMongoDocument(document) as T) : fallback;
+}
+
+async function writeMongoSingle<T extends object>(
+  collectionName: string,
+  id: string,
+  value: T,
+): Promise<T> {
+  const collection = await getCmsCollection<T>(collectionName);
+  if (!collection) throw new Error(`MongoDB collection not available: ${collectionName}`);
+
+  const document = createMongoDocument(id, value);
+  await collection.replaceOne({ _id: id } as Filter<typeof document>, document, { upsert: true });
+  return value;
+}
+
+async function readMongoCollection<T extends OrderedJsonEntry>(
+  collectionName: string,
+): Promise<T[]> {
+  const collection = await getCmsCollection<T>(collectionName);
+  if (!collection) return [];
+
+  const entries = await collection.find({}).sort({ order: 1 }).toArray();
+  return entries.map((entry) => stripMongoDocument(entry as T & { _id: string }));
+}
+
+async function deleteMongoEntry(collectionName: string, slug: string): Promise<void> {
+  const collection = await getCmsCollection<object>(collectionName);
+  if (!collection) return;
+  await collection.deleteOne({ _id: slug });
+}
+
 export async function readWritingPosts(): Promise<CmsWritingPost[]> {
+  const mongoWriting = await readMongoCollection<CmsWritingPost>("cms_writing");
+  if (mongoWriting.length > 0) {
+    return mongoWriting.sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  }
+
   let files: string[] = [];
   if (useGithub) {
     files = await readGithubDir(writingDir);
@@ -428,12 +552,50 @@ export async function readWritingPosts(): Promise<CmsWritingPost[]> {
   return posts.sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
 }
 
+async function readGear(): Promise<CmsGear> {
+  const mongoGear = await readMongoSingle<CmsGear>("cms_gear", MONGO_GEAR_ID, {
+    title: "",
+    headline: "",
+    description: "",
+    sections: [],
+  });
+  if (mongoGear.title || mongoGear.headline || mongoGear.description || mongoGear.sections.length > 0) {
+    return mongoGear;
+  }
+
+  return readJsonFile<CmsGear>(gearPath, { title: "", headline: "", description: "", sections: [] });
+}
+
+async function readProjects(): Promise<CmsProject[]> {
+  const mongoProjects = await readMongoCollection<CmsProject>("cms_projects");
+  if (mongoProjects.length > 0) return mongoProjects;
+  return readJsonCollection<CmsProject>(projectsDir);
+}
+
+async function readPhotoLocations(): Promise<CmsPhotoLocation[]> {
+  const mongoPhotos = await readMongoCollection<CmsPhotoLocation>("cms_photos");
+  if (mongoPhotos.length > 0) return mongoPhotos;
+  return readJsonCollection<CmsPhotoLocation>(photosDir);
+}
+
+async function readPhotoLocation(slug: string): Promise<CmsPhotoLocation | null> {
+  const collection = await getCmsCollection<CmsPhotoLocation>("cms_photos");
+  if (collection) {
+    const document = await collection.findOne({ _id: slug });
+    if (document) return stripMongoDocument(document);
+  }
+
+  const filePath = path.join(photosDir, `${slug}.json`);
+  if (!existsSync(filePath) && !useGithub) return null;
+  return readJsonFile<CmsPhotoLocation | null>(filePath, null);
+}
+
 export async function readCmsPayload(): Promise<CmsPayload> {
   const [writing, gear, projects, photos] = await Promise.all([
     readWritingPosts(),
-    readJsonFile<Record<string, unknown>>(gearPath, {}),
-    readJsonCollection(projectsDir),
-    readJsonCollection(photosDir),
+    readGear(),
+    readProjects(),
+    readPhotoLocations(),
   ]);
 
   return { writing, gear, projects, photos };
@@ -442,6 +604,12 @@ export async function readCmsPayload(): Promise<CmsPayload> {
 export async function saveWritingPost(input: Record<string, unknown>) {
   checkWriteAccess();
   const post = normalizeWritingPost(input);
+  const collection = await getCmsCollection<CmsWritingPost>("cms_writing");
+  if (collection) {
+    await writeMongoSingle("cms_writing", post.slug, post);
+    return post;
+  }
+
   const filePath = path.join(writingDir, `${post.slug}.md`);
   const content = serializeMarkdown(post);
 
@@ -494,6 +662,12 @@ function normalizeGear(input: Record<string, unknown>) {
 export async function saveGear(input: Record<string, unknown>) {
   checkWriteAccess();
   const gear = normalizeGear(input);
+  const collection = await getCmsCollection<CmsGear>("cms_gear");
+  if (collection) {
+    await writeMongoSingle("cms_gear", MONGO_GEAR_ID, gear);
+    return gear;
+  }
+
   await writeJsonFile(gearPath, gear);
   return gear;
 }
@@ -529,6 +703,12 @@ function normalizeProject(input: Record<string, unknown>) {
 export async function saveProject(input: Record<string, unknown>) {
   checkWriteAccess();
   const project = normalizeProject(input);
+  const collection = await getCmsCollection<CmsProject>("cms_projects");
+  if (collection) {
+    await writeMongoSingle("cms_projects", project.slug, project);
+    return project;
+  }
+
   await writeJsonFile(path.join(projectsDir, `${project.slug}.json`), project);
   return project;
 }
@@ -565,6 +745,12 @@ function normalizePhotoLocation(input: Record<string, unknown>) {
 export async function savePhotoLocation(input: Record<string, unknown>) {
   checkWriteAccess();
   const location = normalizePhotoLocation(input);
+  const collection = await getCmsCollection<CmsPhotoLocation>("cms_photos");
+  if (collection) {
+    await writeMongoSingle("cms_photos", location.slug, location);
+    return location;
+  }
+
   await writeJsonFile(path.join(photosDir, `${location.slug}.json`), location);
   return location;
 }
@@ -572,6 +758,23 @@ export async function savePhotoLocation(input: Record<string, unknown>) {
 export async function deleteEntry(resource: string, slugValue: unknown) {
   checkWriteAccess();
   const slug = safeSlug(slugValue);
+  const mongoCollection =
+    resource === "writing"
+      ? "cms_writing"
+      : resource === "projects"
+        ? "cms_projects"
+        : resource === "photos"
+          ? "cms_photos"
+          : "";
+
+  if (mongoCollection) {
+    const collection = await getCmsCollection<object>(mongoCollection);
+    if (collection) {
+      await deleteMongoEntry(mongoCollection, slug);
+      return;
+    }
+  }
+
   const target =
     resource === "writing"
       ? path.join(writingDir, `${slug}.md`)
@@ -597,6 +800,12 @@ function sanitizeFileName(name: string) {
   const base = slugify(parsed.name).slice(0, 80);
   const ext = parsed.ext.toLowerCase().replace(/[^a-z0-9.]/g, "");
   return `${base || "asset"}${ext || ".webp"}`;
+}
+
+function webpUploadFileName(name: string) {
+  const parsed = path.parse(name);
+  const base = slugify(parsed.name).slice(0, 80);
+  return `${base || "asset"}.webp`;
 }
 
 function gearUploadFileName(name: string) {
@@ -715,12 +924,59 @@ async function processGearImage(buffer: Buffer) {
     },
   })
     .composite([{ input: productBuffer, left, top }])
-    .webp({ quality: 90, alphaQuality: 95 })
+    .webp({ quality: 75, alphaQuality: 80 })
     .toBuffer();
 }
 
+async function processUploadedImage(
+  file: File,
+  target: "photos" | "gear" | "writing",
+): Promise<{ buffer: Buffer; name: string }> {
+  const originalBuffer = Buffer.from(await file.arrayBuffer());
+
+  if (target === "gear") {
+    return {
+      buffer: await processGearImage(originalBuffer),
+      name: gearUploadFileName(file.name),
+    };
+  }
+
+  const settings = uploadImageSettings[target];
+
+  try {
+    const buffer = await sharp(originalBuffer, {
+      failOn: "none",
+      limitInputPixels: false,
+    })
+      .rotate()
+      .resize({
+        width: settings.maxEdge,
+        height: settings.maxEdge,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality: settings.quality,
+        alphaQuality: 90,
+        effort: 5,
+        smartSubsample: true,
+      })
+      .toBuffer();
+
+    return {
+      buffer,
+      name: webpUploadFileName(file.name),
+    };
+  } catch {
+    return {
+      buffer: originalBuffer,
+      name: sanitizeFileName(file.name),
+    };
+  }
+}
+
 export async function uploadAssets(options: {
-  target: "photos" | "gear";
+  target: "photos" | "gear" | "writing";
   slug?: string;
   files: File[];
 }) {
@@ -730,37 +986,36 @@ export async function uploadAssets(options: {
   const folder =
     options.target === "photos"
       ? path.join(photoAssetsDir, targetSlug || "uncategorized")
-      : publicUploadsDir;
+      : options.target === "writing"
+        ? path.join(publicUploadsDir, "writing", targetSlug || "draft")
+        : publicUploadsDir;
   const publicPrefix =
     options.target === "photos"
       ? `/assets/photos/${targetSlug || "uncategorized"}`
-      : "/uploads";
+      : options.target === "writing"
+        ? `/uploads/writing/${targetSlug || "draft"}`
+        : "/uploads";
 
   if (!useGithub) {
     await mkdir(folder, { recursive: true });
   }
 
   for (const file of options.files) {
-    const originalName = options.target === "gear"
-      ? gearUploadFileName(file.name)
-      : sanitizeFileName(file.name);
-    const uniqueName = `${Date.now()}-${originalName}`;
-    const originalBuffer = Buffer.from(await file.arrayBuffer());
-    const buffer = options.target === "gear"
-      ? await processGearImage(originalBuffer)
-      : originalBuffer;
+    const processed = await processUploadedImage(file, options.target);
+    const uniqueName = `${Date.now()}-${uploaded.length + 1}-${processed.name}`;
+    const buffer = processed.buffer;
     const metadata = await imageMetadata(buffer);
     const filePath = path.join(folder, uniqueName);
 
     if (useGithub) {
       await writeGithubFile(filePath, buffer);
     } else {
-      await writeFile(filePath, buffer);
+      await writeFile(filePath, new Uint8Array(buffer));
     }
 
     uploaded.push({
       src: `${publicPrefix}/${uniqueName}`,
-      alt: targetSlug ? `${targetSlug} photo` : originalName.replace(/\.[^.]+$/, ""),
+      alt: targetSlug ? `${targetSlug} photo` : processed.name.replace(/\.[^.]+$/, ""),
       ...metadata,
     });
   }

@@ -72,6 +72,10 @@ const ALLOWED_VERCEL_SIZES = [
   640, 720, 750, 760, 828, 960, 1080, 1200, 1280, 1920, 2048, 3840
 ];
 
+function numericQuality(value: ImageQuality | undefined, fallback: number) {
+  return typeof value === "number" ? value : fallback;
+}
+
 function getClosestAllowedWidth(width: number): number {
   const closest = ALLOWED_VERCEL_SIZES.find((size) => size >= width);
   return closest ?? ALLOWED_VERCEL_SIZES[ALLOWED_VERCEL_SIZES.length - 1];
@@ -145,7 +149,7 @@ export async function optimizePhoto(
         previewWidth,
         targetWidths,
         "webp",
-        (options.previewQuality ?? 65) + 5, // WebP needs slightly higher quality for same visual
+        Math.min(numericQuality(options.previewQuality, 65) + 5, 100),
       );
       webpSrcSet = webpPreview.srcSet.attribute;
     }

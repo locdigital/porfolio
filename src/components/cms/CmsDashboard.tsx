@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   ChevronDown,
   Clock3,
+  ExternalLink,
   FileText,
   HardDrive,
   LayoutDashboard,
@@ -22,11 +23,45 @@ import {
   Sparkles,
   Trash2,
   Upload,
+  X,
   UserPlus,
+  type LucideIcon,
 } from "lucide-react";
+import {
+  calculateSeoScore,
+  type ChecklistItem,
+  type SeoArticle,
+  type SeoArticleForm,
+} from "../../lib/seo-article-checklist";
+import WritingDashboard from "../writing/WritingDashboard";
+import WritingEditorPage from "../writing/WritingEditorPage";
+import DeleteConfirmDialog from "../ui/DeleteConfirmDialog";
+import "../../styles/writing-editor.css";
 
 /* ------ Types ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */
 type Tab = "overview" | "writing" | "gear" | "work" | "photos";
+
+const cmsTabPaths: Record<Tab, string> = {
+  overview: "/cms",
+  writing: "/cms/writing",
+  gear: "/cms/gear",
+  work: "/cms/work",
+  photos: "/cms/photos",
+};
+
+function tabFromCmsPath(pathname: string): Tab {
+  const section = pathname.replace(/\/+$/, "").split("/").filter(Boolean)[1] ?? "";
+  if (section === "writing" || section === "writting") return "writing";
+  if (section === "gear") return "gear";
+  if (section === "work") return "work";
+  if (section === "photos") return "photos";
+  return "overview";
+}
+
+function initialCmsTab(): Tab {
+  if (typeof window === "undefined") return "overview";
+  return tabFromCmsPath(window.location.pathname);
+}
 
 type Status = {
   type: "idle" | "loading" | "success" | "error";
@@ -119,7 +154,7 @@ type CmsData = {
 /* ------ Nav structure ------------------------------------------------------------------------------------------------------------------------------------------------ */
 type NavGroup = {
   label: string;
-  items: Array<{ id: Tab; label: string; icon: React.ElementType }>;
+  items: Array<{ id: Tab; label: string; icon: LucideIcon }>;
 };
 
 const navGroups: NavGroup[] = [
@@ -146,9 +181,10 @@ const navGroups: NavGroup[] = [
 /* ------ Stat card data --------------------------------------------------------------------------------------------------------------------------------------------- */
 type StatDef = {
   title: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   accent: "blue" | "green" | "amber" | "purple";
   footer: string[];
+  tab: Tab;
 };
 
 const statDefs: StatDef[] = [
@@ -157,24 +193,28 @@ const statDefs: StatDef[] = [
     icon: FileText,
     accent: "blue",
     footer: ["Published", "Draft", "Scheduled"],
+    tab: "writing",
   },
   {
     title: "Gear Items",
     icon: Package,
     accent: "green",
     footer: ["Across sections"],
+    tab: "gear",
   },
   {
     title: "What I Do",
     icon: Briefcase,
     accent: "amber",
     footer: ["Client work"],
+    tab: "work",
   },
   {
     title: "Photo Locations",
     icon: Camera,
     accent: "purple",
     footer: ["With images"],
+    tab: "photos",
   },
 ];
 
@@ -191,12 +231,31 @@ function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function uniqueList(values: string[]) {
+  const seen = new Set<string>();
+  return values.filter((value) => {
+    const normalized = value.trim();
+    const key = normalized.toLowerCase();
+    if (!normalized || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function splitList(value: string) {
-  return value.split(",").map((s) => s.trim()).filter(Boolean);
+  return uniqueList(value.split(/[,;\n]+/).map((s) => s.trim()));
 }
 
 function listToString(value: string[] = []) {
   return value.join(", ");
+}
+
+function postKeywords(post: WritingPost) {
+  return splitList(post.keyword);
+}
+
+function primaryKeyword(post: WritingPost) {
+  return postKeywords(post)[0] || post.keyword.trim();
 }
 
 function slugify(value: string) {
@@ -215,6 +274,148 @@ function emptyWriting(): WritingPost {
     metaDescription: "", coverImage: "", publishedAt: today(),
     tags: [], draft: false, body: "Start writing here...",
   };
+}
+
+const keywordStopWords = new Set([
+  "cua", "cho", "voi", "mot", "nhung", "cac", "khi", "vao", "tren", "duoi", "nhu", "the", "nay", "kia",
+  "and", "the", "for", "with", "from", "this", "that", "your", "you", "are", "how", "what", "why",
+  "cach", "cách", "chon", "chọn", "huong", "hướng", "dan", "dẫn", "la", "là", "de", "để", "va", "và",
+]);
+
+function plainText(value: string) {
+  return value
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/[#>*_`~\-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeKeywordToken(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z0-9\s]/g, "")
+    .trim();
+}
+
+function suggestWritingKeywords(post: WritingPost) {
+  const source = plainText([post.title, post.headline, post.summary, post.tags.join(" "), post.body].join(" "));
+  const tokens = normalizeKeywordToken(source)
+    .split(/\s+/)
+    .filter((token) => token.length > 2 && !keywordStopWords.has(token));
+  const scores = new Map<string, number>();
+
+  for (let size = 1; size <= 3; size += 1) {
+    for (let index = 0; index <= tokens.length - size; index += 1) {
+      const phrase = tokens.slice(index, index + size).join(" ");
+      if (!phrase || phrase.length < 4) continue;
+      const weight = size === 1 ? 1 : size === 2 ? 4 : 6;
+      scores.set(phrase, (scores.get(phrase) ?? 0) + weight);
+    }
+  }
+
+  const titleText = normalizeKeywordToken(`${post.title} ${post.headline}`);
+  return Array.from(scores.entries())
+    .map(([keyword, score]) => ({
+      keyword,
+      score: score + (titleText.includes(keyword) ? 8 : 0),
+    }))
+    .sort((a, b) => b.score - a.score || a.keyword.length - b.keyword.length)
+    .filter((item, index, arr) => arr.findIndex((other) => other.keyword.includes(item.keyword) || item.keyword.includes(other.keyword)) === index)
+    .slice(0, 8);
+}
+
+function extractMarkdownHeadings(body: string) {
+  return body
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => /^#{2,3}\s+/.test(line))
+    .map((line) => line.replace(/^##\s+/, "H2: ").replace(/^###\s+/, "H3: "));
+}
+
+function firstParagraph(value: string) {
+  return plainText(value)
+    .split(/\n{2,}/)
+    .map((line) => line.trim())
+    .find(Boolean) || "";
+}
+
+function extractFaq(body: string) {
+  const lines = body.split("\n");
+  const faqs: Array<{ question: string; answer: string }> = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    if (!/^#{2,3}\s+.+\?/.test(line)) continue;
+    const question = line.replace(/^#{2,3}\s+/, "");
+    const answerLines: string[] = [];
+    for (let answerIndex = index + 1; answerIndex < lines.length; answerIndex += 1) {
+      if (/^#{2,3}\s+/.test(lines[answerIndex])) break;
+      if (lines[answerIndex].trim()) answerLines.push(lines[answerIndex].trim());
+    }
+    faqs.push({ question, answer: plainText(answerLines.join(" ")) });
+  }
+  return faqs.slice(0, 5);
+}
+
+function writingToSeoArticle(post: WritingPost): SeoArticle {
+  const body = post.body || "";
+  const faq = extractFaq(body);
+  const focusKeyword = primaryKeyword(post);
+  return {
+    seoTitle: post.title || post.headline || post.slug,
+    metaDescription: post.metaDescription || post.summary,
+    slug: post.slug,
+    h1: post.headline || post.title || post.slug,
+    outline: extractMarkdownHeadings(body),
+    introduction: firstParagraph(`${post.summary}\n\n${body}`),
+    body,
+    conclusion: plainText(body).split(/\s+/).slice(-70).join(" "),
+    faq,
+    imageAltTexts: post.coverImage ? [`${focusKeyword || post.title} cover image`] : [],
+    linkPlacements: [
+      ...Array.from(body.matchAll(/\[[^\]]+]\((\/[^)]+)\)/g)).slice(0, 5).map((match) => ({
+        anchor: match[0].match(/\[([^\]]+)]/)?.[1] || "internal link",
+        url: match[1],
+        placement: "Body markdown",
+        type: "internal" as const,
+      })),
+      ...Array.from(body.matchAll(/\[[^\]]+]\((https?:\/\/[^)]+)\)/g)).slice(0, 5).map((match) => ({
+        anchor: match[0].match(/\[([^\]]+)]/)?.[1] || "external link",
+        url: match[1],
+        placement: "Body markdown",
+        type: "external" as const,
+      })),
+    ],
+    schemaType: faq.length >= 3 ? "FAQPage" : "BlogPosting",
+    cta: /liên hệ|dang ky|đăng ký|tu van|tư vấn|contact|subscribe|download|mua/i.test(body) ? "CTA detected" : "",
+  };
+}
+
+function writingToSeoForm(post: WritingPost): SeoArticleForm {
+  const keywords = postKeywords(post);
+  return {
+    focusKeyword: keywords[0] || suggestWritingKeywords(post)[0]?.keyword || "",
+    secondaryKeywords: listToString(uniqueList([...keywords.slice(1), ...post.tags])),
+    topic: post.title || post.headline,
+    targetAudience: "Website readers",
+    searchIntent: "informational",
+    tone: "Brand voice",
+    desiredWordCount: Math.max(700, plainText(post.body).split(/\s+/).filter(Boolean).length),
+    internalLinks: "",
+    externalLinks: "",
+    brandInfo: "",
+    language: "Vietnamese",
+  };
+}
+
+function checklistIcon(status: ChecklistItem["status"]) {
+  if (status === "pass") return <CheckCircle2 size={14} />;
+  if (status === "warning") return <AlertCircle size={14} />;
+  return <AlertCircle size={14} />;
 }
 
 function emptyGear(): Gear {
@@ -289,9 +490,10 @@ function Field(props: {
   placeholder?: string;
   type?: string;
   required?: boolean;
+  className?: string;
 }) {
   return (
-    <label className="cms-field">
+    <label className={`cms-field ${props.className ?? ""}`}>
       <span>{props.label}</span>
       <input
         type={props.type ?? "text"}
@@ -310,9 +512,10 @@ function TextArea(props: {
   onChange: (v: string) => void;
   rows?: number;
   placeholder?: string;
+  className?: string;
 }) {
   return (
-    <label className="cms-field cms-field-full">
+    <label className={`cms-field cms-field-full ${props.className ?? ""}`}>
       <span>{props.label}</span>
       <textarea
         value={props.value}
@@ -320,6 +523,69 @@ function TextArea(props: {
         placeholder={props.placeholder}
         onChange={(e) => props.onChange(e.target.value)}
       />
+    </label>
+  );
+}
+
+function ChipInput(props: {
+  label: string;
+  value: string[];
+  onChange: (v: string[]) => void;
+  placeholder?: string;
+  className?: string;
+}) {
+  const [draft, setDraft] = useState("");
+
+  const commit = (raw = draft) => {
+    const nextValues = splitList(raw);
+    if (nextValues.length === 0) return;
+    props.onChange(uniqueList([...props.value, ...nextValues]));
+    setDraft("");
+  };
+
+  const remove = (index: number) => {
+    props.onChange(props.value.filter((_, i) => i !== index));
+  };
+
+  return (
+    <label className={`cms-field cms-chip-field ${props.className ?? ""}`}>
+      <span>{props.label}</span>
+      <div className="cms-chip-input-wrap">
+        {props.value.map((item, index) => (
+          <button
+            key={`${item}-${index}`}
+            type="button"
+            className="cms-chip"
+            onClick={() => remove(index)}
+            title={`Remove ${item}`}
+          >
+            <span>{item}</span>
+            <X size={12} aria-hidden="true" />
+          </button>
+        ))}
+        <input
+          value={draft}
+          placeholder={props.value.length ? "" : props.placeholder}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/[,;\n]/.test(value)) {
+              commit(value);
+            } else {
+              setDraft(value);
+            }
+          }}
+          onBlur={() => commit()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === "," || e.key === ";") {
+              e.preventDefault();
+              commit();
+            }
+            if (e.key === "Backspace" && !draft && props.value.length > 0) {
+              remove(props.value.length - 1);
+            }
+          }}
+        />
+      </div>
     </label>
   );
 }
@@ -357,6 +623,41 @@ function SmallButton(props: {
       {props.icon}
       <span>{props.children}</span>
     </button>
+  );
+}
+
+function SmallLinkButton(props: {
+  children: React.ReactNode;
+  href?: string;
+  icon?: React.ReactNode;
+  tone?: "primary" | "secondary" | "danger" | "ghost";
+  title?: string;
+}) {
+  if (!props.href) {
+    return (
+      <button
+        className={`cms-button cms-button-${props.tone ?? "secondary"}`}
+        type="button"
+        disabled
+        title={props.title}
+      >
+        {props.icon}
+        <span>{props.children}</span>
+      </button>
+    );
+  }
+
+  return (
+    <a
+      className={`cms-link-button cms-button-${props.tone ?? "secondary"}`}
+      href={props.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={props.title}
+    >
+      {props.icon}
+      <span>{props.children}</span>
+    </a>
   );
 }
 
@@ -608,14 +909,15 @@ function AskAiDrawer({ onClose }: { onClose: () => void }) {
 }
 
 /* ------ Stat card ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
-function StatCard({ def, value, footerValues }: {
+function StatCard({ def, value, footerValues, onOpen }: {
   def: StatDef;
   value: string;
   footerValues: string[];
+  onOpen: () => void;
 }) {
   const Icon = def.icon;
   return (
-    <article className="cms-stat-card">
+    <button type="button" className="cms-stat-card" onClick={onOpen}>
       <div className="cms-stat-head">
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div className={`cms-stat-icon-wrap ${def.accent}`}>
@@ -638,7 +940,7 @@ function StatCard({ def, value, footerValues }: {
           </span>
         ))}
       </div>
-    </article>
+    </button>
   );
 }
 
@@ -873,7 +1175,11 @@ function TrafficChart() {
 }
 
 /* ------ Recent posts table --------------------------------------------------------------------------------------------------------------------------------- */
-function RecentPostsTable({ posts }: { posts: WritingPost[] }) {
+function RecentPostsTable({ posts, onOpenPost, onOpenWriting }: {
+  posts: WritingPost[];
+  onOpenPost: (post: WritingPost) => void;
+  onOpenWriting: () => void;
+}) {
   const display = posts.slice(0, 5);
 
   function statusBadge(post: WritingPost) {
@@ -889,7 +1195,7 @@ function RecentPostsTable({ posts }: { posts: WritingPost[] }) {
           <div className="cms-table-title">Recent Writing</div>
           <div className="cms-table-sub">Your latest content updates</div>
         </div>
-        <button type="button" className="cms-table-more" aria-label="More options">
+        <button type="button" className="cms-table-more" aria-label="Open writing" onClick={onOpenWriting}>
           <MoreHorizontal size={16} />
         </button>
       </div>
@@ -911,7 +1217,20 @@ function RecentPostsTable({ posts }: { posts: WritingPost[] }) {
             </thead>
             <tbody>
               {display.map((post) => (
-                <tr key={post.slug}>
+                <tr
+                  key={post.slug}
+                  className="cms-table-row-action"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Open ${post.headline || post.title || post.slug || "writing post"}`}
+                  onClick={() => onOpenPost(post)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onOpenPost(post);
+                    }
+                  }}
+                >
                   <td>
                     <div className="cms-table-post-cell">
                       <div className="cms-table-post-icon" aria-hidden="true">
@@ -1010,14 +1329,36 @@ function ActivityPanel() {
 }
 
 /* ------ Dashboard / Overview ------------------------------------------------------------------------------------------------------------------------------ */
-function Dashboard({ data }: { data: CmsData }) {
+function Dashboard({ data, onOpenTab, onOpenPost, jsonPosts }: {
+  data: CmsData;
+  onOpenTab: (tab: Tab) => void;
+  onOpenPost: (post: any) => void;
+  jsonPosts: any[];
+}) {
   const gearTotal = data.gear.sections.reduce((s, sec) => s + sec.items.length, 0);
-  const draftCount  = data.writing.filter((p) => p.draft).length;
-  const publishedCount = data.writing.filter((p) => !p.draft).length;
+
+  // Use JSON posts if they exist, otherwise fallback to markdown posts (data.writing)
+  const postsToUse = jsonPosts && jsonPosts.length > 0 ? jsonPosts.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    title: p.title,
+    headline: p.title,
+    summary: p.excerpt || "",
+    metaDescription: p.seoDescription || "",
+    keyword: p.focusKeyword || "",
+    tags: p.tags || [],
+    coverImage: p.coverImage || "",
+    publishedAt: p.publishedAt ? p.publishedAt.split('T')[0] : "",
+    draft: p.status !== "published",
+    body: p.contentMarkdown || "",
+  })) : data.writing;
+
+  const draftCount  = postsToUse.filter((p) => p.draft).length;
+  const publishedCount = postsToUse.filter((p) => !p.draft).length;
 
   const statValues: [string, string[]][] = [
     [
-      String(data.writing.length),
+      String(postsToUse.length),
       [String(publishedCount), String(draftCount), "0"],
     ],
     [String(gearTotal), [String(data.gear.sections.length)]],
@@ -1032,10 +1373,15 @@ function Dashboard({ data }: { data: CmsData }) {
     <div className="cms-content">
       {/* Page header */}
       <div className="cms-page-header">
-        <h1 className="cms-page-title">Dashboard</h1>
-        <p className="cms-page-subtitle">
-          Here&apos;s what&apos;s happening with your content today.
-        </p>
+        <div>
+          <h1 className="cms-page-title">Dashboard</h1>
+          <p className="cms-page-subtitle">
+            Here&apos;s what&apos;s happening with your content today.
+          </p>
+        </div>
+        <SmallLinkButton href="/" icon={<ExternalLink size={14} />} tone="secondary">
+          View site
+        </SmallLinkButton>
       </div>
 
       {/* Stat cards */}
@@ -1046,6 +1392,7 @@ function Dashboard({ data }: { data: CmsData }) {
             def={def}
             value={statValues[i][0]}
             footerValues={statValues[i][1]}
+            onOpen={() => onOpenTab(def.tab)}
           />
         ))}
       </div>
@@ -1060,7 +1407,11 @@ function Dashboard({ data }: { data: CmsData }) {
       </div>
 
       {/* Recent posts table */}
-      <RecentPostsTable posts={data.writing} />
+      <RecentPostsTable
+        posts={postsToUse}
+        onOpenPost={onOpenPost}
+        onOpenWriting={() => onOpenTab("writing")}
+      />
     </div>
   );
 }
@@ -1071,7 +1422,7 @@ type CmsDashboardProps = {
 };
 
 export default function CmsDashboard({ initialData }: CmsDashboardProps) {
-  const [activeTab,          setActiveTab]          = useState<Tab>("overview");
+  const [activeTab,          setActiveTab]          = useState<Tab>(initialCmsTab);
   const normalizedInitial                            = useMemo(
     () => (initialData ? normalizeData(initialData) : null),
     [initialData],
@@ -1082,6 +1433,104 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       : { type: "loading", text: "Loading CMS data--" },
   );
   const [data,              setData]              = useState<CmsData | null>(normalizedInitial);
+
+  // Pathname state for client-side routing detection
+  const [currentPathname, setCurrentPathname] = useState(
+    typeof window !== "undefined" ? window.location.pathname : ""
+  );
+
+  // Route details client-side for CMS integration of BlockNote editor
+  const routeInfo = useMemo(() => {
+    const path = currentPathname;
+    if (path === "/cms/writing/new") return { mode: "new" as const };
+    const match = path.match(/^\/cms\/writing\/([^/]+)\/edit$/);
+    if (match) return { mode: "edit" as const, id: match[1] };
+    return { mode: "list" as const };
+  }, [currentPathname]);
+
+  const [jsonPosts, setJsonPosts] = useState<any[]>([]);
+  const [loadingJsonPosts, setLoadingJsonPosts] = useState(true);
+  const [createdId, setCreatedId] = useState<string | null>(null);
+  const [editingPost, setEditingPost] = useState<any | null>(null);
+  const [loadingPost, setLoadingPost] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  // Sync pathname on history changes (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPathname(window.location.pathname);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  // Fetch block editor (JSON) posts for list view
+  useEffect(() => {
+    if (activeTab === "writing" && routeInfo.mode === "list") {
+      setLoadingJsonPosts(true);
+      fetch("/api/writing/posts")
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success) {
+            setJsonPosts(res.data);
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          setLoadingJsonPosts(false);
+        });
+    }
+  }, [activeTab, routeInfo.mode]);
+
+  // Create draft post client-side if URL is /cms/writing/new
+  useEffect(() => {
+    if (routeInfo.mode === "new" && !createdId) {
+      fetch("/api/writing/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: "Untitled", status: "draft" }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setCreatedId(data.data.id);
+            window.location.replace(`/cms/writing/${data.data.id}/edit`);
+          } else {
+            alert("Failed to create post: " + (data.error || "Unknown error"));
+            window.location.replace("/cms/writing");
+          }
+        })
+        .catch((err) => {
+          alert("Failed to create post: " + String(err));
+          window.location.replace("/cms/writing");
+        });
+    }
+  }, [routeInfo.mode, createdId]);
+
+  // Load post details client-side if URL is /cms/writing/:id/edit
+  useEffect(() => {
+    if (routeInfo.mode === "edit" && routeInfo.id) {
+      setLoadingPost(true);
+      setLoadError(null);
+      fetch(`/api/writing/posts/${routeInfo.id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setEditingPost(data.data);
+          } else {
+            setLoadError(data.error || "Failed to load post.");
+          }
+        })
+        .catch((err) => {
+          setLoadError(String(err));
+        })
+        .finally(() => {
+          setLoadingPost(false);
+        });
+    } else {
+      setEditingPost(null);
+    }
+  }, [routeInfo.mode, routeInfo.id]);
   const [writingDraft,      setWritingDraft]      = useState<WritingPost>(
     normalizedInitial?.writing[0] ?? emptyWriting(),
   );
@@ -1100,13 +1549,48 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   const [gearAiFilling,     setGearAiFilling]     = useState(false);
   const [uploadingImages,   setUploadingImages]   = useState<Array<{ url: string; name: string }>>([]);
   const [previewImage,      setPreviewImage]      = useState<{ src: string; alt: string } | null>(null);
+  const [deleteDialogOpen,   setDeleteDialogOpen]   = useState(false);
+  const [resourceToDelete,   setResourceToDelete]   = useState<{
+    resource: string;
+    slug: string;
+    successText: string;
+    title: string;
+  } | null>(null);
   const gearUploadRef  = useRef<HTMLInputElement>(null);
   const photoUploadRef = useRef<HTMLInputElement>(null);
+  const writingCoverUploadRef = useRef<HTMLInputElement>(null);
+  const writingBodyUploadRef = useRef<HTMLInputElement>(null);
   const [darkMode, setDarkMode] = useState(false);
   const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
 
   const selectedGearSection = gearDraft.sections[gearSectionIndex];
   const selectedGearItem    = selectedGearSection?.items[gearItemIndex];
+  const writingKeywordSuggestions = useMemo(() => suggestWritingKeywords(writingDraft), [writingDraft]);
+  const writingSeoForm = useMemo(() => writingToSeoForm(writingDraft), [writingDraft]);
+  const writingSeoArticle = useMemo(() => writingToSeoArticle(writingDraft), [writingDraft]);
+  const writingSeoScore = useMemo(
+    () => writingSeoForm.focusKeyword
+      ? calculateSeoScore(writingSeoArticle, writingSeoForm)
+      : null,
+    [writingSeoArticle, writingSeoForm],
+  );
+
+  function navigateToTab(tab: Tab, options: { replace?: boolean } = {}) {
+    setActiveTab(tab);
+    if (typeof window === "undefined") return;
+
+    const nextPath = cmsTabPaths[tab];
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const next = `${nextPath}${window.location.search}${window.location.hash}`;
+
+    if (current === next) return;
+    if (options.replace) {
+      window.history.replaceState(null, "", next);
+    } else {
+      window.history.pushState(null, "", next);
+    }
+    setCurrentPathname(nextPath);
+  }
 
   /* ------ Data loading --------------------------------------------------------------------------------------------------------------------------------------------- */
   async function loadData(options: { quiet?: boolean } = {}) {
@@ -1147,6 +1631,12 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   }, [normalizedInitial]);
 
   useEffect(() => {
+    const onPopState = () => setActiveTab(tabFromCmsPath(window.location.pathname));
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setPreviewImage(null); };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -1176,9 +1666,16 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     }
   }
 
-  async function deleteResource(resource: string, slug: string, successText: string) {
-    if (!slug || !window.confirm(`Delete ${slug}?`)) return;
+  function requestDeleteResource(resource: string, slug: string, successText: string, title: string) {
+    setResourceToDelete({ resource, slug, successText, title });
+    setDeleteDialogOpen(true);
+  }
+
+  async function confirmDeleteResource() {
+    if (!resourceToDelete) return;
+    const { resource, slug, successText } = resourceToDelete;
     setSaving(true);
+    setDeleteDialogOpen(false);
     setStatus({ type: "loading", text: "Deleting entry--" });
     try {
       const response = await fetch("/api/cms", {
@@ -1199,10 +1696,16 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to delete entry." });
     } finally {
       setSaving(false);
+      setResourceToDelete(null);
     }
   }
 
-  async function uploadFiles(target: "photos" | "gear", files: FileList | null, slug?: string) {
+  async function uploadFiles(
+    target: "photos" | "gear" | "writing",
+    files: FileList | null,
+    slug?: string,
+    mode?: "cover" | "body",
+  ) {
     if (!files?.length) return;
     setSaving(true);
     setStatus({ type: "loading", text: "Uploading images--" });
@@ -1221,6 +1724,23 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       const nextData = normalizeData(result.data);
       setData(nextData);
       if (target === "gear" && result.uploaded?.[0]?.src) updateGearItem("image", result.uploaded[0].src);
+      if (target === "writing" && result.uploaded?.length) {
+        const uploaded = result.uploaded as Array<{ src: string; alt: string }>;
+        if (mode === "cover") {
+          setWritingDraft((cur) => ({
+            ...cur,
+            slug: slug || cur.slug,
+            coverImage: uploaded[0].src,
+          }));
+        } else {
+          const markdown = uploaded.map((asset) => `![${asset.alt || "Article image"}](${asset.src})`).join("\n\n");
+          setWritingDraft((cur) => ({
+            ...cur,
+            slug: slug || cur.slug,
+            body: [cur.body.trim(), markdown].filter(Boolean).join("\n\n"),
+          }));
+        }
+      }
       if (target === "photos") {
         const nextLoc = nextData.photos.find((l) => l.slug === slug);
         if (nextLoc) setPhotoDraft(nextLoc);
@@ -1231,12 +1751,46 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     } finally {
       setSaving(false);
       setUploadingImages((cur) => { cur.forEach((img) => URL.revokeObjectURL(img.url)); return []; });
+      if (target === "writing" && mode === "cover" && writingCoverUploadRef.current) {
+        writingCoverUploadRef.current.value = "";
+      }
+      if (target === "writing" && mode === "body" && writingBodyUploadRef.current) {
+        writingBodyUploadRef.current.value = "";
+      }
     }
   }
 
   async function logout() {
     await fetch("/api/logout", { method: "POST" });
     window.location.href = "/login";
+  }
+
+  function updateWritingTitle(value: string) {
+    const previousAutoSlug = slugify(writingDraft.title || writingDraft.headline || "");
+    const shouldUpdateSlug = !writingDraft.slug || writingDraft.slug === previousAutoSlug;
+    setWritingDraft({
+      ...writingDraft,
+      title: value,
+      slug: shouldUpdateSlug ? slugify(value || writingDraft.headline || "") : writingDraft.slug,
+    });
+  }
+
+  function updateWritingHeadline(value: string) {
+    const previousAutoSlug = slugify(writingDraft.title || writingDraft.headline || "");
+    const shouldUpdateSlug = !writingDraft.slug || writingDraft.slug === previousAutoSlug;
+    setWritingDraft({
+      ...writingDraft,
+      headline: value,
+      slug: shouldUpdateSlug ? slugify(writingDraft.title || value || "") : writingDraft.slug,
+    });
+  }
+
+  function writingUploadSlug() {
+    const nextSlug = writingDraft.slug || slugify(writingDraft.title || writingDraft.headline || "writing-draft");
+    if (!writingDraft.slug) {
+      setWritingDraft((cur) => ({ ...cur, slug: nextSlug }));
+    }
+    return nextSlug;
   }
 
   /* ------ Gear helpers --------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -1374,99 +1928,68 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   }
 
   function removeGearSection() {
-    setGearDraft((cur) => ({ ...cur, sections: cur.sections.filter((_, i) => i !== gearSectionIndex) }));
+    setGearDraft((cur) => ({
+      ...cur,
+      sections: cur.sections.filter((_, i) => i !== gearSectionIndex),
+    }));
     setGearSectionIndex(0);
     setGearItemIndex(0);
   }
 
-  /* ------ Tab renderers ------------------------------------------------------------------------------------------------------------------------------------------ */
-  function renderOverview() {
-    if (!data) return null;
-    return <Dashboard data={data} />;
-  }
+  function openWritingPost(post: any) {
+          if (post.id) {
+            window.location.href = `/cms/writing/${post.id}/edit`;
+          } else {
+            setWritingDraft(post);
+            navigateToTab("writing");
+          }
+        }
 
-  function renderWriting() {
-    return (
-      <div className="cms-content">
-        <div className="cms-page-header">
-          <h1 className="cms-page-title">Writing</h1>
-          <p className="cms-page-subtitle">Create and manage your blog posts and articles.</p>
-        </div>
-        <section className="cms-editor-grid">
-          <aside className="cms-list-panel">
-            <div className="cms-panel-head">
-              <h2>Posts</h2>
-              <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={() => setWritingDraft(emptyWriting())}>
-                New
-              </SmallButton>
-            </div>
-            <div className="cms-list">
-              {(data?.writing ?? []).map((post) => (
-                <button
-                  key={post.slug}
-                  type="button"
-                  className={post.slug === writingDraft.slug ? "is-active" : ""}
-                  onClick={() => setWritingDraft(post)}
-                >
-                  <span>{post.headline || post.title || "(Untitled)"}</span>
-                  <small>{post.draft ? "Draft" : post.publishedAt}</small>
-                </button>
-              ))}
-              {(data?.writing ?? []).length === 0 && (
-                <p className="cms-empty">No posts yet.</p>
-              )}
-            </div>
-          </aside>
+        function renderOverview() {
+          if (!data) return null;
+          return (
+            <Dashboard
+              data={data}
+              onOpenTab={navigateToTab}
+              onOpenPost={openWritingPost}
+              jsonPosts={jsonPosts}
+            />
+          );
+        }
 
-          <form
-            className="cms-editor"
-            onSubmit={(e) => {
-              e.preventDefault();
-              saveResource("writing", writingDraft, "Writing post saved.");
-            }}
-          >
-            <div className="cms-editor-head">
-              <div>
-                <p className="cms-kicker">Markdown entry</p>
-                <h2>{writingDraft.slug ? writingDraft.headline || writingDraft.slug : "New writing post"}</h2>
+        function renderWriting() {
+          if (loadingJsonPosts) {
+            return (
+              <div className="cms-loading">
+                <Loader2 size={24} className="cms-spin animate-spin" />
+                <span>Loading Writing posts--</span>
               </div>
-              <div className="cms-actions">
-                <SmallButton icon={<Save size={15} />} type="submit" disabled={saving}>Save</SmallButton>
-                <SmallButton
-                  icon={<Trash2 size={15} />}
-                  tone="danger"
-                  disabled={!writingDraft.slug || saving}
-                  onClick={() => deleteResource("writing", writingDraft.slug, "Writing post deleted.")}
-                >
-                  Delete
-                </SmallButton>
-              </div>
+            );
+          }
+          return (
+            <div className="cms-content font-sans">
+              <WritingDashboard initialPosts={jsonPosts} />
             </div>
-
-            <div className="cms-form-grid">
-              <Field label="Slug"       value={writingDraft.slug}            onChange={(v) => setWritingDraft({ ...writingDraft, slug: v })} />
-              <Field label="Published"  type="date" value={writingDraft.publishedAt} onChange={(v) => setWritingDraft({ ...writingDraft, publishedAt: v })} />
-              <Field label="Title"      required value={writingDraft.title}   onChange={(v) => setWritingDraft({ ...writingDraft, title: v })} />
-              <Field label="Headline"   required value={writingDraft.headline} onChange={(v) => setWritingDraft({ ...writingDraft, headline: v })} />
-              <Field label="Tags"       value={listToString(writingDraft.tags)} onChange={(v) => setWritingDraft({ ...writingDraft, tags: splitList(v) })} />
-              <Field label="Cover image" value={writingDraft.coverImage}      onChange={(v) => setWritingDraft({ ...writingDraft, coverImage: v })} />
-              <TextArea label="Summary"           value={writingDraft.summary}          rows={3}  onChange={(v) => setWritingDraft({ ...writingDraft, summary: v })} />
-              <TextArea label="Meta description"  value={writingDraft.metaDescription}  rows={3}  onChange={(v) => setWritingDraft({ ...writingDraft, metaDescription: v })} />
-              <TextArea label="Body markdown"     value={writingDraft.body}             rows={16} onChange={(v) => setWritingDraft({ ...writingDraft, body: v })} />
-            </div>
-            <Toggle label="Keep as draft" checked={writingDraft.draft} onChange={(v) => setWritingDraft({ ...writingDraft, draft: v })} />
-          </form>
-        </section>
-      </div>
-    );
-  }
+          );
+        }
 
   function renderGear() {
+    const gearViewHref = selectedGearItem?.slug
+      ? `/gear#${selectedGearItem.slug}`
+      : selectedGearSection?.slug
+        ? `/gear#${selectedGearSection.slug}`
+        : "/gear";
+
     return (
       <div className="cms-content">
         <div className="cms-page-header">
-          <h1 className="cms-page-title">Gear</h1>
-          <p className="cms-page-subtitle">Manage your tools, setup, and product recommendations.</p>
+          <div>
+            <h1 className="cms-page-title">Gear</h1>
+            <p className="cms-page-subtitle">Manage your tools, setup, and product recommendations.</p>
+          </div>
+          <SmallLinkButton href={gearViewHref} icon={<ExternalLink size={14} />} tone="secondary">
+            View page
+          </SmallLinkButton>
         </div>
         <section className="cms-editor-grid">
           <aside className="cms-list-panel">
@@ -1497,6 +2020,11 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
               <div>
                 <p className="cms-kicker">Gear setup JSON</p>
                 <h2>{gearDraft.title}</h2>
+              </div>
+              <div className="cms-actions">
+                <SmallLinkButton href={gearViewHref} icon={<ExternalLink size={14} />} tone="secondary">
+                  View page
+                </SmallLinkButton>
               </div>
             </div>
 
@@ -1596,11 +2124,18 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   }
 
   function renderWork() {
+    const projectViewHref = projectDraft.slug ? `/work/${projectDraft.slug}` : undefined;
+
     return (
       <div className="cms-content">
         <div className="cms-page-header">
-          <h1 className="cms-page-title">Work</h1>
-          <p className="cms-page-subtitle">Manage your portfolio projects and case studies.</p>
+          <div>
+            <h1 className="cms-page-title">Work</h1>
+            <p className="cms-page-subtitle">Manage your portfolio projects and case studies.</p>
+          </div>
+          <SmallLinkButton href={projectViewHref ?? "/work"} icon={<ExternalLink size={14} />} tone="secondary">
+            View page
+          </SmallLinkButton>
         </div>
         <section className="cms-editor-grid">
           <aside className="cms-list-panel">
@@ -1643,12 +2178,20 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                 <h2>{projectDraft.title || "New work project"}</h2>
               </div>
               <div className="cms-actions">
+                <SmallLinkButton
+                  href={projectViewHref}
+                  icon={<ExternalLink size={15} />}
+                  tone="secondary"
+                  title={projectViewHref ? "Open public work page" : "Add a slug before opening the public page"}
+                >
+                  View page
+                </SmallLinkButton>
                 <SmallButton icon={<Save size={15} />} type="submit" disabled={saving}>Save</SmallButton>
                 <SmallButton
                   icon={<Trash2 size={15} />}
                   tone="danger"
                   disabled={!projectDraft.slug || saving}
-                  onClick={() => deleteResource("projects", projectDraft.slug, "Work project deleted.")}
+                  onClick={() => requestDeleteResource("projects", projectDraft.slug, "Work project deleted.", projectDraft.title || projectDraft.slug)}
                 >
                   Delete
                 </SmallButton>
@@ -1678,11 +2221,18 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   }
 
   function renderPhotos() {
+    const photoViewHref = photoDraft.slug ? `/photos#${photoDraft.slug}` : undefined;
+
     return (
       <div className="cms-content">
         <div className="cms-page-header">
-          <h1 className="cms-page-title">Photos</h1>
-          <p className="cms-page-subtitle">Manage your photo locations and image galleries.</p>
+          <div>
+            <h1 className="cms-page-title">Photos</h1>
+            <p className="cms-page-subtitle">Manage your photo locations and image galleries.</p>
+          </div>
+          <SmallLinkButton href={photoViewHref ?? "/photos"} icon={<ExternalLink size={14} />} tone="secondary">
+            View page
+          </SmallLinkButton>
         </div>
         <section className="cms-editor-grid">
           <aside className="cms-list-panel">
@@ -1725,12 +2275,20 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                 <h2>{photoDraft.location || "New photo location"}</h2>
               </div>
               <div className="cms-actions">
+                <SmallLinkButton
+                  href={photoViewHref}
+                  icon={<ExternalLink size={15} />}
+                  tone="secondary"
+                  title={photoViewHref ? "Open public photo location" : "Add a slug before opening the public page"}
+                >
+                  View page
+                </SmallLinkButton>
                 <SmallButton icon={<Save size={15} />} type="submit" disabled={saving}>Save</SmallButton>
                 <SmallButton
                   icon={<Trash2 size={15} />}
                   tone="danger"
                   disabled={!photoDraft.slug || saving}
-                  onClick={() => deleteResource("photos", photoDraft.slug, "Photo location deleted.")}
+                  onClick={() => requestDeleteResource("photos", photoDraft.slug, "Photo location deleted.", photoDraft.location || photoDraft.slug)}
                 >
                   Delete
                 </SmallButton>
@@ -1819,13 +2377,49 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     return renderOverview();
   }
 
+  /* ------ Editor mode returns ---------------------------------------------------------------------------------------------------------------------------------- */
+  if (routeInfo.mode === "new") {
+    return (
+      <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'sans-serif' }}>
+        <Loader2 className="cms-spin animate-spin" size={32} style={{ marginBottom: 12 }} />
+        <div>Creating draft post...</div>
+      </div>
+    );
+  }
+
+  if (routeInfo.mode === "edit") {
+    if (loadingPost) {
+      return (
+        <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'sans-serif' }}>
+          <Loader2 className="cms-spin animate-spin" size={32} style={{ marginBottom: 12 }} />
+          <div>Loading editor...</div>
+        </div>
+      );
+    }
+    if (loadError) {
+      return (
+        <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'sans-serif', gap: 16 }}>
+          <div style={{ color: 'red' }}>Error: {loadError}</div>
+          <a href="/cms/writing" style={{ padding: '8px 16px', background: '#1a1a1a', color: 'white', borderRadius: 8, textDecoration: 'none' }}>Back to Writing</a>
+        </div>
+      );
+    }
+    if (editingPost) {
+      return (
+        <div className={`cms-app cms-editor-only${darkMode ? " cms-dark-mode" : ""}`}>
+          <WritingEditorPage initialPost={editingPost} />
+        </div>
+      );
+    }
+  }
+
   /* ------ Render --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
   return (
     <div className={`cms-app${darkMode ? " cms-dark-mode" : ""}`}>
       <Sidebar
         activeTab={activeTab}
         onTabChange={(tab) => {
-          setActiveTab(tab);
+          navigateToTab(tab);
         }}
         onLogout={logout}
         setStatus={setStatus}
@@ -1837,16 +2431,16 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
           onQuickCreate={(type) => {
             if (type === "writing") {
               setWritingDraft(emptyWriting());
-              setActiveTab("writing");
+              navigateToTab("writing");
             } else if (type === "gear") {
               setGearDraft(emptyGear());
-              setActiveTab("gear");
+              navigateToTab("gear");
             } else if (type === "work") {
               setProjectDraft(emptyProject((data?.projects.length ?? 0) + 1));
-              setActiveTab("work");
+              navigateToTab("work");
             } else if (type === "photos") {
               setPhotoDraft(emptyPhotoLocation((data?.photos.length ?? 0) + 1));
-              setActiveTab("photos");
+              navigateToTab("photos");
             }
           }}
           onOpenAskAi={() => setAiDrawerOpen(true)}
@@ -1891,6 +2485,15 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       {aiDrawerOpen && (
         <AskAiDrawer onClose={() => setAiDrawerOpen(false)} />
       )}
+
+      <DeleteConfirmDialog
+        open={deleteDialogOpen}
+        title="Are you sure?"
+        description={`Are you sure you want to delete "${resourceToDelete?.title || "this item"}"? This action cannot be undone.`}
+        onConfirm={confirmDeleteResource}
+        onCancel={() => { setDeleteDialogOpen(false); setResourceToDelete(null); }}
+        loading={saving}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { animate, motion, useAnimationFrame, useMotionValue, useScroll, useTransform } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -25,7 +26,7 @@ type BentoInfiniteGalleryProps = {
   items?: BentoItem[];
 };
 
-const introContainerVariants = {
+const introContainerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -35,7 +36,7 @@ const introContainerVariants = {
   },
 };
 
-const introChildVariants = {
+const introChildVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 18,
@@ -47,12 +48,12 @@ const introChildVariants = {
     filter: "blur(0px)",
     transition: {
       duration: 0.68,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   },
 };
 
-const railVariants = {
+const railVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
@@ -65,7 +66,7 @@ const railVariants = {
     transition: {
       delay: showIntro ? 0.62 : 0.16,
       duration: 0.76,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     },
   }),
 };

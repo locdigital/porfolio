@@ -34,8 +34,8 @@ export const GET: APIRoute = async ({ params, request }) => {
   const isGithubEnabled = !!(githubConfig.token && githubConfig.owner && githubConfig.repo);
   const useGithub = (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") && isGithubEnabled;
 
-  let fileBuffer: ArrayBuffer | Buffer;
-  let ext = path.extname(safePath).toLowerCase();
+  let fileBuffer: ArrayBuffer;
+  const ext = path.extname(safePath).toLowerCase();
 
   if (useGithub) {
     try {
@@ -65,7 +65,8 @@ export const GET: APIRoute = async ({ params, request }) => {
     }
 
     try {
-      fileBuffer = await fs.readFile(absolutePath);
+      const buffer = await fs.readFile(absolutePath);
+      fileBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
     } catch (error) {
       return new Response("Error reading file", { status: 500 });
     }

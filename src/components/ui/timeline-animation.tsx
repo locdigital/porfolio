@@ -2,7 +2,7 @@
 import React, { useRef, type RefObject } from "react";
 import { motion, useInView } from "framer-motion";
 
-type ValidTag = keyof JSX.IntrinsicElements;
+type ValidTag = keyof React.JSX.IntrinsicElements;
 
 interface TimelineContentProps<T extends ValidTag = "div"> {
   as?: T;
@@ -70,5 +70,4 @@ export function TimelineContent<T extends ValidTag = "div">({
     </MotionTag>
   );
 }
-
 

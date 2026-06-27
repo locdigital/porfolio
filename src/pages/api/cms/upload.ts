@@ -29,8 +29,8 @@ export const POST: APIRoute = async ({ request }) => {
     const slug = String(form.get("slug") ?? "");
     const files = form.getAll("files").filter(isFile);
 
-    if (target !== "photos" && target !== "gear") {
-      return json({ success: false, error: "Upload target must be photos or gear." }, { status: 400 });
+    if (target !== "photos" && target !== "gear" && target !== "writing") {
+      return json({ success: false, error: "Upload target must be photos, gear, or writing." }, { status: 400 });
     }
 
     if (target === "photos" && !slug) {

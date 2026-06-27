@@ -6,7 +6,7 @@ import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const sortedProjects = await getProjects();
 const workTitle = "Work | Phuc Loc Nguyen";
-const workDescription = "Selected projects by Phuc Loc Nguyen --- paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
+const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
 ---
 
 <Layout
@@ -65,7 +65,7 @@ const workDescription = "Selected projects by Phuc Loc Nguyen --- paid media sca
                 <p class="project-summary">{project.summary}</p>
 
                 <p class="project-tools">
-                  {project.tags.map((tag, ti) => (
+                  {project.tags.map((tag) => (
                     <span class="tag">{tag}</span>
                   ))}
                 </p>

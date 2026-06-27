@@ -6,9 +6,9 @@ export const DEFAULT_DESCRIPTION =
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 export const sameAs = [
+  "https://www.instagram.com/henrygoodkid",
   "https://www.linkedin.com/in/phucloc",
-  "https://github.com/phucloc",
-  "https://phucloc.digital/resume",
+  "https://www.pexels.com/@henrygoodkid",
 ];
 
 export type JsonLd = Record<string, unknown>;

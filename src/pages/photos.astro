@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import { getPhotoLocations } from "../lib/cms";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
 import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
+import BlurFade from "../components/ui/BlurFade.astro";
+import { Images } from "lucide-react";
 
 const sourceLocations = await getPhotoLocations();
 const optimizedLocations = await Promise.all(
@@ -36,7 +38,6 @@ const optimizedLocations = await Promise.all(
     ),
   })),
 );
-const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photos.length, 0);
 ---
 
 <Layout title="Photos --- Phuc Loc Nguyen">
@@ -70,7 +71,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
               </a>
             ))}
             <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
-              Gallery <span class="photos-gallery-arrow">-></span>
+              Gallery <Images className="photos-gallery-icon" size={15} strokeWidth={1.8} aria-hidden="true" />
             </a>
           </div>
         </nav>
@@ -102,27 +103,43 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
         <div class="container">
           <div class="loc-grid" data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
             {loc.photos.map((photo, i) => (
-              <div
-                class={`loc-photo-item r ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
-                data-d={String((i % 5) + 1)}
-                data-pswp-width={photo.fullWidth}
-                data-pswp-height={photo.fullHeight}
-                aria-label={photo.alt}
+              <BlurFade
+                delay={(i % 5) * 0.08}
+                className="break-inside-avoid mb-[4px]"
               >
-                {photo.previewSrcSet ? (
-                  <picture>
-                    <source
-                      type="image/avif"
-                      srcset={photo.previewSrcSet}
-                      sizes={photo.previewSizes}
-                    />
-                    {photo.webpSrcSet && (
+                <div
+                  class={`loc-photo-item ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
+                  data-pswp-width={photo.fullWidth}
+                  data-pswp-height={photo.fullHeight}
+                  aria-label={photo.alt}
+                  style={`aspect-ratio: ${photo.previewWidth} / ${photo.previewHeight};`}
+                >
+                  {photo.previewSrcSet ? (
+                    <picture>
                       <source
-                        type="image/webp"
-                        srcset={photo.webpSrcSet}
+                        type="image/avif"
+                        srcset={photo.previewSrcSet}
                         sizes={photo.previewSizes}
                       />
-                    )}
+                      {photo.webpSrcSet && (
+                        <source
+                          type="image/webp"
+                          srcset={photo.webpSrcSet}
+                          sizes={photo.previewSizes}
+                        />
+                      )}
+                      <img
+                        src={photo.previewSrc}
+                        width={photo.previewWidth}
+                        height={photo.previewHeight}
+                        alt={photo.alt}
+                        loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
+                        onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
+                      />
+                    </picture>
+                  ) : (
                     <img
                       src={photo.previewSrc}
                       width={photo.previewWidth}
@@ -131,23 +148,14 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
                       loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
                       decoding="async"
                       fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
+                      onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
                     />
-                  </picture>
-                ) : (
-                  <img
-                    src={photo.previewSrc}
-                    width={photo.previewWidth}
-                    height={photo.previewHeight}
-                    alt={photo.alt}
-                    loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
-                    decoding="async"
-                    fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
-                  />
-                )}
-                <div class="loc-photo-overlay" aria-hidden="true">
-                  <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
+                  )}
+                  <div class="loc-photo-overlay" aria-hidden="true">
+                    <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
+                  </div>
                 </div>
-              </div>
+              </BlurFade>
             ))}
           </div>
         </div>
@@ -292,12 +300,12 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
     color: rgba(14, 15, 17, 0.5);
   }
 
-  .photos-gallery-arrow {
+  .photos-gallery-icon {
     display: inline-block;
     transition: transform 0.2s ease;
   }
 
-  .photos-nav-gallery-btn:hover .photos-gallery-arrow {
+  .photos-nav-gallery-btn:hover .photos-gallery-icon {
     transform: translateX(3px);
   }
 
@@ -444,6 +452,7 @@ const totalPhotosCount = optimizedLocations.reduce((sum, loc) => sum + loc.photo
 </style>
 
 <script>
+  // @ts-nocheck
   import { gsap } from "gsap";
   import { Flip } from "gsap/Flip";
 

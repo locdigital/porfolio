@@ -244,7 +244,7 @@ const pageDescription = "Senior Performance Marketing Executive scaling multi-ch
 
         <div class="post-list">
           {posts && posts.length > 0 ? (
-            posts.slice(0, 5).map((post, i) => {
+            posts.slice(0, 5).map((post) => {
               const dateStr = post.data.publishedAt.toLocaleDateString('en-US', { 
                 month: 'short', 
                 year: 'numeric' 
@@ -262,8 +262,6 @@ const pageDescription = "Senior Performance Marketing Executive scaling multi-ch
             </div>
           )}
         </div>
-
-        <a href="/blog" class="see-all">All writing</a>
       </div>
     </section>
 

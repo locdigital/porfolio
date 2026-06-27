@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
-export interface HeroCollageProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface HeroCollageProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   title: React.ReactNode;
   subtitle: string;
   stats: { value: string; label: string }[];

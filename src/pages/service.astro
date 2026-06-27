@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
 import { getPhotoAsset } from "../lib/photo-assets";
 import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
 import { absoluteUrl, pageSchema } from "../lib/seo";
+import { ArrowRight } from "lucide-react";
 
 // Import optimized images for service cards/tabs
 const performanceImg = getPhotoAsset("/assets/photos/img-portfolio/photo-10.webp");
@@ -348,7 +348,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
               >
                 <span class="tab-num">{service.num}</span>
                 <span class="tab-title">{service.title}</span>
-                <span class="tab-arrow">→</span>
+                <ArrowRight className="tab-arrow" size={16} strokeWidth={1.8} aria-hidden="true" />
               </button>
             ))}
           </div>
@@ -620,7 +620,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   .section-title {
     font-family: var(--serif);
-    font-size: var(--fs-display);
+    font-size: clamp(30px, 3.4vw, 42px);
     font-weight: 400;
     line-height: 1.15;
     color: var(--text);

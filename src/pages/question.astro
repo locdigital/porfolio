@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import BlurFade from "../components/ui/BlurFade.astro";
+import { BriefcaseBusiness, ExternalLink, FileText, Mail } from "lucide-react";
 ---
 
 <Layout
@@ -40,7 +41,7 @@ import BlurFade from "../components/ui/BlurFade.astro";
           class="qp-pill"
           data-q="What projects and campaigns have you worked on? Tell me about your best work."
           type="button"
-        >see my work --</button>
+        ><BriefcaseBusiness className="qp-pill-icon" size={14} strokeWidth={1.8} aria-hidden="true" />see work</button>
         <button
           class="qp-pill"
           data-q="Tell me about your digital marketing background and work experience."
@@ -57,9 +58,15 @@ import BlurFade from "../components/ui/BlurFade.astro";
           type="button"
         >available for hire?</button>
         <div class="qp-pills-break"></div>
-        <a class="qp-pill qp-pill--ext" href="mailto:hi@loc.digital">email -></a>
-        <a class="qp-pill qp-pill--ext" href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer">LinkedIn -></a>
-        <a class="qp-pill qp-pill--ext" href="https://phucloc.digital/resume" target="_blank" rel="noopener noreferrer">resume -></a>
+        <a class="qp-pill qp-pill--ext" href="mailto:hi@loc.digital">
+          <Mail className="qp-pill-icon" size={14} strokeWidth={1.8} aria-hidden="true" />email
+        </a>
+        <a class="qp-pill qp-pill--ext" href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer">
+          <ExternalLink className="qp-pill-icon" size={14} strokeWidth={1.8} aria-hidden="true" />LinkedIn
+        </a>
+        <a class="qp-pill qp-pill--ext" href="https://phucloc.digital/resume" target="_blank" rel="noopener noreferrer">
+          <FileText className="qp-pill-icon" size={14} strokeWidth={1.8} aria-hidden="true" />resume
+        </a>
       </nav>
 
       <!-- Input form -->
@@ -88,7 +95,7 @@ import BlurFade from "../components/ui/BlurFade.astro";
         </label>
       </form>
 
-      <p class="qp-note">Answers are automated based on Loc's portfolio content.</p>
+      <p class="qp-note">Answers use Gemini with Loc's portfolio context and only cover Loc, work, industry, and contact.</p>
 
     </div><!-- /.qp-wrap -->
   </main>
@@ -280,6 +287,13 @@ import BlurFade from "../components/ui/BlurFade.astro";
 
   .qp-pill--ext {
     color: #2a2040;
+  }
+
+  .qp-pill-icon {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+    margin-right: 6px;
   }
 
   /* ------ Chat messages ------ */
@@ -559,31 +573,23 @@ import BlurFade from "../components/ui/BlurFade.astro";
       pills.forEach(p => { (p as HTMLButtonElement).disabled = loading; });
     }
 
-    // ------ Local Automated Responder ---------------------------------------------------------------------------------------------------
-    async function askLocalAgent(userText: string): Promise<void> {
+    // ------ Gemini Portfolio Responder ---------------------------------------------------------------------------------------------------
+    async function askPortfolioAgent(userText: string): Promise<void> {
       setLoading(true);
       showTyping();
 
-      // Simulate network delay for natural feel
-      await new Promise(r => setTimeout(r, 600 + Math.random() * 600));
+      let aiText = "Mình đang bị lỗi kết nối một chút. Bạn thử hỏi lại về Loc, công việc, kỹ năng hoặc thông tin liên hệ nha.";
 
-      const text = userText.toLowerCase();
-      let aiText = "";
-
-      if (text.includes("project") || text.includes("campaign") || text.includes("work") || text.includes("portfolio")) {
-        aiText = "Loc has worked on performance marketing, SEO, lead generation, and community growth for PlayAh!, WorkFlow Space, TOMATO Children's Home, POPS Worldwide, and education communities. Check out the Work section for detailed case studies.";
-      } else if (text.includes("background") || text.includes("experience") || text.includes("history") || text.includes("past")) {
-        aiText = "Loc is a Senior Performance Marketing Executive with 4+ years of experience scaling e-commerce, education, and consumer brands. His resume includes 10x website revenue growth, 30x+ TikTok Shop GMV growth, and 10x organic traffic growth.";
-      } else if (text.includes("skill") || text.includes("expertise") || text.includes("expert") || text.includes("do you know") || text.includes("can you")) {
-        aiText = "Loc's key skills include Performance Marketing on Meta, Google, and TikTok; TikTok Shop GMV scaling; SEO/SEM; GA4/GTM/Looker Studio analytics; n8n and email automation; and ROAS, CPA, and CPL optimization.";
-      } else if (text.includes("hire") || text.includes("available") || text.includes("freelance") || text.includes("job") || text.includes("opportunity")) {
-        aiText = "Yes, Loc is open to performance marketing, growth, and full-time opportunities. You can email him at hi@loc.digital to discuss further.";
-      } else if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("touch") || text.includes("connect")) {
-        aiText = "You can reach Loc directly via email at hi@loc.digital or connect with him on LinkedIn.";
-      } else if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
-        aiText = "Hi there! I'm here to help you with questions about Loc's digital marketing work. What would you like to know about his projects, skills, or experience?";
-      } else {
-        aiText = "I'm only here to answer questions about Loc's work! Try asking about his digital marketing campaigns, skills, or professional background.";
+      try {
+        const response = await fetch('/api/question', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: userText }),
+        });
+        const data = await response.json();
+        aiText = data?.answer || aiText;
+      } catch {
+        aiText = "Mình chưa gọi được Gemini lúc này. Bạn có thể hỏi về portfolio, kỹ năng, kinh nghiệm hoặc email Loc qua hi@loc.digital.";
       }
 
       removeTyping();
@@ -603,7 +609,7 @@ import BlurFade from "../components/ui/BlurFade.astro";
       addMessage(text, 'user');
       input.value = '';
 
-      await askLocalAgent(text);
+      await askPortfolioAgent(text);
     });
 
     // ------ Auto Introduction ---------------------------------------------------------------------------------------------
@@ -636,7 +642,7 @@ import BlurFade from "../components/ui/BlurFade.astro";
         triggerIntro(true);
         const q = pill.dataset.q!;
         addMessage(q, 'user');
-        await askLocalAgent(q);
+        await askPortfolioAgent(q);
       });
     });
 

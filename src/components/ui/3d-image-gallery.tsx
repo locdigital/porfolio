@@ -4,7 +4,6 @@ import React, {
   Suspense,
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -89,63 +88,31 @@ function CardProvider({ children }: { children: React.ReactNode }) {
 }
 
 function StarfieldBackground() {
-  const mountRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!mountRef.current) return
-
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000)
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor(0xffffff, 1)
-    mountRef.current.appendChild(renderer.domElement)
-
-    const starsGeometry = new THREE.BufferGeometry()
-    const starsCount = 10000
+  const starsRef = useRef<THREE.Points>(null)
+  const starsGeometry = useMemo(() => {
+    const geometry = new THREE.BufferGeometry()
+    const starsCount = 6000
     const positions = new Float32Array(starsCount * 3)
     for (let i = 0; i < starsCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 2000
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 2000
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 2000
+      positions[i * 3] = (Math.random() - 0.5) * 420
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 240
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 420
     }
-    starsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
-    const starsMaterial = new THREE.PointsMaterial({ color: 0x9ca3af, size: 0.7, sizeAttenuation: true })
-    const stars = new THREE.Points(starsGeometry, starsMaterial)
-    scene.add(stars)
-
-    camera.position.z = 10
-
-    let animationId = 0
-    const animate = () => {
-      animationId = requestAnimationFrame(animate)
-      stars.rotation.y += 0.0001
-      stars.rotation.x += 0.00005
-      renderer.render(scene, camera)
-    }
-    animate()
-
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
-    }
-    window.addEventListener("resize", handleResize)
-
-    return () => {
-      window.removeEventListener("resize", handleResize)
-      cancelAnimationFrame(animationId)
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement)
-      }
-      renderer.dispose()
-      starsGeometry.dispose()
-      starsMaterial.dispose()
-    }
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
+    return geometry
   }, [])
 
-  return <div ref={mountRef} className="fixed top-0 left-0 w-full h-full z-0 bg-white" />
+  useFrame(() => {
+    if (!starsRef.current) return
+    starsRef.current.rotation.y += 0.0001
+    starsRef.current.rotation.x += 0.00005
+  })
+
+  return (
+    <points ref={starsRef} geometry={starsGeometry} frustumCulled={false}>
+      <pointsMaterial color="#9ca3af" size={0.16} sizeAttenuation transparent opacity={0.72} />
+    </points>
+  )
 }
 
 function FloatingCard({
@@ -350,11 +317,11 @@ function CardGalaxy() {
       const theta = (2 * Math.PI * i) / goldenRatio
       const x = Math.cos(theta) * radiusAtY
       const z = Math.sin(theta) * radiusAtY
-      const layerRadius = 12 + (i % 3) * 4
+      const layerRadius = 7.5 + (i % 4) * 1.8
 
       positions.push({
         x: x * layerRadius,
-        y: y * layerRadius,
+        y: y * layerRadius * 0.72,
         z: z * layerRadius,
         rotationX: Math.atan2(z, Math.sqrt(x * x + y * y)),
         rotationY: Math.atan2(x, z),
@@ -369,13 +336,13 @@ function CardGalaxy() {
       <Sphere args={[2, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#0f172a" transparent opacity={0.08} wireframe />
       </Sphere>
-      <Sphere args={[12, 32, 32]} position={[0, 0, 0]}>
+      <Sphere args={[8, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.1} wireframe />
       </Sphere>
-      <Sphere args={[16, 32, 32]} position={[0, 0, 0]}>
+      <Sphere args={[11, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.07} wireframe />
       </Sphere>
-      <Sphere args={[20, 32, 32]} position={[0, 0, 0]}>
+      <Sphere args={[14, 32, 32]} position={[0, 0, 0]}>
         <meshStandardMaterial color="#31b8c6" transparent opacity={0.05} wireframe />
       </Sphere>
 
@@ -389,17 +356,18 @@ function CardGalaxy() {
 export default function StellarCardGallerySingle() {
   return (
     <CardProvider>
-      <div className="w-full min-h-[100dvh] relative overflow-hidden bg-white">
-        <StarfieldBackground />
-
+      <div className="relative h-[100svh] min-h-[620px] w-full overflow-hidden bg-white">
         <Canvas
-          camera={{ position: [0, 0, 15], fov: 60 }}
+          camera={{ position: [0, 0, 28], fov: 54 }}
           className="absolute inset-0 z-10"
+          style={{ width: "100%", height: "100%" }}
           onCreated={({ gl }) => {
             gl.domElement.style.pointerEvents = "auto"
           }}
         >
           <Suspense fallback={null}>
+            <color attach="background" args={["#ffffff"]} />
+            <StarfieldBackground />
             <Environment preset="city" />
             <ambientLight intensity={0.7} />
             <pointLight position={[10, 10, 10]} intensity={0.45} />
@@ -409,8 +377,8 @@ export default function StellarCardGallerySingle() {
               enablePan
               enableZoom
               enableRotate
-              minDistance={5}
-              maxDistance={40}
+              minDistance={12}
+              maxDistance={60}
               autoRotate={false}
               rotateSpeed={0.5}
               zoomSpeed={1.2}

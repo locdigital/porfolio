@@ -44,7 +44,7 @@
       --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --mono: 'DM Mono', 'Courier New', monospace;
 
-      --max: 1160px;
+      --max: 1400px;
       --px: clamp(20px, 4vw, 56px);
 
       --spring: cubic-bezier(0.28, 1.36, 0.54, 1);
@@ -83,6 +83,7 @@
       --rounded-lg: 12px;
       --rounded-xl: 16px;
       --rounded-full: 9999px;
+      --image-radius: 0.5rem;
     }
 
     /* SVG Icon Helpers */
@@ -118,6 +119,28 @@
       overflow-x: hidden;
     }
 
+    .site-grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(110, 110, 110, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(110, 110, 110, 0.035) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: var(--serif);
+      letter-spacing: 0;
+    }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -132,15 +155,24 @@
     img {
       display: block;
       max-width: 100%;
-      border-radius: 0.3rem;
+      border-radius: var(--image-radius);
     }
 
-    /* Global photo styling: border radius + gradient overlay */
+    /* Global photo styling */
     picture, .ratio-box {
       display: block;
       position: relative;
-      border-radius: 0.3rem;
+      border-radius: var(--image-radius);
       overflow: hidden;
+    }
+
+    :where(main, article) :where(picture, .ratio-box, .loc-photo-item, .project-card-img, .detail-hero-img, .desk-visual, .gear-card-visual, .gallery-item, .gal-item, .big-card, .mobile-about-panel) {
+      border-radius: var(--image-radius);
+      overflow: hidden;
+    }
+
+    :where(main, article) img:not(.nav-icon):not([src$=".svg"]):not([src*="/assets/logos/"]):not([src*="/favicon"]) {
+      border-radius: var(--image-radius);
     }
 
     picture::after, .ratio-box::after {
@@ -186,7 +218,7 @@
        HEADER
     ============================================================ */
     #site-header {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       right: 0;
@@ -250,60 +282,75 @@
 
 
     /* Desktop nav */
-    .header-nav-desktop ul {
+    .header-menu {
+      position: relative;
+      overflow: hidden;
+      padding: 4px;
+      border: 1px solid rgba(232, 232, 226, 0.6);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(250, 250, 247, 0.6));
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .header-menu ul {
       display: flex;
-      gap: 28px;
+      align-items: center;
+      gap: 6px;
     }
 
-    .header-nav-desktop a {
+    .header-menu a {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 31px;
+      padding: 6px 12px;
+      border-radius: 12px;
       font-size: var(--fs-xs);
-      color: var(--muted);
-      transition: color .25s ease;
-    }
-
-    .header-nav-desktop a:hover {
-      color: var(--accent);
-    }
-
-    .header-nav-desktop a.active {
-      color: var(--text);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      text-decoration-thickness: 1px;
-    }
-
-    /* Ask - special pill CTA in the nav */
-    .header-nav-desktop a.ask-link {
-      color: #0075de;
-      padding: 5px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(0, 117, 222, 0.28);
-      background: rgba(0, 117, 222, 0.07);
-      transition: background .22s ease, border-color .22s ease,
-                  color .22s ease, box-shadow .22s ease;
-      text-decoration: none !important;
       font-weight: 500;
+      color: var(--muted);
+      transition: color .2s ease, background-color .2s ease;
     }
 
-    .header-nav-desktop a.ask-link:hover {
-      background: rgba(0, 117, 222, 0.14);
-      border-color: rgba(0, 117, 222, 0.5);
+    .header-menu a::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: radial-gradient(circle, rgba(0,117,222,0.14) 0%, rgba(0,117,222,0.06) 52%, rgba(0,117,222,0) 100%);
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+
+    .header-menu a:hover,
+    .header-menu a.active {
+      color: var(--text);
+    }
+
+    .header-menu a:hover::before,
+    .header-menu a.active::before {
+      opacity: 1;
+    }
+
+    .header-menu .nav-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .header-menu a[href="/question"] {
       color: #0075de;
-      box-shadow: 0 2px 10px rgba(0, 117, 222, 0.15);
     }
 
-    .header-nav-desktop a.ask-link.active {
-      background: rgba(0, 117, 222, 0.18);
-      border-color: rgba(0, 117, 222, 0.6);
-      color: #0075de;
-      text-decoration: none !important;
-    }
-
-    /* Glow Menu Isolation */
-    .header-nav-desktop .header-glow-menu a {
-      text-decoration: none !important;
-      font-size: inherit;
-      color: inherit;
+    @media (max-width: 1100px) {
+      .header-menu a {
+        padding-inline: 9px;
+      }
     }
 
     /* Hamburger */
@@ -973,7 +1020,7 @@
     /* Writing rows - simple underline hover like luke.ac, no block background */
     .post-item {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 20px;
       padding: 18px 0;
       color: var(--text);
@@ -986,6 +1033,7 @@
       font-size: var(--fs-xs);
       color: var(--muted);
       font-family: var(--mono);
+      line-height: 1;
       min-width: 88px;
       flex-shrink: 0;
     }
@@ -994,7 +1042,7 @@
       font-size: var(--fs-lg);
       font-family: var(--serif);
       font-weight: 400;
-      line-height: 1.35;
+      line-height: 1.2;
       transition: color .25s ease;
     }
 
@@ -1309,11 +1357,11 @@
       }
 
       /* Target exact active item styles to match desktop glow menu */
-      .mobile-bottom-nav-list a[href="/about"].active {
+      .mobile-bottom-nav-list a[href="/blog"].active {
         background: transparent;
         color: var(--accent);
       }
-      .mobile-bottom-nav-list a[href="/about"].active .nav-icon {
+      .mobile-bottom-nav-list a[href="/blog"].active .nav-icon {
         stroke: var(--accent);
       }
 
@@ -1595,33 +1643,12 @@
 }
 
 /* ============================================================
-   IMAGE SHIMMER SKELETON & GLOWING ORB LOADER
+   IMAGE SHIMMER SKELETON
    ============================================================ */
 .skeleton-loading {
   position: relative !important;
   background-color: #f3f4f6 !important;
   overflow: hidden !important;
-}
-
-/* Premium custom glowing orb loader in the center of the loading image wrapper */
-.skeleton-loading::after {
-  content: "" !important;
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 50% !important;
-  background-color: rgba(59, 130, 246, 0.2) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-size: 20px 20px !important;
-  pointer-events: none !important;
-  z-index: 10 !important;
 }
 
 /* Image fade-in styles */

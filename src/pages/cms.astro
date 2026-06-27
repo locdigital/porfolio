@@ -26,5 +26,5 @@ const initialData = await readCmsPayload();
   favicon="/favicon-cms.svg"
   robots="noindex, nofollow"
 >
-  <CmsDashboard initialData={initialData} client:load />
+  <CmsDashboard initialData={initialData} client:only="react" />
 </Layout>
