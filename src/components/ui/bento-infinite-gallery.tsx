@@ -332,8 +332,8 @@ export default function BentoInfiniteGallery({
         .big-kicker {
           margin: 0 0 12px;
           font-family: var(--mono, ui-monospace, monospace);
-          font-size: 11px;
-          letter-spacing: 0.12em;
+          font-size: var(--type-caption);
+          letter-spacing: var(--tracking-label);
           text-transform: uppercase;
           color: rgba(17, 18, 20, 0.52);
         }
@@ -341,17 +341,17 @@ export default function BentoInfiniteGallery({
         .big-copy h1 {
           margin: 0;
           font-family: var(--serif, Georgia, serif);
-          font-size: clamp(46px, 8vw, 96px);
+          font-size: var(--type-display-xl);
           font-weight: 400;
-          line-height: 0.95;
+          line-height: var(--leading-tight);
           letter-spacing: 0;
         }
 
         .big-copy > p:last-child {
           margin: 18px auto 0;
           max-width: 590px;
-          font-size: clamp(15px, 1.8vw, 18px);
-          line-height: 1.65;
+          font-size: var(--type-lead);
+          line-height: var(--leading-body);
           color: rgba(17, 18, 20, 0.62);
         }
 
@@ -513,12 +513,12 @@ export default function BentoInfiniteGallery({
         }
 
         .big-card-copy strong {
-          font-size: 18px;
+          font-size: var(--type-lead);
           line-height: 1.15;
         }
 
         .big-card-copy small {
-          font-size: 13px;
+          font-size: var(--type-ui);
           line-height: 1.45;
           color: rgba(255, 255, 255, 0.8);
         }
@@ -534,12 +534,12 @@ export default function BentoInfiniteGallery({
           }
 
           .big-copy h1 {
-            font-size: clamp(44px, 15vw, 68px);
+            font-size: var(--type-display-lg);
           }
 
           .big-copy > p:last-child {
             margin-left: 0;
-            font-size: 15px;
+            font-size: var(--type-body);
           }
 
           .big-rail-shell {

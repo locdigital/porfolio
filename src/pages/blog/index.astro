@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getWritingPosts } from "../../lib/writing";
-import AnimatedPageHeadline, { AnimatedPageDescription } from "../../components/ui/animated-page-headline";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const posts = await getWritingPosts();
@@ -47,10 +46,13 @@ function previewImageFor(image?: string) {
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">Writing</span>
         </div>
-        <AnimatedPageHeadline client:load headline={"Notes on <em>marketing</em>\ncode & <em>growth.</em>"} />
-        <AnimatedPageDescription client:load className="gear-intro">
+        <h1>
+          Notes on <em>marketing</em><br />
+          code &amp; <em>growth.</em>
+        </h1>
+        <p class="gear-intro">
           A collection of thoughts, tutorials, and reflections on marketing, code, and life.
-        </AnimatedPageDescription>
+        </p>
       </section>
 
       {posts.length > 0 ? (
@@ -93,7 +95,15 @@ function previewImageFor(image?: string) {
       <div class="post-hover-preview" aria-hidden="true">
         <div class="post-hover-preview__inner">
           <div class="post-hover-preview__image-wrap">
-            <img src={fallbackPreviewImage} alt="" decoding="async" loading="eager" />
+            <img
+              src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+              alt=""
+              decoding="async"
+              loading="lazy"
+              fetchpriority="low"
+              width="330"
+              height="206"
+            />
           </div>
           <div class="post-hover-preview__body">
             <span class="post-hover-preview__date"></span>
@@ -109,7 +119,7 @@ function previewImageFor(image?: string) {
 
 <style>
   .blog-page {
-    padding: calc(var(--hdr-h) + 64px) 0 120px;
+    padding: calc(var(--hdr-h) + 56px) 0 112px;
   }
 
   .blog-wrap {
@@ -120,26 +130,33 @@ function previewImageFor(image?: string) {
 
   .blog-page .gear-hero {
     max-width: none;
-    margin-bottom: 52px;
+    margin-bottom: 44px;
   }
 
   .blog-page .gear-hero :global(h1) {
-    white-space: pre-line;
+    text-wrap: balance;
   }
 
   .blog-posts-list {
     display: flex;
     flex-direction: column;
-    gap: 72px;
+    gap: 0;
+    max-width: 980px;
   }
 
   .blog-post-link {
     display: flex;
     flex-direction: column;
     position: relative;
+    padding: 26px 0 30px;
+    border-top: 1px solid rgba(28, 28, 28, 0.1);
     transition:
       opacity 220ms var(--ease-out),
       transform 220ms var(--ease-out);
+  }
+
+  .blog-post-link:last-child {
+    border-bottom: 1px solid rgba(28, 28, 28, 0.1);
   }
 
   .blog-post-link:hover,
@@ -151,9 +168,9 @@ function previewImageFor(image?: string) {
   .blog-post-date {
     flex-shrink: 0;
     margin-bottom: 8px;
-    padding-top: 14px;
+    padding-top: 9px;
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.08em;
     line-height: 1.2;
     text-transform: uppercase;
@@ -162,17 +179,18 @@ function previewImageFor(image?: string) {
 
   .blog-post-copy {
     flex-grow: 1;
-    max-width: none;
+    max-width: 74ch;
   }
 
   .blog-post-headline {
-    font-family: 'Imbue', serif;
-    margin-bottom: 12px;
-    font-size: 32px;
+    font-family: var(--serif);
+    margin-bottom: 10px;
+    font-size: var(--type-section-title);
     font-weight: 400;
     letter-spacing: -0.02em;
     line-height: 1.1;
     color: var(--text);
+    text-wrap: balance;
   }
 
   .blog-post-summary {
@@ -180,9 +198,11 @@ function previewImageFor(image?: string) {
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    font-size: 15px;
-    line-height: 1.6;
+    font-family: var(--sans);
+    font-size: var(--type-body);
+    line-height: 1.55;
     color: var(--muted);
+    text-wrap: pretty;
   }
 
   .post-hover-preview {
@@ -277,7 +297,7 @@ function previewImageFor(image?: string) {
     display: block;
     margin-bottom: 5px;
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--type-micro);
     letter-spacing: 0.08em;
     line-height: 1.2;
     text-transform: uppercase;
@@ -288,7 +308,7 @@ function previewImageFor(image?: string) {
     display: block;
     overflow: hidden;
     font-family: var(--sans);
-    font-size: 14px;
+    font-size: var(--type-body);
     font-weight: 700;
     line-height: 1.25;
     color: var(--text);
@@ -302,7 +322,7 @@ function previewImageFor(image?: string) {
     margin-top: 4px;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    font-size: 12px;
+    font-size: var(--type-caption);
     line-height: 1.45;
     color: var(--muted);
   }
@@ -311,16 +331,12 @@ function previewImageFor(image?: string) {
     .blog-post-link {
       flex-direction: row;
       align-items: flex-start;
-      gap: 60px;
+      gap: clamp(40px, 6vw, 72px);
     }
 
     .blog-post-date {
       width: 120px;
       margin-bottom: 0;
-    }
-
-    .blog-post-headline {
-      font-size: 42px;
     }
   }
 
@@ -342,6 +358,15 @@ function previewImageFor(image?: string) {
   @media (max-width: 620px) {
     .blog-page {
       padding-top: calc(var(--hdr-h) + 44px);
+      padding-bottom: 96px;
+    }
+
+    .blog-page .gear-hero {
+      margin-bottom: 30px;
+    }
+
+    .blog-post-link {
+      padding: 21px 0 25px;
     }
   }
 </style>

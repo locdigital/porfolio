@@ -107,7 +107,7 @@ export const InfiniteGrid = ({ bgOnly = false }: { bgOnly?: boolean }) => {
                 onChange={(e) => setGridSize(Number(e.target.value))}
                 className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <div className="flex justify-between text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+              <div className="flex justify-between text-[var(--type-micro)] text-muted-foreground uppercase tracking-widest font-mono">
                 <span>Dense</span>
                 <span>Sparse ({gridSize}px)</span>
               </div>
@@ -202,7 +202,7 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer Branding */}
-      <footer className="fixed bottom-4 left-4 z-50 text-[10px] uppercase tracking-widest text-muted-foreground opacity-50 font-mono">
+      <footer className="fixed bottom-4 left-4 z-50 text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground opacity-50 font-mono">
         Shadcn Infinite Grid v1.1
       </footer>
     </div>

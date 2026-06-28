@@ -30,8 +30,8 @@ const textVariants = {
     },
   }),
   hidden: {
-    filter: "blur(8px)",
-    opacity: 0,
+    filter: "blur(0px)",
+    opacity: 1,
   },
 };
 
@@ -92,11 +92,7 @@ export default function AnimatedPageHeadline({ headline, className }: AnimatedPa
               style={{
                 fontStyle: "italic",
                 color: "var(--accent)",
-                border: "1.5px dashed rgba(0,117,222,0.38)",
-                borderRadius: "6px",
-                padding: "0 6px",
-                display: "inline-block",
-                whiteSpace: "nowrap",
+                display: "inline",
               }}
             >
               {part.text}

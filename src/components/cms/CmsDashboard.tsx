@@ -23,16 +23,9 @@ import {
   Sparkles,
   Trash2,
   Upload,
-  X,
   UserPlus,
   type LucideIcon,
 } from "lucide-react";
-import {
-  calculateSeoScore,
-  type ChecklistItem,
-  type SeoArticle,
-  type SeoArticleForm,
-} from "../../lib/seo-article-checklist";
 import WritingDashboard from "../writing/WritingDashboard";
 import WritingEditorPage from "../writing/WritingEditorPage";
 import DeleteConfirmDialog from "../ui/DeleteConfirmDialog";
@@ -69,6 +62,7 @@ type Status = {
 };
 
 type WritingPost = {
+  id?: string;
   slug: string;
   title: string;
   headline: string;
@@ -226,11 +220,6 @@ const activities = [
   { icon: Send,         text: "Photos synced to build",         time: "last session"},
 ];
 
-/* ------ Helpers --------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
-function today() {
-  return new Date().toISOString().slice(0, 10);
-}
-
 function uniqueList(values: string[]) {
   const seen = new Set<string>();
   return values.filter((value) => {
@@ -250,14 +239,6 @@ function listToString(value: string[] = []) {
   return value.join(", ");
 }
 
-function postKeywords(post: WritingPost) {
-  return splitList(post.keyword);
-}
-
-function primaryKeyword(post: WritingPost) {
-  return postKeywords(post)[0] || post.keyword.trim();
-}
-
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -266,156 +247,6 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
-}
-
-function emptyWriting(): WritingPost {
-  return {
-    slug: "", title: "", headline: "", summary: "", keyword: "",
-    metaDescription: "", coverImage: "", publishedAt: today(),
-    tags: [], draft: false, body: "Start writing here...",
-  };
-}
-
-const keywordStopWords = new Set([
-  "cua", "cho", "voi", "mot", "nhung", "cac", "khi", "vao", "tren", "duoi", "nhu", "the", "nay", "kia",
-  "and", "the", "for", "with", "from", "this", "that", "your", "you", "are", "how", "what", "why",
-  "cach", "cách", "chon", "chọn", "huong", "hướng", "dan", "dẫn", "la", "là", "de", "để", "va", "và",
-]);
-
-function plainText(value: string) {
-  return value
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
-    .replace(/\[[^\]]*]\([^)]*\)/g, " ")
-    .replace(/[#>*_`~\-]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function normalizeKeywordToken(value: string) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/[^a-z0-9\s]/g, "")
-    .trim();
-}
-
-function suggestWritingKeywords(post: WritingPost) {
-  const source = plainText([post.title, post.headline, post.summary, post.tags.join(" "), post.body].join(" "));
-  const tokens = normalizeKeywordToken(source)
-    .split(/\s+/)
-    .filter((token) => token.length > 2 && !keywordStopWords.has(token));
-  const scores = new Map<string, number>();
-
-  for (let size = 1; size <= 3; size += 1) {
-    for (let index = 0; index <= tokens.length - size; index += 1) {
-      const phrase = tokens.slice(index, index + size).join(" ");
-      if (!phrase || phrase.length < 4) continue;
-      const weight = size === 1 ? 1 : size === 2 ? 4 : 6;
-      scores.set(phrase, (scores.get(phrase) ?? 0) + weight);
-    }
-  }
-
-  const titleText = normalizeKeywordToken(`${post.title} ${post.headline}`);
-  return Array.from(scores.entries())
-    .map(([keyword, score]) => ({
-      keyword,
-      score: score + (titleText.includes(keyword) ? 8 : 0),
-    }))
-    .sort((a, b) => b.score - a.score || a.keyword.length - b.keyword.length)
-    .filter((item, index, arr) => arr.findIndex((other) => other.keyword.includes(item.keyword) || item.keyword.includes(other.keyword)) === index)
-    .slice(0, 8);
-}
-
-function extractMarkdownHeadings(body: string) {
-  return body
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => /^#{2,3}\s+/.test(line))
-    .map((line) => line.replace(/^##\s+/, "H2: ").replace(/^###\s+/, "H3: "));
-}
-
-function firstParagraph(value: string) {
-  return plainText(value)
-    .split(/\n{2,}/)
-    .map((line) => line.trim())
-    .find(Boolean) || "";
-}
-
-function extractFaq(body: string) {
-  const lines = body.split("\n");
-  const faqs: Array<{ question: string; answer: string }> = [];
-  for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index].trim();
-    if (!/^#{2,3}\s+.+\?/.test(line)) continue;
-    const question = line.replace(/^#{2,3}\s+/, "");
-    const answerLines: string[] = [];
-    for (let answerIndex = index + 1; answerIndex < lines.length; answerIndex += 1) {
-      if (/^#{2,3}\s+/.test(lines[answerIndex])) break;
-      if (lines[answerIndex].trim()) answerLines.push(lines[answerIndex].trim());
-    }
-    faqs.push({ question, answer: plainText(answerLines.join(" ")) });
-  }
-  return faqs.slice(0, 5);
-}
-
-function writingToSeoArticle(post: WritingPost): SeoArticle {
-  const body = post.body || "";
-  const faq = extractFaq(body);
-  const focusKeyword = primaryKeyword(post);
-  return {
-    seoTitle: post.title || post.headline || post.slug,
-    metaDescription: post.metaDescription || post.summary,
-    slug: post.slug,
-    h1: post.headline || post.title || post.slug,
-    outline: extractMarkdownHeadings(body),
-    introduction: firstParagraph(`${post.summary}\n\n${body}`),
-    body,
-    conclusion: plainText(body).split(/\s+/).slice(-70).join(" "),
-    faq,
-    imageAltTexts: post.coverImage ? [`${focusKeyword || post.title} cover image`] : [],
-    linkPlacements: [
-      ...Array.from(body.matchAll(/\[[^\]]+]\((\/[^)]+)\)/g)).slice(0, 5).map((match) => ({
-        anchor: match[0].match(/\[([^\]]+)]/)?.[1] || "internal link",
-        url: match[1],
-        placement: "Body markdown",
-        type: "internal" as const,
-      })),
-      ...Array.from(body.matchAll(/\[[^\]]+]\((https?:\/\/[^)]+)\)/g)).slice(0, 5).map((match) => ({
-        anchor: match[0].match(/\[([^\]]+)]/)?.[1] || "external link",
-        url: match[1],
-        placement: "Body markdown",
-        type: "external" as const,
-      })),
-    ],
-    schemaType: faq.length >= 3 ? "FAQPage" : "BlogPosting",
-    cta: /liên hệ|dang ky|đăng ký|tu van|tư vấn|contact|subscribe|download|mua/i.test(body) ? "CTA detected" : "",
-  };
-}
-
-function writingToSeoForm(post: WritingPost): SeoArticleForm {
-  const keywords = postKeywords(post);
-  return {
-    focusKeyword: keywords[0] || suggestWritingKeywords(post)[0]?.keyword || "",
-    secondaryKeywords: listToString(uniqueList([...keywords.slice(1), ...post.tags])),
-    topic: post.title || post.headline,
-    targetAudience: "Website readers",
-    searchIntent: "informational",
-    tone: "Brand voice",
-    desiredWordCount: Math.max(700, plainText(post.body).split(/\s+/).filter(Boolean).length),
-    internalLinks: "",
-    externalLinks: "",
-    brandInfo: "",
-    language: "Vietnamese",
-  };
-}
-
-function checklistIcon(status: ChecklistItem["status"]) {
-  if (status === "pass") return <CheckCircle2 size={14} />;
-  if (status === "warning") return <AlertCircle size={14} />;
-  return <AlertCircle size={14} />;
 }
 
 function emptyGear(): Gear {
@@ -523,82 +354,6 @@ function TextArea(props: {
         placeholder={props.placeholder}
         onChange={(e) => props.onChange(e.target.value)}
       />
-    </label>
-  );
-}
-
-function ChipInput(props: {
-  label: string;
-  value: string[];
-  onChange: (v: string[]) => void;
-  placeholder?: string;
-  className?: string;
-}) {
-  const [draft, setDraft] = useState("");
-
-  const commit = (raw = draft) => {
-    const nextValues = splitList(raw);
-    if (nextValues.length === 0) return;
-    props.onChange(uniqueList([...props.value, ...nextValues]));
-    setDraft("");
-  };
-
-  const remove = (index: number) => {
-    props.onChange(props.value.filter((_, i) => i !== index));
-  };
-
-  return (
-    <label className={`cms-field cms-chip-field ${props.className ?? ""}`}>
-      <span>{props.label}</span>
-      <div className="cms-chip-input-wrap">
-        {props.value.map((item, index) => (
-          <button
-            key={`${item}-${index}`}
-            type="button"
-            className="cms-chip"
-            onClick={() => remove(index)}
-            title={`Remove ${item}`}
-          >
-            <span>{item}</span>
-            <X size={12} aria-hidden="true" />
-          </button>
-        ))}
-        <input
-          value={draft}
-          placeholder={props.value.length ? "" : props.placeholder}
-          onChange={(e) => {
-            const value = e.target.value;
-            if (/[,;\n]/.test(value)) {
-              commit(value);
-            } else {
-              setDraft(value);
-            }
-          }}
-          onBlur={() => commit()}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === "," || e.key === ";") {
-              e.preventDefault();
-              commit();
-            }
-            if (e.key === "Backspace" && !draft && props.value.length > 0) {
-              remove(props.value.length - 1);
-            }
-          }}
-        />
-      </div>
-    </label>
-  );
-}
-
-function Toggle(props: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <label className="cms-toggle">
-      <input
-        type="checkbox"
-        checked={props.checked}
-        onChange={(e) => props.onChange(e.target.checked)}
-      />
-      <span>{props.label}</span>
     </label>
   );
 }
@@ -799,19 +554,7 @@ function Sidebar({
 }
 
 /* ------ Topbar --------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
-function Topbar({
-  activeTab,
-  onQuickCreate,
-  onOpenAskAi,
-  darkMode,
-  onToggleDarkMode,
-}: {
-  activeTab: Tab;
-  onQuickCreate: (type: "writing" | "gear" | "work" | "photos") => void;
-  onOpenAskAi: () => void;
-  darkMode: boolean;
-  onToggleDarkMode: () => void;
-}) {
+function Topbar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -834,77 +577,6 @@ function Topbar({
         {/* Buttons deleted */}
       </div>
     </header>
-  );
-}
-
-/* ------ Ask AI Drawer --------------------------------------------------------------------------------------------------------------------------------------------------- */
-function AskAiDrawer({ onClose }: { onClose: () => void }) {
-  const [messages, setMessages] = useState<Array<{ sender: "user" | "ai"; text: string }>>([
-    { sender: "ai", text: "Xin chào! Tôi là trợ lý AI của Lộc Digital. Bạn cần tôi giúp gì về quản lý nội dung portfolio hôm nay?" },
-  ]);
-  const [input, setInput] = useState("");
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMsg = input.trim();
-    setMessages((prev) => [...prev, { sender: "user", text: userMsg }]);
-    setInput("");
-
-    // Simulate AI response based on keywords
-    setTimeout(() => {
-      let reply = "Tôi có thể giúp bạn viết bài đăng, tìm kiếm các phần trong Gear hoặc tối ưu hóa dự án. Hãy cho tôi biết cụ thể nhé!";
-      const query = userMsg.toLowerCase();
-      if (query.includes("gear")) {
-        reply = "Hệ thống đang lưu trữ 28 món đồ Gear chia làm 7 danh mục khác nhau. Vào tab Gear, chọn một section, rồi bấm 'Add product' để thêm sản phẩm vào đúng section đó.";
-      } else if (query.includes("writing") || query.includes("bài viết")) {
-        reply = "Hiện tại bạn chưa có bài viết blog nào hoạt động. Bạn muốn tôi gợi ý một số chủ đề SEO về Digital Marketing không?";
-      } else if (query.includes("project") || query.includes("dự án") || query.includes("work")) {
-        reply = "Có 5 dự án Work đã được cấu hình trong hệ thống (như PlayAh!, WorkFlow Space, TOMATO Children's Home, POPS Worldwide...). Bạn có thể chỉnh sửa mô tả của từng dự án ở tab 'Work'.";
-      } else if (query.includes("photo") || query.includes("ảnh")) {
-        reply = "Thư mục Photos của bạn đang chứa 4 địa điểm chụp ảnh với tổng số 17 hình ảnh đã đồng bộ.";
-      }
-      setMessages((prev) => [...prev, { sender: "ai", text: reply }]);
-    }, 800);
-  };
-
-  return (
-    <div className="cms-drawer-overlay" onClick={onClose}>
-      <div className="cms-drawer-content" onClick={(e) => e.stopPropagation()}>
-        <div className="cms-drawer-header">
-          <div className="cms-drawer-title">
-            <Sparkles size={16} className="cms-accent-color" style={{ color: "var(--accent)" }} />
-            <h3 style={{ margin: 0, fontSize: 16 }}>Trợ lý AI</h3>
-          </div>
-          <button type="button" className="cms-drawer-close" onClick={onClose}>Close</button>
-        </div>
-        <div className="cms-drawer-body">
-          <div className="cms-chat-messages">
-            {messages.map((m, i) => (
-              <div key={i} className={`cms-chat-bubble-wrapper is-${m.sender}`}>
-                <div className="cms-chat-bubble">{m.text}</div>
-              </div>
-            ))}
-            <div ref={chatEndRef} />
-          </div>
-        </div>
-        <form className="cms-drawer-footer" onSubmit={handleSend}>
-          <input
-            type="text"
-            placeholder="Hỏi AI bất kỳ điều gì..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <button type="submit" className="cms-chat-send-btn">Gửi</button>
-        </form>
-      </div>
-    </div>
   );
 }
 
@@ -1531,9 +1203,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       setEditingPost(null);
     }
   }, [routeInfo.mode, routeInfo.id]);
-  const [writingDraft,      setWritingDraft]      = useState<WritingPost>(
-    normalizedInitial?.writing[0] ?? emptyWriting(),
-  );
   const [projectDraft,      setProjectDraft]      = useState<Project>(
     normalizedInitial?.projects[0] ??
     emptyProject((normalizedInitial?.projects.length ?? 0) + 1),
@@ -1558,22 +1227,9 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   } | null>(null);
   const gearUploadRef  = useRef<HTMLInputElement>(null);
   const photoUploadRef = useRef<HTMLInputElement>(null);
-  const writingCoverUploadRef = useRef<HTMLInputElement>(null);
-  const writingBodyUploadRef = useRef<HTMLInputElement>(null);
-  const [darkMode, setDarkMode] = useState(false);
-  const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
 
   const selectedGearSection = gearDraft.sections[gearSectionIndex];
   const selectedGearItem    = selectedGearSection?.items[gearItemIndex];
-  const writingKeywordSuggestions = useMemo(() => suggestWritingKeywords(writingDraft), [writingDraft]);
-  const writingSeoForm = useMemo(() => writingToSeoForm(writingDraft), [writingDraft]);
-  const writingSeoArticle = useMemo(() => writingToSeoArticle(writingDraft), [writingDraft]);
-  const writingSeoScore = useMemo(
-    () => writingSeoForm.focusKeyword
-      ? calculateSeoScore(writingSeoArticle, writingSeoForm)
-      : null,
-    [writingSeoArticle, writingSeoForm],
-  );
 
   function navigateToTab(tab: Tab, options: { replace?: boolean } = {}) {
     setActiveTab(tab);
@@ -1606,7 +1262,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     const nextData = normalizeData(result.data);
     setData(nextData);
     setGearDraft(nextData.gear);
-    setWritingDraft(nextData.writing[0] ?? emptyWriting());
     setProjectDraft(nextData.projects[0] ?? emptyProject(nextData.projects.length + 1));
     setPhotoDraft(nextData.photos[0] ?? emptyPhotoLocation(nextData.photos.length + 1));
     setGearSectionIndex(0);
@@ -1614,14 +1269,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
     if (!options.quiet) setStatus({ type: "success", text: "CMS data ready." });
   }
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
 
   useEffect(() => {
     if (normalizedInitial) return;
@@ -1688,7 +1335,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       if (!response.ok || !result.success) throw new Error(result.error || "Unable to delete entry.");
       const nextData = normalizeData(result.data);
       setData(nextData);
-      setWritingDraft(nextData.writing[0] ?? emptyWriting());
       setProjectDraft(nextData.projects[0] ?? emptyProject(nextData.projects.length + 1));
       setPhotoDraft(nextData.photos[0] ?? emptyPhotoLocation(nextData.photos.length + 1));
       setStatus({ type: "success", text: successText });
@@ -1701,10 +1347,9 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   }
 
   async function uploadFiles(
-    target: "photos" | "gear" | "writing",
+    target: "photos" | "gear",
     files: FileList | null,
     slug?: string,
-    mode?: "cover" | "body",
   ) {
     if (!files?.length) return;
     setSaving(true);
@@ -1724,23 +1369,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       const nextData = normalizeData(result.data);
       setData(nextData);
       if (target === "gear" && result.uploaded?.[0]?.src) updateGearItem("image", result.uploaded[0].src);
-      if (target === "writing" && result.uploaded?.length) {
-        const uploaded = result.uploaded as Array<{ src: string; alt: string }>;
-        if (mode === "cover") {
-          setWritingDraft((cur) => ({
-            ...cur,
-            slug: slug || cur.slug,
-            coverImage: uploaded[0].src,
-          }));
-        } else {
-          const markdown = uploaded.map((asset) => `![${asset.alt || "Article image"}](${asset.src})`).join("\n\n");
-          setWritingDraft((cur) => ({
-            ...cur,
-            slug: slug || cur.slug,
-            body: [cur.body.trim(), markdown].filter(Boolean).join("\n\n"),
-          }));
-        }
-      }
       if (target === "photos") {
         const nextLoc = nextData.photos.find((l) => l.slug === slug);
         if (nextLoc) setPhotoDraft(nextLoc);
@@ -1751,46 +1379,12 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     } finally {
       setSaving(false);
       setUploadingImages((cur) => { cur.forEach((img) => URL.revokeObjectURL(img.url)); return []; });
-      if (target === "writing" && mode === "cover" && writingCoverUploadRef.current) {
-        writingCoverUploadRef.current.value = "";
-      }
-      if (target === "writing" && mode === "body" && writingBodyUploadRef.current) {
-        writingBodyUploadRef.current.value = "";
-      }
     }
   }
 
   async function logout() {
     await fetch("/api/logout", { method: "POST" });
     window.location.href = "/login";
-  }
-
-  function updateWritingTitle(value: string) {
-    const previousAutoSlug = slugify(writingDraft.title || writingDraft.headline || "");
-    const shouldUpdateSlug = !writingDraft.slug || writingDraft.slug === previousAutoSlug;
-    setWritingDraft({
-      ...writingDraft,
-      title: value,
-      slug: shouldUpdateSlug ? slugify(value || writingDraft.headline || "") : writingDraft.slug,
-    });
-  }
-
-  function updateWritingHeadline(value: string) {
-    const previousAutoSlug = slugify(writingDraft.title || writingDraft.headline || "");
-    const shouldUpdateSlug = !writingDraft.slug || writingDraft.slug === previousAutoSlug;
-    setWritingDraft({
-      ...writingDraft,
-      headline: value,
-      slug: shouldUpdateSlug ? slugify(writingDraft.title || value || "") : writingDraft.slug,
-    });
-  }
-
-  function writingUploadSlug() {
-    const nextSlug = writingDraft.slug || slugify(writingDraft.title || writingDraft.headline || "writing-draft");
-    if (!writingDraft.slug) {
-      setWritingDraft((cur) => ({ ...cur, slug: nextSlug }));
-    }
-    return nextSlug;
   }
 
   /* ------ Gear helpers --------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -1936,16 +1530,15 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     setGearItemIndex(0);
   }
 
-  function openWritingPost(post: any) {
-          if (post.id) {
-            window.location.href = `/cms/writing/${post.id}/edit`;
-          } else {
-            setWritingDraft(post);
-            navigateToTab("writing");
-          }
-        }
+  function openWritingPost(post: WritingPost) {
+    if (post.id) {
+      window.location.href = `/cms/writing/${post.id}/edit`;
+    } else {
+      navigateToTab("writing");
+    }
+  }
 
-        function renderOverview() {
+  function renderOverview() {
           if (!data) return null;
           return (
             <Dashboard
@@ -2406,7 +1999,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     }
     if (editingPost) {
       return (
-        <div className={`cms-app cms-editor-only${darkMode ? " cms-dark-mode" : ""}`}>
+        <div className="cms-app cms-editor-only">
           <WritingEditorPage initialPost={editingPost} />
         </div>
       );
@@ -2415,7 +2008,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
 
   /* ------ Render --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
   return (
-    <div className={`cms-app${darkMode ? " cms-dark-mode" : ""}`}>
+    <div className="cms-app">
       <Sidebar
         activeTab={activeTab}
         onTabChange={(tab) => {
@@ -2426,27 +2019,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       />
 
       <main className="cms-main">
-        <Topbar
-          activeTab={activeTab}
-          onQuickCreate={(type) => {
-            if (type === "writing") {
-              setWritingDraft(emptyWriting());
-              navigateToTab("writing");
-            } else if (type === "gear") {
-              setGearDraft(emptyGear());
-              navigateToTab("gear");
-            } else if (type === "work") {
-              setProjectDraft(emptyProject((data?.projects.length ?? 0) + 1));
-              navigateToTab("work");
-            } else if (type === "photos") {
-              setPhotoDraft(emptyPhotoLocation((data?.photos.length ?? 0) + 1));
-              navigateToTab("photos");
-            }
-          }}
-          onOpenAskAi={() => setAiDrawerOpen(true)}
-          darkMode={darkMode}
-          onToggleDarkMode={() => setDarkMode(!darkMode)}
-        />
+        <Topbar />
 
         {status.text && (
           <div
@@ -2479,11 +2052,6 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
             <img src={previewImage.src} alt={previewImage.alt} />
           </div>
         </div>
-      )}
-
-      {/* Ask AI slide-out drawer */}
-      {aiDrawerOpen && (
-        <AskAiDrawer onClose={() => setAiDrawerOpen(false)} />
       )}
 
       <DeleteConfirmDialog

@@ -41,9 +41,9 @@ const WritingEditor = memo(function WritingEditor({
   useEffect(() => {
     if (!onChange) return;
 
-    const handleChange = async () => {
+    const handleChange = () => {
       const blocks = editor.document as Block[];
-      const html = await editor.blocksToFullHTML(blocks);
+      const html = editor.blocksToFullHTML(blocks);
       onChangeRef.current?.(blocks, html);
     };
 

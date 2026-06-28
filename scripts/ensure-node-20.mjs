@@ -2,10 +2,10 @@ const requiredMajor = 20;
 const actual = process.versions.node;
 const actualMajor = Number(actual.split(".")[0]);
 
-if (actualMajor !== requiredMajor) {
+if (actualMajor < requiredMajor) {
   console.error(
     [
-      `This project must run on Node ${requiredMajor}.x.`,
+      `This project must run on Node ${requiredMajor}.x or newer.`,
       `Current Node: ${actual}`,
       "",
       "Switch to the project version before running dev/build:",

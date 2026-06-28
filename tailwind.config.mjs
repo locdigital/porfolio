@@ -13,6 +13,24 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--sans)"],
+        serif: ["var(--serif)"],
+        mono: ["var(--mono)"],
+      },
+      fontSize: {
+        micro: ["var(--type-micro)", { lineHeight: "1.35" }],
+        xs: ["var(--type-caption)", { lineHeight: "1.35" }],
+        sm: ["var(--type-ui)", { lineHeight: "1.45" }],
+        base: ["var(--type-body)", { lineHeight: "var(--leading-body)" }],
+        lg: ["var(--type-lead)", { lineHeight: "1.45" }],
+        xl: ["var(--type-subhead)", { lineHeight: "1.22" }],
+        "2xl": ["var(--type-card-title)", { lineHeight: "1.16" }],
+        "3xl": ["var(--type-section-title)", { lineHeight: "1.12" }],
+        "4xl": ["var(--type-display)", { lineHeight: "1.08" }],
+        "5xl": ["var(--type-display-lg)", { lineHeight: "1.04" }],
+        "6xl": ["var(--type-display-xl)", { lineHeight: "1.04" }],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

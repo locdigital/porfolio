@@ -220,7 +220,7 @@ const creativeWorkSchema = {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
+    font-size: var(--type-ui);
     font-family: var(--mono);
     color: var(--muted);
     text-decoration: none;
@@ -247,14 +247,14 @@ const creativeWorkSchema = {
 
   .detail-number {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     color: var(--muted);
     letter-spacing: 0.12em;
   }
 
   .detail-year {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     color: var(--muted);
     letter-spacing: 0.08em;
   }
@@ -286,14 +286,14 @@ const creativeWorkSchema = {
 
   .meta-label {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--type-micro);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
   }
 
   .meta-value {
-    font-size: 14px;
+    font-size: var(--type-body);
     color: var(--text);
   }
 
@@ -346,7 +346,7 @@ const creativeWorkSchema = {
   /* ── Body text ── */
   .detail-summary {
     font-family: var(--serif);
-    font-size: clamp(20px, 2.2vw, 26px);
+    font-size: var(--type-subhead);
     font-weight: 400;
     line-height: 1.55;
     color: var(--text);
@@ -355,7 +355,7 @@ const creativeWorkSchema = {
   }
 
   .detail-para {
-    font-size: 15px;
+    font-size: var(--type-body);
     line-height: 1.78;
     color: var(--muted);
     margin-bottom: 20px;
@@ -366,7 +366,7 @@ const creativeWorkSchema = {
     align-items: center;
     gap: 7px;
     margin-top: 12px;
-    font-size: 14px;
+    font-size: var(--type-body);
     font-weight: 500;
     color: var(--text);
     text-decoration: underline;
@@ -397,7 +397,7 @@ const creativeWorkSchema = {
 
   .sidebar-label {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--type-micro);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
@@ -410,7 +410,7 @@ const creativeWorkSchema = {
   }
 
   .sidebar-tag {
-    font-size: 13px;
+    font-size: var(--type-ui);
     color: var(--text);
     list-style: none;
     display: flex;
@@ -428,7 +428,7 @@ const creativeWorkSchema = {
   }
 
   .sidebar-value {
-    font-size: 14px;
+    font-size: var(--type-body);
     color: var(--text);
   }
 
@@ -436,7 +436,7 @@ const creativeWorkSchema = {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: var(--type-ui);
     color: var(--muted);
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -485,7 +485,7 @@ const creativeWorkSchema = {
     align-items: center;
     gap: 7px;
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     color: var(--muted);
     letter-spacing: 0.08em;
     transition: color 0.25s ease;
@@ -493,7 +493,7 @@ const creativeWorkSchema = {
 
   .pnav-title {
     font-family: var(--serif);
-    font-size: clamp(18px, 2vw, 24px);
+    font-size: var(--type-subhead);
     font-weight: 400;
     line-height: 1.25;
     transition: color 0.25s ease;

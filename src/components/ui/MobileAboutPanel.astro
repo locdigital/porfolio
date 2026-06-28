@@ -9,7 +9,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
 ---
 
 <div class="mobile-about-panel md:hidden h-auto flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10" style="font-family: var(--sans);">
-  <h2 class="italic text-[clamp(2.2rem,11vw,5rem)] leading-[1.05] mb-2 font-light" style="font-family: var(--serif);">
+  <h2 class="italic text-[var(--type-display-lg)] leading-[1.05] mb-2 font-light" style="font-family: var(--serif);">
     I turn paid traffic into profit.
   </h2>
 
@@ -19,7 +19,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
       <div class="overflow-hidden rounded-lg w-full">
         <img src={portraitSrc} alt="Phuc Loc" class="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
       </div>
-      <p class="mt-2.5 text-[9px] text-muted-foreground tracking-widest text-center">Phuc Loc · Saigon</p>
+      <p class="mt-2.5 text-[var(--type-micro)] text-muted-foreground tracking-widest text-center">Phuc Loc · Saigon</p>
     </div>
 
     <div class="bg-[#4ECCA3] border border-white/40 text-[#0a2e22] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
@@ -29,15 +29,15 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
             <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0a2e22]"></span>
           </span>
-          <span class="text-[8px] uppercase tracking-widest opacity-60" style="font-family: var(--mono);">available now</span>
+          <span class="text-[var(--type-micro)] uppercase tracking-widest opacity-60" style="font-family: var(--mono);">available now</span>
         </div>
         <div class="h-px bg-[#0a2e22]/20 mb-2.5"></div>
         <p class="italic text-lg leading-tight mb-2.5" style="font-family: var(--serif);">Performance Marketer</p>
       </div>
       <div class="space-y-1">
-        <div class="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-[9px]">Ho Chi Minh City</span></div>
-        <div class="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-[9px]">Remote Vietnam</span></div>
-        <div class="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-[9px]">Global remote</span></div>
+        <div class="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
+        <div class="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-[var(--type-micro)]">Remote Vietnam</span></div>
+        <div class="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-[var(--type-micro)]">Global remote</span></div>
       </div>
     </div>
   </div>
@@ -51,8 +51,8 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
           <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" class="w-full h-full object-cover pointer-events-none" />
         </div>
         <div class="flex-1 min-w-0">
-          <p class="text-[10px] font-semibold text-background truncate">Photograph</p>
-          <p class="text-[9px] text-background/50 truncate">Ed Sheeran</p>
+          <p class="text-[var(--type-micro)] font-semibold text-background truncate">Photograph</p>
+          <p class="text-[var(--type-micro)] text-background/50 truncate">Ed Sheeran</p>
         </div>
       </div>
       
@@ -71,8 +71,8 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
         <div class="absolute left-0 top-0 h-full bg-white/80 rounded-full" id="spotify-progress" style="width: 48%;"></div>
       </div>
       <div class="flex justify-between" style="font-family: var(--mono);">
-        <span class="text-[8px] text-background/30" id="spotify-time">2:05</span>
-        <span class="text-[8px] text-background/30">4:19</span>
+        <span class="text-[var(--type-micro)] text-background/30" id="spotify-time">2:05</span>
+        <span class="text-[var(--type-micro)] text-background/30">4:19</span>
       </div>
       <div class="flex items-center justify-center gap-3">
         <button aria-label="Previous track" class="text-background/40 text-xs">⏮</button>
@@ -91,7 +91,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
     <div class="-rotate-[1deg]">
       <div class="relative">
         <div class="bg-card border border-border/60 rounded-xl px-4 py-4 shadow-card w-full">
-          <p class="text-[9px] uppercase tracking-widest text-muted-foreground mb-3">rate this portfolio</p>
+          <p class="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-3">rate this portfolio</p>
           <div class="flex gap-0.5" id="mobile-rating">
             {[1, 2, 3, 4, 5].map((starIdx) => (
               <button 
@@ -117,20 +117,20 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
   <!-- Sub-grid 3: Details -->
   <div class="grid grid-cols-2 gap-3">
     <div class="bg-[#FF6B47] text-white rounded-xl px-4 py-4 -rotate-[1deg]">
-      <p class="text-[10px] leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
+      <p class="text-[var(--type-micro)] leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
     </div>
     <div class="bg-accent text-accent-foreground rounded-xl px-4 py-4 rotate-[2deg]">
-      <p class="text-[8px] uppercase tracking-widest text-accent-foreground/60 mb-1.5">currently building</p>
-      <p class="text-[10px] leading-snug font-medium">This demo site.<br /><span class="text-accent-foreground/70 font-normal">(meta, right?)</span></p>
+      <p class="text-[var(--type-micro)] uppercase tracking-widest text-accent-foreground/60 mb-1.5">currently building</p>
+      <p class="text-[var(--type-micro)] leading-snug font-medium">This demo site.<br /><span class="text-accent-foreground/70 font-normal">(meta, right?)</span></p>
     </div>
   </div>
 
   <!-- Interests -->
   <div class="bg-card border border-border/60 rounded-xl px-4 py-3.5 shadow-card -rotate-[0.5deg]">
-    <p class="text-[8px] uppercase tracking-widest text-muted-foreground mb-2.5">interests</p>
+    <p class="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-2.5">interests</p>
     <div class="flex flex-wrap gap-1.5">
       {["CrossFit", "Music", "Reading", "Nature walks", "New restaurants", "Japanese learner", "AI-first"].map((interest) => (
-        <span class="px-2.5 py-1 rounded-full border border-border text-[9px] text-foreground/70">{interest}</span>
+        <span class="px-2.5 py-1 rounded-full border border-border text-[var(--type-micro)] text-foreground/70">{interest}</span>
       ))}
     </div>
   </div>

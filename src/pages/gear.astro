@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getGear } from "../lib/cms";
-import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 
 const fallbackGearSections = [
@@ -141,6 +140,9 @@ const gearHeadline = gear?.headline ?? "Tools for <em>focused work</em> and fast
 const gearDescription = gear?.description ?? "A living list of the products in my everyday setup. Each item links out to the product page so it is easy to reference, replace, or share.";
 const gearPageTitle = "My Gear | Phuc Loc Nguyen";
 const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc Loc Nguyen uses for marketing, content, and creative work.";
+const safeGearHeadline = gearHeadline
+  .replace(/<em[^>]*>/gi, "<em>")
+  .replace(/<(?!\/?em>)[^>]*>/gi, "");
 ---
 
 <Layout
@@ -173,17 +175,21 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 >
   <main class="gear-page">
     <div class="gear-container">
-      <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="My Gear introduction">
+      <section class="gear-hero" aria-label="My Gear introduction">
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
-        <AnimatedPageHeadline client:load headline={gearHeadline} />
-        <AnimatedPageDescription client:load className="gear-intro">
-          {gearDescription}
-        </AnimatedPageDescription>
+        <h1 set:html={safeGearHeadline} />
+        <p class="gear-intro">{gearDescription}</p>
       </section>
 
-      <section class="gear-featured toki-r" data-d="2" aria-label="Featured setup">
+      <nav class="gear-jump-nav" aria-label="Gear categories">
+        {gearSections.map((section) => (
+          <a href={`#${section.slug}`}>{section.title}</a>
+        ))}
+      </nav>
+
+      <section class="gear-featured" aria-label="Featured setup">
         <div class="desk-visual">
           <img src="/images/gear/gear-future.webp" alt="Future desk setup" loading="eager" decoding="async" />
         </div>
@@ -197,7 +203,7 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
       </section>
 
       {gearSections.map((section, sectionIndex) => (
-        <section class="gear-section toki-r" id={section.slug} data-d={String(sectionIndex + 3)}>
+        <section class="gear-section" id={section.slug}>
           <div class="gear-section-head">
             <div>
               <h2>{section.title}</h2>
@@ -208,18 +214,34 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 
           <div class="gear-grid">
             {section.items.map((item) => (
-              <div id={item.slug} class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
-                <div class="gear-card-visual">
-                  {item.image ? <img src={item.image} alt={item.name} loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
-                </div>
-                <div class="gear-card-copy">
-                  <div class="gear-card-title">
-                    <h3>{item.name}</h3>
+              item.url ? (
+                <a id={item.slug} class={`gear-card gear-card-${item.slug}`} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${item.name}: ${item.headline}`}>
+                  <div class="gear-card-visual">
+                    {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
                   </div>
-                  <p class="gear-role">{item.headline}</p>
-                  <p class="gear-note">{item.description}</p>
-                </div>
-              </div>
+                  <div class="gear-card-copy">
+                    <div class="gear-card-title">
+                      <h3>{item.name}</h3>
+                      <span aria-hidden="true">↗</span>
+                    </div>
+                    <p class="gear-role">{item.headline}</p>
+                    <p class="gear-note">{item.description}</p>
+                  </div>
+                </a>
+              ) : (
+                <article id={item.slug} class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
+                  <div class="gear-card-visual">
+                    {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
+                  </div>
+                  <div class="gear-card-copy">
+                    <div class="gear-card-title">
+                      <h3>{item.name}</h3>
+                    </div>
+                    <p class="gear-role">{item.headline}</p>
+                    <p class="gear-note">{item.description}</p>
+                  </div>
+                </article>
+              )
             ))}
           </div>
         </section>
@@ -230,6 +252,36 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 
 <style>
   /* Shared layout and hero styles inherited from global.css */
+
+  .gear-jump-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -22px 0 42px;
+  }
+
+  .gear-jump-nav a {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    border: 1px solid var(--divider);
+    border-radius: var(--rounded-sm);
+    padding: 7px 11px;
+    font-family: var(--sans);
+    font-size: var(--type-ui);
+    font-weight: 600;
+    line-height: 1;
+    color: color-mix(in srgb, var(--text) 78%, var(--muted));
+    background: rgba(255, 255, 255, 0.36);
+    transition: border-color 180ms var(--ease-out), color 180ms var(--ease-out), background 180ms var(--ease-out);
+  }
+
+  .gear-jump-nav a:hover,
+  .gear-jump-nav a:focus-visible {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
 
   .gear-featured {
     display: grid;
@@ -268,27 +320,32 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 
   .gear-count {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: var(--type-caption);
     color: var(--muted);
     margin-bottom: 18px;
   }
 
   .gear-featured-copy h2 {
-    font-size: 22px;
-    line-height: 1.3;
-    font-weight: 600;
+    font-family: var(--serif);
+    font-size: var(--type-section-title);
+    line-height: 1.05;
+    font-weight: 400;
     color: var(--text);
     margin-bottom: 14px;
+    text-wrap: balance;
   }
 
   .gear-featured-copy p {
-    color: var(--muted);
-    font-size: 14px;
+    color: color-mix(in srgb, var(--text) 70%, var(--muted));
+    font-size: var(--type-body);
     line-height: 1.72;
+    text-wrap: pretty;
   }
 
   .gear-section {
     margin-bottom: 76px;
+    scroll-margin-top: calc(var(--hdr-h) + 24px);
+    content-visibility: visible;
   }
 
   .gear-section-head {
@@ -301,27 +358,31 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
   }
 
   .gear-section-head h2 {
-    font-size: 16px;
-    font-weight: 600;
+    font-family: var(--serif);
+    font-size: var(--type-section-title);
+    font-weight: 400;
+    line-height: 1.08;
     color: var(--text);
     margin-bottom: 8px;
   }
 
   .gear-section-head p {
     max-width: 560px;
-    color: var(--muted);
-    font-size: 13.5px;
+    color: color-mix(in srgb, var(--text) 70%, var(--muted));
+    font-size: var(--type-body);
+    line-height: 1.62;
+    text-wrap: pretty;
   }
 
   .gear-section-head span {
     font-family: var(--mono);
-    font-size: 12px;
+    font-size: var(--type-caption);
     color: var(--muted);
   }
 
   .gear-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 16px;
     padding-top: 16px;
   }
@@ -334,11 +395,12 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
     border: 1px solid var(--divider);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.32);
-    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    color: inherit;
+    transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out);
   }
 
-  .gear-card:hover {
-    transform: translateY(-2px);
+  .gear-card:hover,
+  .gear-card:focus-visible {
     border-color: rgba(0, 117, 222, 0.42);
     background: rgba(255, 255, 255, 0.6);
   }
@@ -383,7 +445,7 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 
   .gear-card-visual span {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     color: var(--text);
   }
 
@@ -401,26 +463,36 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
   }
 
   .gear-card-title h3 {
-    font-size: 16px;
-    line-height: 1.35;
-    font-weight: 600;
+    font-family: var(--serif);
+    font-size: var(--type-card-title);
+    line-height: 1.05;
+    font-weight: 400;
     color: var(--text);
     transition: color 0.2s ease;
+    text-wrap: balance;
+  }
+
+  .gear-card-title span {
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
   }
 
 
 
   .gear-role {
     font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
+    font-size: var(--type-caption);
+    color: #005fb8;
     margin-bottom: 14px;
   }
 
   .gear-note {
-    color: var(--muted);
-    font-size: 13.5px;
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
+    font-size: var(--type-body);
     line-height: 1.65;
+    text-wrap: pretty;
   }
 
   @media (max-width: 900px) {
@@ -440,6 +512,22 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 
     .gear-featured {
       margin-bottom: 64px;
+    }
+
+    .gear-jump-nav {
+      margin-bottom: 34px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+
+    .gear-jump-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gear-jump-nav a {
+      flex: 0 0 auto;
     }
 
     .desk-visual {

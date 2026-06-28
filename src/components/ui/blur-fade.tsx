@@ -34,13 +34,13 @@ export function BlurFade({
   yOffset = 6,
   inView = false,
   inViewMargin = "-50px",
-  blur = "6px",
+  blur: _blur = "6px",
 }: BlurFadeProps) {
   const ref = useRef(null)
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin })
   const isInView = !inView || inViewResult
   const defaultVariants: Variants = {
-    hidden: { y: yOffset, opacity: 0, filter: `blur(${blur})` },
+    hidden: { y: 0, opacity: 1, filter: "blur(0px)" },
     visible: { y: -yOffset, opacity: 1, filter: `blur(0px)` },
   }
   const combinedVariants = variant || defaultVariants
@@ -48,7 +48,7 @@ export function BlurFade({
     <AnimatePresence>
       <motion.div
         ref={ref}
-        initial="hidden"
+        initial={false}
         animate={isInView ? "visible" : "hidden"}
         exit="hidden"
         variants={combinedVariants}

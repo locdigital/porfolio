@@ -1,12 +1,12 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
-import AnimatedPageHeadline, { AnimatedPageDescription } from "../../components/ui/animated-page-headline";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const sortedProjects = await getProjects();
 const workTitle = "Work | Phuc Loc Nguyen";
 const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
+const workHeadline = "Selected work & <em>case studies</em>";
 ---
 
 <Layout
@@ -37,23 +37,23 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
     <div class="gear-container">
 
       <!-- PAGE HERO -->
-      <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="My work">
+      <section class="gear-hero work-hero" aria-label="My work">
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My work</span>
         </div>
-        <AnimatedPageHeadline client:load headline="Selected work & <em>case studies</em>" />
-        <AnimatedPageDescription client:load className="gear-intro">
+        <h1 set:html={workHeadline} />
+        <p class="gear-intro">
           Paid media scaling, TikTok Shop growth, technical SEO,
           lead generation, and community work across e-commerce,
           education, and entertainment.
-        </AnimatedPageDescription>
+        </p>
       </section>
 
 
       <!-- Project List -->
       <div class="project-list">
-        {sortedProjects.map((project, i) => (
-          <article class="project-row r" data-d={String((i % 5) + 1)}>
+        {sortedProjects.map((project) => (
+          <article class="project-row">
             <div class:list={["project-row-inner", !project.coverImage && "project-row-inner--text-only"]}>
 
               <!-- Left: text -->
@@ -130,7 +130,7 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
 
   .page-title {
     font-family: var(--serif);
-    font-size: clamp(42px, 6.5vw, 90px);
+    font-size: var(--type-display-xl);
     font-weight: 400;
     line-height: 1.0;
     letter-spacing: -0.03em;
@@ -139,7 +139,7 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   }
 
   .page-subtitle {
-    font-size: 13px;
+    font-size: var(--type-ui);
     color: var(--muted);
     font-family: var(--mono);
     letter-spacing: 0.08em;
@@ -147,7 +147,7 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   }
 
   .page-desc {
-    font-size: 15px;
+    font-size: var(--type-body);
     line-height: 1.72;
     color: var(--muted);
     max-width: 400px;
@@ -161,15 +161,9 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
     flex-direction: column;
   }
 
-  /* Hover effect: blur other rows when hovering one */
-  .project-list:hover .project-row:not(:hover) {
-    opacity: 0.35 !important;
-    filter: blur(4px) !important;
-  }
-
   .project-row {
-    transition: opacity 0.4s ease, filter 0.4s ease, transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, filter, transform;
+    content-visibility: visible;
+    transition: none;
   }
 
   .project-row-inner {
@@ -188,9 +182,9 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   .project-number {
     display: block;
     font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.12em;
+    font-size: var(--type-caption);
+    color: color-mix(in srgb, var(--text) 68%, var(--muted));
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     margin-bottom: 16px;
   }
@@ -206,7 +200,7 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
 
   .project-name {
     font-family: var(--serif);
-    font-size: clamp(22px, 2.8vw, 34px);
+    font-size: var(--type-card-title);
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.015em;
@@ -216,11 +210,12 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   }
 
   .project-summary {
-    font-size: 14px;
+    font-size: var(--type-body);
     line-height: 1.72;
-    color: var(--muted);
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
     margin-bottom: 20px;
     max-width: 420px;
+    text-wrap: pretty;
   }
 
   .project-tools {
@@ -232,12 +227,12 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
 
   .tag {
     font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    color: var(--muted);
+    font-size: var(--type-caption);
+    letter-spacing: 0.02em;
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
     border: 1px solid var(--divider);
     border-radius: 3px;
-    padding: 3px 8px;
+    padding: 4px 8px;
     text-transform: uppercase;
     transition: color 0.2s ease, border-color 0.2s ease;
   }
@@ -254,7 +249,7 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   }
 
   .link-primary {
-    font-size: 13px;
+    font-size: var(--type-ui);
     font-weight: 500;
     color: var(--text);
     text-decoration: underline;
@@ -270,9 +265,9 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   }
 
   .link-secondary {
-    font-size: 12px;
+    font-size: var(--type-ui);
     font-family: var(--mono);
-    color: var(--muted);
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
     transition: color 0.25s ease;
   }
 
@@ -284,17 +279,27 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   .project-card-link {
     display: block;
     text-decoration: none;
+    border-radius: var(--rounded-md);
   }
 
   .project-card-img {
+    --thumb-radius: var(--rounded-md);
+    --thumb-border-width: 1.5px;
+    --thumb-inner-radius: calc(var(--thumb-radius) - var(--thumb-border-width));
+
     position: relative;
     aspect-ratio: 2 / 1;
     background: transparent;
-    border-radius: 16px;
+    border-radius: var(--thumb-radius);
     overflow: hidden;
-    border: 1.5px solid rgba(0, 0, 0, 0.06);
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.5s ease;
+    border: var(--thumb-border-width) solid rgba(0, 0, 0, 0.06);
+    transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out);
+  }
+
+  .project-card-link:hover .project-card-img,
+  .project-card-link:focus-visible .project-card-img {
+    border-color: var(--accent-border);
+    background: var(--accent-soft);
   }
 
   .card-logo-wrapper {
@@ -304,6 +309,7 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
     align-items: center;
     justify-content: center;
     padding: 0;
+    border-radius: var(--thumb-inner-radius);
   }
 
   @media (max-width: 600px) {
@@ -316,13 +322,13 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    border-radius: var(--thumb-inner-radius);
   }
 
   .card-overlay {
     position: absolute;
     inset: 0;
+    border-radius: var(--thumb-inner-radius);
     background: rgba(28, 28, 28, 0);
     display: flex;
     align-items: flex-end;
@@ -331,12 +337,21 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   }
 
   .card-cta {
-    font-size: 13px;
+    font-size: var(--type-ui);
     font-weight: 500;
     color: #fff;
     opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease;
+  }
+
+  .project-card-link:hover .card-overlay,
+  .project-card-link:focus-visible .card-overlay {
+    background: rgba(28, 28, 28, 0.18);
+  }
+
+  .project-card-link:hover .card-cta,
+  .project-card-link:focus-visible .card-cta {
+    opacity: 1;
   }
 
   /* ------ Divider ------ */
@@ -378,6 +393,10 @@ const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scalin
   }
 
   @media (max-width: 480px) {
+    :global(.mobile-bottom-nav) {
+      display: none !important;
+    }
+
     .projects-page {
       padding-top: calc(var(--hdr-h) + 48px);
     }

@@ -19,46 +19,40 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
 >
   <main class="about-minimal-page">
     <div class="about-minimal-container">
-      
-      <!-- 00 INTRODUCTION -->
-      <section class="figma-intro gear-hero about-reveal-hero toki-r" data-d="1" aria-label="About me">
-        <AboutHero client:load />
+      <section class="about-intro gear-hero" aria-label="About me">
+        <AboutHero />
       </section>
 
-      <!-- 01 SELECTED WORK -->
-      <section class="figma-card toki-r" data-d="2">
-        <div class="figma-card-header">
-          <div class="card-num-kicker">
-            <span class="card-num">01</span>
-            <span class="card-kicker">SELECTED WORK</span>
-          </div>
+      <section class="about-section">
+        <div class="about-section-header">
+          <p class="section-kicker">Selected work</p>
           <h2 class="card-title">What I Do</h2>
           <p class="card-desc">Campaigns, funnels, and communities scaled across e-commerce, education, and entertainment.</p>
         </div>
-        <div class="figma-card-body">
-          <div class="card-container">
-            <div class="card-list">
-              <a href="/work/playah" class="card-list-item is-link">
+        <div class="about-section-body">
+          <div class="evidence-panel">
+            <div class="work-list">
+              <a href="/work/playah" class="work-list-item is-link">
                 <div class="item-main">PlayAh!</div>
                 <div class="item-desc">Revenue Scaling & TikTok Shop GMV</div>
                 <div class="item-meta">playahvietnam.com</div>
               </a>
-              <a href="/work/workflow-space" class="card-list-item is-link">
+              <a href="/work/workflow-space" class="work-list-item is-link">
                 <div class="item-main">WorkFlow Space</div>
                 <div class="item-desc">Branch Launches & Lead Generation</div>
                 <div class="item-meta">workflowspace.vn</div>
               </a>
-              <a href="/work/tomato-childrens-home" class="card-list-item is-link">
+              <a href="/work/tomato-childrens-home" class="work-list-item is-link">
                 <div class="item-main">TOMATO Children's Home</div>
                 <div class="item-desc">Marketing 360 & Enrollment Growth</div>
                 <div class="item-meta">education growth</div>
               </a>
-              <a href="/work/pops-worldwide" class="card-list-item is-link">
+              <a href="/work/pops-worldwide" class="work-list-item is-link">
                 <div class="item-main">POPS Worldwide</div>
                 <div class="item-desc">Technical SEO & Organic Growth</div>
                 <div class="item-meta">pops.vn</div>
               </a>
-              <a href="/work/education-communities" class="card-list-item is-link">
+              <a href="/work/education-communities" class="work-list-item is-link">
                 <div class="item-main">Education Communities</div>
                 <div class="item-desc">3M+ and 1M Member Communities</div>
                 <div class="item-meta">founding member</div>
@@ -68,83 +62,73 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
         </div>
       </section>
 
-      <!-- 02 TOOLSET & SKILLS -->
-      <section class="figma-card toki-r" data-d="3">
-        <div class="figma-card-header">
-          <div class="card-num-kicker">
-            <span class="card-num">02</span>
-            <span class="card-kicker">TOOLSET & SKILLS</span>
-          </div>
+      <section class="about-section">
+        <div class="about-section-header">
+          <p class="section-kicker">Toolset & skills</p>
           <h2 class="card-title">Toolset & Skills</h2>
           <p class="card-desc">Platforms and systems I use to scale performance, attribution, SEO, and automation.</p>
         </div>
-        <div class="figma-card-body">
-          <div class="card-container">
-            <div class="card-list">
-              <div class="card-list-item">
-                <div class="item-main">Meta Ads</div>
-                <div class="item-desc">Paid Social Campaigns</div>
-                <div class="item-meta">facebook.com</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">Google Ads</div>
-                <div class="item-desc">Performance Max, Search & Web Conversion</div>
-                <div class="item-meta">ads.google.com</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">TikTok Ads</div>
-                <div class="item-desc">Spark Ads, GMV Max & TikTok Shop</div>
-                <div class="item-meta">ads.tiktok.com</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">Google Analytics</div>
-                <div class="item-desc">Data Audits & GA4 Reporting</div>
-                <div class="item-meta">analytics.google.com</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">Figma</div>
-                <div class="item-desc">Interface Design & Creative Mockups</div>
-                <div class="item-meta">figma.com</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">n8n</div>
-                <div class="item-desc">AI-powered Funnel Automation</div>
-                <div class="item-meta">n8n.io</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">Ahrefs</div>
-                <div class="item-desc">SEO Keyword & Competitor Research</div>
-                <div class="item-meta">ahrefs.com</div>
-              </div>
-              <div class="card-list-item">
-                <div class="item-main">Looker Studio</div>
-                <div class="item-desc">Dashboarding & Performance Reporting</div>
-                <div class="item-meta">lookerstudio.google.com</div>
-              </div>
+        <div class="about-section-body">
+          <div class="skills-grid">
+            <div class="skill-item">
+              <div class="item-main">Meta Ads</div>
+              <div class="item-desc">Paid Social Campaigns</div>
+              <div class="item-meta">facebook.com</div>
+            </div>
+            <div class="skill-item">
+              <div class="item-main">Google Ads</div>
+              <div class="item-desc">Performance Max, Search & Web Conversion</div>
+              <div class="item-meta">ads.google.com</div>
+            </div>
+            <div class="skill-item">
+              <div class="item-main">TikTok Ads</div>
+              <div class="item-desc">Spark Ads, GMV Max & TikTok Shop</div>
+              <div class="item-meta">ads.tiktok.com</div>
+            </div>
+            <div class="skill-item">
+              <div class="item-main">Google Analytics</div>
+              <div class="item-desc">Data Audits & GA4 Reporting</div>
+              <div class="item-meta">analytics.google.com</div>
+            </div>
+            <div class="skill-item">
+              <div class="item-main">Figma</div>
+              <div class="item-desc">Interface Design & Creative Mockups</div>
+              <div class="item-meta">figma.com</div>
+            </div>
+            <div class="skill-item">
+              <div class="item-main">n8n</div>
+              <div class="item-desc">AI-powered Funnel Automation</div>
+              <div class="item-meta">n8n.io</div>
+            </div>
+            <div class="skill-item">
+              <div class="item-main">Ahrefs</div>
+              <div class="item-desc">SEO Keyword & Competitor Research</div>
+              <div class="item-meta">ahrefs.com</div>
+            </div>
+            <div class="skill-item">
+              <div class="item-main">Looker Studio</div>
+              <div class="item-desc">Dashboarding & Performance Reporting</div>
+              <div class="item-meta">lookerstudio.google.com</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 03 EDUCATION & CREDENTIALS -->
-      <section class="figma-card toki-r" data-d="4">
-        <div class="figma-card-header">
-          <div class="card-num-kicker">
-            <span class="card-num">03</span>
-            <span class="card-kicker">EDUCATION</span>
-          </div>
+      <section class="about-section">
+        <div class="about-section-header">
+          <p class="section-kicker">Education</p>
           <h2 class="card-title">Education & Credentials</h2>
           <p class="card-desc">Formal degree and professional marketing certifications.</p>
         </div>
-        <div class="figma-card-body">
-          <div class="card-container">
-            <div class="card-list">
-              <div class="card-list-item">
+        <div class="about-section-body">
+          <div class="evidence-panel is-compact">
+            <div class="work-list">
+              <div class="work-list-item">
                 <div class="item-main">FPT University</div>
                 <div class="item-desc">Bachelor of Digital Marketing, Graduated with Honors</div>
                 <div class="item-meta">2019-2023 · GPA 9.4/10</div>
               </div>
-              <div class="card-list-item">
+              <div class="work-list-item">
                 <div class="item-main">Google</div>
                 <div class="item-desc">Digital Marketing Specialization</div>
                 <div class="item-meta">Issued 2022</div>
@@ -153,14 +137,13 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
           </div>
         </div>
       </section>
-
     </div>
   </main>
 </Layout>
 
 <style>
   .about-minimal-page {
-    padding: calc(var(--hdr-h) + 64px) 0 120px;
+    padding: calc(var(--hdr-h) + clamp(44px, 7vw, 84px)) 0 clamp(72px, 10vw, 128px);
     background: transparent;
   }
 
@@ -170,336 +153,305 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
     padding: 0 var(--px);
   }
 
-  /* ------ Figma Slide Grid ------ */
-  .figma-card {
-    display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: clamp(32px, 6vw, 84px);
-    margin-bottom: 96px;
-    align-items: start;
-  }
-
-  /* ------ Intro section (no image, full width) ------ */
-  .figma-intro {
-    margin-bottom: 96px;
-    padding-bottom: 72px;
+  .about-intro {
+    margin-bottom: clamp(64px, 8vw, 108px);
+    padding-bottom: clamp(44px, 7vw, 80px);
     border-bottom: 1px solid var(--divider);
   }
 
-  .figma-card-header {
+  :global(.about-hero-shell) {
+    max-width: 1120px;
+  }
+
+  :global(.about-kicker),
+  .section-kicker {
+    margin-bottom: 18px;
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: #005fb8;
+  }
+
+  :global(.about-hero-title) {
+    max-width: 980px;
+    font-family: var(--serif);
+    font-size: var(--type-display-lg);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: 0;
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  :global(.about-hero-grid) {
+    display: grid;
+    grid-template-columns: minmax(0, 620px) minmax(220px, 1fr);
+    gap: clamp(28px, 7vw, 96px);
+    align-items: end;
+    margin-top: clamp(24px, 4vw, 44px);
+  }
+
+  :global(.about-hero-copy) {
+    max-width: 68ch;
+    font-family: var(--sans);
+    font-size: var(--type-body);
+    line-height: 1.72;
+    color: color-mix(in srgb, var(--text) 73%, var(--muted));
+    text-wrap: pretty;
+  }
+
+  :global(.about-hero-aside) {
+    display: grid;
+    gap: 6px;
+    justify-items: end;
+    padding-bottom: 2px;
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    line-height: 1.45;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  :global(.about-hero-aside strong) {
+    color: var(--text);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  :global(.about-hero-actions) {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  :global(.about-hero-actions a) {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--divider);
+    border-radius: var(--rounded-sm);
+    padding: 8px 13px;
+    font-family: var(--sans);
+    font-size: var(--type-ui);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.42);
+    transition: border-color 180ms var(--ease-out), color 180ms var(--ease-out), background 180ms var(--ease-out);
+  }
+
+  :global(.about-hero-actions a:hover) {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .about-section {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.82fr) minmax(0, 1.35fr);
+    gap: clamp(28px, 6vw, 84px);
+    align-items: start;
+    margin-bottom: clamp(64px, 8vw, 104px);
+  }
+
+  .about-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-section-header {
     position: sticky;
     top: calc(var(--hdr-h) + 32px);
   }
 
-  .card-num-kicker {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    font-weight: 600;
-  }
-
-  .card-num {
-    padding: 2px 8px;
-    border: 1px solid rgba(0, 117, 222, 0.25);
-    border-radius: 4px;
-    background: rgba(0, 117, 222, 0.05);
-    font-size: 10px;
-  }
-
-  .card-kicker {
-    text-transform: uppercase;
-  }
-
   .card-title {
     font-family: var(--serif);
-    font-size: clamp(28px, 4vw, 38px);
-    line-height: 1.15;
-    color: var(--text);
+    font-size: var(--type-section-title);
     font-weight: 400;
+    line-height: 1.05;
+    color: var(--text);
+    text-wrap: balance;
   }
 
   .card-desc {
-    font-size: 14px;
+    max-width: 34ch;
+    margin-top: 14px;
+    font-family: var(--sans);
+    font-size: var(--type-body);
     line-height: 1.6;
-    color: var(--muted);
+    color: color-mix(in srgb, var(--text) 68%, var(--muted));
+    text-wrap: pretty;
   }
 
-  .figma-card-body {
-    width: 100%;
+  .about-section-body {
+    min-width: 0;
   }
 
-  /* ------ Card Container ------ */
-  .card-container {
-    background: rgba(255, 255, 255, 0.45);
-    border: 1px solid var(--divider);
-    border-radius: 16px;
-    padding: 32px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.015), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  .evidence-panel {
+    border-top: 1px solid var(--text);
+    border-bottom: 1px solid var(--divider);
   }
 
-  .card-container:hover {
-    border-color: rgba(0, 117, 222, 0.25);
-    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  .evidence-panel.is-compact {
+    border-top-color: var(--divider);
   }
 
-  /* ------ List Items ------ */
-  .card-list {
+  .work-list {
     display: flex;
     flex-direction: column;
   }
 
-
-
-  .card-list-item {
+  .work-list-item {
     display: grid;
-    grid-template-columns: 1.2fr 1.6fr 1.2fr;
-    gap: 16px;
-    padding: 20px 0;
+    grid-template-columns: minmax(150px, 0.9fr) minmax(220px, 1.45fr) minmax(128px, 0.8fr);
+    gap: clamp(14px, 2.5vw, 28px);
+    align-items: baseline;
+    padding: 18px 0;
     border-bottom: 1px solid var(--divider);
-    font-size: 14px;
-    align-items: center;
     color: var(--text);
-    transition: all 0.25s var(--ease-out);
-    will-change: opacity, filter;
+    font-family: var(--sans);
+    font-size: var(--type-body);
+    transition: color 180ms var(--ease-out), background 180ms var(--ease-out);
   }
 
-  .card-list-item:first-child {
-    padding-top: 0;
-  }
-
-  .card-list-item:last-child {
-    padding-bottom: 0;
+  .work-list-item:last-child {
     border-bottom: none;
   }
 
-  a.card-list-item {
-    text-decoration: none;
+  a.work-list-item:hover {
+    color: var(--accent);
+    background: var(--accent-soft);
   }
 
-  a.card-list-item:hover {
-    color: var(--accent);
-    padding-left: 8px;
-    background: rgba(0, 117, 222, 0.02);
-    border-radius: 6px;
+  a.work-list-item:hover .item-desc,
+  a.work-list-item:hover .item-meta {
+    color: var(--text);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    border-top: 1px solid var(--text);
+    border-left: 1px solid var(--divider);
+  }
+
+  .skill-item {
+    min-height: 132px;
+    padding: 18px;
+    border-right: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+    background: rgba(255, 255, 255, 0.28);
   }
 
   .item-main {
-    font-weight: 600;
+    font-family: var(--serif);
+    font-size: var(--type-subhead);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--text);
   }
 
   .item-desc {
-    color: var(--muted);
-    transition: color 0.25s ease;
-  }
-
-  a.card-list-item:hover .item-desc {
-    color: var(--text);
+    color: color-mix(in srgb, var(--text) 70%, var(--muted));
+    transition: color 180ms var(--ease-out);
   }
 
   .item-meta {
     font-family: var(--mono);
-    font-size: 11.5px;
+    font-size: var(--type-caption);
+    line-height: 1.5;
     color: var(--muted);
     text-align: right;
-    transition: color 0.25s ease;
+    transition: color 180ms var(--ease-out);
   }
 
-  a.card-list-item:hover .item-meta {
-    color: var(--accent);
+  .skill-item .item-desc {
+    margin-top: 10px;
+    line-height: 1.5;
   }
 
-  /* ------ Hero Customization ------ */
-  .hero-main-title {
-    font-family: var(--serif);
-    font-size: clamp(38px, 5vw, 52px);
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 8px;
+  .skill-item .item-meta {
+    display: block;
+    margin-top: 22px;
+    text-align: left;
   }
 
-  .hero-main-title em {
-    font-style: italic;
-    color: var(--accent);
-    font-family: var(--serif);
-  }
-
-  .hero-bio {
-    margin-top: 12px;
-  }
-
-  .hero-bio p {
-    font-size: 14.5px;
-    line-height: 1.65;
-    color: var(--muted);
-  }
-
-  .hero-links {
-    display: flex;
-    gap: 24px;
-    margin-top: 8px;
-  }
-
-  .min-link {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--text);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-color: var(--divider);
-    transition: all 0.25s ease;
-  }
-
-  .min-link:hover {
-    color: var(--accent);
-    text-decoration-color: var(--accent);
-  }
-
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding: 12px;
-  }
-
-  .hero-image-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
-    aspect-ratio: 4 / 5;
-    border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
-  }
-
-  .hero-image-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 16px;
-    border: 1px solid var(--divider);
-    filter: grayscale(0.1);
-    transition: filter 0.3s ease;
-  }
-
-  .hero-image-wrapper:hover img {
-    filter: grayscale(0);
-  }
-
-  /* ------ Floating Chips ------ */
-  .floating-chip {
-    position: absolute;
-    padding: 8px 14px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 999px;
-    font-size: 10px;
-    font-weight: 600;
-    font-family: var(--mono);
-    color: var(--text);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    pointer-events: none;
-    transition: transform 0.3s ease;
-    animation: chipFloat 6s ease-in-out infinite;
-    z-index: 10;
-    white-space: nowrap;
-  }
-
-  .chip-1 {
-    top: 15%;
-    left: -35px;
-    animation-delay: 0s;
-  }
-
-  .chip-2 {
-    bottom: 25%;
-    right: -45px;
-    animation-delay: 1.5s;
-  }
-
-  .chip-3 {
-    bottom: 10%;
-    left: -20px;
-    animation-delay: 3s;
-  }
-
-  @keyframes chipFloat {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  /* Hover interactivity for chips */
-  .hero-image-wrapper:hover .chip-1 {
-    transform: translate(-6px, -4px);
-  }
-  .hero-image-wrapper:hover .chip-2 {
-    transform: translate(6px, -4px);
-  }
-  .hero-image-wrapper:hover .chip-3 {
-    transform: translate(-4px, 4px);
-  }
-
-  /* ------ Responsive ------ */
   @media (max-width: 992px) {
-    .figma-card {
+    .about-section {
       grid-template-columns: 1fr;
       gap: 32px;
-      margin-bottom: 64px;
+      margin-bottom: 72px;
     }
 
-    .figma-card-header {
+    .about-section-header {
       position: static;
     }
 
-    .hero-visual {
-      order: -1;
-      margin-bottom: 16px;
+    :global(.about-hero-grid) {
+      grid-template-columns: 1fr;
+      gap: 24px;
     }
 
-    .hero-image-wrapper {
-      max-width: 320px;
+    :global(.about-hero-aside) {
+      justify-items: start;
+      text-align: left;
     }
 
-    .chip-1 { left: -15px; }
-    .chip-2 { right: -20px; }
-    .chip-3 { left: -10px; }
+    .card-desc {
+      max-width: 58ch;
+    }
   }
 
-  @media (max-width: 640px) {
-    .card-container {
-      padding: 24px 16px;
+  @media (max-width: 760px) {
+    .work-list-item {
+      grid-template-columns: 1fr;
+      gap: 7px;
+      padding: 17px 0;
     }
 
-    .card-list-item {
-      grid-template-columns: 1fr;
-      gap: 8px;
-      padding: 16px 0;
+    a.work-list-item:hover {
+      padding-inline: 0;
+      background: transparent;
     }
 
     .item-meta {
       text-align: left;
-      margin-top: 4px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about-minimal-page {
+      padding-top: calc(var(--hdr-h) + 36px);
     }
 
-    .floating-chip {
-      display: none; /* Hide chips on small mobile to avoid layout clipping */
+    .about-intro {
+      margin-bottom: 176px;
+    }
+
+    :global(.about-hero-title) {
+      font-size: var(--type-display-lg);
+      line-height: 0.98;
+    }
+
+    :global(.about-hero-copy),
+    .card-desc,
+    .work-list-item {
+      font-size: var(--type-body);
+    }
+
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .skill-item {
+      min-height: 0;
+      padding: 16px 0;
+      border-right: none;
+      background: transparent;
     }
   }
 </style>

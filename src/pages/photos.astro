@@ -2,9 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import { getPhotoLocations } from "../lib/cms";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
-import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
-import BlurFade from "../components/ui/BlurFade.astro";
-import { Images } from "lucide-react";
 
 const sourceLocations = await getPhotoLocations();
 const optimizedLocations = await Promise.all(
@@ -38,40 +35,38 @@ const optimizedLocations = await Promise.all(
     ),
   })),
 );
+const photosHeadline = "Places I've <em>wandered.</em>";
 ---
 
-<Layout title="Photos --- Phuc Loc Nguyen">
+<Layout title="Photos | Phuc Loc Nguyen">
 
   <main class="gear-page">
     <div class="gear-container">
       <!-- PAGE HERO -->
-      <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="Photos introduction">
+      <section class="gear-hero photos-hero-copy" aria-label="Photos introduction">
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My photos</span>
         </div>
-        <AnimatedPageHeadline client:load headline="Places I've <em>wandered.</em>" />
-        <AnimatedPageDescription client:load className="gear-intro">
+        <h1 set:html={photosHeadline} />
+        <p class="gear-intro">
           Shot on whatever was in my pocket. These are the places that stayed with me.
-        </AnimatedPageDescription>
+        </p>
       </section>
     </div>
 
     <!-- QUICK NAV -->
     <div id="photos-nav-sentinel"></div>
-    <div class="photos-nav-wrapper toki-r" data-d="2">
+    <div class="photos-nav-wrapper">
       <div class="container">
-            <nav class="photos-nav" aria-label="Locations navigation">
+        <nav class="photos-nav" aria-label="Locations navigation">
           <div class="photos-nav-list">
-            <!-- Active underline -->
-            <div class="photos-nav-active-line" id="photos-active-line"></div>
-
             {optimizedLocations.map((loc, i) => (
-              <a href="/photos" class={`photos-nav-link ${i === 0 ? 'active' : ''}`} data-nav-target={loc.slug}>
+              <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`}>
                 {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
               </a>
             ))}
             <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
-              Gallery <Images className="photos-gallery-icon" size={15} strokeWidth={1.8} aria-hidden="true" />
+              Gallery <span class="photos-gallery-icon" aria-hidden="true">↗</span>
             </a>
           </div>
         </nav>
@@ -87,7 +82,7 @@ const optimizedLocations = await Promise.all(
       >
         <div class="container">
           <!-- Location header -->
-          <div class="loc-header r" data-d="1">
+          <div class="loc-header">
             <div class="loc-meta">
               <span class="loc-index">{String(locIdx + 1).padStart(2, '0')}</span>
               <div>
@@ -103,43 +98,27 @@ const optimizedLocations = await Promise.all(
         <div class="container">
           <div class="loc-grid" data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
             {loc.photos.map((photo, i) => (
-              <BlurFade
-                delay={(i % 5) * 0.08}
-                className="break-inside-avoid mb-[4px]"
+              <div
+                class={`loc-photo-item ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
+                data-pswp-width={photo.fullWidth}
+                data-pswp-height={photo.fullHeight}
+                aria-label={photo.alt}
+                style={`aspect-ratio: ${photo.previewWidth} / ${photo.previewHeight};`}
               >
-                <div
-                  class={`loc-photo-item ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
-                  data-pswp-width={photo.fullWidth}
-                  data-pswp-height={photo.fullHeight}
-                  aria-label={photo.alt}
-                  style={`aspect-ratio: ${photo.previewWidth} / ${photo.previewHeight};`}
-                >
-                  {photo.previewSrcSet ? (
-                    <picture>
+                {photo.previewSrcSet ? (
+                  <picture>
+                    <source
+                      type="image/avif"
+                      srcset={photo.previewSrcSet}
+                      sizes={photo.previewSizes}
+                    />
+                    {photo.webpSrcSet && (
                       <source
-                        type="image/avif"
-                        srcset={photo.previewSrcSet}
+                        type="image/webp"
+                        srcset={photo.webpSrcSet}
                         sizes={photo.previewSizes}
                       />
-                      {photo.webpSrcSet && (
-                        <source
-                          type="image/webp"
-                          srcset={photo.webpSrcSet}
-                          sizes={photo.previewSizes}
-                        />
-                      )}
-                      <img
-                        src={photo.previewSrc}
-                        width={photo.previewWidth}
-                        height={photo.previewHeight}
-                        alt={photo.alt}
-                        loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
-                        decoding="async"
-                        fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
-                        onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
-                      />
-                    </picture>
-                  ) : (
+                    )}
                     <img
                       src={photo.previewSrc}
                       width={photo.previewWidth}
@@ -150,12 +129,23 @@ const optimizedLocations = await Promise.all(
                       fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
                       onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
                     />
-                  )}
-                  <div class="loc-photo-overlay" aria-hidden="true">
-                    <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
-                  </div>
+                  </picture>
+                ) : (
+                  <img
+                    src={photo.previewSrc}
+                    width={photo.previewWidth}
+                    height={photo.previewHeight}
+                    alt={photo.alt}
+                    loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
+                    onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
+                  />
+                )}
+                <div class="loc-photo-overlay" aria-hidden="true">
+                  <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
                 </div>
-              </BlurFade>
+              </div>
             ))}
           </div>
         </div>
@@ -181,7 +171,7 @@ const optimizedLocations = await Promise.all(
 
   .photos-heading {
     font-family: var(--serif);
-    font-size: clamp(42px, 6.5vw, 90px);
+    font-size: var(--type-display-xl);
     font-weight: 400;
     line-height: 1.06;
     letter-spacing: -.025em;
@@ -196,7 +186,7 @@ const optimizedLocations = await Promise.all(
   }
 
   .photos-subtext {
-    font-size: 15px;
+    font-size: var(--type-body);
     color: var(--muted);
     max-width: 480px;
     line-height: 1.7;
@@ -266,10 +256,10 @@ const optimizedLocations = await Promise.all(
     padding: 6px 14px;
     height: 36px;
     border-radius: 6px;
-    font-size: 14px;
-    font-family: var(--sans, system-ui, sans-serif);
+    font-size: var(--type-body);
+    font-family: var(--sans);
     font-weight: 500;
-    color: rgba(14, 15, 17, 0.6);
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
     text-decoration: none;
     white-space: nowrap;
     background: transparent;
@@ -288,7 +278,7 @@ const optimizedLocations = await Promise.all(
 
   .photos-nav-count {
     color: inherit;
-    font-size: 10px;
+    font-size: var(--type-caption);
     font-family: var(--mono, monospace);
     opacity: 0.55;
     transform: translateY(-30%);
@@ -297,24 +287,24 @@ const optimizedLocations = await Promise.all(
 
   .photos-nav-gallery-btn {
     margin-left: 10px;
-    color: rgba(14, 15, 17, 0.5);
+    color: color-mix(in srgb, var(--text) 68%, var(--muted));
   }
 
   .photos-gallery-icon {
     display: inline-block;
-    transition: transform 0.2s ease;
-  }
-
-  .photos-nav-gallery-btn:hover .photos-gallery-icon {
-    transform: translateX(3px);
   }
 
   /* ------ Location section ------ */
   .loc-section {
-    display: none;
-    opacity: 0;
+    display: block;
+    opacity: 1;
     padding: clamp(24px, 4vw, 40px) 0 clamp(60px, 8vw, 100px) 0;
     scroll-margin-top: calc(var(--hdr-h, 80px) + 70px);
+    content-visibility: visible;
+  }
+
+  .gear-page > .loc-section {
+    content-visibility: visible;
   }
 
   .loc-section.active {
@@ -328,13 +318,6 @@ const optimizedLocations = await Promise.all(
     justify-content: space-between;
     gap: 24px;
     margin-bottom: 28px;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  :global(.nav-is-stuck) .loc-header {
-    opacity: 0;
-    transform: translateY(-8px);
-    pointer-events: none;
   }
 
   .loc-meta {
@@ -345,7 +328,7 @@ const optimizedLocations = await Promise.all(
 
   .loc-index {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     color: var(--muted);
     letter-spacing: .08em;
     padding-top: 10px;
@@ -354,7 +337,7 @@ const optimizedLocations = await Promise.all(
 
   .loc-name {
     font-family: var(--serif);
-    font-size: clamp(32px, 4.5vw, 56px);
+    font-size: var(--type-display);
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: -.025em;
@@ -363,15 +346,15 @@ const optimizedLocations = await Promise.all(
   }
 
   .loc-desc {
-    font-size: 13px;
-    color: var(--muted);
+    font-size: var(--type-body);
+    color: color-mix(in srgb, var(--text) 70%, var(--muted));
     max-width: 380px;
     line-height: 1.6;
   }
 
   .loc-count {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     color: var(--muted);
     white-space: nowrap;
     flex-shrink: 0;
@@ -398,12 +381,14 @@ const optimizedLocations = await Promise.all(
     transform: translateZ(0); /* Prevent column break glitches */
   }
 
+  .loc-photo-item picture::after {
+    display: none;
+  }
+
   .loc-photo-item img {
     display: block;
     width: 100%;
     height: auto; /* Maintains original aspect ratio */
-    transition: transform .65s var(--ease-out, ease);
-    will-change: transform;
     backface-visibility: hidden;
   }
 
@@ -426,8 +411,8 @@ const optimizedLocations = await Promise.all(
 
   .loc-photo-index {
     font-family: var(--mono);
-    font-size: 10px;
-    color: rgba(255,255,255,.7);
+    font-size: var(--type-caption);
+    color: rgba(255,255,255,.82);
     letter-spacing: .1em;
   }
 
@@ -439,6 +424,10 @@ const optimizedLocations = await Promise.all(
   }
 
   @media (max-width: 600px) {
+    :global(.mobile-bottom-nav) {
+      display: none !important;
+    }
+
     .loc-grid {
       column-count: 1;
     }
@@ -450,347 +439,3 @@ const optimizedLocations = await Promise.all(
     }
   }
 </style>
-
-<script>
-  // @ts-nocheck
-  import { gsap } from "gsap";
-  import { Flip } from "gsap/Flip";
-
-  gsap.registerPlugin(Flip);
-
-  // PhotoSwipe per-gallery init
-  (function () {
-    document.addEventListener('astro:page-load', () => {
-      // Re-use IO from layout for .r elements on this page
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-        });
-      }, { threshold: 0.05, rootMargin: '0px 0px -32px 0px' });
-      document.querySelectorAll('.r').forEach(el => io.observe(el));
-
-      // ------ Vercel-style tabs: active underline ------
-      const navLinks = document.querySelectorAll('.photos-nav-link[data-nav-target]');
-      const activeLine = document.getElementById('photos-active-line');
-      const navList   = document.querySelector('.photos-nav-list');
-      let currentActiveLink = navLinks[0] || null;
-
-      function getOffset(el) {
-        if (!el || !navList) return { left: 0, width: 0 };
-        const elRect   = el.getBoundingClientRect();
-        const listRect = navList.getBoundingClientRect();
-        return {
-          left:  elRect.left - listRect.left + navList.scrollLeft,
-          width: elRect.width,
-        };
-      }
-
-      function moveActiveLine(link) {
-        if (!activeLine || !link) return;
-        const { left, width } = getOffset(link);
-        activeLine.style.left  = `${left}px`;
-        activeLine.style.width = `${width}px`;
-      }
-
-
-
-      // Tab switcher
-      const sections = document.querySelectorAll('.loc-section');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let activeSlug = '';
-      let tabTween = null;
-
-      function getSectionPieces(section) {
-        if (!section) return [];
-        return gsap.utils.toArray(section.querySelectorAll('.loc-header, .loc-photo-item'));
-      }
-
-      function setSectionVisible(section, isVisible, { keepMinHeight = false } = {}) {
-        if (!section) return;
-        section.classList.toggle('active', isVisible);
-        section.style.display = isVisible ? 'block' : 'none';
-        section.style.opacity = isVisible ? '1' : '0';
-        if (!keepMinHeight) {
-          section.style.minHeight = '';
-        }
-
-        section.querySelectorAll('.r').forEach(el => {
-          el.classList.toggle('in', isVisible);
-        });
-      }
-
-      function settleTab(slug, { keepActiveMinHeight = false } = {}) {
-        sections.forEach(sec => {
-          const isActiveSection = sec.id === slug;
-          setSectionVisible(sec, isActiveSection, { keepMinHeight: isActiveSection && keepActiveMinHeight });
-          gsap.set(sec, { clearProps: 'transform,scale,opacity,visibility' });
-          gsap.set(getSectionPieces(sec), { clearProps: 'transform,scale,opacity,visibility' });
-        });
-      }
-
-      function measureHiddenSectionHeight(section) {
-        if (!section) return 0;
-        const previousDisplay = section.style.display;
-        const previousOpacity = section.style.opacity;
-        const previousVisibility = section.style.visibility;
-        const previousPosition = section.style.position;
-        const previousPointerEvents = section.style.pointerEvents;
-        const previousWidth = section.style.width;
-        const previousLeft = section.style.left;
-
-        section.style.display = 'block';
-        section.style.opacity = '0';
-        section.style.visibility = 'hidden';
-        section.style.position = 'absolute';
-        section.style.pointerEvents = 'none';
-        section.style.width = `${section.parentElement?.getBoundingClientRect().width || document.documentElement.clientWidth}px`;
-        section.style.left = '0';
-
-        const height = section.scrollHeight;
-
-        section.style.display = previousDisplay;
-        section.style.opacity = previousOpacity;
-        section.style.visibility = previousVisibility;
-        section.style.position = previousPosition;
-        section.style.pointerEvents = previousPointerEvents;
-        section.style.width = previousWidth;
-        section.style.left = previousLeft;
-
-        return height;
-      }
-
-      function ensureScrollRoom(section, desiredScrollY, activeSection = document.querySelector('.loc-section.active')) {
-        if (!section) return 0;
-        const referenceSection = activeSection || section;
-        const sectionTop = referenceSection.getBoundingClientRect().top + window.scrollY;
-        const minHeightForViewport = Math.ceil(desiredScrollY + window.innerHeight - sectionTop + 2);
-        const targetHeight = section.offsetHeight || measureHiddenSectionHeight(section);
-        const currentHeight = Math.max(referenceSection.offsetHeight, referenceSection.scrollHeight, targetHeight);
-
-        const lockHeight = Math.max(currentHeight, minHeightForViewport, 0);
-        referenceSection.style.minHeight = `${lockHeight}px`;
-        section.style.minHeight = `${lockHeight}px`;
-
-        return lockHeight;
-      }
-
-      function restoreScrollY(scrollY) {
-        window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
-        requestAnimationFrame(() => {
-          window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
-          requestAnimationFrame(() => {
-            window.scrollTo({ top: scrollY, left: window.scrollX, behavior: 'auto' });
-          });
-        });
-      }
-
-      function clearLocationHash() {
-        if (!window.location.hash) return;
-        history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
-      }
-
-      const activateTab = (slug, options = {}) => {
-        const targetSection = document.getElementById(slug);
-        if (!targetSection) return;
-        if (slug === activeSlug && targetSection.classList.contains('active')) return;
-
-        const shouldPreserveScroll = options.preserveScroll === true;
-        const previousScrollY = window.scrollY;
-        const activeSection = document.querySelector('.loc-section.active');
-        const outgoingPieces = getSectionPieces(activeSection);
-        const incomingPieces = getSectionPieces(targetSection);
-        const flipState = reduceMotion || !activeSection ? null : Flip.getState(outgoingPieces);
-
-        if (tabTween) {
-          tabTween.kill();
-          tabTween = null;
-        }
-
-        if (shouldPreserveScroll) {
-          ensureScrollRoom(targetSection, previousScrollY, activeSection);
-        }
-
-        if (reduceMotion || !activeSection || activeSection === targetSection) {
-          settleTab(slug, { keepActiveMinHeight: shouldPreserveScroll });
-        } else {
-          setSectionVisible(activeSection, true, { keepMinHeight: shouldPreserveScroll });
-          setSectionVisible(targetSection, false, { keepMinHeight: shouldPreserveScroll });
-
-          tabTween = gsap.timeline({
-            onComplete: () => {
-              tabTween = null;
-              settleTab(slug, { keepActiveMinHeight: shouldPreserveScroll });
-              if (shouldPreserveScroll) {
-                restoreScrollY(previousScrollY);
-              }
-            },
-          });
-
-          tabTween
-            .add(Flip.from(flipState, {
-              targets: outgoingPieces,
-              duration: 0.6,
-              scale: true,
-              ease: 'power1.inOut',
-              stagger: 0.05,
-              absolute: true,
-              prune: true,
-            }), 0)
-            .to(outgoingPieces, {
-              opacity: 0,
-              scale: 0,
-              duration: 0.8,
-              ease: 'power1.inOut',
-              stagger: 0.05,
-              overwrite: true,
-            }, 0)
-            .set(activeSection, { display: 'none', opacity: 0 }, 0.42)
-            .set(targetSection, { display: 'block', opacity: 1 }, 0.42)
-            .fromTo(incomingPieces, {
-              opacity: 0,
-              scale: 0,
-            }, {
-              opacity: 1,
-              scale: 1,
-              duration: 0.8,
-              ease: 'power1.inOut',
-              stagger: 0.05,
-              overwrite: true,
-            }, 0.42);
-        }
-
-        activeSlug = slug;
-
-        navLinks.forEach(link => {
-          if (link.getAttribute('data-nav-target') === slug) {
-            link.classList.add('active');
-            currentActiveLink = link;
-            moveActiveLine(link);
-            link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-          } else {
-            link.classList.remove('active');
-          }
-        });
-
-        targetSection.querySelectorAll('.r').forEach(el => {
-          el.classList.add('in');
-          io.observe(el);
-        });
-
-        if (shouldPreserveScroll) {
-          restoreScrollY(previousScrollY);
-        }
-      };
-
-      navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-          const slug = this.getAttribute('data-nav-target');
-          if (slug) {
-            e.preventDefault();
-            activateTab(slug, { preserveScroll: true });
-            clearLocationHash();
-          }
-        });
-      });
-
-      const onPopState = () => {
-        const hash = window.location.hash;
-        if (hash) {
-          activateTab(hash.substring(1));
-          clearLocationHash();
-        } else if (sections.length > 0) {
-          activateTab(sections[0].id);
-        }
-      };
-      const photosWindow = window;
-      if (photosWindow._photosOnPopState) {
-        window.removeEventListener('popstate', photosWindow._photosOnPopState);
-      }
-      photosWindow._photosOnPopState = onPopState;
-      window.addEventListener('popstate', photosWindow._photosOnPopState);
-
-      // Reposition on resize
-      const onResize = () => {
-        if (currentActiveLink) moveActiveLine(currentActiveLink);
-      };
-      if (photosWindow._photosOnResize) {
-        window.removeEventListener('resize', photosWindow._photosOnResize);
-      }
-      photosWindow._photosOnResize = onResize;
-      window.addEventListener('resize', photosWindow._photosOnResize);
-
-      // Init
-      const initHash = window.location.hash;
-      if (initHash) {
-        activateTab(initHash.substring(1));
-        clearLocationHash();
-      } else if (sections.length > 0) {
-        activateTab(sections[0].id);
-      }
-      // Init active line position after first paint
-      requestAnimationFrame(() => moveActiveLine(currentActiveLink));
-
-      // Navigation scroll effect (toggles body class when scrolled past sentinel)
-      const sentinel = document.getElementById('photos-nav-sentinel');
-      if (sentinel) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-              document.body.classList.add('nav-is-stuck');
-            } else {
-              document.body.classList.remove('nav-is-stuck');
-            }
-          });
-        }, {
-          threshold: [0],
-          rootMargin: '-1px 0px 0px 0px'
-        });
-        observer.observe(sentinel);
-      }
-
-      // Drag-to-scroll for nav list
-      if (navList) {
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-        let hasDragged = false;
-
-        navList.addEventListener('mousedown', (e) => {
-          isDown = true;
-          hasDragged = false;
-          startX = e.pageX - navList.offsetLeft;
-          scrollLeft = navList.scrollLeft;
-        });
-
-        navList.addEventListener('mouseleave', () => {
-          isDown = false;
-        });
-
-        navList.addEventListener('mouseup', () => {
-          isDown = false;
-        });
-
-        navList.addEventListener('mousemove', (e) => {
-          if (!isDown) return;
-          e.preventDefault();
-          const x = e.pageX - navList.offsetLeft;
-          const walk = (x - startX) * 2; // scroll speed multiplier
-          if (Math.abs(walk) > 5) hasDragged = true;
-          navList.scrollLeft = scrollLeft - walk;
-        });
-
-        // Prevent click if dragging
-        navList.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', (e) => {
-            if (hasDragged) {
-              e.preventDefault();
-              e.stopImmediatePropagation();
-            }
-          });
-          // Prevent ghost drag
-          link.addEventListener('dragstart', (e) => e.preventDefault());
-        });
-      }
-    });
-  })();
-</script>

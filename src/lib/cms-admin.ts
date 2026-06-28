@@ -578,18 +578,6 @@ async function readPhotoLocations(): Promise<CmsPhotoLocation[]> {
   return readJsonCollection<CmsPhotoLocation>(photosDir);
 }
 
-async function readPhotoLocation(slug: string): Promise<CmsPhotoLocation | null> {
-  const collection = await getCmsCollection<CmsPhotoLocation>("cms_photos");
-  if (collection) {
-    const document = await collection.findOne({ _id: slug });
-    if (document) return stripMongoDocument(document);
-  }
-
-  const filePath = path.join(photosDir, `${slug}.json`);
-  if (!existsSync(filePath) && !useGithub) return null;
-  return readJsonFile<CmsPhotoLocation | null>(filePath, null);
-}
-
 export async function readCmsPayload(): Promise<CmsPayload> {
   const [writing, gear, projects, photos] = await Promise.all([
     readWritingPosts(),

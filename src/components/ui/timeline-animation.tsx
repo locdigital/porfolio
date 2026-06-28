@@ -45,9 +45,9 @@ export function TimelineContent<T extends ValidTag = "div">({
       },
     }),
     hidden: {
-      y: 36,
-      opacity: 0,
-      filter: "blur(8px)",
+      y: 0,
+      opacity: 1,
+      filter: "blur(0px)",
     },
   };
 
@@ -62,7 +62,7 @@ export function TimelineContent<T extends ValidTag = "div">({
       className={className}
       custom={animationNum}
       variants={activeVariants}
-      initial="hidden"
+      initial={false}
       animate={isInView ? "visible" : "hidden"}
       {...(props as object)}
     >
@@ -70,4 +70,3 @@ export function TimelineContent<T extends ValidTag = "div">({
     </MotionTag>
   );
 }
-

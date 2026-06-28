@@ -2,8 +2,6 @@
    Writing Editor — Global Styles
    ============================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap');
-
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -21,7 +19,7 @@
   flex-direction: column;
   min-height: 100vh;
   background: #fafafa;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--sans);
   width: 100%;
 }
 
@@ -70,7 +68,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--type-ui);
   font-weight: 500;
   color: #666;
   text-decoration: none;
@@ -89,7 +87,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: var(--type-caption);
   font-weight: 500;
   padding: 4px 10px;
   border-radius: 20px;
@@ -105,7 +103,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: var(--type-caption);
   color: #aaa;
 }
 
@@ -116,7 +114,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--type-ui);
   font-weight: 500;
   padding: 7px 14px;
   border-radius: 8px;
@@ -185,7 +183,7 @@
 
 .post-status-badge {
   display: inline-flex;
-  font-size: 11px;
+  font-size: var(--type-caption);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -200,7 +198,7 @@
 /* ---- Title ---- */
 .writing-title-input {
   width: 100%;
-  font-size: 42px;
+  font-size: var(--type-section-title);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.025em;
@@ -209,7 +207,7 @@
   border: none;
   outline: none;
   resize: none;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   margin-bottom: 12px;
   display: block;
   overflow: hidden;
@@ -230,15 +228,15 @@
 }
 
 .writing-slug-prefix {
-  font-size: 13px;
+  font-size: var(--type-ui);
   color: #aaa;
-  font-family: 'Menlo', 'Monaco', monospace;
+  font-family: var(--mono);
   white-space: nowrap;
 }
 
 .writing-slug-input {
-  font-size: 13px;
-  font-family: 'Menlo', 'Monaco', monospace;
+  font-size: var(--type-ui);
+  font-family: var(--mono);
   color: #555;
   background: transparent;
   border: none;
@@ -276,25 +274,25 @@
 }
 
 .blocknote-wrapper .bn-block-content {
-  font-size: 17px;
+  font-size: var(--type-lead);
   line-height: 1.75;
   color: #2d2d2d;
 }
 
 .blocknote-wrapper .bn-block-content[data-content-type="heading"][data-level="1"] {
-  font-size: 32px !important;
+  font-size: var(--type-section-title) !important;
   font-weight: 700;
   color: #111;
 }
 
 .blocknote-wrapper .bn-block-content[data-content-type="heading"][data-level="2"] {
-  font-size: 26px !important;
+  font-size: var(--type-card-title) !important;
   font-weight: 700;
   color: #111;
 }
 
 .blocknote-wrapper .bn-block-content[data-content-type="heading"][data-level="3"] {
-  font-size: 21px !important;
+  font-size: var(--type-card-title) !important;
   font-weight: 600;
   color: #111;
 }
@@ -350,7 +348,7 @@
 
 .seo-sidebar-title {
   font-family: var(--serif);
-  font-size: 22px;
+  font-size: var(--type-card-title);
   font-weight: 500;
   color: #111;
   margin: 0;
@@ -364,13 +362,13 @@
 }
 
 .seo-score-num {
-  font-size: 22px;
+  font-size: var(--type-card-title);
   font-weight: 700;
   line-height: 1;
 }
 
 .seo-score-label {
-  font-size: 12px;
+  font-size: var(--type-caption);
   color: #aaa;
 }
 
@@ -407,7 +405,7 @@
   background: #fffaf4;
   color: #8a4d14;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: var(--type-ui);
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, transform 0.15s;
@@ -442,7 +440,7 @@
   padding: 10px 12px;
   border-bottom: 1px solid #f3f3f3;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: var(--type-caption);
   color: #777;
 }
 
@@ -456,7 +454,7 @@
   border-radius: 999px;
   background: #f5f5f5;
   color: #999;
-  font-size: 9px;
+  font-size: var(--type-micro);
   font-weight: 700;
   line-height: 1;
   padding: 3px 5px;
@@ -470,7 +468,7 @@
   border-bottom: 1px solid #f3f3f3;
   color: #a04b20;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: var(--type-caption);
   line-height: 1.4;
 }
 
@@ -486,7 +484,7 @@
 
 .seo-autofill-score strong {
   color: #111;
-  font-size: 13px;
+  font-size: var(--type-ui);
   font-variant-numeric: tabular-nums;
 }
 
@@ -507,7 +505,7 @@
   align-items: center;
   gap: 6px;
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: var(--type-caption);
   font-weight: 700;
   color: #888;
   text-transform: uppercase;
@@ -518,7 +516,7 @@
   border-radius: 999px;
   background: #f5f5f5;
   color: #999;
-  font-size: 9px;
+  font-size: var(--type-micro);
   line-height: 1;
   padding: 3px 5px;
   letter-spacing: 0;
@@ -530,7 +528,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: var(--type-caption);
   line-height: 1.45;
   color: #333;
 }
@@ -548,7 +546,7 @@
   min-height: 28px;
   border-radius: 6px;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: var(--type-caption);
   font-weight: 700;
   cursor: pointer;
 }
@@ -580,7 +578,7 @@
 
 .seo-field-label {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: var(--type-caption);
   font-weight: 600;
   color: #888;
   letter-spacing: 0.03em;
@@ -589,14 +587,14 @@
 
 .seo-field-hint {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: var(--type-caption);
   color: #bbb;
   font-variant-numeric: tabular-nums;
 }
 
 .seo-input {
   width: 100%;
-  font-size: 13px;
+  font-size: var(--type-ui);
   color: #333;
   background: #fafafa;
   border: 1px solid #ececec;
@@ -614,13 +612,13 @@
 }
 
 .seo-input-mono {
-  font-family: 'Menlo', 'Monaco', monospace;
-  font-size: 12px;
+  font-family: var(--mono);
+  font-size: var(--type-caption);
 }
 
 .seo-textarea {
   width: 100%;
-  font-size: 13px;
+  font-size: var(--type-ui);
   color: #333;
   background: #fafafa;
   border: 1px solid #ececec;
@@ -647,7 +645,7 @@
 
 .seo-section-label {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: var(--type-caption);
   font-weight: 600;
   color: #aaa;
   text-transform: uppercase;
@@ -680,7 +678,7 @@
 
 .seo-check-label {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: var(--type-caption);
   color: #555;
   line-height: 1.4;
 }
@@ -693,7 +691,7 @@
    Writing Dashboard
    ============================================== */
 .dashboard-page {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   min-height: 100vh;
   background: #fafafa;
   padding: 40px 48px;
@@ -718,7 +716,7 @@
 }
 
 .dashboard-title {
-  font-size: 28px;
+  font-size: var(--type-card-title);
   font-weight: 700;
   color: #111;
   letter-spacing: -0.02em;
@@ -726,7 +724,7 @@
 }
 
 .dashboard-subtitle {
-  font-size: 14px;
+  font-size: var(--type-body);
   color: #aaa;
   margin: 0;
 }
@@ -749,7 +747,7 @@
 }
 
 .filter-btn {
-  font-size: 13px;
+  font-size: var(--type-ui);
   font-weight: 500;
   color: #666;
   background: transparent;
@@ -776,7 +774,7 @@
 }
 
 .filter-count {
-  font-size: 11px;
+  font-size: var(--type-caption);
   color: #aaa;
   font-variant-numeric: tabular-nums;
 }
@@ -799,14 +797,14 @@
 }
 
 .dashboard-search {
-  font-size: 13px;
+  font-size: var(--type-ui);
   color: #333;
   background: #fff;
   border: 1px solid #ececec;
   border-radius: 8px;
   padding: 8px 12px 8px 32px;
   width: 200px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   transition: border-color 0.15s, box-shadow 0.15s;
   outline: none;
 }
@@ -827,13 +825,13 @@
 .dashboard-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--type-ui);
 }
 
 .dashboard-table thead th {
   padding: 12px 16px;
   text-align: left;
-  font-size: 11px;
+  font-size: var(--type-caption);
   font-weight: 600;
   color: #aaa;
   text-transform: uppercase;
@@ -872,7 +870,7 @@
 }
 
 .post-title-link {
-  font-size: 14px;
+  font-size: var(--type-body);
   font-weight: 500;
   color: #111;
   text-decoration: none;
@@ -888,7 +886,7 @@
 }
 
 .post-keyword {
-  font-size: 11px;
+  font-size: var(--type-caption);
   background: #f0f0ff;
   color: #4f46e5;
   padding: 2px 7px;
@@ -898,14 +896,14 @@
 }
 
 .post-slug {
-  font-size: 12px;
+  font-size: var(--type-caption);
   color: #bbb;
-  font-family: 'Menlo', 'Monaco', monospace;
+  font-family: var(--mono);
 }
 
 .dashboard-cell-meta {
   color: #aaa;
-  font-size: 12px;
+  font-size: var(--type-caption);
   white-space: nowrap;
 }
 
@@ -913,7 +911,7 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  font-size: 11px;
+  font-size: var(--type-caption);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -981,14 +979,14 @@
 }
 
 .dashboard-empty-title {
-  font-size: 18px;
+  font-size: var(--type-lead);
   font-weight: 600;
   color: #333;
   margin: 0;
 }
 
 .dashboard-empty-sub {
-  font-size: 14px;
+  font-size: var(--type-body);
   color: #aaa;
   margin: 0 0 16px;
 }
@@ -1068,7 +1066,7 @@
 
 .dialog-title {
   font-family: var(--serif);
-  font-size: 24px;
+  font-size: var(--type-card-title);
   font-weight: 700;
   color: #111;
   margin: 0 0 8px;
@@ -1081,7 +1079,7 @@
 }
 
 .dialog-desc {
-  font-size: 14px;
+  font-size: var(--type-body);
   color: #666;
   margin: 0 0 16px;
   line-height: 1.5;
@@ -1096,15 +1094,15 @@
 }
 
 .dialog-slug-text {
-  font-family: 'Menlo', 'Monaco', monospace;
-  font-size: 13px;
+  font-family: var(--mono);
+  font-size: var(--type-ui);
   color: #555;
 }
 
 .dialog-meta {
   display: flex;
   gap: 8px;
-  font-size: 13px;
+  font-size: var(--type-ui);
   margin-bottom: 24px;
 }
 
@@ -1175,7 +1173,7 @@
 
 @media (max-width: 600px) {
   .topbar-meta { display: none; }
-  .writing-title-input { font-size: 28px; }
+  .writing-title-input { font-size: var(--type-card-title); }
 }
 
 /* ------ Delete Dialog styling ------ */
@@ -1202,7 +1200,7 @@
   position: relative;
   text-align: center;
   animation: delete-dialog-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-family: var(--sans);
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
@@ -1234,7 +1232,7 @@
 }
 
 .delete-dialog-title {
-  font-size: 22px;
+  font-size: var(--type-card-title);
   font-weight: 700;
   color: #121A26; /* Deep dark color */
   margin: 0 0 12px;
@@ -1242,7 +1240,7 @@
 }
 
 .delete-dialog-desc {
-  font-size: 14px;
+  font-size: var(--type-body);
   line-height: 1.5;
   color: #5A6270; /* Muted description gray */
   margin: 0 0 28px;
@@ -1263,7 +1261,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: var(--type-body);
   font-weight: 600;
   border-radius: 10px;
   cursor: pointer;
@@ -1296,39 +1294,4 @@
 .delete-dialog-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-/* Dark mode overrides */
-.cms-app.cms-dark-mode .delete-dialog-box {
-  background: #1C1C1A;
-  border-color: #2E2E2B;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
-}
-
-.cms-app.cms-dark-mode .delete-dialog-close {
-  background: #2E2E2B;
-  color: #8E8E88;
-}
-
-.cms-app.cms-dark-mode .delete-dialog-close:hover {
-  background: #3E3E3B;
-  color: #FAFAF7;
-}
-
-.cms-app.cms-dark-mode .delete-dialog-title {
-  color: #FAFAF7;
-}
-
-.cms-app.cms-dark-mode .delete-dialog-desc {
-  color: #8E8E88;
-}
-
-.cms-app.cms-dark-mode .delete-dialog-btn-cancel {
-  background: #121210;
-  color: #FAFAF7;
-  border-color: #2E2E2B;
-}
-
-.cms-app.cms-dark-mode .delete-dialog-btn-cancel:hover:not(:disabled) {
-  background: #2E2E2B;
 }

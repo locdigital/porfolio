@@ -25,6 +25,12 @@ const showcaseSrcs = (
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Showcase --- Phuc Loc Nguyen</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="/favicon-active.svg" />
   <script is:inline>
     function syncFavicon() {
@@ -48,7 +54,7 @@ const showcaseSrcs = (
 
     body {
       background: #06060a;
-      font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif;
+      font-family: var(--sans);
       overflow-x: hidden;
     }
 
@@ -87,7 +93,7 @@ const showcaseSrcs = (
       position: fixed;
       top: 28px;
       left: 36px;
-      font-size: 11px;
+      font-size: var(--type-caption);
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.38);
@@ -128,7 +134,7 @@ const showcaseSrcs = (
       bottom: 44px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 10px;
+      font-size: var(--type-micro);
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.3);
@@ -149,7 +155,7 @@ const showcaseSrcs = (
       transition: opacity 1s ease;
     }
     #hint span {
-      font-size: 9px;
+      font-size: var(--type-micro);
       letter-spacing: 0.24em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.28);
@@ -452,7 +458,6 @@ const showcaseSrcs = (
       requestAnimationFrame(animate);
 
       var t  = clock.getElapsedTime();
-      var dt = clock.getDelta ? 1 : 1; // unused but keep ref
 
       if (loaded < N) { renderer.render(scene, camera); return; }
 

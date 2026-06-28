@@ -3,26 +3,6 @@
 @tailwind utilities;
 
 /* ============================================================
-   LOCAL FONTS - PP Editorial Old (self-hosted, zero CDN round-trip)
-   font-display: swap = show fallback text immediately, swap when loaded
-============================================================ */
-@font-face {
-  font-family: 'PP Editorial Old';
-  src: url('/assets/fonts/ppeditorialold-regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'PP Editorial Old';
-  src: url('/assets/fonts/ppeditorialold-italic.otf') format('opentype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* ============================================================
    DESIGN TOKENS
    ============================================================ */
     :root {
@@ -40,25 +20,49 @@
       --muted-foreground: 0 0% 43%;
       --hdr-h: 60px;
 
-      --serif: 'Imbue', serif;
-      --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --mono: 'DM Mono', 'Courier New', monospace;
+      --serif: 'Imbue', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
 
       --max: 1400px;
       --px: clamp(20px, 4vw, 56px);
 
-      --spring: cubic-bezier(0.28, 1.36, 0.54, 1);
+      --spring: cubic-bezier(0.22, 1, 0.36, 1);
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-      /* Typography Scale */
-      --fs-xs: 12px;
-      --fs-sm: 14px;
-      --fs-base: 15.5px;
-      --fs-lg: clamp(16px, 1.8vw, 20px);
-      --fs-xl: clamp(24px, 3.5vw, 34px);
-      --fs-display: clamp(38px, 5vw, 52px);
-      --fs-display-lg: clamp(42px, 7vw, 86px);
-      --fs-display-xl: clamp(42px, 6.5vw, 90px);
+      /* Typography System
+         Compact brand UI: Plus Jakarta Sans body, Imbue headings.
+         Keep article/body copy around 14px while preserving strong display contrast. */
+      --type-micro: 0.625rem;      /* 10px: dense metadata only */
+      --type-caption: 0.75rem;     /* 12px: labels, dates, nav */
+      --type-ui: 0.8125rem;        /* 13px: buttons, compact controls */
+      --type-body: 0.875rem;       /* 14px: default body copy */
+      --type-body-lg: 1rem;        /* 16px: long-form readable copy */
+      --type-lead: clamp(1rem, 1.35vw, 1.125rem);
+      --type-subhead: clamp(1.25rem, 2vw, 1.5rem);
+      --type-card-title: clamp(1.375rem, 2.4vw, 2rem);
+      --type-section-title: clamp(1.875rem, 3.4vw, 2.625rem);
+      --type-data: 1.625rem;
+      --type-page-title: clamp(2.625rem, 7vw, 5.375rem);
+      --type-display: clamp(2.375rem, 5vw, 3.25rem);
+      --type-display-lg: clamp(2.625rem, 7vw, 5.375rem);
+      --type-display-xl: clamp(2.625rem, 6.5vw, 5.625rem);
+
+      --leading-tight: 1.08;
+      --leading-heading: 1.14;
+      --leading-body: 1.62;
+      --leading-prose: 1.72;
+      --tracking-label: 0.08em;
+
+      /* Backwards-compatible aliases. */
+      --fs-xs: var(--type-caption);
+      --fs-sm: var(--type-body);
+      --fs-base: var(--type-body);
+      --fs-lg: var(--type-lead);
+      --fs-xl: var(--type-card-title);
+      --fs-display: var(--type-display);
+      --fs-display-lg: var(--type-display-lg);
+      --fs-display-xl: var(--type-display-xl);
 
       /* Icon Scale */
       --icon-xs: 14px;
@@ -108,15 +112,19 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       scroll-behavior: smooth;
+      font-size: 100%;
+      text-size-adjust: 100%;
     }
 
     body {
       font-family: var(--sans);
       font-size: var(--fs-base);
-      line-height: 1.65;
+      line-height: var(--leading-body);
       color: var(--text);
       background: transparent;
       overflow-x: hidden;
+      font-kerning: normal;
+      font-optical-sizing: auto;
     }
 
     .site-grid-bg {
@@ -139,6 +147,21 @@
     h6 {
       font-family: var(--serif);
       letter-spacing: 0;
+      font-weight: 400;
+      line-height: var(--leading-heading);
+      text-wrap: balance;
+    }
+
+    p,
+    li {
+      text-wrap: pretty;
+    }
+
+    small,
+    figcaption,
+    caption {
+      font-size: var(--type-caption);
+      line-height: 1.45;
     }
 
     a {
@@ -435,7 +458,7 @@
 
     .mobile-nav a {
       font-family: var(--sans);
-      font-size: 20px;
+      font-size: var(--type-subhead);
       display: block;
       padding: 24px 0;
       color: var(--text);
@@ -479,7 +502,7 @@
     }
 
     .sh-title {
-      font-size: 11px;
+      font-size: var(--type-caption);
       font-weight: 500;
       letter-spacing: .16em;
       text-transform: uppercase;
@@ -488,7 +511,7 @@
 
     .sh-number {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: var(--type-caption);
       color: var(--muted);
       display: none;
     }
@@ -673,7 +696,7 @@
 
     .hero-aside p {
       max-width: 34ch;
-      font-size: clamp(16px, 1.65vw, 20px);
+      font-size: var(--type-lead);
       line-height: 1.58;
       color: #343433;
     }
@@ -698,7 +721,7 @@
       justify-content: center;
       border-radius: var(--rounded-full);
       padding: 10px 18px;
-      font-size: 13px;
+      font-size: var(--type-ui);
       font-weight: 650;
       line-height: 1;
       white-space: nowrap;
@@ -773,7 +796,7 @@
       flex-shrink: 0;
       display: grid;
       place-items: center;
-      font-size: 17px;
+      font-size: var(--type-lead);
       overflow: hidden;
     }
 
@@ -798,7 +821,7 @@
       text-decoration: none;
       border-bottom: 1px solid var(--divider);
       padding-bottom: 1px;
-      transition: all .25s ease;
+      transition: color .25s ease, border-bottom-color .25s ease;
     }
 
     .tl-company a:hover {
@@ -841,7 +864,7 @@
     }
 
     .about-prose p {
-      font-size: 15px;
+      font-size: var(--type-body);
       line-height: 1.78;
       margin-bottom: 15px;
       text-align: justify;
@@ -1126,7 +1149,7 @@
       transform: translateX(-50%);
       background: var(--text);
       color: #fff;
-      font-size: 11px;
+      font-size: var(--type-caption);
       padding: 3px 8px;
       border-radius: 4px;
       white-space: nowrap;
@@ -1148,7 +1171,7 @@
     }
 
     .footer-links a {
-      font-size: 11px;
+      font-size: var(--type-caption);
       font-family: var(--mono);
       color: var(--muted);
       transition: color .25s ease;
@@ -1163,7 +1186,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px 0 40px;
-      font-size: 10px;
+      font-size: var(--type-caption);
       color: #8A8A85; /* text-colophon equivalent */
       font-family: var(--mono);
       gap: 12px;
@@ -1320,7 +1343,7 @@
         border-radius: 9999px;
         color: var(--muted);
         font-family: var(--sans);
-        transition: all 0.25s var(--ease-out);
+        transition: color 0.25s var(--ease-out), background 0.25s var(--ease-out), transform 0.25s var(--ease-out);
         text-decoration: none !important;
         -webkit-tap-highlight-color: transparent;
       }
@@ -1340,7 +1363,7 @@
       }
 
       .mobile-bottom-nav-list a .nav-label {
-        font-size: 9.5px;
+        font-size: var(--type-micro);
         font-weight: 600;
         letter-spacing: 0.01em;
         transition: color 0.25s var(--ease-out);
@@ -1437,11 +1460,11 @@
       }
 
       .hero-line {
-        font-size: clamp(36px, 10vw, 54px);
+        font-size: var(--type-display);
       }
 
       .hero-title--animated {
-        font-size: clamp(36px, 10vw, 54px);
+        font-size: var(--type-display);
       }
 
       .hero-line.floating {
@@ -1490,7 +1513,7 @@
       }
 
       .footer-links a {
-        font-size: 13px;
+        font-size: var(--type-ui);
       }
 
       .colophon {
@@ -1555,7 +1578,7 @@
 
 .page-kicker-num {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-caption);
   padding: 2px 8px;
   border: 1px solid rgba(0, 117, 222, 0.25);
   border-radius: 4px;
@@ -1567,7 +1590,7 @@
 
 .page-kicker-text {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-caption);
   letter-spacing: 0.1em;
   color: var(--accent);
   font-weight: 600;
@@ -1586,6 +1609,16 @@
   margin-bottom: 24px;
 }
 
+.gear-hero h1 em {
+  font-style: italic !important;
+  color: var(--accent) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  display: inline !important;
+  white-space: normal !important;
+}
+
 .hero-headline-line {
   display: flex;
   align-items: baseline;
@@ -1594,31 +1627,10 @@
   width: fit-content;
 }
 
-/* Dynamic dashed borders matching about page highlights */
-.gear-hero h1 em:nth-of-type(odd) {
-  font-style: italic !important;
-  color: var(--accent) !important;
-  border: 1.5px dashed rgba(0, 117, 222, 0.4) !important;
-  border-radius: 6px !important;
-  padding: 0 6px !important;
-  display: inline-block !important;
-  white-space: nowrap !important;
-}
-
-.gear-hero h1 em:nth-of-type(even) {
-  font-style: italic !important;
-  color: var(--accent) !important;
-  border: 1.5px dashed rgba(0, 117, 222, 0.32) !important;
-  border-radius: 6px !important;
-  padding: 0 6px !important;
-  display: inline-block !important;
-  white-space: nowrap !important;
-}
-
 .gear-intro {
   max-width: 640px;
   margin-top: 24px;
-  font-size: 14.5px;
+  font-size: var(--type-body);
   line-height: 1.75;
   color: var(--muted);
 }

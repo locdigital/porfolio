@@ -11,12 +11,15 @@ interface DraggableCollageProps {
 // DYNAMIC VELOCITY-BASED DRAGGABLE CARD COMPONENT
 // ----------------------------------------------------
 interface CardProps {
+  id: string;
   children: React.ReactNode;
   className: string;
   style?: React.CSSProperties;
   dragConstraints: React.RefObject<HTMLDivElement | null>;
   initialRotate: number;
   initialScale?: number;
+  savedPosition?: { x: number; y: number };
+  onPositionChange?: (id: string, position: { x: number; y: number }) => void;
   onDragStart?: () => void;
   onDragEnd?: () => void;
   onMouseEnter?: () => void;
@@ -26,12 +29,15 @@ interface CardProps {
 }
 
 function DraggableCard({ 
+  id,
   children, 
   className, 
   style = {}, 
   dragConstraints, 
   initialRotate,
   initialScale = 1,
+  savedPosition,
+  onPositionChange,
   onDragStart,
   onDragEnd,
   onMouseEnter,
@@ -41,8 +47,16 @@ function DraggableCard({
 }: CardProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
+  const { x: initialX = 0, y: initialY = 0, ...restStyle } = style as React.CSSProperties & {
+    x?: number;
+    y?: number;
+  };
   const rotate = initialRotate;
+
+  useEffect(() => {
+    x.set(savedPosition?.x ?? initialX);
+    y.set(savedPosition?.y ?? initialY);
+  }, [initialX, initialY, savedPosition?.x, savedPosition?.y, x, y]);
 
   return (
     <motion.div
@@ -51,11 +65,14 @@ function DraggableCard({
       dragElastic={0}
       dragTransition={{ power: 0, timeConstant: 0 }}
       onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
+      onDragEnd={() => {
+        onPositionChange?.(id, { x: x.get(), y: y.get() });
+        onDragEnd?.();
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onPointerDown={onPointerDown}
-      style={{ x, y, rotate, scale: initialScale, zIndex, ...style }}
+      style={{ ...restStyle, x, y, rotate, scale: initialScale, zIndex }}
       whileDrag={{ 
         scale: initialScale * 1.08, 
         filter: "brightness(1.03)",
@@ -78,6 +95,31 @@ function DraggableCard({
 // ----------------------------------------------------
 export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }: DraggableCollageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const positionStorageKey = 'loc-draggable-collage-positions-v1';
+  const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>({});
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(positionStorageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        setSavedPositions(parsed);
+      }
+    } catch {
+      window.localStorage.removeItem(positionStorageKey);
+    }
+  }, []);
+
+  const keepCardPosition = (id: string, position: { x: number; y: number }) => {
+    setSavedPositions(prev => {
+      const next = { ...prev, [id]: position };
+      try {
+        window.localStorage.setItem(positionStorageKey, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
 
   // Stacking z-index tracking
   const [cardZIndices, setCardZIndices] = useState<Record<string, number>>({
@@ -223,7 +265,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           MOBILE CONTAINER (md:hidden list layout)
           ============================================== */}
       <div className="mobile-about-panel md:hidden h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10">
-        <h2 className="italic text-[clamp(2.2rem,11vw,5rem)] leading-[1.05] mb-2 font-light" style={{ fontFamily: 'var(--serif)' }}>
+        <h2 className="italic text-[var(--type-display-lg)] leading-[1.05] mb-2 font-light" style={{ fontFamily: 'var(--serif)' }}>
           I turn paid traffic into profit.
         </h2>
 
@@ -233,7 +275,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
             <div className="overflow-hidden rounded-lg w-full">
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
-            <p className="mt-2.5 text-[9px] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
+            <p className="mt-2.5 text-[var(--type-micro)] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
           </div>
 
           <div className="bg-[#4ECCA3] border border-white/40 text-[#0a2e22] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
@@ -243,15 +285,15 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0a2e22]"></span>
                 </span>
-                <span className="text-[8px] uppercase tracking-widest opacity-60" style={{ fontFamily: 'var(--mono)' }}>available now</span>
+                <span className="text-[var(--type-micro)] uppercase tracking-widest opacity-60" style={{ fontFamily: 'var(--mono)' }}>available now</span>
               </div>
               <div className="h-px bg-[#0a2e22]/20 mb-2.5"></div>
               <p className="italic text-lg leading-tight mb-2.5" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             </div>
             <div className="space-y-1" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[9px]">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[9px]">Remote Vietnam</span></div>
-              <div className="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[9px]">Global remote</span></div>
+              <div className="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Remote Vietnam</span></div>
+              <div className="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Global remote</span></div>
             </div>
           </div>
         </div>
@@ -265,8 +307,8 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
                 <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-semibold text-background truncate">Photograph</p>
-                <p className="text-[9px] text-background/50 truncate">Ed Sheeran</p>
+                <p className="text-[var(--type-micro)] font-semibold text-background truncate">Photograph</p>
+                <p className="text-[var(--type-micro)] text-background/50 truncate">Ed Sheeran</p>
               </div>
             </div>
             
@@ -286,8 +328,8 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
               <div className="absolute left-0 top-0 h-full bg-white/80 rounded-full" style={{ width: `${(spotifyProgress / spotifyTotalSeconds) * 100}%` }}></div>
             </div>
             <div className="flex justify-between" style={{ fontFamily: 'var(--mono)' }}>
-              <span className="text-[8px] text-background/30">{formatTime(spotifyProgress)}</span>
-              <span className="text-[8px] text-background/30">{formatTime(spotifyTotalSeconds)}</span>
+              <span className="text-[var(--type-micro)] text-background/30">{formatTime(spotifyProgress)}</span>
+              <span className="text-[var(--type-micro)] text-background/30">{formatTime(spotifyTotalSeconds)}</span>
             </div>
             <div className="flex items-center justify-center gap-3">
               <button aria-label="Previous track" className="text-background/40 transition-colors hover:text-background/70">
@@ -310,7 +352,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
           <div className="-rotate-[1deg]">
             <div className="relative">
               <div className="bg-card border border-border/60 rounded-xl px-4 py-4 shadow-card w-full">
-                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: 'var(--sans)' }}>rate this portfolio</p>
+                <p className="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: 'var(--sans)' }}>rate this portfolio</p>
                 <div className="flex gap-0.5">
                   {[1, 2, 3, 4, 5].map((starIdx) => {
                     const isFilled = starIdx <= (hoveredRating || rating);
@@ -342,20 +384,20 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
         {/* Sub-grid 3: Details */}
         <div className="grid grid-cols-2 gap-3" style={{ fontFamily: 'var(--sans)' }}>
           <div className="bg-[#FF6B47] text-white rounded-xl px-4 py-4 -rotate-[1deg]">
-            <p className="text-[10px] leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
+            <p className="text-[var(--type-micro)] leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
           </div>
           <div className="bg-accent text-accent-foreground rounded-xl px-4 py-4 rotate-[2deg]">
-            <p className="text-[8px] uppercase tracking-widest text-accent-foreground/60 mb-1.5" style={{ fontFamily: 'var(--sans)' }}>currently building</p>
-            <p className="text-[10px] leading-snug font-medium">This demo site.<br /><span className="text-accent-foreground/70 font-normal">(meta, right?)</span></p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest text-accent-foreground/60 mb-1.5" style={{ fontFamily: 'var(--sans)' }}>currently building</p>
+            <p className="text-[var(--type-micro)] leading-snug font-medium">This demo site.<br /><span className="text-accent-foreground/70 font-normal">(meta, right?)</span></p>
           </div>
         </div>
 
         {/* Interests */}
         <div className="bg-card border border-border/60 rounded-xl px-4 py-3.5 shadow-card -rotate-[0.5deg]">
-          <p className="text-[8px] uppercase tracking-widest text-muted-foreground mb-2.5" style={{ fontFamily: 'var(--sans)' }}>interests</p>
+          <p className="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-2.5" style={{ fontFamily: 'var(--sans)' }}>interests</p>
           <div className="flex flex-wrap gap-1.5">
             {["CrossFit", "Music", "Reading", "Nature walks", "New restaurants", "Japanese learner", "AI-first"].map((interest, i) => (
-              <span key={i} className="px-2.5 py-1 rounded-full border border-border text-[9px] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>{interest}</span>
+              <span key={i} className="px-2.5 py-1 rounded-full border border-border text-[var(--type-micro)] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>{interest}</span>
             ))}
           </div>
         </div>
@@ -378,7 +420,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
       >
         {/* Background Center Header */}
         <div className="absolute inset-0 z-0 flex flex-col items-center justify-center px-8 -translate-y-[4%] pointer-events-none">
-          <h2 className="italic text-[clamp(2.5rem,8vw,4.5rem)] md:text-[clamp(3rem,5.5vw,7.5rem)] leading-[1.08] text-center whitespace-nowrap font-light" style={{ fontFamily: 'var(--serif)' }}>
+          <h2 className="italic text-[var(--type-display-lg)] md:text-[var(--type-display-xl)] leading-[1.08] text-center whitespace-nowrap font-light" style={{ fontFamily: 'var(--serif)' }}>
             I turn paid traffic into profit.
           </h2>
         </div>
@@ -388,8 +430,11 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
 
         {/* 1. Portrait Card */}
         <DraggableCard
+          id="portrait"
           dragConstraints={containerRef}
           initialRotate={-5}
+          savedPosition={savedPositions.portrait}
+          onPositionChange={keepCardPosition}
           className="top-[10%] left-[5%]"
           onPointerDown={() => bringToFront('portrait')}
           zIndex={cardZIndices.portrait}
@@ -404,8 +449,11 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
 
         {/* 2. Available status Card */}
         <DraggableCard
+          id="available"
           dragConstraints={containerRef}
           initialRotate={4}
+          savedPosition={savedPositions.available}
+          onPositionChange={keepCardPosition}
           className="top-[8%] right-[7%]"
           onPointerDown={() => bringToFront('available')}
           zIndex={cardZIndices.available}
@@ -416,22 +464,25 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#0a2e22]"></span>
               </span>
-              <span className="text-[9px] uppercase tracking-widest opacity-60" style={{ fontFamily: 'var(--mono)' }}>available now</span>
+              <span className="text-[var(--type-micro)] uppercase tracking-widest opacity-60" style={{ fontFamily: 'var(--mono)' }}>available now</span>
             </div>
             <div className="h-px bg-[#0a2e22]/20 mb-3"></div>
             <p className="italic text-xl leading-tight mb-3" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             <div className="space-y-1.5" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[10px]">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-2"><Laptop className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[10px]">Remote Vietnam</span></div>
-              <div className="flex items-center gap-2"><Globe2 className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[10px]">Global remote</span></div>
+              <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-2"><Laptop className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Remote Vietnam</span></div>
+              <div className="flex items-center gap-2"><Globe2 className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Global remote</span></div>
             </div>
           </div>
         </DraggableCard>
 
         {/* 3. Spotify Music Player */}
         <DraggableCard
+          id="spotify"
           dragConstraints={containerRef}
           initialRotate={-2}
+          savedPosition={savedPositions.spotify}
+          onPositionChange={keepCardPosition}
           className="top-[9%] left-[36%]"
           onPointerDown={() => bringToFront('spotify')}
           zIndex={cardZIndices.spotify}
@@ -443,7 +494,7 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
               </div>
               <div className="flex-1 min-w-0" style={{ fontFamily: 'var(--sans)' }}>
                 <p className="text-xs font-semibold text-background truncate">Photograph</p>
-                <p className="text-[10px] text-background/50 truncate">Ed Sheeran</p>
+                <p className="text-[var(--type-micro)] text-background/50 truncate">Ed Sheeran</p>
               </div>
               
               {/* Audio wave */}
@@ -463,8 +514,8 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
               <div className="absolute left-0 top-0 h-full bg-white/80 rounded-full" style={{ width: `${(spotifyProgress / spotifyTotalSeconds) * 100}%` }}></div>
             </div>
             <div className="flex justify-between mt-1.5" style={{ fontFamily: 'var(--mono)' }}>
-              <span className="text-[9px] text-background/30">{formatTime(spotifyProgress)}</span>
-              <span className="text-[9px] text-background/30">{formatTime(spotifyTotalSeconds)}</span>
+              <span className="text-[var(--type-micro)] text-background/30">{formatTime(spotifyProgress)}</span>
+              <span className="text-[var(--type-micro)] text-background/30">{formatTime(spotifyTotalSeconds)}</span>
             </div>
             
             {/* Controls */}
@@ -490,14 +541,17 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
 
         {/* 4. Movie poster Card */}
         <DraggableCard
+          id="movie"
           dragConstraints={containerRef}
           initialRotate={3}
+          savedPosition={savedPositions.movie}
+          onPositionChange={keepCardPosition}
           className="bottom-[9%] left-[57%]"
           onPointerDown={() => bringToFront('movie')}
           zIndex={cardZIndices.movie}
         >
           <div className="bg-card border border-border/60 rounded-xl p-4 w-[180px] 3xl:w-[230px] 4xl:w-[270px] shadow-sm">
-            <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-2.5" style={{ fontFamily: 'var(--sans)' }}>currently watching</p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-2.5" style={{ fontFamily: 'var(--sans)' }}>currently watching</p>
             <div className="w-full rounded-lg overflow-hidden mb-3" style={{ aspectRatio: '2 / 3' }}>
               <img src="/images/The_Wolf_of_Wall_Street_2013.webp" alt="The Wolf of Wall Street movie poster" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
             </div>
@@ -505,24 +559,27 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
               <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
                 <div className="h-full w-[82%] bg-foreground/50 rounded-full"></div>
               </div>
-              <span className="text-[9px] text-muted-foreground" style={{ fontFamily: 'var(--sans)' }}>82%</span>
+              <span className="text-[var(--type-micro)] text-muted-foreground" style={{ fontFamily: 'var(--sans)' }}>82%</span>
             </div>
           </div>
         </DraggableCard>
 
         {/* 5. Interests Card */}
         <DraggableCard
+          id="interests"
           dragConstraints={containerRef}
           initialRotate={3}
+          savedPosition={savedPositions.interests}
+          onPositionChange={keepCardPosition}
           className="bottom-[8%] left-[5%]"
           onPointerDown={() => bringToFront('interests')}
           zIndex={cardZIndices.interests}
         >
           <div className="bg-card border border-border/60 rounded-xl px-5 py-4 shadow-card max-w-[250px] 3xl:max-w-[310px] 4xl:max-w-[360px]">
-            <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: 'var(--sans)' }}>interests</p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: 'var(--sans)' }}>interests</p>
             <div className="flex flex-wrap gap-1.5">
               {["CrossFit", "Music", "Reading", "Nature walks", "New restaurants", "Japanese learner", "AI-first"].map((interest, i) => (
-                <span key={i} className="px-2.5 py-1 rounded-full border border-border text-[9px] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>{interest}</span>
+                <span key={i} className="px-2.5 py-1 rounded-full border border-border text-[var(--type-micro)] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>{interest}</span>
               ))}
             </div>
           </div>
@@ -530,99 +587,117 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
 
         {/* 6. LinkedIn Card */}
         <DraggableCard
+          id="linkedin"
           dragConstraints={containerRef}
           initialRotate={-4}
+          savedPosition={savedPositions.linkedin}
+          onPositionChange={keepCardPosition}
           className="bottom-[10%] right-[7%]"
           onPointerDown={() => bringToFront('linkedin')}
           zIndex={cardZIndices.linkedin}
         >
           <a href="https://www.linkedin.com/in/phucloc/" target="_blank" rel="noopener noreferrer" draggable="false" className="block border border-white/30 rounded-xl px-5 py-4 w-[190px] 3xl:w-[240px] 4xl:w-[280px] shadow-lg hover:opacity-95 transition-all text-white bg-[#0a66c2]" style={{ fontFamily: 'var(--sans)' }}>
-            <p className="text-[9px] uppercase tracking-widest text-white/60 mb-2">find me online</p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest text-white/60 mb-2">find me online</p>
             <div className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="0" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-              <p className="text-xs font-medium leading-snug">LinkedIn<br /><span className="text-white/70 text-[9px]">/in/phucloc</span></p>
+              <p className="text-xs font-medium leading-snug">LinkedIn<br /><span className="text-white/70 text-[var(--type-micro)]">/in/phucloc</span></p>
             </div>
           </a>
         </DraggableCard>
 
         {/* 7. Resume CV Card */}
         <DraggableCard
+          id="resume"
           dragConstraints={containerRef}
           initialRotate={3}
+          savedPosition={savedPositions.resume}
+          onPositionChange={keepCardPosition}
           className="top-[46%] right-[5%]"
           onPointerDown={() => bringToFront('resume')}
           zIndex={cardZIndices.resume}
         >
           <div className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-xl px-5 py-4 w-[180px] 3xl:w-[230px] 4xl:w-[270px] shadow-lg" style={{ fontFamily: 'var(--sans)' }}>
-            <p className="text-[9px] uppercase tracking-widest opacity-60 mb-2">cv</p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest opacity-60 mb-2">cv</p>
             <div className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
-              <p className="text-xs font-medium leading-snug">Resume<br /><span className="opacity-60 text-[9px]">Web format</span></p>
+              <p className="text-xs font-medium leading-snug">Resume<br /><span className="opacity-60 text-[var(--type-micro)]">Web format</span></p>
             </div>
           </div>
         </DraggableCard>
 
         {/* 8. Book a Call Card */}
         <DraggableCard
+          id="notion"
           dragConstraints={containerRef}
           initialRotate={-3}
+          savedPosition={savedPositions.notion}
+          onPositionChange={keepCardPosition}
           className="top-[16%] right-[30%]"
           onPointerDown={() => bringToFront('notion')}
           zIndex={cardZIndices.notion}
         >
           <a href="mailto:hi@loc.digital" draggable="false" className="block bg-foreground text-background rounded-xl px-5 py-4 w-[190px] 3xl:w-[240px] 4xl:w-[280px] shadow-lg hover:opacity-95 transition-all" style={{ fontFamily: 'var(--sans)' }}>
-            <p className="text-[9px] uppercase tracking-widest text-background/50 mb-2">open to work</p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest text-background/50 mb-2">open to work</p>
             <div className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
-              <p className="text-xs font-medium leading-snug">Email me<br /><span className="text-background/60 text-[9px]">hi@loc.digital</span></p>
+              <p className="text-xs font-medium leading-snug">Email me<br /><span className="text-background/60 text-[var(--type-micro)]">hi@loc.digital</span></p>
             </div>
           </a>
         </DraggableCard>
 
         {/* 9. Currently Learning Card */}
         <DraggableCard
+          id="learning"
           dragConstraints={containerRef}
           initialRotate={5}
+          savedPosition={savedPositions.learning}
+          onPositionChange={keepCardPosition}
           className="top-[62%] left-[6%]"
           onPointerDown={() => bringToFront('learning')}
           zIndex={cardZIndices.learning}
         >
           <div className="bg-[#FFF3CD] border border-[#F0C040]/40 text-[#7a5c00] rounded-xl px-4 py-3 w-[170px] 3xl:w-[220px] 4xl:w-[260px] shadow-sm" style={{ fontFamily: 'var(--sans)' }}>
-            <p className="text-[10px] leading-snug">Currently learning<br /><span className="text-xs font-semibold">🇯🇵 Japanese for fun</span></p>
+            <p className="text-[var(--type-micro)] leading-snug">Currently learning<br /><span className="text-xs font-semibold">🇯🇵 Japanese for fun</span></p>
           </div>
         </DraggableCard>
 
         {/* 10. Digital Timezone Clock Card */}
         <DraggableCard
+          id="clock"
           dragConstraints={containerRef}
           initialRotate={-3}
           style={{ x: 30.5, y: -12.5 }}
+          savedPosition={savedPositions.clock}
+          onPositionChange={keepCardPosition}
           className="top-[44%] left-[5%]"
           onPointerDown={() => bringToFront('clock')}
           zIndex={cardZIndices.clock}
         >
           <div className="bg-card border border-border/60 rounded-xl px-5 py-4 shadow-card w-fit whitespace-nowrap">
-            <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-2" style={{ fontFamily: 'var(--sans)' }}>Saigon, VN</p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-2" style={{ fontFamily: 'var(--sans)' }}>Saigon, VN</p>
             <div className="flex items-end gap-1.5">
-              <span className="text-[26px] font-bold leading-none tracking-tight tabular-nums" style={{ fontFamily: 'var(--mono)' }}>
+              <span className="text-[var(--type-data)] font-bold leading-none tracking-tight tabular-nums" style={{ fontFamily: 'var(--mono)' }}>
                 {timeStr}
               </span>
-              <span className="text-[9px] text-foreground/40 mb-1 uppercase tracking-widest" style={{ fontFamily: 'var(--sans)' }}>{period}</span>
+              <span className="text-[var(--type-micro)] text-foreground/40 mb-1 uppercase tracking-widest" style={{ fontFamily: 'var(--sans)' }}>{period}</span>
             </div>
-            <p className="text-[9px] text-muted-foreground mt-1.5" style={{ fontFamily: 'var(--mono)' }}>ICT · UTC+7</p>
+            <p className="text-[var(--type-micro)] text-muted-foreground mt-1.5" style={{ fontFamily: 'var(--mono)' }}>ICT · UTC+7</p>
           </div>
         </DraggableCard>
 
         {/* 11. Rate Portfolio Stars Card */}
         <DraggableCard
+          id="rating"
           dragConstraints={containerRef}
           initialRotate={-4}
+          savedPosition={savedPositions.rating}
+          onPositionChange={keepCardPosition}
           className="bottom-[22%] left-[25%]"
           onPointerDown={() => bringToFront('rating')}
           zIndex={cardZIndices.rating}
         >
           <div className="bg-card border border-border/60 rounded-xl px-5 py-4 shadow-card w-full">
-            <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: 'var(--sans)' }}>rate this portfolio</p>
+            <p className="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-3" style={{ fontFamily: 'var(--sans)' }}>rate this portfolio</p>
             <div className="flex gap-0.5">
               {[1, 2, 3, 4, 5].map((starIdx) => {
                 const isFilled = starIdx <= (hoveredRating || rating);
@@ -651,9 +726,12 @@ export default function DraggableCollage({ portraitSrc = "/leah-portrait.webp" }
 
         {/* 12. My writings folder card */}
         <DraggableCard
+          id="folder"
           dragConstraints={containerRef}
           initialRotate={-2}
           initialScale={0.5}
+          savedPosition={savedPositions.folder}
+          onPositionChange={keepCardPosition}
           className="bottom-[25%] left-[40%] flex flex-col items-center group origin-bottom"
           onPointerDown={() => bringToFront('folder')}
           zIndex={cardZIndices.folder}
