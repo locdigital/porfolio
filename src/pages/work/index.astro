@@ -1,12 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
+import BlurText from "../../components/ui/BlurText";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const sortedProjects = await getProjects();
 const workTitle = "Work | Phuc Loc Nguyen";
 const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
 const workHeadline = "Selected work & <em>case studies</em>";
+const workHeadlineText = "Selected work & case studies";
 ---
 
 <Layout
@@ -41,7 +43,16 @@ const workHeadline = "Selected work & <em>case studies</em>";
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My work</span>
         </div>
-        <h1 set:html={workHeadline} />
+        <h1 class="sr-only" set:html={workHeadline} />
+        <BlurText
+          client:load
+          text={workHeadlineText}
+          animateBy="words"
+          direction="top"
+          delay={70}
+          stepDuration={0.42}
+          className="gear-hero-title"
+        />
         <p class="gear-intro">
           Paid media scaling, TikTok Shop growth, technical SEO,
           lead generation, and community work across e-commerce,
@@ -156,26 +167,49 @@ const workHeadline = "Selected work & <em>case studies</em>";
 
 
   /* ------ Project list ------ */
+  .work-hero {
+    margin-bottom: clamp(48px, 7vw, 76px);
+    padding-bottom: clamp(36px, 5vw, 56px);
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .work-hero .gear-intro {
+    max-width: 560px;
+    margin-top: 18px;
+  }
+
   .project-list {
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid var(--divider);
   }
 
   .project-row {
     content-visibility: visible;
-    transition: none;
+    outline: none;
+    transition: opacity 0.4s ease, filter 0.4s ease, transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, filter, transform;
+    cursor: pointer;
+  }
+
+  /* Hover effect: blur other rows when hovering one */
+  @media (hover: hover) and (pointer: fine) {
+    .project-list:hover .project-row:not(:hover) {
+      opacity: 0.35 !important;
+      filter: blur(4px) !important;
+    }
   }
 
   .project-row-inner {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
+    grid-template-columns: minmax(0, 0.88fr) minmax(320px, 0.82fr);
+    gap: clamp(44px, 6vw, 84px);
     align-items: center;
-    padding: 64px 0;
+    padding: clamp(44px, 6vw, 72px) 0;
   }
 
   .project-row-inner--text-only {
-    grid-template-columns: minmax(0, 720px);
+    grid-template-columns: minmax(0, 860px);
   }
 
   /* ------ Text side ------ */
@@ -205,7 +239,7 @@ const workHeadline = "Selected work & <em>case studies</em>";
     line-height: 1.2;
     letter-spacing: -0.015em;
     color: var(--text);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     transition: color 0.25s ease;
   }
 
@@ -214,7 +248,7 @@ const workHeadline = "Selected work & <em>case studies</em>";
     line-height: 1.72;
     color: color-mix(in srgb, var(--text) 72%, var(--muted));
     margin-bottom: 20px;
-    max-width: 420px;
+    max-width: 620px;
     text-wrap: pretty;
   }
 
@@ -222,7 +256,7 @@ const workHeadline = "Selected work & <em>case studies</em>";
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 28px;
+    margin-bottom: 26px;
   }
 
   .tag {
@@ -296,7 +330,6 @@ const workHeadline = "Selected work & <em>case studies</em>";
     transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out);
   }
 
-  .project-card-link:hover .project-card-img,
   .project-card-link:focus-visible .project-card-img {
     border-color: var(--accent-border);
     background: var(--accent-soft);
@@ -341,17 +374,11 @@ const workHeadline = "Selected work & <em>case studies</em>";
     font-weight: 500;
     color: #fff;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    pointer-events: none;
   }
 
-  .project-card-link:hover .card-overlay,
   .project-card-link:focus-visible .card-overlay {
     background: rgba(28, 28, 28, 0.18);
-  }
-
-  .project-card-link:hover .card-cta,
-  .project-card-link:focus-visible .card-cta {
-    opacity: 1;
   }
 
   /* ------ Divider ------ */
