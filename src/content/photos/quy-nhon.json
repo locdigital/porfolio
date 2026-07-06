@@ -1,0 +1,14 @@
+{
+  "slug": "quy-nhon",
+  "order": 3,
+  "location": "Quy Nhơn",
+  "headline": "Hidden beaches and quiet sand.",
+  "subheadline": "Cham towers at dusk.",
+  "description": "Hidden beaches, Cham towers at dusk, and long stretches of empty white sand.",
+  "images": [
+    { "src": "/assets/photos/img-portfolio/photo-14.webp", "alt": "Quy Nhơn --- photo 1", "width": 1280, "height": 1920 },
+    { "src": "/assets/photos/img-portfolio/photo-15.webp", "alt": "Quy Nhơn --- photo 2", "width": 1280, "height": 1920 },
+    { "src": "/assets/photos/img-portfolio/photo-29.webp", "alt": "Quy Nhơn --- photo 3", "width": 1920, "height": 1280 },
+    { "src": "/assets/photos/quy-nhon/DSC_0370-Edit copy.webp", "alt": "Quy Nhơn --- photo 4", "width": 4032, "height": 6048 }
+  ]
+}

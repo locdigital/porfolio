@@ -1,0 +1,70 @@
+{
+  "slug": "da-nang",
+  "order": 6,
+  "location": "Đà Nẵng",
+  "headline": "Đà Nẵng",
+  "subheadline": "Đà Nẵng",
+  "description": "Hell",
+  "images": [
+    {
+      "src": "/assets/photos/da-nang/1782173568786-image-1.png",
+      "alt": "da-nang photo",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568800-image-2.png",
+      "alt": "da-nang photo",
+      "width": 1200,
+      "height": 1300
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568803-image-3.png",
+      "alt": "da-nang photo",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568809-image-4.png",
+      "alt": "da-nang photo",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568815-image-5.png",
+      "alt": "da-nang photo",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568819-image-6.png",
+      "alt": "da-nang photo",
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568823-image-7.png",
+      "alt": "da-nang photo",
+      "width": 1440,
+      "height": 1082
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568831-image-8.png",
+      "alt": "da-nang photo",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568841-image-9.png",
+      "alt": "da-nang photo",
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "src": "/assets/photos/da-nang/1782173568852-image-10.png",
+      "alt": "da-nang photo",
+      "width": 1200,
+      "height": 1600
+    }
+  ]
+}

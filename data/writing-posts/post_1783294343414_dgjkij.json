@@ -1,0 +1,1575 @@
+{
+  "id": "post_1783294343414_dgjkij",
+  "title": "Xin chào",
+  "slug": "minh",
+  "contentJson": [
+    {
+      "id": "b55ccc15-378a-4b35-83e6-4139bca963bc",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có một giai đoạn trong đời, tôi từng nghĩ mọi thứ đang bắt đầu đi đúng hướng.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "39d03e06-c2b7-4f5e-a56d-c1ce33e90c14",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Sau Covid, khi cả thế giới vừa bước ra khỏi một khoảng thời gian rất lạ, tôi cũng giống như nhiều người trẻ khác: hơi hoang mang, hơi háo hức, và có khá nhiều kỳ vọng. Lúc đó tôi còn là sinh viên. Điểm chuyên ngành của tôi tương đối tốt. Không phải kiểu thiên tài gì ghê gớm, nhưng đủ để tôi có cảm giác rằng nếu mình cứ tiếp tục cố gắng, cuộc đời chắc cũng không đến nỗi tệ.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "9a107434-179a-42e7-a069-0ade6f424222",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Rồi một ngày, tôi được một công ty MNC mời về làm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "1dd21609-93ea-4c12-ba91-e569302d4b07",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Với một đứa sinh viên mới ra khỏi trường, chuyện đó giống như được ai đó vỗ vai nói: “Ê, hình như mày đang đi đúng đường rồi đó.” Tôi nhớ cảm giác lúc ấy khá rõ. Vừa vui, vừa tự hào, vừa thấy những năm tháng học hành, thức khuya, làm project, chạy deadline cuối cùng cũng có một cái kết tử tế.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "6bcb9393-9dc2-4a26-a223-a62c555d9215",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi đã nghĩ đó là đoạn mở đầu của một chương mới.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "573e9492-1ed0-4760-93bd-2adf159696c5",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nhưng cuộc đời đôi khi có cách viết kịch bản rất riêng. Nó không báo trước. Không gửi email nhắc lịch. Không hỏi mình đã sẵn sàng chưa. Nó chỉ đột ngột bẻ lái.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "7c429b23-5270-46cf-893f-e9805c63395b",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Và lần đó, nó bẻ rất gắt.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "884aff06-1f9a-4dd6-b3b9-27d5a3849a84",
+      "type": "heading",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left",
+        "level": 2,
+        "isToggleable": false
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Một tai nạn, một mất mát, và một khoản nợ",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "98e1a492-81bf-4f5c-85f3-8d83f37419b7",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Một tai nạn đủ nặng để khiến chân tôi không còn đi lại bình thường trong một thời gian dài. Từ một người đang chuẩn bị bước vào đời với khá nhiều kỳ vọng, tôi bỗng phải học lại những việc tưởng như rất cơ bản. Đi đứng. Di chuyển. Tự xoay xở. Chấp nhận rằng cơ thể mình không còn nghe lời mình như trước.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "ed721366-80a7-4180-b821-aba442dfdf97",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có những buổi sáng thức dậy, tôi nhìn cái chân của mình và thấy trong lòng trống rỗng. Không phải kiểu buồn ồn ào. Nó là một sự im lặng rất nặng. Cái im lặng của một người biết rằng mình vẫn phải sống tiếp, nhưng chưa biết sẽ sống tiếp bằng cách nào.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "46c52963-8053-42bd-b657-e79fecc6722a",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Trong lúc tôi còn đang loay hoay với tai nạn của chính mình, cha tôi bệnh.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "f2a02bcc-80ee-4c42-81be-0fbfd5ce3625",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Rồi cha tôi mất.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "65ed5ac8-3167-4fc5-9722-ad89b55c06de",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi nghĩ có những mất mát mà ngôn từ luôn đến sau. Khi chuyện xảy ra, mình không thật sự có đủ khả năng để gọi tên nó. Người ngoài nhìn vào có thể nói đó là biến cố, là cú sốc, là mất mát lớn. Nhưng với người ở trong cuộc, nó đơn giản hơn và cũng tàn nhẫn hơn nhiều: một người thân nhất của mình không còn ở đó nữa.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "2b82935a-fb90-457c-a5d6-df4fa4d65b58",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Và sau sự mất mát ấy là một thứ rất thực tế: tiền viện phí.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "d121155d-f67c-4caa-9ab2-7f4e43f386b5",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Gia đình tôi không có bảo hiểm. Nói cho công bằng, đó là một phần do chủ quan. Khi còn khỏe, người ta thường nghĩ bệnh tật là chuyện của người khác. Khi còn trẻ, người ta thường nghĩ rủi ro là một khái niệm nằm trong sách tài chính cá nhân. Đến khi nó gõ cửa nhà mình, mình mới hiểu có những bài học không học bằng sách được.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "66c540fe-d817-4c86-bd41-bdd85f1a240b",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Cha tôi mất, và để lại một khoản nợ khá lớn.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "035f5133-3fc6-4551-bfe2-e1737131b288",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi bước vào đời không phải từ con số không.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "ae4a798f-52dc-4f91-92d6-ba2c7f32117f",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi bước vào đời từ con số âm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "84607aac-9cb0-4e4f-8285-a53c2197ff09",
+      "type": "heading",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left",
+        "level": 2,
+        "isToggleable": false
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Những thứ phải bán đi",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "1420600e-b63b-489b-9484-7db5bd57044c",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nói từ con số âm nghe hơi kịch tính, nhưng lúc đó đúng là như vậy. Tôi không chỉ cần kiếm tiền để sống. Tôi cần kiếm tiền để trả nợ. Không chỉ trả nợ ngân hàng hay bệnh viện, mà còn trả nợ những người đã giúp gia đình tôi trong lúc khó khăn. Có những khoản tiền không quá lớn với người khác, nhưng với tôi lúc đó, nó nặng như một cục đá để trong ngực.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "3fa3c25a-4e8e-4685-b2dc-d6f3881f9d0a",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Điều làm tôi nhớ nhất không phải là số tiền. Mà là cảm giác phải một mình xoay sở trong giai đoạn đầu tiên.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "46bd9636-8bec-4b42-9249-6fe656e16d33",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi không trách bạn bè. Mỗi người đều có cuộc sống riêng, áp lực riêng, giới hạn riêng. Sau Covid, ai cũng đang cố đứng vững. Nhưng phải thành thật là lúc đó, tôi đã có những ngày rất cô đơn. Cô đơn không phải vì không có ai xung quanh, mà vì không biết phải gọi cho ai khi mình thật sự cần giúp.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "e80b7723-546b-4c23-b15e-5a80272e5fa0",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có những tin nhắn tôi soạn rồi xóa.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "ed4d9bfb-40b3-4368-bf66-42baf39fa409",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có những cuộc gọi tôi nhìn rất lâu rồi không bấm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "f395e591-9fbe-48bf-8a52-86d928b953fb",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có những ngày tôi nhận ra rằng trong đời, đến một lúc nào đó, mình phải tự kéo mình lên trước khi có ai đó đủ rảnh tay để kéo mình.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "19a173a2-1b2c-417a-ac69-93b32c4ee4c7",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi bắt đầu bán những thứ mình quý. Trong đó có chiếc máy ảnh đầu tiên trong đời.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "6470d718-829e-4d9f-9fe9-7e24a2978e71",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Chiếc máy ảnh đó với người khác có thể chỉ là một món đồ công nghệ cũ. Nhưng với tôi, nó là một phần ký ức. Nó từng đi cùng tôi qua những ngày còn mơ mộng, còn nghĩ mình sẽ có nhiều thời gian để chụp lại cuộc đời, để đi đây đi đó, để lưu lại những khoảnh khắc đẹp.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "8ebcc97b-ac57-4a9b-828e-b48de29921db",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Ngày bán nó đi, tôi không buồn kiểu khóc lóc. Tôi chỉ thấy mình già đi một chút.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "a84e8ce2-ea0a-448a-bdbe-60ebcc6cb288",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có những thứ khi mua, mình nghĩ nó là phần thưởng cho tuổi trẻ. Khi bán, mình hiểu nó là cái giá của trưởng thành.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "25994575-6da0-45bc-8fa8-fcece5a9b526",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Sau đó, tôi cầm cố cả xe máy để trả nợ cho một vài người bạn. Nghe thì đơn giản, nhưng với một người chân đang yếu, xe máy gần như là phương tiện tự do cuối cùng. Cầm nó đi giống như tự tháo bớt một phần khả năng di chuyển của mình. Nhưng lúc đó tôi không có nhiều lựa chọn. Nợ thì phải trả. Người ta đã giúp mình lúc khó khăn, mình không thể sống như thể lòng tốt của người khác là một khoản có thể quên.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "be652d6f-94c3-4ab8-8fd9-bdadae5c5eb4",
+      "type": "heading",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left",
+        "level": 2,
+        "isToggleable": false
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Làm những việc mình không thích",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "f6b709e8-ab32-4aad-8425-102de1640a17",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Từ đó, tôi bắt đầu nhận những công việc mà tôi không thích.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "fcf98183-c04f-4f20-bb1f-a55e5bdc5eaf",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nói không thích còn nhẹ. Có những việc tôi thật sự chán ghét. Mỗi sáng mở mắt ra là thấy trong lòng nặng xuống. Có những môi trường không hợp. Có những công việc không đúng với thứ mình từng tưởng tượng. Có những ngày làm xong, tôi chỉ muốn ngồi im một chỗ và không nói chuyện với ai.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "78711d12-66b2-4559-a89b-f3e5bd7325f4",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nhưng những công việc đó trả tiền tốt.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "132d473a-d61c-42c7-8dbb-c72d7ccdc620",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Và trong giai đoạn đó, tiền không phải là thứ xấu xa. Tiền là thuốc giảm đau. Tiền là hơi thở. Tiền là cách tôi giữ lời hứa với những người đã cho gia đình tôi vay. Tiền là cách tôi mua thêm một ít bình yên cho những ngày rất bất ổn.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "439be606-44be-4539-a90d-40976fbee083",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Sau này nhìn lại, tôi nghĩ tuổi trẻ đôi khi được dạy quá nhiều về việc phải làm điều mình thích. Điều đó không sai. Nhưng đời sống không phải lúc nào cũng đủ tử tế để cho mình lựa chọn đẹp như trong sách. Có những giai đoạn, điều đúng đắn nhất không phải là làm thứ mình đam mê, mà là làm thứ cần làm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "4db5239f-a3a3-4084-8255-b35d29bb33a5",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Không lãng mạn lắm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "c310dd30-3124-4945-a1c3-7c679c17d6ae",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nhưng thật.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "fb1f54bb-3687-4afe-954d-5fe948413cdb",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi nhảy qua nhiều công ty. Một phần vì hoàn cảnh, một phần vì tôi đang tìm cách tăng thu nhập nhanh nhất có thể. Có lúc tôi cũng tự hỏi mình đang đi đâu. Sự nghiệp nhìn từ bên ngoài có vẻ hơi lộn xộn. Nhưng ở bên trong, tôi biết mình đang có một mục tiêu rất rõ: trả nợ, đứng dậy, và không để mình chìm thêm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "b7bcf50e-a752-467b-ae2b-76d20df537cd",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "May mắn là trong những lần chuyển việc đó, tôi gặp được nhiều người tốt.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "0bc869ed-9b52-48c5-86aa-990c55390748",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có những người chỉ nói chuyện với tôi vài lần nhưng mở cho tôi một cơ hội mới. Có người giới thiệu job freelance. Có người cho tôi lời khuyên. Có người đơn giản là tin tôi ở một thời điểm mà chính tôi cũng không còn tin mình nhiều như trước.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "87124e08-4ba3-4a75-8eaa-09969e7bf823",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi bắt đầu có nhiều kết nối hơn. Từ một công việc, tôi có thêm việc thứ hai. Từ một mối quan hệ, tôi biết thêm một dự án khác. Có những giai đoạn tôi làm nhiều job cùng lúc, ngày làm 16 đến 18 tiếng là chuyện bình thường.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "30a79724-e380-4970-a391-5fa794b1e1a3",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nghe thì rất “cháy”, nhưng thật ra không có gì hào nhoáng. Nó không giống mấy câu chuyện truyền cảm hứng kiểu thức khuya xây đế chế. Phần lớn thời gian, nó chỉ là mệt. Rất mệt.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "0532d6ef-db81-4500-976d-c4f090d5aa55",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Mắt khô. Lưng đau. Đầu óc lúc nào cũng như có ai mở quá nhiều tab cùng lúc.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "d8d10bb0-3e68-4fac-9e71-1285593faf4b",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nhưng mỗi lần trả được thêm một khoản nợ, tôi thấy nhẹ hơn một chút. Không phải nhẹ kiểu vui sướng, mà là nhẹ kiểu người đang đi trong hầm tối thấy phía trước có một vệt sáng rất nhỏ.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "50bdace0-6338-4672-b03a-bd88ebfd1a22",
+      "type": "heading",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left",
+        "level": 2,
+        "isToggleable": false
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Learn to earn, not to save",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "a8d53287-e242-4897-870d-9ffff8ffdf7c",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Trong giai đoạn đó, có một điều hơi ngược đời là tôi không cắt giảm mức sống của mình quá nhiều.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "3d744714-31ed-4289-9860-57d0d65ab04a",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tất nhiên tôi không tiêu xài hoang phí. Nhưng tôi cũng không ép mình sống như một cái máy trả nợ. Tôi vẫn cho phép mình ăn một bữa tử tế khi cần. Vẫn mua một khóa học nếu thấy đáng. Vẫn gặp người này người kia. Vẫn đầu tư vào kỹ năng. Vẫn cố gắng giữ cho đời sống của mình còn một chút chất lượng.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "2992ceb0-bb13-4ed9-8134-0e9d919e9f14",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi sống theo một niềm tin khá đơn giản: learn to earn, not to save.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "a6fb7158-226a-4cb0-8e8f-901412af884e",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Học để kiếm nhiều hơn, chứ không chỉ sống để tiết kiệm ít hơn.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "1e8e6715-9ba2-47d0-bbfc-8897448ca58f",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tiết kiệm là cần thiết, nhất là khi mình đang nợ. Nhưng nếu chỉ chăm chăm bóp nhỏ cuộc đời lại, tôi sợ mình sẽ nghèo cả tiền lẫn tinh thần. Tôi cần tăng năng lực kiếm tiền. Cần học thêm kỹ năng. Cần gặp thêm người. Cần làm thêm việc. Cần mở rộng thế giới của mình, dù lúc đó thế giới ấy đang khá tối.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "d0378037-a093-4677-a41f-c7a60eb67884",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Và tôi cũng cố giữ thói quen cho đi trước rồi tính sau.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "59b6ec4d-dbf2-4852-8696-8357fe2ee6a9",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Không phải vì tôi cao thượng gì. Chỉ là sau khi trải qua giai đoạn khốn khó, tôi hiểu cảm giác được ai đó giúp đúng lúc quý như thế nào. Có những sự giúp đỡ không giải quyết hết vấn đề, nhưng nó làm người ta bớt thấy mình bị bỏ lại. Và đôi khi, chỉ cần vậy là đủ để một người tiếp tục.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "4d1967ae-32ef-4d99-887b-adefb2aa2171",
+      "type": "heading",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left",
+        "level": 2,
+        "isToggleable": false
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Những đoạn đường đi bộ",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "3c37fc1a-0d61-4d64-9da9-9132eae11999",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Một điều buồn cười là trong giai đoạn bận nhất, tôi vẫn duy trì thói quen đạp xe và đi bộ đi làm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "46e59a94-59a8-482b-850a-36e454ded2fa",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Một phần vì chân tôi lúc đó còn yếu, chưa thể đi xe máy thoải mái. Một phần vì tôi không còn xe trong một khoảng thời gian. Nhưng dần dần, chuyện đó trở thành một dạng trị liệu.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "f73f9ac9-65f7-4f3c-ab5f-f2f5b19bfc19",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Buổi sáng, khi đạp xe hoặc đi bộ, tôi có thời gian để nói chuyện với chính mình. Không phải kiểu triết lý cao siêu. Chỉ là tự hỏi hôm nay mình cần làm gì. Khoản nào cần trả trước. Việc nào cần hoàn thành. Người nào cần nhắn lại. Chân đau thì đi chậm hơn. Mệt thì nghỉ một chút. Nhưng vẫn đi.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "510dca4f-8766-4735-a1cc-3d5a13fe9e4b",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có lẽ chính những đoạn đường đó đã dạy tôi nhiều hơn tôi tưởng.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "a6887a08-2875-4a86-8756-f88e8ed15a85",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Khi đi xe máy, mình chỉ nghĩ tới đích. Khi đi bộ, mình buộc phải để ý từng đoạn đường.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "bd67b805-e1c3-464e-a678-f4b7812a1f92",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi để ý ổ gà. Để ý dốc cầu. Để ý những chỗ có bóng cây. Để ý hơi thở của mình. Để ý cái chân yếu đang cố gắng từng chút một. Và tôi nhận ra việc hồi phục không diễn ra bằng những khoảnh khắc lớn lao. Nó diễn ra trong những bước rất nhỏ, rất đều, rất lặp lại.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "0036573a-41cd-49a1-a97b-6cc07e98ec47",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Trả nợ cũng vậy.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "844ad20d-9e1d-48fa-a74d-5959eed8be19",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Xây lại đời mình cũng vậy.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "0d6165bc-664c-46f3-804e-5b4f1bf4edbf",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Không có ngày nào tự nhiên mọi thứ tốt lên hẳn. Chỉ có rất nhiều ngày mình không bỏ cuộc. Rất nhiều ngày mình làm thêm một chút. Học thêm một chút. Trả thêm một chút. Kết nối thêm một chút. Đi thêm một đoạn.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "7d35d309-1b9b-4933-a1fa-bfb821ade0d8",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Rồi một ngày nhìn lại, mình thấy mình đã đi xa hơn rất nhiều so với cái hôm mình tưởng mình không còn đi nổi nữa.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "644276dc-900f-4a2d-b811-3f4057a47c8e",
+      "type": "heading",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left",
+        "level": 2,
+        "isToggleable": false
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Không lãng mạn hóa đau khổ",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "9551ecf5-3260-4adb-8799-f594660c5934",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi không muốn lãng mạn hóa đau khổ.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "91855e44-8445-4f58-9e8c-15132bc6378e",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi không nghĩ ai cũng cần phải trải qua biến cố lớn để trưởng thành. Nếu được chọn, tôi vẫn mong cha tôi khỏe mạnh, gia đình tôi không nợ nần, chân tôi không bị tai nạn, và tuổi trẻ của tôi diễn ra nhẹ nhàng hơn một chút.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "f71a4c6f-83ee-4471-a097-2dd81274280d",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nhưng đời không hỏi mình muốn bản dễ hay bản khó.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "ab3e3832-c91e-42dc-9cec-664138372c64",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nó chỉ đưa cho mình một ván bài, rồi nhìn xem mình sẽ chơi tiếp ra sao.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "6e3d8d11-22a2-4c22-9829-24bf5534168e",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Những khoảng tối trong cuộc đời không làm tôi mạnh mẽ ngay lập tức. Ban đầu, nó chỉ làm tôi sợ. Làm tôi hoang mang. Làm tôi thấy mình nhỏ bé hơn rất nhiều so với những gì mình từng nghĩ.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "e2146c7f-70ba-4fcf-83cb-dbdf1d950a02",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nhưng chính trong khoảng tối đó, tôi học được vài điều.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "30841028-3507-45fa-a6d6-ca6663d8f316",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi học rằng không có nền tảng nào chắc chắn tuyệt đối. Học giỏi, có offer tốt, có kế hoạch đẹp, tất cả đều đáng quý. Nhưng một biến cố đủ lớn có thể làm mọi thứ đảo lộn.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "20f1017f-d944-4a11-a29f-c320970b6b85",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi học rằng bảo hiểm, quỹ dự phòng, sức khỏe, và khả năng kiếm tiền không phải là những chủ đề khô khan. Đó là những thứ có thể quyết định một gia đình sẽ đau thêm bao nhiêu khi rủi ro xảy ra.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "499d0652-a7c6-449f-becd-33ed61eb05de",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi học rằng có những người sẽ rời đi khi mình khó khăn. Có những người sẽ ở lại. Có những người không ở lại lâu, nhưng xuất hiện đúng lúc. Và mình nên biết ơn cả những người đó.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "ecb66b99-79aa-4ab7-acc7-8aa913b4adae",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi học rằng đôi khi phải làm việc mình không thích, không phải vì mình hết ước mơ, mà vì mình đang bảo vệ quyền được mơ tiếp trong tương lai.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "a13f61f4-19d7-4ff8-8287-bb19cdd723fb",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi học rằng cơ thể mình mong manh hơn mình tưởng, nhưng cũng bền bỉ hơn mình nghĩ.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "9d9c3e3a-b94b-44e2-9bc8-b257ee378b47",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Và tôi học rằng khi không còn gì nhiều trong tay, thứ cuối cùng mình vẫn có thể giữ là thái độ sống.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "b4f6d849-3735-481c-bc62-e15e705bbef8",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Không phải thái độ tích cực giả tạo kiểu sáng nào cũng nhìn vào gương nói mình ổn trong khi trong lòng nát bét. Mà là một thái độ thực tế hơn: hôm nay khó, nhưng mình vẫn làm. Hôm nay mệt, nhưng mình vẫn đi. Hôm nay chưa thấy đường ra, nhưng mình vẫn không tự tay đóng cửa lại.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "1df4de2f-2149-48f4-a547-3130cd0459f3",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Bây giờ, khi nhìn lại giai đoạn đó, tôi không còn chỉ thấy đau.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "2f939c9e-a107-411b-92c6-7f3a7b758f50",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi thấy một phiên bản rất trẻ của mình, chân còn yếu, tiền còn thiếu, lòng còn nhiều hoang mang, nhưng vẫn cố đạp xe đi làm. Vẫn cố nhận thêm job. Vẫn cố trả từng khoản nợ. Vẫn cố gặp người mới. Vẫn cố học. Vẫn cố cho đi. Vẫn cố sống tử tế, dù cuộc đời lúc đó không tử tế với mình lắm.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "d3dbf171-c311-4c0e-978a-cd7383aae97c",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Tôi thương phiên bản đó.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "0593a4f8-2c68-46be-a53e-fb9fb0bdfdc3",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Không phải vì nó giỏi.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "db89058f-0ed6-4e91-8daa-2ffbab359624",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Mà vì nó đã không bỏ cuộc.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "047147e8-78b2-45eb-8790-1a392178b175",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có thể ai rồi cũng sẽ có những khoảng tối của riêng mình. Một biến cố sức khỏe. Một mất mát gia đình. Một khoản nợ. Một thất bại. Một giai đoạn cô đơn đến mức không biết phải kể với ai.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "5bda7325-8fcb-4fbd-913b-48602dc6730a",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Khi đang ở trong đó, mình thường nghĩ cuộc đời mình đã hỏng rồi.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "88a3bae2-c210-49a1-9ab4-e5819b66684f",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Nhưng có khi không phải.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "f9a3bb98-177e-43c0-b771-50b430d9d068",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Có khi đó chỉ là một đoạn rất tối trên con đường rất dài. Một đoạn mà mình phải đi chậm hơn, đau hơn, cô đơn hơn. Nhưng nếu mình cứ đi, từng bước một, rồi cũng sẽ có ngày mình nhìn thấy ánh sáng.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "61981810-f34b-4884-ab0d-9d5bb2003d59",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Không phải ánh sáng rực rỡ như trong phim.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "9f0ee3dd-9c45-4a37-826b-f87e41b82f89",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Chỉ là một buổi sáng bình thường, mình thức dậy và nhận ra lòng mình đã nhẹ hơn trước một chút.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "29ae4534-79f0-42bf-a30e-9e34625a78ea",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Với tôi, như vậy cũng đã là một phép màu rồi.",
+          "styles": {}
+        }
+      ],
+      "children": []
+    },
+    {
+      "id": "340d6e2d-e8e8-4974-8164-4d89d511f12c",
+      "type": "paragraph",
+      "props": {
+        "backgroundColor": "default",
+        "textColor": "default",
+        "textAlignment": "left"
+      },
+      "content": [],
+      "children": []
+    }
+  ],
+  "contentHtml": "<div class=\"bn-block-group\" data-node-type=\"blockGroup\"><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"b55ccc15-378a-4b35-83e6-4139bca963bc\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"b55ccc15-378a-4b35-83e6-4139bca963bc\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có một giai đoạn trong đời, tôi từng nghĩ mọi thứ đang bắt đầu đi đúng hướng.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"39d03e06-c2b7-4f5e-a56d-c1ce33e90c14\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"39d03e06-c2b7-4f5e-a56d-c1ce33e90c14\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Sau Covid, khi cả thế giới vừa bước ra khỏi một khoảng thời gian rất lạ, tôi cũng giống như nhiều người trẻ khác: hơi hoang mang, hơi háo hức, và có khá nhiều kỳ vọng. Lúc đó tôi còn là sinh viên. Điểm chuyên ngành của tôi tương đối tốt. Không phải kiểu thiên tài gì ghê gớm, nhưng đủ để tôi có cảm giác rằng nếu mình cứ tiếp tục cố gắng, cuộc đời chắc cũng không đến nỗi tệ.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"9a107434-179a-42e7-a069-0ade6f424222\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"9a107434-179a-42e7-a069-0ade6f424222\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Rồi một ngày, tôi được một công ty MNC mời về làm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"1dd21609-93ea-4c12-ba91-e569302d4b07\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"1dd21609-93ea-4c12-ba91-e569302d4b07\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Với một đứa sinh viên mới ra khỏi trường, chuyện đó giống như được ai đó vỗ vai nói: “Ê, hình như mày đang đi đúng đường rồi đó.” Tôi nhớ cảm giác lúc ấy khá rõ. Vừa vui, vừa tự hào, vừa thấy những năm tháng học hành, thức khuya, làm project, chạy deadline cuối cùng cũng có một cái kết tử tế.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"6bcb9393-9dc2-4a26-a223-a62c555d9215\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"6bcb9393-9dc2-4a26-a223-a62c555d9215\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi đã nghĩ đó là đoạn mở đầu của một chương mới.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"573e9492-1ed0-4760-93bd-2adf159696c5\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"573e9492-1ed0-4760-93bd-2adf159696c5\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nhưng cuộc đời đôi khi có cách viết kịch bản rất riêng. Nó không báo trước. Không gửi email nhắc lịch. Không hỏi mình đã sẵn sàng chưa. Nó chỉ đột ngột bẻ lái.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"7c429b23-5270-46cf-893f-e9805c63395b\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"7c429b23-5270-46cf-893f-e9805c63395b\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Và lần đó, nó bẻ rất gắt.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"884aff06-1f9a-4dd6-b3b9-27d5a3849a84\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"884aff06-1f9a-4dd6-b3b9-27d5a3849a84\"><div class=\"bn-block-content\" data-content-type=\"heading\" data-level=\"2\"><h2 class=\"bn-inline-content\">Một tai nạn, một mất mát, và một khoản nợ</h2></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"98e1a492-81bf-4f5c-85f3-8d83f37419b7\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"98e1a492-81bf-4f5c-85f3-8d83f37419b7\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Một tai nạn đủ nặng để khiến chân tôi không còn đi lại bình thường trong một thời gian dài. Từ một người đang chuẩn bị bước vào đời với khá nhiều kỳ vọng, tôi bỗng phải học lại những việc tưởng như rất cơ bản. Đi đứng. Di chuyển. Tự xoay xở. Chấp nhận rằng cơ thể mình không còn nghe lời mình như trước.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"ed721366-80a7-4180-b821-aba442dfdf97\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"ed721366-80a7-4180-b821-aba442dfdf97\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có những buổi sáng thức dậy, tôi nhìn cái chân của mình và thấy trong lòng trống rỗng. Không phải kiểu buồn ồn ào. Nó là một sự im lặng rất nặng. Cái im lặng của một người biết rằng mình vẫn phải sống tiếp, nhưng chưa biết sẽ sống tiếp bằng cách nào.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"46c52963-8053-42bd-b657-e79fecc6722a\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"46c52963-8053-42bd-b657-e79fecc6722a\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Trong lúc tôi còn đang loay hoay với tai nạn của chính mình, cha tôi bệnh.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"f2a02bcc-80ee-4c42-81be-0fbfd5ce3625\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"f2a02bcc-80ee-4c42-81be-0fbfd5ce3625\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Rồi cha tôi mất.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"65ed5ac8-3167-4fc5-9722-ad89b55c06de\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"65ed5ac8-3167-4fc5-9722-ad89b55c06de\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi nghĩ có những mất mát mà ngôn từ luôn đến sau. Khi chuyện xảy ra, mình không thật sự có đủ khả năng để gọi tên nó. Người ngoài nhìn vào có thể nói đó là biến cố, là cú sốc, là mất mát lớn. Nhưng với người ở trong cuộc, nó đơn giản hơn và cũng tàn nhẫn hơn nhiều: một người thân nhất của mình không còn ở đó nữa.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"2b82935a-fb90-457c-a5d6-df4fa4d65b58\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"2b82935a-fb90-457c-a5d6-df4fa4d65b58\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Và sau sự mất mát ấy là một thứ rất thực tế: tiền viện phí.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"d121155d-f67c-4caa-9ab2-7f4e43f386b5\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"d121155d-f67c-4caa-9ab2-7f4e43f386b5\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Gia đình tôi không có bảo hiểm. Nói cho công bằng, đó là một phần do chủ quan. Khi còn khỏe, người ta thường nghĩ bệnh tật là chuyện của người khác. Khi còn trẻ, người ta thường nghĩ rủi ro là một khái niệm nằm trong sách tài chính cá nhân. Đến khi nó gõ cửa nhà mình, mình mới hiểu có những bài học không học bằng sách được.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"66c540fe-d817-4c86-bd41-bdd85f1a240b\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"66c540fe-d817-4c86-bd41-bdd85f1a240b\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Cha tôi mất, và để lại một khoản nợ khá lớn.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"035f5133-3fc6-4551-bfe2-e1737131b288\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"035f5133-3fc6-4551-bfe2-e1737131b288\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi bước vào đời không phải từ con số không.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"ae4a798f-52dc-4f91-92d6-ba2c7f32117f\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"ae4a798f-52dc-4f91-92d6-ba2c7f32117f\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi bước vào đời từ con số âm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"84607aac-9cb0-4e4f-8285-a53c2197ff09\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"84607aac-9cb0-4e4f-8285-a53c2197ff09\"><div class=\"bn-block-content\" data-content-type=\"heading\" data-level=\"2\"><h2 class=\"bn-inline-content\">Những thứ phải bán đi</h2></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"1420600e-b63b-489b-9484-7db5bd57044c\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"1420600e-b63b-489b-9484-7db5bd57044c\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nói từ con số âm nghe hơi kịch tính, nhưng lúc đó đúng là như vậy. Tôi không chỉ cần kiếm tiền để sống. Tôi cần kiếm tiền để trả nợ. Không chỉ trả nợ ngân hàng hay bệnh viện, mà còn trả nợ những người đã giúp gia đình tôi trong lúc khó khăn. Có những khoản tiền không quá lớn với người khác, nhưng với tôi lúc đó, nó nặng như một cục đá để trong ngực.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"3fa3c25a-4e8e-4685-b2dc-d6f3881f9d0a\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"3fa3c25a-4e8e-4685-b2dc-d6f3881f9d0a\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Điều làm tôi nhớ nhất không phải là số tiền. Mà là cảm giác phải một mình xoay sở trong giai đoạn đầu tiên.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"46bd9636-8bec-4b42-9249-6fe656e16d33\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"46bd9636-8bec-4b42-9249-6fe656e16d33\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi không trách bạn bè. Mỗi người đều có cuộc sống riêng, áp lực riêng, giới hạn riêng. Sau Covid, ai cũng đang cố đứng vững. Nhưng phải thành thật là lúc đó, tôi đã có những ngày rất cô đơn. Cô đơn không phải vì không có ai xung quanh, mà vì không biết phải gọi cho ai khi mình thật sự cần giúp.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"e80b7723-546b-4c23-b15e-5a80272e5fa0\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"e80b7723-546b-4c23-b15e-5a80272e5fa0\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có những tin nhắn tôi soạn rồi xóa.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"ed4d9bfb-40b3-4368-bf66-42baf39fa409\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"ed4d9bfb-40b3-4368-bf66-42baf39fa409\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có những cuộc gọi tôi nhìn rất lâu rồi không bấm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"f395e591-9fbe-48bf-8a52-86d928b953fb\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"f395e591-9fbe-48bf-8a52-86d928b953fb\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có những ngày tôi nhận ra rằng trong đời, đến một lúc nào đó, mình phải tự kéo mình lên trước khi có ai đó đủ rảnh tay để kéo mình.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"19a173a2-1b2c-417a-ac69-93b32c4ee4c7\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"19a173a2-1b2c-417a-ac69-93b32c4ee4c7\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi bắt đầu bán những thứ mình quý. Trong đó có chiếc máy ảnh đầu tiên trong đời.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"6470d718-829e-4d9f-9fe9-7e24a2978e71\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"6470d718-829e-4d9f-9fe9-7e24a2978e71\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Chiếc máy ảnh đó với người khác có thể chỉ là một món đồ công nghệ cũ. Nhưng với tôi, nó là một phần ký ức. Nó từng đi cùng tôi qua những ngày còn mơ mộng, còn nghĩ mình sẽ có nhiều thời gian để chụp lại cuộc đời, để đi đây đi đó, để lưu lại những khoảnh khắc đẹp.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"8ebcc97b-ac57-4a9b-828e-b48de29921db\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"8ebcc97b-ac57-4a9b-828e-b48de29921db\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Ngày bán nó đi, tôi không buồn kiểu khóc lóc. Tôi chỉ thấy mình già đi một chút.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"a84e8ce2-ea0a-448a-bdbe-60ebcc6cb288\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"a84e8ce2-ea0a-448a-bdbe-60ebcc6cb288\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có những thứ khi mua, mình nghĩ nó là phần thưởng cho tuổi trẻ. Khi bán, mình hiểu nó là cái giá của trưởng thành.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"25994575-6da0-45bc-8fa8-fcece5a9b526\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"25994575-6da0-45bc-8fa8-fcece5a9b526\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Sau đó, tôi cầm cố cả xe máy để trả nợ cho một vài người bạn. Nghe thì đơn giản, nhưng với một người chân đang yếu, xe máy gần như là phương tiện tự do cuối cùng. Cầm nó đi giống như tự tháo bớt một phần khả năng di chuyển của mình. Nhưng lúc đó tôi không có nhiều lựa chọn. Nợ thì phải trả. Người ta đã giúp mình lúc khó khăn, mình không thể sống như thể lòng tốt của người khác là một khoản có thể quên.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"be652d6f-94c3-4ab8-8fd9-bdadae5c5eb4\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"be652d6f-94c3-4ab8-8fd9-bdadae5c5eb4\"><div class=\"bn-block-content\" data-content-type=\"heading\" data-level=\"2\"><h2 class=\"bn-inline-content\">Làm những việc mình không thích</h2></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"f6b709e8-ab32-4aad-8425-102de1640a17\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"f6b709e8-ab32-4aad-8425-102de1640a17\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Từ đó, tôi bắt đầu nhận những công việc mà tôi không thích.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"fcf98183-c04f-4f20-bb1f-a55e5bdc5eaf\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"fcf98183-c04f-4f20-bb1f-a55e5bdc5eaf\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nói không thích còn nhẹ. Có những việc tôi thật sự chán ghét. Mỗi sáng mở mắt ra là thấy trong lòng nặng xuống. Có những môi trường không hợp. Có những công việc không đúng với thứ mình từng tưởng tượng. Có những ngày làm xong, tôi chỉ muốn ngồi im một chỗ và không nói chuyện với ai.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"78711d12-66b2-4559-a89b-f3e5bd7325f4\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"78711d12-66b2-4559-a89b-f3e5bd7325f4\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nhưng những công việc đó trả tiền tốt.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"132d473a-d61c-42c7-8dbb-c72d7ccdc620\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"132d473a-d61c-42c7-8dbb-c72d7ccdc620\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Và trong giai đoạn đó, tiền không phải là thứ xấu xa. Tiền là thuốc giảm đau. Tiền là hơi thở. Tiền là cách tôi giữ lời hứa với những người đã cho gia đình tôi vay. Tiền là cách tôi mua thêm một ít bình yên cho những ngày rất bất ổn.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"439be606-44be-4539-a90d-40976fbee083\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"439be606-44be-4539-a90d-40976fbee083\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Sau này nhìn lại, tôi nghĩ tuổi trẻ đôi khi được dạy quá nhiều về việc phải làm điều mình thích. Điều đó không sai. Nhưng đời sống không phải lúc nào cũng đủ tử tế để cho mình lựa chọn đẹp như trong sách. Có những giai đoạn, điều đúng đắn nhất không phải là làm thứ mình đam mê, mà là làm thứ cần làm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"4db5239f-a3a3-4084-8255-b35d29bb33a5\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"4db5239f-a3a3-4084-8255-b35d29bb33a5\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Không lãng mạn lắm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"c310dd30-3124-4945-a1c3-7c679c17d6ae\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"c310dd30-3124-4945-a1c3-7c679c17d6ae\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nhưng thật.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"fb1f54bb-3687-4afe-954d-5fe948413cdb\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"fb1f54bb-3687-4afe-954d-5fe948413cdb\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi nhảy qua nhiều công ty. Một phần vì hoàn cảnh, một phần vì tôi đang tìm cách tăng thu nhập nhanh nhất có thể. Có lúc tôi cũng tự hỏi mình đang đi đâu. Sự nghiệp nhìn từ bên ngoài có vẻ hơi lộn xộn. Nhưng ở bên trong, tôi biết mình đang có một mục tiêu rất rõ: trả nợ, đứng dậy, và không để mình chìm thêm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"b7bcf50e-a752-467b-ae2b-76d20df537cd\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"b7bcf50e-a752-467b-ae2b-76d20df537cd\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">May mắn là trong những lần chuyển việc đó, tôi gặp được nhiều người tốt.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"0bc869ed-9b52-48c5-86aa-990c55390748\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"0bc869ed-9b52-48c5-86aa-990c55390748\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có những người chỉ nói chuyện với tôi vài lần nhưng mở cho tôi một cơ hội mới. Có người giới thiệu job freelance. Có người cho tôi lời khuyên. Có người đơn giản là tin tôi ở một thời điểm mà chính tôi cũng không còn tin mình nhiều như trước.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"87124e08-4ba3-4a75-8eaa-09969e7bf823\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"87124e08-4ba3-4a75-8eaa-09969e7bf823\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi bắt đầu có nhiều kết nối hơn. Từ một công việc, tôi có thêm việc thứ hai. Từ một mối quan hệ, tôi biết thêm một dự án khác. Có những giai đoạn tôi làm nhiều job cùng lúc, ngày làm 16 đến 18 tiếng là chuyện bình thường.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"30a79724-e380-4970-a391-5fa794b1e1a3\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"30a79724-e380-4970-a391-5fa794b1e1a3\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nghe thì rất “cháy”, nhưng thật ra không có gì hào nhoáng. Nó không giống mấy câu chuyện truyền cảm hứng kiểu thức khuya xây đế chế. Phần lớn thời gian, nó chỉ là mệt. Rất mệt.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"0532d6ef-db81-4500-976d-c4f090d5aa55\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"0532d6ef-db81-4500-976d-c4f090d5aa55\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Mắt khô. Lưng đau. Đầu óc lúc nào cũng như có ai mở quá nhiều tab cùng lúc.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"d8d10bb0-3e68-4fac-9e71-1285593faf4b\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"d8d10bb0-3e68-4fac-9e71-1285593faf4b\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nhưng mỗi lần trả được thêm một khoản nợ, tôi thấy nhẹ hơn một chút. Không phải nhẹ kiểu vui sướng, mà là nhẹ kiểu người đang đi trong hầm tối thấy phía trước có một vệt sáng rất nhỏ.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"50bdace0-6338-4672-b03a-bd88ebfd1a22\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"50bdace0-6338-4672-b03a-bd88ebfd1a22\"><div class=\"bn-block-content\" data-content-type=\"heading\" data-level=\"2\"><h2 class=\"bn-inline-content\">Learn to earn, not to save</h2></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"a8d53287-e242-4897-870d-9ffff8ffdf7c\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"a8d53287-e242-4897-870d-9ffff8ffdf7c\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Trong giai đoạn đó, có một điều hơi ngược đời là tôi không cắt giảm mức sống của mình quá nhiều.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"3d744714-31ed-4289-9860-57d0d65ab04a\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"3d744714-31ed-4289-9860-57d0d65ab04a\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tất nhiên tôi không tiêu xài hoang phí. Nhưng tôi cũng không ép mình sống như một cái máy trả nợ. Tôi vẫn cho phép mình ăn một bữa tử tế khi cần. Vẫn mua một khóa học nếu thấy đáng. Vẫn gặp người này người kia. Vẫn đầu tư vào kỹ năng. Vẫn cố gắng giữ cho đời sống của mình còn một chút chất lượng.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"2992ceb0-bb13-4ed9-8134-0e9d919e9f14\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"2992ceb0-bb13-4ed9-8134-0e9d919e9f14\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi sống theo một niềm tin khá đơn giản: learn to earn, not to save.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"a6fb7158-226a-4cb0-8e8f-901412af884e\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"a6fb7158-226a-4cb0-8e8f-901412af884e\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Học để kiếm nhiều hơn, chứ không chỉ sống để tiết kiệm ít hơn.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"1e8e6715-9ba2-47d0-bbfc-8897448ca58f\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"1e8e6715-9ba2-47d0-bbfc-8897448ca58f\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tiết kiệm là cần thiết, nhất là khi mình đang nợ. Nhưng nếu chỉ chăm chăm bóp nhỏ cuộc đời lại, tôi sợ mình sẽ nghèo cả tiền lẫn tinh thần. Tôi cần tăng năng lực kiếm tiền. Cần học thêm kỹ năng. Cần gặp thêm người. Cần làm thêm việc. Cần mở rộng thế giới của mình, dù lúc đó thế giới ấy đang khá tối.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"d0378037-a093-4677-a41f-c7a60eb67884\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"d0378037-a093-4677-a41f-c7a60eb67884\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Và tôi cũng cố giữ thói quen cho đi trước rồi tính sau.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"59b6ec4d-dbf2-4852-8696-8357fe2ee6a9\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"59b6ec4d-dbf2-4852-8696-8357fe2ee6a9\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Không phải vì tôi cao thượng gì. Chỉ là sau khi trải qua giai đoạn khốn khó, tôi hiểu cảm giác được ai đó giúp đúng lúc quý như thế nào. Có những sự giúp đỡ không giải quyết hết vấn đề, nhưng nó làm người ta bớt thấy mình bị bỏ lại. Và đôi khi, chỉ cần vậy là đủ để một người tiếp tục.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"4d1967ae-32ef-4d99-887b-adefb2aa2171\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"4d1967ae-32ef-4d99-887b-adefb2aa2171\"><div class=\"bn-block-content\" data-content-type=\"heading\" data-level=\"2\"><h2 class=\"bn-inline-content\">Những đoạn đường đi bộ</h2></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"3c37fc1a-0d61-4d64-9da9-9132eae11999\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"3c37fc1a-0d61-4d64-9da9-9132eae11999\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Một điều buồn cười là trong giai đoạn bận nhất, tôi vẫn duy trì thói quen đạp xe và đi bộ đi làm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"46e59a94-59a8-482b-850a-36e454ded2fa\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"46e59a94-59a8-482b-850a-36e454ded2fa\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Một phần vì chân tôi lúc đó còn yếu, chưa thể đi xe máy thoải mái. Một phần vì tôi không còn xe trong một khoảng thời gian. Nhưng dần dần, chuyện đó trở thành một dạng trị liệu.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"f73f9ac9-65f7-4f3c-ab5f-f2f5b19bfc19\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"f73f9ac9-65f7-4f3c-ab5f-f2f5b19bfc19\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Buổi sáng, khi đạp xe hoặc đi bộ, tôi có thời gian để nói chuyện với chính mình. Không phải kiểu triết lý cao siêu. Chỉ là tự hỏi hôm nay mình cần làm gì. Khoản nào cần trả trước. Việc nào cần hoàn thành. Người nào cần nhắn lại. Chân đau thì đi chậm hơn. Mệt thì nghỉ một chút. Nhưng vẫn đi.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"510dca4f-8766-4735-a1cc-3d5a13fe9e4b\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"510dca4f-8766-4735-a1cc-3d5a13fe9e4b\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có lẽ chính những đoạn đường đó đã dạy tôi nhiều hơn tôi tưởng.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"a6887a08-2875-4a86-8756-f88e8ed15a85\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"a6887a08-2875-4a86-8756-f88e8ed15a85\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Khi đi xe máy, mình chỉ nghĩ tới đích. Khi đi bộ, mình buộc phải để ý từng đoạn đường.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"bd67b805-e1c3-464e-a678-f4b7812a1f92\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"bd67b805-e1c3-464e-a678-f4b7812a1f92\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi để ý ổ gà. Để ý dốc cầu. Để ý những chỗ có bóng cây. Để ý hơi thở của mình. Để ý cái chân yếu đang cố gắng từng chút một. Và tôi nhận ra việc hồi phục không diễn ra bằng những khoảnh khắc lớn lao. Nó diễn ra trong những bước rất nhỏ, rất đều, rất lặp lại.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"0036573a-41cd-49a1-a97b-6cc07e98ec47\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"0036573a-41cd-49a1-a97b-6cc07e98ec47\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Trả nợ cũng vậy.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"844ad20d-9e1d-48fa-a74d-5959eed8be19\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"844ad20d-9e1d-48fa-a74d-5959eed8be19\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Xây lại đời mình cũng vậy.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"0d6165bc-664c-46f3-804e-5b4f1bf4edbf\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"0d6165bc-664c-46f3-804e-5b4f1bf4edbf\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Không có ngày nào tự nhiên mọi thứ tốt lên hẳn. Chỉ có rất nhiều ngày mình không bỏ cuộc. Rất nhiều ngày mình làm thêm một chút. Học thêm một chút. Trả thêm một chút. Kết nối thêm một chút. Đi thêm một đoạn.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"7d35d309-1b9b-4933-a1fa-bfb821ade0d8\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"7d35d309-1b9b-4933-a1fa-bfb821ade0d8\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Rồi một ngày nhìn lại, mình thấy mình đã đi xa hơn rất nhiều so với cái hôm mình tưởng mình không còn đi nổi nữa.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"644276dc-900f-4a2d-b811-3f4057a47c8e\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"644276dc-900f-4a2d-b811-3f4057a47c8e\"><div class=\"bn-block-content\" data-content-type=\"heading\" data-level=\"2\"><h2 class=\"bn-inline-content\">Không lãng mạn hóa đau khổ</h2></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"9551ecf5-3260-4adb-8799-f594660c5934\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"9551ecf5-3260-4adb-8799-f594660c5934\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi không muốn lãng mạn hóa đau khổ.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"91855e44-8445-4f58-9e8c-15132bc6378e\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"91855e44-8445-4f58-9e8c-15132bc6378e\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi không nghĩ ai cũng cần phải trải qua biến cố lớn để trưởng thành. Nếu được chọn, tôi vẫn mong cha tôi khỏe mạnh, gia đình tôi không nợ nần, chân tôi không bị tai nạn, và tuổi trẻ của tôi diễn ra nhẹ nhàng hơn một chút.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"f71a4c6f-83ee-4471-a097-2dd81274280d\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"f71a4c6f-83ee-4471-a097-2dd81274280d\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nhưng đời không hỏi mình muốn bản dễ hay bản khó.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"ab3e3832-c91e-42dc-9cec-664138372c64\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"ab3e3832-c91e-42dc-9cec-664138372c64\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nó chỉ đưa cho mình một ván bài, rồi nhìn xem mình sẽ chơi tiếp ra sao.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"6e3d8d11-22a2-4c22-9829-24bf5534168e\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"6e3d8d11-22a2-4c22-9829-24bf5534168e\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Những khoảng tối trong cuộc đời không làm tôi mạnh mẽ ngay lập tức. Ban đầu, nó chỉ làm tôi sợ. Làm tôi hoang mang. Làm tôi thấy mình nhỏ bé hơn rất nhiều so với những gì mình từng nghĩ.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"e2146c7f-70ba-4fcf-83cb-dbdf1d950a02\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"e2146c7f-70ba-4fcf-83cb-dbdf1d950a02\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nhưng chính trong khoảng tối đó, tôi học được vài điều.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"30841028-3507-45fa-a6d6-ca6663d8f316\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"30841028-3507-45fa-a6d6-ca6663d8f316\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi học rằng không có nền tảng nào chắc chắn tuyệt đối. Học giỏi, có offer tốt, có kế hoạch đẹp, tất cả đều đáng quý. Nhưng một biến cố đủ lớn có thể làm mọi thứ đảo lộn.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"20f1017f-d944-4a11-a29f-c320970b6b85\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"20f1017f-d944-4a11-a29f-c320970b6b85\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi học rằng bảo hiểm, quỹ dự phòng, sức khỏe, và khả năng kiếm tiền không phải là những chủ đề khô khan. Đó là những thứ có thể quyết định một gia đình sẽ đau thêm bao nhiêu khi rủi ro xảy ra.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"499d0652-a7c6-449f-becd-33ed61eb05de\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"499d0652-a7c6-449f-becd-33ed61eb05de\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi học rằng có những người sẽ rời đi khi mình khó khăn. Có những người sẽ ở lại. Có những người không ở lại lâu, nhưng xuất hiện đúng lúc. Và mình nên biết ơn cả những người đó.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"ecb66b99-79aa-4ab7-acc7-8aa913b4adae\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"ecb66b99-79aa-4ab7-acc7-8aa913b4adae\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi học rằng đôi khi phải làm việc mình không thích, không phải vì mình hết ước mơ, mà vì mình đang bảo vệ quyền được mơ tiếp trong tương lai.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"a13f61f4-19d7-4ff8-8287-bb19cdd723fb\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"a13f61f4-19d7-4ff8-8287-bb19cdd723fb\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi học rằng cơ thể mình mong manh hơn mình tưởng, nhưng cũng bền bỉ hơn mình nghĩ.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"9d9c3e3a-b94b-44e2-9bc8-b257ee378b47\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"9d9c3e3a-b94b-44e2-9bc8-b257ee378b47\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Và tôi học rằng khi không còn gì nhiều trong tay, thứ cuối cùng mình vẫn có thể giữ là thái độ sống.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"b4f6d849-3735-481c-bc62-e15e705bbef8\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"b4f6d849-3735-481c-bc62-e15e705bbef8\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Không phải thái độ tích cực giả tạo kiểu sáng nào cũng nhìn vào gương nói mình ổn trong khi trong lòng nát bét. Mà là một thái độ thực tế hơn: hôm nay khó, nhưng mình vẫn làm. Hôm nay mệt, nhưng mình vẫn đi. Hôm nay chưa thấy đường ra, nhưng mình vẫn không tự tay đóng cửa lại.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"1df4de2f-2149-48f4-a547-3130cd0459f3\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"1df4de2f-2149-48f4-a547-3130cd0459f3\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Bây giờ, khi nhìn lại giai đoạn đó, tôi không còn chỉ thấy đau.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"2f939c9e-a107-411b-92c6-7f3a7b758f50\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"2f939c9e-a107-411b-92c6-7f3a7b758f50\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi thấy một phiên bản rất trẻ của mình, chân còn yếu, tiền còn thiếu, lòng còn nhiều hoang mang, nhưng vẫn cố đạp xe đi làm. Vẫn cố nhận thêm job. Vẫn cố trả từng khoản nợ. Vẫn cố gặp người mới. Vẫn cố học. Vẫn cố cho đi. Vẫn cố sống tử tế, dù cuộc đời lúc đó không tử tế với mình lắm.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"d3dbf171-c311-4c0e-978a-cd7383aae97c\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"d3dbf171-c311-4c0e-978a-cd7383aae97c\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Tôi thương phiên bản đó.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"0593a4f8-2c68-46be-a53e-fb9fb0bdfdc3\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"0593a4f8-2c68-46be-a53e-fb9fb0bdfdc3\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Không phải vì nó giỏi.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"db89058f-0ed6-4e91-8daa-2ffbab359624\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"db89058f-0ed6-4e91-8daa-2ffbab359624\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Mà vì nó đã không bỏ cuộc.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"047147e8-78b2-45eb-8790-1a392178b175\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"047147e8-78b2-45eb-8790-1a392178b175\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có thể ai rồi cũng sẽ có những khoảng tối của riêng mình. Một biến cố sức khỏe. Một mất mát gia đình. Một khoản nợ. Một thất bại. Một giai đoạn cô đơn đến mức không biết phải kể với ai.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"5bda7325-8fcb-4fbd-913b-48602dc6730a\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"5bda7325-8fcb-4fbd-913b-48602dc6730a\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Khi đang ở trong đó, mình thường nghĩ cuộc đời mình đã hỏng rồi.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"88a3bae2-c210-49a1-9ab4-e5819b66684f\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"88a3bae2-c210-49a1-9ab4-e5819b66684f\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Nhưng có khi không phải.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"f9a3bb98-177e-43c0-b771-50b430d9d068\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"f9a3bb98-177e-43c0-b771-50b430d9d068\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Có khi đó chỉ là một đoạn rất tối trên con đường rất dài. Một đoạn mà mình phải đi chậm hơn, đau hơn, cô đơn hơn. Nhưng nếu mình cứ đi, từng bước một, rồi cũng sẽ có ngày mình nhìn thấy ánh sáng.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"61981810-f34b-4884-ab0d-9d5bb2003d59\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"61981810-f34b-4884-ab0d-9d5bb2003d59\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Không phải ánh sáng rực rỡ như trong phim.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"9f0ee3dd-9c45-4a37-826b-f87e41b82f89\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"9f0ee3dd-9c45-4a37-826b-f87e41b82f89\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Chỉ là một buổi sáng bình thường, mình thức dậy và nhận ra lòng mình đã nhẹ hơn trước một chút.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"29ae4534-79f0-42bf-a30e-9e34625a78ea\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"29ae4534-79f0-42bf-a30e-9e34625a78ea\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\">Với tôi, như vậy cũng đã là một phép màu rồi.</p></div></div></div><div class=\"bn-block-outer\" data-node-type=\"blockOuter\" data-id=\"340d6e2d-e8e8-4974-8164-4d89d511f12c\"><div class=\"bn-block\" data-node-type=\"blockContainer\" data-id=\"340d6e2d-e8e8-4974-8164-4d89d511f12c\"><div class=\"bn-block-content\" data-content-type=\"paragraph\"><p class=\"bn-inline-content\"><span class=\"ProseMirror-trailingBreak\" style=\"display: inline-block;\"></span></p></div></div></div></div>",
+  "contentMarkdown": "",
+  "tags": [],
+  "status": "published",
+  "wordCount": 2719,
+  "readingTime": 14,
+  "createdAt": "2026-07-05T23:32:23.414Z",
+  "updatedAt": "2026-07-05T23:40:23.281Z",
+  "publishedAt": "2026-07-05T23:40:23.280Z",
+  "seoTitle": "Có một giai đoạn trong đời, tôi từng nghĩ mọi thứ đang",
+  "seoDescription": "Có một giai đoạn trong đời, tôi từng nghĩ mọi thứ đang bắt đầu đi đúng hướng. Sau Covid, khi cả thế giới vừa bước ra khỏi một khoảng thời gian rất lạ, tôi cũng",
+  "focusKeyword": "minh",
+  "ogTitle": "Hi - Có một giai đoạn trong đời, tôi từng nghĩ mọi thứ đang",
+  "ogDescription": "Có một giai đoạn trong đời, tôi từng nghĩ mọi thứ đang bắt đầu đi đúng hướng. Sau Covid, khi cả thế giới vừa bước ra khỏi một khoảng thời gian rất lạ, tôi cũng",
+  "ogImage": "/og-image.jpg"
+}

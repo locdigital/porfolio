@@ -1,0 +1,14 @@
+{
+  "slug": "da-lat",
+  "order": 4,
+  "location": "Đà Lạt",
+  "headline": "Pine forests in the mist.",
+  "subheadline": "Cool air and flower fields.",
+  "description": "Pine forests in the mist, flower fields, and the cool air of Vietnam's highland city.",
+  "images": [
+    { "src": "/assets/photos/da-lat/DSC_0174.webp", "alt": "Đà Lạt --- photo 1", "width": 4032, "height": 6048 },
+    { "src": "/assets/photos/da-lat/DSC_1163.webp", "alt": "Đà Lạt --- photo 2", "width": 2636, "height": 3248 },
+    { "src": "/assets/photos/da-lat/DSC_1322.webp", "alt": "Đà Lạt --- photo 3", "width": 6048, "height": 4032 },
+    { "src": "/assets/photos/da-lat/IMG_1585.webp", "alt": "Đà Lạt --- photo 4", "width": 6000, "height": 3368 }
+  ]
+}

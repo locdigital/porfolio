@@ -1,0 +1,240 @@
+'use client';
+
+import React, { useState } from 'react';
+
+export default function LoginForm() {
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setStatus('');
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Unable to sign in.");
+      }
+
+      window.location.href = "/cms";
+    } catch (error: any) {
+      setStatus(error instanceof Error ? error.message : "Unable to sign in.");
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <main className="login-shell" aria-label="CMS login">
+      <section className="login-panel toki-r" data-d="1">
+        <div>
+          <a href="/" className="login-brand" aria-label="Back to homepage">
+            <span aria-hidden="true"></span>
+          </a>
+          <p className="login-kicker">Private CMS</p>
+          <h1>Content desk for writing, gear, work, and photos.</h1>
+          <p className="login-copy">
+            Sign in to manage the static content files that power loc.digital.
+          </p>
+        </div>
+
+        <form className="login-form" id="login-form" onSubmit={handleSubmit}>
+          <label htmlFor="username">
+            <span>Username</span>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
+
+          <label htmlFor="password">
+            <span>Password</span>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+
+          <button type="submit" id="login-submit" disabled={submitting}>
+            {submitting ? 'Signing in...' : 'Sign in'}
+          </button>
+          <p className="login-status" id="login-status" role="status" aria-live="polite">
+            {status}
+          </p>
+        </form>
+      </section>
+
+      <style jsx global>{`
+        .login-shell {
+          min-height: 100svh;
+          display: grid;
+          place-items: center;
+          padding: clamp(24px, 4vw, 56px);
+          background:
+            linear-gradient(90deg, rgba(28, 28, 28, 0.035) 1px, transparent 1px),
+            linear-gradient(180deg, rgba(28, 28, 28, 0.035) 1px, transparent 1px),
+            var(--bg);
+          background-size: 42px 42px;
+        }
+
+        .login-panel {
+          width: min(100%, 960px);
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+          gap: clamp(32px, 7vw, 84px);
+          align-items: center;
+          padding: clamp(28px, 5vw, 56px);
+          border: 1px solid var(--divider);
+          border-radius: var(--radius);
+          background: rgba(250, 250, 247, 0.88);
+          box-shadow: 0 24px 80px rgba(28, 28, 28, 0.08);
+        }
+
+        .login-brand {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
+          margin-bottom: 54px;
+        }
+
+        .login-brand span {
+          width: 14px;
+          height: 14px;
+          border-radius: var(--radius);
+          background: var(--accent);
+          display: block;
+          transition: transform 0.3s var(--ease-out);
+        }
+
+        .login-brand:hover span {
+          transform: scale(1.2);
+        }
+
+        .login-brand:active span {
+          transform: scale(0.94);
+        }
+
+        .login-kicker {
+          font-family: var(--mono);
+          color: var(--accent);
+          text-transform: uppercase;
+          font-size: var(--type-caption);
+          margin-bottom: 18px;
+        }
+
+        .login-panel h1 {
+          max-width: 540px;
+          font-family: var(--serif);
+          font-size: var(--type-display-lg);
+          font-weight: 400;
+          line-height: 0.98;
+          letter-spacing: 0;
+          color: var(--text);
+        }
+
+        .login-copy {
+          max-width: 420px;
+          margin-top: 24px;
+          color: var(--muted);
+          line-height: 1.75;
+        }
+
+        .login-form {
+          display: grid;
+          gap: 18px;
+          padding: 24px;
+          border: 1px solid var(--divider);
+          border-radius: var(--radius);
+          background: #fff;
+        }
+
+        .login-form label {
+          display: grid;
+          gap: 8px;
+        }
+
+        .login-form span {
+          font-family: var(--mono);
+          font-size: var(--type-micro);
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--muted);
+        }
+
+        .login-form input {
+          width: 100%;
+          min-height: 46px;
+          border: 1px solid var(--divider);
+          border-radius: var(--radius);
+          padding: 0 14px;
+          font: inherit;
+          color: var(--text);
+          background: #fafaf7;
+        }
+
+        .login-form input:focus {
+          outline: 2px solid rgba(0, 117, 222, 0.18);
+          border-color: var(--accent);
+        }
+
+        .login-form button {
+          min-height: 46px;
+          border-radius: var(--radius);
+          background: var(--text);
+          color: var(--bg);
+          font-weight: 600;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+          border: none;
+          cursor: pointer;
+        }
+
+        .login-form button:hover {
+          opacity: 0.9;
+          transform: translateY(-1px);
+        }
+
+        .login-form button:disabled {
+          cursor: wait;
+          opacity: 0.55;
+          transform: none;
+        }
+
+        .login-status {
+          min-height: 22px;
+          color: #b42318;
+          font-size: var(--type-ui);
+        }
+
+        @media (max-width: 820px) {
+          .login-panel {
+            grid-template-columns: 1fr;
+          }
+
+          .login-brand {
+            margin-bottom: 36px;
+          }
+        }
+      `}</style>
+    </main>
+  );
+}

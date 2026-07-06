@@ -1,0 +1,248 @@
+---
+import { FolderOpen, Globe2, Laptop, MapPin } from "lucide-react";
+
+interface Props {
+  portraitSrc?: string;
+}
+
+const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
+---
+
+<div class="mobile-about-panel md:hidden h-auto flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10" style="font-family: var(--sans);">
+  <h2 class="italic leading-[1.05] mb-2 font-light" style="font-family: var(--serif); font-size: var(--fs-display);">
+    I turn paid traffic into profit.
+  </h2>
+
+  <!-- Sub-grid 1: Profile and Available status -->
+  <div class="grid grid-cols-2 gap-3">
+    <div class="bg-card border border-border/60 rounded-xl p-2.5 pb-6 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)] -rotate-[2deg]">
+      <div class="overflow-hidden rounded-lg w-full">
+        <img src={portraitSrc} alt="Phuc Loc" class="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
+      </div>
+      <p class="mt-2.5 text-micro text-muted-foreground tracking-widest text-center">Phuc Loc · Saigon</p>
+    </div>
+
+    <div class="bg-[#4ECCA3] border border-white/40 text-[#0a2e22] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
+      <div>
+        <div class="flex items-center gap-1.5 mb-2.5">
+          <span class="relative flex h-1.5 w-1.5 shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
+            <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0a2e22]"></span>
+          </span>
+          <span class="text-micro uppercase tracking-widest opacity-60" style="font-family: var(--mono);">available now</span>
+        </div>
+        <div class="h-px bg-[#0a2e22]/20 mb-2.5"></div>
+        <p class="italic text-lg leading-tight mb-2.5" style="font-family: var(--serif);">Performance Marketer</p>
+      </div>
+      <div class="space-y-1">
+        <div class="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-micro">Ho Chi Minh City</span></div>
+        <div class="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-micro">Remote Vietnam</span></div>
+        <div class="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-micro">Global remote</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-grid 2: Music widget and Star rate -->
+  <div class="grid grid-cols-2 gap-3">
+    <!-- Spotify -->
+    <div class="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2" id="mobile-spotify">
+      <div class="flex items-center gap-2">
+        <div class="shrink-0 w-8 h-8 rounded-md overflow-hidden">
+          <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" class="w-full h-full object-cover pointer-events-none" />
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-micro font-semibold text-background truncate">Photograph</p>
+          <p class="text-micro text-background/50 truncate">Ed Sheeran</p>
+        </div>
+      </div>
+      
+      <!-- Audio wave -->
+      <span class="inline-flex items-end gap-[2px] h-3">
+        {[0.25, 0.69, 0.62, 0.41, 0.59].map((height, i) => (
+          <span 
+            class={`w-[2px] rounded-full bg-white/70 origin-bottom sound-bar sound-bar-${i}`} 
+            style={`height: 12px; transform: scaleY(${height});`} 
+          />
+        ))}
+      </span>
+
+      <!-- Slider -->
+      <div class="relative h-[3px] bg-white/20 rounded-full overflow-hidden">
+        <div class="absolute left-0 top-0 h-full bg-white/80 rounded-full" id="spotify-progress" style="width: 48%;"></div>
+      </div>
+      <div class="flex justify-between" style="font-family: var(--mono);">
+        <span class="text-micro text-background/30" id="spotify-time">2:05</span>
+        <span class="text-micro text-background/30">4:19</span>
+      </div>
+      <div class="flex items-center justify-center gap-3">
+        <button aria-label="Previous track" class="text-background/40 text-xs">⏮</button>
+        <button 
+          id="spotify-play-btn"
+          aria-label="Play" 
+          class="w-7 h-7 rounded-full bg-background flex items-center justify-center text-foreground text-xs"
+        >
+          ▶
+        </button>
+        <button aria-label="Next track" class="text-background/40 text-xs">⏭</button>
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div class="-rotate-[1deg]">
+      <div class="relative">
+        <div class="bg-card border border-border/60 rounded-xl px-4 py-4 shadow-card w-full">
+          <p class="text-micro uppercase tracking-widest text-muted-foreground mb-3">rate this portfolio</p>
+          <div class="flex gap-0.5" id="mobile-rating">
+            {[1, 2, 3, 4, 5].map((starIdx) => (
+              <button 
+                data-index={starIdx}
+                class="star-btn leading-none transition-transform duration-100 hover:scale-125 cursor-pointer" 
+                aria-label={`Rate ${starIdx} stars`}
+              >
+                <span style="display: inline-block; transform: none;">
+                  <span class="relative inline-block w-6 h-6 text-neutral-300 transition-colors duration-200" style="color: #d1d5db;">
+                    <svg viewBox="0 0 24 24" class="absolute inset-0 w-full h-full fill-current">
+                      <path d="M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5ZM12 4.75L14 9.33L18.7 9.75L15 13.07L16.18 17.75L12 15.16L7.82 17.75L9 13.07L5.3 9.75L10 9.33L12 4.75Z"></path>
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-grid 3: Details -->
+  <div class="grid grid-cols-2 gap-3">
+    <div class="bg-[#FF6B47] text-white rounded-xl px-4 py-4 -rotate-[1deg]">
+      <p class="text-micro leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
+    </div>
+    <div class="bg-accent text-accent-foreground rounded-xl px-4 py-4 rotate-[2deg]">
+      <p class="text-micro uppercase tracking-widest text-accent-foreground/60 mb-1.5">currently building</p>
+      <p class="text-micro leading-snug font-medium">This demo site.<br /><span class="text-accent-foreground/70 font-normal">(meta, right?)</span></p>
+    </div>
+  </div>
+
+  <!-- Interests -->
+  <div class="bg-card border border-border/60 rounded-xl px-4 py-3.5 shadow-card -rotate-[0.5deg]">
+    <p class="text-micro uppercase tracking-widest text-muted-foreground mb-2.5">interests</p>
+    <div class="flex flex-wrap gap-1.5">
+      {["CrossFit", "Music", "Reading", "Nature walks", "New restaurants", "Japanese learner", "AI-first"].map((interest) => (
+        <span class="px-2.5 py-1 rounded-full border border-border text-micro text-foreground/70">{interest}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Writings Folder -->
+  <div class="flex flex-col items-center mt-4">
+    <a href="/blog" class="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-xs">
+      <FolderOpen size={15} strokeWidth={1.8} aria-hidden="true" /> View My Writings
+    </a>
+  </div>
+</div>
+
+<script>
+  function initMobilePanel() {
+    let isPlaying = false;
+    let progressSeconds = 125;
+    const totalSeconds = 259;
+    let intervalId: any = null;
+
+    const playBtn = document.getElementById('spotify-play-btn');
+    const progressEl = document.getElementById('spotify-progress');
+    const timeEl = document.getElementById('spotify-time');
+    const soundBars = document.querySelectorAll('.sound-bar');
+
+    const formatTime = (secs: number) => {
+      const m = Math.floor(secs / 60);
+      const s = Math.floor(secs % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    };
+
+    const updatePlayState = () => {
+      if (playBtn) playBtn.textContent = isPlaying ? '||' : '▶';
+      
+      soundBars.forEach((bar, idx) => {
+        if (isPlaying) {
+          bar.classList.add(`sound-animate-${idx}`);
+          if (!document.getElementById('soundwave-style')) {
+            const style = document.createElement('style');
+            style.id = 'soundwave-style';
+            style.innerHTML = `
+              @keyframes soundwave-bounce {
+                0%, 100% { transform: scaleY(0.25); }
+                50% { transform: scaleY(1.15); }
+              }
+              .sound-animate-0 { animation: soundwave-bounce 0.9s ease-in-out infinite alternate; }
+              .sound-animate-1 { animation: soundwave-bounce 0.7s ease-in-out infinite alternate 0.15s; }
+              .sound-animate-2 { animation: soundwave-bounce 1.1s ease-in-out infinite alternate 0.3s; }
+              .sound-animate-3 { animation: soundwave-bounce 0.6s ease-in-out infinite alternate 0.05s; }
+              .sound-animate-4 { animation: soundwave-bounce 0.8s ease-in-out infinite alternate 0.2s; }
+            `;
+            document.head.appendChild(style);
+          }
+        } else {
+          bar.className = `w-[2px] rounded-full bg-white/70 origin-bottom sound-bar sound-bar-${idx}`;
+        }
+      });
+
+      if (isPlaying) {
+        if (!intervalId) {
+          intervalId = setInterval(() => {
+            progressSeconds++;
+            if (progressSeconds >= totalSeconds) {
+              isPlaying = false;
+              progressSeconds = 0;
+              clearInterval(intervalId);
+              intervalId = null;
+              updatePlayState();
+            }
+            if (progressEl) progressEl.style.width = `${(progressSeconds / totalSeconds) * 100}%`;
+            if (timeEl) timeEl.textContent = formatTime(progressSeconds);
+          }, 1000);
+        }
+      } else {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      }
+    };
+
+    playBtn?.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      updatePlayState();
+    });
+
+    // Star Rating
+    const stars = document.querySelectorAll('#mobile-rating .star-btn');
+    stars.forEach((star) => {
+      star.addEventListener('click', () => {
+        const selectedIndex = parseInt(star.getAttribute('data-index') || '0');
+        stars.forEach((s) => {
+          const idx = parseInt(s.getAttribute('data-index') || '0');
+          const iconContainer = s.querySelector('.relative.inline-block');
+          if (iconContainer) {
+            if (idx <= selectedIndex) {
+              iconContainer.classList.remove('text-neutral-300');
+              (iconContainer as HTMLElement).style.color = '#FABE15';
+              iconContainer.querySelector('svg')?.setAttribute('style', 'fill: currentColor;');
+              iconContainer.querySelector('path')?.setAttribute('d', 'M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5Z');
+            } else {
+              iconContainer.classList.add('text-neutral-300');
+              (iconContainer as HTMLElement).style.color = '#d1d5db';
+              iconContainer.querySelector('svg')?.removeAttribute('style');
+              iconContainer.querySelector('path')?.setAttribute('d', 'M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5ZM12 4.75L14 9.33L18.7 9.75L15 13.07L16.18 17.75L12 15.16L7.82 17.75L9 13.07L5.3 9.75L10 9.33L12 4.75Z');
+            }
+          }
+        });
+      });
+    });
+  }
+
+  // Run on first load and after page transitions
+  initMobilePanel();
+  document.addEventListener('astro:page-load', initMobilePanel);
+</script>

@@ -1,0 +1,34 @@
+{
+  "slug": "phu-yen",
+  "order": 2,
+  "location": "Phú Yên",
+  "headline": "Golden hour on the coast.",
+  "subheadline": "Blue sky, stone cliffs, winding roads.",
+  "description": "Golden hour on Gành Đá Đĩa, winding roads along the coast, and the bluest sky.",
+  "images": [
+    {
+      "src": "/assets/photos/img-portfolio/photo-5.webp",
+      "alt": "Phú Yên --- photo 1",
+      "width": 1280,
+      "height": 1920
+    },
+    {
+      "src": "/assets/photos/img-portfolio/photo-13.webp",
+      "alt": "Phú Yên --- photo 2",
+      "width": 1280,
+      "height": 1920
+    },
+    {
+      "src": "/assets/photos/img-portfolio/photo-11.webp",
+      "alt": "Phú Yên --- photo 3",
+      "width": 1920,
+      "height": 1280
+    },
+    {
+      "src": "/assets/photos/img-portfolio/photo-12.webp",
+      "alt": "Phú Yên --- photo 4",
+      "width": 1920,
+      "height": 1280
+    }
+  ]
+}

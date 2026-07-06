@@ -1,0 +1,67 @@
+# Phuc Loc Nguyen - Lộc Digital
+
+> Phuc Loc Nguyen is a Senior Performance Marketing Executive based in Ho Chi Minh City, Vietnam. He scales multi-channel paid acquisition (Meta, Google, TikTok Ads), increases TikTok Shop GMV, optimizes organic SEO, and designs AI-powered automation funnels that drive measurable business revenue.
+
+## Contact & Profiles
+- **Website:** https://loc.digital
+- **Email:** hi@loc.digital / mailto:hi@loc.digital
+- **LinkedIn:** https://www.linkedin.com/in/phucloc
+- **Instagram:** https://www.instagram.com/henrygoodkid
+- **Pexels:** https://www.pexels.com/@henrygoodkid
+
+---
+
+## Navigation & Core Pages
+- **Home (`/`):** Summary of experience, selected work history, photography archive, and recent blog posts.
+- **About (`/about`):** Loc's biography, selected client work, tools, and formal credentials.
+- **Services (`/service`):** Detailed breakdown of marketing offerings, billing plans, and retainer options.
+- **Work (`/work`):** Case studies and selected client growth projects.
+- **Blog (`/blog`):** Reflections and tutorials on performance marketing, technical SEO, and development.
+- **Gear (`/gear`):** Physical and software setup used daily.
+
+---
+
+## Services & Offerings
+- **Performance Ads & Attribution (4.2x Avg ROAS):** Setup Meta/Google/TikTok campaigns, server-side Conversion API (CAPI), GTM server container setup, GA4 audit, and custom dashboard reporting.
+- **Organic Seeding & Advocacy (85% Trust Index):** Dialogue engineering, Reddit and forum outreach, community monitoring, and KOC booking to build organic product recommendation.
+- **Brand Marketing & Positioning:** Market positioning audits, core value propositions, styleguides, and message mapping.
+- **E-Commerce Growth (+28% Conversion):** Conversion rate optimization (CRO) on Shopify, Klaviyo email retention flows, catalog ad feed optimization.
+- **Astro & React Web Engineering (100/100 Speed):** Blazing-fast static site builds on Astro and React, technical SEO schema structure, headless CMS setups.
+
+---
+
+## Toolset & Core Skills
+- **Paid Acquisition:** Meta Ads, Google Ads (Search, PMax), TikTok Ads (Spark Ads, GMV Max).
+- **Analytics & Automation:** Google Analytics (GA4), Google Tag Manager (GTM), n8n (AI-powered automation), Looker Studio.
+- **SEO & Product:** Ahrefs, SEMrush, Technical SEO Audits, Content SEO.
+- **Design & Coding:** Figma, Astro Framework, React, TypeScript.
+
+---
+
+## Key Projects & Case Studies
+
+### 1. PlayAh! Revenue & TikTok Shop Scaling (2024-Present)
+- **Role:** Performance Senior Executive
+- **Outcomes:** Scaled website revenue 10x in 2 months. Grew Meta Ads 2x MoM with ROAS > 5. Built TikTok Shop from scratch to 30x+ GMV growth within 2 months (ROAS > 10, ranked #1 in category).
+
+### 2. WorkFlow Space: Branch Launch Performance (2024-Present)
+- **Role:** Digital Marketing Executive
+- **Outcomes:** Managed VND 300M paid budget, generating 2,000+ leads and 4M+ impressions. Rebranded visual identity and built custom landing pages with 400+ leads/month at a 35-40% conversion rate.
+
+### 3. POPS Worldwide: SEO & Organic Growth (2022-2023)
+- **Role:** Search Engine Optimization Executive
+- **Outcomes:** Scaled POPS Vietnam organic traffic to 2.5M monthly users (10x user growth). Launched POPS Kids Learn, acquiring 10,000+ active users in 4 months.
+
+### 4. TOMATO Children's Home: Enrollment Growth (2023-2024)
+- **Role:** Digital Marketing Executive
+- **Outcomes:** Scaled monthly student enrollment by 3x and reduced cost-per-lead (CPL) by 60%. Managed 40,000+ contact email flows with > 60% open rates.
+
+### 5. Education Communities (2021-Present)
+- **Role:** Founding Member
+- **Outcomes:** Co-founded and scaled "Dai Hoc Dung Hoc Dai" and "Di Lam Dung Di Lam" communities to 3M and 1M members respectively within 12 months.
+
+---
+
+## Education & Credentials
+- **FPT University:** Bachelor of Digital Marketing, Graduated with Honors (2019-2023), GPA 9.4/10.
+- **Google:** Professional Digital Marketing Specialization Certification (Issued 2022).
