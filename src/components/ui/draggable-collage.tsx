@@ -256,12 +256,12 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           --input: 0 0% 88%;
           --ring: 222 89% 55%;
           --radius: 0.5rem;
-          --type-micro: 0.8rem;
-          --type-caption: 0.8rem;
+          --type-micro: 14px;
+          --type-caption: 14px;
           --type-ui: 0.875rem;
-          --type-body: 0.8rem;
-          --type-subhead: clamp(1.375rem, 2.2vw, 1.625rem);
-          --type-data: 1.875rem;
+          --type-body: 14px;
+          --type-subhead: 14px;
+          --type-data: 1.375rem;
           --type-display-lg: clamp(3rem, 7vw, 5.75rem);
           --type-display-xl: clamp(3rem, 6.5vw, 6rem);
         }
@@ -279,6 +279,14 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           font-weight: 400;
           letter-spacing: 0;
           text-transform: none;
+        }
+
+        .collage-card-text {
+          font-family: var(--sans);
+          font-size: 14px;
+          line-height: 1.4;
+          font-weight: 400;
+          letter-spacing: 0;
         }
 
         @media (min-width: 1800px) {
@@ -327,7 +335,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             <div className="overflow-hidden rounded-lg w-full">
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
-            <p className="mt-2.5 text-[var(--type-micro)] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
+            <p className="mt-2.5 collage-card-text text-muted-foreground text-center">Phuc Loc · Saigon</p>
           </div>
 
           <div className="bg-[#4ECCA3] border border-white/40 text-[#0a2e22] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
@@ -340,12 +348,12 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
                 <span className="collage-card-label opacity-60">Available Now</span>
               </div>
               <div className="h-px bg-[#0a2e22]/20 mb-2.5"></div>
-              <p className="italic text-[var(--type-subhead)] leading-tight mb-2.5" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
+              <p className="collage-card-text mb-2.5">Performance Marketer</p>
             </div>
             <div className="space-y-1" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Remote Vietnam</span></div>
-              <div className="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Global remote</span></div>
+              <div className="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Remote Vietnam</span></div>
+              <div className="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Global remote</span></div>
             </div>
           </div>
         </div>
@@ -436,11 +444,11 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
         {/* Sub-grid 3: Details */}
         <div className="grid grid-cols-2 gap-3" style={{ fontFamily: 'var(--sans)' }}>
           <div className="bg-[#FF6B47] text-white rounded-xl px-4 py-4 -rotate-[1deg]">
-            <p className="text-[var(--type-micro)] leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
+            <p className="collage-card-text">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
           </div>
           <div className="bg-accent text-accent-foreground rounded-xl px-4 py-4 rotate-[2deg]">
             <p className="collage-card-label text-accent-foreground/60 mb-1.5">Currently Building</p>
-            <p className="text-[var(--type-micro)] leading-snug font-normal">This demo site.<br /><span className="text-accent-foreground/70">(meta, right?)</span></p>
+            <p className="collage-card-text">This demo site.<br /><span className="text-accent-foreground/70">(meta, right?)</span></p>
           </div>
         </div>
 
@@ -495,7 +503,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             <div className="overflow-hidden rounded-lg w-[160px]">
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
-            <p className="mt-3 text-[var(--type-caption)] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
+            <p className="mt-3 collage-card-text text-muted-foreground text-center">Phuc Loc · Saigon</p>
           </div>
         </DraggableCard>
 
@@ -516,14 +524,14 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#0a2e22]"></span>
               </span>
-                <span className="collage-card-label opacity-60">Available Now</span>
+              <span className="collage-card-label opacity-60">Available Now</span>
             </div>
             <div className="h-px bg-[#0a2e22]/20 mb-3"></div>
-            <p className="italic text-[var(--type-subhead)] leading-tight mb-3" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
+            <p className="collage-card-text mb-3">Performance Marketer</p>
             <div className="space-y-1.5" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-2"><Laptop className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Remote Vietnam</span></div>
-              <div className="flex items-center gap-2"><Globe2 className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Global remote</span></div>
+              <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-2"><Laptop className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Remote Vietnam</span></div>
+              <div className="flex items-center gap-2"><Globe2 className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Global remote</span></div>
             </div>
           </div>
         </DraggableCard>
