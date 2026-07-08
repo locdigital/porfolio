@@ -212,7 +212,7 @@ const creativeWorkSchema = {
 
 <style>
   .project-detail-page {
-    padding: calc(var(--hdr-h) + 56px) 0 0;
+    padding: calc(var(--hdr-h) + 48px) 0 0;
   }
 
   /* ── Back link ── */
@@ -224,7 +224,7 @@ const creativeWorkSchema = {
     font-family: var(--mono);
     color: var(--muted);
     text-decoration: none;
-    margin-bottom: 56px;
+    margin-bottom: 44px;
     transition: color 0.25s ease, gap 0.25s ease;
   }
 
@@ -235,7 +235,7 @@ const creativeWorkSchema = {
 
   /* ── Detail header ── */
   .detail-header {
-    margin-bottom: 64px;
+    margin-bottom: clamp(44px, 6vw, 72px);
   }
 
   .detail-header-top {
@@ -261,20 +261,21 @@ const creativeWorkSchema = {
 
   .detail-title {
     font-family: var(--serif);
-    font-size: var(--fs-display);
+    font-size: var(--type-display-lg);
     font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    line-height: 1.04;
+    letter-spacing: 0;
     color: var(--text);
-    margin-bottom: 40px;
-    max-width: 790px;
+    margin-bottom: 36px;
+    max-width: 920px;
+    text-wrap: balance;
   }
 
   /* ── Meta row ── */
   .detail-meta {
     display: flex;
-    gap: 48px;
-    padding-top: 28px;
+    gap: clamp(28px, 5vw, 64px);
+    padding-top: 24px;
     border-top: 1px solid var(--divider);
   }
 
@@ -299,14 +300,14 @@ const creativeWorkSchema = {
 
   /* ── Hero image ── */
   .detail-hero {
-    margin-bottom: 80px;
+    margin-bottom: clamp(56px, 7vw, 88px);
   }
 
   .detail-hero-img {
     position: relative;
     aspect-ratio: 2 / 1;
     background: transparent;
-    border-radius: 16px;
+    border-radius: var(--rounded-md);
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.06);
   }
@@ -336,29 +337,35 @@ const creativeWorkSchema = {
   /* ── Content grid ── */
   .detail-content {
     display: grid;
-    grid-template-columns: 1fr 280px;
-    gap: 80px;
+    grid-template-columns: minmax(0, 0.74fr) minmax(240px, 0.26fr);
+    gap: clamp(52px, 7vw, 96px);
     margin-bottom: 0;
-    padding-bottom: 100px;
+    padding-bottom: clamp(72px, 8vw, 108px);
     border-bottom: 1px solid var(--divider);
+  }
+
+  .detail-body {
+    max-width: 780px;
   }
 
   /* ── Body text ── */
   .detail-summary {
     font-family: var(--serif);
-    font-size: var(--type-subhead);
+    font-size: var(--type-card-title);
     font-weight: 400;
-    line-height: 1.55;
+    line-height: 1.42;
     color: var(--text);
-    margin-bottom: 36px;
-    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+    letter-spacing: 0;
+    text-wrap: pretty;
   }
 
   .detail-para {
     font-size: var(--type-body);
-    line-height: 1.78;
-    color: var(--muted);
-    margin-bottom: 20px;
+    line-height: var(--leading-prose);
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
+    margin-bottom: 18px;
+    max-width: 72ch;
   }
 
   .detail-link {
@@ -387,6 +394,8 @@ const creativeWorkSchema = {
     flex-direction: column;
     gap: 32px;
     padding-top: 8px;
+    position: sticky;
+    top: calc(var(--hdr-h) + 32px);
   }
 
   .sidebar-block {
@@ -405,26 +414,18 @@ const creativeWorkSchema = {
 
   .sidebar-tags {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .sidebar-tag {
-    font-size: var(--type-ui);
-    color: var(--text);
-    list-style: none;
-    display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
   }
 
-  .sidebar-tag::before {
-    content: "";
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--muted);
-    flex-shrink: 0;
+  .sidebar-tag {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--text);
+    list-style: none;
+    border: 1px solid var(--divider);
+    border-radius: 3px;
+    padding: 4px 8px;
   }
 
   .sidebar-value {
@@ -456,6 +457,7 @@ const creativeWorkSchema = {
   .project-nav-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--divider);
   }
 
   .pnav-item {
@@ -515,10 +517,10 @@ const creativeWorkSchema = {
     }
 
     .detail-sidebar {
+      position: static;
       flex-direction: row;
       flex-wrap: wrap;
       gap: 24px;
-      padding-top: 0;
       border-top: 1px solid var(--divider);
       padding-top: 32px;
     }

@@ -1,90 +1,36 @@
 ---
-import BlurFade from "./BlurFade.astro";
+import BlurText from "./BlurText.astro";
+
+const aboutHeadline = "Performance marketer building revenue systems across media, SEO, and automation.";
 ---
 
-<div class="w-full">
-  <!-- Kicker -->
-  <div class="page-kicker-wrapper">
-    <span class="page-kicker-num">
-      00
-    </span>
-    <span class="page-kicker-text">
-      Introduction
-    </span>
-  </div>
-
-  <!-- Main headline with BlurFade -->
-  <BlurFade delay={0.15}>
-    <h1>
-      <span class="hero-headline-line">
-        Digital marketer who <em>scales brands</em>
-      </span>
-      <span class="hero-headline-line">
-        with data & <em>code.</em>
-      </span>
-    </h1>
-  </BlurFade>
-
-  <!-- Bio -->
-  <div class="about-hero-bio">
-    <p class="gear-intro">
-      Hi, I'm Loc 👋 I'm a Performance-driven Digital Marketer based in Ho
-      Chi Minh City, Vietnam. My passion is in creating data-driven
-      campaigns and useful solutions to marketing problems that don't have
-      obvious answers.
+<div class="about-hero-shell">
+  <p class="about-kicker">About Loc</p>
+  <h1 class="sr-only">{aboutHeadline}</h1>
+  <BlurText
+    text={aboutHeadline}
+    animateBy="words"
+    direction="top"
+    delay={70}
+    stepDuration={0.42}
+    className="about-hero-title"
+  />
+  <div class="about-hero-grid">
+    <p class="about-hero-copy">
+      Hi, I'm Loc, a Senior Performance Marketing Executive based in Ho Chi
+      Minh City. I scale multi-channel paid media across Meta, Google, and
+      TikTok, connect creative to conversion, and build AI-powered systems
+      that turn marketing spend into measurable growth.
     </p>
+    <div class="about-hero-aside" aria-label="Current focus">
+      <span>Ho Chi Minh City</span>
+      <strong>Performance Senior Executive</strong>
+    </div>
   </div>
-
-  <!-- Bottom row: tagline + CTA -->
-  <div class="flex items-center justify-between gap-6 flex-wrap">
-    <div>
-      <div
-        style="font-family: var(--mono); font-size: var(--type-caption); color: var(--muted); letter-spacing: 0.05em; margin-bottom: 4px;"
-      >
-        Based in Ho Chi Minh City
-      </div>
-      <div
-        style="font-family: var(--mono); font-size: var(--type-caption); color: var(--text); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;"
-      >
-        Performance Senior Executive
-      </div>
-    </div>
-
-    <div class="flex gap-4 items-center">
-      <a
-        href="mailto:hi@loc.digital"
-        class="about-cta-link"
-      >
-        Email me
-      </a>
-      <a
-        href="https://www.linkedin.com/in/phucloc"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="about-cta-link"
-      >
-        LinkedIn
-      </a>
-    </div>
+  <div class="about-hero-actions" aria-label="Contact links">
+    <a href="mailto:hi@loc.digital">Email me</a>
+    <a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer">
+      LinkedIn
+    </a>
   </div>
 </div>
-
-<style>
-  .about-hero-bio {
-    margin-bottom: 32px;
-  }
-
-  .about-cta-link {
-    font-size: var(--type-ui);
-    font-weight: 500;
-    color: var(--text);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-color: var(--divider);
-    transition: all 0.25s ease;
-  }
-  .about-cta-link:hover {
-    color: var(--accent);
-    text-decoration-color: var(--accent);
-  }
-</style>

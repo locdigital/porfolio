@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getGear } from "../lib/cms";
+import BlurText from "../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 
 const fallbackGearSections = [
@@ -143,6 +144,7 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 const safeGearHeadline = gearHeadline
   .replace(/<em[^>]*>/gi, "<em>")
   .replace(/<(?!\/?em>)[^>]*>/gi, "");
+const gearHeadlineText = safeGearHeadline.replace(/<\/?em>/g, "");
 ---
 
 <Layout
@@ -179,7 +181,15 @@ const safeGearHeadline = gearHeadline
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
-        <h1 set:html={safeGearHeadline} />
+        <h1 class="sr-only" set:html={safeGearHeadline} />
+        <BlurText
+          text={gearHeadlineText}
+          animateBy="words"
+          direction="top"
+          delay={70}
+          stepDuration={0.42}
+          className="gear-hero-title"
+        />
         <p class="gear-intro">{gearDescription}</p>
       </section>
 
@@ -214,34 +224,18 @@ const safeGearHeadline = gearHeadline
 
           <div class="gear-grid">
             {section.items.map((item) => (
-              item.url ? (
-                <a id={item.slug} class={`gear-card gear-card-${item.slug}`} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`${item.name}: ${item.headline}`}>
-                  <div class="gear-card-visual">
-                    {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
+              <article id={item.slug} class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
+                <div class="gear-card-visual">
+                  {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
+                </div>
+                <div class="gear-card-copy">
+                  <div class="gear-card-title">
+                    <h3>{item.name}</h3>
                   </div>
-                  <div class="gear-card-copy">
-                    <div class="gear-card-title">
-                      <h3>{item.name}</h3>
-                      <span aria-hidden="true">↗</span>
-                    </div>
-                    <p class="gear-role">{item.headline}</p>
-                    <p class="gear-note">{item.description}</p>
-                  </div>
-                </a>
-              ) : (
-                <article id={item.slug} class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
-                  <div class="gear-card-visual">
-                    {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
-                  </div>
-                  <div class="gear-card-copy">
-                    <div class="gear-card-title">
-                      <h3>{item.name}</h3>
-                    </div>
-                    <p class="gear-role">{item.headline}</p>
-                    <p class="gear-note">{item.description}</p>
-                  </div>
-                </article>
-              )
+                  <p class="gear-role">{item.headline}</p>
+                  <p class="gear-note">{item.description}</p>
+                </div>
+              </article>
             ))}
           </div>
         </section>
@@ -396,17 +390,6 @@ const safeGearHeadline = gearHeadline
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.32);
     color: inherit;
-    transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out);
-  }
-
-  .gear-card:hover,
-  .gear-card:focus-visible {
-    border-color: rgba(0, 117, 222, 0.42);
-    background: rgba(255, 255, 255, 0.6);
-  }
-
-  .gear-card:hover h3 {
-    color: var(--accent);
   }
 
   .gear-card-visual {
@@ -464,7 +447,7 @@ const safeGearHeadline = gearHeadline
 
   .gear-card-title h3 {
     font-family: var(--serif);
-    font-size: var(--type-card-title);
+    font-size: calc(var(--type-card-title) * 0.8);
     line-height: 1.05;
     font-weight: 400;
     color: var(--text);
@@ -483,14 +466,14 @@ const safeGearHeadline = gearHeadline
 
   .gear-role {
     font-family: var(--mono);
-    font-size: var(--type-caption);
+    font-size: calc(var(--type-caption) * 0.8);
     color: #005fb8;
     margin-bottom: 14px;
   }
 
   .gear-note {
     color: color-mix(in srgb, var(--text) 72%, var(--muted));
-    font-size: var(--type-body);
+    font-size: calc(var(--type-body) * 0.8);
     line-height: 1.65;
     text-wrap: pretty;
   }

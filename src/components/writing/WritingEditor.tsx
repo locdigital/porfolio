@@ -1,9 +1,19 @@
 "use client";
 import "@blocknote/mantine/style.css";
+import "../../styles/writing-editor.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote } from "@blocknote/react";
 import type { Block, PartialBlock } from "@blocknote/core";
+import { defaultStyleSpecs } from "@blocknote/core";
 import { useEffect, useRef, memo } from "react";
+import { blocksToStyledHtml } from "../../lib/writing/blocknote-to-html";
+import { fontSizeStyle } from "../../lib/writing/fontSizeStyle";
+
+// Extend default style schema with our custom fontSize style
+const customStyleSpecs = {
+  ...defaultStyleSpecs,
+  fontSize: fontSizeStyle,
+};
 
 interface WritingEditorProps {
   initialContent?: PartialBlock[];
@@ -17,6 +27,7 @@ const WritingEditor = memo(function WritingEditor({
   editable = true,
 }: WritingEditorProps) {
   const editor = useCreateBlockNote({
+    styleSchema: customStyleSpecs,
     initialContent:
       initialContent && initialContent.length > 0
         ? initialContent
@@ -43,11 +54,11 @@ const WritingEditor = memo(function WritingEditor({
 
     const handleChange = () => {
       const blocks = editor.document as Block[];
-      const html = editor.blocksToFullHTML(blocks);
+      // Custom serializer preserves colors, fontSize, font, alignment as inline styles
+      const html = blocksToStyledHtml(blocks as never);
       onChangeRef.current?.(blocks, html);
     };
 
-    // Subscribe to editor changes
     const unsubscribe = editor.onChange(handleChange);
     return () => {
       if (typeof unsubscribe === "function") unsubscribe();
@@ -60,7 +71,7 @@ const WritingEditor = memo(function WritingEditor({
       editable={editable}
       theme="light"
       style={{
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "var(--sans)",
         fontSize: "17px",
         lineHeight: "1.75",
       }}

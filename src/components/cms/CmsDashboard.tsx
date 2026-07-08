@@ -914,7 +914,7 @@ function RecentPostsTable({ posts, onOpenPost, onOpenWriting }: {
                     </div>
                   </td>
                   <td>{statusBadge(post)}</td>
-                  <td style={{ fontSize: 12, fontFamily: "var(--mono)", color: "var(--muted)" }}>
+                  <td style={{ fontSize: 12, fontFamily: "var(--sans)", color: "var(--muted)" }}>
                     {post.publishedAt || "None"}
                   </td>
                   <td style={{ fontSize: 12, color: "var(--muted)" }}>
@@ -1560,7 +1560,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
             );
           }
           return (
-            <div className="cms-content font-sans">
+            <div className="cms-content cms-content-writing font-sans">
               <WritingDashboard initialPosts={jsonPosts} />
             </div>
           );
@@ -1973,7 +1973,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   /* ------ Editor mode returns ---------------------------------------------------------------------------------------------------------------------------------- */
   if (routeInfo.mode === "new") {
     return (
-      <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'sans-serif' }}>
+      <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'var(--sans)' }}>
         <Loader2 className="cms-spin animate-spin" size={32} style={{ marginBottom: 12 }} />
         <div>Creating draft post...</div>
       </div>
@@ -1983,7 +1983,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   if (routeInfo.mode === "edit") {
     if (loadingPost) {
       return (
-        <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'sans-serif' }}>
+        <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'var(--sans)' }}>
           <Loader2 className="cms-spin animate-spin" size={32} style={{ marginBottom: 12 }} />
           <div>Loading editor...</div>
         </div>
@@ -1991,7 +1991,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     }
     if (loadError) {
       return (
-        <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'sans-serif', gap: 16 }}>
+        <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'var(--sans)', gap: 16 }}>
           <div style={{ color: 'red' }}>Error: {loadError}</div>
           <a href="/cms/writing" style={{ padding: '8px 16px', background: '#1a1a1a', color: 'white', borderRadius: 8, textDecoration: 'none' }}>Back to Writing</a>
         </div>

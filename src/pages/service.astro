@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getPhotoAsset } from "../lib/photo-assets";
-import AnimatedPageHeadline, { AnimatedPageDescription } from "../components/ui/animated-page-headline";
+import BlurText from "../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 import { ArrowRight } from "lucide-react";
 
@@ -11,6 +11,8 @@ const seedingImg = getPhotoAsset("/assets/photos/img-portfolio/photo-15.webp");
 const brandImg = getPhotoAsset("/assets/photos/img-portfolio/photo-3.webp");
 const ecommerceImg = getPhotoAsset("/assets/photos/img-portfolio/photo-19.webp");
 const webdevImg = getPhotoAsset("/assets/photos/img-portfolio/photo-20.webp");
+const automationImg = getPhotoAsset("/assets/photos/img-portfolio/photo-6.webp");
+const serviceHeadlineText = "Growth systems for acquisition, tracking, and fast websites.";
 
 const services = [
   {
@@ -121,6 +123,28 @@ const services = [
       { name: "Astro Static Builds", desc: "Creating static page assemblies that load in milliseconds and deliver perfect SEO crawls." },
       { name: "Dynamic React Modules", desc: "Building snappier components (collages, listings, query tabs) that run securely in browser frames." },
       { name: "Headless CMS Integration", desc: "Linking repositories with easy Markdown editors (Keystatic/Decap) for simple client-side updates." }
+    ]
+  },
+  {
+    id: "automation",
+    num: "06",
+    kicker: "GROWTH AUTOMATION",
+    title: "AI Funnels & Growth Automation",
+    metric: "95% Automation",
+    desc: "Streamline manual marketing loops and unlock inbound scale by deploying automated lead generation workflows, custom CRM syncs, and AI content engines.",
+    img: automationImg,
+    alt: "Growth Automation & AI Funnels Setup",
+    tags: ["Make.com", "Zapier", "AI Scripting", "CRM Flows", "SEO Auto"],
+    checklist: [
+      "Automated multi-channel lead routing (CRM & Slack)",
+      "AI-assisted content optimization & programmatic SEO",
+      "Custom database syncs and automated reports (API/SQL)",
+      "Interactive email sequence automation & drip campaigns"
+    ],
+    capabilities: [
+      { name: "Workflow Integration", desc: "Connecting ads, email tools, and internal CRMs via Make.com/Zapier to automate lead transfers instantly." },
+      { name: "Programmatic SEO & AI", desc: "Setting up AI pipelines to clean data, generate page variations, and auto-check formatting rules." },
+      { name: "Database & API Custom Syncs", desc: "Writing simple server-side hooks to pass lead data, sync sheets, and feed automation dashboards." }
     ]
   }
 ];
@@ -244,13 +268,18 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My Services</span>
         </div>
-        <AnimatedPageHeadline
-          client:load
-          headline="Growth systems for <em>acquisition</em>, tracking, and fast websites."
+        <h1 class="sr-only">Growth systems for acquisition, tracking, and fast websites.</h1>
+        <BlurText
+          text={serviceHeadlineText}
+          animateBy="words"
+          direction="top"
+          delay={70}
+          stepDuration={0.42}
+          className="gear-hero-title"
         />
-        <AnimatedPageDescription client:load className="gear-intro">
+        <p class="gear-intro">
           I help lean teams connect paid media, organic trust, analytics, SEO, and headless web builds into one measurable operating system.
-        </AnimatedPageDescription>
+        </p>
         <ul class="hero-proof-list" aria-label="Primary service outcomes">
           <li>Paid acquisition</li>
           <li>Server-side measurement</li>
@@ -799,6 +828,12 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     overflow: hidden;
   }
 
+  @media (min-width: 769px) {
+    .saas-card {
+      min-height: 590px;
+    }
+  }
+
   .saas-card:hover {
     background: rgba(255, 255, 255, 0.58);
   }
@@ -842,7 +877,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     line-height: 1.6;
     color: var(--muted);
     margin-bottom: 28px;
-    flex-grow: 1;
   }
 
   .card-checklist-header {
@@ -880,11 +914,14 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .card-tags {
+    margin-top: auto;
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
     border-top: 1px solid var(--divider);
     padding-top: 20px;
+    min-height: 80px;
+    align-content: flex-start;
   }
 
   .card-tag {

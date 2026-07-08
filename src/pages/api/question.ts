@@ -79,7 +79,7 @@ async function buildPortfolioContext() {
       "Name: Nguyen Phuc Loc / Phuc Loc Nguyen / Loc.",
       "Location: Ho Chi Minh City, Vietnam.",
       "Positioning: Senior Performance Marketing Executive focused on paid media, TikTok Shop GMV, SEO, automation, analytics, and revenue systems.",
-      "Contact: email hi@loc.digital. LinkedIn: https://www.linkedin.com/in/phucloc. Resume: https://phucloc.digital/resume.",
+      "Contact: email hi@loc.digital. LinkedIn: https://www.linkedin.com/in/phucloc. Resume: https://loc.digital/resume.pdf.",
       "Education: FPT University, Bachelor of Digital Marketing, graduated with Honors, GPA 9.4/10. Google Digital Marketing Specialization issued 2022.",
       "Core tools: Meta Ads, Google Ads, TikTok Ads, TikTok Shop, Google Analytics/GA4, GTM, Looker Studio, Ahrefs, SEMrush, Figma, n8n, email automation.",
       "",

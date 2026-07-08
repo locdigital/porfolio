@@ -78,7 +78,6 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
     (updates: Partial<Post>) => {
       setPost((prev) => {
         const next = { ...prev, ...updates };
-        // Save local backup
         localStorage.setItem(localKey, JSON.stringify({ ...next, _localAt: Date.now() }));
         setSaveStatus("unsaved");
         autoSave(updates);
@@ -142,9 +141,7 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
   const handleConfirmPublish = useCallback(async () => {
     setPublishLoading(true);
     try {
-      // Save current state first
       await patchPost(post);
-      // Publish
       const res = await fetch(`/api/writing/posts/${initialPost.id}/publish`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -234,7 +231,6 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
           </div>
         </main>
 
-        {/* SEO Sidebar */}
         <SeoSidebar post={post} onUpdate={updatePost} />
       </div>
 

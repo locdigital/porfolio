@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
-import BlurText from "../../components/ui/BlurText";
+import BlurText from "../../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const sortedProjects = await getProjects();
@@ -45,7 +45,6 @@ const workHeadlineText = "Selected work & case studies";
         </div>
         <h1 class="sr-only" set:html={workHeadline} />
         <BlurText
-          client:load
           text={workHeadlineText}
           animateBy="words"
           direction="top"

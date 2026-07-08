@@ -1,12 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getWritingPosts } from "../../lib/writing";
+import BlurText from "../../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 
 const posts = await getWritingPosts();
 const blogTitle = "Writing | Lộc Digital";
 const blogDescription = "Essays and notes on digital marketing, SEO, code, creative systems, and life.";
 const fallbackPreviewImage = "/og-image.jpg";
+const blogHeadlineText = "Notes on marketing code & growth.";
 
 function previewImageFor(image?: string) {
   if (!image) return fallbackPreviewImage;
@@ -39,20 +41,30 @@ function previewImageFor(image?: string) {
     },
   ]}
 >
-  <main class="blog-page">
-    <div class="blog-wrap">
+  <main class="gear-page blog-page">
+    <div class="gear-container blog-wrap">
       <!-- PAGE HERO -->
       <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="Writing">
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">Writing</span>
         </div>
-        <h1>
-          Notes on <em>marketing</em><br />
-          code &amp; <em>growth.</em>
-        </h1>
-        <p class="gear-intro">
-          A collection of thoughts, tutorials, and reflections on marketing, code, and life.
-        </p>
+        <div class="blog-hero-grid">
+          <h1 class="sr-only">
+            Notes on <em>marketing</em><br />
+            code &amp; <em>growth.</em>
+          </h1>
+          <BlurText
+            text={blogHeadlineText}
+            animateBy="words"
+            direction="top"
+            delay={70}
+            stepDuration={0.42}
+            className="gear-hero-title"
+          />
+          <p class="gear-intro">
+            A collection of thoughts, tutorials, and reflections on marketing, code, and life.
+          </p>
+        </div>
       </section>
 
       {posts.length > 0 ? (
@@ -119,7 +131,7 @@ function previewImageFor(image?: string) {
 
 <style>
   .blog-page {
-    padding: calc(var(--hdr-h) + 56px) 0 112px;
+    padding: calc(var(--hdr-h) + 64px) 0 112px;
   }
 
   .blog-wrap {
@@ -130,77 +142,79 @@ function previewImageFor(image?: string) {
 
   .blog-page .gear-hero {
     max-width: none;
-    margin-bottom: 44px;
+    margin-bottom: 52px;
   }
 
   .blog-page .gear-hero :global(h1) {
     text-wrap: balance;
   }
 
+  .blog-hero-grid {
+    max-width: 850px;
+  }
+
+  .blog-hero-grid .gear-intro {
+    max-width: 560px;
+    margin-top: 18px;
+  }
+
   .blog-posts-list {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    max-width: 980px;
+    gap: 32px;
+    width: 100%;
   }
 
   .blog-post-link {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     position: relative;
-    padding: 26px 0 30px;
-    border-top: 1px solid rgba(28, 28, 28, 0.1);
-    transition:
-      opacity 220ms var(--ease-out),
-      transform 220ms var(--ease-out);
-  }
-
-  .blog-post-link:last-child {
-    border-bottom: 1px solid rgba(28, 28, 28, 0.1);
+    padding: 8px 0;
+    transition: opacity 220ms var(--ease-out);
+    text-decoration: none;
   }
 
   .blog-post-link:hover,
   .blog-post-link:focus-visible {
-    opacity: 0.82;
-    transform: translateX(4px);
+    opacity: 0.85;
+  }
+
+  .blog-post-link:hover .blog-post-headline {
+    color: var(--accent-solid);
   }
 
   .blog-post-date {
     flex-shrink: 0;
-    margin-bottom: 8px;
-    padding-top: 9px;
-    font-family: var(--mono);
+    margin-bottom: 6px;
+    padding-top: 4px;
+    font-family: var(--sans);
     font-size: var(--type-caption);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.02em;
     line-height: 1.2;
-    text-transform: uppercase;
     color: var(--muted);
   }
 
   .blog-post-copy {
     flex-grow: 1;
-    max-width: 74ch;
+    max-width: 82ch;
   }
 
   .blog-post-headline {
     font-family: var(--serif);
-    margin-bottom: 10px;
-    font-size: var(--type-section-title);
+    margin-bottom: 8px;
+    font-size: clamp(1.5rem, 1.3rem + 1vw, 2.125rem); /* Elegant serif heading size */
     font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
     color: var(--text);
     text-wrap: balance;
+    transition: color 220ms var(--ease-out);
   }
 
   .blog-post-summary {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
     font-family: var(--sans);
     font-size: var(--type-body);
-    line-height: 1.55;
+    line-height: 1.6;
     color: var(--muted);
     text-wrap: pretty;
   }
@@ -329,14 +343,19 @@ function previewImageFor(image?: string) {
 
   @media (min-width: 768px) {
     .blog-post-link {
-      flex-direction: row;
+      grid-template-columns: 120px 1fr;
       align-items: flex-start;
-      gap: clamp(40px, 6vw, 72px);
+      gap: 40px;
     }
 
     .blog-post-date {
-      width: 120px;
       margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .blog-hero-grid .gear-intro {
+      max-width: 620px;
     }
   }
 

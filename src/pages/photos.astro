@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getPhotoLocations } from "../lib/cms";
+import BlurText from "../components/ui/BlurText.astro";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
 
 const sourceLocations = await getPhotoLocations();
@@ -36,6 +37,7 @@ const optimizedLocations = await Promise.all(
   })),
 );
 const photosHeadline = "Places I've <em>wandered.</em>";
+const photosHeadlineText = "Places I've wandered.";
 ---
 
 <Layout title="Photos | Phuc Loc Nguyen">
@@ -47,7 +49,15 @@ const photosHeadline = "Places I've <em>wandered.</em>";
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My photos</span>
         </div>
-        <h1 set:html={photosHeadline} />
+        <h1 class="sr-only" set:html={photosHeadline} />
+        <BlurText
+          text={photosHeadlineText}
+          animateBy="words"
+          direction="top"
+          delay={70}
+          stepDuration={0.42}
+          className="gear-hero-title"
+        />
         <p class="gear-intro">
           Shot on whatever was in my pocket. These are the places that stayed with me.
         </p>

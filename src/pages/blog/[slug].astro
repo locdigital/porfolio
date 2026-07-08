@@ -22,7 +22,7 @@ type TocItem = {
 };
 
 const authorName = jsonPost?.author || "Phuc Loc Nguyen";
-const authorAvatar = "/author-cat.webp";
+const authorAvatar = "/himmel-vua.jpeg";
 
 function slugifyHeading(value: string) {
   return value
@@ -166,19 +166,19 @@ const primaryCategory = tags[0] || "Writing";
       <article class="article-main">
         <header class="article-hero">
           <div class="article-hero-copy">
-            <nav class="article-breadcrumb article-enter article-enter-1" aria-label="Breadcrumb">
-              <a href="/blog">Blog</a>
-              <span aria-hidden="true">/</span>
-              <span>{primaryCategory}</span>
-            </nav>
+            <p class="article-date article-enter article-enter-1">
+              {publishDate || primaryCategory} · {readingMinutes} min read
+            </p>
 
             <h1 class="blog-article-title article-enter article-enter-2">{displayTitle}</h1>
+
+            {postDescription && <p class="article-summary article-enter article-enter-3">{postDescription}</p>}
 
             <div class="article-byline article-enter article-enter-3">
               <img src={authorAvatar} alt={authorName} loading="eager" decoding="async" />
               <p>
+                <span>Posted by</span>
                 <strong>{authorName}</strong>
-                {publishDate && <span>| Last updated on {publishDate}</span>}
               </p>
             </div>
           </div>
@@ -197,6 +197,7 @@ const primaryCategory = tags[0] || "Writing";
             <aside class="article-rail toki-r" data-d="1" aria-label="Article information">
               <div class="article-rail-inner">
                 <nav class="article-toc" aria-label="Table of contents">
+                  <p>On this page</p>
                   <ol>
                     {tocItems.map((item) => (
                       <li class={`toc-depth-${item.depth}`}>
@@ -211,7 +212,7 @@ const primaryCategory = tags[0] || "Writing";
 
           <div class="article-content-column">
             <div class="article-meta toki-r" data-d="2">
-              <span>{readingMinutes} min read</span>
+              <span>{publishDate || primaryCategory}</span>
               {tags.length > 0 && (
                 <div class="article-tags">
                   {tags.map((tag: string) => (
@@ -240,28 +241,30 @@ const primaryCategory = tags[0] || "Writing";
 
 <style>
   .blog-article-page {
-    padding: calc(var(--hdr-h) + 28px) var(--px) 96px;
-    background: #e9e8e2;
+    padding: calc(var(--hdr-h) + 44px) var(--px) 112px;
+    background: #fff;
   }
 
   .article-shell {
-    width: min(calc(var(--max) - (var(--px) * 2)), 100%);
+    width: min(1160px, 100%);
     margin: 0 auto;
+    background: transparent;
+    border: 0;
   }
 
   .article-main {
     min-width: 0;
+    background: transparent;
   }
 
   .article-hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-    gap: clamp(36px, 6vw, 88px);
-    align-items: center;
-    min-height: clamp(460px, 52vw, 640px);
-    padding: clamp(44px, 7vw, 96px) clamp(28px, 5vw, 72px);
-    border-radius: 18px;
-    background: #fffefa;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    gap: clamp(12px, 1.6vw, 19px);
+    min-height: 0;
+    padding: 0 0 clamp(40px, 5vw, 64px);
+    border-bottom: 0;
     opacity: 0;
     transform: translateY(22px) scale(0.992);
     filter: blur(14px);
@@ -312,35 +315,46 @@ const primaryCategory = tags[0] || "Writing";
   }
 
   .article-hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     min-width: 0;
+    width: min(860px, 100%);
+    padding: 0;
+    text-align: left;
   }
 
-  .article-breadcrumb {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 32px;
+  .article-date {
+    margin: 0 0 22px;
+    font-family: var(--sans);
     font-size: var(--type-body);
+    font-weight: 500;
+    letter-spacing: 0;
     line-height: 1.2;
     color: color-mix(in srgb, var(--text) 62%, transparent);
   }
 
-  .article-breadcrumb a,
-  .article-breadcrumb span:last-child {
+  .blog-article-title {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 0 28px;
+    font-family: var(--sans);
+    font-size: 2rem;
+    font-weight: 750;
+    letter-spacing: 0;
+    line-height: 0.92;
     color: var(--text);
-    font-weight: 600;
+    text-wrap: balance;
   }
 
-  .blog-article-title {
-    max-width: 780px;
-    margin: 0 0 40px;
-    font-family: var(--serif);
-    font-size: var(--type-display-lg);
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 1.04;
-    color: #2a2925;
+  .article-summary {
+    max-width: 62ch;
+    margin: 0 0 30px;
+    font-family: var(--sans);
+    font-size: var(--type-body);
+    line-height: 1.62;
+    color: color-mix(in srgb, var(--text) 74%, transparent);
   }
 
   .article-byline {
@@ -348,6 +362,7 @@ const primaryCategory = tags[0] || "Writing";
     align-items: center;
     gap: 12px;
     color: #292824;
+    justify-content: flex-start;
   }
 
   .article-byline img {
@@ -361,23 +376,28 @@ const primaryCategory = tags[0] || "Writing";
   .article-byline p {
     margin: 0;
     font-size: var(--type-body);
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   .article-byline strong {
+    display: block;
     font-weight: 700;
   }
 
   .article-byline span {
-    margin-left: 8px;
+    display: block;
+    margin: 0 0 1px;
     color: color-mix(in srgb, var(--text) 68%, transparent);
   }
 
   .article-cover {
     width: 100%;
-    aspect-ratio: 16 / 10.2;
+    max-width: none;
+    aspect-ratio: 16 / 7.5;
+    min-height: 0;
     overflow: hidden;
-    border-radius: 10px;
+    border: 1px solid var(--divider);
+    border-radius: var(--rounded-md);
     background: #ece8dc;
   }
 
@@ -403,7 +423,7 @@ const primaryCategory = tags[0] || "Writing";
     display: grid;
     place-items: center;
     color: color-mix(in srgb, var(--text) 54%, transparent);
-    font-family: var(--mono);
+    font-family: var(--sans);
     font-size: var(--type-caption);
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -411,10 +431,11 @@ const primaryCategory = tags[0] || "Writing";
 
   .article-body-grid {
     display: grid;
-    grid-template-columns: minmax(220px, 32%) minmax(0, 1fr);
-    gap: clamp(56px, 9vw, 128px);
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    justify-content: center;
+    gap: clamp(40px, 6vw, 72px);
     align-items: start;
-    padding: clamp(64px, 8vw, 104px) clamp(28px, 5vw, 72px) 0;
+    padding: clamp(8px, 1vw, 12px) 0 0;
   }
 
   .article-body-grid:not(:has(.article-rail)) {
@@ -422,9 +443,12 @@ const primaryCategory = tags[0] || "Writing";
   }
 
   .article-rail {
+    display: block;
     position: sticky;
     top: calc(var(--hdr-h) + 32px);
+    order: 2;
     min-width: 0;
+    align-self: start;
   }
 
   .article-rail-inner {
@@ -434,15 +458,25 @@ const primaryCategory = tags[0] || "Writing";
   }
 
   .article-toc {
-    width: min(360px, 100%);
-    padding: 0;
+    width: 100%;
+    padding: 0 0 18px;
     background: transparent;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .article-toc p {
+    margin: 0 0 14px;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text);
   }
 
   .article-toc ol {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 10px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -462,11 +496,11 @@ const primaryCategory = tags[0] || "Writing";
   .article-toc a {
     display: block;
     font-family: var(--sans);
-    font-size: var(--type-body-lg);
+    font-size: 0.8rem;
     font-weight: 500;
-    line-height: 1.6;
+    line-height: 1.45;
     letter-spacing: 0;
-    color: #6d6d6d;
+    color: color-mix(in srgb, var(--text) 58%, transparent);
     text-decoration: none;
     transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
   }
@@ -488,16 +522,20 @@ const primaryCategory = tags[0] || "Writing";
   }
 
   .article-content-column {
+    order: 1;
     min-width: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
   }
 
   .article-meta {
-    display: flex;
+    display: none;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px 16px;
     margin-bottom: 28px;
-    font-family: var(--mono);
+    font-family: var(--sans);
     font-size: var(--type-caption);
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -513,6 +551,19 @@ const primaryCategory = tags[0] || "Writing";
   .blog-article-content {
     color: #2f2e2a;
     font-family: var(--sans);
+    max-width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .blog-article-content :global(h2:first-child),
+  .blog-article-content :global(h3:first-child) {
+    margin-top: 0;
+  }
+
+  /* Allow inline styles from BlockNote custom serializer */
+  .blog-article-content :global([style]) {
+    /* inline styles are intentional — do not override */
   }
 
   .article-content-reveal {
@@ -532,12 +583,8 @@ const primaryCategory = tags[0] || "Writing";
     filter: blur(0);
   }
 
-  .blog-article-content :global(h1),
-  .blog-article-content :global(h2),
-  .blog-article-content :global(h3),
-  .blog-article-content :global(h4),
-  .blog-article-content :global(h5),
-  .blog-article-content :global(h6) {
+  .blog-article-content :global(h1) {
+    text-align: left;
     font-family: var(--serif);
     color: #25241f;
     font-weight: 400;
@@ -546,23 +593,39 @@ const primaryCategory = tags[0] || "Writing";
     scroll-margin-top: calc(var(--hdr-h) + 32px);
   }
 
+  .blog-article-content :global(h2),
+  .blog-article-content :global(h3),
+  .blog-article-content :global(h4),
+  .blog-article-content :global(h5),
+  .blog-article-content :global(h6) {
+    text-align: left;
+    font-family: var(--sans);
+    color: #25241f;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    scroll-margin-top: calc(var(--hdr-h) + 32px);
+  }
+
   .blog-article-content :global(h2) {
-    margin: 72px 0 22px;
-    font-size: var(--type-display);
+    margin: 28px 0 9px;
+    font-size: 1.2rem;
   }
 
   .blog-article-content :global(h3) {
-    margin: 52px 0 18px;
-    font-size: var(--type-card-title);
+    margin: 21px 0 7px;
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
   }
 
   .blog-article-content :global(p) {
-    margin: 0 0 18px;
+    margin: 0 0 17px;
     max-width: 100%;
     font-family: var(--sans);
-    font-size: var(--type-body);
-    line-height: 1.72;
+    font-size: 0.8rem;
+    line-height: var(--leading-prose);
     letter-spacing: 0;
+    text-align: justify;
+    text-justify: inter-word;
   }
 
   .blog-article-content :global(a) {
@@ -586,8 +649,9 @@ const primaryCategory = tags[0] || "Writing";
   .blog-article-content :global(ol) {
     margin: 0 0 24px;
     padding-left: 1.25em;
-    font-size: var(--type-body);
+    font-size: 0.8rem;
     line-height: 1.72;
+    text-align: left;
   }
 
   .blog-article-content :global(li) {
@@ -595,7 +659,7 @@ const primaryCategory = tags[0] || "Writing";
   }
 
   .blog-article-content :global(blockquote) {
-    margin: 52px 0;
+    margin: 48px 0;
     padding: 6px 0 6px 24px;
     border-left: 1px solid var(--divider);
     color: var(--muted);
@@ -605,7 +669,7 @@ const primaryCategory = tags[0] || "Writing";
   .blog-article-content :global(img) {
     max-width: 100%;
     border-radius: 8px;
-    margin: 56px 0;
+    margin: 52px 0;
   }
 
   .blog-article-content :global(hr) {
@@ -624,7 +688,7 @@ const primaryCategory = tags[0] || "Writing";
 
   .blog-article-content :global(pre) {
     overflow-x: auto;
-    margin: 52px 0;
+    margin: 48px 0;
     padding: 22px 24px;
     border-radius: 8px;
     background: #16162a;
@@ -643,7 +707,7 @@ const primaryCategory = tags[0] || "Writing";
     table-layout: fixed;
     border-collapse: collapse;
     margin: 52px 0;
-    font-size: var(--type-body-lg);
+    font-size: var(--type-body);
     line-height: 1.5;
   }
 
@@ -657,7 +721,7 @@ const primaryCategory = tags[0] || "Writing";
   }
 
   .article-footer {
-    margin-top: 84px;
+    margin-top: 72px;
     padding-top: 28px;
     border-top: 1px solid var(--divider);
   }
@@ -712,22 +776,29 @@ const primaryCategory = tags[0] || "Writing";
     .article-hero {
       grid-template-columns: 1fr;
       min-height: 0;
-      padding: 36px 24px;
+      padding: 0 0 42px;
+    }
+
+    .article-cover {
+      grid-column: 1;
+      min-height: auto;
+      aspect-ratio: 16 / 9;
+      border-left: 1px solid var(--divider);
+      border-top: 1px solid var(--divider);
     }
 
     .article-body-grid {
       grid-template-columns: 1fr;
       gap: 40px;
-      padding: 48px 24px 0;
+      padding: 12px 0 0;
     }
 
     .article-rail {
-      position: static;
-      order: 1;
+      display: none;
     }
 
     .article-content-column {
-      order: 2;
+      order: 1;
     }
   }
 
@@ -743,14 +814,17 @@ const primaryCategory = tags[0] || "Writing";
 
     .article-hero {
       gap: 28px;
-      padding: 28px 18px;
-      border-radius: 14px;
+      padding: 0;
+    }
+
+    .article-hero-copy {
+      padding: 0;
     }
 
     .blog-article-title {
-      margin-bottom: 28px;
-      font-size: var(--type-section-title);
-      line-height: 1.02;
+      margin-bottom: 18px;
+      font-size: 2rem;
+      line-height: 1.08;
     }
 
     .article-byline {
@@ -764,7 +838,7 @@ const primaryCategory = tags[0] || "Writing";
 
     .article-body-grid {
       gap: 36px;
-      padding: 42px 12px 0;
+      padding: 10px 0 0;
     }
 
     .article-toc a {

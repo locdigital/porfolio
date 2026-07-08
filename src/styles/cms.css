@@ -2,11 +2,16 @@
    CMS DASHBOARD --- loc.digital style guide applied
    Inspired by 21st.dev template; 100% original code.
    Tokens: --bg #FAFAF7 | --text #1C1C1C | --accent #0075de
-   Fonts: Imbue (serif) | Plus Jakarta Sans (sans) | DM Mono (mono)
+   Fonts: Plus Jakarta Sans across the CMS
    ============================================================ */
+
+:root {
+  --mono: var(--sans) !important;
+}
 
 /* ------ Layout shell --------------------------------------------------------------------------------------------------------------------------------- */
 .cms-app {
+  --mono: var(--sans);
   min-height: 100svh;
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
@@ -64,7 +69,7 @@
   border-radius: 50%;
   background: #000000;
   color: var(--bg);
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-lead);
   display: grid;
   place-items: center;
@@ -88,7 +93,7 @@
 }
 
 .cms-workspace-sub {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -115,7 +120,7 @@
 }
 
 .cms-nav-kicker {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -189,7 +194,7 @@
 }
 
 .cms-storage-pct {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-caption);
   color: var(--muted);
 }
@@ -209,7 +214,7 @@
 }
 
 .cms-storage-meta {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -265,7 +270,7 @@
 }
 
 .cms-sidebar-user-role {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -352,7 +357,7 @@
   border: 1px solid var(--divider);
   border-radius: 4px;
   background: var(--bg);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   color: var(--muted);
   white-space: nowrap;
@@ -427,7 +432,7 @@
   border-radius: 50%;
   background: var(--text);
   color: var(--bg);
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-body);
   display: grid;
   place-items: center;
@@ -445,6 +450,10 @@
 .cms-content {
   flex: 1;
   padding: 28px 28px 48px;
+}
+
+.cms-content-writing {
+  padding: 0;
 }
 
 /* ------ Page header ------------------------------------------------------------------------------------------------------------------------------------ */
@@ -532,14 +541,14 @@
 }
 
 .cms-stat-growth {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-caption);
   color: #16a34a;
   font-weight: 600;
 }
 
 .cms-stat-value {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-section-title);
   font-weight: 400;
   line-height: 1;
@@ -548,7 +557,7 @@
 }
 
 .cms-stat-meta {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -716,7 +725,7 @@
 .cms-table th {
   padding: 10px 20px;
   text-align: left;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -841,7 +850,7 @@
 }
 
 .cms-category-pct {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-caption);
   font-weight: 600;
   color: var(--muted);
@@ -896,7 +905,7 @@
   align-items: center;
   gap: 4px;
   margin-top: 3px;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.04em;
   color: var(--muted);
@@ -921,7 +930,7 @@
 }
 
 .cms-metric strong {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-display);
   font-weight: 400;
   line-height: 1;
@@ -929,7 +938,7 @@
 }
 
 .cms-metric span {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -959,7 +968,7 @@
 
 .cms-section-head h1 {
   max-width: 760px;
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-display);
   font-weight: 400;
   line-height: 1.02;
@@ -969,7 +978,7 @@
 
 /* ------ Kicker --------------------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-kicker {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1146,7 +1155,7 @@
 
 .cms-writing-seo-head h3 {
   margin-bottom: 4px;
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-card-title);
   font-weight: 400;
   line-height: 1.1;
@@ -1189,7 +1198,7 @@
 
 .cms-writing-seo-score small {
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
 }
 
@@ -1284,7 +1293,7 @@
 .cms-panel-head h2,
 .cms-editor-head h2,
 .cms-subhead h3 {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-card-title);
   font-weight: 400;
   line-height: 1.1;
@@ -1294,7 +1303,7 @@
 
 .cms-subtitle-small {
   margin-top: 4px;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1372,7 +1381,7 @@
 .cms-list button small,
 .cms-gear-item-list button small,
 .cms-list-label {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1482,7 +1491,7 @@
 }
 
 .cms-field > span {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1623,7 +1632,7 @@
 }
 
 .cms-upload-note {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.04em;
   text-transform: none;
@@ -1686,7 +1695,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   color: var(--muted);
 }
@@ -1950,7 +1959,7 @@
 }
 
 .cms-dropdown-header {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.1em;
   text-transform: uppercase;

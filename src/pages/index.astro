@@ -1,92 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { optimizePhotos, getPhotoAsset } from "../lib/photo-assets";
-import { getWritingPosts } from "../lib/writing";
+import { absoluteUrl, pageSchema } from "../lib/seo";
 import DraggableCollage from "../components/ui/draggable-collage";
 import MobileAboutPanel from "../components/ui/MobileAboutPanel.astro";
-import AnimatedPageHeadline from "../components/ui/animated-page-headline";
-import BentoInfiniteGallery from "../components/ui/bento-infinite-gallery";
-import { absoluteUrl, pageSchema } from "../lib/seo";
 
-const makePortfolioPhoto = (number: number) => ({
-  src: `/assets/photos/img-portfolio/photo-${number}.webp`,
-  alt: `Photo ${number}`,
-  w: 0,
-  h: 0,
-});
-
-const homeBentoPhotos = await optimizePhotos(
-  Array.from({ length: 20 }, (_, index) => index + 1).map(makePortfolioPhoto),
-  {
-    previewWidth: 960,
-    previewWidths: [320, 480, 720, 960, 1200],
-    previewSizes: "(max-width: 760px) 76vw, 32rem",
-    fullWidth: 1920,
-    fullQuality: 80,
-    withWebpFallback: false,
-  },
-);
-
-const homeBentoItems = homeBentoPhotos.map((photo, index) => {
-  const spanCycle = [
-    "hero",
-    "standard",
-    "standard",
-    "tall",
-    "wide",
-    "standard",
-    "tall",
-    "standard",
-    "wide",
-    "standard",
-    "standard",
-    "tall",
-    "wide",
-    "standard",
-    "standard",
-    "hero",
-    "standard",
-    "wide",
-    "tall",
-    "standard",
-  ] as const;
-  const titles = [
-    "Sea Light",
-    "Blue Distance",
-    "Quiet Coast",
-    "Cliff Walk",
-    "Island Wind",
-    "Green Shore",
-    "Open Water",
-    "Late Horizon",
-    "Rock Garden",
-    "Soft Morning",
-    "Salt Air",
-    "Low Tide",
-    "Blue Ridge",
-    "Hidden Bay",
-    "Green Path",
-    "Wide Sky",
-    "Still Water",
-    "Island Edge",
-    "Far Shore",
-    "Sun Drift",
-  ];
-
-  return {
-    id: index + 1,
-    title: titles[index] ?? `Photo ${index + 1}`,
-    desc: "A frame from my travel archive.",
-    url: photo.previewSrc,
-    fullUrl: photo.fullSrc,
-    span: spanCycle[index] ?? "standard",
-  };
-});
-
-const posts = await getWritingPosts();
-const heroAbout = getPhotoAsset("/assets/photos/img-portfolio/hero-about.webp");
 const pageTitle = "Nguyen Phuc Loc | Senior Performance Marketing Executive";
 const pageDescription = "Senior Performance Marketing Executive scaling multi-channel paid media, TikTok Shop GMV, SEO growth, and AI-powered conversion funnels.";
+const heroAbout = { src: "/himmel-vua.jpeg" };
 ---
 <Layout
   title={pageTitle}
@@ -98,22 +18,6 @@ const pageDescription = "Senior Performance Marketing Executive scaling multi-ch
       description: pageDescription,
       type: "ProfilePage",
     }),
-    {
-      "@type": "ItemList",
-      "@id": `${absoluteUrl("/")}#selected-work`,
-      name: "Selected work experience",
-      itemListElement: [
-        "WorkFlow Space",
-        "PlayAh! Vietnam",
-        "POPS Worldwide",
-        "TOMATO Children's Home",
-        "Dai Hoc Dung Hoc Dai",
-      ].map((name, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name,
-      })),
-    },
   ]}
 >
 
@@ -125,142 +29,42 @@ const pageDescription = "Senior Performance Marketing Executive scaling multi-ch
   ============================================================ -->
   <main style="display:flex;flex-direction:column;">
 
-    <!-- HERO ------------------------------------ -->
-    <section class="hero" id="hero" aria-label="Introduction">
-      <div class="container hero-container">
-        <div class="hero-layout">
-
-          <div>
-            <AnimatedPageHeadline
-              client:load
-              className="hero-title hero-title--animated"
-              headline={"Performance.\nStrategy.\n<em>Revenue systems</em>\nwith <em>data.</em>"}
-            />
+    <!-- CAREER ---------------------------------- -->
+    <section class="career-map toki-r" data-d="1" aria-label="Past, current, and future work">
+      <div class="container">
+        <div class="career-map-intro career-map-intro--horizontal">
+          <div class="career-map-statement">
+            <h1 class="career-map-title career-map-title--typing">
+              <span class="typing-line" style="--steps: 14; --target: 14ch; --typing-delay: 0ms;">Design Better.</span>
+              <span class="typing-line" style="--steps: 15; --target: 15ch; --typing-delay: 820ms;">Market Smarter.</span>
+              <span class="typing-line" style="--steps: 13; --target: 13ch; --typing-delay: 1640ms;">Scale Faster.</span>
+            </h1>
+            <p class="career-map-description">
+              loc.digital helps businesses grow through modern websites, strategic social media, digital marketing, and AI automation&mdash;creating systems that save time, attract customers, and deliver measurable results.
+            </p>
           </div>
 
-          <div class="hero-aside">
-            <p>Senior performance marketer building paid media, TikTok Shop, SEO, and AI funnels for measurable growth.</p>
-            <div class="hero-actions">
-              <a href="mailto:hi@loc.digital" class="hero-primary">Email Loc</a>
-              <a href="/work" class="hero-secondary">View work</a>
+          <div class="career-map-copy">
+            <div class="career-map-copy-item career-map-copy-item--current">
+              <span>Now</span>
+              <p>
+                Building growth at <strong>AnyMind Group</strong>.
+              </p>
             </div>
+            <div class="career-map-copy-item">
+              <span>Systems</span>
+              <p>
+                Media spend into measurable revenue across TikTok Shop, Meta, Google, SEO, landing pages, and AI-assisted funnels.
+              </p>
+            </div>
+            <div class="career-map-copy-item">
+              <span>Focus</span>
+              <p>
+                Commerce scaling, branch launches, and creative testing systems in Vietnam. <a href="mailto:hi@loc.digital">Let’s talk.</a>
+              </p>
+            </div>
+            <small>SAIGON, VIETNAM / PERFORMANCE, SEO, AI FUNNELS</small>
           </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- EXPERIENCE ------------------------------ -->
-    <section class="work toki-r" id="work" data-d="2" aria-label="Work experience">
-      <div class="container">
-        <div class="sh">
-          <span class="sh-title" data-parallax=".1">Experience</span>
-          <span class="sh-number" data-parallax=".3">01</span>
-        </div>
-
-        <ul>
-          <li class="timeline-row">
-            <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-workflow.webp" alt="WorkFlow Space"
-                  loading="lazy"></div>
-              <div class="tl-info">
-                <span class="tl-company"><a href="https://www.workflowspace.vn/" target="_blank" rel="noopener">WorkFlow
-                    Space</a></span>
-                <span class="tl-desc">Digital Marketing Executive: paid launches, leads &amp; creative systems.</span>
-              </div>
-            </div>
-            <span class="tl-dates">2024-Present</span>
-          </li>
-          <li class="timeline-row">
-            <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-playah.webp" alt="PlayAh!"
-                  loading="lazy"></div>
-              <div class="tl-info">
-                <span class="tl-company"><a href="https://playahvietnam.com/" target="_blank"
-                    rel="noopener">PlayAh!</a></span>
-                <span class="tl-desc">Performance Senior Executive: TikTok, Meta &amp; Google revenue growth.</span>
-              </div>
-            </div>
-            <span class="tl-dates">Dec 2024-Present</span>
-          </li>
-          <li class="timeline-row">
-            <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-pops.webp" alt="POPS Worldwide"
-                  loading="lazy"></div>
-              <div class="tl-info">
-                <span class="tl-company"><a href="https://pops.vn/" target="_blank" rel="noopener">POPS
-                    Worldwide</a></span>
-                <span class="tl-desc">SEO Executive: technical roadmap &amp; organic user growth.</span>
-              </div>
-            </div>
-            <span class="tl-dates">2022-2023</span>
-          </li>
-          <li class="timeline-row">
-            <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-tomato.webp" alt="TOMATO Children's Home" loading="lazy">
-              </div>
-              <div class="tl-info">
-                <span class="tl-company"><a href="/work/tomato-childrens-home">TOMATO Children's Home</a></span>
-                <span class="tl-desc">Digital Marketing Executive: integrated Marketing 360 &amp; enrollment growth.</span>
-              </div>
-            </div>
-            <span class="tl-dates">2023-2024</span>
-          </li>
-          <li class="timeline-row">
-            <div class="tl-left">
-              <div class="tl-logo" aria-hidden="true"><img src="/assets/logos/logo-community.svg" alt="Education communities" loading="lazy">
-              </div>
-              <div class="tl-info">
-                <span class="tl-company"><a href="/work/education-communities">Education Communities</a></span>
-                <span class="tl-desc">Founding Member: community growth for students &amp; early-career professionals.</span>
-              </div>
-            </div>
-            <span class="tl-dates">2021-Present</span>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-
-
-    <!-- PHOTOGRAPHY ----------------------------- -->
-    <BentoInfiniteGallery
-      id="photography"
-      kicker="Photography"
-      showIntro={false}
-      showSectionHeader={true}
-      sectionNumber="02"
-      items={homeBentoItems}
-      client:load
-    />
-
-    <!-- WRITING --------------------------------- -->
-    <section class="writing toki-r" id="writing" data-d="4" aria-label="Writing">
-      <div class="container">
-        <div class="sh">
-          <span class="sh-title" data-parallax=".1">Writing</span>
-          <span class="sh-number" data-parallax=".3">03</span>
-        </div>
-
-        <div class="post-list">
-          {posts && posts.length > 0 ? (
-            posts.slice(0, 5).map((post) => {
-              const dateStr = post.data.publishedAt.toLocaleDateString('en-US', { 
-                month: 'short', 
-                year: 'numeric' 
-              });
-              return (
-                <a href={`/blog/${post.slug}`} class="post-item" aria-label={`Read: ${post.data.title}`}>
-                  <span class="post-date">{dateStr}</span>
-                  <span class="post-title">{post.data.headline}</span>
-                </a>
-              );
-            })
-          ) : (
-            <div class="py-10 text-[var(--muted)]">
-              <p>No writing entries found.</p>
-            </div>
-          )}
         </div>
       </div>
     </section>
@@ -269,7 +73,7 @@ const pageDescription = "Senior Performance Marketing Executive scaling multi-ch
     <section class="relative w-full h-auto md:h-[100dvh] overflow-visible md:overflow-hidden toki-r" data-d="5" aria-label="Interactive collage">
       <MobileAboutPanel portraitSrc={heroAbout.src} />
       <div class="hidden md:block h-full w-full">
-        <DraggableCollage client:visible portraitSrc={heroAbout.src} />
+        <DraggableCollage client:idle portraitSrc={heroAbout.src} />
       </div>
     </section>
 

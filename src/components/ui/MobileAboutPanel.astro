@@ -5,7 +5,7 @@ interface Props {
   portraitSrc?: string;
 }
 
-const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
+const { portraitSrc = "/himmel-vua.jpeg" } = Astro.props;
 ---
 
 <div class="mobile-about-panel md:hidden h-auto flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10" style="font-family: var(--sans);">
@@ -32,7 +32,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
           <span class="text-[var(--type-micro)] uppercase tracking-widest opacity-60" style="font-family: var(--mono);">available now</span>
         </div>
         <div class="h-px bg-[#0a2e22]/20 mb-2.5"></div>
-        <p class="italic text-lg leading-tight mb-2.5" style="font-family: var(--serif);">Performance Marketer</p>
+        <p class="italic text-[var(--type-subhead)] leading-tight mb-2.5" style="font-family: var(--serif);">Performance Marketer</p>
       </div>
       <div class="space-y-1">
         <div class="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span class="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
@@ -75,15 +75,15 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
         <span class="text-[var(--type-micro)] text-background/30">4:19</span>
       </div>
       <div class="flex items-center justify-center gap-3">
-        <button aria-label="Previous track" class="text-background/40 text-xs">⏮</button>
+        <button aria-label="Previous track" class="text-background/40 text-[var(--type-caption)]">⏮</button>
         <button 
           id="spotify-play-btn"
           aria-label="Play" 
-          class="w-7 h-7 rounded-full bg-background flex items-center justify-center text-foreground text-xs"
+          class="w-7 h-7 rounded-full bg-background flex items-center justify-center text-foreground text-[var(--type-caption)]"
         >
           ▶
         </button>
-        <button aria-label="Next track" class="text-background/40 text-xs">⏭</button>
+        <button aria-label="Next track" class="text-background/40 text-[var(--type-caption)]">⏭</button>
       </div>
     </div>
 
@@ -137,7 +137,7 @@ const { portraitSrc = "/leah-portrait.webp" } = Astro.props;
 
   <!-- Writings Folder -->
   <div class="flex flex-col items-center mt-4">
-    <a href="/blog" class="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-xs">
+    <a href="/blog" class="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-[var(--type-caption)]">
       <FolderOpen size={15} strokeWidth={1.8} aria-hidden="true" /> View My Writings
     </a>
   </div>

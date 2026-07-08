@@ -1,9 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
-import { getPhotoAsset } from "../lib/photo-assets";
-
-const avatarAsset = getPhotoAsset("/assets/photos/img-portfolio/photo-1.webp");
 ---
 
 <Layout
@@ -40,14 +36,14 @@ const avatarAsset = getPhotoAsset("/assets/photos/img-portfolio/photo-1.webp");
         <!-- Avatar -->
         <div class="avatar-wrap" aria-hidden="true">
           <div class="avatar-ring">
-            <Image
-              src={avatarAsset}
+            <img
+              src="/himmel-vua.jpeg"
               alt="Phuc Loc Nguyen"
               width={56}
               height={56}
-              quality={80}
               class="avatar-img"
               loading="eager"
+              decoding="async"
             />
           </div>
           <span class="avatar-status" aria-label="Available"></span>

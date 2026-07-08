@@ -24,3 +24,4 @@ git_store_broken.nosync/
 .agents/
 skills-lock.json
 .gstack/
+.vercel
