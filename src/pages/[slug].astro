@@ -1,0 +1,106 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+const pages = await getCollection("pages", ({ data }) => !data.draft);
+const page = pages.find((entry) => entry.slug === slug);
+
+if (!slug || !page) {
+  return Astro.redirect("/404", 404);
+}
+
+const { Content } = await page.render();
+---
+
+<Layout
+  title={`${page.data.title} | Phuc Loc Nguyen`}
+  description={page.data.metaDescription || page.data.description}
+  ogImage={page.data.coverImage}
+>
+  <main class="cms-page">
+    <article class="cms-page-inner">
+      <header class="cms-page-header">
+        <p class="cms-page-kicker">{page.data.title}</p>
+        <h1>{page.data.headline || page.data.title}</h1>
+        {page.data.subheadline && <p class="cms-page-subtitle">{page.data.subheadline}</p>}
+      </header>
+
+      {page.data.coverImage && (
+        <img class="cms-page-cover" src={page.data.coverImage} alt={page.data.title} loading="eager" decoding="async" />
+      )}
+
+      <div class="cms-page-content">
+        <Content />
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .cms-page {
+    padding: calc(var(--hdr-h) + 80px) 0 120px;
+  }
+
+  .cms-page-inner {
+    width: min(880px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .cms-page-header {
+    margin-bottom: 48px;
+  }
+
+  .cms-page-kicker {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .cms-page-header h1 {
+    font-family: var(--serif);
+    font-size: var(--type-page-title);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: 0;
+    color: var(--text);
+  }
+
+  .cms-page-subtitle {
+    max-width: 620px;
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: var(--type-body-lg);
+    line-height: 1.7;
+  }
+
+  .cms-page-cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-bottom: 56px;
+  }
+
+  .cms-page-content {
+    color: var(--text);
+    font-size: var(--type-lead);
+    line-height: 1.8;
+  }
+
+  .cms-page-content :global(p) {
+    margin-bottom: 1.4em;
+  }
+
+  .cms-page-content :global(h2) {
+    font-family: var(--sans);
+    font-size: calc(var(--type-section-title) * 0.7);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 2em 0 0.7em;
+  }
+</style>

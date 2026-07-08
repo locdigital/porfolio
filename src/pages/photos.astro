@@ -1,0 +1,451 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getPhotoLocations } from "../lib/cms";
+import BlurText from "../components/ui/BlurText.astro";
+import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
+
+const sourceLocations = await getPhotoLocations();
+const optimizedLocations = await Promise.all(
+  sourceLocations.map(async (loc) => ({
+    ...loc,
+    photos: await Promise.all(
+      loc.photos.map(async (photo) => {
+        if (!photo.src.startsWith("/assets/photos/")) {
+          return {
+            ...photo,
+            previewSrc: photo.src,
+            previewSrcSet: "",
+            webpSrcSet: "",
+            previewSizes: PHOTO_GRID_SIZES,
+            previewWidth: photo.w,
+            previewHeight: photo.h,
+            fullSrc: photo.src,
+            fullWidth: photo.w,
+            fullHeight: photo.h,
+          };
+        }
+
+        return optimizePhoto(photo, {
+          previewWidth: 720,
+          previewWidths: [240, 400, 640, 960],
+          previewSizes: PHOTO_GRID_SIZES,
+          fullQuality: 78,
+          withWebpFallback: true,
+        });
+      }),
+    ),
+  })),
+);
+const photosHeadline = "Places I've <em>wandered.</em>";
+const photosHeadlineText = "Places I've wandered.";
+---
+
+<Layout title="Photos | Phuc Loc Nguyen">
+
+  <main class="gear-page">
+    <div class="gear-container">
+      <!-- PAGE HERO -->
+      <section class="gear-hero photos-hero-copy" aria-label="Photos introduction">
+        <div class="page-kicker-wrapper">
+          <span class="page-kicker-text">My photos</span>
+        </div>
+        <h1 class="sr-only" set:html={photosHeadline} />
+        <BlurText
+          text={photosHeadlineText}
+          animateBy="words"
+          direction="top"
+          delay={70}
+          stepDuration={0.42}
+          className="gear-hero-title"
+        />
+        <p class="gear-intro">
+          Shot on whatever was in my pocket. These are the places that stayed with me.
+        </p>
+      </section>
+    </div>
+
+    <!-- QUICK NAV -->
+    <div id="photos-nav-sentinel"></div>
+    <div class="photos-nav-wrapper">
+      <div class="container">
+        <nav class="photos-nav" aria-label="Locations navigation">
+          <div class="photos-nav-list">
+            {optimizedLocations.map((loc, i) => (
+              <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`}>
+                {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
+              </a>
+            ))}
+            <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
+              Gallery <span class="photos-gallery-icon" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- LOCATION SECTIONS -->
+    {optimizedLocations.map((loc, locIdx) => (
+      <section
+        class="loc-section"
+        id={loc.slug}
+        aria-label={`Photos from ${loc.name}`}
+      >
+        <div class="container">
+          <!-- Location header -->
+          <div class="loc-header">
+            <div class="loc-meta">
+              <span class="loc-index">{String(locIdx + 1).padStart(2, '0')}</span>
+              <div>
+                <h2 class="loc-name">{loc.name}</h2>
+                <p class="loc-desc">{loc.description}</p>
+              </div>
+            </div>
+            <span class="loc-count">{loc.photos.length} photos</span>
+          </div>
+        </div>
+
+        <!-- Photo grid --- full-bleed inside container -->
+        <div class="container">
+          <div class="loc-grid" data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
+            {loc.photos.map((photo, i) => (
+              <div
+                class={`loc-photo-item ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
+                data-pswp-width={photo.fullWidth}
+                data-pswp-height={photo.fullHeight}
+                aria-label={photo.alt}
+                style={`aspect-ratio: ${photo.previewWidth} / ${photo.previewHeight};`}
+              >
+                {photo.previewSrcSet ? (
+                  <picture>
+                    <source
+                      type="image/avif"
+                      srcset={photo.previewSrcSet}
+                      sizes={photo.previewSizes}
+                    />
+                    {photo.webpSrcSet && (
+                      <source
+                        type="image/webp"
+                        srcset={photo.webpSrcSet}
+                        sizes={photo.previewSizes}
+                      />
+                    )}
+                    <img
+                      src={photo.previewSrc}
+                      width={photo.previewWidth}
+                      height={photo.previewHeight}
+                      alt={photo.alt}
+                      loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
+                      decoding="async"
+                      fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
+                      onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
+                    />
+                  </picture>
+                ) : (
+                  <img
+                    src={photo.previewSrc}
+                    width={photo.previewWidth}
+                    height={photo.previewHeight}
+                    alt={photo.alt}
+                    loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
+                    onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
+                  />
+                )}
+                <div class="loc-photo-overlay" aria-hidden="true">
+                  <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+
+
+  </main>
+
+</Layout>
+
+<style>
+  /* ------ Page ------ */
+  .photos-page {
+    padding-top: var(--hdr-h);
+  }
+
+  /* ------ Hero ------ */
+  .photos-hero {
+    padding: 80px 0 clamp(32px, 4vw, 52px);
+  }
+
+  .photos-heading {
+    font-family: var(--serif);
+    font-size: var(--type-display-xl);
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -.025em;
+    color: var(--text);
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+
+  .photos-heading em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .photos-subtext {
+    font-size: var(--type-body);
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  #photos-nav-sentinel {
+    height: 1px;
+    margin-bottom: -1px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* ------ Nav wrapper ------ */
+  .photos-nav-wrapper {
+    position: relative;
+    z-index: 50;
+    background: transparent;
+    padding: 24px 0 0;
+    margin-bottom: 40px;
+    margin-top: -1px;
+  }
+
+  /* ------ Nav ------ */
+  .photos-nav {
+    border-bottom: 1px solid var(--divider);
+    padding-bottom: 0;
+  }
+
+  .photos-nav-list {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+
+  .photos-nav-list:active { cursor: grabbing; }
+  .photos-nav-list::-webkit-scrollbar { display: none; }
+
+
+
+  /* Active underline */
+  .photos-nav-active-line {
+    position: absolute;
+    bottom: -1px;
+    height: 2px;
+    background: var(--text);
+    pointer-events: none;
+    z-index: 2;
+    transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Tab links */
+  .photos-nav-link {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: var(--type-body);
+    font-family: var(--sans);
+    font-weight: 500;
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
+    text-decoration: none;
+    white-space: nowrap;
+    background: transparent;
+    transition: color 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .photos-nav-link.active {
+    color: var(--text);
+  }
+
+  .photos-nav-link:hover {
+    color: var(--accent);
+  }
+
+  .photos-nav-count {
+    color: inherit;
+    font-size: var(--type-caption);
+    font-family: var(--mono, monospace);
+    opacity: 0.55;
+    transform: translateY(-30%);
+    display: inline-block;
+  }
+
+  .photos-nav-gallery-btn {
+    margin-left: 10px;
+    color: color-mix(in srgb, var(--text) 68%, var(--muted));
+  }
+
+  .photos-gallery-icon {
+    display: inline-block;
+  }
+
+  /* ------ Location section ------ */
+  .loc-section {
+    display: block;
+    opacity: 1;
+    padding: clamp(24px, 4vw, 40px) 0 clamp(60px, 8vw, 100px) 0;
+    scroll-margin-top: calc(var(--hdr-h, 80px) + 70px);
+    content-visibility: visible;
+  }
+
+  .gear-page > .loc-section {
+    content-visibility: visible;
+  }
+
+  .loc-section.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .loc-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+
+  .loc-meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .loc-index {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+    letter-spacing: .08em;
+    padding-top: 10px;
+    flex-shrink: 0;
+  }
+
+  .loc-name {
+    font-family: var(--serif);
+    font-size: var(--type-display);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -.025em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .loc-desc {
+    font-size: var(--type-body);
+    color: color-mix(in srgb, var(--text) 70%, var(--muted));
+    max-width: 380px;
+    line-height: 1.6;
+  }
+
+  .loc-count {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 6px;
+    letter-spacing: .06em;
+  }
+
+  /* ------ Image Grid ------ */
+  /*
+    Masonry layout to display photos in full size / original aspect ratio
+  */
+  .loc-grid {
+    column-count: 3;
+    column-gap: 4px;
+  }
+
+  .loc-photo-item {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.05);
+    margin-bottom: 4px;
+    break-inside: avoid;
+    transform: translateZ(0); /* Prevent column break glitches */
+  }
+
+  .loc-photo-item picture::after {
+    display: none;
+  }
+
+  .loc-photo-item img {
+    display: block;
+    width: 100%;
+    height: auto; /* Maintains original aspect ratio */
+    backface-visibility: hidden;
+  }
+
+  /* Overlay: appears on hover */
+  .loc-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.3) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity .35s ease;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px 14px;
+  }
+
+  .loc-photo-item:hover .loc-photo-overlay {
+    opacity: 1;
+  }
+
+  .loc-photo-index {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: rgba(255,255,255,.82);
+    letter-spacing: .1em;
+  }
+
+  /* ------ Responsive ------ */
+  @media (max-width: 900px) {
+    .loc-grid {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 600px) {
+    :global(.mobile-bottom-nav) {
+      display: none !important;
+    }
+
+    .loc-grid {
+      column-count: 1;
+    }
+    .loc-photo-item {
+      margin-bottom: 8px; /* Slightly more gap on mobile stack */
+    }
+    .loc-header {
+      gap: 16px;
+    }
+  }
+</style>

@@ -2,11 +2,11 @@ const SESSION_COOKIE = "cms_session";
 const LEGACY_SESSION_COOKIE = "session";
 
 function readEnv(name: string) {
-  return process.env[name];
+  return process.env[name] || import.meta.env[name];
 }
 
 export function isCmsDisabledInProduction() {
-  return process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+  return import.meta.env.PROD || process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
 }
 
 export function getCmsAuthConfig() {

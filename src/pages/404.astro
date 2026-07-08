@@ -1,0 +1,718 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="404 · Page Not Found | Phuc Loc Nguyen"
+  description="Oops, this page doesn't exist. Head back to Phuc Loc Nguyen's portfolio."
+  hideHeader={true}
+  hideFooter={true}
+  favicon="/favicon-404.svg"
+  robots="noindex, nofollow"
+>
+  <main class="notfound-main" id="main-content">
+
+    <!-- Animated gradient background -->
+    <div class="notfound-bg" aria-hidden="true">
+      <div class="bg-blob bg-blob-1"></div>
+      <div class="bg-blob bg-blob-2"></div>
+      <div class="bg-blob bg-blob-3"></div>
+    </div>
+
+    <!-- Subtle noise overlay -->
+    <div class="notfound-noise" aria-hidden="true"></div>
+
+    <div class="notfound-container">
+
+      <!-- Status label -->
+      <div class="notfound-label r" data-d="1">
+        <span class="label-dot" aria-hidden="true"></span>
+        <span>404 &middot; page not found</span>
+      </div>
+
+      <!-- Main layout (avatar + copy) -->
+      <div class="notfound-card r" data-d="2">
+
+        <!-- Avatar -->
+        <div class="avatar-wrap" aria-hidden="true">
+          <div class="avatar-ring">
+            <img
+              src="/himmel-vua.jpeg"
+              alt="Phuc Loc Nguyen"
+              width={56}
+              height={56}
+              class="avatar-img"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+          <span class="avatar-status" aria-label="Available"></span>
+        </div>
+
+        <!-- Copy block -->
+        <div class="notfound-copy">
+          
+          <!-- Typing indicator bubble -->
+          <div class="typing-bubble-wrap" id="nf-typing" aria-hidden="true">
+            <div class="typing-bubble">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <!-- Actual content - Title (hidden initially) -->
+          <div class="notfound-content-title" id="nf-title">
+            <h1 class="notfound-heading">
+              Hmm, that page doesn't exist.<br>
+              <em class="notfound-sub">Want to see my work instead?</em>
+            </h1>
+          </div>
+
+          <!-- Actual content - Cards & Navigation (hidden initially) -->
+          <div class="notfound-content-cards" id="nf-cards">
+            <!-- Featured project cards -->
+            <div class="plink-grid">
+
+              <a href="/work/playah" class="plink-card" id="nf-link-playah">
+                <div class="plink-thumb">
+                  <img
+                    src="/assets/logos/logo-playah.webp"
+                    alt="PlayAh! Vietnam"
+                    loading="lazy"
+                    width="80"
+                    height="56"
+                  />
+                </div>
+                <div class="plink-info">
+                  <p class="plink-title">PlayAh! Brand Growth &amp; Performance</p>
+                  <p class="plink-meta">PlayAh! Vietnam &middot; 2024-Present</p>
+                </div>
+                <div class="plink-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4"/>
+                  </svg>
+                </div>
+              </a>
+
+              <a href="/work/workflow-space" class="plink-card" id="nf-link-workflow">
+                <div class="plink-thumb">
+                  <img
+                    src="/assets/logos/logo-workflow.webp"
+                    alt="WorkFlow Space"
+                    loading="lazy"
+                    width="80"
+                    height="56"
+                  />
+                </div>
+                <div class="plink-info">
+                  <p class="plink-title">WorkFlow Space: Community &amp; Content</p>
+                  <p class="plink-meta">+800% Instagram growth</p>
+                </div>
+                <div class="plink-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4"/>
+                  </svg>
+                </div>
+              </a>
+
+              <a href="/work/pops-worldwide" class="plink-card" id="nf-link-pops">
+                <div class="plink-thumb">
+                  <img
+                    src="/assets/logos/logo-pops.webp"
+                    alt="POPS Worldwide"
+                    loading="lazy"
+                    width="80"
+                    height="56"
+                  />
+                </div>
+                <div class="plink-info">
+                  <p class="plink-title">POPS Worldwide: SEO &amp; Organic Growth</p>
+                  <p class="plink-meta">+22 rank positions on target KWs</p>
+                </div>
+                <div class="plink-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4"/>
+                  </svg>
+                </div>
+              </a>
+
+            </div>
+
+            <!-- Back link -->
+            <div id="nf-back-wrap">
+              <a href="/" class="nf-back" id="nf-back-home">- back to home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const typing = document.getElementById("nf-typing");
+    const title = document.getElementById("nf-title");
+    const cards = document.getElementById("nf-cards");
+
+    if (typing && title && cards) {
+      // 1. Instantly trigger typing bubble entrance animation in next frame
+      requestAnimationFrame(() => {
+        typing.classList.add("in");
+      });
+
+      // 2. After 1.4 seconds, trigger exit transition of typing bubble, and display title
+      setTimeout(() => {
+        typing.classList.remove("in");
+        typing.classList.add("exit");
+
+        // Wait for typing bubble exit animation to complete (220ms) before showing title
+        setTimeout(() => {
+          title.classList.add("in");
+        }, 220);
+      }, 1400);
+
+      // 3. After 2.2 seconds, transition the cards
+      setTimeout(() => {
+        cards.classList.add("in");
+      }, 2200);
+    }
+  });
+</script>
+
+<style>
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     FULL-SCREEN WRAPPER
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-main {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: calc(var(--hdr-h) + 48px) 0 80px;
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     ANIMATED GRADIENT BLOBS
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.18;
+    will-change: transform;
+  }
+
+  .bg-blob-1 {
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, #93c5fd 0%, transparent 70%);
+    top: -160px;
+    left: -100px;
+    animation: blobFloat1 16s ease-in-out infinite;
+  }
+
+  .bg-blob-2 {
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, #c4b5fd 0%, transparent 70%);
+    bottom: -80px;
+    right: -80px;
+    animation: blobFloat2 20s ease-in-out infinite;
+  }
+
+  .bg-blob-3 {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #bae6fd 0%, transparent 70%);
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: blobFloat3 12s ease-in-out infinite;
+  }
+
+  @keyframes blobFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(48px, 32px) scale(1.05); }
+    66%       { transform: translate(-24px, 56px) scale(0.97); }
+  }
+  @keyframes blobFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%       { transform: translate(-56px, -44px) scale(1.08); }
+  }
+  @keyframes blobFloat3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%       { transform: translate(-50%, -50%) scale(1.14); }
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     NOISE OVERLAY (adds depth / premium texture)
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-noise {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.28;
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     CONTAINER
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-container {
+    position: relative;
+    z-index: 2;
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+    width: 100%;
+    opacity: 0;
+    animation: pageFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes pageFadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     STATUS LABEL
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+    opacity: 0;
+    transform: translateY(-8px);
+    animation: labelEnter 0.5s ease-out forwards;
+  }
+
+  @keyframes labelEnter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .label-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #f43f5e;
+    flex-shrink: 0;
+    animation: labelPulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes labelPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.3; transform: scale(0.6); }
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     CARD WRAPPER (avatar + copy side by side)
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     AVATAR
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  .avatar-ring {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    background: var(--divider);
+  }
+
+  /* Suppress the global picture::after gradient overlay */
+  .avatar-ring picture::after {
+    display: none !important;
+  }
+
+  .avatar-img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .avatar-status {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #22c55e;
+    border: 2px solid var(--bg);
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     COPY BLOCK
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-copy {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     TYPING BUBBLE
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .typing-bubble-wrap {
+    display: flex;
+    align-items: center;
+    min-height: 52px; /* Matches avatar height */
+    margin-bottom: 24px;
+    transform-origin: left center;
+    opacity: 0;
+    max-height: 100px;
+    transform: translateY(6px) scale(0.94);
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                max-height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                margin-bottom 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, max-height, margin-bottom, transform;
+    overflow: hidden;
+  }
+
+  .typing-bubble-wrap.in {
+    opacity: 1;
+    max-height: 100px;
+    transform: translateY(0) scale(1);
+  }
+
+  .typing-bubble-wrap.exit {
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0;
+    min-height: 0;
+    transform: translateY(-3px) scale(0.97);
+  }
+
+  .typing-bubble {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 12px 16px;
+    border-radius: 16px;
+    border-top-left-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .typing-dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: rgba(22, 22, 42, 0.4);
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out both;
+  }
+
+  .typing-dot:nth-child(1) { animation-delay: 0s; }
+  .typing-dot:nth-child(2) { animation-delay: 0.18s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.36s; }
+
+  @keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0.3); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     HEADING & TITLE TRANSITION
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-content-title {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    filter: blur(4px);
+    transform: translateY(10px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, max-height, filter, transform;
+  }
+
+  .notfound-content-title.in {
+    opacity: 1;
+    max-height: 200px;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+
+  .notfound-heading {
+    font-family: var(--serif);
+    font-size: var(--type-section-title);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 32px;
+  }
+
+  .notfound-sub {
+    font-style: italic;
+    color: var(--muted);
+    display: block;
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     PROJECT LINK CARDS TRANSITION & GRID
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .notfound-content-cards {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease,
+                max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, max-height;
+  }
+
+  .notfound-content-cards.in {
+    opacity: 1;
+    max-height: 1000px;
+  }
+
+  .notfound-content-cards .plink-card {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    will-change: opacity, transform;
+  }
+
+  .notfound-content-cards.in .plink-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .notfound-content-cards.in .plink-card:nth-child(1) {
+    transition-delay: 0s;
+  }
+
+  .notfound-content-cards.in .plink-card:nth-child(2) {
+    transition-delay: 0.08s;
+  }
+
+  .notfound-content-cards.in .plink-card:nth-child(3) {
+    transition-delay: 0.16s;
+  }
+
+  .notfound-content-cards #nf-back-wrap {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    will-change: opacity, transform;
+  }
+
+  .notfound-content-cards.in #nf-back-wrap {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     PROJECT LINK CARDS GRID
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .plink-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  /* Individual card */
+  .plink-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(232, 232, 226, 0.85);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.22s ease,
+      box-shadow 0.22s ease,
+      transform 0.22s ease;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 8px 24px -8px rgba(0, 0, 0, 0.07);
+    cursor: pointer;
+  }
+
+  .plink-card:hover {
+    border-color: var(--accent-solid);
+    box-shadow:
+      0 0 0 1px rgba(0, 117, 222, 0.12),
+      0 8px 32px rgba(0, 117, 222, 0.1);
+    transform: translateY(-1px);
+  }
+
+  /* Thumbnail */
+  .plink-thumb {
+    width: 112px;
+    height: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  /* Suppress global picture/img overlays for thumbnails */
+  .plink-thumb picture::after,
+  .plink-thumb img::after {
+    display: none !important;
+  }
+
+  .plink-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    display: block;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  /* Info */
+  .plink-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .plink-title {
+    font-size: var(--type-ui);
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .plink-meta {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* Arrow icon */
+  .plink-arrow {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--divider);
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    transition:
+      border-color 0.22s ease,
+      color 0.22s ease,
+      transform 0.22s ease;
+  }
+
+  .plink-arrow svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .plink-card:hover .plink-arrow {
+    border-color: var(--accent-solid);
+    color: var(--accent-solid);
+    transform: translateX(3px);
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     BACK LINK
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  .nf-back {
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.22s ease;
+    display: inline-block;
+  }
+
+  .nf-back:hover {
+    color: var(--accent);
+  }
+
+  /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     RESPONSIVE
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+  @media (max-width: 600px) {
+    .notfound-card {
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .notfound-heading {
+      font-size: var(--type-card-title);
+    }
+
+    .plink-thumb {
+      width: 80px;
+      height: 40px;
+      padding: 0;
+    }
+
+    .plink-card {
+      gap: 12px;
+      padding: 10px 12px;
+    }
+
+    .plink-title {
+      font-size: var(--type-caption);
+    }
+  }
+</style>

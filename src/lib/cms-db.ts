@@ -10,21 +10,16 @@ export async function getCmsCollection<T extends object>(
 ): Promise<Collection<CmsMongoDocument<T>> | null> {
   if (!isMongoConfigured()) return null;
 
-  try {
-    const db = await getMongoDb();
-    const collection = db.collection<CmsMongoDocument<T>>(name);
+  const db = await getMongoDb();
+  const collection = db.collection<CmsMongoDocument<T>>(name);
 
-    if (!readyCollections.has(name)) {
-      await collection.createIndex({ slug: 1 });
-      await collection.createIndex({ order: 1 });
-      readyCollections.add(name);
-    }
-
-    return collection;
-  } catch (error) {
-    console.error(`[cms-db] Failed to connect to MongoDB for collection "${name}":`, error);
-    return null;
+  if (!readyCollections.has(name)) {
+    await collection.createIndex({ slug: 1 });
+    await collection.createIndex({ order: 1 });
+    readyCollections.add(name);
   }
+
+  return collection;
 }
 
 export function stripMongoId<T extends object>(

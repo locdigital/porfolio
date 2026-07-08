@@ -1,4 +1,4 @@
-import { getCollection } from "./content";
+import { getCollection } from "astro:content";
 import { getCmsCollection, stripMongoId } from "./cms-db";
 
 type ProjectData = {
@@ -115,7 +115,7 @@ export async function getPhotoLocations() {
       headline: entry.data.headline,
       subheadline: entry.data.subheadline,
       description: entry.data.description ?? "",
-      photos: entry.data.images.map((image: any) => ({
+      photos: entry.data.images.map((image) => ({
         src: image.src,
         alt: image.alt,
         w: image.width ?? 1600,

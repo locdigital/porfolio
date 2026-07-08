@@ -33,14 +33,14 @@ Standardized type scales ensure headings, body prose, and code sections are cons
 
 | Token | CSS Variable / Value | Font Family | Usage |
 |---|---|---|---|
-| **Display XL** | `var(--fs-display-xl)` / `clamp(42px, 6.5vw, 90px)` | `PP Editorial Old` (Serif) | Hero display titles (Index) |
-| **Display LG** | `var(--fs-display-lg)` / `clamp(42px, 7vw, 86px)` | `PP Editorial Old` (Serif) | Category header titles (Gear) |
-| **Display MD** | `var(--fs-display)` / `clamp(38px, 5vw, 52px)` | `PP Editorial Old` (Serif) | Section hero titles (About) |
-| **Title LG** | `var(--fs-xl)` / `clamp(24px, 3.5vw, 34px)` | `PP Editorial Old` (Serif) | Section card titles |
-| **Title MD** | `var(--fs-lg)` / `clamp(16px, 1.8vw, 20px)` | `PP Editorial Old` (Serif) | Timeline items, post titles |
-| **Body Base** | `var(--fs-base)` / `15.5px` | `Plus Jakarta Sans` (Sans) | Default body prose, biographical text |
-| **Body SM** | `var(--fs-sm)` / `14px` | `Plus Jakarta Sans` (Sans) | Card descriptions, list rows |
-| **Kicker / Label** | `var(--fs-xs)` / `12px` | `DM Mono` (Monospace) | Category tags, timelines, kickers |
+| **Display XL** | `var(--fs-display-xl)` / `clamp(52px, 6vw, 92px)` | `Imbue` (Serif) | Hero display titles and dominant editorial statements |
+| **Display LG** | `var(--fs-display-lg)` / `clamp(46px, 5vw, 88px)` | `Imbue` (Serif) | Category and page hero titles |
+| **Display MD** | `var(--fs-display)` / `clamp(38px, 3vw, 64px)` | `Imbue` (Serif) | Section hero titles |
+| **Title LG** | `var(--fs-xl)` / `clamp(24px, 1.35vw, 36px)` | `Imbue` (Serif) | Card titles and detail summaries |
+| **Title MD** | `var(--fs-lg)` / `clamp(16px, 0.22vw, 18px)` | `Imbue` (Serif) | Timeline items, post titles, compact leads |
+| **Body Base** | `var(--fs-base)` / `14px` | `Plus Jakarta Sans` (Sans) | Default body prose, cards, and list rows |
+| **Body LG** | `var(--type-body-lg)` / `15px` | `Plus Jakarta Sans` (Sans) | Long-form prose and intro copy |
+| **Kicker / Label** | `var(--fs-xs)` / `12px` | `DM Mono` or `Plus Jakarta Sans` | Category tags, timelines, kickers |
 
 ---
 

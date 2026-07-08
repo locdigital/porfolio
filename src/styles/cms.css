@@ -2,17 +2,22 @@
    CMS DASHBOARD --- loc.digital style guide applied
    Inspired by 21st.dev template; 100% original code.
    Tokens: --bg #FAFAF7 | --text #1C1C1C | --accent #0075de
-   Fonts: Imbue (serif) | Plus Jakarta Sans (sans) | DM Mono (mono)
+   Fonts: Plus Jakarta Sans across the CMS
    ============================================================ */
+
+:root {
+  --mono: var(--sans) !important;
+}
 
 /* ------ Layout shell --------------------------------------------------------------------------------------------------------------------------------- */
 .cms-app {
+  --mono: var(--sans);
   min-height: 100svh;
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
   background: transparent;
   color: var(--text);
-  font-family: var(--serif);
+  font-family: var(--sans);
 }
 
 /* ------ Sidebar ------------------------------------------------------------------------------------------------------------------------------------------------ */
@@ -40,7 +45,7 @@
   padding: 12px 10px;
   margin-bottom: 20px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: #fff;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -61,10 +66,10 @@
 .cms-workspace-avatar {
   width: 38px;
   height: 38px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   background: #000000;
   color: var(--bg);
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-lead);
   display: grid;
   place-items: center;
@@ -88,7 +93,7 @@
 }
 
 .cms-workspace-sub {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -115,7 +120,7 @@
 }
 
 .cms-nav-kicker {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -131,14 +136,14 @@
   align-items: center;
   gap: 10px;
   padding: 0 10px;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   color: var(--muted);
   font-size: var(--type-ui);
   font-weight: 500;
   text-align: left;
   transition: background 0.15s ease, color 0.15s ease;
   cursor: pointer;
-  font-family: var(--serif);
+  font-family: var(--sans);
 }
 
 .cms-nav-btn:hover {
@@ -166,7 +171,7 @@
   margin-top: 16px;
   padding: 14px 16px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: #fff;
   display: grid;
   gap: 10px;
@@ -189,27 +194,27 @@
 }
 
 .cms-storage-pct {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-caption);
   color: var(--muted);
 }
 
 .cms-storage-bar {
   height: 6px;
-  border-radius: var(--radius);
+  border-radius: 99px;
   background: var(--divider);
   overflow: hidden;
 }
 
 .cms-storage-fill {
   height: 100%;
-  border-radius: var(--radius);
+  border-radius: 99px;
   background: var(--accent);
   transition: width 0.4s ease;
 }
 
 .cms-storage-meta {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -232,7 +237,7 @@
   align-items: center;
   gap: 10px;
   padding: 10px;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   border: 1px solid var(--divider);
   background: #fff;
 }
@@ -240,7 +245,7 @@
 .cms-sidebar-user-avatar {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   background: var(--text);
   color: var(--bg);
   font-size: var(--type-ui);
@@ -265,7 +270,7 @@
 }
 
 .cms-sidebar-user-role {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -274,7 +279,7 @@
 
 .cms-sidebar-logout {
   padding: 6px;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-sm, 6px);
   color: var(--muted);
   transition: color 0.15s ease, background 0.15s ease;
   cursor: pointer;
@@ -315,7 +320,7 @@
   height: 38px;
   padding: 0 12px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: #fff;
   color: var(--text);
   font-size: var(--type-ui);
@@ -350,9 +355,9 @@
   flex-shrink: 0;
   padding: 2px 6px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: 4px;
   background: var(--bg);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   color: var(--muted);
   white-space: nowrap;
@@ -371,13 +376,13 @@
   gap: 6px;
   height: 38px;
   padding: 0 14px;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   border: 1px solid var(--divider);
   background: #fff;
   color: var(--text);
   font-size: var(--type-ui);
   font-weight: 600;
-  font-family: var(--serif);
+  font-family: var(--sans);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
   white-space: nowrap;
@@ -416,7 +421,7 @@
   right: 8px;
   width: 7px;
   height: 7px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   background: #ef4444;
   border: 2px solid #fff;
 }
@@ -424,10 +429,10 @@
 .cms-topbar-avatar {
   width: 36px;
   height: 36px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   background: var(--text);
   color: var(--bg);
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-body);
   display: grid;
   place-items: center;
@@ -445,6 +450,10 @@
 .cms-content {
   flex: 1;
   padding: 28px 28px 48px;
+}
+
+.cms-content-writing {
+  padding: 0;
 }
 
 /* ------ Page header ------------------------------------------------------------------------------------------------------------------------------------ */
@@ -482,7 +491,7 @@
   width: 100%;
   padding: 18px 20px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: #fff;
   display: grid;
   gap: 12px;
@@ -514,7 +523,7 @@
 .cms-stat-icon-wrap {
   width: 38px;
   height: 38px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -523,7 +532,7 @@
 .cms-stat-icon-wrap.blue   { background: rgba(0, 117, 222, 0.1);  color: var(--accent); }
 .cms-stat-icon-wrap.green  { background: rgba(22, 163, 74, 0.1);   color: #16a34a; }
 .cms-stat-icon-wrap.amber  { background: rgba(217, 119, 6, 0.1);   color: #d97706; }
-.cms-stat-icon-wrap.teal   { background: rgba(20, 148, 144, 0.1);  color: #0f766e; }
+.cms-stat-icon-wrap.purple { background: rgba(124, 58, 237, 0.1);  color: #7c3aed; }
 
 .cms-stat-label {
   font-size: var(--type-caption);
@@ -532,14 +541,14 @@
 }
 
 .cms-stat-growth {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-caption);
   color: #16a34a;
   font-weight: 600;
 }
 
 .cms-stat-value {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-section-title);
   font-weight: 400;
   line-height: 1;
@@ -548,7 +557,7 @@
 }
 
 .cms-stat-meta {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -581,7 +590,7 @@
 .cms-chart-card {
   padding: 20px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: #fff;
 }
 
@@ -614,7 +623,7 @@
   height: 32px;
   padding: 0 11px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: var(--bg);
   color: var(--muted);
   font-size: var(--type-caption);
@@ -634,7 +643,7 @@
   width: 100%;
   height: 200px;
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: rgba(250, 250, 247, 0.5);
 }
 
@@ -658,13 +667,13 @@
 .cms-legend-dot {
   width: 10px;
   height: 4px;
-  border-radius: var(--radius);
+  border-radius: 2px;
 }
 
 /* ------ Recent posts table --------------------------------------------------------------------------------------------------------------- */
 .cms-table-card {
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: #fff;
   overflow: hidden;
 }
@@ -693,7 +702,7 @@
 .cms-table-more {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   border: 1px solid var(--divider);
   background: #fff;
   color: var(--muted);
@@ -716,7 +725,7 @@
 .cms-table th {
   padding: 10px 20px;
   text-align: left;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -761,7 +770,7 @@
 .cms-table-post-icon {
   width: 36px;
   height: 36px;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: var(--bg);
   border: 1px solid var(--divider);
   display: grid;
@@ -785,7 +794,7 @@
   display: inline-flex;
   align-items: center;
   padding: 3px 10px;
-  border-radius: var(--radius);
+  border-radius: 99px;
   font-size: var(--type-caption);
   font-weight: 600;
   white-space: nowrap;
@@ -804,7 +813,7 @@
 
 .cms-panel {
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: #fff;
   padding: 18px 20px;
 }
@@ -841,7 +850,7 @@
 }
 
 .cms-category-pct {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-caption);
   font-weight: 600;
   color: var(--muted);
@@ -849,14 +858,14 @@
 
 .cms-category-bar {
   height: 5px;
-  border-radius: var(--radius);
+  border-radius: 99px;
   background: var(--divider);
   overflow: hidden;
 }
 
 .cms-category-fill {
   height: 100%;
-  border-radius: var(--radius);
+  border-radius: 99px;
   background: var(--accent);
 }
 
@@ -875,7 +884,7 @@
 .cms-activity-icon {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   background: var(--bg);
   border: 1px solid var(--divider);
   display: grid;
@@ -896,7 +905,7 @@
   align-items: center;
   gap: 4px;
   margin-top: 3px;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.04em;
   color: var(--muted);
@@ -916,12 +925,12 @@
   align-content: space-between;
   padding: 16px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: #fff;
 }
 
 .cms-metric strong {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--type-display);
   font-weight: 400;
   line-height: 1;
@@ -929,7 +938,7 @@
 }
 
 .cms-metric span {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -969,7 +978,7 @@
 
 /* ------ Kicker --------------------------------------------------------------------------------------------------------------------------------------------------- */
 .cms-kicker {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -987,7 +996,7 @@
   gap: 7px;
   padding: 0 14px;
   border: 1px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   font-size: var(--type-ui);
   font-weight: 600;
   font-family: var(--sans);
@@ -1048,7 +1057,7 @@
   margin: 16px 28px 14px;
   padding: 0 14px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: #fff;
   color: var(--muted);
   font-size: var(--type-ui);
@@ -1086,14 +1095,14 @@
   top: 64px; /* topbar height */
   padding: 14px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: rgba(255, 255, 255, 0.95);
 }
 
 .cms-editor {
   padding: 20px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: rgba(255, 255, 255, 0.95);
 }
 
@@ -1133,7 +1142,7 @@
   padding: 16px;
   margin-bottom: 18px;
   border: 1px solid rgba(0, 117, 222, 0.18);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-lg, 12px);
   background: linear-gradient(180deg, rgba(0, 117, 222, 0.06), rgba(255, 255, 255, 0.96));
 }
 
@@ -1168,7 +1177,7 @@
   justify-content: center;
   gap: 3px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: #fff;
   color: #b42318;
 }
@@ -1189,7 +1198,7 @@
 
 .cms-writing-seo-score small {
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
 }
 
@@ -1213,7 +1222,7 @@
   display: inline-flex;
   align-items: center;
   border: 1px solid rgba(0, 117, 222, 0.18);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-full);
   background: #fff;
   padding: 0 11px;
   color: var(--text);
@@ -1243,7 +1252,7 @@
   gap: 8px;
   padding: 9px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: rgba(255, 255, 255, 0.82);
 }
 
@@ -1294,7 +1303,7 @@
 
 .cms-subtitle-small {
   margin-top: 4px;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1339,7 +1348,7 @@
   gap: 3px;
   padding: 9px 11px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: var(--bg);
   text-align: left;
   color: var(--text);
@@ -1372,7 +1381,7 @@
 .cms-list button small,
 .cms-gear-item-list button small,
 .cms-list-label {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1471,7 +1480,7 @@
   padding: 10px;
   border: 1px solid var(--divider);
   border-bottom: 0;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-sm, 6px) var(--rounded-sm, 6px) 0 0;
   background: rgba(0, 117, 222, 0.035);
 }
 
@@ -1482,7 +1491,7 @@
 }
 
 .cms-field > span {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1494,7 +1503,7 @@
 .cms-item-toolbar select {
   width: 100%;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-sm, 6px);
   background: var(--bg);
   color: var(--text);
   font: inherit;
@@ -1503,8 +1512,8 @@
 }
 
 .cms-body-toolbar + textarea {
-  border-top-left-radius: var(--radius);
-  border-top-right-radius: var(--radius);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .cms-field input,
@@ -1529,7 +1538,7 @@
   width: 100%;
   padding: 5px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-sm, 6px);
   background: var(--bg);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -1542,7 +1551,7 @@
   gap: 6px;
   padding: 0 8px 0 10px;
   border: 1px solid rgba(0, 117, 222, 0.18);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-full);
   background: rgba(0, 117, 222, 0.08);
   color: var(--accent);
   font-family: var(--sans);
@@ -1623,7 +1632,7 @@
 }
 
 .cms-upload-note {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.04em;
   text-transform: none;
@@ -1647,7 +1656,7 @@
   gap: 8px;
   padding: 8px;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   background: var(--bg);
   overflow: hidden;
   cursor: pointer;
@@ -1663,7 +1672,7 @@
   width: 100%;
   height: 86px;
   object-fit: cover;
-  border-radius: var(--radius);
+  border-radius: 4px;
   background: rgba(0, 0, 0, 0.03);
 }
 
@@ -1686,7 +1695,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   color: var(--muted);
 }
@@ -1716,7 +1725,7 @@
   max-width: 100%;
   max-height: 90vh;
   object-fit: contain;
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
 }
 
@@ -1730,7 +1739,7 @@
   font-size: var(--type-card-title);
   width: 44px;
   height: 44px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1910,7 +1919,7 @@
   right: 0;
   background: #ffffff;
   border: 1px solid var(--divider);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-md, 8px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   padding: 6px;
   display: flex;
@@ -1930,7 +1939,7 @@
   font-family: var(--sans);
   font-size: var(--type-ui);
   color: var(--text);
-  border-radius: var(--radius);
+  border-radius: var(--rounded-sm, 6px);
   text-align: left;
   cursor: pointer;
   background: transparent;
@@ -1950,7 +1959,7 @@
 }
 
 .cms-dropdown-header {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--type-micro);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1980,7 +1989,7 @@
 
 .delete-dialog-box {
   background: #F7F5F2; /* Soft warm cream background */
-  border-radius: var(--radius);
+  border-radius: 20px;
   padding: 36px 32px 32px;
   max-width: 440px;
   width: 100%;
@@ -2006,7 +2015,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--radius);
+  border-radius: 50%;
   background: #EAE6DF; /* Soft warm circle */
   border: none;
   color: #726A5E; /* Muted brown-grey */
@@ -2051,7 +2060,7 @@
   justify-content: center;
   font-size: var(--type-body);
   font-weight: 600;
-  border-radius: var(--radius);
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: inherit;

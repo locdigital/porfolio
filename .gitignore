@@ -5,9 +5,7 @@ node_modules/
 # Build outputs and framework cache
 dist/
 .astro/
-.next/
 .vercel/
-tsconfig.tsbuildinfo
 
 # Local environment files
 .env
@@ -23,7 +21,7 @@ Go Vap 1 - 9m5 v2/
 # Local agent/git stores
 git_store.nosync/
 git_store_broken.nosync/
-.agent/
 .agents/
 skills-lock.json
 .gstack/
+.vercel

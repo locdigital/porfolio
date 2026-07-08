@@ -109,6 +109,6 @@ export function graphSchema(nodes: JsonLd[] = []): JsonLd {
   };
 }
 
-export function safeJsonLd(schema: JsonLd | JsonLd[]) {
+export function safeJsonLd(schema: JsonLd) {
   return JSON.stringify(schema).replace(/</g, "\\u003c");
 }

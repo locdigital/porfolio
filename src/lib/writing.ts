@@ -1,9 +1,8 @@
-import { getCollection, type CollectionEntry } from "./content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { existsSync, readdirSync } from "node:fs";
-import path from "node:path";
 import { listPosts, type Post } from "./writing/posts";
 
-const writingDir = path.join(process.cwd(), "src", "content", "writing");
+const writingDir = new URL("../content/writing", import.meta.url);
 
 type WritingPostData = {
   title: string;
@@ -16,7 +15,7 @@ type WritingPostData = {
   tags: string[];
 };
 
-type LocalWritingPost = CollectionEntry<WritingPostData> & {
+type LocalWritingPost = CollectionEntry<"writing"> & {
   source: "local";
   slug: string;
 };

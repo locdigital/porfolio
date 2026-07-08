@@ -1,0 +1,540 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getGear } from "../lib/cms";
+import BlurText from "../components/ui/BlurText.astro";
+import { absoluteUrl, pageSchema } from "../lib/seo";
+
+const fallbackGearSections = [
+  {
+    title: "Workstation",
+    description: "Daily setup for writing, planning campaigns, editing, and building small tools.",
+    items: [
+      {
+        name: "MacBook Air M2",
+        role: "Main laptop",
+        note: "Lightweight enough for cafe work, strong enough for Astro, Figma, ads dashboards, and photo edits.",
+        url: "https://www.apple.com/macbook-air/",
+        tag: "Laptop",
+      },
+      {
+        name: "LG UltraFine 27 inch",
+        role: "External display",
+        note: "A clean second screen for GA4, Meta Ads, docs, and timeline-heavy work.",
+        url: "https://www.lg.com/us/monitors",
+        tag: "Display",
+      },
+      {
+        name: "Keychron K2",
+        role: "Keyboard",
+        note: "Compact mechanical keyboard that keeps the desk neat without losing function keys.",
+        url: "https://www.keychron.com/products/keychron-k2-wireless-mechanical-keyboard",
+        tag: "Keys",
+      },
+      {
+        name: "Logitech MX Master 3S",
+        role: "Mouse",
+        note: "The horizontal scroll wheel is ridiculously useful for spreadsheets and creative timelines.",
+        url: "https://www.logitech.com/products/mice/mx-master-3s.html",
+        tag: "Mouse",
+      },
+    ],
+  },
+  {
+    title: "Camera & Content",
+    description: "Small kit for travel photos, product shots, and behind-the-scenes content.",
+    items: [
+      {
+        name: "Sony Alpha a6400",
+        role: "Camera body",
+        note: "Reliable autofocus, compact size, and still a very capable hybrid camera for the road.",
+        url: "https://electronics.sony.com/imaging/interchangeable-lens-cameras/aps-c/p/ilce6400-b",
+        tag: "Camera",
+      },
+      {
+        name: "Sigma 30mm F1.4 DC DN",
+        role: "Everyday lens",
+        note: "My favorite focal length for low-light street photos, portraits, and natural product frames.",
+        url: "https://www.sigmaphoto.com/30mm-f1-4-dc-dn-c",
+        tag: "Lens",
+      },
+      {
+        name: "iPhone 15 Pro",
+        role: "Pocket camera",
+        note: "Quick capture, story drafts, notes, voice memos, and the fastest camera because it is always there.",
+        url: "https://www.apple.com/iphone-15-pro/",
+        tag: "Phone",
+      },
+    ],
+  },
+  {
+    title: "Audio & Focus",
+    description: "The tiny things that make deep work and calls easier.",
+    items: [
+      {
+        name: "AirPods Pro",
+        role: "Everyday audio",
+        note: "Noise cancellation for flights, cafes, and long strategy blocks.",
+        url: "https://www.apple.com/airpods-pro/",
+        tag: "Audio",
+      },
+      {
+        name: "Sony WH-1000XM5",
+        role: "Deep work headphones",
+        note: "Comfortable for longer editing sessions and focused planning days.",
+        url: "https://electronics.sony.com/audio/headphones/headband/p/wh1000xm5-b",
+        tag: "Headphones",
+      },
+    ],
+  },
+  {
+    title: "Apps I Keep Open",
+    description: "Software and services that sit in the daily loop.",
+    items: [
+      {
+        name: "Notion",
+        role: "Workspace",
+        note: "Campaign notes, content calendars, project docs, and the personal operating system.",
+        url: "https://www.notion.so/",
+        tag: "Docs",
+      },
+      {
+        name: "Raycast",
+        role: "Launcher",
+        note: "Fast app switching, snippets, clipboard history, and little shortcuts that compound.",
+        url: "https://www.raycast.com/",
+        tag: "Utility",
+      },
+      {
+        name: "ChatGPT",
+        role: "Thinking partner",
+        note: "Research, draft structure, coding help, and pressure-testing ideas before they go live.",
+        url: "https://chatgpt.com/",
+        tag: "AI",
+      },
+      {
+        name: "Ahrefs",
+        role: "SEO research",
+        note: "Keyword exploration, content gaps, competitor checks, and search opportunity sizing.",
+        url: "https://ahrefs.com/",
+        tag: "SEO",
+      },
+    ],
+  },
+];
+
+const gear = await getGear();
+const gearSections = gear?.sections ?? fallbackGearSections.map((section) => ({
+  ...section,
+  slug: section.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+  headline: section.title,
+  items: section.items.map((item) => ({
+    name: item.name,
+    slug: item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+    headline: item.role,
+    description: item.note,
+    url: item.url,
+    tag: item.tag,
+  })),
+}));
+const gearTitle = gear?.title ?? "My Gear";
+const gearHeadline = gear?.headline ?? "Tools for <em>focused work</em> and faster <em>building.</em>";
+const gearDescription = gear?.description ?? "A living list of the products in my everyday setup. Each item links out to the product page so it is easy to reference, replace, or share.";
+const gearPageTitle = "My Gear | Phuc Loc Nguyen";
+const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc Loc Nguyen uses for marketing, content, and creative work.";
+const safeGearHeadline = gearHeadline
+  .replace(/<em[^>]*>/gi, "<em>")
+  .replace(/<(?!\/?em>)[^>]*>/gi, "");
+const gearHeadlineText = safeGearHeadline.replace(/<\/?em>/g, "");
+---
+
+<Layout
+  title={gearPageTitle}
+  description={gearPageDescription}
+  schema={[
+    pageSchema({
+      url: absoluteUrl("/gear"),
+      title: gearPageTitle,
+      description: gearPageDescription,
+      type: "CollectionPage",
+    }),
+    {
+      "@type": "ItemList",
+      "@id": `${absoluteUrl("/gear")}#gear`,
+      name: "Gear and tools",
+      itemListElement: gearSections.flatMap((section) => section.items).map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Product",
+          name: item.name,
+          description: item.description,
+          category: item.tag,
+          url: item.url,
+        },
+      })),
+    },
+  ]}
+>
+  <main class="gear-page">
+    <div class="gear-container">
+      <section class="gear-hero" aria-label="My Gear introduction">
+        <div class="page-kicker-wrapper">
+          <span class="page-kicker-text">{gearTitle}</span>
+        </div>
+        <h1 class="sr-only" set:html={safeGearHeadline} />
+        <BlurText
+          text={gearHeadlineText}
+          animateBy="words"
+          direction="top"
+          delay={70}
+          stepDuration={0.42}
+          className="gear-hero-title"
+        />
+        <p class="gear-intro">{gearDescription}</p>
+      </section>
+
+      <nav class="gear-jump-nav" aria-label="Gear categories">
+        {gearSections.map((section) => (
+          <a href={`#${section.slug}`}>{section.title}</a>
+        ))}
+      </nav>
+
+      <section class="gear-featured" aria-label="Featured setup">
+        <div class="desk-visual">
+          <img src="/images/gear/gear-future.webp" alt="Future desk setup" loading="eager" decoding="async" />
+        </div>
+        <div class="gear-featured-copy">
+          <span class="gear-count">{gearSections.reduce((sum, section) => sum + section.items.length, 0)} items</span>
+          <h2>Desk, camera, audio, and apps in one place.</h2>
+          <p>
+            A curated list of my workstation equipment, camera kit, audio gear, and productivity software that I use on a daily basis.
+          </p>
+        </div>
+      </section>
+
+      {gearSections.map((section, sectionIndex) => (
+        <section class="gear-section" id={section.slug}>
+          <div class="gear-section-head">
+            <div>
+              <h2>{section.title}</h2>
+              <p>{section.description}</p>
+            </div>
+            <span>{String(sectionIndex + 1).padStart(2, "0")}</span>
+          </div>
+
+          <div class="gear-grid">
+            {section.items.map((item) => (
+              <article id={item.slug} class={`gear-card gear-card-${item.slug}`} aria-label={`${item.name}: ${item.headline}`}>
+                <div class="gear-card-visual">
+                  {item.image ? <img src={item.image} alt="" loading="lazy" decoding="async" /> : <span aria-hidden="true">{item.tag}</span>}
+                </div>
+                <div class="gear-card-copy">
+                  <div class="gear-card-title">
+                    <h3>{item.name}</h3>
+                  </div>
+                  <p class="gear-role">{item.headline}</p>
+                  <p class="gear-note">{item.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* Shared layout and hero styles inherited from global.css */
+
+  .gear-jump-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -22px 0 42px;
+  }
+
+  .gear-jump-nav a {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    border: 1px solid var(--divider);
+    border-radius: var(--rounded-sm);
+    padding: 7px 11px;
+    font-family: var(--sans);
+    font-size: var(--type-ui);
+    font-weight: 600;
+    line-height: 1;
+    color: color-mix(in srgb, var(--text) 78%, var(--muted));
+    background: rgba(255, 255, 255, 0.36);
+    transition: border-color 180ms var(--ease-out), color 180ms var(--ease-out), background 180ms var(--ease-out);
+  }
+
+  .gear-jump-nav a:hover,
+  .gear-jump-nav a:focus-visible {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .gear-featured {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr);
+    gap: 36px;
+    align-items: stretch;
+    margin-bottom: 88px;
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+    padding: 28px 0;
+  }
+
+  .desk-visual {
+    min-height: 340px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    background: #f4f4ef;
+  }
+
+  .desk-visual img {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .gear-featured-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .gear-count {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .gear-featured-copy h2 {
+    font-family: var(--serif);
+    font-size: var(--type-section-title);
+    line-height: 1.05;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 14px;
+    text-wrap: balance;
+  }
+
+  .gear-featured-copy p {
+    color: color-mix(in srgb, var(--text) 70%, var(--muted));
+    font-size: var(--type-body);
+    line-height: 1.72;
+    text-wrap: pretty;
+  }
+
+  .gear-section {
+    margin-bottom: 76px;
+    scroll-margin-top: calc(var(--hdr-h) + 24px);
+    content-visibility: visible;
+  }
+
+  .gear-section-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: flex-start;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .gear-section-head h2 {
+    font-family: var(--serif);
+    font-size: var(--type-section-title);
+    font-weight: 400;
+    line-height: 1.08;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .gear-section-head p {
+    max-width: 560px;
+    color: color-mix(in srgb, var(--text) 70%, var(--muted));
+    font-size: var(--type-body);
+    line-height: 1.62;
+    text-wrap: pretty;
+  }
+
+  .gear-section-head span {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+  }
+
+  .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 16px;
+    padding-top: 16px;
+  }
+
+  .gear-card {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    min-height: 180px;
+    overflow: hidden;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.32);
+    color: inherit;
+  }
+
+  .gear-card-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: transparent;
+    border-right: 1px solid var(--divider);
+    border-radius: var(--image-radius) 0 0 var(--image-radius) !important;
+    overflow: hidden;
+  }
+
+  .gear-card-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .gear-card-adidas-adizero-evo-sl .gear-card-visual img {
+    transform: translateX(2px) rotate(0deg) scale(1.04);
+  }
+
+  .gear-card-kailas-fuga-ex-330 .gear-card-visual img {
+    transform: translateX(2px) scaleX(-1) scale(1.04);
+  }
+
+  .gear-card-coros-apex-4 .gear-card-visual img {
+    transform: translateX(2px) scaleX(-1) scale(1.04);
+  }
+
+  .gear-card-gami-crom-pro .gear-card-visual img {
+    transform: scale(1.6);
+    transform-origin: center;
+  }
+
+  .gear-card-visual span {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--text);
+  }
+
+  .gear-card-copy {
+    min-width: 0;
+    padding: 18px;
+  }
+
+  .gear-card-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 4px;
+  }
+
+  .gear-card-title h3 {
+    font-family: var(--serif);
+    font-size: calc(var(--type-card-title) * 0.8);
+    line-height: 1.05;
+    font-weight: 400;
+    color: var(--text);
+    transition: color 0.2s ease;
+    text-wrap: balance;
+  }
+
+  .gear-card-title span {
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+  }
+
+
+
+  .gear-role {
+    font-family: var(--mono);
+    font-size: calc(var(--type-caption) * 0.8);
+    color: #005fb8;
+    margin-bottom: 14px;
+  }
+
+  .gear-note {
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
+    font-size: calc(var(--type-body) * 0.8);
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 900px) {
+    .gear-featured {
+      grid-template-columns: 1fr;
+    }
+
+    .gear-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .gear-page {
+      padding-top: calc(var(--hdr-h) + 44px);
+    }
+
+    .gear-featured {
+      margin-bottom: 64px;
+    }
+
+    .gear-jump-nav {
+      margin-bottom: 34px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+
+    .gear-jump-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gear-jump-nav a {
+      flex: 0 0 auto;
+    }
+
+    .desk-visual {
+      min-height: 260px;
+    }
+
+    .gear-section-head {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .gear-card {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .gear-card-visual {
+      min-height: 96px;
+      border-right: 0;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .gear-card-gami-crom-pro .gear-card-visual img {
+      transform: scale(1);
+    }
+  }
+</style>

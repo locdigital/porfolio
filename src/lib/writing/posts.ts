@@ -74,21 +74,16 @@ function withoutUndefined<T extends Record<string, unknown>>(value: T): T {
 async function getPostsCollection(): Promise<Collection<StoredPost> | null> {
   if (!isMongoConfigured()) return null;
 
-  try {
-    const db = await getMongoDb();
-    const collection = db.collection<StoredPost>("writing_posts");
+  const db = await getMongoDb();
+  const collection = db.collection<StoredPost>("writing_posts");
 
-    if (!indexesReady) {
-      await collection.createIndex({ slug: 1 });
-      await collection.createIndex({ status: 1, updatedAt: -1 });
-      indexesReady = true;
-    }
-
-    return collection;
-  } catch (error) {
-    console.error("[writing-posts] Failed to connect to MongoDB for collection 'writing_posts':", error);
-    return null;
+  if (!indexesReady) {
+    await collection.createIndex({ slug: 1 });
+    await collection.createIndex({ status: 1, updatedAt: -1 });
+    indexesReady = true;
   }
+
+  return collection;
 }
 
 async function listFilePosts(): Promise<Post[]> {

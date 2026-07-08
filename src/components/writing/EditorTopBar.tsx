@@ -6,7 +6,6 @@ export type SaveStatus = "saved" | "saving" | "unsaved" | "error";
 interface EditorTopBarProps {
   post: Partial<Post>;
   saveStatus: SaveStatus;
-  publishStatus?: "idle" | "loading" | "success";
   onSaveDraft: () => void;
   onPublish: () => void;
 }
@@ -40,7 +39,6 @@ const statusConfig: Record<
 export default function EditorTopBar({
   post,
   saveStatus,
-  publishStatus = "idle",
   onSaveDraft,
   onPublish,
 }: EditorTopBarProps) {
@@ -92,10 +90,9 @@ export default function EditorTopBar({
           <span>Save Draft</span>
         </button>
         <button
-          className={`topbar-btn topbar-btn-primary${publishStatus === "success" ? " topbar-btn-success" : ""}`}
+          className="topbar-btn topbar-btn-primary"
           onClick={onPublish}
           aria-label={isPublished ? "Update post" : "Publish post"}
-          disabled={publishStatus === "loading"}
         >
           <span>{isPublished ? "Update" : "Publish"}</span>
         </button>

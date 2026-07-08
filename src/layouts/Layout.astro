@@ -1,0 +1,894 @@
+---
+import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
+const { 
+  title = "Phuc Loc Nguyen | Senior Performance Marketing Executive",
+  description = DEFAULT_DESCRIPTION,
+  hideHeader = false,
+  hideFooter = false,
+  favicon,
+  ogImage,
+  ogType = "website",
+  robots = "index, follow",
+  schema = [],
+} = Astro.props;
+const pathname = Astro.url.pathname;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const socialThumbnail = ogImage || DEFAULT_OG_IMAGE;
+const pageSchemas = Array.isArray(schema) ? schema : [schema];
+const jsonLd = safeJsonLd(graphSchema(pageSchemas));
+const desktopNavItems = [
+  {
+    label: "Work",
+    href: "/work",
+    active: pathname.startsWith("/work"),
+    icon: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+  },
+  {
+    label: "Services",
+    href: "/service",
+    active: pathname.startsWith("/service"),
+    icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  },
+  {
+    label: "Gear",
+    href: "/gear",
+    active: pathname.startsWith("/gear"),
+    icon: '<rect width="18" height="12" x="3" y="4" rx="2" ry="2"/><line x1="2" x2="22" y1="20" y2="20"/><line x1="5" x2="19" y1="16" y2="16"/>',
+  },
+  {
+    label: "Photos",
+    href: "/photos",
+    active: pathname.startsWith("/photos") || pathname.startsWith("/gallery"),
+    icon: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+  },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en" style="background:#FAFAF7">
+
+<head>
+  <meta charset="UTF-8">
+  {import.meta.env.DEV && (
+    <script type="module" is:inline>
+      import RefreshRuntime from "/@react-refresh"
+      RefreshRuntime.injectIntoGlobalHook(window)
+      window.$RefreshReg$ = () => {}
+      window.$RefreshSig$ = () => (type) => type
+      window.__vite_plugin_react_preamble_installed__ = true
+    </script>
+  )}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
+  <meta name="description" content={description}>
+  <meta name="robots" content={robots}>
+  
+  <!-- Open Graph / Social Media Thumbnail -->
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={socialThumbnail}>
+  <meta property="og:image:alt" content={title}>
+  <meta property="og:image:width" content="1774">
+  <meta property="og:image:height" content="887">
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:type" content={ogType}>
+  <meta property="og:site_name" content="Lộc Digital">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={socialThumbnail}>
+
+  <title>{title}</title>
+  <script is:inline>
+    document.documentElement.classList.add("js");
+  </script>
+  <meta name="theme-color" content="#FAFAF7">
+  <link rel="canonical" href={canonicalUrl} />
+  <meta name="google-site-verification" content="tYabJCSeApR0trq6VL7V6_JKbEKbBnznDtNmvaBehfY" />
+  <link rel="alternate" type="application/rss+xml" title="Lộc Digital writing" href={new URL("/rss.xml", Astro.site)} />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  
+  {favicon ? (
+    <link rel="icon" href={favicon} />
+  ) : (
+    <>
+      <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="/favicon-active.svg" />
+      <script is:inline>
+        function syncFavicon() {
+          const favicon = document.getElementById("dynamic-favicon");
+          if (favicon) {
+            favicon.href = document.hidden || !document.hasFocus()
+              ? "/favicon-inactive.svg"
+              : "/favicon-active.svg";
+          }
+        }
+
+        document.addEventListener("visibilitychange", syncFavicon);
+        window.addEventListener("focus", syncFavicon);
+        window.addEventListener("blur", syncFavicon);
+        syncFavicon();
+      </script>
+    </>
+  )}
+
+  <!-- Google tag (gtag.js): loaded after idle so analytics does not compete with first paint -->
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    function loadAnalytics() {
+      if (window.__locAnalyticsLoaded) return;
+      window.__locAnalyticsLoaded = true;
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-DYB5FLYNH4";
+      document.head.appendChild(script);
+      gtag("js", new Date());
+      gtag("config", "G-DYB5FLYNH4");
+    }
+
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(loadAnalytics, { timeout: 3000 });
+    } else {
+      window.addEventListener("load", function () {
+        setTimeout(loadAnalytics, 1200);
+      }, { once: true });
+    }
+  </script>
+
+  <!-- Resource Hints: preconnect + dns-prefetch for external CDNs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="//unpkg.com">
+
+  <!-- Fonts: non-blocking load (media="print" trick avoids render-blocking) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.setAttribute('media','all')">
+  <!-- Fallback for no-JS -->
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400&display=swap"
+      rel="stylesheet">
+  </noscript>
+
+  <ViewTransitions />
+  <script is:inline type="application/ld+json" set:html={jsonLd}></script>
+
+  <style is:global>
+    /* ── Page transition: global blur fade ── */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 360ms;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+      animation-fill-mode: both;
+      mix-blend-mode: normal;
+    }
+
+    ::view-transition-old(root) {
+      animation-name: loc-page-blur-out;
+    }
+
+    ::view-transition-new(root) {
+      animation-name: loc-page-blur-in;
+    }
+
+    @keyframes loc-page-blur-out {
+      from {
+        opacity: 1;
+        filter: blur(0);
+      }
+      to {
+        opacity: 0;
+        filter: blur(12px);
+      }
+    }
+
+    @keyframes loc-page-blur-in {
+      from {
+        opacity: 0;
+        filter: blur(12px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: none !important;
+        filter: none !important;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  {!hideHeader && (
+    <>
+      <header id="site-header" class={`${pathname.startsWith('/photos') ? 'absolute-header' : ''} ${pathname.startsWith('/gallery') ? 'gallery-glass-header' : ''}`.trim()}>
+        <div class="header-inner">
+          <a href="/" class="header-logo" aria-label="Phuc Loc Nguyen, back to home">
+            <span class="logo-circle"></span>
+            <span class="logo-text">Phuc Loc Nguyen</span>
+          </a>
+
+          <div class="header-nav-desktop">
+            <nav class="header-menu" aria-label="Primary navigation">
+              <ul>
+                {desktopNavItems.map((item) => (
+                  <li>
+                    <a href={item.href} class={item.active ? "active" : ""} aria-current={item.active ? "page" : undefined}>
+                      <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={item.icon}></svg>
+                      <span>{item.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          <div class="header-nav-mobile">
+            <div class="mobile-pill-nav">
+              {desktopNavItems.map((item) => (
+                <a href={item.href} class={`mobile-pill-link ${item.active ? "active" : ""}`} aria-current={item.active ? "page" : undefined}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- Mobile Bottom Navigation Bar -->
+      <nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
+        <ul class="mobile-bottom-nav-list">
+          <li>
+            <a href="/work" class={pathname.startsWith('/work') ? 'active' : ''} aria-label="Work">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+              <span class="nav-label">Work</span>
+            </a>
+          </li>
+          <li>
+            <a href="/service" class={pathname.startsWith('/service') ? 'active' : ''} aria-label="Services">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span class="nav-label">Services</span>
+            </a>
+          </li>
+          <li>
+            <a href="/gear" class={pathname.startsWith('/gear') ? 'active' : ''} aria-label="Gear">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect width="18" height="12" x="3" y="4" rx="2" ry="2"/><line x1="2" x2="22" y1="20" y2="20"/><line x1="5" x2="19" y1="16" y2="16"/></svg>
+              <span class="nav-label">Gear</span>
+            </a>
+          </li>
+          <li>
+            <a href="/photos" class={pathname.startsWith('/photos') || pathname.startsWith('/gallery') ? 'active' : ''} aria-label="Photos">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              <span class="nav-label">Photos</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </>
+  )}
+
+
+
+  <slot />
+
+  {!hideFooter && (
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" title="Back to top">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </button>
+  )}
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  {!hideFooter && !pathname.startsWith('/gallery') && (
+    <>
+      <div class="footer-divider"></div>
+      <div class="container">
+        <footer class="footer" aria-label="Footer">
+          <div class="footer-contact">
+            Let's connect.
+            <button class="email-copy" id="copy-email" aria-label="Copy email address" data-tip="Copy">
+              hi@loc.digital
+            </button>
+          </div>
+          <ul class="footer-links">
+            <li><a href="https://www.instagram.com/henrygoodkid" target="_blank" rel="noopener noreferrer"
+                aria-label="Instagram">Instagram ↗</a></li>
+            <li><a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer"
+                aria-label="LinkedIn">LinkedIn ↗</a></li>
+            <li><a href="https://www.pexels.com/@henrygoodkid" target="_blank" rel="noopener noreferrer"
+                aria-label="Pexels">Pexels ↗</a></li>
+          </ul>
+        </footer>
+        <div class="colophon">
+          <span>© 2026 Phuc Loc Nguyen</span>
+          <span>Astro / Static HTML / WCAG 2.2 AA</span>
+        </div>
+      </div>
+    </>
+  )}
+
+
+
+  <!-- Scripts -->
+  <script is:inline>
+    // Force scroll to top on load/refresh and disable browser scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+
+
+    document.addEventListener('astro:page-load', () => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      /* ── Image Loading Shimmer & Fade-in Loader ── */
+      function setupImageLoaders() {
+        const fallbackImageSrc = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Image unavailable">
+            <defs>
+              <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f8f6ef"/>
+                <stop offset="1" stop-color="#e7e3d8"/>
+              </linearGradient>
+              <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+                <path d="M56 0H0v56" fill="none" stroke="#d8d2c2" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="1200" height="800" fill="url(#bg)"/>
+            <rect width="1200" height="800" fill="url(#grid)" opacity=".55"/>
+            <g transform="translate(600 400)" text-anchor="middle">
+              <rect x="-170" y="-118" width="340" height="236" rx="8" fill="#fafaf7" stroke="#222" stroke-width="7"/>
+              <circle cx="-64" cy="-42" r="30" fill="#222"/>
+              <path d="M-130 78 2-42l58 58 42-38 88 100z" fill="#222"/>
+              <text y="190" fill="#222" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" letter-spacing="2">IMAGE UNAVAILABLE</text>
+            </g>
+          </svg>
+        `);
+
+        const setupImage = (img) => {
+          if (img.dataset.loaderSetup) return;
+          img.dataset.loaderSetup = 'true';
+
+          const wrapper = img.closest('picture') || 
+                          img.closest('.ratio-box') || 
+                          img.closest('.loc-photo-item') || 
+                          img.closest('.project-card-img') || 
+                          img.closest('.tl-logo') || 
+                          img.closest('.gallery-item') || 
+                          img.parentElement;
+
+          const showFallbackImage = () => {
+            if (img.dataset.fallbackApplied === 'true') return;
+            img.dataset.fallbackApplied = 'true';
+            img.src = fallbackImageSrc;
+            img.classList.add('loaded');
+            img.classList.remove('skeleton-loading-img');
+            if (wrapper) {
+              wrapper.classList.remove('skeleton-loading');
+            }
+          };
+
+          img.addEventListener('error', showFallbackImage, { once: true });
+
+          // Exclude images in draggable-collage
+          if (img.closest('.draggable-collage-container') || img.closest('.mobile-about-panel')) return;
+
+          if (img.complete && img.naturalWidth > 0) {
+            img.classList.add('loaded');
+          } else if (img.complete && img.naturalWidth === 0) {
+            showFallbackImage();
+          } else {
+            if (wrapper) {
+              wrapper.classList.add('skeleton-loading');
+            }
+            img.classList.add('skeleton-loading-img');
+
+            const handleLoad = () => {
+              img.classList.add('loaded');
+              if (wrapper) {
+                wrapper.classList.remove('skeleton-loading');
+              }
+              img.removeEventListener('load', handleLoad);
+            };
+
+            img.addEventListener('load', handleLoad);
+          }
+        };
+
+        document.querySelectorAll('img').forEach(setupImage);
+
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                if (node.tagName === 'IMG') {
+                  setupImage(node);
+                } else {
+                  node.querySelectorAll('img').forEach(setupImage);
+                }
+              }
+            });
+          });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+        return observer;
+      }
+
+      if (window.imageLoaderObserver) {
+        window.imageLoaderObserver.disconnect();
+      }
+      window.imageLoaderObserver = setupImageLoaders();
+
+      /* ── Page load ── */
+      document.body.classList.add('ready');
+
+      function setupOrderedCardAnimations() {
+        const cards = Array.from(document.querySelectorAll('.animated-card'));
+        if (!cards.length) return;
+
+        if (reduced) {
+          cards.forEach((card) => card.classList.add('card-in'));
+          return;
+        }
+
+        const headlineTypes = new Set(['headline', 'featured', 'title']);
+        const rowTolerance = 24;
+
+        const getCardPriority = (card) => {
+          const type = (card.dataset.cardType || '').toLowerCase();
+          return headlineTypes.has(type) ||
+            card.classList.contains('headline-card') ||
+            card.classList.contains('featured-card') ||
+            card.classList.contains('title-card')
+            ? 0
+            : 1;
+        };
+
+        const sortedCards = cards
+          .map((card, originalIndex) => {
+            const rect = card.getBoundingClientRect();
+            return {
+              card,
+              originalIndex,
+              priority: getCardPriority(card),
+              top: rect.top + window.scrollY,
+              left: rect.left + window.scrollX,
+            };
+          })
+          .sort((a, b) => {
+            const sameRow = Math.abs(a.top - b.top) <= rowTolerance;
+            if (!sameRow) return a.top - b.top;
+            if (a.priority !== b.priority) return a.priority - b.priority;
+            if (Math.abs(a.left - b.left) > 2) return a.left - b.left;
+            return a.originalIndex - b.originalIndex;
+          });
+
+        sortedCards.forEach(({ card }, index) => {
+          card.classList.remove('card-in');
+          card.style.setProperty('--card-delay', `${Math.min(index * 100, 1200)}ms`);
+        });
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            sortedCards.forEach(({ card }) => card.classList.add('card-in'));
+          });
+        });
+      }
+
+      let orderedCardAnimationFrame = 0;
+      function queueOrderedCardAnimations() {
+        if (orderedCardAnimationFrame) cancelAnimationFrame(orderedCardAnimationFrame);
+        orderedCardAnimationFrame = requestAnimationFrame(() => {
+          orderedCardAnimationFrame = requestAnimationFrame(setupOrderedCardAnimations);
+        });
+      }
+
+      queueOrderedCardAnimations();
+      window.addEventListener('load', queueOrderedCardAnimations, { once: true });
+      if (window._orderedCardObserver) {
+        window._orderedCardObserver.disconnect();
+      }
+      window._orderedCardObserver = new MutationObserver((mutations) => {
+        const hasAnimatedCardChange = mutations.some((mutation) =>
+          Array.from(mutation.addedNodes).some((node) =>
+            node.nodeType === Node.ELEMENT_NODE &&
+            (node.classList?.contains('animated-card') || node.querySelector?.('.animated-card'))
+          )
+        );
+
+        if (hasAnimatedCardChange) {
+          queueOrderedCardAnimations();
+        }
+      });
+      window._orderedCardObserver.observe(document.body, { childList: true, subtree: true });
+
+      // Nav: drop from above (spring CSS handles overshoot)
+      setTimeout(() => document.getElementById('site-header')?.classList.add('in'), 80);
+
+      // Prepare typing effect for hero lines
+      const heroLines = document.querySelectorAll('.hero-line');
+      
+      // Hero lines fade-in sequentially
+      if (heroLines.length > 0) {
+        heroLines.forEach((line, i) => {
+          setTimeout(() => {
+            line.classList.add('in');
+          }, reduced ? (280 + i * 130) : (280 + i * 150));
+        });
+      }
+
+      // Hero aside
+      setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
+
+      /* ── IntersectionObserver: section reveals ── */
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.07, rootMargin: '0px 0px -36px 0px' });
+
+      // Observe existing manual reveal elements and auto-reveal elements after a brief delay
+      // to let the page entry fade/blur transition complete so animations are visible
+      setTimeout(() => {
+        document.querySelectorAll('.r, .toki-r').forEach(el => io.observe(el));
+
+        // Auto-reveal: find all major content elements NOT already in a reveal or hero context
+        const AUTO_REVEAL_SELECTORS = [
+          'main section',
+          'main article',
+          'main h1:not(.hero-line)',
+          'main h2',
+          'main h3',
+          'main p:not(.hero-line)',
+          'main li',
+          'main figure',
+          'main picture',
+          'main blockquote',
+          'main .card',
+          'main .post-item',
+          'main .blog-post-link',
+          'main .gear-card',
+          'main .gear-item',
+          'main .photo-card',
+          'main .loc-photo-item',
+          'main .big-card',
+          'main .gear-section',
+          'main .timeline-row',
+          'main .project-row',
+          'main .writing-row',
+          'main .sh',
+          'main .about-layout',
+          'main .about-photo',
+          'main table',
+        ].join(', ');
+
+        document.querySelectorAll(AUTO_REVEAL_SELECTORS).forEach((el) => {
+          // Skip if already has a reveal class or is inside hero
+          if (
+            el.classList.contains('r') ||
+            el.classList.contains('toki-r') ||
+            el.classList.contains('reveal') ||
+            el.classList.contains('gear-intro') ||
+            el.closest('.hero') ||
+            el.closest('.hero-title') ||
+            el.classList.contains('hero-line') ||
+            el.classList.contains('hero-aside')
+          ) return;
+
+          el.classList.add('reveal');
+          io.observe(el);
+        });
+
+        // Auto-stagger items inside reveal-group containers
+        document.querySelectorAll('.reveal-group').forEach((group) => {
+          Array.from(group.children).forEach((child) => {
+            if (!child.classList.contains('reveal')) {
+              child.classList.add('reveal');
+              io.observe(child);
+            }
+          });
+        });
+      }, 40);
+
+      /* ── Viewport observers: header and back-to-top state ── */
+      const header = document.getElementById('site-header');
+      const backToTop = document.getElementById('back-to-top');
+
+      if (window._layoutHeaderObserver) {
+        window._layoutHeaderObserver.disconnect();
+      }
+      if (window._layoutBackToTopObserver) {
+        window._layoutBackToTopObserver.disconnect();
+      }
+      document.querySelectorAll('.viewport-sentinel').forEach((node) => node.remove());
+
+      const headerSentinel = document.createElement('span');
+      headerSentinel.setAttribute('aria-hidden', 'true');
+      headerSentinel.className = 'viewport-sentinel viewport-sentinel--header';
+      document.body.prepend(headerSentinel);
+
+      window._layoutHeaderObserver = new IntersectionObserver(([entry]) => {
+        header?.classList.toggle('is-scrolled', !entry.isIntersecting);
+      }, { threshold: 0 });
+      window._layoutHeaderObserver.observe(headerSentinel);
+
+      const topSentinel = document.createElement('span');
+      topSentinel.setAttribute('aria-hidden', 'true');
+      topSentinel.className = 'viewport-sentinel viewport-sentinel--top';
+      document.body.prepend(topSentinel);
+
+      window._layoutBackToTopObserver = new IntersectionObserver(([entry]) => {
+        backToTop?.classList.toggle('is-visible', !entry.isIntersecting);
+      }, { threshold: 0, rootMargin: '-72% 0px 0px 0px' });
+      window._layoutBackToTopObserver.observe(topSentinel);
+
+      /* ── Back to top ── */
+      if (window._layoutBackToTopClick) {
+        backToTop?.removeEventListener('click', window._layoutBackToTopClick);
+      }
+      window._layoutBackToTopClick = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: reduced ? 'auto' : 'smooth',
+        });
+      };
+      backToTop?.addEventListener('click', window._layoutBackToTopClick);
+
+      /* ── Hamburger / mobile menu ── */
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const backdrop = document.getElementById('mobile-backdrop');
+      let menuOpen = false, lockScrollY = 0;
+
+      function toggleMenu() {
+        menuOpen = !menuOpen;
+        if (hamburger) {
+          hamburger.setAttribute('aria-expanded', String(menuOpen));
+          hamburger.classList.toggle('is-open', menuOpen);
+        }
+        if (mobileMenu) {
+          mobileMenu.classList.toggle('is-open', menuOpen);
+          mobileMenu.setAttribute('aria-hidden', String(!menuOpen));
+        }
+        if (backdrop) backdrop.classList.toggle('is-open', menuOpen);
+
+        if (menuOpen) {
+          lockScrollY = window.scrollY;
+          document.body.style.cssText = `position:fixed;top:-${lockScrollY}px;width:100%;`;
+        } else {
+          document.body.style.cssText = '';
+          window.scrollTo(0, lockScrollY);
+        }
+      }
+
+      hamburger?.addEventListener('click', toggleMenu);
+      backdrop?.addEventListener('click', () => menuOpen && toggleMenu());
+      mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menuOpen && toggleMenu()));
+
+      const onKeyDown = e => e.key === 'Escape' && menuOpen && toggleMenu();
+      if (window._layoutOnKeyDown) {
+        document.removeEventListener('keydown', window._layoutOnKeyDown);
+      }
+      window._layoutOnKeyDown = onKeyDown;
+      document.addEventListener('keydown', window._layoutOnKeyDown);
+
+      /* ── Smooth scroll for anchor links ── */
+      document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(a => {
+        a.addEventListener('click', e => {
+          const href = a.getAttribute('href');
+          const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+          if (href.startsWith('/#') && !isHomePage) return; // let it navigate natively
+          
+          const targetId = href.startsWith('/#') ? href.slice(1) : href;
+          const t = document.querySelector(targetId);
+          if (!t) return;
+          e.preventDefault();
+          window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 56, behavior: reduced ? 'auto' : 'smooth' });
+          if (menuOpen) toggleMenu(); // Close mobile menu on click
+        });
+      });
+
+      /* ── Gallery arrows & Auto Scroll ── */
+      const stripOuter = document.querySelector('.gallery-strip-outer');
+      const arrowL = document.querySelector('.gallery-arrow--left');
+      const arrowR = document.querySelector('.gallery-arrow--right');
+
+      if (stripOuter && arrowL && arrowR) {
+        // Prevent native drag behaviors on child elements
+        stripOuter.querySelectorAll('a, img').forEach(el => {
+          el.setAttribute('draggable', 'false');
+        });
+
+        const fadeR = stripOuter.parentElement.querySelector('.gallery-fade-right');
+        const fadeL = stripOuter.parentElement.querySelector('.gallery-fade-left');
+
+        let down = false;
+
+        const updateArrows = () => {
+          const half = stripOuter.scrollWidth / 2;
+          if (half > 0) {
+            if (stripOuter.scrollLeft >= half) {
+              stripOuter.scrollLeft -= half;
+            } else if (stripOuter.scrollLeft <= 2) {
+              stripOuter.scrollLeft += half;
+            }
+          }
+          arrowL.disabled = false;
+          arrowR.disabled = false;
+          fadeL?.classList.toggle('visible', true);
+          if (fadeR) fadeR.style.opacity = '1';
+        };
+
+        const step = () => stripOuter.clientWidth * 0.7;
+        arrowL.addEventListener('click', () => stripOuter.scrollBy({ left: -step(), behavior: 'smooth' }));
+        arrowR.addEventListener('click', () => stripOuter.scrollBy({ left: step(), behavior: 'smooth' }));
+        stripOuter.addEventListener('scroll', updateArrows, { passive: true });
+        updateArrows();
+
+        // Auto scroll marquee loop disabled as per user request to turn off animations
+        /*
+        const scrollSpeed = 0.5; // px per frame
+        function tickAutoScroll() {
+          if (!down && !isHovered) {
+            const half = stripOuter.scrollWidth / 2;
+            if (half > 0) {
+              let nextScroll = stripOuter.scrollLeft + scrollSpeed;
+              if (nextScroll >= half) {
+                nextScroll -= half;
+              }
+              stripOuter.scrollLeft = nextScroll;
+            }
+          }
+          requestAnimationFrame(tickAutoScroll);
+        }
+
+        // Start auto scroll after short delay
+        setTimeout(() => {
+          requestAnimationFrame(tickAutoScroll);
+        }, 1000);
+        */
+
+        // Drag-to-scroll (mouse only - touch uses native scroll which is smoother)
+        let startX, startSL, vel = 0, lastX, lastT, rafG, rafMove;
+        let isDragging = false;
+        let pendingX = 0;
+
+        // Prevent native image/link ghost drag
+        stripOuter.addEventListener('dragstart', e => e.preventDefault());
+
+        // Batch mousemove into rAF for smooth 60fps updates
+        const applyMove = () => {
+          if (!down) return;
+          const x = pendingX;
+          const dx = x - startX;
+          if (Math.abs(dx) > 5) isDragging = true;
+          stripOuter.scrollLeft = startSL - dx;
+          const now = Date.now(), dt = now - lastT || 1;
+          vel = (lastX - x) / dt;
+          lastX = x;
+          lastT = now;
+          rafMove = 0;
+        };
+
+        const onWindowMouseMove = e => {
+          if (!down) return;
+          e.preventDefault();
+          pendingX = e.pageX;
+          if (!rafMove) rafMove = requestAnimationFrame(applyMove);
+        };
+
+        if (window._layoutOnMouseMove) {
+          window.removeEventListener('mousemove', window._layoutOnMouseMove);
+        }
+        window._layoutOnMouseMove = onWindowMouseMove;
+        window.addEventListener('mousemove', window._layoutOnMouseMove);
+
+        const onWindowMouseUp = () => {
+          if (!down) return;
+          down = false;
+          stripOuter.classList.remove('is-dragging');
+          // Momentum glide
+          const coast = () => {
+            vel *= 0.95;
+            stripOuter.scrollLeft += vel * 16;
+            if (Math.abs(vel) > 0.03) rafG = requestAnimationFrame(coast);
+          };
+          if (Math.abs(vel) > 0.1) coast();
+        };
+
+        if (window._layoutOnMouseUp) {
+          window.removeEventListener('mouseup', window._layoutOnMouseUp);
+        }
+        window._layoutOnMouseUp = onWindowMouseUp;
+        window.addEventListener('mouseup', window._layoutOnMouseUp);
+
+        stripOuter.addEventListener('mousedown', e => {
+          if (e.button !== 0) return;
+          down = true;
+          isDragging = false;
+          startX = e.pageX;
+          startSL = stripOuter.scrollLeft;
+          vel = 0;
+          lastX = e.pageX;
+          lastT = Date.now();
+          cancelAnimationFrame(rafG);
+          stripOuter.classList.add('is-dragging');
+        });
+
+        // Block click (PhotoSwipe) after a drag gesture
+        stripOuter.addEventListener('click', e => {
+          if (isDragging) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+      }
+
+      /* ── Email copy ── */
+      const copyBtn = document.getElementById('copy-email');
+      copyBtn?.addEventListener('click', async () => {
+        const email = 'hi@loc.digital';
+        let success = false;
+        try {
+          if (navigator.clipboard) {
+            await navigator.clipboard.writeText(email);
+            success = true;
+          }
+        } catch {}
+
+        if (!success) {
+          try {
+            const textarea = document.createElement('textarea');
+            textarea.value = email;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            success = true;
+          } catch {}
+        }
+
+        if (success) {
+          copyBtn.dataset.tip = 'Copied!';
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            copyBtn.dataset.tip = 'Copy';
+          }, 2200);
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+---
+import CmsDashboard from "../components/cms/CmsDashboard";
+import Layout from "../layouts/Layout.astro";
+import { readCmsPayload } from "../lib/cms-admin";
+import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../lib/cms-auth";
+import "../styles/cms.css";
+
+export const prerender = false;
+
+if (isCmsDisabledInProduction()) {
+  return Astro.redirect("/404");
+}
+
+if (!isCmsRequestAuthorized(Astro.request)) {
+  return Astro.redirect("/login");
+}
+
+const initialData = await readCmsPayload();
+---
+
+<Layout
+  title="CMS Dashboard | Lộc Digital"
+  description="Private content dashboard for Lộc Digital."
+  hideHeader
+  hideFooter
+  favicon="/favicon-cms.svg"
+  robots="noindex, nofollow"
+>
+  <CmsDashboard initialData={initialData} client:only="react" />
+</Layout>

@@ -22,7 +22,6 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
   const [showPublishDialog, setShowPublishDialog] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
-  const [publishSuccess, setPublishSuccess] = useState(false);
   const titleRef = useRef<HTMLTextAreaElement>(null);
 
   const localKey = `${LOCAL_DRAFT_PREFIX}${initialPost.id}`;
@@ -79,7 +78,6 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
     (updates: Partial<Post>) => {
       setPost((prev) => {
         const next = { ...prev, ...updates };
-        // Save local backup
         localStorage.setItem(localKey, JSON.stringify({ ...next, _localAt: Date.now() }));
         setSaveStatus("unsaved");
         autoSave(updates);
@@ -128,13 +126,22 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
     setSaveStatus(ok ? "saved" : "error");
   }, [patchPost, post]);
 
+  const handlePublish = useCallback(() => {
+    if (!post.title?.trim()) {
+      alert("Please add a title before publishing.");
+      return;
+    }
+    if (!post.slug?.trim()) {
+      alert("Please add a slug before publishing.");
+      return;
+    }
+    setShowPublishDialog(true);
+  }, [post.title, post.slug]);
+
   const handleConfirmPublish = useCallback(async () => {
     setPublishLoading(true);
-    setPublishSuccess(false);
     try {
-      // Save current state first
       await patchPost(post);
-      // Publish
       const res = await fetch(`/api/writing/posts/${initialPost.id}/publish`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -146,30 +153,11 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
         setPost(data.data as Post);
         setShowPublishDialog(false);
         setSaveStatus("saved");
-        setPublishSuccess(true);
-        window.setTimeout(() => setPublishSuccess(false), 1400);
       }
     } finally {
       setPublishLoading(false);
     }
   }, [initialPost.id, patchPost, post]);
-
-  const handlePublish = useCallback(() => {
-    if (publishLoading) return;
-    if (!post.title?.trim()) {
-      alert("Please add a title before publishing.");
-      return;
-    }
-    if (!post.slug?.trim()) {
-      alert("Please add a slug before publishing.");
-      return;
-    }
-    if (post.status === "published") {
-      void handleConfirmPublish();
-      return;
-    }
-    setShowPublishDialog(true);
-  }, [handleConfirmPublish, post.slug, post.status, post.title, publishLoading]);
 
   // Initial content for BlockNote — stable reference from initialPost
   const initialContent =
@@ -182,7 +170,6 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
       <EditorTopBar
         post={post}
         saveStatus={saveStatus}
-        publishStatus={publishLoading ? "loading" : publishSuccess ? "success" : "idle"}
         onSaveDraft={handleSaveDraft}
         onPublish={handlePublish}
       />
@@ -244,7 +231,6 @@ export default function WritingEditorPage({ initialPost }: WritingEditorPageProp
           </div>
         </main>
 
-        {/* SEO Sidebar */}
         <SeoSidebar post={post} onUpdate={updatePost} />
       </div>
 

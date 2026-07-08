@@ -1,0 +1,555 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getProjects } from "../../lib/cms";
+import BlurFade from "../../components/ui/BlurFade.astro";
+import { absoluteUrl, pageSchema } from "../../lib/seo";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const projects = await getProjects();
+const project = projects.find((p) => p.slug === slug);
+
+if (!project) {
+  return Astro.redirect("/work");
+}
+
+// Find prev / next for navigation
+const currentIndex = projects.findIndex((p) => p.slug === slug);
+const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
+const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
+
+// Split description into paragraphs
+const paragraphs = project.description.split("\n\n").filter(Boolean);
+const projectUrl = absoluteUrl(`/work/${project.slug}`);
+const projectLinkLabel = project.linkLabel?.replace(/\s*->\s*$/, "") ?? "Visit site";
+const creativeWorkSchema = {
+  "@type": "CreativeWork",
+  "@id": `${projectUrl}#case-study`,
+  name: project.title,
+  description: project.summary,
+  ...(project.coverImage ? { image: absoluteUrl(project.coverImage) } : {}),
+  url: projectUrl,
+  dateCreated: project.year,
+  creator: { "@id": `${absoluteUrl("/")}#person` },
+  keywords: project.tags,
+  mentions: {
+    "@type": "Organization",
+    name: project.client,
+    url: project.link,
+  },
+};
+---
+
+<Layout
+  title={`${project.title} | Phuc Loc Nguyen`}
+  description={project.summary}
+  schema={[
+    pageSchema({
+      url: projectUrl,
+      title: `${project.title} | Phuc Loc Nguyen`,
+      description: project.summary,
+      type: "WebPage",
+    }),
+    creativeWorkSchema,
+  ]}
+>
+  <main class="project-detail-page">
+    <div class="container">
+
+      <!-- Back link -->
+      <a href="/work" class="back-link r">
+        <ArrowLeft size={14} strokeWidth={1.8} aria-hidden="true" />
+        All work
+      </a>
+
+      <!-- Project header -->
+      <header class="detail-header">
+        <div class="detail-header-top r">
+          <span class="detail-number">{project.number}</span>
+          <span class="detail-year">{project.year}</span>
+        </div>
+
+        <BlurFade>
+          <h1 class="detail-title r" data-d="1">{project.title}</h1>
+        </BlurFade>
+
+        <div class="detail-meta r" data-d="2">
+          <div class="meta-item">
+            <span class="meta-label">Client</span>
+            <span class="meta-value">{project.client}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Role</span>
+            <span class="meta-value">{project.role}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Year</span>
+            <span class="meta-value">{project.year}</span>
+          </div>
+        </div>
+      </header>
+
+      {project.coverImage && (
+        <!-- Hero visual -->
+        <div class="detail-hero r" data-d="3">
+          <div class="detail-hero-img">
+            <div class="hero-logo-wrapper">
+              <img
+                src={project.coverImage}
+                alt={project.client}
+                class="hero-logo"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <!-- Content grid -->
+      <div class="detail-content r" data-d="4">
+
+        <!-- Main body -->
+        <div class="detail-body">
+          <p class="detail-summary">{project.summary}</p>
+
+          {paragraphs.map((para) => (
+            <p class="detail-para">{para}</p>
+          ))}
+
+          {project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="detail-link"
+            >
+              <span>{projectLinkLabel}</span>
+              <ExternalLink size={14} strokeWidth={1.8} aria-hidden="true" />
+            </a>
+          )}
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="detail-sidebar">
+          <div class="sidebar-block">
+            <span class="sidebar-label">Tools / Skills</span>
+            <ul class="sidebar-tags">
+              {project.tags.map((tag) => (
+                <li class="sidebar-tag">{tag}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="sidebar-block">
+            <span class="sidebar-label">Client</span>
+            <span class="sidebar-value">{project.client}</span>
+          </div>
+
+          <div class="sidebar-block">
+            <span class="sidebar-label">Year</span>
+            <span class="sidebar-value">{project.year}</span>
+          </div>
+
+          {project.link && (
+            <div class="sidebar-block">
+              <span class="sidebar-label">Live</span>
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sidebar-link"
+              >
+                <span>{projectLinkLabel}</span>
+                <ExternalLink size={13} strokeWidth={1.8} aria-hidden="true" />
+              </a>
+            </div>
+          )}
+        </aside>
+
+      </div>
+
+    </div>
+
+    <!-- Project navigation -->
+    <nav class="project-nav" aria-label="Project navigation">
+      <div class="container">
+        <div class="project-nav-inner">
+          {prevProject ? (
+            <a href={`/work/${prevProject.slug}`} class="pnav-item pnav-prev r">
+              <span class="pnav-dir"><ArrowLeft size={13} strokeWidth={1.8} aria-hidden="true" />Previous</span>
+              <span class="pnav-title">{prevProject.title}</span>
+            </a>
+          ) : (
+            <div></div>
+          )}
+
+          {nextProject ? (
+            <a href={`/work/${nextProject.slug}`} class="pnav-item pnav-next r" data-d="2">
+              <span class="pnav-dir">Next<ArrowRight size={13} strokeWidth={1.8} aria-hidden="true" /></span>
+              <span class="pnav-title">{nextProject.title}</span>
+            </a>
+          ) : (
+            <a href="/work" class="pnav-item pnav-next r" data-d="2">
+              <span class="pnav-dir">Back to</span>
+              <span class="pnav-title">All Work</span>
+            </a>
+          )}
+        </div>
+      </div>
+    </nav>
+
+  </main>
+</Layout>
+
+<style>
+  .project-detail-page {
+    padding: calc(var(--hdr-h) + 48px) 0 0;
+  }
+
+  /* ── Back link ── */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--type-ui);
+    font-family: var(--mono);
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 44px;
+    transition: color 0.25s ease, gap 0.25s ease;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+    gap: 12px;
+  }
+
+  /* ── Detail header ── */
+  .detail-header {
+    margin-bottom: clamp(44px, 6vw, 72px);
+  }
+
+  .detail-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .detail-number {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+    letter-spacing: 0.12em;
+  }
+
+  .detail-year {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .detail-title {
+    font-family: var(--serif);
+    font-size: var(--type-display-lg);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: 0;
+    color: var(--text);
+    margin-bottom: 36px;
+    max-width: 920px;
+    text-wrap: balance;
+  }
+
+  /* ── Meta row ── */
+  .detail-meta {
+    display: flex;
+    gap: clamp(28px, 5vw, 64px);
+    padding-top: 24px;
+    border-top: 1px solid var(--divider);
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .meta-label {
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .meta-value {
+    font-size: var(--type-body);
+    color: var(--text);
+  }
+
+  /* ── Hero image ── */
+  .detail-hero {
+    margin-bottom: clamp(56px, 7vw, 88px);
+  }
+
+  .detail-hero-img {
+    position: relative;
+    aspect-ratio: 2 / 1;
+    background: transparent;
+    border-radius: var(--rounded-md);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .hero-logo-wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  @media (max-width: 600px) {
+    .hero-logo-wrapper {
+      padding: 0;
+    }
+  }
+
+  .hero-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+  }
+
+  /* ── Content grid ── */
+  .detail-content {
+    display: grid;
+    grid-template-columns: minmax(0, 0.74fr) minmax(240px, 0.26fr);
+    gap: clamp(52px, 7vw, 96px);
+    margin-bottom: 0;
+    padding-bottom: clamp(72px, 8vw, 108px);
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .detail-body {
+    max-width: 780px;
+  }
+
+  /* ── Body text ── */
+  .detail-summary {
+    font-family: var(--serif);
+    font-size: var(--type-card-title);
+    font-weight: 400;
+    line-height: 1.42;
+    color: var(--text);
+    margin-bottom: 32px;
+    letter-spacing: 0;
+    text-wrap: pretty;
+  }
+
+  .detail-para {
+    font-size: var(--type-body);
+    line-height: var(--leading-prose);
+    color: color-mix(in srgb, var(--text) 72%, var(--muted));
+    margin-bottom: 18px;
+    max-width: 72ch;
+  }
+
+  .detail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    font-size: var(--type-body);
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--divider);
+    transition: color 0.25s ease, text-decoration-color 0.25s ease;
+  }
+
+  .detail-link:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  /* ── Sidebar ── */
+  .detail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 8px;
+    position: sticky;
+    top: calc(var(--hdr-h) + 32px);
+  }
+
+  .sidebar-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sidebar-label {
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .sidebar-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sidebar-tag {
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--text);
+    list-style: none;
+    border: 1px solid var(--divider);
+    border-radius: 3px;
+    padding: 4px 8px;
+  }
+
+  .sidebar-value {
+    font-size: var(--type-body);
+    color: var(--text);
+  }
+
+  .sidebar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--type-ui);
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.25s ease;
+  }
+
+  .sidebar-link:hover {
+    color: var(--accent);
+  }
+
+  /* ── Project nav ── */
+  .project-nav {
+    border-top: 1px solid var(--divider);
+    padding: 0;
+  }
+
+  .project-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .pnav-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 48px 0;
+    text-decoration: none;
+    color: var(--text);
+    transition: color 0.25s ease;
+    border-right: 1px solid var(--divider);
+  }
+
+  .pnav-next {
+    border-right: none;
+    text-align: right;
+    align-items: flex-end;
+    padding-left: 40px;
+  }
+
+  .pnav-prev {
+    padding-right: 40px;
+  }
+
+  .pnav-dir {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    transition: color 0.25s ease;
+  }
+
+  .pnav-title {
+    font-family: var(--serif);
+    font-size: var(--type-subhead);
+    font-weight: 400;
+    line-height: 1.25;
+    transition: color 0.25s ease;
+  }
+
+  .pnav-item:hover .pnav-title {
+    color: var(--accent);
+  }
+
+  .pnav-item:hover .pnav-dir {
+    color: var(--text);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .detail-content {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .detail-sidebar {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 24px;
+      border-top: 1px solid var(--divider);
+      padding-top: 32px;
+    }
+
+    .detail-meta {
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .project-nav-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .pnav-item {
+      border-right: none;
+      border-bottom: 1px solid var(--divider);
+      padding: 32px 0;
+    }
+
+    .pnav-next {
+      padding-left: 0;
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    .pnav-item:last-child {
+      border-bottom: none;
+    }
+  }
+</style>
