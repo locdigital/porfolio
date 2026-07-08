@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
 import { cn } from '../../lib/utils';
-import { FolderOpen, Globe2, Laptop, MapPin, Pause, Play, SkipBack, SkipForward } from 'lucide-react';
+import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Pause, PenLine, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from 'lucide-react';
 
 interface DraggableCollageProps {
   portraitSrc?: string;
@@ -230,6 +230,16 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
+  const interestItems = [
+    { label: "CrossFit", Icon: Dumbbell },
+    { label: "Music", Icon: Music },
+    { label: "Reading", Icon: BookOpen },
+    { label: "Nature walks", Icon: Trees },
+    { label: "New restaurants", Icon: Utensils },
+    { label: "Japanese learner", Icon: Languages },
+    { label: "AI-first", Icon: Sparkles },
+  ];
+
   const staticVisualizer = [0.25, 0.69, 0.62, 0.41, 0.59];
 
   return (
@@ -256,11 +266,11 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           --input: 0 0% 88%;
           --ring: 222 89% 55%;
           --radius: 0.5rem;
-          --type-micro: 14px;
-          --type-caption: 14px;
+          --type-micro: 12px;
+          --type-caption: 12px;
           --type-ui: 0.875rem;
-          --type-body: 14px;
-          --type-subhead: 14px;
+          --type-body: 12px;
+          --type-subhead: 12px;
           --type-data: 1.375rem;
           --type-display-lg: clamp(3rem, 7vw, 5.75rem);
           --type-display-xl: clamp(3rem, 6.5vw, 6rem);
@@ -272,9 +282,13 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           letter-spacing: -0.015em;
         }
 
+        .draggable-collage-container p {
+          font-size: 12px;
+        }
+
         .collage-card-label {
           font-family: var(--sans);
-          font-size: 14px;
+          font-size: 12px;
           line-height: 1.35;
           font-weight: 400;
           letter-spacing: 0;
@@ -283,7 +297,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
 
         .collage-card-text {
           font-family: var(--sans);
-          font-size: 14px;
+          font-size: 12px;
           line-height: 1.4;
           font-weight: 400;
           letter-spacing: 0;
@@ -338,16 +352,16 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             <p className="mt-2.5 collage-card-text text-muted-foreground text-center">Phuc Loc · Saigon</p>
           </div>
 
-          <div className="bg-[#4ECCA3] border border-white/40 text-[#0a2e22] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
+          <div className="bg-[#BDF8D1] border border-[#4fb77a]/25 text-[#073b24] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-1.5 mb-2.5">
                 <span className="relative flex h-1.5 w-1.5 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0a2e22]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#073b24] opacity-40"></span>
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#073b24]"></span>
                 </span>
                 <span className="collage-card-label opacity-60">Available Now</span>
               </div>
-              <div className="h-px bg-[#0a2e22]/20 mb-2.5"></div>
+              <div className="h-px bg-[#073b24]/18 mb-2.5"></div>
               <p className="collage-card-text mb-2.5">Performance Marketer</p>
             </div>
             <div className="space-y-1" style={{ fontFamily: 'var(--sans)' }}>
@@ -456,8 +470,11 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
         <div className="bg-card border border-border/60 rounded-xl px-4 py-3.5 shadow-card -rotate-[0.5deg]">
           <p className="collage-card-label text-muted-foreground mb-2.5">Interests</p>
           <div className="flex flex-wrap gap-1.5">
-            {["CrossFit", "Music", "Reading", "Nature walks", "New restaurants", "Japanese learner", "AI-first"].map((interest, i) => (
-              <span key={i} className="px-2.5 py-1 rounded-full border border-border text-[var(--type-micro)] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>{interest}</span>
+            {interestItems.map(({ label, Icon }) => (
+              <span key={label} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-border text-[var(--type-micro)] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>
+                <Icon size={11} strokeWidth={1.8} aria-hidden="true" />
+                {label}
+              </span>
             ))}
           </div>
         </div>
@@ -518,15 +535,15 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           onPointerDown={() => bringToFront('available')}
           zIndex={cardZIndices.available}
         >
-          <div className="bg-[#4ECCA3] border border-white/40 text-[#0a2e22] rounded-xl px-6 py-5 w-[198px] shadow-lg">
+          <div className="bg-[#BDF8D1] border border-[#4fb77a]/25 text-[#073b24] rounded-xl px-6 py-5 w-[198px] shadow-lg">
             <div className="flex items-center gap-2 mb-3">
               <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#0a2e22]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#073b24] opacity-40"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#073b24]"></span>
               </span>
               <span className="collage-card-label opacity-60">Available Now</span>
             </div>
-            <div className="h-px bg-[#0a2e22]/20 mb-3"></div>
+            <div className="h-px bg-[#073b24]/18 mb-3"></div>
             <p className="collage-card-text mb-3">Performance Marketer</p>
             <div className="space-y-1.5" style={{ fontFamily: 'var(--sans)' }}>
               <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Ho Chi Minh City</span></div>
@@ -638,8 +655,11 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           <div className="bg-card border border-border/60 rounded-xl px-6 py-5 shadow-card w-[250px]">
             <p className="collage-card-label text-muted-foreground mb-3">Interests</p>
             <div className="flex flex-wrap gap-1.5">
-              {["CrossFit", "Music", "Reading", "Nature walks", "New restaurants", "Japanese learner", "AI-first"].map((interest, i) => (
-                <span key={i} className="px-2.5 py-1 rounded-full border border-border text-[var(--type-micro)] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>{interest}</span>
+              {interestItems.map(({ label, Icon }) => (
+                <span key={label} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-border text-[var(--type-micro)] text-foreground/70" style={{ fontFamily: 'var(--sans)' }}>
+                  <Icon size={11} strokeWidth={1.8} aria-hidden="true" />
+                  {label}
+                </span>
               ))}
             </div>
           </div>
@@ -717,7 +737,13 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           zIndex={cardZIndices.learning}
         >
           <div className="bg-[#FFF3CD] border border-[#F0C040]/40 text-[#7a5c00] rounded-xl px-4 py-3 w-[170px] shadow-sm" style={{ fontFamily: 'var(--sans)' }}>
-            <p className="text-[var(--type-micro)] leading-snug">Currently learning<br /><span className="text-[var(--type-caption)] font-normal">Japanese for fun</span></p>
+            <p className="text-[var(--type-micro)] leading-snug">
+              Currently learning<br />
+              <span className="inline-flex items-center gap-1.5 text-[var(--type-caption)] font-normal">
+                <Languages size={11} strokeWidth={1.8} aria-hidden="true" />
+                Japanese for fun
+              </span>
+            </p>
           </div>
         </DraggableCard>
 
@@ -798,7 +824,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
         >
           <a className="file relative w-60 h-40 cursor-pointer [perspective:1500px] z-50 block" href="/blog" draggable="false">
             {/* Folder background */}
-            <div className="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none group-hover:shadow-[0_20px_40px_rgba(0,0,0,.2)] transition-all duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+            <div className="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none transition-all duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
             
             {/* Sheet 4 */}
             <div className="work-4 absolute inset-1 bg-white rounded-2xl shadow-md border border-zinc-200 transition-all duration-[500ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom select-none group-hover:[transform:translate(-14px,-30px)_rotate(-7deg)] flex flex-col gap-2 p-4">
@@ -825,9 +851,12 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             </div>
             
             {/* Front flap */}
-            <div className="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all duration-300 origin-bottom flex items-end group-hover:shadow-[inset_0_20px_40px_#fbbf24,_inset_0_-20px_40px_#d97706] group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+            <div className="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all duration-300 origin-bottom flex items-end group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
           </a>
-          <p className="mt-6 collage-card-label text-muted-foreground select-none">My Writings</p>
+          <p className="mt-6 inline-flex items-center gap-1.5 collage-card-label text-muted-foreground select-none" style={{ fontSize: "14px" }}>
+            <PenLine size={14} strokeWidth={1.8} aria-hidden="true" />
+            My Writings
+          </p>
         </DraggableCard>
 
         {/* -------------------- END DYNAMIC CARDS -------------------- */}
