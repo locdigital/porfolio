@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Pause, PenLine, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from 'lucide-react';
 
@@ -26,6 +26,7 @@ interface CardProps {
   onMouseLeave?: () => void;
   onPointerDown?: () => void;
   zIndex?: number;
+  noShadow?: boolean;
 }
 
 function DraggableCard({ 
@@ -43,7 +44,8 @@ function DraggableCard({
   onMouseEnter,
   onMouseLeave,
   onPointerDown,
-  zIndex = 1
+  zIndex = 1,
+  noShadow = false
 }: CardProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -93,11 +95,11 @@ function DraggableCard({
       whileDrag={{ 
         scale: initialScale * 1.08, 
         filter: "brightness(1.03)",
-        boxShadow: "0 35px 70px -15px rgba(0, 0, 0, 0.28)",
+        ...(noShadow ? {} : { boxShadow: "0 35px 70px -15px rgba(0, 0, 0, 0.28)" }),
       }}
       whileHover={{
         scale: initialScale * 1.03,
-        boxShadow: "0 15px 30px -8px rgba(0, 0, 0, 0.12)",
+        ...(noShadow ? {} : { boxShadow: "0 15px 30px -8px rgba(0, 0, 0, 0.12)" }),
       }}
       transition={{ duration: 0 }}
       className={cn("absolute cursor-grab active:cursor-grabbing select-none", className)}
@@ -178,6 +180,15 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
   // Star ratings
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
+
+  // Cursor-following pill label
+  const [cursorLabel, setCursorLabel] = useState('');
+  const [cursorVisible, setCursorVisible] = useState(false);
+  const cursorX = useMotionValue(-200);
+  const cursorY = useMotionValue(-200);
+  const springConfig = { stiffness: 280, damping: 22, mass: 0.4 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
 
 
 
@@ -319,11 +330,11 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           0%, 100% { transform: scaleY(0.25); }
           50% { transform: scaleY(1.15); }
         }
-        .sound-animate-0 { animation: soundwave-bounce 0.9s ease-in-out infinite alternate; }
-        .sound-animate-1 { animation: soundwave-bounce 0.7s ease-in-out infinite alternate 0.15s; }
-        .sound-animate-2 { animation: soundwave-bounce 1.1s ease-in-out infinite alternate 0.3s; }
-        .sound-animate-3 { animation: soundwave-bounce 0.6s ease-in-out infinite alternate 0.05s; }
-        .sound-animate-4 { animation: soundwave-bounce 0.8s ease-in-out infinite alternate 0.2s; }
+        .sound-animate-0 { animation: soundwave-bounce 1.8s ease-in-out infinite alternate; }
+        .sound-animate-1 { animation: soundwave-bounce 2.2s ease-in-out infinite alternate 0.3s; }
+        .sound-animate-2 { animation: soundwave-bounce 2.6s ease-in-out infinite alternate 0.6s; }
+        .sound-animate-3 { animation: soundwave-bounce 1.6s ease-in-out infinite alternate 0.1s; }
+        .sound-animate-4 { animation: soundwave-bounce 2.0s ease-in-out infinite alternate 0.45s; }
       ` }} />
 
       {/* Grid background mesh */}
@@ -356,7 +367,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             <div>
               <div className="flex items-center gap-1.5 mb-2.5">
                 <span className="relative flex h-1.5 w-1.5 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#073b24] opacity-40"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#073b24] opacity-40" style={{ animationDuration: '2s' }}></span>
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#073b24]"></span>
                 </span>
                 <span className="collage-card-label opacity-60">Available Now</span>
@@ -494,6 +505,16 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
       <div 
         ref={containerRef}
         className="hidden md:block absolute inset-0 z-10 overflow-hidden w-full h-full"
+        style={{ cursor: 'none' }}
+        onMouseMove={(e) => {
+          const rect = containerRef.current?.getBoundingClientRect();
+          if (rect) {
+            cursorX.set(e.clientX - rect.left);
+            cursorY.set(e.clientY - rect.top);
+          }
+        }}
+        onMouseEnter={() => setCursorVisible(true)}
+        onMouseLeave={() => { setCursorVisible(false); setCursorLabel(''); }}
       >
         {/* Background Center Header */}
         <div className="absolute inset-0 z-0 flex flex-col items-center justify-center px-8 -translate-y-[4%] pointer-events-none">
@@ -501,6 +522,33 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             I turn paid traffic into profit.
           </h2>
         </div>
+
+        {/* Cursor-following pill label */}
+        <motion.div
+          className="absolute top-0 left-0 pointer-events-none z-[500]"
+          style={{
+            x: cursorXSpring,
+            y: cursorYSpring,
+            translateX: '-50%',
+            translateY: '-50%',
+          }}
+          animate={{
+            opacity: cursorVisible ? 1 : 0,
+            scale: cursorVisible ? 1 : 0.75,
+          }}
+          transition={{ duration: 0.18, ease: 'easeOut' }}
+        >
+          <div
+            className="rounded-full px-4 py-1.5 font-medium whitespace-nowrap shadow-lg text-white"
+            style={{
+              fontFamily: 'var(--sans)',
+              fontSize: '13px',
+              background: '#0075de',
+            }}
+          >
+            {cursorLabel || 'drag me ✦'}
+          </div>
+        </motion.div>
 
 
         {/* -------------------- DYNAMIC DRAGGABLE CARDS -------------------- */}
@@ -515,6 +563,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="top-[10%] left-[5%]"
           onPointerDown={() => bringToFront('portrait')}
           zIndex={cardZIndices.portrait}
+          onMouseEnter={() => setCursorLabel("that's me 👋")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-card border border-border/60 rounded-xl p-3 pb-8 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)]">
             <div className="overflow-hidden rounded-lg w-[160px]">
@@ -534,11 +584,13 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="top-[8%] right-[7%]"
           onPointerDown={() => bringToFront('available')}
           zIndex={cardZIndices.available}
+          onMouseEnter={() => setCursorLabel("let's work together ✦")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-[#BDF8D1] border border-[#4fb77a]/25 text-[#073b24] rounded-xl px-6 py-5 w-[198px] shadow-lg">
             <div className="flex items-center gap-2 mb-3">
               <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#073b24] opacity-40"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#073b24] opacity-40" style={{ animationDuration: '2s' }}></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#073b24]"></span>
               </span>
               <span className="collage-card-label opacity-60">Available Now</span>
@@ -563,6 +615,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="top-[10%] left-[36%]"
           onPointerDown={() => bringToFront('spotify')}
           zIndex={cardZIndices.spotify}
+          onMouseEnter={() => setCursorLabel("currently vibing 🎵")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-foreground text-background rounded-2xl p-4 w-[220px] shadow-xl">
             <div className="flex items-center gap-3 mb-3">
@@ -626,6 +680,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="bottom-[8%] left-[57%]"
           onPointerDown={() => bringToFront('movie')}
           zIndex={cardZIndices.movie}
+          onMouseEnter={() => setCursorLabel("still watching 🎬")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-card border border-border/60 rounded-xl p-4 w-[180px] shadow-sm">
             <p className="collage-card-label text-muted-foreground mb-2.5">Currently Watching</p>
@@ -651,6 +707,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="bottom-[7%] left-[5%]"
           onPointerDown={() => bringToFront('interests')}
           zIndex={cardZIndices.interests}
+          onMouseEnter={() => setCursorLabel("yes, all of these ✦")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-card border border-border/60 rounded-xl px-6 py-5 shadow-card w-[250px]">
             <p className="collage-card-label text-muted-foreground mb-3">Interests</p>
@@ -675,6 +733,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="bottom-[8%] right-[7%]"
           onPointerDown={() => bringToFront('linkedin')}
           zIndex={cardZIndices.linkedin}
+          onMouseEnter={() => setCursorLabel("find me here ✦")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <a href="https://www.linkedin.com/in/phucloc/" target="_blank" rel="noopener noreferrer" draggable="false" className="block border border-white/30 rounded-xl px-5 py-4 w-[190px] shadow-lg hover:opacity-95 transition-all text-white bg-[#0a66c2]" style={{ fontFamily: 'var(--sans)' }}>
             <p className="collage-card-label text-white/60 mb-2">Find Me Online</p>
@@ -695,12 +755,17 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="top-[47%] right-[5%]"
           onPointerDown={() => bringToFront('resume')}
           zIndex={cardZIndices.resume}
+          onMouseEnter={() => setCursorLabel("download CV ✦")}
+          onMouseLeave={() => setCursorLabel('')}
         >
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-xl px-5 py-4 w-[180px] shadow-lg hover:opacity-95 transition-all" style={{ fontFamily: 'var(--sans)' }}>
-            <p className="collage-card-label opacity-60 mb-2">CV</p>
-            <div className="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
-              <p className="text-[var(--type-caption)] font-normal leading-snug">Resume<br /><span className="opacity-60 text-[var(--type-micro)]">Web format</span></p>
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-2xl px-5 py-4 w-[180px] shadow-lg hover:opacity-95 transition-all select-none" style={{ fontFamily: 'var(--sans)' }}>
+            <p className="collage-card-label opacity-40 mb-3 text-[11px] uppercase tracking-wider font-semibold">CV</p>
+            <div className="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 shrink-0 opacity-80"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+              <div className="leading-tight">
+                <span className="font-semibold text-[14px] block">Resume</span>
+                <span className="opacity-50 text-[11px] block mt-0.5">PDF · 1 page</span>
+              </div>
             </div>
           </a>
         </DraggableCard>
@@ -715,6 +780,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="top-[17%] right-[30%]"
           onPointerDown={() => bringToFront('notion')}
           zIndex={cardZIndices.notion}
+          onMouseEnter={() => setCursorLabel("let's talk ✦")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <a href="mailto:hi@loc.digital" draggable="false" className="block bg-foreground text-background rounded-xl px-5 py-4 w-[190px] shadow-lg hover:opacity-95 transition-all" style={{ fontFamily: 'var(--sans)' }}>
             <p className="collage-card-label text-background/50 mb-2">Open To Work</p>
@@ -735,6 +802,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="top-[63%] left-[6%]"
           onPointerDown={() => bringToFront('learning')}
           zIndex={cardZIndices.learning}
+          onMouseEnter={() => setCursorLabel("still learning ✦")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-[#FFF3CD] border border-[#F0C040]/40 text-[#7a5c00] rounded-xl px-4 py-3 w-[170px] shadow-sm" style={{ fontFamily: 'var(--sans)' }}>
             <p className="text-[var(--type-micro)] leading-snug">
@@ -758,6 +827,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="top-[44%] left-[6%]"
           onPointerDown={() => bringToFront('clock')}
           zIndex={cardZIndices.clock}
+          onMouseEnter={() => setCursorLabel("Saigon time 🕐")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-card border border-border/60 rounded-xl px-5 py-4 shadow-card w-fit whitespace-nowrap">
             <p className="collage-card-label text-muted-foreground mb-2">Saigon, VN</p>
@@ -781,6 +852,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="bottom-[20%] left-[25%]"
           onPointerDown={() => bringToFront('rating')}
           zIndex={cardZIndices.rating}
+          onMouseEnter={() => setCursorLabel("rate my work ⭐")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <div className="bg-card border border-border/60 rounded-xl px-5 py-4 shadow-card w-full">
             <p className="collage-card-label text-muted-foreground mb-3">Rate This Portfolio</p>
@@ -821,13 +894,16 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           className="bottom-[24%] left-[42%] flex flex-col items-center group origin-bottom"
           onPointerDown={() => bringToFront('folder')}
           zIndex={cardZIndices.folder}
+          noShadow
+          onMouseEnter={() => setCursorLabel("read my writings ✦")}
+          onMouseLeave={() => setCursorLabel('')}
         >
           <a className="file relative w-60 h-40 cursor-pointer [perspective:1500px] z-50 block" href="/blog" draggable="false">
             {/* Folder background */}
             <div className="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none transition-all duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
             
             {/* Sheet 4 */}
-            <div className="work-4 absolute inset-1 bg-white rounded-2xl shadow-md border border-zinc-200 transition-all duration-[500ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom select-none group-hover:[transform:translate(-14px,-30px)_rotate(-7deg)] flex flex-col gap-2 p-4">
+            <div className="work-4 absolute inset-1 bg-white rounded-2xl border border-zinc-200 transition-all duration-[500ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom select-none group-hover:[transform:translate(-14px,-30px)_rotate(-7deg)] flex flex-col gap-2 p-4">
               <div className="h-1.5 w-12 rounded-full bg-zinc-300" aria-hidden="true"></div>
               <div className="h-2.5 w-3/4 rounded-full bg-zinc-400/80 mt-1" aria-hidden="true"></div>
               <div className="h-1.5 w-full rounded-full bg-zinc-200 mt-auto" aria-hidden="true"></div>
@@ -835,7 +911,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             </div>
             
             {/* Sheet 3 */}
-            <div className="work-3 absolute inset-1 bg-white rounded-2xl shadow-md border border-zinc-200 transition-all duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(14px,-45px)_rotate(5deg)] flex flex-col gap-2 p-4">
+            <div className="work-3 absolute inset-1 bg-white rounded-2xl border border-zinc-200 transition-all duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(14px,-45px)_rotate(5deg)] flex flex-col gap-2 p-4">
               <div className="h-1.5 w-12 rounded-full bg-zinc-300" aria-hidden="true"></div>
               <div className="h-2.5 w-2/3 rounded-full bg-zinc-400/80 mt-1" aria-hidden="true"></div>
               <div className="h-1.5 w-full rounded-full bg-zinc-200 mt-auto" aria-hidden="true"></div>
@@ -843,7 +919,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             </div>
             
             {/* Sheet 2 */}
-            <div className="work-2 absolute inset-1 bg-white rounded-2xl shadow-md border border-zinc-200 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(-4px,-65px)_rotate(-3deg)_scale(1.02)] flex flex-col gap-2 p-4">
+            <div className="work-2 absolute inset-1 bg-white rounded-2xl border border-zinc-200 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(-4px,-65px)_rotate(-3deg)_scale(1.02)] flex flex-col gap-2 p-4">
               <div className="h-1.5 w-12 rounded-full bg-zinc-300" aria-hidden="true"></div>
               <div className="h-2.5 w-4/5 rounded-full bg-zinc-400/80 mt-1" aria-hidden="true"></div>
               <div className="h-1.5 w-full rounded-full bg-zinc-200 mt-auto" aria-hidden="true"></div>
@@ -853,7 +929,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             {/* Front flap */}
             <div className="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all duration-300 origin-bottom flex items-end group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
           </a>
-          <p className="mt-6 inline-flex items-center gap-1.5 collage-card-label text-muted-foreground select-none" style={{ fontSize: "14px" }}>
+          <p className="mt-6 inline-flex items-center gap-1.5 collage-card-label text-muted-foreground select-none text-[14px]" style={{ fontSize: "14px" }}>
             <PenLine size={14} strokeWidth={1.8} aria-hidden="true" />
             My Writings
           </p>

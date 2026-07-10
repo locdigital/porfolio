@@ -150,8 +150,8 @@ export default function BentoInfiniteGallery({
   const groupRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const [loopWidth, setLoopWidth] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [isPointerDown, setIsPointerDown] = useState(false);
+  const [, setPaused] = useState(false);
+  const [, setIsPointerDown] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(true);
   useEffect(() => {
     setPrefersReducedMotion(true);

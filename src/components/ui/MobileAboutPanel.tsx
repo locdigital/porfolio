@@ -1,14 +1,11 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import { FolderOpen, Globe2, Laptop, MapPin } from 'lucide-react';
-import Link from 'next/link';
 
 interface MobileAboutPanelProps {
   portraitSrc?: string;
 }
 
-export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }: MobileAboutPanelProps) {
+export default function MobileAboutPanel({ portraitSrc = "/himmel-vua.jpeg" }: MobileAboutPanelProps) {
   // Spotify audio states
   const [isPlaying, setIsPlaying] = useState(false);
   const [progressSeconds, setProgressSeconds] = useState(125);
@@ -24,7 +21,7 @@ export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }
   };
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
     if (isPlaying) {
       intervalId = setInterval(() => {
         setProgressSeconds((prev) => {
@@ -35,8 +32,6 @@ export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }
           return prev + 1;
         });
       }, 1000);
-    } else if (intervalId) {
-      clearInterval(intervalId);
     }
 
     return () => {
@@ -46,6 +41,14 @@ export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }
 
   return (
     <div className="mobile-about-panel md:hidden h-auto flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10" style={{ fontFamily: 'var(--sans)' }}>
+      {/* Soundwave keyframes */}
+      <style>{`
+        @keyframes soundwave-bounce {
+          0%, 100% { transform: scaleY(0.25); }
+          50% { transform: scaleY(1.15); }
+        }
+      `}</style>
+
       <h2 className="italic leading-[1.05] mb-2 font-light" style={{ fontFamily: 'var(--serif)', fontSize: 'var(--fs-display)' }}>
         I turn paid traffic into profit.
       </h2>
@@ -54,21 +57,21 @@ export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-card border border-border/60 rounded-xl p-2.5 pb-6 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)] -rotate-[2deg]">
           <div className="overflow-hidden rounded-lg w-full">
-            <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
+            <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable={false} />
           </div>
           <p className="mt-2.5 text-micro text-muted-foreground tracking-widest text-center">Phuc Loc · Saigon</p>
         </div>
 
-        <div className="bg-[#4ECCA3] border border-white/40 text-[#0a2e22] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
+        <div className="bg-[#BDF8D1] border border-[#4fb77a]/25 text-[#073b24] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-1.5 mb-2.5">
               <span className="relative flex h-1.5 w-1.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0a2e22] opacity-40"></span>
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0a2e22]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#073b24] opacity-40" style={{ animationDuration: '2s' }}></span>
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#073b24]"></span>
               </span>
               <span className="text-micro uppercase tracking-widest opacity-60" style={{ fontFamily: 'var(--mono)' }}>available now</span>
             </div>
-            <div className="h-px bg-[#0a2e22]/20 mb-2.5"></div>
+            <div className="h-px bg-[#073b24]/20 mb-2.5"></div>
             <p className="italic text-lg leading-tight mb-2.5" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
           </div>
           <div className="space-y-1">
@@ -85,7 +88,7 @@ export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }
         <div className="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2" id="mobile-spotify">
           <div className="flex items-center gap-2">
             <div className="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-              <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+              <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable={false} className="w-full h-full object-cover pointer-events-none" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-micro font-semibold text-background truncate">Photograph</p>
@@ -97,13 +100,13 @@ export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }
           <span className="inline-flex items-end gap-[2px] h-3">
             {[0.25, 0.69, 0.62, 0.41, 0.59].map((height, i) => {
               const barsBounceStyles = [
-                'animate-[soundwave-bounce_0.9s_ease-in-out_infinite_alternate]',
-                'animate-[soundwave-bounce_0.7s_ease-in-out_infinite_alternate_0.15s]',
-                'animate-[soundwave-bounce_1.1s_ease-in-out_infinite_alternate_0.3s]',
-                'animate-[soundwave-bounce_0.6s_ease-in-out_infinite_alternate_0.05s]',
-                'animate-[soundwave-bounce_0.8s_ease-in-out_infinite_alternate_0.2s]',
+                'animate-[soundwave-bounce_1.8s_ease-in-out_infinite_alternate]',
+                'animate-[soundwave-bounce_2.2s_ease-in-out_infinite_alternate_0.3s]',
+                'animate-[soundwave-bounce_2.6s_ease-in-out_infinite_alternate_0.6s]',
+                'animate-[soundwave-bounce_1.6s_ease-in-out_infinite_alternate_0.1s]',
+                'animate-[soundwave-bounce_2.0s_ease-in-out_infinite_alternate_0.45s]',
               ];
-              const barClass = `w-[2px] rounded-full bg-white/70 origin-bottom sound-bar sound-bar-${i} ${isPlaying ? barsBounceStyles[i] : ''}`;
+              const barClass = `w-[2px] rounded-full bg-white/70 origin-bottom ${isPlaying ? barsBounceStyles[i] : ''}`;
               return (
                 <span 
                   key={i}
@@ -197,18 +200,10 @@ export default function MobileAboutPanel({ portraitSrc = "/leah-portrait.webp" }
 
       {/* Writings Folder */}
       <div className="flex flex-col items-center mt-4">
-        <Link href="/blog" className="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-xs">
+        <a href="/blog" className="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-xs">
           <FolderOpen size={15} strokeWidth={1.8} aria-hidden="true" /> View My Writings
-        </Link>
+        </a>
       </div>
-
-      {/* Bounce keyframe stylesheet injection */}
-      <style jsx global>{`
-        @keyframes soundwave-bounce {
-          0%, 100% { transform: scaleY(0.25); }
-          50% { transform: scaleY(1.15); }
-        }
-      `}</style>
     </div>
   );
 }
