@@ -71,13 +71,20 @@ const photosHeadlineText = "Places I've wandered.";
         <nav class="photos-nav" aria-label="Locations navigation">
           <div class="photos-nav-list">
             {optimizedLocations.map((loc, i) => (
-              <a href={`#${loc.slug}`} class={`photos-nav-link ${i === 0 ? 'active' : ''}`}>
+              <button
+                type="button"
+                class={`photos-nav-link ${i === 0 ? 'active' : ''}`}
+                data-target={loc.slug}
+                aria-current={i === 0 ? "true" : undefined}
+                aria-controls={loc.slug}
+              >
                 {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
-              </a>
+              </button>
             ))}
             <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
               Gallery <span class="photos-gallery-icon" aria-hidden="true">↗</span>
             </a>
+            <span class="photos-nav-active-line" aria-hidden="true"></span>
           </div>
         </nav>
       </div>
@@ -86,9 +93,10 @@ const photosHeadlineText = "Places I've wandered.";
     <!-- LOCATION SECTIONS -->
     {optimizedLocations.map((loc, locIdx) => (
       <section
-        class="loc-section"
+        class={`loc-section ${locIdx === 0 ? 'active' : ''}`}
         id={loc.slug}
         aria-label={`Photos from ${loc.name}`}
+        hidden={locIdx !== 0}
       >
         <div class="container">
           <!-- Location header -->
@@ -167,6 +175,58 @@ const photosHeadlineText = "Places I've wandered.";
   </main>
 
 </Layout>
+
+<script>
+  function initPhotoTabs() {
+    const tablist = document.querySelector(".photos-nav-list");
+    if (!(tablist instanceof HTMLElement) || tablist.dataset.tabsReady) return;
+    tablist.dataset.tabsReady = "true";
+
+    const tabs = Array.from(tablist.querySelectorAll(".photos-nav-link[data-target]"));
+    const panels = Array.from(document.querySelectorAll(".loc-section"));
+    const line = tablist.querySelector(".photos-nav-active-line");
+
+    const moveLine = (tab: Element | null) => {
+      if (!(line instanceof HTMLElement) || !(tab instanceof HTMLElement)) return;
+      line.style.width = `${tab.offsetWidth}px`;
+      line.style.transform = `translateX(${tab.offsetLeft}px)`;
+    };
+
+    const activate = (id?: string) => {
+      const nextTab = tabs.find((tab) => tab.getAttribute("data-target") === id) || tabs[0];
+      const nextId = nextTab?.getAttribute("data-target");
+      if (!nextId) return;
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+
+      tabs.forEach((tab) => {
+        const isActive = tab === nextTab;
+        tab.classList.toggle("active", isActive);
+        tab.toggleAttribute("aria-current", isActive);
+      });
+
+      panels.forEach((panel) => {
+        const isActive = panel.id === nextId;
+        panel.classList.toggle("active", isActive);
+        panel.toggleAttribute("hidden", !isActive);
+      });
+
+      moveLine(nextTab);
+      requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => activate(tab.getAttribute("data-target") || undefined));
+    });
+
+    activate(location.hash.slice(1));
+    window.addEventListener("resize", () => moveLine(tablist.querySelector(".photos-nav-link.active")));
+    window.addEventListener("hashchange", () => activate(location.hash.slice(1)));
+  }
+
+  document.addEventListener("astro:page-load", initPhotoTabs);
+  initPhotoTabs();
+</script>
 
 <style>
   /* ------ Page ------ */
@@ -252,7 +312,10 @@ const photosHeadlineText = "Places I've wandered.";
     background: var(--text);
     pointer-events: none;
     z-index: 2;
-    transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    left: 0;
+    width: 0;
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
                 width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
@@ -272,6 +335,7 @@ const photosHeadlineText = "Places I've wandered.";
     color: color-mix(in srgb, var(--text) 72%, var(--muted));
     text-decoration: none;
     white-space: nowrap;
+    border: 0;
     background: transparent;
     transition: color 0.2s ease;
     cursor: pointer;
@@ -306,8 +370,9 @@ const photosHeadlineText = "Places I've wandered.";
 
   /* ------ Location section ------ */
   .loc-section {
-    display: block;
+    display: none;
     opacity: 1;
+    overflow-anchor: none;
     padding: clamp(24px, 4vw, 40px) 0 clamp(60px, 8vw, 100px) 0;
     scroll-margin-top: calc(var(--hdr-h, 80px) + 70px);
     content-visibility: visible;
@@ -320,6 +385,18 @@ const photosHeadlineText = "Places I've wandered.";
   .loc-section.active {
     display: block;
     opacity: 1;
+    animation: photos-tab-in 0.28s ease both;
+  }
+
+  @keyframes photos-tab-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .loc-header {

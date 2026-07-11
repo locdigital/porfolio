@@ -929,8 +929,8 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
             {/* Front flap */}
             <div className="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all duration-300 origin-bottom flex items-end group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
           </a>
-          <p className="mt-6 inline-flex items-center gap-1.5 collage-card-label text-muted-foreground select-none text-[14px]" style={{ fontSize: "14px" }}>
-            <PenLine size={14} strokeWidth={1.8} aria-hidden="true" />
+          <p className="mt-6 inline-flex items-center gap-1.5 collage-card-label text-muted-foreground select-none" style={{ fontSize: "24px" }}>
+            <PenLine size={24} strokeWidth={1.8} aria-hidden="true" />
             My Writings
           </p>
         </DraggableCard>
