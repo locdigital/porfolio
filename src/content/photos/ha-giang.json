@@ -1,0 +1,61 @@
+{
+  "slug": "ha-giang",
+  "order": 15,
+  "type": "check-in",
+  "location": "Hà Giang",
+  "name": "Hà Giang",
+  "city": "Hà Giang",
+  "country": "Vietnam",
+  "province": "Hà Giang",
+  "region": "Miền Bắc",
+  "headline": "Mountain passes above the clouds.",
+  "subheadline": "Stone plateaus, sharp roads, and northern light.",
+  "introduction": "Hà Giang is built around movement: winding passes, limestone valleys, roadside pauses, and the feeling that every turn changes the scale of the landscape.",
+  "shortDescription": "Northern mountain roads, stone plateaus, deep valleys, and one of Vietnam's most cinematic riding routes.",
+  "description": "Northern mountain roads, stone plateaus, deep valleys, and one of Vietnam's most cinematic riding routes.",
+  "longDescription": "The route rewards patience more than speed. Keep the days realistic, respect the weather, and treat the road itself as the main destination.",
+  "travelFrom": "Hà Nội",
+  "travelTime": "6-8h road to Hà Giang city",
+  "recommendedStay": "4-5 days",
+  "bestMonths": "Oct - Apr",
+  "transportation": ["Bus", "Motorbike", "Car"],
+  "suitableFor": ["Mountain roads", "Photography", "Adventure", "Landscape"],
+  "overview": "A northern mountain route for dramatic passes, limestone textures, villages, and slow travel through changing weather.",
+  "personalRating": 9,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 10,
+    "food": 7,
+    "cafe": 5,
+    "relaxation": 7,
+    "value": 8,
+    "accessibility": 5
+  },
+  "bestTimeOfDay": ["Morning", "Cloudy afternoon", "Golden hour"],
+  "localTransport": ["Motorbike with caution", "Car with local driver"],
+  "weatherNote": "Mountain weather changes quickly. Mist can make the route beautiful but also slower and less forgiving.",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "requires_preparation",
+  "travelTips": [
+    "Do not rush the loop into too few days.",
+    "Choose a local driver or guide if mountain riding is not familiar.",
+    "Pack layers and rain protection."
+  ],
+  "notFor": ["Travelers who dislike long road days or exposed mountain routes."],
+  "tags": ["Mountain", "Loop", "Road trip", "Landscape", "Northern Vietnam"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Hà Giang Photo Notes | Mountain Passes and Stone Plateaus",
+  "seoDescription": "A short editorial photo note from Hà Giang: northern mountain passes, stone plateaus, valleys, road days, and dramatic landscape travel.",
+  "relatedLocations": [
+    { "slug": "ha-noi", "distance": "Gateway", "category": "City" },
+    { "slug": "da-lat", "distance": "Highland comparison", "category": "Cool weather" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

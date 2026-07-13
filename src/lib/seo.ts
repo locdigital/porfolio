@@ -3,7 +3,7 @@ export const SITE_NAME = "Lộc Digital";
 export const PERSON_NAME = "Phuc Loc Nguyen";
 export const DEFAULT_DESCRIPTION =
   "Senior Performance Marketing Executive based in Ho Chi Minh City. Helping brands scale paid media, TikTok Shop GMV, SEO growth, automation, and full-funnel campaigns.";
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+export const DEFAULT_OG_IMAGE = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hz9GQ9ONrQN89V1S2GcyZlRdnh3U0J4kfWYAX";
 
 export const sameAs = [
   "https://www.instagram.com/henrygoodkid",

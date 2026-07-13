@@ -5,7 +5,7 @@ interface Props {
   portraitSrc?: string;
 }
 
-const { portraitSrc = "/himmel-vua.jpeg" } = Astro.props;
+const { portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNwarCDg0EFydvVs3BXGZR" } = Astro.props;
 ---
 
 <div class="mobile-about-panel md:hidden h-auto flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10" style="font-family: var(--sans);">
@@ -48,7 +48,7 @@ const { portraitSrc = "/himmel-vua.jpeg" } = Astro.props;
     <div class="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2" id="mobile-spotify">
       <div class="flex items-center gap-2">
         <div class="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-          <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" class="w-full h-full object-cover pointer-events-none" />
+          <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKk6DszvWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="Photograph" loading="lazy" decoding="async" draggable="false" class="w-full h-full object-cover pointer-events-none" />
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-[var(--type-micro)] font-semibold text-background truncate">Photograph</p>
@@ -148,7 +148,7 @@ const { portraitSrc = "/himmel-vua.jpeg" } = Astro.props;
     let isPlaying = false;
     let progressSeconds = 125;
     const totalSeconds = 259;
-    let intervalId: any = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
 
     const playBtn = document.getElementById('spotify-play-btn');
     const progressEl = document.getElementById('spotify-progress');
@@ -195,7 +195,7 @@ const { portraitSrc = "/himmel-vua.jpeg" } = Astro.props;
             if (progressSeconds >= totalSeconds) {
               isPlaying = false;
               progressSeconds = 0;
-              clearInterval(intervalId);
+              if (intervalId) clearInterval(intervalId);
               intervalId = null;
               updatePlayState();
             }

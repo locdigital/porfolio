@@ -1,0 +1,61 @@
+{
+  "slug": "rach-gia",
+  "order": 2,
+  "type": "check-in",
+  "location": "Rạch Giá",
+  "name": "Rạch Giá",
+  "city": "Rạch Giá",
+  "country": "Vietnam",
+  "province": "Kiên Giang",
+  "region": "Tây Nam Bộ",
+  "headline": "A western-sea pause before the islands.",
+  "subheadline": "Harbor air, Mekong edges, and quiet coastal evenings.",
+  "introduction": "Rạch Giá is often treated as a gateway, but it has its own slow edge: harbor light, western-sea air, local food, and a calmer Mekong-coast rhythm.",
+  "shortDescription": "A Mekong-coast city with harbor scenes, island-gateway energy, local food, and quiet southern evenings.",
+  "description": "A Mekong-coast city with harbor scenes, island-gateway energy, local food, and quiet southern evenings.",
+  "longDescription": "The city works best as a gentle pause before or after island travel. Walk near the water, keep expectations simple, and let the harbor pace set the day.",
+  "travelFrom": "HCM City",
+  "travelTime": "5-6h road or short flight",
+  "recommendedStay": "1-2 days",
+  "bestMonths": "Dec - Apr",
+  "transportation": ["Car", "Bus", "Flight", "Ferry"],
+  "suitableFor": ["Gateway city", "Food", "Harbor", "Slow travel"],
+  "overview": "A western Mekong-coast stop for harbor light, local meals, ferry routes, and quieter southern city scenes.",
+  "personalRating": 7.4,
+  "wouldReturn": "maybe",
+  "scores": {
+    "scenery": 7,
+    "food": 8,
+    "cafe": 5,
+    "relaxation": 7,
+    "value": 8,
+    "accessibility": 7
+  },
+  "bestTimeOfDay": ["Morning", "Late afternoon", "Sunset"],
+  "localTransport": ["Taxi in town", "Ferry for island routes"],
+  "weatherNote": "Dry months are easier for road and ferry plans. Check sea conditions if connecting onward.",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "easy",
+  "travelTips": [
+    "Use it as a buffer night for island travel.",
+    "Keep ferry timing at the center of the plan.",
+    "Look for simple local food instead of landmark-heavy sightseeing."
+  ],
+  "notFor": ["Travelers who expect a polished resort city."],
+  "tags": ["Harbor", "Mekong coast", "Gateway", "Food", "Southern Vietnam"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Rạch Giá Photo Notes | Harbor City on the Mekong Coast",
+  "seoDescription": "A short editorial photo note from Rạch Giá: harbor light, local food, ferry routes, western-sea air, and quiet Mekong-coast evenings.",
+  "relatedLocations": [
+    { "slug": "my-tho", "distance": "Mekong route", "category": "River" },
+    { "slug": "sai-gon", "distance": "Gateway", "category": "City" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

@@ -23,15 +23,131 @@ type ProjectData = {
 type PhotoLocationData = {
   slug: string;
   order: number;
+  type?: "hotel" | "restaurant" | "cafe" | "check-in";
   location: string;
+  name?: string;
+  city?: string;
+  district?: string;
+  country?: string;
+  province?: string;
+  region?: string;
   headline: string;
   subheadline?: string;
+  introduction?: string;
+  shortDescription?: string;
   description?: string;
-  images: {
+  longDescription?: string;
+  travelFrom?: string;
+  travelTime?: string;
+  recommendedStay?: string;
+  bestMonths?: string;
+  budgetMin?: number;
+  budgetMax?: number;
+  budgetNote?: string;
+  transportation?: string[];
+  suitableFor?: string[];
+  overview?: string;
+  favoriteThings?: string;
+  whatIWouldDoAgain?: string;
+  editorialReview?: string;
+  personalRating?: number;
+  wouldReturn?: "definitely" | "maybe" | "unsure" | "no";
+  scores?: {
+    scenery?: number;
+    food?: number;
+    cafe?: number;
+    relaxation?: number;
+    value?: number;
+    accessibility?: number;
+  };
+  bestTimeOfDay?: string[];
+  localTransport?: string[];
+  weatherNote?: string;
+  crowdLevel?: "quiet" | "moderate" | "busy_weekends" | "very_busy";
+  travelDifficulty?: "very_easy" | "easy" | "moderate" | "requires_preparation";
+  travelTips?: string[];
+  notFor?: string[];
+  heroImage?: {
+    id?: string;
     src: string;
     alt: string;
     width?: number;
     height?: number;
+    caption?: string;
+    order?: number;
+    isCover?: boolean;
+  };
+  images: {
+    id?: string;
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+    caption?: string;
+    order?: number;
+    isCover?: boolean;
+  }[];
+  googleMapsUrl?: string;
+  latitude?: string;
+  longitude?: string;
+  openingHours?: string;
+  priceRange?: string;
+  website?: string;
+  phone?: string;
+  bookingUrl?: string;
+  instagram?: string;
+  tags?: string[];
+  featured?: boolean;
+  published?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: string;
+  relatedLocations?: { slug: string; distance?: string; category?: string }[];
+  relatedArticles?: { slug: string; title?: string }[];
+  amenities?: string[];
+  roomTypes?: string[];
+  checkInTime?: string;
+  checkOutTime?: string;
+  breakfastIncluded?: boolean;
+  parking?: boolean;
+  petFriendly?: boolean;
+  pricePerNight?: string;
+  bookingLinks?: string[];
+  cuisine?: string;
+  menuImages?: {
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+    caption?: string;
+  }[];
+  mustTryDishes?: string[];
+  averagePrice?: string;
+  reservationRequired?: boolean;
+  delivery?: boolean;
+  outdoorSeating?: boolean;
+  coffeeType?: string;
+  workingFriendly?: boolean;
+  powerOutlets?: boolean;
+  wifi?: boolean;
+  viewRating?: string;
+  indoor?: boolean;
+  outdoor?: boolean;
+  openingStyle?: string;
+  entranceFee?: string;
+  bestTime?: string;
+  sunrise?: boolean;
+  sunset?: boolean;
+  walkingTime?: string;
+  difficulty?: string;
+  droneAllowed?: boolean;
+  thingsToKnow?: string;
+  blocks?: {
+    id: string;
+    type: string;
+    enabled: boolean;
+    title: string;
+    content?: string;
   }[];
 };
 
@@ -82,46 +198,45 @@ export async function getProjects() {
 }
 
 export async function getPhotoLocations() {
+  const mapPhotoLocation = (data: PhotoLocationData) => {
+    const sortedImages = [...(data.images ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    const heroImage = data.heroImage ?? sortedImages.find((image) => image.isCover) ?? sortedImages[0];
+    const name = data.name || data.location;
+    const introduction = data.introduction ?? data.shortDescription ?? data.description ?? "";
+
+    return {
+      ...data,
+      id: data.slug,
+      slug: data.slug,
+      name,
+      location: data.location || name,
+      headline: data.headline,
+      subheadline: data.subheadline,
+      introduction,
+      description: introduction,
+      longDescription: data.longDescription ?? data.editorialReview ?? data.description ?? "",
+      heroImage,
+      photos: sortedImages.map((image) => ({
+        src: image.src,
+        alt: image.alt,
+        w: image.width ?? 1600,
+        h: image.height ?? 1200,
+        caption: image.caption,
+      })),
+    };
+  };
+
   const collection = await getCmsCollection<PhotoLocationData>("cms_photos");
   if (collection) {
     const locations = await collection.find({}).sort({ order: 1 }).toArray();
     if (locations.length > 0) {
-      return locations.map((location) => {
-        const data = stripMongoId(location);
-        return {
-          id: data.slug,
-          slug: data.slug,
-          name: data.location,
-          headline: data.headline,
-          subheadline: data.subheadline,
-          description: data.description ?? "",
-          photos: data.images.map((image) => ({
-            src: image.src,
-            alt: image.alt,
-            w: image.width ?? 1600,
-            h: image.height ?? 1200,
-          })),
-        };
-      });
+      return locations.map((location) => mapPhotoLocation(stripMongoId(location)));
     }
   }
 
   const entries = await getCollection("photos");
   return entries
-    .map((entry) => ({
-      id: entry.data.slug,
-      slug: entry.data.slug,
-      name: entry.data.location,
-      headline: entry.data.headline,
-      subheadline: entry.data.subheadline,
-      description: entry.data.description ?? "",
-      photos: entry.data.images.map((image) => ({
-        src: image.src,
-        alt: image.alt,
-        w: image.width ?? 1600,
-        h: image.height ?? 1200,
-      })),
-    }))
+    .map((entry) => mapPhotoLocation(entry.data))
     .sort((a, b) => {
       const aOrder = entries.find((entry) => entry.data.slug === a.slug)?.data.order ?? 0;
       const bOrder = entries.find((entry) => entry.data.slug === b.slug)?.data.order ?? 0;

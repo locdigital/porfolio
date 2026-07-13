@@ -1,14 +1,66 @@
 {
   "slug": "da-lat",
-  "order": 4,
+  "order": 6,
   "location": "Đà Lạt",
+  "name": "Đà Lạt",
+  "city": "Đà Lạt",
+  "country": "Vietnam",
+  "province": "Lâm Đồng",
+  "region": "Tây Nguyên",
   "headline": "Pine forests in the mist.",
   "subheadline": "Cool air and flower fields.",
+  "introduction": "Đà Lạt is a soft reset: pine roads, cool air, old villas, garden light, and mornings that make coffee feel like the main plan.",
+  "shortDescription": "Pine forests, flower fields, hillside cafes, and the cool air of Vietnam's highland city.",
   "description": "Pine forests in the mist, flower fields, and the cool air of Vietnam's highland city.",
+  "longDescription": "The city is most memorable when the pace stays slow. Walk early, let the weather change, and save time for small roadside scenes instead of only chasing landmarks.",
+  "travelFrom": "HCM City",
+  "travelTime": "45m flight or 6-8h road",
+  "recommendedStay": "3-4 days",
+  "bestMonths": "Nov - Mar",
+  "transportation": ["Flight", "Sleeper bus", "Taxi", "Motorbike"],
+  "suitableFor": ["Slow travel", "Cafe hopping", "Nature walks", "Photography"],
+  "overview": "A highland escape for cool mornings, pine textures, quiet cafes, and a slower rhythm than the coast.",
+  "personalRating": 8.6,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 9,
+    "food": 7,
+    "cafe": 9,
+    "relaxation": 9,
+    "value": 8,
+    "accessibility": 8
+  },
+  "bestTimeOfDay": ["Early morning", "Golden hour", "Cloudy afternoon"],
+  "localTransport": ["Taxi for town", "Motorbike for pine roads"],
+  "weatherNote": "Bring a light layer. The mood changes quickly between clear sun, mist, and rain.",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "easy",
+  "travelTips": [
+    "Start early for mist and quieter streets.",
+    "Do not overpack the day; distance feels longer on hill roads.",
+    "Keep one cafe or walking block unplanned."
+  ],
+  "notFor": ["Travelers who only want beaches or hot weather."],
+  "tags": ["Highland", "Pine forest", "Cafe", "Cool weather", "Slow travel"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Đà Lạt Photo Notes | Pine Forests and Highland Air",
+  "seoDescription": "A short editorial photo note from Đà Lạt: pine forests, cool weather, hillside cafes, flower fields, and slow highland mornings.",
+  "relatedLocations": [
+    { "slug": "dak-nong", "distance": "Highland route", "category": "Nature" },
+    { "slug": "bali", "distance": "Different mood", "category": "Slow travel" },
+    { "slug": "sai-gon", "distance": "City contrast", "category": "Urban" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
   "images": [
-    { "src": "/assets/photos/da-lat/DSC_0174.webp", "alt": "Đà Lạt --- photo 1", "width": 4032, "height": 6048 },
-    { "src": "/assets/photos/da-lat/DSC_1163.webp", "alt": "Đà Lạt --- photo 2", "width": 2636, "height": 3248 },
-    { "src": "/assets/photos/da-lat/DSC_1322.webp", "alt": "Đà Lạt --- photo 3", "width": 6048, "height": 4032 },
-    { "src": "/assets/photos/da-lat/IMG_1585.webp", "alt": "Đà Lạt --- photo 4", "width": 6000, "height": 3368 }
+    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59han9lzmyOH490TilXyexRchUNGmAMZLwKkFvI", "alt": "Đà Lạt --- photo 1", "width": 4032, "height": 6048 },
+    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hwIAk7zhTQDH0hL5Ild1c8EfBpZCgP4y2MATX", "alt": "Đà Lạt --- photo 2", "width": 2636, "height": 3248 },
+    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjZCZm294KrOISaFPdMJw9ClQ8qRiYZespBUG", "alt": "Đà Lạt --- photo 3", "width": 6048, "height": 4032 },
+    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbQBtISkAEiMVyIw93QvFdHjfCaP5rqRXL4bO", "alt": "Đà Lạt --- photo 4", "width": 6000, "height": 3368 }
   ]
 }

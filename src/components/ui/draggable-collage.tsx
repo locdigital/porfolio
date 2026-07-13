@@ -112,7 +112,7 @@ function DraggableCard({
 // ----------------------------------------------------
 // MAIN DRAGGABLE COLLAGE
 // ----------------------------------------------------
-export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: DraggableCollageProps) {
+export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNwarCDg0EFydvVs3BXGZR" }: DraggableCollageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const positionStorageKey = 'loc-draggable-collage-positions-v2';
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>({});
@@ -389,7 +389,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           <div className="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <div className="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-                <img src="/images/X_cover.webp" alt="Photograph" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+                <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKk6DszvWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="Photograph" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[var(--type-micro)] font-normal text-background truncate">Photograph</p>
@@ -621,7 +621,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           <div className="bg-foreground text-background rounded-2xl p-4 w-[220px] shadow-xl">
             <div className="flex items-center gap-3 mb-3">
               <div className="shrink-0 w-10 h-10 rounded-lg overflow-hidden">
-                <img src="/images/X_cover.webp" alt="Photograph album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+                <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKk6DszvWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="Photograph album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0" style={{ fontFamily: 'var(--sans)' }}>
                 <p className="text-[var(--type-caption)] font-normal text-background truncate">Photograph</p>
@@ -686,7 +686,7 @@ export default function DraggableCollage({ portraitSrc = "/himmel-vua.jpeg" }: D
           <div className="bg-card border border-border/60 rounded-xl p-4 w-[180px] shadow-sm">
             <p className="collage-card-label text-muted-foreground mb-2.5">Currently Watching</p>
             <div className="w-full rounded-lg overflow-hidden mb-3" style={{ aspectRatio: '2 / 3' }}>
-              <img src="/images/The_Wolf_of_Wall_Street_2013.webp" alt="The Wolf of Wall Street movie poster" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+              <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKHp72avWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="The Wolf of Wall Street movie poster" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
             </div>
             <div className="flex items-center gap-2">
               <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">

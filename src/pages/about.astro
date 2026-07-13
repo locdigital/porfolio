@@ -148,9 +148,10 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
   }
 
   .about-minimal-container {
-    max-width: var(--max);
+    width: min(calc(100% - (var(--page-gutter) * 2)), var(--main-content-max));
+    max-width: var(--main-content-max);
     margin: 0 auto;
-    padding: 0 var(--px);
+    padding: 0;
   }
 
   .about-intro {
@@ -196,9 +197,9 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
   :global(.about-hero-copy) {
     max-width: 68ch;
     font-family: var(--sans);
-    font-size: var(--type-body);
+    font-size: 0.875rem;
     line-height: 1.72;
-    color: color-mix(in srgb, var(--text) 73%, var(--muted));
+    color: #6e6e6e;
     text-wrap: pretty;
   }
 
@@ -281,9 +282,9 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
     max-width: 34ch;
     margin-top: 14px;
     font-family: var(--sans);
-    font-size: var(--type-body);
+    font-size: 0.875rem;
     line-height: 1.6;
-    color: color-mix(in srgb, var(--text) 68%, var(--muted));
+    color: #6e6e6e;
     text-wrap: pretty;
   }
 
@@ -356,7 +357,8 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
   }
 
   .item-desc {
-    color: color-mix(in srgb, var(--text) 70%, var(--muted));
+    font-size: 0.875rem;
+    color: #6e6e6e;
     transition: color 180ms var(--ease-out);
   }
 

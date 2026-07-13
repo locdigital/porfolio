@@ -10,15 +10,16 @@ import {
   ExternalLink,
   FileText,
   HardDrive,
+  Image as ImageIcon,
   LayoutDashboard,
   Loader2,
+  MapPin,
   LogOut,
   MessageSquare,
   MoreHorizontal,
   Package,
   Plus,
   Save,
-  Search,
   Send,
   Sparkles,
   Trash2,
@@ -29,6 +30,7 @@ import {
 import WritingDashboard from "../writing/WritingDashboard";
 import WritingEditorPage from "../writing/WritingEditorPage";
 import DeleteConfirmDialog from "../ui/DeleteConfirmDialog";
+import type { Post } from "../../lib/writing/posts";
 import "../../styles/writing-editor.css";
 
 /* ------ Types ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */
@@ -122,20 +124,152 @@ type Project = {
 };
 
 type PhotoImage = {
+  id?: string;
   src: string;
   alt: string;
   width: number;
   height: number;
+  caption?: string;
+  order?: number;
+  isCover?: boolean;
+};
+
+type LocationType = "hotel" | "restaurant" | "cafe" | "check-in";
+
+type LocationBlock = {
+  id: string;
+  type: string;
+  enabled: boolean;
+  title: string;
+  content: string;
+};
+
+type RelatedLocation = {
+  slug: string;
+  distance: string;
+  category: string;
+};
+
+type RelatedArticle = {
+  slug: string;
+  title: string;
 };
 
 type PhotoLocation = {
   slug: string;
   order: number;
+  type: LocationType;
   location: string;
+  name: string;
+  city: string;
+  district: string;
+  country: string;
+  province: string;
+  region: string;
   headline: string;
   subheadline: string;
+  introduction: string;
+  shortDescription: string;
   description: string;
+  longDescription: string;
+  travelFrom: string;
+  travelTime: string;
+  recommendedStay: string;
+  bestMonths: string;
+  budgetMin: number | "";
+  budgetMax: number | "";
+  budgetNote: string;
+  transportation: string[];
+  suitableFor: string[];
+  overview: string;
+  favoriteThings: string;
+  whatIWouldDoAgain: string;
+  editorialReview: string;
+  personalRating: number | "";
+  wouldReturn: "" | "definitely" | "maybe" | "unsure" | "no";
+  scores: {
+    scenery: number | "";
+    food: number | "";
+    cafe: number | "";
+    relaxation: number | "";
+    value: number | "";
+    accessibility: number | "";
+  };
+  bestTimeOfDay: string[];
+  localTransport: string[];
+  weatherNote: string;
+  crowdLevel: "" | "quiet" | "moderate" | "busy_weekends" | "very_busy";
+  travelDifficulty: "" | "very_easy" | "easy" | "moderate" | "requires_preparation";
+  travelTips: string[];
+  notFor: string[];
+  heroImage?: PhotoImage;
   images: PhotoImage[];
+  googleMapsUrl: string;
+  latitude: string;
+  longitude: string;
+  openingHours: string;
+  priceRange: string;
+  website: string;
+  phone: string;
+  bookingUrl: string;
+  instagram: string;
+  tags: string[];
+  featured: boolean;
+  published: boolean;
+  seoTitle: string;
+  seoDescription: string;
+  seoImage: string;
+  relatedLocations: RelatedLocation[];
+  relatedArticles: RelatedArticle[];
+  amenities: string[];
+  roomTypes: string[];
+  checkInTime: string;
+  checkOutTime: string;
+  breakfastIncluded: boolean;
+  parking: boolean;
+  petFriendly: boolean;
+  pricePerNight: string;
+  bookingLinks: string[];
+  cuisine: string;
+  menuImages: PhotoImage[];
+  mustTryDishes: string[];
+  averagePrice: string;
+  reservationRequired: boolean;
+  delivery: boolean;
+  outdoorSeating: boolean;
+  coffeeType: string;
+  workingFriendly: boolean;
+  powerOutlets: boolean;
+  wifi: boolean;
+  viewRating: string;
+  indoor: boolean;
+  outdoor: boolean;
+  openingStyle: string;
+  entranceFee: string;
+  bestTime: string;
+  sunrise: boolean;
+  sunset: boolean;
+  walkingTime: string;
+  difficulty: string;
+  droneAllowed: boolean;
+  thingsToKnow: string;
+  blocks: LocationBlock[];
+};
+
+type CmsCollectionEntry = {
+  slug: string;
+  order: number;
+  name: string;
+  description: string;
+};
+
+type CmsCollections = {
+  categories: CmsCollectionEntry[];
+  amenities: CmsCollectionEntry[];
+  cities: CmsCollectionEntry[];
+  districts: CmsCollectionEntry[];
+  tags: CmsCollectionEntry[];
+  articles: CmsCollectionEntry[];
 };
 
 type CmsData = {
@@ -143,6 +277,7 @@ type CmsData = {
   gear: Gear;
   projects: Project[];
   photos: PhotoLocation[];
+  collections: CmsCollections;
 };
 
 /* ------ Nav structure ------------------------------------------------------------------------------------------------------------------------------------------------ */
@@ -281,36 +416,207 @@ function emptyProject(order = 99): Project {
   };
 }
 
+const suitableForOptions = [
+  "Solo",
+  "Couple",
+  "Bạn bè",
+  "Gia đình",
+  "Người lớn tuổi",
+  "Photographer",
+  "Food lover",
+  "Coffee lover",
+  "Nghỉ dưỡng",
+  "Trekking",
+];
+const bestTimeOfDayOptions = ["Sáng sớm", "Chiều muộn", "Hoàng hôn", "Cả ngày"];
+const locationTypeValues: LocationType[] = ["hotel", "restaurant", "cafe", "check-in"];
+
+const defaultLocationBlocks: LocationBlock[] = [
+  "Hero",
+  "Gallery",
+  "Editorial Review",
+  "Quick Facts",
+  "Tips",
+  "Pros & Cons",
+  "Map",
+  "Nearby Places",
+  "Related Articles",
+  "FAQ",
+  "CTA",
+].map((title) => ({ id: slugify(title), type: slugify(title), enabled: true, title, content: "" }));
+
+const emptyCollections = (): CmsCollections => ({
+  categories: [],
+  amenities: [],
+  cities: [],
+  districts: [],
+  tags: [],
+  articles: [],
+});
+
 function emptyPhotoLocation(order = 99): PhotoLocation {
-  return { slug: "", order, location: "", headline: "", subheadline: "", description: "", images: [] };
+  return {
+    slug: "",
+    order,
+    type: "check-in",
+    location: "",
+    name: "",
+    city: "",
+    district: "",
+    country: "Vietnam",
+    province: "",
+    region: "",
+    headline: "",
+    subheadline: "",
+    introduction: "",
+    shortDescription: "",
+    description: "",
+    longDescription: "",
+    travelFrom: "",
+    travelTime: "",
+    recommendedStay: "",
+    bestMonths: "",
+    budgetMin: "",
+    budgetMax: "",
+    budgetNote: "",
+    transportation: [],
+    suitableFor: [],
+    overview: "",
+    favoriteThings: "",
+    whatIWouldDoAgain: "",
+    editorialReview: "",
+    personalRating: "",
+    wouldReturn: "",
+    scores: {
+      scenery: "",
+      food: "",
+      cafe: "",
+      relaxation: "",
+      value: "",
+      accessibility: "",
+    },
+    bestTimeOfDay: [],
+    localTransport: [],
+    weatherNote: "",
+    crowdLevel: "",
+    travelDifficulty: "",
+    travelTips: [],
+    notFor: [],
+    heroImage: undefined,
+    images: [],
+    googleMapsUrl: "",
+    latitude: "",
+    longitude: "",
+    openingHours: "",
+    priceRange: "",
+    website: "",
+    phone: "",
+    bookingUrl: "",
+    instagram: "",
+    tags: [],
+    featured: false,
+    published: true,
+    seoTitle: "",
+    seoDescription: "",
+    seoImage: "",
+    relatedLocations: [],
+    relatedArticles: [],
+    amenities: [],
+    roomTypes: [],
+    checkInTime: "",
+    checkOutTime: "",
+    breakfastIncluded: false,
+    parking: false,
+    petFriendly: false,
+    pricePerNight: "",
+    bookingLinks: [],
+    cuisine: "",
+    menuImages: [],
+    mustTryDishes: [],
+    averagePrice: "",
+    reservationRequired: false,
+    delivery: false,
+    outdoorSeating: false,
+    coffeeType: "",
+    workingFriendly: false,
+    powerOutlets: false,
+    wifi: false,
+    viewRating: "",
+    indoor: false,
+    outdoor: false,
+    openingStyle: "",
+    entranceFee: "",
+    bestTime: "",
+    sunrise: false,
+    sunset: false,
+    walkingTime: "",
+    difficulty: "",
+    droneAllowed: false,
+    thingsToKnow: "",
+    blocks: defaultLocationBlocks.map((block) => ({ ...block })),
+  };
+}
+
+function normalizePhotoDraft(input: Partial<PhotoLocation>, order = 99): PhotoLocation {
+  const empty = emptyPhotoLocation(order);
+  const blocks = Array.isArray(input.blocks) && input.blocks.length > 0
+    ? input.blocks.map((block, index) => ({
+        id: block.id || `${block.type || slugify(block.title || "block")}-${index + 1}`,
+        type: block.type || slugify(block.title || "block"),
+        enabled: block.enabled ?? true,
+        title: block.title || block.type || `Block ${index + 1}`,
+        content: block.content || "",
+      }))
+    : [];
+
+  for (const block of defaultLocationBlocks) {
+    if (!blocks.some((item) => item.type === block.type)) blocks.push({ ...block });
+  }
+
+  return {
+    ...empty,
+    ...input,
+    type: locationTypeValues.includes(input.type as LocationType) ? input.type as LocationType : empty.type,
+    name: input.name ?? input.location ?? "",
+    province: input.province ?? input.city ?? "",
+    introduction: input.introduction ?? input.shortDescription ?? input.description ?? "",
+    shortDescription: input.shortDescription ?? input.description ?? "",
+    description: input.description ?? input.shortDescription ?? "",
+    longDescription: input.longDescription ?? input.description ?? "",
+    images: Array.isArray(input.images)
+      ? input.images.map((image, index) => ({ ...image, order: image.order ?? index + 1 }))
+      : [],
+    tags: Array.isArray(input.tags) ? input.tags : [],
+    transportation: Array.isArray(input.transportation) ? input.transportation : [],
+    suitableFor: Array.isArray(input.suitableFor) ? input.suitableFor : [],
+    scores: { ...empty.scores, ...(input.scores ?? {}) },
+    bestTimeOfDay: Array.isArray(input.bestTimeOfDay) ? input.bestTimeOfDay : [],
+    localTransport: Array.isArray(input.localTransport) ? input.localTransport : [],
+    travelTips: Array.isArray(input.travelTips) ? input.travelTips : [],
+    notFor: Array.isArray(input.notFor) ? input.notFor : [],
+    relatedLocations: Array.isArray(input.relatedLocations) ? input.relatedLocations : [],
+    relatedArticles: Array.isArray(input.relatedArticles) ? input.relatedArticles : [],
+    amenities: Array.isArray(input.amenities) ? input.amenities : [],
+    roomTypes: Array.isArray(input.roomTypes) ? input.roomTypes : [],
+    bookingLinks: Array.isArray(input.bookingLinks) ? input.bookingLinks : [],
+    menuImages: Array.isArray(input.menuImages) ? input.menuImages : [],
+    mustTryDishes: Array.isArray(input.mustTryDishes) ? input.mustTryDishes : [],
+    blocks,
+  };
 }
 
 function normalizeData(data: Partial<CmsData>): CmsData {
+  const photos = Array.isArray(data.photos) ? data.photos : [];
   return {
     writing:  Array.isArray(data.writing)  ? data.writing  : [],
     gear:     data.gear?.sections          ? data.gear      : emptyGear(),
     projects: Array.isArray(data.projects) ? data.projects  : [],
-    photos:   Array.isArray(data.photos)   ? data.photos    : [],
+    photos:   photos.map((photo, index) => normalizePhotoDraft(photo, index + 1)),
+    collections: {
+      ...emptyCollections(),
+      ...(data.collections ?? {}),
+    },
   };
-}
-
-function imagesToText(images: PhotoImage[] = []) {
-  return images
-    .map((p) => [p.src, p.alt, p.width || "", p.height || ""].join(" | "))
-    .join("\n");
-}
-
-function textToImages(value: string): PhotoImage[] {
-  return value
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const [src = "", alt = "", width = "1600", height = "1200"] =
-        line.split("|").map((p) => p.trim());
-      return { src, alt, width: Number(width) || 1600, height: Number(height) || 1200 };
-    })
-    .filter((p) => p.src);
 }
 
 /* ------ Primitive UI components --------------------------------------------------------------------------------------------------------------------- */
@@ -320,6 +626,9 @@ function Field(props: {
   onChange: (v: string) => void;
   placeholder?: string;
   type?: string;
+  min?: number;
+  max?: number;
+  step?: number;
   required?: boolean;
   className?: string;
 }) {
@@ -330,6 +639,9 @@ function Field(props: {
         type={props.type ?? "text"}
         value={props.value}
         required={props.required}
+        min={props.min}
+        max={props.max}
+        step={props.step}
         placeholder={props.placeholder}
         onChange={(e) => props.onChange(e.target.value)}
       />
@@ -355,6 +667,149 @@ function TextArea(props: {
         onChange={(e) => props.onChange(e.target.value)}
       />
     </label>
+  );
+}
+
+function SelectField(props: {
+  label: string;
+  value: string;
+  options: Array<{ value: string; label: string }>;
+  onChange: (v: string) => void;
+  className?: string;
+}) {
+  return (
+    <label className={`cms-field ${props.className ?? ""}`}>
+      <span>{props.label}</span>
+      <select value={props.value} onChange={(e) => props.onChange(e.target.value)}>
+        {props.options.map((option) => (
+          <option key={option.value} value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function MultiSelectField(props: {
+  label: string;
+  value: string[];
+  options: string[];
+  onChange: (value: string[]) => void;
+  placeholder?: string;
+}) {
+  const [draft, setDraft] = useState("");
+
+  function addValue(value: string) {
+    const clean = value.trim();
+    if (!clean) return;
+    props.onChange(uniqueList([...props.value, clean]));
+    setDraft("");
+  }
+
+  function removeValue(value: string) {
+    props.onChange(props.value.filter((item) => item !== value));
+  }
+
+  return (
+    <label className="cms-field cms-chip-field">
+      <span>{props.label}</span>
+      <div className="cms-chip-input-wrap">
+        {props.value.map((item) => (
+          <button key={item} type="button" className="cms-chip" onClick={() => removeValue(item)}>
+            <span>{item}</span>
+            <Trash2 size={12} />
+          </button>
+        ))}
+        <input
+          list={`${props.label.replace(/\s+/g, "-").toLowerCase()}-options`}
+          value={draft}
+          placeholder={props.placeholder ?? "Add item"}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === ",") {
+              e.preventDefault();
+              addValue(draft);
+            }
+          }}
+          onBlur={() => addValue(draft)}
+        />
+        <datalist id={`${props.label.replace(/\s+/g, "-").toLowerCase()}-options`}>
+          {props.options.map((option) => (
+            <option key={option} value={option} />
+          ))}
+        </datalist>
+      </div>
+    </label>
+  );
+}
+
+function RepeatableListField(props: {
+  label: string;
+  value: string[];
+  onChange: (value: string[]) => void;
+  placeholder?: string;
+}) {
+  function updateItem(index: number, value: string) {
+    props.onChange(props.value.map((item, itemIndex) => (itemIndex === index ? value : item)));
+  }
+
+  function addItem() {
+    props.onChange([...props.value, ""]);
+  }
+
+  function removeItem(index: number) {
+    props.onChange(props.value.filter((_, itemIndex) => itemIndex !== index));
+  }
+
+  return (
+    <div className="cms-field cms-field-full">
+      <span>{props.label}</span>
+      <div className="cms-repeat-list">
+        {props.value.map((item, index) => (
+          <div className="cms-repeat-row" key={`${props.label}-${index}`}>
+            <input
+              type="text"
+              value={item}
+              placeholder={props.placeholder ?? "Add item"}
+              onChange={(e) => updateItem(index, e.target.value)}
+            />
+            <SmallButton tone="danger" icon={<Trash2 size={13} />} onClick={() => removeItem(index)}>Remove</SmallButton>
+          </div>
+        ))}
+        {props.value.length === 0 && <p className="cms-empty">No items yet.</p>}
+      </div>
+      <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={addItem}>
+        Add item
+      </SmallButton>
+    </div>
+  );
+}
+
+function CollapsibleSection(props: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+  action?: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(props.defaultOpen ?? false);
+
+  return (
+    <section className="cms-collapse">
+      <button
+        type="button"
+        className="cms-collapse-trigger"
+        onClick={() => setOpen((current) => !current)}
+        aria-expanded={open}
+      >
+        <span>{props.title}</span>
+        <ChevronDown size={15} style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }} />
+      </button>
+      {open && (
+        <div className="cms-collapse-body">
+          {props.action && <div className="cms-collapse-action">{props.action}</div>}
+          {props.children}
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -555,26 +1010,9 @@ function Sidebar({
 
 /* ------ Topbar --------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 function Topbar() {
-  const [searchQuery, setSearchQuery] = useState("");
-
   return (
     <header className="cms-topbar">
-      {/* Search */}
-      <div className="cms-topbar-search" role="search">
-        <Search size={15} className="cms-topbar-search-icon" />
-        <input
-          type="search"
-          placeholder="Search content"
-          aria-label="Search CMS content"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <kbd className="cms-topbar-kbd">K</kbd>
-      </div>
-
-      {/* Right actions */}
       <div className="cms-topbar-actions">
-        {/* Buttons deleted */}
       </div>
     </header>
   );
@@ -1004,8 +1442,8 @@ function ActivityPanel() {
 function Dashboard({ data, onOpenTab, onOpenPost, jsonPosts }: {
   data: CmsData;
   onOpenTab: (tab: Tab) => void;
-  onOpenPost: (post: any) => void;
-  jsonPosts: any[];
+  onOpenPost: (post: WritingPost) => void;
+  jsonPosts: Post[];
 }) {
   const gearTotal = data.gear.sections.reduce((s, sec) => s + sec.items.length, 0);
 
@@ -1090,13 +1528,13 @@ function Dashboard({ data, onOpenTab, onOpenPost, jsonPosts }: {
 
 /* ------ Props & main component --------------------------------------------------------------------------------------------------------------------- */
 type CmsDashboardProps = {
-  initialData?: CmsData;
+  initialData?: unknown;
 };
 
 export default function CmsDashboard({ initialData }: CmsDashboardProps) {
   const [activeTab,          setActiveTab]          = useState<Tab>(initialCmsTab);
   const normalizedInitial                            = useMemo(
-    () => (initialData ? normalizeData(initialData) : null),
+    () => (initialData ? normalizeData(initialData as Partial<CmsData>) : null),
     [initialData],
   );
   const [status, setStatus] = useState<Status>(
@@ -1120,10 +1558,10 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     return { mode: "list" as const };
   }, [currentPathname]);
 
-  const [jsonPosts, setJsonPosts] = useState<any[]>([]);
+  const [jsonPosts, setJsonPosts] = useState<Post[]>([]);
   const [loadingJsonPosts, setLoadingJsonPosts] = useState(true);
   const [createdId, setCreatedId] = useState<string | null>(null);
-  const [editingPost, setEditingPost] = useState<any | null>(null);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [loadingPost, setLoadingPost] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -1305,6 +1743,10 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
       const nextData = normalizeData(result.data);
       setData(nextData);
       if (resource === "gear") setGearDraft(nextData.gear);
+      if (resource === "photos") {
+        const saved = nextData.photos.find((loc) => loc.slug === (payload as PhotoLocation).slug);
+        if (saved) setPhotoDraft(saved);
+      }
       setStatus({ type: "success", text: successText });
     } catch (err) {
       setStatus({ type: "error", text: err instanceof Error ? err.message : "Unable to save changes." });
@@ -1813,8 +2255,52 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     );
   }
 
+  function updatePhoto<K extends keyof PhotoLocation>(field: K, value: PhotoLocation[K]) {
+    setPhotoDraft((current) => ({ ...current, [field]: value }));
+  }
+
+  function updatePhotoImage(index: number, field: keyof PhotoImage, value: string | number) {
+    setPhotoDraft((current) => ({
+      ...current,
+      images: current.images.map((image, imageIndex) =>
+        imageIndex === index ? { ...image, [field]: value } : image,
+      ),
+    }));
+  }
+
+  function removePhotoImage(index: number) {
+    setPhotoDraft((current) => ({
+      ...current,
+      images: current.images.filter((_, imageIndex) => imageIndex !== index),
+    }));
+  }
+
+  function addRelatedLocation() {
+    setPhotoDraft((current) => ({
+      ...current,
+      relatedLocations: [...current.relatedLocations, { slug: "", distance: "", category: "" }],
+    }));
+  }
+
+  function updateRelatedLocation(index: number, patch: Partial<RelatedLocation>) {
+    setPhotoDraft((current) => ({
+      ...current,
+      relatedLocations: current.relatedLocations.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, ...patch } : item,
+      ),
+    }));
+  }
+
+  function removeRelatedLocation(index: number) {
+    setPhotoDraft((current) => ({
+      ...current,
+      relatedLocations: current.relatedLocations.filter((_, itemIndex) => itemIndex !== index),
+    }));
+  }
+
   function renderPhotos() {
     const photoViewHref = photoDraft.slug ? `/photos#${photoDraft.slug}` : undefined;
+    const locationOptions = (data?.photos ?? []).filter((loc) => loc.slug !== photoDraft.slug);
 
     return (
       <div className="cms-content">
@@ -1848,7 +2334,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                   onClick={() => setPhotoDraft(loc)}
                 >
                   <span>{loc.location || "(Untitled)"}</span>
-                  <small>{loc.images.length} photos</small>
+                  <small>{loc.type.replace("-", " ")} / {loc.images.length} photos</small>
                 </button>
               ))}
               {(data?.photos ?? []).length === 0 && <p className="cms-empty">No locations yet.</p>}
@@ -1888,22 +2374,47 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
               </div>
             </div>
 
-            <div className="cms-form-grid">
-              <Field label="Order"       type="number" value={photoDraft.order}       onChange={(v) => setPhotoDraft({ ...photoDraft, order: Number(v) })} />
-              <Field label="Slug"        value={photoDraft.slug}                      onChange={(v) => setPhotoDraft({ ...photoDraft, slug: v })} />
-              <Field label="Location"    required value={photoDraft.location}         onChange={(v) => setPhotoDraft({ ...photoDraft, location: v })} />
-              <Field label="Headline"    value={photoDraft.headline}                  onChange={(v) => setPhotoDraft({ ...photoDraft, headline: v })} />
-              <Field label="Subheadline" value={photoDraft.subheadline}               onChange={(v) => setPhotoDraft({ ...photoDraft, subheadline: v })} />
-              <TextArea label="Description"               value={photoDraft.description}         rows={3}  onChange={(v) => setPhotoDraft({ ...photoDraft, description: v })} />
-              <TextArea
-                label="Images: src | alt | width | height"
-                value={imagesToText(photoDraft.images)}
-                rows={9}
-                onChange={(v) => setPhotoDraft({ ...photoDraft, images: textToImages(v) })}
-              />
-            </div>
+            <CollapsibleSection title="Basic Information" defaultOpen>
+              <div className="cms-form-grid">
+                <Field label="Slug" value={photoDraft.slug} onChange={(v) => updatePhoto("slug", v)} />
+                <Field
+                  label="Location Name"
+                  required
+                  value={photoDraft.location}
+                  onChange={(v) => setPhotoDraft({
+                    ...photoDraft,
+                    location: v,
+                    name: v,
+                    slug: photoDraft.slug || slugify(v),
+                    headline: photoDraft.headline || v,
+                  })}
+                />
+                <Field label="Province / City" value={photoDraft.province} onChange={(v) => setPhotoDraft({ ...photoDraft, province: v, city: photoDraft.city || v })} />
+                <Field label="Headline" value={photoDraft.headline} onChange={(v) => updatePhoto("headline", v)} />
+                <Field label="Subheadline" value={photoDraft.subheadline} onChange={(v) => updatePhoto("subheadline", v)} />
+                <TextArea label="Short Introduction" value={photoDraft.introduction} rows={4} onChange={(v) => setPhotoDraft({ ...photoDraft, introduction: v, shortDescription: v, description: photoDraft.description || v })} />
+              </div>
+            </CollapsibleSection>
 
-            <div className="cms-upload-row">
+            <CollapsibleSection title="Quick Facts" defaultOpen>
+              <div className="cms-form-grid">
+                <Field label="Recommended Stay" value={photoDraft.recommendedStay} placeholder="3 ngày 2 đêm" onChange={(v) => updatePhoto("recommendedStay", v)} />
+                <Field label="Best Months" value={photoDraft.bestMonths} placeholder="Tháng 11 - tháng 3" onChange={(v) => updatePhoto("bestMonths", v)} />
+                <Field label="Budget Minimum" type="number" value={photoDraft.budgetMin} onChange={(v) => updatePhoto("budgetMin", v === "" ? "" : Number(v))} />
+                <Field label="Budget Maximum" type="number" value={photoDraft.budgetMax} onChange={(v) => updatePhoto("budgetMax", v === "" ? "" : Number(v))} />
+                <Field label="Budget Note" value={photoDraft.budgetNote} placeholder="per person / 7 days" onChange={(v) => updatePhoto("budgetNote", v)} />
+                <MultiSelectField label="Suitable For" value={photoDraft.suitableFor} options={suitableForOptions} onChange={(value) => updatePhoto("suitableFor", value)} />
+              </div>
+            </CollapsibleSection>
+
+            <CollapsibleSection title="Good To Know" defaultOpen>
+              <div className="cms-form-grid">
+                <MultiSelectField label="Best Time of Day" value={photoDraft.bestTimeOfDay} options={bestTimeOfDayOptions} onChange={(value) => updatePhoto("bestTimeOfDay", value)} />
+                <RepeatableListField label="Travel Tips" value={photoDraft.travelTips} placeholder="Mang theo áo khoác mỏng" onChange={(value) => updatePhoto("travelTips", value)} />
+              </div>
+            </CollapsibleSection>
+
+            <CollapsibleSection title="Media" defaultOpen>
               <input
                 ref={photoUploadRef}
                 type="file"
@@ -1912,41 +2423,93 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                 hidden
                 onChange={(e) => uploadFiles("photos", e.target.files, photoDraft.slug)}
               />
-              <SmallButton
-                icon={<Upload size={14} />}
-                tone="secondary"
-                disabled={!photoDraft.slug}
-                onClick={() => photoUploadRef.current?.click()}
+              <div
+                className="cms-dropzone"
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  uploadFiles("photos", e.dataTransfer.files, photoDraft.slug);
+                }}
               >
-                Upload to location
-              </SmallButton>
-              <span className="cms-upload-note">
-                Saves to src/assets/photos/{photoDraft.slug || "location-slug"}/
-              </span>
-            </div>
-
-            {(photoDraft.images.length > 0 || uploadingImages.length > 0) && (
-              <div className="cms-photo-grid">
-                {photoDraft.images.map((photo) => {
-                  const src = photo.src.startsWith("/assets/photos/")
-                    ? photo.src.replace("/assets/photos/", "/api/cms/assets/")
-                    : photo.src;
-                  return (
-                    <figure key={`${photo.src}-${photo.alt}`} onClick={() => setPreviewImage({ src, alt: photo.alt })}>
-                      <img src={src} alt={photo.alt} className="cms-photo-thumb" />
-                      <figcaption>{photo.alt || photo.src}</figcaption>
+                <ImageIcon size={18} />
+                <SmallButton
+                  icon={<Upload size={14} />}
+                  tone="secondary"
+                  disabled={!photoDraft.slug}
+                  onClick={() => photoUploadRef.current?.click()}
+                >
+                  Upload to location
+                </SmallButton>
+                <span className="cms-upload-note">
+                  Saves to src/assets/photos/{photoDraft.slug || "location-slug"}/
+                </span>
+              </div>
+              {(photoDraft.images.length > 0 || uploadingImages.length > 0) && (
+                <div className="cms-photo-grid cms-photo-grid-edit">
+                  {photoDraft.images.map((photo, index) => {
+                    const src = photo.src.startsWith("/assets/photos/")
+                      ? photo.src.replace("/assets/photos/", "/api/cms/assets/")
+                      : photo.src;
+                    return (
+                      <figure key={`${photo.src}-${index}`}>
+                        <button type="button" className="cms-photo-preview-btn" onClick={() => setPreviewImage({ src, alt: photo.alt })}>
+                          <img src={src} alt={photo.alt} className="cms-photo-thumb" />
+                        </button>
+                        <div className="cms-photo-meta">
+                          <Field label="Alt text" value={photo.alt} onChange={(v) => updatePhotoImage(index, "alt", v)} />
+                          <Field label="Caption" value={photo.caption ?? ""} onChange={(v) => updatePhotoImage(index, "caption", v)} />
+                        </div>
+                        <div className="cms-photo-actions">
+                          <SmallButton tone="danger" icon={<Trash2 size={13} />} onClick={() => removePhotoImage(index)}>Remove</SmallButton>
+                        </div>
+                      </figure>
+                    );
+                  })}
+                  {uploadingImages.map((img, i) => (
+                    <figure key={`uploading-${i}`} className="is-uploading">
+                      <div className="cms-photo-loading-overlay"><Loader2 className="cms-spin" size={20} /></div>
+                      <img src={img.url} alt={img.name} className="cms-photo-thumb" />
+                      <figcaption>Uploading {img.name}...</figcaption>
                     </figure>
+                  ))}
+                </div>
+              )}
+            </CollapsibleSection>
+
+            <CollapsibleSection title="Nearby Locations">
+              <div className="cms-relation-list">
+                {photoDraft.relatedLocations.map((item, index) => {
+                  const related = locationOptions.find((loc) => loc.slug === item.slug);
+                  const image = related?.heroImage?.src || related?.images[0]?.src || "";
+                  const imageSrc = image.startsWith("/assets/photos/") ? image.replace("/assets/photos/", "/api/cms/assets/") : image;
+                  return (
+                    <div className="cms-relation-row" key={`${item.slug}-${index}`}>
+                      <div className="cms-relation-preview">
+                        {imageSrc ? <img src={imageSrc} alt={related?.location || item.slug} /> : <MapPin size={18} />}
+                        <div>
+                          <strong>{related?.location || item.slug || "Nearby location"}</strong>
+                          <span>{item.distance || "Distance"} / {item.category || related?.type || "Category"}</span>
+                        </div>
+                      </div>
+                      <div className="cms-form-grid cms-form-grid-tight">
+                        <SelectField
+                          label="Title"
+                          value={item.slug}
+                          options={[{ value: "", label: "Choose location" }, ...locationOptions.map((loc) => ({ value: loc.slug, label: loc.location }))]}
+                          onChange={(v) => updateRelatedLocation(index, { slug: v })}
+                        />
+                        <Field label="Distance" value={item.distance} onChange={(v) => updateRelatedLocation(index, { distance: v })} />
+                        <Field label="Category" value={item.category} onChange={(v) => updateRelatedLocation(index, { category: v })} />
+                      </div>
+                      <SmallButton icon={<Trash2 size={14} />} tone="danger" onClick={() => removeRelatedLocation(index)}>Remove</SmallButton>
+                    </div>
                   );
                 })}
-                {uploadingImages.map((img, i) => (
-                  <figure key={`uploading-${i}`} className="is-uploading" onClick={() => setPreviewImage({ src: img.url, alt: img.name })}>
-                    <div className="cms-photo-loading-overlay"><Loader2 className="cms-spin" size={20} /></div>
-                    <img src={img.url} alt={img.name} className="cms-photo-thumb" />
-                    <figcaption>Uploading {img.name}--</figcaption>
-                  </figure>
-                ))}
+                {photoDraft.relatedLocations.length === 0 && <p className="cms-empty">No nearby locations selected.</p>}
               </div>
-            )}
+              <SmallButton icon={<Plus size={14} />} tone="secondary" onClick={addRelatedLocation}>Nearby place</SmallButton>
+            </CollapsibleSection>
+
           </form>
         </section>
       </div>

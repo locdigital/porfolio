@@ -8,7 +8,7 @@ const sortedProjects = await getProjects();
 const workTitle = "Work | Phuc Loc Nguyen";
 const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
 const workHeadline = "Selected work & <em>case studies</em>";
-const workHeadlineText = "Selected work & case studies";
+const workHeadlineText = "Selected work &\ncase studies";
 ---
 
 <Layout
@@ -177,6 +177,10 @@ const workHeadlineText = "Selected work & case studies";
     margin-top: 18px;
   }
 
+  .work-hero .gear-hero-title {
+    white-space: pre-line;
+  }
+
   .project-list {
     display: flex;
     flex-direction: column;
@@ -243,9 +247,9 @@ const workHeadlineText = "Selected work & case studies";
   }
 
   .project-summary {
-    font-size: var(--type-body);
+    font-size: 0.875rem;
     line-height: 1.72;
-    color: color-mix(in srgb, var(--text) 72%, var(--muted));
+    color: #6e6e6e;
     margin-bottom: 20px;
     max-width: 620px;
     text-wrap: pretty;

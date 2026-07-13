@@ -1,0 +1,62 @@
+{
+  "slug": "nha-trang",
+  "order": 8,
+  "type": "check-in",
+  "location": "Nha Trang",
+  "name": "Nha Trang",
+  "city": "Nha Trang",
+  "country": "Vietnam",
+  "province": "Khánh Hòa",
+  "region": "Nam Trung Bộ",
+  "headline": "Bright water and a louder beach-city rhythm.",
+  "subheadline": "A coastal base for sun, seafood, and easy island views.",
+  "introduction": "Nha Trang is brighter and busier than the quieter central coast: open beach, blue water, seafood evenings, and a city rhythm that stays close to the sea.",
+  "shortDescription": "A lively beach city with bright water, seafood, island views, and easy coastal access.",
+  "description": "A lively beach city with bright water, seafood, island views, and easy coastal access.",
+  "longDescription": "Nha Trang is best when treated as a beach-city base rather than a remote escape. Keep mornings near the water and save evenings for food and the city lights.",
+  "travelFrom": "HCM City",
+  "travelTime": "1h flight",
+  "recommendedStay": "2-3 days",
+  "bestMonths": "Jan - Aug",
+  "transportation": ["Flight", "Taxi", "Walking"],
+  "suitableFor": ["Beach city", "Seafood", "Family", "Short escape"],
+  "overview": "A lively coastal city for people who want beach access, seafood, simple logistics, and a more active city base.",
+  "personalRating": 7.8,
+  "wouldReturn": "maybe",
+  "scores": {
+    "scenery": 8,
+    "food": 8,
+    "cafe": 7,
+    "relaxation": 7,
+    "value": 7,
+    "accessibility": 9
+  },
+  "bestTimeOfDay": ["Morning", "Golden hour", "Evening"],
+  "localTransport": ["Walking near the beach", "Taxi across town"],
+  "weatherNote": "Clear mornings make the water look its best. Midday heat can be strong on exposed beach stretches.",
+  "crowdLevel": "very_busy",
+  "travelDifficulty": "very_easy",
+  "travelTips": [
+    "Stay close to the beach if you want easy morning walks.",
+    "Use early light for sea photos.",
+    "Pick food stops away from the most tourist-heavy strip when possible."
+  ],
+  "notFor": ["Travelers looking for a quiet hidden beach mood."],
+  "tags": ["Beach city", "Seafood", "Island view", "Coast", "Short escape"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Nha Trang Photo Notes | Bright Water and Beach City Days",
+  "seoDescription": "A short editorial photo note from Nha Trang: bright beach water, seafood, island views, city lights, and easy coastal travel.",
+  "relatedLocations": [
+    { "slug": "phu-yen", "distance": "Northern coast", "category": "Road trip" },
+    { "slug": "quy-nhon", "distance": "Quieter coast", "category": "Beach town" },
+    { "slug": "vung-tau", "distance": "Beach-city comparison", "category": "Short escape" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

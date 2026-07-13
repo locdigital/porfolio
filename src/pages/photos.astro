@@ -38,6 +38,60 @@ const optimizedLocations = await Promise.all(
 );
 const photosHeadline = "Places I've <em>wandered.</em>";
 const photosHeadlineText = "Places I've wandered.";
+type PhotoLocationView = Omit<Awaited<ReturnType<typeof getPhotoLocations>>[number], "photos"> & {
+  photos?: unknown[];
+};
+
+function enabledBlock(loc: PhotoLocationView, type: string) {
+  const blocks = Array.isArray(loc.blocks) ? loc.blocks : [];
+  if (blocks.length === 0) return true;
+  return blocks.some((block) => block.type === type && block.enabled);
+}
+
+function factsFor(loc: PhotoLocationView) {
+  const budget = formatBudget(loc);
+  return [
+    { label: "Place", value: loc.province || loc.city || loc.country, icon: "📍" },
+    { label: "Stay", value: loc.recommendedStay, icon: "🕒" },
+    { label: "Season", value: loc.bestMonths || loc.bestTime, icon: "🗓️" },
+    { label: "Budget", value: budget, icon: "💵" },
+    { label: "Best for", value: (loc.suitableFor ?? []).join(" / "), icon: "✨" },
+  ].filter((fact) => fact.value);
+}
+
+function formatBudget(loc: PhotoLocationView) {
+  const min = typeof loc.budgetMin === "number" ? loc.budgetMin : 0;
+  const max = typeof loc.budgetMax === "number" ? loc.budgetMax : 0;
+  const amount = min && max
+    ? `${formatMoney(min)} - ${formatMoney(max)}`
+    : min || max
+      ? formatMoney(min || max)
+      : "";
+  return amount;
+}
+
+function formatMoney(value: number) {
+  return `$${value.toLocaleString("en-US")}`;
+}
+
+function reviewSectionsFor(loc: PhotoLocationView) {
+  const overview = loc.overview || loc.shortDescription || loc.description || loc.introduction;
+  return overview ? [["Overview", overview]] : [];
+}
+
+function goodToKnowChipsFor(loc: PhotoLocationView) {
+  return [...(loc.bestTimeOfDay ?? []), ...(loc.travelTips ?? [])].filter(Boolean);
+}
+
+function hasDetailsFor(loc: PhotoLocationView) {
+  return (
+    (enabledBlock(loc, "quick-facts") && factsFor(loc).length > 0) ||
+    (enabledBlock(loc, "editorial-review") && reviewSectionsFor(loc).length > 0) ||
+    (enabledBlock(loc, "tips") && goodToKnowChipsFor(loc).length > 0) ||
+    (enabledBlock(loc, "related-articles") && (loc.relatedArticles ?? []).length > 0) ||
+    (enabledBlock(loc, "cta") && Boolean(loc.website || loc.bookingUrl || loc.instagram))
+  );
+}
 ---
 
 <Layout title="Photos | Phuc Loc Nguyen">
@@ -81,9 +135,6 @@ const photosHeadlineText = "Places I've wandered.";
                 {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
               </button>
             ))}
-            <a href="/gallery" class="photos-nav-link photos-nav-gallery-btn">
-              Gallery <span class="photos-gallery-icon" aria-hidden="true">↗</span>
-            </a>
             <span class="photos-nav-active-line" aria-hidden="true"></span>
           </div>
         </nav>
@@ -102,14 +153,80 @@ const photosHeadlineText = "Places I've wandered.";
           <!-- Location header -->
           <div class="loc-header">
             <div class="loc-meta">
-              <span class="loc-index">{String(locIdx + 1).padStart(2, '0')}</span>
               <div>
-                <h2 class="loc-name">{loc.name}</h2>
+                <h2 class="loc-name">{loc.headline || loc.name}</h2>
                 <p class="loc-desc">{loc.description}</p>
               </div>
             </div>
             <span class="loc-count">{loc.photos.length} photos</span>
           </div>
+
+          {hasDetailsFor(loc) && (
+            <div class="loc-cms-detail" aria-label={`${loc.name} travel details`}>
+              {enabledBlock(loc, "quick-facts") && factsFor(loc).length > 0 && (
+                <section class="loc-info-section loc-quick-facts">
+                  <h3>Quick Facts</h3>
+                  <div class="loc-facts">
+                    {factsFor(loc).map(({ label, value, icon }) => (
+                      <span class="loc-fact-pill">
+                        <span class="loc-fact-label">
+                          <span class="loc-meta-icon" aria-hidden="true">{icon}</span>
+                          {label}
+                        </span>
+                        <strong>{value}</strong>
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {enabledBlock(loc, "editorial-review") && reviewSectionsFor(loc).length > 0 && (
+                <section class="loc-info-section loc-rich">
+                  {reviewSectionsFor(loc).map(([label, value]) => (
+                    <>
+                      <h3>{label}</h3>
+                      <p>{value}</p>
+                    </>
+                  ))}
+                </section>
+              )}
+
+              {enabledBlock(loc, "tips") && goodToKnowChipsFor(loc).length > 0 && (
+                <section class="loc-info-section loc-good-to-know">
+                  <h3>Good To Know</h3>
+                  <ul class="loc-pill-list">
+                    {goodToKnowChipsFor(loc).map((item) => (
+                      <li>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {enabledBlock(loc, "related-articles") && (loc.relatedArticles ?? []).length > 0 && (
+                <section class="loc-info-section">
+                  <h3>Related Articles</h3>
+                  <div class="loc-link-list">
+                    {(loc.relatedArticles ?? []).map((article) => (
+                      <a href={`/blog/${article.slug}`}>{article.title || article.slug}</a>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {enabledBlock(loc, "cta") && (loc.website || loc.bookingUrl || loc.instagram) && (
+                <section class="loc-info-section">
+                  <h3>Links</h3>
+                  <div class="loc-link-list">
+                    {loc.website && <a href={loc.website} target="_blank" rel="noopener noreferrer">Website</a>}
+                    {loc.bookingUrl && <a href={loc.bookingUrl} target="_blank" rel="noopener noreferrer">Booking</a>}
+                    {loc.instagram && <a href={loc.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>}
+                  </div>
+                </section>
+              )}
+            </div>
+          )}
         </div>
 
         <!-- Photo grid --- full-bleed inside container -->
@@ -211,7 +328,15 @@ const photosHeadlineText = "Places I've wandered.";
         panel.toggleAttribute("hidden", !isActive);
       });
 
+      if (location.hash.slice(1) !== nextId) {
+        history.replaceState(null, "", `${location.pathname}${location.search}#${nextId}`);
+      }
+
       moveLine(nextTab);
+      if (nextTab instanceof HTMLElement) {
+        const left = nextTab.offsetLeft - (tablist.clientWidth - nextTab.offsetWidth) / 2;
+        tablist.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+      }
       requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
     };
 
@@ -220,7 +345,9 @@ const photosHeadlineText = "Places I've wandered.";
     });
 
     activate(location.hash.slice(1));
-    window.addEventListener("resize", () => moveLine(tablist.querySelector(".photos-nav-link.active")));
+    window.addEventListener("resize", () => {
+      moveLine(tablist.querySelector(".photos-nav-link.active"));
+    });
     window.addEventListener("hashchange", () => activate(location.hash.slice(1)));
   }
 
@@ -294,7 +421,10 @@ const photosHeadlineText = "Places I've wandered.";
     margin: 0;
     padding: 0;
     overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-y: none;
     scrollbar-width: none;
+    touch-action: pan-x;
     -webkit-overflow-scrolling: touch;
     cursor: grab;
   }
@@ -359,17 +489,18 @@ const photosHeadlineText = "Places I've wandered.";
     display: inline-block;
   }
 
-  .photos-nav-gallery-btn {
-    margin-left: 10px;
-    color: color-mix(in srgb, var(--text) 68%, var(--muted));
-  }
-
-  .photos-gallery-icon {
-    display: inline-block;
-  }
-
   /* ------ Location section ------ */
   .loc-section {
+    --loc-prose-size: 0.875rem;
+    --loc-prose-leading: 1.7;
+    --loc-sidebar-size: 0.875rem;
+    --loc-sidebar-leading: 1.65;
+    --loc-prose-measure: 68ch;
+    --loc-sidebar-measure: 34ch;
+    --loc-heading-gap: var(--space-2);
+    --loc-copy-gap: var(--space-3);
+    --loc-rich-block-gap: 2rem;
+    --loc-section-gap: var(--space-6);
     display: none;
     opacity: 1;
     overflow-anchor: none;
@@ -403,23 +534,14 @@ const photosHeadlineText = "Places I've wandered.";
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 28px;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
   }
 
   .loc-meta {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-  }
-
-  .loc-index {
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    color: var(--muted);
-    letter-spacing: .08em;
-    padding-top: 10px;
-    flex-shrink: 0;
+    gap: var(--space-4);
   }
 
   .loc-name {
@@ -429,14 +551,17 @@ const photosHeadlineText = "Places I've wandered.";
     line-height: 1.05;
     letter-spacing: -.025em;
     color: var(--text);
-    margin-bottom: 8px;
+    margin-bottom: var(--loc-heading-gap);
   }
 
   .loc-desc {
-    font-size: var(--type-body);
-    color: color-mix(in srgb, var(--text) 70%, var(--muted));
-    max-width: 380px;
-    line-height: 1.6;
+    max-width: var(--loc-prose-measure);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    line-height: var(--loc-prose-leading);
+    color: #6e6e6e;
+    letter-spacing: 0;
+    text-wrap: pretty;
   }
 
   .loc-count {
@@ -449,13 +574,10 @@ const photosHeadlineText = "Places I've wandered.";
     letter-spacing: .06em;
   }
 
-  /* ------ Image Grid ------ */
-  /*
-    Masonry layout to display photos in full size / original aspect ratio
-  */
   .loc-grid {
+    display: block;
     column-count: 3;
-    column-gap: 4px;
+    column-gap: 8px;
   }
 
   .loc-photo-item {
@@ -463,19 +585,26 @@ const photosHeadlineText = "Places I've wandered.";
     position: relative;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.05);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    border-radius: 6px;
     break-inside: avoid;
-    transform: translateZ(0); /* Prevent column break glitches */
+    aspect-ratio: auto !important;
+    transform: translateZ(0);
   }
 
   .loc-photo-item picture::after {
     display: none;
   }
 
+  .loc-photo-item picture {
+    display: block;
+    width: 100%;
+  }
+
   .loc-photo-item img {
     display: block;
     width: 100%;
-    height: auto; /* Maintains original aspect ratio */
+    height: auto;
     backface-visibility: hidden;
   }
 
@@ -503,10 +632,259 @@ const photosHeadlineText = "Places I've wandered.";
     letter-spacing: .1em;
   }
 
+  /* ------ CMS location details ------ */
+  .loc-cms-detail {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.72fr) minmax(38ch, 1.48fr) minmax(14rem, 0.8fr);
+    gap: clamp(var(--space-5), 3vw, var(--space-10));
+    min-width: 0;
+    margin: var(--space-1) 0 clamp(var(--space-8), 4vw, var(--space-12));
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--divider);
+  }
+
+  .loc-info-section {
+    display: grid;
+    gap: var(--loc-copy-gap);
+    align-content: start;
+    min-width: 0;
+  }
+
+  .loc-info-section + .loc-info-section {
+    padding-left: clamp(var(--space-4), 2vw, var(--space-6));
+    border-left: 1px solid color-mix(in srgb, var(--divider) 72%, transparent);
+  }
+
+  .loc-info-section h3,
+  .loc-rich h3,
+  .loc-rich h4 {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--text);
+  }
+
+  .loc-info-section h3,
+  .loc-rich h3 {
+    font-size: 1.5rem;
+    line-height: 1;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  :global(.loc-cms-detail h3) {
+    font-size: 1.5rem;
+  }
+
+  .loc-rich h4 {
+    font-size: var(--type-subhead);
+    line-height: 1.12;
+    margin-top: var(--space-2);
+    text-wrap: balance;
+  }
+
+.loc-rich,
+  .loc-rich p,
+  .loc-rich li,
+  .loc-muted {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    line-height: var(--loc-prose-leading);
+    color: #6e6e6e;
+  }
+
+  .loc-rich {
+    display: grid;
+    gap: var(--loc-rich-block-gap);
+    max-width: var(--loc-prose-measure);
+  }
+
+  .loc-quick-facts,
+  .loc-good-to-know {
+    gap: var(--loc-rich-block-gap);
+  }
+
+  .loc-rich > :not(:first-child):is(h3, h4) {
+    margin-top: 0;
+  }
+
+  .loc-rich p,
+  .loc-rich ul,
+  .loc-rich blockquote {
+    max-width: var(--loc-prose-measure);
+    min-width: 0;
+  }
+
+  .loc-rich ul {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: 1.1em;
+  }
+
+  .loc-rich blockquote {
+    margin: 2px 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--text);
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .loc-facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    max-width: var(--loc-sidebar-measure);
+  }
+
+  .loc-fact-pill,
+  .loc-fact-pill span,
+  .loc-fact-pill strong,
+  .loc-text-link,
+  .loc-link-list a {
+    font-family: var(--sans);
+    font-size: var(--loc-sidebar-size);
+  }
+
+  .loc-fact-pill {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    flex: 0 1 auto;
+    gap: var(--space-1);
+    min-width: 0;
+    min-height: 58px;
+    max-width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .loc-fact-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--muted);
+    font-size: var(--type-caption);
+    font-weight: 500;
+  }
+
+  .loc-meta-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 1.1em;
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .loc-fact-pill strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    font-size: var(--type-body);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .loc-pill-list,
+  .loc-link-list,
+  .loc-score-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .loc-pill-list li,
+  .loc-text-link,
+  .loc-link-list a,
+  .loc-score-pill {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 32px;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--divider);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.6);
+    color: var(--text);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .loc-pill-list li {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    min-height: 28px;
+    padding: 0.375rem 0.75rem;
+  }
+
+  .loc-score-pill {
+    gap: var(--space-2);
+  }
+
+  .loc-score-pill span,
+  .loc-note-list,
+  .loc-note-list p,
+  .loc-bullet-list,
+  .loc-bullet-list li {
+    font-family: var(--sans);
+    font-size: var(--loc-sidebar-size);
+  }
+
+  .loc-score-pill span {
+    color: var(--muted);
+  }
+
+  .loc-score-pill strong {
+    font-weight: 600;
+  }
+
+  .loc-note-list {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--loc-sidebar-measure);
+    color: #6e6e6e;
+    font-size: 0.875rem;
+    line-height: var(--loc-sidebar-leading);
+  }
+
+  .loc-bullet-list {
+    display: grid;
+    gap: var(--space-2);
+    max-width: var(--loc-sidebar-measure);
+    padding-left: 1.1em;
+    list-style: disc;
+    color: #6e6e6e;
+    font-size: 0.875rem;
+    line-height: var(--loc-sidebar-leading);
+  }
+
   /* ------ Responsive ------ */
   @media (max-width: 900px) {
     .loc-grid {
       column-count: 2;
+    }
+
+    .loc-cms-detail {
+      grid-template-columns: 1fr;
+      margin-left: 0;
+      min-width: 0;
+    }
+
+    .loc-rich {
+      max-width: var(--loc-prose-measure);
+    }
+
+    .loc-info-section + .loc-info-section {
+      padding-left: 0;
+      padding-top: var(--space-5);
+      border-left: 0;
+      border-top: 1px solid color-mix(in srgb, var(--divider) 72%, transparent);
     }
   }
 
@@ -518,11 +896,43 @@ const photosHeadlineText = "Places I've wandered.";
     .loc-grid {
       column-count: 1;
     }
-    .loc-photo-item {
-      margin-bottom: 8px; /* Slightly more gap on mobile stack */
+
+    .loc-facts {
+      grid-template-columns: 1fr;
+      max-width: none;
     }
+
+    .loc-section {
+      --loc-prose-size: 0.875rem;
+      --loc-sidebar-size: 0.875rem;
+    }
+
+    .loc-fact-pill {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .loc-pill-list,
+    .loc-link-list,
+    .loc-score-list {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .loc-pill-list li,
+    .loc-link-list a,
+    .loc-score-pill {
+      width: 100%;
+    }
+
+    .loc-fact-pill strong {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
     .loc-header {
-      gap: 16px;
+      gap: var(--space-4);
     }
   }
 </style>

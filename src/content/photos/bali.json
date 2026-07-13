@@ -1,0 +1,338 @@
+{
+  "slug": "bali",
+  "order": 1,
+  "type": "check-in",
+  "location": "Bali",
+  "name": "Bali",
+  "city": "Bali",
+  "district": "Canggu / Ubud / Uluwatu",
+  "country": "Indonesia",
+  "province": "Bali",
+  "region": "",
+  "headline": "Bali in small, golden days.",
+  "subheadline": "A quick visual note from Canggu, Ubud, and Uluwatu.",
+  "introduction": "A short Bali overview for the photo page: soft mornings, green inland roads, cliff light, and a slower island pace.",
+  "shortDescription": "A short Bali overview: cafe mornings, rice-field roads, cliff views, and soft sunset light.",
+  "description": "A short Bali overview: cafe mornings, rice-field roads, cliff views, and soft sunset light.",
+  "longDescription": "A short Bali overview for the photo page.",
+  "travelFrom": "HCM City",
+  "travelTime": "7h",
+  "recommendedStay": "7 days",
+  "bestMonths": "Apr - Oct",
+  "budgetMin": 500,
+  "budgetMax": 1000,
+  "budgetNote": "per person / 7 days",
+  "transportation": [
+    "Flight",
+    "Driver",
+    "Scooter"
+  ],
+  "suitableFor": [
+    "Slow travel",
+    "Cafe hopping",
+    "Photography"
+  ],
+  "overview": "A compact island overview: Canggu for easy mornings, Ubud for green quiet, and Uluwatu for cliff-side sunset light.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
+  "personalRating": 8.4,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 9,
+    "food": 8,
+    "cafe": 9,
+    "relaxation": 8,
+    "value": 7,
+    "accessibility": 7
+  },
+  "bestTimeOfDay": [],
+  "localTransport": [
+    "Driver for long days",
+    "Scooter for short hops"
+  ],
+  "weatherNote": "Dry season is easier for road days. Short rain can still happen, so keep the plan loose.",
+  "crowdLevel": "very_busy",
+  "travelDifficulty": "requires_preparation",
+  "travelTips": [
+    "Do not stack Canggu, Ubud, and Uluwatu into one day.",
+    "Add buffer time for traffic, especially around sunset.",
+    "Carry a light sarong or cover-up for temples.",
+    "Pick accommodation by area, not only by room photos."
+  ],
+  "notFor": [
+    "A trip where every hour needs to be tightly scheduled.",
+    "Travelers who dislike traffic or moving between areas."
+  ],
+  "heroImage": {
+    "id": "assets-photos-img-portfolio-photo-11-webp-coastal-road-and-open-sky-in-bali",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
+    "alt": "Coastal road and open sky in Bali",
+    "width": 1600,
+    "height": 1067,
+    "caption": "A road-day frame, used here as the Bali hero mood.",
+    "order": 2,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "assets-photos-img-portfolio-photo-12-webp-late-afternoon-landscape-with-soft-tra",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJ1yejlKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
+      "alt": "Late afternoon island landscape with soft travel light",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Late afternoon is when the island starts to slow down.",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-11-webp-coastal-road-and-open-sky-in-bali",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
+      "alt": "Coastal road and open sky in Bali",
+      "width": 1600,
+      "height": 1067,
+      "caption": "A road-day frame, used here as the Bali hero mood.",
+      "order": 2,
+      "isCover": true
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-5-webp-vertical-travel-detail-from-a-tropical-",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUni2CYtE95AXOuIBLNQ3GyKFm2qSCfe1MP64",
+      "alt": "Vertical travel detail from a tropical stop",
+      "width": 1067,
+      "height": 1600,
+      "caption": "Small scenes matter more than landmark collecting.",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-14-webp-portrait-travel-frame-with-quiet-atmos",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7sxN4c54ylS30dX98IkbwjPC6iqWEvHMFax2",
+      "alt": "Portrait travel frame with quiet atmosphere",
+      "width": 1067,
+      "height": 1600,
+      "caption": "A slower vertical frame for the gallery rhythm.",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-4-webp-calm-bali-road-scene",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hilCFGvzwbmU9pOiYE6G824a0BWCXcl37yufz",
+      "alt": "Calm Bali road scene with open tropical light",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Road time is part of the trip, not just the transfer.",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-6-webp-green-island-landscape",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hW0XZEXC2QiOP6pqzN9dESsBlGD0KV7FZvL2C",
+      "alt": "Green island landscape on a quiet Bali route",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Ubud days work best when they stay unhurried.",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-7-webp-warm-coastal-afternoon",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKaZ3StvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
+      "alt": "Warm coastal afternoon in Bali",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Save the coast for the softer end of the day.",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-8-webp-warm-outdoor-travel-scene",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hV4CzSTiW6tUiNOoXB108SdsMHZayFfJrLGkP",
+      "alt": "Warm outdoor travel scene",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Keep the route loose enough for detours.",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-9-webp-bright-island-stop",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUs5SfWrYtE95AXOuIBLNQ3GyKFm2qSCfe1MP",
+      "alt": "Bright island stop with tropical travel atmosphere",
+      "width": 1600,
+      "height": 1067,
+      "caption": "The best stops are often the ones between the famous ones.",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "assets-photos-img-portfolio-photo-10-webp-open-bali-landscape",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJVll2aCKGPnLEw4QeZijRaqKpHdbcxS3TC1I",
+      "alt": "Open Bali landscape under clear daylight",
+      "width": 1600,
+      "height": 1067,
+      "caption": "A clean landscape frame to close the set.",
+      "order": 10,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bali%2C%20Indonesia",
+  "latitude": "-8.3405",
+  "longitude": "115.0920",
+  "openingHours": "Open all day",
+  "priceRange": "$$",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
+  "tags": [
+    "Island",
+    "Slow travel",
+    "Rice fields",
+    "Cliff view",
+    "Sunset",
+    "Cafe",
+    "Photography"
+  ],
+  "featured": false,
+  "published": false,
+  "seoTitle": "Bali Slow Travel Guide | Canggu, Ubud, Uluwatu",
+  "seoDescription": "A slow editorial Bali guide for Canggu cafe mornings, Ubud rice fields, Uluwatu cliffs, temple roads, sunsets, and flexible island days.",
+  "seoImage": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
+  "relatedLocations": [
+    {
+      "slug": "da-lat",
+      "distance": "Different mood",
+      "category": "Highland escape"
+    },
+    {
+      "slug": "da-nang",
+      "distance": "Coastal comparison",
+      "category": "Beach city"
+    },
+    {
+      "slug": "hoi-an",
+      "distance": "Soft evening energy",
+      "category": "Old town"
+    }
+  ],
+  "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": true,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": true,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": true,
+  "openingStyle": "",
+  "entranceFee": "Usually 25k - 100k IDR depending on temple, beach, or viewpoint",
+  "bestTime": "Morning / golden hour",
+  "sunrise": true,
+  "sunset": true,
+  "walkingTime": "Flexible",
+  "difficulty": "Easy to moderate",
+  "droneAllowed": false,
+  "thingsToKnow": "Traffic adds time fast. Pick one area per day, check temple dress codes, and avoid planning back-to-back sunset spots.",
+  "blocks": [
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": "Lead with a slower Bali mood: road light, open afternoons, and fewer stops."
+    },
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": "Best for slow travel, cafes, beaches, rice fields, temples, road days, and sunset viewpoints."
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": "Ten frames arranged as one rectangular mosaic for the public location page."
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Editorial Review",
+      "content": "Bali becomes better when the itinerary gets smaller and the days have more air."
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Tips",
+      "content": "Stay close to your main area, keep mornings open, and do not stack famous spots just because they are nearby on the map."
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": "Pros: light, cafes, beaches, rice fields, cliffs. Cons: traffic, crowds, and routes that try to do too much."
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": false,
+      "title": "Map",
+      "content": "General island map link for Bali, Indonesia."
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": false,
+      "title": "Nearby Places",
+      "content": "Related travel references from the same photo CMS."
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": false,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": false,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": "Use website, booking, or Instagram links when this location becomes a specific venue."
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    }
+  ]
+}

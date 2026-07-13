@@ -1,0 +1,62 @@
+{
+  "slug": "hue",
+  "order": 12,
+  "type": "check-in",
+  "location": "Huế",
+  "name": "Huế",
+  "city": "Huế",
+  "country": "Vietnam",
+  "province": "Thừa Thiên Huế",
+  "region": "Miền Trung",
+  "headline": "Imperial quiet by the Perfume River.",
+  "subheadline": "Old walls, rainy streets, and slow central light.",
+  "introduction": "Huế carries a quieter weight: citadel walls, river air, garden houses, soft rain, and food that feels tied to memory.",
+  "shortDescription": "Imperial architecture, river walks, old walls, garden houses, and one of Vietnam's most atmospheric food cities.",
+  "description": "Imperial architecture, river walks, old walls, garden houses, and one of Vietnam's most atmospheric food cities.",
+  "longDescription": "Huế is best when approached slowly. Let the day move between heritage stops, small bowls of food, and weather that gives the city its softer, older mood.",
+  "travelFrom": "Đà Nẵng",
+  "travelTime": "2-3h road",
+  "recommendedStay": "2-3 days",
+  "bestMonths": "Jan - Apr",
+  "transportation": ["Train", "Car", "Taxi", "Motorbike"],
+  "suitableFor": ["History", "Food", "Slow travel", "Photography"],
+  "overview": "A heritage city for imperial architecture, river light, quiet streets, rain, and deeply local food.",
+  "personalRating": 8.5,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 8,
+    "food": 9,
+    "cafe": 7,
+    "relaxation": 8,
+    "value": 8,
+    "accessibility": 8
+  },
+  "bestTimeOfDay": ["Morning", "Cloudy afternoon", "Late afternoon"],
+  "localTransport": ["Taxi between sites", "Walking near the river"],
+  "weatherNote": "Rain is part of Huế's mood, but it can slow outdoor plans. Keep the route flexible.",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "easy",
+  "travelTips": [
+    "Do not stack every tomb and heritage site into one day.",
+    "Leave space for food stops.",
+    "Bring light rain protection even in shoulder months."
+  ],
+  "notFor": ["Travelers who want only beaches or nightlife."],
+  "tags": ["Heritage", "Imperial city", "Food", "River", "Central Vietnam"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Huế Photo Notes | Imperial City and Perfume River",
+  "seoDescription": "A short editorial photo note from Huế: imperial walls, Perfume River light, rainy streets, garden houses, heritage stops, and local food.",
+  "relatedLocations": [
+    { "slug": "da-nang", "distance": "Nearby", "category": "Beach city" },
+    { "slug": "hoi-an", "distance": "Heritage route", "category": "Old town" },
+    { "slug": "ha-noi", "distance": "Old-city comparison", "category": "Capital" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

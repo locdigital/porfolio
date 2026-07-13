@@ -1,0 +1,61 @@
+{
+  "slug": "hoi-an",
+  "order": 13,
+  "type": "check-in",
+  "location": "Hội An",
+  "name": "Hội An",
+  "city": "Hội An",
+  "country": "Vietnam",
+  "province": "Quảng Nam",
+  "region": "Miền Trung",
+  "headline": "Lantern light and slow old-town evenings.",
+  "subheadline": "A small city made for walking before sunset.",
+  "introduction": "Hội An is softest at the edges of the day: quiet lanes in the morning, yellow walls in late light, and lantern reflections after dark.",
+  "shortDescription": "Old-town lanes, yellow walls, riverside evenings, lanterns, and a slower central Vietnam mood.",
+  "description": "Old-town lanes, yellow walls, riverside evenings, lanterns, and a slower central Vietnam mood.",
+  "longDescription": "The town can get crowded, so the trick is timing. Walk early, rest through the busiest heat, then return when the light turns warm and the river starts to glow.",
+  "travelFrom": "Đà Nẵng",
+  "travelTime": "45-60m road",
+  "recommendedStay": "2-3 days",
+  "bestMonths": "Feb - Aug",
+  "transportation": ["Car", "Taxi", "Bicycle", "Walking"],
+  "suitableFor": ["Old town", "Food", "Walking", "Photography"],
+  "overview": "A compact heritage town for yellow walls, lantern light, riverside walks, tailoring stops, and soft evening scenes.",
+  "personalRating": 8.3,
+  "wouldReturn": "maybe",
+  "scores": {
+    "scenery": 8,
+    "food": 8,
+    "cafe": 8,
+    "relaxation": 7,
+    "value": 7,
+    "accessibility": 8
+  },
+  "bestTimeOfDay": ["Early morning", "Golden hour", "Evening"],
+  "localTransport": ["Walking in old town", "Bicycle for nearby routes"],
+  "weatherNote": "Old-town walks are best outside the hottest part of the day. Rain can make evenings atmospheric but slower.",
+  "crowdLevel": "very_busy",
+  "travelDifficulty": "very_easy",
+  "travelTips": [
+    "Walk early if you want quieter photos.",
+    "Stay close enough to return after a midday break.",
+    "Treat the lantern scene as atmosphere, not a checklist."
+  ],
+  "notFor": ["Travelers who dislike tourist crowds."],
+  "tags": ["Old town", "Lanterns", "Heritage", "Walking", "Central Vietnam"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Hội An Photo Notes | Lanterns and Old-Town Evenings",
+  "seoDescription": "A short editorial photo note from Hội An: yellow walls, lanterns, riverside evenings, old-town walks, food, and central Vietnam light.",
+  "relatedLocations": [
+    { "slug": "da-nang", "distance": "Nearby", "category": "Beach city" },
+    { "slug": "hue", "distance": "Heritage route", "category": "Old city" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

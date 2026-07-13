@@ -1,17 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getPhotoAsset } from "../lib/photo-assets";
 import BlurText from "../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 import { ArrowRight } from "lucide-react";
 
-// Import optimized images for service cards/tabs
-const performanceImg = getPhotoAsset("/assets/photos/img-portfolio/photo-10.webp");
-const seedingImg = getPhotoAsset("/assets/photos/img-portfolio/photo-15.webp");
-const brandImg = getPhotoAsset("/assets/photos/img-portfolio/photo-3.webp");
-const ecommerceImg = getPhotoAsset("/assets/photos/img-portfolio/photo-19.webp");
-const webdevImg = getPhotoAsset("/assets/photos/img-portfolio/photo-20.webp");
-const automationImg = getPhotoAsset("/assets/photos/img-portfolio/photo-6.webp");
 const serviceHeadlineText = "Growth systems for acquisition, tracking, and fast websites.";
 
 const services = [
@@ -22,7 +14,6 @@ const services = [
     title: "Performance Ads & Attribution",
     metric: "4.2x Avg ROAS",
     desc: "Scale conversions and lower CAC through high-intent paid campaigns and modern server-side measurement frameworks.",
-    img: performanceImg,
     alt: "Performance Marketing Analytics",
     tags: ["Meta Ads", "Google Ads", "TikTok Ads", "GA4 Server-Side", "Looker Studio"],
     checklist: [
@@ -44,7 +35,6 @@ const services = [
     title: "Organic Seeding & Advocacy",
     metric: "85% Trust Index",
     desc: "Deploy natural forum discussion threads and community seeding campaigns that establish genuine peer recommendation.",
-    img: seedingImg,
     alt: "Social Seeding and Community Advocacy",
     tags: ["Forum Seeding", "Reddit & Facebook", "Sentiment Mgmt", "KOC Booking"],
     checklist: [
@@ -66,7 +56,6 @@ const services = [
     title: "Strategic Brand Positioning",
     metric: "100% Alignment",
     desc: "Outline your core positioning, styleguides, and messaging maps to stand out in crowded tech markets.",
-    img: brandImg,
     alt: "Brand Identity Layout",
     tags: ["Market Positioning", "Messaging Maps", "Visual Styleguides", "Tone of Voice"],
     checklist: [
@@ -88,7 +77,6 @@ const services = [
     title: "DTC Storefront Optimization",
     metric: "+28% Conversion",
     desc: "Refine store interfaces and configure retention flows to increase Customer Lifetime Value and average order index.",
-    img: ecommerceImg,
     alt: "E-Commerce Funnel Optimization",
     tags: ["Shopify CRO", "Cart Funnel optimization", "Klaviyo CRM", "Catalog Feed"],
     checklist: [
@@ -110,7 +98,6 @@ const services = [
     title: "Headless Web Engineering",
     metric: "100/100 Speed",
     desc: "Build lightning-fast, fully responsive websites on Astro and React that score perfect Lighthouse diagnostics.",
-    img: webdevImg,
     alt: "Modern Web Engineering Workspace",
     tags: ["Astro Framework", "React & TS", "Keystatic CMS", "Core Web Vitals"],
     checklist: [
@@ -132,7 +119,6 @@ const services = [
     title: "AI Funnels & Growth Automation",
     metric: "95% Automation",
     desc: "Streamline manual marketing loops and unlock inbound scale by deploying automated lead generation workflows, custom CRM syncs, and AI content engines.",
-    img: automationImg,
     alt: "Growth Automation & AI Funnels Setup",
     tags: ["Make.com", "Zapier", "AI Scripting", "CRM Flows", "SEO Auto"],
     checklist: [
@@ -285,10 +271,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
           <li>Server-side measurement</li>
           <li>SEO-ready builds</li>
         </ul>
-        <div class="hero-ctas">
-          <a href="mailto:hi@loc.digital" class="btn btn-primary">Book a discovery call <ArrowRight size={15} strokeWidth={1.8} aria-hidden="true" /></a>
-          <button class="btn btn-secondary" id="scroll-to-pricing">Explore Retainers</button>
-        </div>
       </section>
 
       <!-- TRUST LOGOS (Infinite Horizontal Scrolling Marquee) -->
@@ -611,15 +593,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
       });
     }
 
-    /* ── Scroll to Pricing ── */
-    const scrollBtn = document.getElementById('scroll-to-pricing');
-    const pricingBlock = document.getElementById('pricing-block');
-    if (scrollBtn && pricingBlock) {
-      scrollBtn.addEventListener('click', () => {
-        pricingBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-
     /* ── Collapsible Accordion FAQs ── */
     const faqHeaders = document.querySelectorAll('.faq-header');
 
@@ -660,9 +633,9 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .section-desc {
-    font-size: var(--fs-sm);
+    font-size: 0.875rem;
     line-height: 1.62;
-    color: var(--muted);
+    color: #6e6e6e;
   }
 
   /* Buttons */
@@ -708,13 +681,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   /* ── 1. Hero ── */
-  .hero-ctas {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 28px;
-  }
-
   .hero-proof-list {
     display: flex;
     flex-wrap: wrap;
@@ -873,9 +839,9 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .saas-card .card-desc {
-    font-size: var(--fs-sm);
+    font-size: 0.875rem;
     line-height: 1.6;
-    color: var(--muted);
+    color: #6e6e6e;
     margin-bottom: 28px;
   }
 
@@ -1088,8 +1054,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .pane-desc {
-    font-size: var(--fs-sm);
-    color: var(--muted);
+    font-size: 0.875rem;
+    color: #6e6e6e;
     line-height: 1.6;
     margin-bottom: 24px;
   }
@@ -1125,8 +1091,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .pane-cap-desc {
-    font-size: var(--fs-sm);
-    color: var(--muted);
+    font-size: 0.875rem;
+    color: #6e6e6e;
     line-height: 1.5;
     padding-left: 16px;
   }
@@ -1271,9 +1237,9 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .plan-desc {
-    font-size: var(--fs-sm);
+    font-size: 0.875rem;
     line-height: 1.55;
-    color: var(--muted);
+    color: #6e6e6e;
   }
 
   .plan-price {
@@ -1501,9 +1467,9 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .cta-desc {
-    font-size: var(--fs-base);
+    font-size: 0.875rem;
     line-height: 1.7;
-    color: var(--muted);
+    color: #6e6e6e;
     max-width: 600px;
     margin: 0 auto 32px;
   }
@@ -1569,10 +1535,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
     .saas-grid {
       gap: 0;
-    }
-
-    .hero-ctas .btn {
-      width: 100%;
     }
 
     .cta-buttons {

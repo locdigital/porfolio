@@ -1,11 +1,14 @@
 import type { APIRoute } from "astro";
 import {
   deleteEntry,
+  collectionNames,
   readCmsPayload,
   saveGear,
+  saveCollectionEntry,
   savePhotoLocation,
   saveProject,
   saveWritingPost,
+  type CollectionName,
 } from "../../lib/cms-admin";
 import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../../lib/cms-auth";
 
@@ -66,6 +69,8 @@ export const POST: APIRoute = async ({ request }) => {
       await saveProject(body.data ?? {});
     } else if (resource === "photos") {
       await savePhotoLocation(body.data ?? {});
+    } else if (collectionNames.includes(resource as CollectionName)) {
+      await saveCollectionEntry(resource as CollectionName, body.data ?? {});
     } else {
       return json({ success: false, error: "Unknown CMS resource." }, { status: 400 });
     }

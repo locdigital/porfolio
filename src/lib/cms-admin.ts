@@ -11,6 +11,7 @@ const writingDir = path.join(contentDir, "writing");
 const gearPath = path.join(contentDir, "gear", "setup.json");
 const projectsDir = path.join(contentDir, "projects");
 const photosDir = path.join(contentDir, "photos");
+const cmsDataDir = path.join(rootDir, "data", "cms");
 const photoAssetsDir = path.join(rootDir, "src", "assets", "photos");
 const publicUploadsDir = path.join(rootDir, "public", "uploads");
 const uploadImageSettings = {
@@ -221,20 +222,152 @@ export type CmsProject = {
 };
 
 export type CmsPhotoImage = {
+  id?: string;
   src: string;
   alt: string;
   width: number;
   height: number;
+  caption?: string;
+  order?: number;
+  isCover?: boolean;
+};
+
+export type CmsLocationType = "hotel" | "restaurant" | "cafe" | "check-in";
+
+export type CmsLocationBlock = {
+  id: string;
+  type: string;
+  enabled: boolean;
+  title: string;
+  content: string;
+};
+
+export type CmsRelatedLocation = {
+  slug: string;
+  distance: string;
+  category: string;
+};
+
+export type CmsRelatedArticle = {
+  slug: string;
+  title: string;
 };
 
 export type CmsPhotoLocation = {
   slug: string;
   order: number;
+  type?: CmsLocationType;
   location: string;
+  name?: string;
+  city?: string;
+  district?: string;
+  country?: string;
+  province?: string;
+  region?: string;
   headline: string;
   subheadline: string;
+  introduction?: string;
+  shortDescription?: string;
   description: string;
+  longDescription?: string;
+  travelFrom?: string;
+  travelTime?: string;
+  recommendedStay?: string;
+  bestMonths?: string;
+  budgetMin?: number;
+  budgetMax?: number;
+  budgetNote?: string;
+  transportation?: string[];
+  suitableFor?: string[];
+  overview?: string;
+  favoriteThings?: string;
+  whatIWouldDoAgain?: string;
+  editorialReview?: string;
+  personalRating?: number;
+  wouldReturn?: "definitely" | "maybe" | "unsure" | "no";
+  scores?: {
+    scenery?: number;
+    food?: number;
+    cafe?: number;
+    relaxation?: number;
+    value?: number;
+    accessibility?: number;
+  };
+  bestTimeOfDay?: string[];
+  localTransport?: string[];
+  weatherNote?: string;
+  crowdLevel?: "quiet" | "moderate" | "busy_weekends" | "very_busy";
+  travelDifficulty?: "very_easy" | "easy" | "moderate" | "requires_preparation";
+  travelTips?: string[];
+  notFor?: string[];
+  heroImage?: CmsPhotoImage;
   images: CmsPhotoImage[];
+  googleMapsUrl?: string;
+  latitude?: string;
+  longitude?: string;
+  openingHours?: string;
+  priceRange?: string;
+  website?: string;
+  phone?: string;
+  bookingUrl?: string;
+  instagram?: string;
+  tags?: string[];
+  featured?: boolean;
+  published?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: string;
+  relatedLocations?: CmsRelatedLocation[];
+  relatedArticles?: CmsRelatedArticle[];
+  amenities?: string[];
+  roomTypes?: string[];
+  checkInTime?: string;
+  checkOutTime?: string;
+  breakfastIncluded?: boolean;
+  parking?: boolean;
+  petFriendly?: boolean;
+  pricePerNight?: string;
+  bookingLinks?: string[];
+  cuisine?: string;
+  menuImages?: CmsPhotoImage[];
+  mustTryDishes?: string[];
+  averagePrice?: string;
+  reservationRequired?: boolean;
+  delivery?: boolean;
+  outdoorSeating?: boolean;
+  coffeeType?: string;
+  workingFriendly?: boolean;
+  powerOutlets?: boolean;
+  wifi?: boolean;
+  viewRating?: string;
+  indoor?: boolean;
+  outdoor?: boolean;
+  openingStyle?: string;
+  entranceFee?: string;
+  bestTime?: string;
+  sunrise?: boolean;
+  sunset?: boolean;
+  walkingTime?: string;
+  difficulty?: string;
+  droneAllowed?: boolean;
+  thingsToKnow?: string;
+  blocks?: CmsLocationBlock[];
+};
+
+export type CmsCollectionEntry = {
+  slug: string;
+  order: number;
+  name: string;
+  description: string;
+};
+
+export type CmsCollections = {
+  categories: CmsCollectionEntry[];
+  amenities: CmsCollectionEntry[];
+  cities: CmsCollectionEntry[];
+  districts: CmsCollectionEntry[];
+  tags: CmsCollectionEntry[];
+  articles: CmsCollectionEntry[];
 };
 
 export type CmsPayload = {
@@ -242,6 +375,7 @@ export type CmsPayload = {
   gear: CmsGear;
   projects: CmsProject[];
   photos: CmsPhotoLocation[];
+  collections: CmsCollections;
 };
 
 export type UploadedAsset = {
@@ -302,6 +436,27 @@ function asStringArray(value: unknown) {
 function asNumber(value: unknown, fallback = 0) {
   const number = Number(value);
   return Number.isFinite(number) ? number : fallback;
+}
+
+function asOptionalNumber(value: unknown) {
+  if (value === "" || value === null || typeof value === "undefined") return undefined;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : undefined;
+}
+
+function asScore(value: unknown, label: string) {
+  const score = asOptionalNumber(value);
+  if (typeof score === "undefined") return undefined;
+  if (score < 1 || score > 10) {
+    throw new Error(`${label} must be between 1 and 10.`);
+  }
+  return score;
+}
+
+function asBoolean(value: unknown, fallback = false) {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return value === "true";
+  return fallback;
 }
 
 function frontmatterValue(value: unknown) {
@@ -474,7 +629,7 @@ async function readMongoSingle<T extends object>(
   const collection = await getCmsCollection<T>(collectionName);
   if (!collection) return fallback;
 
-  const document = await collection.findOne({ _id: id } as any);
+  const document = await collection.findOne({ _id: id } as Filter<T & { _id: string }>);
   return document ? (stripMongoDocument(document) as T) : fallback;
 }
 
@@ -572,6 +727,52 @@ async function readProjects(): Promise<CmsProject[]> {
   return readJsonCollection<CmsProject>(projectsDir);
 }
 
+export const collectionNames = ["categories", "amenities", "cities", "districts", "tags", "articles"] as const;
+export type CollectionName = typeof collectionNames[number];
+
+function normalizeCollectionEntry(input: Record<string, unknown>, fallbackOrder = 99): CmsCollectionEntry {
+  const name = asString(input.name || input.title).trim();
+  const slug = safeSlug(input.slug || name);
+
+  if (!name) {
+    throw new Error("Collection entries need a name.");
+  }
+
+  return {
+    slug,
+    order: asNumber(input.order, fallbackOrder),
+    name,
+    description: asString(input.description),
+  };
+}
+
+async function readCollectionEntries(name: CollectionName): Promise<CmsCollectionEntry[]> {
+  const mongoEntries = await readMongoCollection<CmsCollectionEntry>(`cms_${name}`);
+  if (mongoEntries.length > 0) return mongoEntries;
+  return readJsonCollection<CmsCollectionEntry>(path.join(cmsDataDir, name));
+}
+
+async function readCmsCollections(): Promise<CmsCollections> {
+  const entries = await Promise.all(collectionNames.map((name) => readCollectionEntries(name)));
+  return collectionNames.reduce((acc, name, index) => {
+    acc[name] = entries[index];
+    return acc;
+  }, {} as CmsCollections);
+}
+
+export async function saveCollectionEntry(resource: CollectionName, input: Record<string, unknown>) {
+  checkWriteAccess();
+  const entry = normalizeCollectionEntry(input);
+  const collection = await getCmsCollection<CmsCollectionEntry>(`cms_${resource}`);
+  if (collection) {
+    await writeMongoSingle(`cms_${resource}`, entry.slug, entry);
+    return entry;
+  }
+
+  await writeJsonFile(path.join(cmsDataDir, resource, `${entry.slug}.json`), entry);
+  return entry;
+}
+
 async function readPhotoLocations(): Promise<CmsPhotoLocation[]> {
   const mongoPhotos = await readMongoCollection<CmsPhotoLocation>("cms_photos");
   if (mongoPhotos.length > 0) return mongoPhotos;
@@ -579,14 +780,15 @@ async function readPhotoLocations(): Promise<CmsPhotoLocation[]> {
 }
 
 export async function readCmsPayload(): Promise<CmsPayload> {
-  const [writing, gear, projects, photos] = await Promise.all([
+  const [writing, gear, projects, photos, collections] = await Promise.all([
     readWritingPosts(),
     readGear(),
     readProjects(),
     readPhotoLocations(),
+    readCmsCollections(),
   ]);
 
-  return { writing, gear, projects, photos };
+  return { writing, gear, projects, photos, collections };
 }
 
 export async function saveWritingPost(input: Record<string, unknown>) {
@@ -701,32 +903,223 @@ export async function saveProject(input: Record<string, unknown>) {
   return project;
 }
 
+function normalizePhotoImage(input: unknown, fallbackAlt: string): CmsPhotoImage | null {
+  const value = input as Record<string, unknown>;
+  const src = asString(value?.src).trim();
+  if (!src) return null;
+
+  return {
+    id: asString(value.id) || slugify(`${src}-${asString(value.alt, fallbackAlt)}`).slice(0, 80),
+    src,
+    alt: asString(value.alt, fallbackAlt),
+    width: asNumber(value.width, 1600),
+    height: asNumber(value.height, 1200),
+    caption: asString(value.caption),
+    order: asOptionalNumber(value.order),
+    isCover: asBoolean(value.isCover),
+  };
+}
+
+function normalizeRelatedLocations(input: unknown): CmsRelatedLocation[] {
+  if (!Array.isArray(input)) return [];
+  return input
+    .map((item) => {
+      const value = item as Record<string, unknown>;
+      return {
+        slug: asString(value.slug).trim(),
+        distance: asString(value.distance),
+        category: asString(value.category),
+      };
+    })
+    .filter((item) => item.slug);
+}
+
+function normalizeRelatedArticles(input: unknown): CmsRelatedArticle[] {
+  if (!Array.isArray(input)) return [];
+  return input
+    .map((item) => {
+      const value = item as Record<string, unknown>;
+      return {
+        slug: asString(value.slug).trim(),
+        title: asString(value.title),
+      };
+    })
+    .filter((item) => item.slug || item.title);
+}
+
+const allowedLocationTypes = new Set(["hotel", "restaurant", "cafe", "check-in"]);
+const defaultLocationBlocks = [
+  "Hero",
+  "Gallery",
+  "Editorial Review",
+  "Quick Facts",
+  "Tips",
+  "Pros & Cons",
+  "Map",
+  "Nearby Places",
+  "Related Articles",
+  "FAQ",
+  "CTA",
+];
+
+function normalizeLocationBlocks(input: unknown): CmsLocationBlock[] {
+  const rawBlocks = Array.isArray(input) ? input : [];
+  const normalized = rawBlocks
+    .map((item, index) => {
+      const value = item as Record<string, unknown>;
+      const title = asString(value.title || value.type, defaultLocationBlocks[index] ?? `Block ${index + 1}`);
+      const type = asString(value.type, slugify(title));
+      return {
+        id: asString(value.id, `${slugify(type)}-${index + 1}`),
+        type,
+        enabled: asBoolean(value.enabled, true),
+        title,
+        content: asString(value.content),
+      };
+    })
+    .filter((block) => block.type);
+
+  for (const title of defaultLocationBlocks) {
+    const type = slugify(title);
+    if (!normalized.some((block) => block.type === type)) {
+      normalized.push({ id: type, type, enabled: true, title, content: "" });
+    }
+  }
+
+  return normalized;
+}
+
 function normalizePhotoLocation(input: Record<string, unknown>) {
-  const location = asString(input.location).trim();
+  const location = asString(input.location || input.name).trim();
   const slug = safeSlug(input.slug || location);
   const images = Array.isArray(input.images) ? input.images : [];
+  const menuImages = Array.isArray(input.menuImages) ? input.menuImages : [];
+  const rawType = asString(input.type, "check-in");
+  const type = allowedLocationTypes.has(rawType) ? rawType as CmsLocationType : "check-in";
+  const allowedWouldReturn = new Set(["definitely", "maybe", "unsure", "no"]);
+  const rawWouldReturn = asString(input.wouldReturn);
+  const allowedCrowdLevel = new Set(["quiet", "moderate", "busy_weekends", "very_busy"]);
+  const rawCrowdLevel = asString(input.crowdLevel);
+  const allowedTravelDifficulty = new Set(["very_easy", "easy", "moderate", "requires_preparation"]);
+  const rawTravelDifficulty = asString(input.travelDifficulty);
+  const scoresInput = (input.scores ?? {}) as Record<string, unknown>;
 
   if (!location) {
     throw new Error("Photo locations need a location name.");
   }
 
+  const normalizedImages = images
+    .map((image, index) => normalizePhotoImage(image, `${location} photo ${index + 1}`))
+    .filter((image): image is CmsPhotoImage => Boolean(image))
+    .map((image, index) => ({ ...image, order: image.order ?? index + 1 }));
+  const coverIndex = normalizedImages.findIndex((image) => image.isCover);
+  const heroImage = normalizePhotoImage(input.heroImage, `${location} hero`)
+    ?? (coverIndex >= 0 ? normalizedImages[coverIndex] : normalizedImages[0]);
+  const scores = {
+    scenery: asScore(scoresInput.scenery, "Scenery Score"),
+    food: asScore(scoresInput.food, "Food Score"),
+    cafe: asScore(scoresInput.cafe, "Cafe Score"),
+    relaxation: asScore(scoresInput.relaxation, "Relaxation Score"),
+    value: asScore(scoresInput.value, "Value Score"),
+    accessibility: asScore(scoresInput.accessibility, "Accessibility Score"),
+  };
+
   return {
     slug,
     order: asNumber(input.order, 99),
+    type,
     location,
+    name: asString(input.name || location),
+    city: asString(input.city),
+    district: asString(input.district),
+    country: asString(input.country, "Vietnam"),
+    province: asString(input.province || input.city),
+    region: asString(input.region),
     headline: asString(input.headline),
     subheadline: asString(input.subheadline),
-    description: asString(input.description),
-    images: images.map((image, index) => {
-      const value = image as Record<string, unknown>;
-
-      return {
-        src: asString(value.src),
-        alt: asString(value.alt, `${location} photo ${index + 1}`),
-        width: asNumber(value.width, 1600),
-        height: asNumber(value.height, 1200),
-      };
-    }).filter((image) => image.src),
+    introduction: asString(input.introduction || input.shortDescription || input.description),
+    shortDescription: asString(input.shortDescription || input.description),
+    description: asString(input.description || input.shortDescription),
+    longDescription: asString(input.longDescription),
+    travelFrom: asString(input.travelFrom),
+    travelTime: asString(input.travelTime),
+    recommendedStay: asString(input.recommendedStay),
+    bestMonths: asString(input.bestMonths),
+    budgetMin: asOptionalNumber(input.budgetMin),
+    budgetMax: asOptionalNumber(input.budgetMax),
+    budgetNote: asString(input.budgetNote),
+    transportation: asStringArray(input.transportation),
+    suitableFor: asStringArray(input.suitableFor),
+    overview: asString(input.overview),
+    favoriteThings: asString(input.favoriteThings),
+    whatIWouldDoAgain: asString(input.whatIWouldDoAgain),
+    editorialReview: asString(input.editorialReview),
+    personalRating: asScore(input.personalRating, "Personal Rating"),
+    wouldReturn: allowedWouldReturn.has(rawWouldReturn) ? rawWouldReturn : undefined,
+    scores: Object.fromEntries(
+      Object.entries(scores).filter(([, value]) => typeof value !== "undefined"),
+    ),
+    bestTimeOfDay: asStringArray(input.bestTimeOfDay),
+    localTransport: asStringArray(input.localTransport),
+    weatherNote: asString(input.weatherNote),
+    crowdLevel: allowedCrowdLevel.has(rawCrowdLevel) ? rawCrowdLevel : undefined,
+    travelDifficulty: allowedTravelDifficulty.has(rawTravelDifficulty) ? rawTravelDifficulty : undefined,
+    travelTips: asStringArray(input.travelTips),
+    notFor: asStringArray(input.notFor),
+    heroImage,
+    images: normalizedImages,
+    googleMapsUrl: asString(input.googleMapsUrl),
+    latitude: asString(input.latitude),
+    longitude: asString(input.longitude),
+    openingHours: asString(input.openingHours),
+    priceRange: asString(input.priceRange),
+    website: asString(input.website),
+    phone: asString(input.phone),
+    bookingUrl: asString(input.bookingUrl),
+    instagram: asString(input.instagram),
+    tags: asStringArray(input.tags),
+    featured: asBoolean(input.featured),
+    published: asBoolean(input.published, true),
+    seoTitle: asString(input.seoTitle),
+    seoDescription: asString(input.seoDescription),
+    seoImage: asString(input.seoImage),
+    relatedLocations: normalizeRelatedLocations(input.relatedLocations),
+    relatedArticles: normalizeRelatedArticles(input.relatedArticles),
+    amenities: asStringArray(input.amenities),
+    roomTypes: asStringArray(input.roomTypes),
+    checkInTime: asString(input.checkInTime),
+    checkOutTime: asString(input.checkOutTime),
+    breakfastIncluded: asBoolean(input.breakfastIncluded),
+    parking: asBoolean(input.parking),
+    petFriendly: asBoolean(input.petFriendly),
+    pricePerNight: asString(input.pricePerNight),
+    bookingLinks: asStringArray(input.bookingLinks),
+    cuisine: asString(input.cuisine),
+    menuImages: menuImages
+      .map((image, index) => normalizePhotoImage(image, `${location} menu ${index + 1}`))
+      .filter((image): image is CmsPhotoImage => Boolean(image)),
+    mustTryDishes: asStringArray(input.mustTryDishes),
+    averagePrice: asString(input.averagePrice),
+    reservationRequired: asBoolean(input.reservationRequired),
+    delivery: asBoolean(input.delivery),
+    outdoorSeating: asBoolean(input.outdoorSeating),
+    coffeeType: asString(input.coffeeType),
+    workingFriendly: asBoolean(input.workingFriendly),
+    powerOutlets: asBoolean(input.powerOutlets),
+    wifi: asBoolean(input.wifi),
+    viewRating: asString(input.viewRating),
+    indoor: asBoolean(input.indoor),
+    outdoor: asBoolean(input.outdoor),
+    openingStyle: asString(input.openingStyle),
+    entranceFee: asString(input.entranceFee),
+    bestTime: asString(input.bestTime),
+    sunrise: asBoolean(input.sunrise),
+    sunset: asBoolean(input.sunset),
+    walkingTime: asString(input.walkingTime),
+    difficulty: asString(input.difficulty),
+    droneAllowed: asBoolean(input.droneAllowed),
+    thingsToKnow: asString(input.thingsToKnow),
+    blocks: normalizeLocationBlocks(input.blocks),
   };
 }
 
@@ -753,7 +1146,9 @@ export async function deleteEntry(resource: string, slugValue: unknown) {
         ? "cms_projects"
         : resource === "photos"
           ? "cms_photos"
-          : "";
+          : collectionNames.includes(resource as CollectionName)
+            ? `cms_${resource}`
+            : "";
 
   if (mongoCollection) {
     const collection = await getCmsCollection<object>(mongoCollection);
@@ -770,7 +1165,9 @@ export async function deleteEntry(resource: string, slugValue: unknown) {
         ? path.join(projectsDir, `${slug}.json`)
         : resource === "photos"
           ? path.join(photosDir, `${slug}.json`)
-          : "";
+          : collectionNames.includes(resource as CollectionName)
+            ? path.join(cmsDataDir, resource, `${slug}.json`)
+            : "";
 
   if (!target) {
     throw new Error("This resource cannot be deleted here.");
@@ -1009,20 +1406,31 @@ export async function uploadAssets(options: {
   }
 
   if (options.target === "photos" && targetSlug && uploaded.length > 0) {
-    const filePath = path.join(photosDir, `${targetSlug}.json`);
-    const current = await readJsonFile<Record<string, unknown>>(filePath, {
+    const fallback = {
       slug: targetSlug,
       order: 99,
       location: targetSlug,
       headline: "",
       description: "",
       images: [],
-    });
+    };
+    const collection = await getCmsCollection<CmsPhotoLocation>("cms_photos");
+    const mongoCurrent = collection
+      ? await collection.findOne({ _id: targetSlug } as Filter<CmsPhotoLocation & { _id: string }>)
+      : null;
+    const filePath = path.join(photosDir, `${targetSlug}.json`);
+    const current = mongoCurrent
+      ? stripMongoDocument(mongoCurrent as CmsPhotoLocation & { _id: string })
+      : await readJsonFile<Record<string, unknown>>(filePath, fallback);
     const location = normalizePhotoLocation({
       ...current,
       images: [...(Array.isArray(current.images) ? current.images : []), ...uploaded],
     });
-    await writeJsonFile(filePath, location);
+    if (collection) {
+      await writeMongoSingle("cms_photos", location.slug, location);
+    } else {
+      await writeJsonFile(filePath, location);
+    }
   }
 
   return uploaded;

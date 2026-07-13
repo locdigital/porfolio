@@ -1,0 +1,61 @@
+{
+  "slug": "my-tho",
+  "order": 3,
+  "type": "check-in",
+  "location": "Mỹ Tho",
+  "name": "Mỹ Tho",
+  "city": "Mỹ Tho",
+  "country": "Vietnam",
+  "province": "Tiền Giang",
+  "region": "Tây Nam Bộ",
+  "headline": "A quick river note from the Mekong.",
+  "subheadline": "Canals, fruit stops, and soft southern afternoons.",
+  "introduction": "Mỹ Tho is a short Mekong reset: river air, small boat routes, fruit stops, and a slower southern pace close enough for a quick escape.",
+  "shortDescription": "A compact Mekong stop with canals, river scenes, fruit gardens, and soft southern afternoon light.",
+  "description": "A compact Mekong stop with canals, river scenes, fruit gardens, and soft southern afternoon light.",
+  "longDescription": "Mỹ Tho works as a simple day or overnight trip. The value is not in doing too much, but in letting the river, food, and small transitions slow the day down.",
+  "travelFrom": "HCM City",
+  "travelTime": "1.5-2h road",
+  "recommendedStay": "1-2 days",
+  "bestMonths": "Dec - Apr",
+  "transportation": ["Car", "Bus", "Boat"],
+  "suitableFor": ["Short escape", "River", "Food", "Family"],
+  "overview": "A nearby Mekong city for river scenes, canals, garden stops, and an easy break from Sài Gòn.",
+  "personalRating": 7.5,
+  "wouldReturn": "maybe",
+  "scores": {
+    "scenery": 7,
+    "food": 8,
+    "cafe": 5,
+    "relaxation": 7,
+    "value": 8,
+    "accessibility": 8
+  },
+  "bestTimeOfDay": ["Morning", "Late afternoon"],
+  "localTransport": ["Car from Sài Gòn", "Boat for canal routes"],
+  "weatherNote": "The dry season is easiest for river days, but shade and water are still useful in the midday heat.",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "very_easy",
+  "travelTips": [
+    "Keep it as a slow day trip or light overnight.",
+    "Start early from Sài Gòn to avoid losing the best light.",
+    "Leave room for food stops instead of only boat activities."
+  ],
+  "notFor": ["Travelers looking for a remote Mekong expedition."],
+  "tags": ["Mekong", "River", "Short trip", "Food", "Southern Vietnam"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Mỹ Tho Photo Notes | Mekong River Day Trip",
+  "seoDescription": "A short editorial photo note from Mỹ Tho: Mekong river scenes, canals, fruit stops, food, and a simple southern Vietnam escape from Sài Gòn.",
+  "relatedLocations": [
+    { "slug": "sai-gon", "distance": "Nearby", "category": "City" },
+    { "slug": "rach-gia", "distance": "Western route", "category": "Mekong coast" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

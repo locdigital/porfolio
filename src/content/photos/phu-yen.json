@@ -1,31 +1,83 @@
 {
   "slug": "phu-yen",
-  "order": 2,
+  "order": 9,
   "location": "Phú Yên",
+  "name": "Phú Yên",
+  "city": "Tuy Hòa",
+  "country": "Vietnam",
+  "province": "Phú Yên",
+  "region": "Nam Trung Bộ",
   "headline": "Golden hour on the coast.",
   "subheadline": "Blue sky, stone cliffs, winding roads.",
+  "introduction": "Phú Yên feels open: long coastal roads, low-key towns, clean horizons, and golden light that makes the landscape look wider than it is.",
+  "shortDescription": "Stone cliffs, empty roads, blue sky, fishing villages, and one of central Vietnam's quieter coastal moods.",
   "description": "Golden hour on Gành Đá Đĩa, winding roads along the coast, and the bluest sky.",
+  "longDescription": "The best version of Phú Yên is a road day with space between stops. The coast is the main character, but the quiet transitions between places are where the photos breathe.",
+  "travelFrom": "HCM City",
+  "travelTime": "1h15 flight",
+  "recommendedStay": "3 days",
+  "bestMonths": "Jan - Aug",
+  "transportation": ["Flight", "Taxi", "Motorbike"],
+  "suitableFor": ["Coastal road trip", "Photography", "Seafood", "Quiet travel"],
+  "overview": "A quieter coastal province for road-light, cliffs, seafood stops, and wide blue frames.",
+  "personalRating": 8.4,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 9,
+    "food": 8,
+    "cafe": 6,
+    "relaxation": 8,
+    "value": 8,
+    "accessibility": 7
+  },
+  "bestTimeOfDay": ["Morning", "Golden hour", "Sunset"],
+  "localTransport": ["Motorbike for coast roads", "Taxi for longer transfers"],
+  "weatherNote": "The dry months are easier for coastal photos. Midday sun can be harsh, so save key stops for softer light.",
+  "crowdLevel": "quiet",
+  "travelDifficulty": "easy",
+  "travelTips": [
+    "Do fewer stops and give each coastal route time.",
+    "Carry water if riding between viewpoints.",
+    "Plan around light, not only map distance."
+  ],
+  "notFor": ["Travelers who want dense nightlife or a packed city base."],
+  "tags": ["Coast", "Road trip", "Cliffs", "Seafood", "Golden hour"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Phú Yên Photo Notes | Coastal Roads and Golden Hour",
+  "seoDescription": "A short editorial photo note from Phú Yên: coastal roads, stone cliffs, blue skies, seafood stops, and golden-hour landscapes.",
+  "relatedLocations": [
+    { "slug": "quy-nhon", "distance": "Nearby coast", "category": "Beach town" },
+    { "slug": "nha-trang", "distance": "Southern coast", "category": "Beach city" },
+    { "slug": "phu-quy", "distance": "Island comparison", "category": "Island" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
   "images": [
     {
-      "src": "/assets/photos/img-portfolio/photo-5.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUni2CYtE95AXOuIBLNQ3GyKFm2qSCfe1MP64",
       "alt": "Phú Yên --- photo 1",
       "width": 1280,
       "height": 1920
     },
     {
-      "src": "/assets/photos/img-portfolio/photo-13.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hMe6TXEU15DKkGrxHn3sZOlpRXP4veiquwVQB",
       "alt": "Phú Yên --- photo 2",
       "width": 1280,
       "height": 1920
     },
     {
-      "src": "/assets/photos/img-portfolio/photo-11.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
       "alt": "Phú Yên --- photo 3",
       "width": 1920,
       "height": 1280
     },
     {
-      "src": "/assets/photos/img-portfolio/photo-12.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJ1yejlKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
       "alt": "Phú Yên --- photo 4",
       "width": 1920,
       "height": 1280

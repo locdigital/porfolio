@@ -40,7 +40,7 @@ const desktopNavItems = [
   {
     label: "Photos",
     href: "/photos",
-    active: pathname.startsWith("/photos") || pathname.startsWith("/gallery"),
+    active: pathname.startsWith("/photos"),
     icon: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
   },
 ];
@@ -88,25 +88,25 @@ const desktopNavItems = [
   <link rel="canonical" href={canonicalUrl} />
   <meta name="google-site-verification" content="tYabJCSeApR0trq6VL7V6_JKbEKbBnznDtNmvaBehfY" />
   <link rel="alternate" type="application/rss+xml" title="Lộc Digital writing" href={new URL("/rss.xml", Astro.site)} />
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" href="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVanATviW6tUiNOoXB108SdsMHZayFfJrLGkP" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hn9SRdiJ5TFbsKzkHujxQqSNBdEect3LIpPhg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyYssMWGxsFHdfJjrMPbwZN7OcmnvgYRak59A" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hK2wHO7vWeLQqSKNwarCDg0EFydvVs3BXGZR5" />
+  <link rel="apple-touch-icon" href="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAqSB4hBXpDBZJUeuLCSt3Mgn5FsKqXWk62Ha" />
   <link rel="manifest" href="/site.webmanifest" />
   
   {favicon ? (
     <link rel="icon" href={favicon} />
   ) : (
     <>
-      <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="/favicon-active.svg" />
+      <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hn9SRdiJ5TFbsKzkHujxQqSNBdEect3LIpPhg" />
       <script is:inline>
         function syncFavicon() {
           const favicon = document.getElementById("dynamic-favicon");
           if (favicon) {
             favicon.href = document.hidden || !document.hasFocus()
-              ? "/favicon-inactive.svg"
-              : "/favicon-active.svg";
+              ? "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hn9SRdiJ5TFbsKzkHujxQqSNBdEect3LIpPhg"
+              : "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hn9SRdiJ5TFbsKzkHujxQqSNBdEect3LIpPhg";
           }
         }
 
@@ -223,7 +223,7 @@ const desktopNavItems = [
   ============================================================ -->
   {!hideHeader && (
     <>
-      <header id="site-header" class={`${pathname.startsWith('/photos') ? 'absolute-header' : ''} ${pathname.startsWith('/gallery') ? 'gallery-glass-header' : ''}`.trim()}>
+      <header id="site-header" class={pathname.startsWith('/photos') ? 'absolute-header' : ''}>
         <div class="header-inner">
           <a href="/" class="header-logo" aria-label="Phuc Loc Nguyen, back to home">
             <span class="logo-circle"></span>
@@ -280,7 +280,7 @@ const desktopNavItems = [
             </a>
           </li>
           <li>
-            <a href="/photos" class={pathname.startsWith('/photos') || pathname.startsWith('/gallery') ? 'active' : ''} aria-label="Photos">
+            <a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''} aria-label="Photos">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
               <span class="nav-label">Photos</span>
             </a>
@@ -305,7 +305,7 @@ const desktopNavItems = [
   <!-- ============================================================
        FOOTER
   ============================================================ -->
-  {!hideFooter && !pathname.startsWith('/gallery') && (
+  {!hideFooter && (
     <>
       <div class="footer-divider"></div>
       <div class="container">
@@ -321,6 +321,8 @@ const desktopNavItems = [
                 aria-label="Instagram">Instagram ↗</a></li>
             <li><a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer"
                 aria-label="LinkedIn">LinkedIn ↗</a></li>
+            <li><a href="https://x.com/vuaecom" target="_blank" rel="noopener noreferrer"
+                aria-label="X">X ↗</a></li>
             <li><a href="https://www.pexels.com/@henrygoodkid" target="_blank" rel="noopener noreferrer"
                 aria-label="Pexels">Pexels ↗</a></li>
           </ul>

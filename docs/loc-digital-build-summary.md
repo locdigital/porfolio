@@ -34,8 +34,8 @@ porfolio/
     ├── assets/
     │   └── photos/           # Ảnh gốc phân giải cao được phân loại theo địa danh (để Sharp xử lý)
     ├── components/
-    │   └── ui/
-    │       └── modern-hero-section.tsx   # Component React sử dụng Framer Motion cho trang Workflow Space
+    │   ├── ui/               # Component UI dùng chung cho hero, hiệu ứng chữ, collage và dialog
+    │   └── writing/          # Component cho dashboard/editor bài viết
     ├── content/              # Quản lý nội dung tĩnh thông qua Astro Content Collections
     │   ├── config.ts         # Khai báo schema định dạng dữ liệu (pages, writing, projects, photos, gear)
     │   ├── gear/             # JSON chứa danh sách thiết bị
@@ -88,7 +88,7 @@ Hệ thống hiệu ứng của website kết hợp hài hòa giữa **CSS Trans
 7. **Typed.js (Chữ gõ Hero):**
    - Sử dụng thư viện ngoài qua CDN để gõ liên tục cụm từ khóa: `'data.'`, `'automation.'`, `'ads.'`.
 8. **Dynamic Favicon (Favicon động):**
-   - Tự động thay đổi favicon dựa trên trạng thái cửa sổ trình duyệt: hiển thị biểu tượng hoạt động (`/favicon-active.svg`) khi tab đang mở và chuyển sang trạng thái nghỉ (`/favicon-inactive.svg`) khi người dùng chuyển sang tab khác để giữ tương tác thương hiệu.
+   - Tự động thay đổi favicon dựa trên trạng thái cửa sổ trình duyệt: hiển thị biểu tượng hoạt động (`https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hn9SRdiJ5TFbsKzkHujxQqSNBdEect3LIpPhg`) khi tab đang mở và chuyển sang trạng thái nghỉ (`https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hn9SRdiJ5TFbsKzkHujxQqSNBdEect3LIpPhg`) khi người dùng chuyển sang tab khác để giữ tương tác thương hiệu.
 
 ---
 

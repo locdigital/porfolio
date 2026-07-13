@@ -31,22 +31,17 @@
     "@blocknote/react": "^0.51.4",
     "@mantine/core": "^9.4.0",
     "@mantine/hooks": "^9.4.0",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
     "astro": "^4.16.19",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
-    "gsap": "^3.15.0",
     "lucide-react": "^1.20.0",
     "mongodb": "^6.21.0",
-    "motion": "^12.42.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "sharp": "^0.33.5",
     "slugify": "^1.6.9",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^3.4.4",
-    "three": "^0.184.0",
     "use-debounce": "^10.1.1"
   },
   "devDependencies": {
@@ -54,7 +49,6 @@
     "@types/node": "^20.19.43",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.184.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.15"
   }

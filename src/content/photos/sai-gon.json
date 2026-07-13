@@ -1,0 +1,62 @@
+{
+  "slug": "sai-gon",
+  "order": 4,
+  "type": "check-in",
+  "location": "Sài Gòn",
+  "name": "Sài Gòn",
+  "city": "Ho Chi Minh City",
+  "country": "Vietnam",
+  "province": "Ho Chi Minh City",
+  "region": "Đông Nam Bộ",
+  "headline": "Heat, coffee, traffic, and momentum.",
+  "subheadline": "The city I keep reading in layers.",
+  "introduction": "Sài Gòn is speed and softness at once: early coffee, market noise, wet streets, neon, old apartments, and the feeling that the city is always mid-sentence.",
+  "shortDescription": "Coffee corners, old apartments, market noise, humid evenings, and a city rhythm that never really switches off.",
+  "description": "Coffee corners, old apartments, market noise, humid evenings, and a city rhythm that never really switches off.",
+  "longDescription": "The best way to photograph Sài Gòn is to stop trying to summarize it. Pick a district, walk slowly, drink something cold, and let the city reveal itself one layer at a time.",
+  "travelFrom": "Local base",
+  "travelTime": "Local",
+  "recommendedStay": "3-5 days",
+  "bestMonths": "Dec - Apr",
+  "transportation": ["Taxi", "Motorbike", "Walking"],
+  "suitableFor": ["City walk", "Coffee", "Food", "Street photography"],
+  "overview": "A restless southern city for coffee rituals, food, street texture, old buildings, and humid evening light.",
+  "personalRating": 8.7,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 7,
+    "food": 10,
+    "cafe": 10,
+    "relaxation": 5,
+    "value": 8,
+    "accessibility": 9
+  },
+  "bestTimeOfDay": ["Early morning", "Late afternoon", "Night"],
+  "localTransport": ["Taxi for distance", "Walking by neighborhood"],
+  "weatherNote": "Dry season makes walking easier. Rainy evenings can be beautiful but sudden.",
+  "crowdLevel": "very_busy",
+  "travelDifficulty": "very_easy",
+  "travelTips": [
+    "Explore by neighborhood, not by scattered landmarks.",
+    "Start early for markets and coffee.",
+    "Keep rain plans loose in the wet season."
+  ],
+  "notFor": ["Travelers who need quiet, clean air, or a slow resort pace."],
+  "tags": ["City", "Coffee", "Food", "Street photography", "Urban"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Sài Gòn Photo Notes | Coffee, Streets, and City Momentum",
+  "seoDescription": "A short editorial photo note from Sài Gòn: coffee corners, old apartments, food, markets, traffic, humid evenings, and urban street photography.",
+  "relatedLocations": [
+    { "slug": "my-tho", "distance": "Nearby escape", "category": "Mekong" },
+    { "slug": "vung-tau", "distance": "Weekend coast", "category": "Beach" },
+    { "slug": "ha-noi", "distance": "City comparison", "category": "Capital" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

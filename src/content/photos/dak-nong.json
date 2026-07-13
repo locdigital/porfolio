@@ -1,0 +1,61 @@
+{
+  "slug": "dak-nong",
+  "order": 7,
+  "type": "check-in",
+  "location": "Đắk Nông",
+  "name": "Đắk Nông",
+  "city": "Gia Nghĩa",
+  "country": "Vietnam",
+  "province": "Đắk Nông",
+  "region": "Tây Nguyên",
+  "headline": "Basalt roads and highland water.",
+  "subheadline": "Waterfalls, volcanic textures, and quiet forest air.",
+  "introduction": "Đắk Nông is a quieter highland route: basalt soil, open roads, waterfalls, forest pockets, and a slower kind of green.",
+  "shortDescription": "A highland nature stop with waterfalls, volcanic textures, open roads, and quiet Central Highlands air.",
+  "description": "A highland nature stop with waterfalls, volcanic textures, open roads, and quiet Central Highlands air.",
+  "longDescription": "This is not a place to rush. The appeal is in the road, the pauses between waterfalls, and the feeling of being away from the usual city-to-beach loop.",
+  "travelFrom": "HCM City",
+  "travelTime": "6-8h road",
+  "recommendedStay": "2-3 days",
+  "bestMonths": "Nov - Apr",
+  "transportation": ["Car", "Motorbike", "Bus"],
+  "suitableFor": ["Nature", "Road trip", "Waterfalls", "Photography"],
+  "overview": "A Central Highlands detour for people who like rougher edges, green routes, and quieter nature days.",
+  "personalRating": 8,
+  "wouldReturn": "maybe",
+  "scores": {
+    "scenery": 8,
+    "food": 6,
+    "cafe": 5,
+    "relaxation": 8,
+    "value": 8,
+    "accessibility": 6
+  },
+  "bestTimeOfDay": ["Morning", "Cloudy afternoon", "Golden hour"],
+  "localTransport": ["Car for comfort", "Motorbike for flexible stops"],
+  "weatherNote": "Dry months make road days simpler. Waterfall areas can still be slippery, so keep footwear practical.",
+  "crowdLevel": "quiet",
+  "travelDifficulty": "moderate",
+  "travelTips": [
+    "Keep the route simple and leave time between nature stops.",
+    "Bring shoes that can handle wet paths.",
+    "Download maps before leaving the main town."
+  ],
+  "notFor": ["Travelers who need polished tourism infrastructure."],
+  "tags": ["Highland", "Waterfall", "Road trip", "Nature", "Basalt"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Đắk Nông Photo Notes | Waterfalls and Highland Roads",
+  "seoDescription": "A short editorial photo note from Đắk Nông: waterfalls, basalt roads, quiet highland air, forest pockets, and Central Highlands travel.",
+  "relatedLocations": [
+    { "slug": "da-lat", "distance": "Highland comparison", "category": "Cool weather" },
+    { "slug": "sai-gon", "distance": "City contrast", "category": "Urban" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
+  "images": []
+}

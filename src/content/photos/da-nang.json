@@ -1,67 +1,119 @@
 {
   "slug": "da-nang",
-  "order": 6,
+  "order": 11,
   "location": "Đà Nẵng",
-  "headline": "Đà Nẵng",
-  "subheadline": "Đà Nẵng",
-  "description": "Hell",
+  "name": "Đà Nẵng",
+  "city": "Đà Nẵng",
+  "country": "Vietnam",
+  "province": "Đà Nẵng",
+  "region": "Miền Trung",
+  "headline": "A coastal city built for easy days.",
+  "subheadline": "Beach mornings, river bridges, and quick road trips.",
+  "introduction": "Đà Nẵng is the kind of city that makes travel feel light: sea air in the morning, city lights at night, and enough day-trip options to keep the route open.",
+  "shortDescription": "Beach mornings, river bridges, mountain roads, and a clean central base for exploring nearby old towns and coastlines.",
+  "description": "Beach mornings, river bridges, mountain roads, and a clean central base for exploring nearby old towns and coastlines.",
+  "longDescription": "Đà Nẵng works best when it is not overplanned. Start close to the beach, keep one slow cafe block in the day, then leave room for a bridge walk, a mountain road, or a short ride toward Hội An.",
+  "travelFrom": "HCM City",
+  "travelTime": "1h20 flight",
+  "recommendedStay": "3-4 days",
+  "bestMonths": "Feb - Aug",
+  "transportation": ["Flight", "Taxi", "Motorbike"],
+  "suitableFor": ["Beach city", "Short escape", "Food", "Photography"],
+  "overview": "A practical coastal base with enough calm for slow mornings and enough access for road days across central Vietnam.",
+  "personalRating": 8.2,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 8,
+    "food": 8,
+    "cafe": 7,
+    "relaxation": 8,
+    "value": 8,
+    "accessibility": 9
+  },
+  "bestTimeOfDay": ["Morning", "Golden hour", "Evening"],
+  "localTransport": ["Taxi for city hops", "Motorbike for flexible coastal routes"],
+  "weatherNote": "Central Vietnam is easiest to photograph in the drier months, but leave room for sudden weather shifts.",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "very_easy",
+  "travelTips": [
+    "Stay near the beach if slow mornings matter.",
+    "Group Hội An or Huế as separate day plans instead of rushing both.",
+    "Keep sunset flexible for the river or the coast."
+  ],
+  "notFor": ["Travelers looking for a remote or quiet-only beach town."],
+  "tags": ["Beach city", "Central Vietnam", "River", "Food", "Road trip"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Đà Nẵng Photo Notes | Beach City in Central Vietnam",
+  "seoDescription": "A short editorial photo note from Đà Nẵng: beach mornings, river bridges, central Vietnam road trips, food, and easy coastal days.",
+  "relatedLocations": [
+    { "slug": "hoi-an", "distance": "Nearby", "category": "Old town" },
+    { "slug": "hue", "distance": "Day trip", "category": "Heritage city" },
+    { "slug": "quy-nhon", "distance": "Coastal comparison", "category": "Beach town" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
   "images": [
     {
-      "src": "/assets/photos/da-nang/1782173568786-image-1.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJdQ5AAKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
       "alt": "da-nang photo",
       "width": 1440,
       "height": 1080
     },
     {
-      "src": "/assets/photos/da-nang/1782173568800-image-2.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hGzkajLBcjrVF5sU9WdBP1Zmn2bOHaiQSKAwk",
       "alt": "da-nang photo",
       "width": 1200,
       "height": 1300
     },
     {
-      "src": "/assets/photos/da-nang/1782173568803-image-3.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5N5HwOnzPCHf8h9G7Slp6scrUVuR10JngFBO",
       "alt": "da-nang photo",
       "width": 1200,
       "height": 1600
     },
     {
-      "src": "/assets/photos/da-nang/1782173568809-image-4.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hMLlpKDU15DKkGrxHn3sZOlpRXP4veiquwVQB",
       "alt": "da-nang photo",
       "width": 1600,
       "height": 1200
     },
     {
-      "src": "/assets/photos/da-nang/1782173568815-image-5.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUzAW7yYtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
       "alt": "da-nang photo",
       "width": 1600,
       "height": 1200
     },
     {
-      "src": "/assets/photos/da-nang/1782173568819-image-6.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnXKPyyJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
       "alt": "da-nang photo",
       "width": 1600,
       "height": 1200
     },
     {
-      "src": "/assets/photos/da-nang/1782173568823-image-7.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFfxrA4KzSM0IwjJ82zLsrNaCxbfXRnF4WlyK",
       "alt": "da-nang photo",
       "width": 1440,
       "height": 1082
     },
     {
-      "src": "/assets/photos/da-nang/1782173568831-image-8.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hHzt2XqeQp1bPln5ZfBa2gk4uX9OGVzCi6Fvh",
       "alt": "da-nang photo",
       "width": 1080,
       "height": 1440
     },
     {
-      "src": "/assets/photos/da-nang/1782173568841-image-9.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmQDAWBgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
       "alt": "da-nang photo",
       "width": 1200,
       "height": 1600
     },
     {
-      "src": "/assets/photos/da-nang/1782173568852-image-10.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRRK7cAxhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
       "alt": "da-nang photo",
       "width": 1200,
       "height": 1600

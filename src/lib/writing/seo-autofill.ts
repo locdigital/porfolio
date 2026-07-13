@@ -213,7 +213,7 @@ export function suggestSeoAutofill(post: Partial<Post>): SeoAutofillPreview {
   const seoTitle = buildSeoTitle(post, keyword, plainContent);
   const seoDescription = buildDescription(keyword, plainContent, post.title ?? "");
   const slug = normalizeSlug(post.slug ?? "") || generateSlug(keyword || post.title || "post");
-  const ogImage = post.ogImage || post.coverImage || "/og-image.jpg";
+  const ogImage = post.ogImage || post.coverImage || "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hz9GQ9ONrQN89V1S2GcyZlRdnh3U0J4kfWYAX";
 
   const suggestion = bestSuggestion(post, {
     seoTitle,

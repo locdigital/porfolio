@@ -7,7 +7,7 @@ import { absoluteUrl, pageSchema } from "../../lib/seo";
 const posts = await getWritingPosts();
 const blogTitle = "Writing | Lộc Digital";
 const blogDescription = "Essays and notes on digital marketing, SEO, code, creative systems, and life.";
-const fallbackPreviewImage = "/og-image.jpg";
+const fallbackPreviewImage = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hz9GQ9ONrQN89V1S2GcyZlRdnh3U0J4kfWYAX";
 const blogHeadlineText = "Notes on marketing code & growth.";
 
 function previewImageFor(image?: string) {
@@ -135,9 +135,9 @@ function previewImageFor(image?: string) {
   }
 
   .blog-wrap {
-    max-width: var(--max);
+    max-width: none;
     margin: 0 auto;
-    padding: 0 var(--px);
+    padding: 0;
   }
 
   .blog-page .gear-hero {

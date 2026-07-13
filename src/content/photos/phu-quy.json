@@ -1,31 +1,83 @@
 {
   "slug": "phu-quy",
-  "order": 1,
+  "order": 16,
   "location": "Phú Quý",
+  "name": "Phú Quý",
+  "city": "Phú Quý",
+  "country": "Vietnam",
+  "province": "Bình Thuận",
+  "region": "Nam Trung Bộ",
   "headline": "Island light, fishing boats, red-rock cliffs.",
   "subheadline": "Turquoise water and slow days.",
+  "introduction": "Phú Quý is small enough to feel personal and bright enough to make every road look like a detour worth taking.",
+  "shortDescription": "Turquoise water, fishing boats, volcanic rocks, open roads, and slow island light.",
   "description": "Island life at its most untouched --- turquoise water, fishing boats, and red-rock cliffs.",
+  "longDescription": "The island is less about a checklist and more about timing: ride early, rest when the light gets harsh, and come back outside when the sea turns silver again.",
+  "travelFrom": "Phan Thiết",
+  "travelTime": "2.5-3.5h ferry",
+  "recommendedStay": "2-3 days",
+  "bestMonths": "Mar - Aug",
+  "transportation": ["Ferry", "Motorbike"],
+  "suitableFor": ["Island escape", "Photography", "Seafood", "Slow travel"],
+  "overview": "A compact island for bright water, fishing village textures, red rocks, and simple days built around the weather.",
+  "personalRating": 8.5,
+  "wouldReturn": "definitely",
+  "scores": {
+    "scenery": 9,
+    "food": 8,
+    "cafe": 6,
+    "relaxation": 9,
+    "value": 8,
+    "accessibility": 6
+  },
+  "bestTimeOfDay": ["Morning", "Golden hour", "Sunset"],
+  "localTransport": ["Motorbike around the island"],
+  "weatherNote": "Ferry comfort depends on sea conditions. Keep dates flexible if the forecast looks rough.",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "requires_preparation",
+  "travelTips": [
+    "Book ferry timing before locking the full route.",
+    "Use mornings for riding and photos.",
+    "Bring sun protection; shade can be limited on open roads."
+  ],
+  "notFor": ["Travelers who need big-city convenience or luxury options."],
+  "tags": ["Island", "Ferry", "Sea", "Fishing village", "Sunset"],
+  "featured": false,
+  "published": true,
+  "seoTitle": "Phú Quý Photo Notes | Island Light and Fishing Boats",
+  "seoDescription": "A short editorial photo note from Phú Quý island: turquoise water, fishing boats, red-rock cliffs, ferry days, and slow coastal light.",
+  "relatedLocations": [
+    { "slug": "vung-tau", "distance": "Weekend coast", "category": "Coast" },
+    { "slug": "quy-nhon", "distance": "Coastal comparison", "category": "Beach town" },
+    { "slug": "phu-yen", "distance": "Road trip mood", "category": "Coast" }
+  ],
+  "relatedArticles": [],
+  "blocks": [
+    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
+    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
+    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+  ],
   "images": [
     {
-      "src": "/assets/photos/img-portfolio/photo-1.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hPHpTTj6stjCAvHqacRQKpwg5kVIlTiJY6SnW",
       "alt": "Phú Quý --- photo 1",
       "width": 1280,
       "height": 1920
     },
     {
-      "src": "/assets/photos/img-portfolio/photo-2.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hiN8pR7wbmU9pOiYE6G824a0BWCXcl37yufzH",
       "alt": "Phú Quý --- photo 2",
       "width": 1280,
       "height": 1920
     },
     {
-      "src": "/assets/photos/img-portfolio/photo-4.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hilCFGvzwbmU9pOiYE6G824a0BWCXcl37yufz",
       "alt": "Phú Quý --- photo 3",
       "width": 1920,
       "height": 1280
     },
     {
-      "src": "/assets/photos/img-portfolio/photo-6.webp",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hW0XZEXC2QiOP6pqzN9dESsBlGD0KV7FZvL2C",
       "alt": "Phú Quý --- photo 4",
       "width": 1920,
       "height": 1280
