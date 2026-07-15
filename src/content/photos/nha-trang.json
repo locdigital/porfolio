@@ -18,8 +18,17 @@
   "travelTime": "1h flight",
   "recommendedStay": "2-3 days",
   "bestMonths": "Jan - Aug",
-  "transportation": ["Flight", "Taxi", "Walking"],
-  "suitableFor": ["Beach city", "Seafood", "Family", "Short escape"],
+  "transportation": [
+    "Flight",
+    "Taxi",
+    "Walking"
+  ],
+  "suitableFor": [
+    "Beach city",
+    "Seafood",
+    "Family",
+    "Short escape"
+  ],
   "overview": "A lively coastal city for people who want beach access, seafood, simple logistics, and a more active city base.",
   "personalRating": 7.8,
   "wouldReturn": "maybe",
@@ -31,8 +40,15 @@
     "value": 7,
     "accessibility": 9
   },
-  "bestTimeOfDay": ["Morning", "Golden hour", "Evening"],
-  "localTransport": ["Walking near the beach", "Taxi across town"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Golden hour",
+    "Evening"
+  ],
+  "localTransport": [
+    "Walking near the beach",
+    "Taxi across town"
+  ],
   "weatherNote": "Clear mornings make the water look its best. Midday heat can be strong on exposed beach stretches.",
   "crowdLevel": "very_busy",
   "travelDifficulty": "very_easy",
@@ -41,22 +57,169 @@
     "Use early light for sea photos.",
     "Pick food stops away from the most tourist-heavy strip when possible."
   ],
-  "notFor": ["Travelers looking for a quiet hidden beach mood."],
-  "tags": ["Beach city", "Seafood", "Island view", "Coast", "Short escape"],
+  "notFor": [
+    "Travelers looking for a quiet hidden beach mood."
+  ],
+  "tags": [
+    "Beach city",
+    "Seafood",
+    "Island view",
+    "Coast",
+    "Short escape"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Nha Trang Photo Notes | Bright Water and Beach City Days",
   "seoDescription": "A short editorial photo note from Nha Trang: bright beach water, seafood, island views, city lights, and easy coastal travel.",
   "relatedLocations": [
-    { "slug": "phu-yen", "distance": "Northern coast", "category": "Road trip" },
-    { "slug": "quy-nhon", "distance": "Quieter coast", "category": "Beach town" },
-    { "slug": "vung-tau", "distance": "Beach-city comparison", "category": "Short escape" }
+    {
+      "slug": "phu-yen",
+      "distance": "Northern coast",
+      "category": "Road trip"
+    },
+    {
+      "slug": "quy-nhon",
+      "distance": "Quieter coast",
+      "category": "Beach town"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
-  "images": []
+  "images": [
+    {
+      "src": "/assets/photos/nha-trang/02-photo_2.jpg",
+      "alt": "Nha Trang --- photo 1",
+      "width": 2160,
+      "height": 3840,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/nha-trang/04-photo_4.jpg",
+      "alt": "Nha Trang --- photo 2",
+      "width": 2160,
+      "height": 3840,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/nha-trang/05-photo_5.jpg",
+      "alt": "Nha Trang --- photo 3",
+      "width": 2160,
+      "height": 3840,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/nha-trang/07-photo_7.jpg",
+      "alt": "Nha Trang --- photo 4",
+      "width": 2160,
+      "height": 3840,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/nha-trang/08-photo_8.jpg",
+      "alt": "Nha Trang --- photo 5",
+      "width": 2160,
+      "height": 3840,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/nha-trang/09-photo_9.jpg",
+      "alt": "Nha Trang --- photo 6",
+      "width": 2160,
+      "height": 3840,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/nha-trang/10-photo_10.jpg",
+      "alt": "Nha Trang --- photo 7",
+      "width": 2156,
+      "height": 3836,
+      "order": 7
+    },
+    {
+      "src": "/assets/photos/nha-trang/11-photo_11.jpg",
+      "alt": "Nha Trang --- photo 8",
+      "width": 2160,
+      "height": 3840,
+      "order": 8
+    },
+    {
+      "src": "/assets/photos/nha-trang/12-photo_12.jpg",
+      "alt": "Nha Trang --- photo 9",
+      "width": 2160,
+      "height": 3840,
+      "order": 9
+    },
+    {
+      "src": "/assets/photos/nha-trang/13-photo_13.jpg",
+      "alt": "Nha Trang --- photo 10",
+      "width": 2160,
+      "height": 3840,
+      "order": 10
+    },
+    {
+      "src": "/assets/photos/nha-trang/14-photo_14.jpg",
+      "alt": "Nha Trang --- photo 11",
+      "width": 2160,
+      "height": 3840,
+      "order": 11
+    },
+    {
+      "src": "/assets/photos/nha-trang/15-photo_15.jpg",
+      "alt": "Nha Trang --- photo 12",
+      "width": 2160,
+      "height": 3840,
+      "order": 12
+    },
+    {
+      "src": "/assets/photos/nha-trang/17-photo_17.jpg",
+      "alt": "Nha Trang --- photo 13",
+      "width": 2160,
+      "height": 3840,
+      "order": 13
+    },
+    {
+      "src": "/assets/photos/nha-trang/18-photo_18.jpg",
+      "alt": "Nha Trang --- photo 14",
+      "width": 2160,
+      "height": 3840,
+      "order": 14
+    },
+    {
+      "src": "/assets/photos/nha-trang/19-photo_19.jpg",
+      "alt": "Nha Trang --- photo 15",
+      "width": 2160,
+      "height": 3840,
+      "order": 15
+    }
+  ],
+  "heroImage": {
+    "src": "/assets/photos/nha-trang/02-photo_2.jpg",
+    "alt": "Nha Trang --- photo 1",
+    "width": 2160,
+    "height": 3840,
+    "order": 1,
+    "isCover": true
+  }
 }

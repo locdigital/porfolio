@@ -65,115 +65,76 @@
     "Travelers who dislike traffic or moving between areas."
   ],
   "heroImage": {
-    "id": "assets-photos-img-portfolio-photo-11-webp-coastal-road-and-open-sky-in-bali",
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
-    "alt": "Coastal road and open sky in Bali",
-    "width": 1600,
-    "height": 1067,
-    "caption": "A road-day frame, used here as the Bali hero mood.",
-    "order": 2,
+    "src": "/assets/photos/bali/733692765_10244474875706043_7649457688157255346_n.jpg",
+    "alt": "Bali --- photo 1",
+    "width": 1365,
+    "height": 2048,
+    "order": 1,
     "isCover": true
   },
   "images": [
     {
-      "id": "assets-photos-img-portfolio-photo-12-webp-late-afternoon-landscape-with-soft-tra",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJ1yejlKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
-      "alt": "Late afternoon island landscape with soft travel light",
-      "width": 1600,
-      "height": 1067,
-      "caption": "Late afternoon is when the island starts to slow down.",
-      "order": 1,
-      "isCover": false
+      "src": "/assets/photos/bali/733692765_10244474875706043_7649457688157255346_n.jpg",
+      "alt": "Bali --- photo 1",
+      "width": 1365,
+      "height": 2048,
+      "order": 1
     },
     {
-      "id": "assets-photos-img-portfolio-photo-11-webp-coastal-road-and-open-sky-in-bali",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
-      "alt": "Coastal road and open sky in Bali",
-      "width": 1600,
-      "height": 1067,
-      "caption": "A road-day frame, used here as the Bali hero mood.",
-      "order": 2,
-      "isCover": true
+      "src": "/assets/photos/bali/735994132_10244463028729876_2418360992136723904_n.jpg",
+      "alt": "Bali --- photo 2",
+      "width": 1365,
+      "height": 2048,
+      "order": 2
     },
     {
-      "id": "assets-photos-img-portfolio-photo-5-webp-vertical-travel-detail-from-a-tropical-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUni2CYtE95AXOuIBLNQ3GyKFm2qSCfe1MP64",
-      "alt": "Vertical travel detail from a tropical stop",
-      "width": 1067,
-      "height": 1600,
-      "caption": "Small scenes matter more than landmark collecting.",
-      "order": 3,
-      "isCover": false
+      "src": "/assets/photos/bali/737519352_10244463034850029_3859798982354849012_n.jpg",
+      "alt": "Bali --- photo 3",
+      "width": 1365,
+      "height": 2048,
+      "order": 3
     },
     {
-      "id": "assets-photos-img-portfolio-photo-14-webp-portrait-travel-frame-with-quiet-atmos",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7sxN4c54ylS30dX98IkbwjPC6iqWEvHMFax2",
-      "alt": "Portrait travel frame with quiet atmosphere",
-      "width": 1067,
-      "height": 1600,
-      "caption": "A slower vertical frame for the gallery rhythm.",
-      "order": 4,
-      "isCover": false
+      "src": "/assets/photos/bali/737543592_10244463049050384_144936958033147284_n.jpg",
+      "alt": "Bali --- photo 4",
+      "width": 1365,
+      "height": 2048,
+      "order": 4
     },
     {
-      "id": "assets-photos-img-portfolio-photo-4-webp-calm-bali-road-scene",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hilCFGvzwbmU9pOiYE6G824a0BWCXcl37yufz",
-      "alt": "Calm Bali road scene with open tropical light",
-      "width": 1600,
-      "height": 1067,
-      "caption": "Road time is part of the trip, not just the transfer.",
-      "order": 5,
-      "isCover": false
+      "src": "/assets/photos/bali/737911942_10244463045010283_7759922678853193852_n.jpg",
+      "alt": "Bali --- photo 5",
+      "width": 1365,
+      "height": 2048,
+      "order": 5
     },
     {
-      "id": "assets-photos-img-portfolio-photo-6-webp-green-island-landscape",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hW0XZEXC2QiOP6pqzN9dESsBlGD0KV7FZvL2C",
-      "alt": "Green island landscape on a quiet Bali route",
-      "width": 1600,
-      "height": 1067,
-      "caption": "Ubud days work best when they stay unhurried.",
-      "order": 6,
-      "isCover": false
+      "src": "/assets/photos/bali/737939097_10244474885986300_4281551648067122654_n.jpg",
+      "alt": "Bali --- photo 6",
+      "width": 1365,
+      "height": 2048,
+      "order": 6
     },
     {
-      "id": "assets-photos-img-portfolio-photo-7-webp-warm-coastal-afternoon",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKaZ3StvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
-      "alt": "Warm coastal afternoon in Bali",
-      "width": 1600,
-      "height": 1067,
-      "caption": "Save the coast for the softer end of the day.",
-      "order": 7,
-      "isCover": false
+      "src": "/assets/photos/bali/738330536_10244463046730326_4447823590008994780_n.jpg",
+      "alt": "Bali --- photo 7",
+      "width": 1365,
+      "height": 2048,
+      "order": 7
     },
     {
-      "id": "assets-photos-img-portfolio-photo-8-webp-warm-outdoor-travel-scene",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hV4CzSTiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-      "alt": "Warm outdoor travel scene",
-      "width": 1600,
-      "height": 1067,
-      "caption": "Keep the route loose enough for detours.",
-      "order": 8,
-      "isCover": false
+      "src": "/assets/photos/bali/738523343_10244463017449594_9046646533201130721_n-1.jpg",
+      "alt": "Bali --- photo 8",
+      "width": 1365,
+      "height": 2048,
+      "order": 8
     },
     {
-      "id": "assets-photos-img-portfolio-photo-9-webp-bright-island-stop",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUs5SfWrYtE95AXOuIBLNQ3GyKFm2qSCfe1MP",
-      "alt": "Bright island stop with tropical travel atmosphere",
-      "width": 1600,
-      "height": 1067,
-      "caption": "The best stops are often the ones between the famous ones.",
-      "order": 9,
-      "isCover": false
-    },
-    {
-      "id": "assets-photos-img-portfolio-photo-10-webp-open-bali-landscape",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJVll2aCKGPnLEw4QeZijRaqKpHdbcxS3TC1I",
-      "alt": "Open Bali landscape under clear daylight",
-      "width": 1600,
-      "height": 1067,
-      "caption": "A clean landscape frame to close the set.",
-      "order": 10,
-      "isCover": false
+      "src": "/assets/photos/bali/738916334_10244463050970432_4442561238562235481_n.jpg",
+      "alt": "Bali --- photo 9",
+      "width": 1365,
+      "height": 2048,
+      "order": 9
     }
   ],
   "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bali%2C%20Indonesia",
@@ -198,7 +159,7 @@
   "published": false,
   "seoTitle": "Bali Slow Travel Guide | Canggu, Ubud, Uluwatu",
   "seoDescription": "A slow editorial Bali guide for Canggu cafe mornings, Ubud rice fields, Uluwatu cliffs, temple roads, sunsets, and flexible island days.",
-  "seoImage": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
+  "seoImage": "/assets/photos/bali/733692765_10244474875706043_7649457688157255346_n.jpg",
   "relatedLocations": [
     {
       "slug": "da-lat",

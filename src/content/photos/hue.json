@@ -18,8 +18,18 @@
   "travelTime": "2-3h road",
   "recommendedStay": "2-3 days",
   "bestMonths": "Jan - Apr",
-  "transportation": ["Train", "Car", "Taxi", "Motorbike"],
-  "suitableFor": ["History", "Food", "Slow travel", "Photography"],
+  "transportation": [
+    "Train",
+    "Car",
+    "Taxi",
+    "Motorbike"
+  ],
+  "suitableFor": [
+    "History",
+    "Food",
+    "Slow travel",
+    "Photography"
+  ],
   "overview": "A heritage city for imperial architecture, river light, quiet streets, rain, and deeply local food.",
   "personalRating": 8.5,
   "wouldReturn": "definitely",
@@ -31,8 +41,15 @@
     "value": 8,
     "accessibility": 8
   },
-  "bestTimeOfDay": ["Morning", "Cloudy afternoon", "Late afternoon"],
-  "localTransport": ["Taxi between sites", "Walking near the river"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Cloudy afternoon",
+    "Late afternoon"
+  ],
+  "localTransport": [
+    "Taxi between sites",
+    "Walking near the river"
+  ],
   "weatherNote": "Rain is part of Huế's mood, but it can slow outdoor plans. Keep the route flexible.",
   "crowdLevel": "moderate",
   "travelDifficulty": "easy",
@@ -41,22 +58,113 @@
     "Leave space for food stops.",
     "Bring light rain protection even in shoulder months."
   ],
-  "notFor": ["Travelers who want only beaches or nightlife."],
-  "tags": ["Heritage", "Imperial city", "Food", "River", "Central Vietnam"],
+  "notFor": [
+    "Travelers who want only beaches or nightlife."
+  ],
+  "tags": [
+    "Heritage",
+    "Imperial city",
+    "Food",
+    "River",
+    "Central Vietnam"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Huế Photo Notes | Imperial City and Perfume River",
   "seoDescription": "A short editorial photo note from Huế: imperial walls, Perfume River light, rainy streets, garden houses, heritage stops, and local food.",
   "relatedLocations": [
-    { "slug": "da-nang", "distance": "Nearby", "category": "Beach city" },
-    { "slug": "hoi-an", "distance": "Heritage route", "category": "Old town" },
-    { "slug": "ha-noi", "distance": "Old-city comparison", "category": "Capital" }
+    {
+      "slug": "da-nang",
+      "distance": "Nearby",
+      "category": "Beach city"
+    },
+    {
+      "slug": "hoi-an",
+      "distance": "Heritage route",
+      "category": "Old town"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
-  "images": []
+  "images": [
+    {
+      "src": "/assets/photos/hue/545291857_24392382083758682_8004547080967898061_n.jpg",
+      "alt": "Huế --- photo 1",
+      "width": 1966,
+      "height": 1106,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/hue/545590386_24392381640425393_8236979995412601418_n.jpg",
+      "alt": "Huế --- photo 2",
+      "width": 1572,
+      "height": 1966,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/hue/545852486_24392381767092047_2268179313710849140_n.jpg",
+      "alt": "Huế --- photo 3",
+      "width": 1572,
+      "height": 1966,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/hue/546154614_24392382357091988_6132473400039708928_n.jpg",
+      "alt": "Huế --- photo 4",
+      "width": 1572,
+      "height": 1966,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/hue/546616470_24392382517091972_4348713963531715607_n.jpg",
+      "alt": "Huế --- photo 5",
+      "width": 1966,
+      "height": 1106,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/hue/546619737_24392381587092065_6821042461666650166_n.jpg",
+      "alt": "Huế --- photo 6",
+      "width": 1572,
+      "height": 1966,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/hue/546621941_24392382420425315_5515318189503263980_n.jpg",
+      "alt": "Huế --- photo 7",
+      "width": 1572,
+      "height": 1966,
+      "order": 7
+    }
+  ],
+  "heroImage": {
+    "src": "/assets/photos/hue/545291857_24392382083758682_8004547080967898061_n.jpg",
+    "alt": "Huế --- photo 1",
+    "width": 1966,
+    "height": 1106,
+    "order": 1,
+    "isCover": true
+  }
 }

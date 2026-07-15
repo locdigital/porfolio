@@ -17,8 +17,17 @@
   "travelTime": "1h10 flight",
   "recommendedStay": "3 days",
   "bestMonths": "Feb - Aug",
-  "transportation": ["Flight", "Taxi", "Motorbike"],
-  "suitableFor": ["Beach town", "Seafood", "Photography", "Slow travel"],
+  "transportation": [
+    "Flight",
+    "Taxi",
+    "Motorbike"
+  ],
+  "suitableFor": [
+    "Beach town",
+    "Seafood",
+    "Photography",
+    "Slow travel"
+  ],
   "overview": "A low-key beach city with Cham heritage, clean sand, and easy coastal routes nearby.",
   "personalRating": 8.3,
   "wouldReturn": "maybe",
@@ -30,8 +39,15 @@
     "value": 8,
     "accessibility": 7
   },
-  "bestTimeOfDay": ["Morning", "Late afternoon", "Sunset"],
-  "localTransport": ["Taxi in town", "Motorbike for viewpoints"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Late afternoon",
+    "Sunset"
+  ],
+  "localTransport": [
+    "Taxi in town",
+    "Motorbike for viewpoints"
+  ],
   "weatherNote": "Beach days are easiest in the sunnier central-coast months. Keep a backup cafe block for rain.",
   "crowdLevel": "moderate",
   "travelDifficulty": "easy",
@@ -40,27 +56,98 @@
     "Use late afternoon for warmer sand and softer towers.",
     "Leave one meal open for seafood."
   ],
-  "notFor": ["Travelers who want a dense resort strip or loud nightlife."],
-  "tags": ["Beach", "Cham towers", "Seafood", "Central coast", "Slow travel"],
+  "notFor": [
+    "Travelers who want a dense resort strip or loud nightlife."
+  ],
+  "tags": [
+    "Beach",
+    "Cham towers",
+    "Seafood",
+    "Central coast",
+    "Slow travel"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Quy Nhơn Photo Notes | Beaches, Cham Towers, and Quiet Sand",
   "seoDescription": "A short editorial photo note from Quy Nhơn: quiet beaches, Cham towers, seafood, soft coastal light, and slow central Vietnam days.",
   "relatedLocations": [
-    { "slug": "phu-yen", "distance": "Nearby coast", "category": "Road trip" },
-    { "slug": "da-nang", "distance": "Coastal comparison", "category": "Beach city" },
-    { "slug": "nha-trang", "distance": "Southern coast", "category": "Beach city" }
+    {
+      "slug": "phu-yen",
+      "distance": "Nearby coast",
+      "category": "Road trip"
+    },
+    {
+      "slug": "da-nang",
+      "distance": "Coastal comparison",
+      "category": "Beach city"
+    },
+    {
+      "slug": "nha-trang",
+      "distance": "Southern coast",
+      "category": "Beach city"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
   "images": [
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7sxN4c54ylS30dX98IkbwjPC6iqWEvHMFax2", "alt": "Quy Nhơn --- photo 1", "width": 1280, "height": 1920 },
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hboZJitkAEiMVyIw93QvFdHjfCaP5rqRXL4bO", "alt": "Quy Nhơn --- photo 2", "width": 1280, "height": 1920 },
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZXz81DsiYJsWR4ITvHoQh9ASwb7rDt13X8jq", "alt": "Quy Nhơn --- photo 3", "width": 1920, "height": 1280 },
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hIyNcxnWlPNf9shR3SkuyHBoXviJTb1wmZFOj", "alt": "Quy Nhơn --- photo 4", "width": 4032, "height": 6048 }
-  ]
+    {
+      "src": "/assets/photos/quy-nhon/65412C2F-5F00-47B7-881E-7270274F0DAE.jpg",
+      "alt": "Quy Nhơn --- photo 1",
+      "width": 1260,
+      "height": 2240,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/quy-nhon/f37995328.jpg",
+      "alt": "Quy Nhơn --- photo 2",
+      "width": 6048,
+      "height": 4032,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/quy-nhon/f38140608%202.jpg",
+      "alt": "Quy Nhơn --- photo 3",
+      "width": 6048,
+      "height": 4032,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/quy-nhon/f38178432.jpg",
+      "alt": "Quy Nhơn --- photo 4",
+      "width": 6048,
+      "height": 4032,
+      "order": 4
+    }
+  ],
+  "type": "check-in",
+  "heroImage": {
+    "src": "/assets/photos/quy-nhon/65412C2F-5F00-47B7-881E-7270274F0DAE.jpg",
+    "alt": "Quy Nhơn --- photo 1",
+    "width": 1260,
+    "height": 2240,
+    "order": 1,
+    "isCover": true
+  }
 }

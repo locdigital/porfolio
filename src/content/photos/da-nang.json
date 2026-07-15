@@ -17,8 +17,17 @@
   "travelTime": "1h20 flight",
   "recommendedStay": "3-4 days",
   "bestMonths": "Feb - Aug",
-  "transportation": ["Flight", "Taxi", "Motorbike"],
-  "suitableFor": ["Beach city", "Short escape", "Food", "Photography"],
+  "transportation": [
+    "Flight",
+    "Taxi",
+    "Motorbike"
+  ],
+  "suitableFor": [
+    "Beach city",
+    "Short escape",
+    "Food",
+    "Photography"
+  ],
   "overview": "A practical coastal base with enough calm for slow mornings and enough access for road days across central Vietnam.",
   "personalRating": 8.2,
   "wouldReturn": "definitely",
@@ -30,8 +39,15 @@
     "value": 8,
     "accessibility": 9
   },
-  "bestTimeOfDay": ["Morning", "Golden hour", "Evening"],
-  "localTransport": ["Taxi for city hops", "Motorbike for flexible coastal routes"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Golden hour",
+    "Evening"
+  ],
+  "localTransport": [
+    "Taxi for city hops",
+    "Motorbike for flexible coastal routes"
+  ],
   "weatherNote": "Central Vietnam is easiest to photograph in the drier months, but leave room for sudden weather shifts.",
   "crowdLevel": "moderate",
   "travelDifficulty": "very_easy",
@@ -40,83 +56,189 @@
     "Group Hội An or Huế as separate day plans instead of rushing both.",
     "Keep sunset flexible for the river or the coast."
   ],
-  "notFor": ["Travelers looking for a remote or quiet-only beach town."],
-  "tags": ["Beach city", "Central Vietnam", "River", "Food", "Road trip"],
+  "notFor": [
+    "Travelers looking for a remote or quiet-only beach town."
+  ],
+  "tags": [
+    "Beach city",
+    "Central Vietnam",
+    "River",
+    "Food",
+    "Road trip"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Đà Nẵng Photo Notes | Beach City in Central Vietnam",
   "seoDescription": "A short editorial photo note from Đà Nẵng: beach mornings, river bridges, central Vietnam road trips, food, and easy coastal days.",
   "relatedLocations": [
-    { "slug": "hoi-an", "distance": "Nearby", "category": "Old town" },
-    { "slug": "hue", "distance": "Day trip", "category": "Heritage city" },
-    { "slug": "quy-nhon", "distance": "Coastal comparison", "category": "Beach town" }
+    {
+      "slug": "hoi-an",
+      "distance": "Nearby",
+      "category": "Old town"
+    },
+    {
+      "slug": "hue",
+      "distance": "Day trip",
+      "category": "Heritage city"
+    },
+    {
+      "slug": "quy-nhon",
+      "distance": "Coastal comparison",
+      "category": "Beach town"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
   "images": [
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJdQ5AAKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
-      "alt": "da-nang photo",
-      "width": 1440,
-      "height": 1080
+      "src": "/assets/photos/da-nang/515441343_24141354622194764_2961209749619136370_n.jpg",
+      "alt": "Đà Nẵng --- photo 1",
+      "width": 1638,
+      "height": 2048,
+      "order": 1
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hGzkajLBcjrVF5sU9WdBP1Zmn2bOHaiQSKAwk",
-      "alt": "da-nang photo",
-      "width": 1200,
-      "height": 1300
+      "src": "/assets/photos/da-nang/522691965_24005234085806819_5320459884910614416_n.jpg",
+      "alt": "Đà Nẵng --- photo 2",
+      "width": 1572,
+      "height": 1966,
+      "order": 2
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5N5HwOnzPCHf8h9G7Slp6scrUVuR10JngFBO",
-      "alt": "da-nang photo",
-      "width": 1200,
-      "height": 1600
+      "src": "/assets/photos/da-nang/523926256_24005241035806124_5621515779441257703_n.jpg",
+      "alt": "Đà Nẵng --- photo 3",
+      "width": 1573,
+      "height": 1966,
+      "order": 3
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hMLlpKDU15DKkGrxHn3sZOlpRXP4veiquwVQB",
-      "alt": "da-nang photo",
-      "width": 1600,
-      "height": 1200
+      "src": "/assets/photos/da-nang/529662747_24141354615528098_8202339928733761132_n.jpg",
+      "alt": "Đà Nẵng --- photo 4",
+      "width": 2048,
+      "height": 1152,
+      "order": 4
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUzAW7yYtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
-      "alt": "da-nang photo",
-      "width": 1600,
-      "height": 1200
+      "src": "/assets/photos/da-nang/529826178_24141354528861440_8409878767605585107_n.jpg",
+      "alt": "Đà Nẵng --- photo 5",
+      "width": 2048,
+      "height": 1152,
+      "order": 5
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnXKPyyJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-      "alt": "da-nang photo",
-      "width": 1600,
-      "height": 1200
+      "src": "/assets/photos/da-nang/530234090_24141354108861482_3328510392160955599_n.jpg",
+      "alt": "Đà Nẵng --- photo 6",
+      "width": 1638,
+      "height": 2048,
+      "order": 6
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFfxrA4KzSM0IwjJ82zLsrNaCxbfXRnF4WlyK",
-      "alt": "da-nang photo",
-      "width": 1440,
-      "height": 1082
+      "src": "/assets/photos/da-nang/530367043_24141354858861407_7395546488874945264_n.jpg",
+      "alt": "Đà Nẵng --- photo 7",
+      "width": 1638,
+      "height": 2048,
+      "order": 7
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hHzt2XqeQp1bPln5ZfBa2gk4uX9OGVzCi6Fvh",
-      "alt": "da-nang photo",
-      "width": 1080,
-      "height": 1440
+      "src": "/assets/photos/da-nang/530501316_24141354128861480_4296597814917866281_n.jpg",
+      "alt": "Đà Nẵng --- photo 8",
+      "width": 2048,
+      "height": 1152,
+      "order": 8
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmQDAWBgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
-      "alt": "da-nang photo",
-      "width": 1200,
-      "height": 1600
+      "src": "/assets/photos/da-nang/530736067_24141354805528079_5814019546214319363_n.jpg",
+      "alt": "Đà Nẵng --- photo 9",
+      "width": 1638,
+      "height": 2048,
+      "order": 9
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRRK7cAxhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
-      "alt": "da-nang photo",
-      "width": 1200,
-      "height": 1600
+      "src": "/assets/photos/da-nang/530756373_24141354388861454_4870850596333837051_n.jpg",
+      "alt": "Đà Nẵng --- photo 10",
+      "width": 1638,
+      "height": 2048,
+      "order": 10
+    },
+    {
+      "src": "/assets/photos/da-nang/530817556_24141354352194791_1814293016886040455_n.jpg",
+      "alt": "Đà Nẵng --- photo 11",
+      "width": 2048,
+      "height": 1152,
+      "order": 11
+    },
+    {
+      "src": "/assets/photos/da-nang/531093921_24141354462194780_91856170404640496_n.jpg",
+      "alt": "Đà Nẵng --- photo 12",
+      "width": 1638,
+      "height": 2048,
+      "order": 12
+    },
+    {
+      "src": "/assets/photos/da-nang/531758164_24141354205528139_7408120239639068526_n-1.jpg",
+      "alt": "Đà Nẵng --- photo 13",
+      "width": 1638,
+      "height": 2048,
+      "order": 13
+    },
+    {
+      "src": "/assets/photos/da-nang/531758164_24141354205528139_7408120239639068526_n.jpg",
+      "alt": "Đà Nẵng --- photo 14",
+      "width": 1638,
+      "height": 2048,
+      "order": 14
+    },
+    {
+      "src": "/assets/photos/da-nang/531986989_24141354135528146_1870004131577270189_n.jpg",
+      "alt": "Đà Nẵng --- photo 15",
+      "width": 1638,
+      "height": 2048,
+      "order": 15
+    },
+    {
+      "src": "/assets/photos/da-nang/540740453_24313355491661342_8033205211170273756_n.jpg",
+      "alt": "Đà Nẵng --- photo 16",
+      "width": 1638,
+      "height": 2048,
+      "order": 16
+    },
+    {
+      "src": "/assets/photos/da-nang/541449594_24313355651661326_5835395316725255528_n.jpg",
+      "alt": "Đà Nẵng --- photo 17",
+      "width": 1638,
+      "height": 2048,
+      "order": 17
     }
-  ]
+  ],
+  "type": "check-in",
+  "heroImage": {
+    "src": "/assets/photos/da-nang/515441343_24141354622194764_2961209749619136370_n.jpg",
+    "alt": "Đà Nẵng --- photo 1",
+    "width": 1638,
+    "height": 2048,
+    "order": 1,
+    "isCover": true
+  }
 }

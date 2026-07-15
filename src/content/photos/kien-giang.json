@@ -1,0 +1,91 @@
+{
+  "slug": "kien-giang",
+  "order": 18,
+  "type": "check-in",
+  "location": "Kiên Giang",
+  "name": "Kiên Giang",
+  "city": "Kiên Giang",
+  "country": "Vietnam",
+  "province": "Kiên Giang",
+  "region": "Tây Nam Bộ",
+  "headline": "Kiên Giang in frames.",
+  "subheadline": "A small photo note from the road.",
+  "introduction": "Photos from Kiên Giang.",
+  "shortDescription": "A compact gallery from Kiên Giang.",
+  "description": "A compact gallery from Kiên Giang.",
+  "images": [
+    {
+      "src": "/assets/photos/kien-giang/9C452514-5DBE-4AA4-BD21-F28C333366EA.jpg",
+      "alt": "Kiên Giang --- photo 1",
+      "width": 3071,
+      "height": 4096,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/kien-giang/DSC_1832.JPG",
+      "alt": "Kiên Giang --- photo 2",
+      "width": 6048,
+      "height": 4032,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/kien-giang/DSC_1847.JPG",
+      "alt": "Kiên Giang --- photo 3",
+      "width": 6048,
+      "height": 4032,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/kien-giang/DSC_1860.JPG",
+      "alt": "Kiên Giang --- photo 4",
+      "width": 2751,
+      "height": 4127,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/kien-giang/DSC_1874.JPG",
+      "alt": "Kiên Giang --- photo 5",
+      "width": 6048,
+      "height": 4032,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/kien-giang/DSC_1893.JPG",
+      "alt": "Kiên Giang --- photo 6",
+      "width": 4320,
+      "height": 2880,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/kien-giang/DSC_1944.JPG",
+      "alt": "Kiên Giang --- photo 7",
+      "width": 6048,
+      "height": 4032,
+      "order": 7
+    },
+    {
+      "src": "/assets/photos/kien-giang/DSC_1962.JPG",
+      "alt": "Kiên Giang --- photo 8",
+      "width": 4032,
+      "height": 6048,
+      "order": 8
+    }
+  ],
+  "blocks": [
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    }
+  ],
+  "heroImage": {
+    "src": "/assets/photos/kien-giang/9C452514-5DBE-4AA4-BD21-F28C333366EA.jpg",
+    "alt": "Kiên Giang --- photo 1",
+    "width": 3071,
+    "height": 4096,
+    "order": 1,
+    "isCover": true
+  }
+}

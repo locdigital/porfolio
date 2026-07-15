@@ -18,8 +18,18 @@
   "travelTime": "45-60m road",
   "recommendedStay": "2-3 days",
   "bestMonths": "Feb - Aug",
-  "transportation": ["Car", "Taxi", "Bicycle", "Walking"],
-  "suitableFor": ["Old town", "Food", "Walking", "Photography"],
+  "transportation": [
+    "Car",
+    "Taxi",
+    "Bicycle",
+    "Walking"
+  ],
+  "suitableFor": [
+    "Old town",
+    "Food",
+    "Walking",
+    "Photography"
+  ],
   "overview": "A compact heritage town for yellow walls, lantern light, riverside walks, tailoring stops, and soft evening scenes.",
   "personalRating": 8.3,
   "wouldReturn": "maybe",
@@ -31,8 +41,15 @@
     "value": 7,
     "accessibility": 8
   },
-  "bestTimeOfDay": ["Early morning", "Golden hour", "Evening"],
-  "localTransport": ["Walking in old town", "Bicycle for nearby routes"],
+  "bestTimeOfDay": [
+    "Early morning",
+    "Golden hour",
+    "Evening"
+  ],
+  "localTransport": [
+    "Walking in old town",
+    "Bicycle for nearby routes"
+  ],
   "weatherNote": "Old-town walks are best outside the hottest part of the day. Rain can make evenings atmospheric but slower.",
   "crowdLevel": "very_busy",
   "travelDifficulty": "very_easy",
@@ -41,21 +58,155 @@
     "Stay close enough to return after a midday break.",
     "Treat the lantern scene as atmosphere, not a checklist."
   ],
-  "notFor": ["Travelers who dislike tourist crowds."],
-  "tags": ["Old town", "Lanterns", "Heritage", "Walking", "Central Vietnam"],
+  "notFor": [
+    "Travelers who dislike tourist crowds."
+  ],
+  "tags": [
+    "Old town",
+    "Lanterns",
+    "Heritage",
+    "Walking",
+    "Central Vietnam"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Hội An Photo Notes | Lanterns and Old-Town Evenings",
   "seoDescription": "A short editorial photo note from Hội An: yellow walls, lanterns, riverside evenings, old-town walks, food, and central Vietnam light.",
   "relatedLocations": [
-    { "slug": "da-nang", "distance": "Nearby", "category": "Beach city" },
-    { "slug": "hue", "distance": "Heritage route", "category": "Old city" }
+    {
+      "slug": "da-nang",
+      "distance": "Nearby",
+      "category": "Beach city"
+    },
+    {
+      "slug": "hue",
+      "distance": "Heritage route",
+      "category": "Old city"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
-  "images": []
+  "images": [
+    {
+      "src": "/assets/photos/hoi-an/515102033_10096275450462584_7036167719365043306_n.jpg",
+      "alt": "Hội An --- photo 1",
+      "width": 1966,
+      "height": 1106,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/hoi-an/515436504_10096275750462554_8788910203868497525_n.jpg",
+      "alt": "Hội An --- photo 2",
+      "width": 1572,
+      "height": 1966,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/hoi-an/515436538_10096273357129460_8421346063998755185_n.jpg",
+      "alt": "Hội An --- photo 3",
+      "width": 1572,
+      "height": 1966,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/hoi-an/515438230_10096273253796137_5086406800215504614_n.jpg",
+      "alt": "Hội An --- photo 4",
+      "width": 1573,
+      "height": 1966,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/hoi-an/515442930_10096273020462827_269782480144024652_n.jpg",
+      "alt": "Hội An --- photo 5",
+      "width": 1572,
+      "height": 1966,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/hoi-an/515500196_10096273360462793_3334049799004553557_n.jpg",
+      "alt": "Hội An --- photo 6",
+      "width": 1966,
+      "height": 1106,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/hoi-an/515508748_10096275253795937_1653898572910636316_n.jpg",
+      "alt": "Hội An --- photo 7",
+      "width": 1966,
+      "height": 1106,
+      "order": 7
+    },
+    {
+      "src": "/assets/photos/hoi-an/515511413_10096273220462807_4442928436101756164_n.jpg",
+      "alt": "Hội An --- photo 8",
+      "width": 1572,
+      "height": 1966,
+      "order": 8
+    },
+    {
+      "src": "/assets/photos/hoi-an/515555908_10096274260462703_909727076920369498_n.jpg",
+      "alt": "Hội An --- photo 9",
+      "width": 1966,
+      "height": 1106,
+      "order": 9
+    },
+    {
+      "src": "/assets/photos/hoi-an/515574343_10096274960462633_5281409057560715465_n.jpg",
+      "alt": "Hội An --- photo 10",
+      "width": 1966,
+      "height": 1106,
+      "order": 10
+    },
+    {
+      "src": "/assets/photos/hoi-an/515589920_10096273107129485_9015131971223477645_n.jpg",
+      "alt": "Hội An --- photo 11",
+      "width": 1966,
+      "height": 1106,
+      "order": 11
+    },
+    {
+      "src": "/assets/photos/hoi-an/516502487_10096276007129195_2230740273117271965_n.jpg",
+      "alt": "Hội An --- photo 12",
+      "width": 1573,
+      "height": 1966,
+      "order": 12
+    },
+    {
+      "src": "/assets/photos/hoi-an/516697559_10096273193796143_8215191715198048833_n.jpg",
+      "alt": "Hội An --- photo 13",
+      "width": 1573,
+      "height": 1966,
+      "order": 13
+    }
+  ],
+  "heroImage": {
+    "src": "/assets/photos/hoi-an/515102033_10096275450462584_7036167719365043306_n.jpg",
+    "alt": "Hội An --- photo 1",
+    "width": 1966,
+    "height": 1106,
+    "order": 1,
+    "isCover": true
+  }
 }

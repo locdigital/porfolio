@@ -17,8 +17,16 @@
   "travelTime": "2.5-3.5h ferry",
   "recommendedStay": "2-3 days",
   "bestMonths": "Mar - Aug",
-  "transportation": ["Ferry", "Motorbike"],
-  "suitableFor": ["Island escape", "Photography", "Seafood", "Slow travel"],
+  "transportation": [
+    "Ferry",
+    "Motorbike"
+  ],
+  "suitableFor": [
+    "Island escape",
+    "Photography",
+    "Seafood",
+    "Slow travel"
+  ],
   "overview": "A compact island for bright water, fishing village textures, red rocks, and simple days built around the weather.",
   "personalRating": 8.5,
   "wouldReturn": "definitely",
@@ -30,8 +38,14 @@
     "value": 8,
     "accessibility": 6
   },
-  "bestTimeOfDay": ["Morning", "Golden hour", "Sunset"],
-  "localTransport": ["Motorbike around the island"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Golden hour",
+    "Sunset"
+  ],
+  "localTransport": [
+    "Motorbike around the island"
+  ],
   "weatherNote": "Ferry comfort depends on sea conditions. Keep dates flexible if the forecast looks rough.",
   "crowdLevel": "moderate",
   "travelDifficulty": "requires_preparation",
@@ -40,47 +54,128 @@
     "Use mornings for riding and photos.",
     "Bring sun protection; shade can be limited on open roads."
   ],
-  "notFor": ["Travelers who need big-city convenience or luxury options."],
-  "tags": ["Island", "Ferry", "Sea", "Fishing village", "Sunset"],
+  "notFor": [
+    "Travelers who need big-city convenience or luxury options."
+  ],
+  "tags": [
+    "Island",
+    "Ferry",
+    "Sea",
+    "Fishing village",
+    "Sunset"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Phú Quý Photo Notes | Island Light and Fishing Boats",
   "seoDescription": "A short editorial photo note from Phú Quý island: turquoise water, fishing boats, red-rock cliffs, ferry days, and slow coastal light.",
   "relatedLocations": [
-    { "slug": "vung-tau", "distance": "Weekend coast", "category": "Coast" },
-    { "slug": "quy-nhon", "distance": "Coastal comparison", "category": "Beach town" },
-    { "slug": "phu-yen", "distance": "Road trip mood", "category": "Coast" }
+    {
+      "slug": "quy-nhon",
+      "distance": "Coastal comparison",
+      "category": "Beach town"
+    },
+    {
+      "slug": "phu-yen",
+      "distance": "Road trip mood",
+      "category": "Coast"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
   "images": [
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hPHpTTj6stjCAvHqacRQKpwg5kVIlTiJY6SnW",
+      "src": "/assets/photos/phu-quy/IMG_0404.JPG",
       "alt": "Phú Quý --- photo 1",
-      "width": 1280,
-      "height": 1920
+      "width": 1707,
+      "height": 2560,
+      "order": 1
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hiN8pR7wbmU9pOiYE6G824a0BWCXcl37yufzH",
+      "src": "/assets/photos/phu-quy/IMG_0410.JPG",
       "alt": "Phú Quý --- photo 2",
-      "width": 1280,
-      "height": 1920
+      "width": 1707,
+      "height": 2560,
+      "order": 2
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hilCFGvzwbmU9pOiYE6G824a0BWCXcl37yufz",
+      "src": "/assets/photos/phu-quy/IMG_0541.PNG",
       "alt": "Phú Quý --- photo 3",
-      "width": 1920,
-      "height": 1280
+      "width": 5762,
+      "height": 3814,
+      "order": 3
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hW0XZEXC2QiOP6pqzN9dESsBlGD0KV7FZvL2C",
+      "src": "/assets/photos/phu-quy/IMG_0556.JPG",
       "alt": "Phú Quý --- photo 4",
       "width": 1920,
-      "height": 1280
+      "height": 2560,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/phu-quy/IMG_0586.PNG",
+      "alt": "Phú Quý --- photo 5",
+      "width": 4032,
+      "height": 6048,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/phu-quy/IMG_0588.PNG",
+      "alt": "Phú Quý --- photo 6",
+      "width": 6048,
+      "height": 4032,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/phu-quy/IMG_0590.PNG",
+      "alt": "Phú Quý --- photo 7",
+      "width": 6048,
+      "height": 4032,
+      "order": 7
+    },
+    {
+      "src": "/assets/photos/phu-quy/IMG_0597.PNG",
+      "alt": "Phú Quý --- photo 8",
+      "width": 6048,
+      "height": 4032,
+      "order": 8
+    },
+    {
+      "src": "/assets/photos/phu-quy/IMG_0598.PNG",
+      "alt": "Phú Quý --- photo 9",
+      "width": 6048,
+      "height": 4032,
+      "order": 9
     }
-  ]
+  ],
+  "type": "check-in",
+  "heroImage": {
+    "src": "/assets/photos/phu-quy/IMG_0404.JPG",
+    "alt": "Phú Quý --- photo 1",
+    "width": 1707,
+    "height": 2560,
+    "order": 1,
+    "isCover": true
+  }
 }

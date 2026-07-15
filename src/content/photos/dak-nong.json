@@ -18,8 +18,17 @@
   "travelTime": "6-8h road",
   "recommendedStay": "2-3 days",
   "bestMonths": "Nov - Apr",
-  "transportation": ["Car", "Motorbike", "Bus"],
-  "suitableFor": ["Nature", "Road trip", "Waterfalls", "Photography"],
+  "transportation": [
+    "Car",
+    "Motorbike",
+    "Bus"
+  ],
+  "suitableFor": [
+    "Nature",
+    "Road trip",
+    "Waterfalls",
+    "Photography"
+  ],
   "overview": "A Central Highlands detour for people who like rougher edges, green routes, and quieter nature days.",
   "personalRating": 8,
   "wouldReturn": "maybe",
@@ -31,8 +40,15 @@
     "value": 8,
     "accessibility": 6
   },
-  "bestTimeOfDay": ["Morning", "Cloudy afternoon", "Golden hour"],
-  "localTransport": ["Car for comfort", "Motorbike for flexible stops"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Cloudy afternoon",
+    "Golden hour"
+  ],
+  "localTransport": [
+    "Car for comfort",
+    "Motorbike for flexible stops"
+  ],
   "weatherNote": "Dry months make road days simpler. Waterfall areas can still be slippery, so keep footwear practical.",
   "crowdLevel": "quiet",
   "travelDifficulty": "moderate",
@@ -41,21 +57,129 @@
     "Bring shoes that can handle wet paths.",
     "Download maps before leaving the main town."
   ],
-  "notFor": ["Travelers who need polished tourism infrastructure."],
-  "tags": ["Highland", "Waterfall", "Road trip", "Nature", "Basalt"],
+  "notFor": [
+    "Travelers who need polished tourism infrastructure."
+  ],
+  "tags": [
+    "Highland",
+    "Waterfall",
+    "Road trip",
+    "Nature",
+    "Basalt"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Đắk Nông Photo Notes | Waterfalls and Highland Roads",
   "seoDescription": "A short editorial photo note from Đắk Nông: waterfalls, basalt roads, quiet highland air, forest pockets, and Central Highlands travel.",
   "relatedLocations": [
-    { "slug": "da-lat", "distance": "Highland comparison", "category": "Cool weather" },
-    { "slug": "sai-gon", "distance": "City contrast", "category": "Urban" }
+    {
+      "slug": "da-lat",
+      "distance": "Highland comparison",
+      "category": "Cool weather"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
-  "images": []
+  "images": [
+    {
+      "src": "/assets/photos/dak-nong/DSC_1309.png",
+      "alt": "Đắk Nông --- photo 1",
+      "width": 4032,
+      "height": 6048,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/dak-nong/DSC_1485.JPG",
+      "alt": "Đắk Nông --- photo 2",
+      "width": 6048,
+      "height": 4032,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/dak-nong/DSC_1505.JPG",
+      "alt": "Đắk Nông --- photo 3",
+      "width": 6048,
+      "height": 4032,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/dak-nong/DSC_1545.JPG",
+      "alt": "Đắk Nông --- photo 4",
+      "width": 6048,
+      "height": 4032,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/dak-nong/DSC_1586.JPG",
+      "alt": "Đắk Nông --- photo 5",
+      "width": 6048,
+      "height": 4032,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/dak-nong/DSC_1599.JPG",
+      "alt": "Đắk Nông --- photo 6",
+      "width": 6048,
+      "height": 4032,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/dak-nong/DSC_1716.JPG",
+      "alt": "Đắk Nông --- photo 7",
+      "width": 6048,
+      "height": 4032,
+      "order": 7
+    },
+    {
+      "src": "/assets/photos/dak-nong/DSC_1721.JPG",
+      "alt": "Đắk Nông --- photo 8",
+      "width": 6048,
+      "height": 4032,
+      "order": 8
+    },
+    {
+      "src": "/assets/photos/dak-nong/IMG_0739.JPG",
+      "alt": "Đắk Nông --- photo 9",
+      "width": 1707,
+      "height": 2560,
+      "order": 9
+    },
+    {
+      "src": "/assets/photos/dak-nong/IMG_0809.JPG",
+      "alt": "Đắk Nông --- photo 10",
+      "width": 2560,
+      "height": 1707,
+      "order": 10
+    }
+  ],
+  "heroImage": {
+    "src": "/assets/photos/dak-nong/DSC_1309.png",
+    "alt": "Đắk Nông --- photo 1",
+    "width": 4032,
+    "height": 6048,
+    "order": 1,
+    "isCover": true
+  }
 }

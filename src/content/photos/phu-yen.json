@@ -17,8 +17,17 @@
   "travelTime": "1h15 flight",
   "recommendedStay": "3 days",
   "bestMonths": "Jan - Aug",
-  "transportation": ["Flight", "Taxi", "Motorbike"],
-  "suitableFor": ["Coastal road trip", "Photography", "Seafood", "Quiet travel"],
+  "transportation": [
+    "Flight",
+    "Taxi",
+    "Motorbike"
+  ],
+  "suitableFor": [
+    "Coastal road trip",
+    "Photography",
+    "Seafood",
+    "Quiet travel"
+  ],
   "overview": "A quieter coastal province for road-light, cliffs, seafood stops, and wide blue frames.",
   "personalRating": 8.4,
   "wouldReturn": "definitely",
@@ -30,8 +39,15 @@
     "value": 8,
     "accessibility": 7
   },
-  "bestTimeOfDay": ["Morning", "Golden hour", "Sunset"],
-  "localTransport": ["Motorbike for coast roads", "Taxi for longer transfers"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Golden hour",
+    "Sunset"
+  ],
+  "localTransport": [
+    "Motorbike for coast roads",
+    "Taxi for longer transfers"
+  ],
   "weatherNote": "The dry months are easier for coastal photos. Midday sun can be harsh, so save key stops for softer light.",
   "crowdLevel": "quiet",
   "travelDifficulty": "easy",
@@ -40,47 +56,119 @@
     "Carry water if riding between viewpoints.",
     "Plan around light, not only map distance."
   ],
-  "notFor": ["Travelers who want dense nightlife or a packed city base."],
-  "tags": ["Coast", "Road trip", "Cliffs", "Seafood", "Golden hour"],
+  "notFor": [
+    "Travelers who want dense nightlife or a packed city base."
+  ],
+  "tags": [
+    "Coast",
+    "Road trip",
+    "Cliffs",
+    "Seafood",
+    "Golden hour"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Phú Yên Photo Notes | Coastal Roads and Golden Hour",
   "seoDescription": "A short editorial photo note from Phú Yên: coastal roads, stone cliffs, blue skies, seafood stops, and golden-hour landscapes.",
   "relatedLocations": [
-    { "slug": "quy-nhon", "distance": "Nearby coast", "category": "Beach town" },
-    { "slug": "nha-trang", "distance": "Southern coast", "category": "Beach city" },
-    { "slug": "phu-quy", "distance": "Island comparison", "category": "Island" }
+    {
+      "slug": "quy-nhon",
+      "distance": "Nearby coast",
+      "category": "Beach town"
+    },
+    {
+      "slug": "nha-trang",
+      "distance": "Southern coast",
+      "category": "Beach city"
+    },
+    {
+      "slug": "phu-quy",
+      "distance": "Island comparison",
+      "category": "Island"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
   "images": [
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUni2CYtE95AXOuIBLNQ3GyKFm2qSCfe1MP64",
+      "src": "/assets/photos/phu-yen/f36095680.jpg",
       "alt": "Phú Yên --- photo 1",
-      "width": 1280,
-      "height": 1920
+      "width": 4032,
+      "height": 6048,
+      "order": 1
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hMe6TXEU15DKkGrxHn3sZOlpRXP4veiquwVQB",
+      "src": "/assets/photos/phu-yen/f36795840.jpg",
       "alt": "Phú Yên --- photo 2",
-      "width": 1280,
-      "height": 1920
+      "width": 6048,
+      "height": 4032,
+      "order": 2
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDhfs3074Q021dYenszMLNrbPgXCUpWoif9D4",
+      "src": "/assets/photos/phu-yen/f37035968.jpg",
       "alt": "Phú Yên --- photo 3",
-      "width": 1920,
-      "height": 1280
+      "width": 5462,
+      "height": 3641,
+      "order": 3
     },
     {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJ1yejlKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
+      "src": "/assets/photos/phu-yen/f37074176.jpg",
       "alt": "Phú Yên --- photo 4",
-      "width": 1920,
-      "height": 1280
+      "width": 5356,
+      "height": 3570,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/phu-yen/f37475520.jpg",
+      "alt": "Phú Yên --- photo 5",
+      "width": 6048,
+      "height": 4032,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/phu-yen/f37606016.jpg",
+      "alt": "Phú Yên --- photo 6",
+      "width": 6048,
+      "height": 4032,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/phu-yen/f37926720%202.jpg",
+      "alt": "Phú Yên --- photo 7",
+      "width": 4032,
+      "height": 2687,
+      "order": 7
     }
-  ]
+  ],
+  "type": "check-in",
+  "heroImage": {
+    "src": "/assets/photos/phu-yen/f36095680.jpg",
+    "alt": "Phú Yên --- photo 1",
+    "width": 4032,
+    "height": 6048,
+    "order": 1,
+    "isCover": true
+  }
 }

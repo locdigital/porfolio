@@ -18,8 +18,17 @@
   "travelTime": "6-8h road to Hà Giang city",
   "recommendedStay": "4-5 days",
   "bestMonths": "Oct - Apr",
-  "transportation": ["Bus", "Motorbike", "Car"],
-  "suitableFor": ["Mountain roads", "Photography", "Adventure", "Landscape"],
+  "transportation": [
+    "Bus",
+    "Motorbike",
+    "Car"
+  ],
+  "suitableFor": [
+    "Mountain roads",
+    "Photography",
+    "Adventure",
+    "Landscape"
+  ],
   "overview": "A northern mountain route for dramatic passes, limestone textures, villages, and slow travel through changing weather.",
   "personalRating": 9,
   "wouldReturn": "definitely",
@@ -31,8 +40,15 @@
     "value": 8,
     "accessibility": 5
   },
-  "bestTimeOfDay": ["Morning", "Cloudy afternoon", "Golden hour"],
-  "localTransport": ["Motorbike with caution", "Car with local driver"],
+  "bestTimeOfDay": [
+    "Morning",
+    "Cloudy afternoon",
+    "Golden hour"
+  ],
+  "localTransport": [
+    "Motorbike with caution",
+    "Car with local driver"
+  ],
   "weatherNote": "Mountain weather changes quickly. Mist can make the route beautiful but also slower and less forgiving.",
   "crowdLevel": "moderate",
   "travelDifficulty": "requires_preparation",
@@ -41,21 +57,94 @@
     "Choose a local driver or guide if mountain riding is not familiar.",
     "Pack layers and rain protection."
   ],
-  "notFor": ["Travelers who dislike long road days or exposed mountain routes."],
-  "tags": ["Mountain", "Loop", "Road trip", "Landscape", "Northern Vietnam"],
+  "notFor": [
+    "Travelers who dislike long road days or exposed mountain routes."
+  ],
+  "tags": [
+    "Mountain",
+    "Loop",
+    "Road trip",
+    "Landscape",
+    "Northern Vietnam"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Hà Giang Photo Notes | Mountain Passes and Stone Plateaus",
   "seoDescription": "A short editorial photo note from Hà Giang: northern mountain passes, stone plateaus, valleys, road days, and dramatic landscape travel.",
   "relatedLocations": [
-    { "slug": "ha-noi", "distance": "Gateway", "category": "City" },
-    { "slug": "da-lat", "distance": "Highland comparison", "category": "Cool weather" }
+    {
+      "slug": "da-lat",
+      "distance": "Highland comparison",
+      "category": "Cool weather"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
-  "images": []
+  "images": [
+    {
+      "src": "/assets/photos/ha-giang/56AAEBD4-F4B8-4C38-8414-79801D144DC8.jpg",
+      "alt": "Hà Giang --- photo 1",
+      "width": 1440,
+      "height": 1439,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/ha-giang/80BED570-20E0-40F7-8425-F84E263C3B5A.jpg",
+      "alt": "Hà Giang --- photo 2",
+      "width": 1290,
+      "height": 2293,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/ha-giang/BAAD8359-FAB6-44AA-9ED0-C11FB04268ED.jpg",
+      "alt": "Hà Giang --- photo 3",
+      "width": 1440,
+      "height": 1439,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/ha-giang/IMG_1548.JPG",
+      "alt": "Hà Giang --- photo 4",
+      "width": 6000,
+      "height": 3368,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/ha-giang/IMG_8672.JPG",
+      "alt": "Hà Giang --- photo 5",
+      "width": 3368,
+      "height": 6000,
+      "order": 5
+    }
+  ],
+  "heroImage": {
+    "src": "/assets/photos/ha-giang/56AAEBD4-F4B8-4C38-8414-79801D144DC8.jpg",
+    "alt": "Hà Giang --- photo 1",
+    "width": 1440,
+    "height": 1439,
+    "order": 1,
+    "isCover": true
+  }
 }

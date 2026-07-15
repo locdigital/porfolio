@@ -1,0 +1,105 @@
+{
+  "slug": "thai-lan",
+  "order": 23,
+  "type": "check-in",
+  "location": "Thái Lan",
+  "name": "Thái Lan",
+  "city": "Thailand",
+  "country": "Thailand",
+  "province": "Thailand",
+  "region": "Southeast Asia",
+  "headline": "Thái Lan in frames.",
+  "subheadline": "A small photo note from the road.",
+  "introduction": "Photos from Thái Lan.",
+  "shortDescription": "A compact gallery from Thái Lan.",
+  "description": "A compact gallery from Thái Lan.",
+  "images": [
+    {
+      "src": "/assets/photos/thai-lan/image%201.png",
+      "alt": "Thái Lan --- photo 1",
+      "width": 1080,
+      "height": 1440,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%202.png",
+      "alt": "Thái Lan --- photo 2",
+      "width": 1080,
+      "height": 720,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%203.png",
+      "alt": "Thái Lan --- photo 3",
+      "width": 1080,
+      "height": 1440,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%204.png",
+      "alt": "Thái Lan --- photo 4",
+      "width": 1080,
+      "height": 1440,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%205.png",
+      "alt": "Thái Lan --- photo 5",
+      "width": 1080,
+      "height": 1440,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%206.png",
+      "alt": "Thái Lan --- photo 6",
+      "width": 1080,
+      "height": 720,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%207.png",
+      "alt": "Thái Lan --- photo 7",
+      "width": 1080,
+      "height": 720,
+      "order": 7
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%208.png",
+      "alt": "Thái Lan --- photo 8",
+      "width": 1080,
+      "height": 1440,
+      "order": 8
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%209.png",
+      "alt": "Thái Lan --- photo 9",
+      "width": 1080,
+      "height": 720,
+      "order": 9
+    },
+    {
+      "src": "/assets/photos/thai-lan/image%2010.png",
+      "alt": "Thái Lan --- photo 10",
+      "width": 1080,
+      "height": 1440,
+      "order": 10
+    }
+  ],
+  "blocks": [
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    }
+  ],
+  "heroImage": {
+    "src": "/assets/photos/thai-lan/image%201.png",
+    "alt": "Thái Lan --- photo 1",
+    "width": 1080,
+    "height": 1440,
+    "order": 1,
+    "isCover": true
+  }
+}

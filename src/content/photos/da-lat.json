@@ -17,8 +17,18 @@
   "travelTime": "45m flight or 6-8h road",
   "recommendedStay": "3-4 days",
   "bestMonths": "Nov - Mar",
-  "transportation": ["Flight", "Sleeper bus", "Taxi", "Motorbike"],
-  "suitableFor": ["Slow travel", "Cafe hopping", "Nature walks", "Photography"],
+  "transportation": [
+    "Flight",
+    "Sleeper bus",
+    "Taxi",
+    "Motorbike"
+  ],
+  "suitableFor": [
+    "Slow travel",
+    "Cafe hopping",
+    "Nature walks",
+    "Photography"
+  ],
   "overview": "A highland escape for cool mornings, pine textures, quiet cafes, and a slower rhythm than the coast.",
   "personalRating": 8.6,
   "wouldReturn": "definitely",
@@ -30,8 +40,15 @@
     "value": 8,
     "accessibility": 8
   },
-  "bestTimeOfDay": ["Early morning", "Golden hour", "Cloudy afternoon"],
-  "localTransport": ["Taxi for town", "Motorbike for pine roads"],
+  "bestTimeOfDay": [
+    "Early morning",
+    "Golden hour",
+    "Cloudy afternoon"
+  ],
+  "localTransport": [
+    "Taxi for town",
+    "Motorbike for pine roads"
+  ],
   "weatherNote": "Bring a light layer. The mood changes quickly between clear sun, mist, and rain.",
   "crowdLevel": "moderate",
   "travelDifficulty": "easy",
@@ -40,27 +57,191 @@
     "Do not overpack the day; distance feels longer on hill roads.",
     "Keep one cafe or walking block unplanned."
   ],
-  "notFor": ["Travelers who only want beaches or hot weather."],
-  "tags": ["Highland", "Pine forest", "Cafe", "Cool weather", "Slow travel"],
+  "notFor": [
+    "Travelers who only want beaches or hot weather."
+  ],
+  "tags": [
+    "Highland",
+    "Pine forest",
+    "Cafe",
+    "Cool weather",
+    "Slow travel"
+  ],
   "featured": false,
   "published": true,
   "seoTitle": "Đà Lạt Photo Notes | Pine Forests and Highland Air",
   "seoDescription": "A short editorial photo note from Đà Lạt: pine forests, cool weather, hillside cafes, flower fields, and slow highland mornings.",
   "relatedLocations": [
-    { "slug": "dak-nong", "distance": "Highland route", "category": "Nature" },
-    { "slug": "bali", "distance": "Different mood", "category": "Slow travel" },
-    { "slug": "sai-gon", "distance": "City contrast", "category": "Urban" }
+    {
+      "slug": "dak-nong",
+      "distance": "Highland route",
+      "category": "Nature"
+    },
+    {
+      "slug": "bali",
+      "distance": "Different mood",
+      "category": "Slow travel"
+    }
   ],
   "relatedArticles": [],
   "blocks": [
-    { "id": "quick-facts", "type": "quick-facts", "enabled": true, "title": "Quick Facts", "content": "" },
-    { "id": "editorial-review", "type": "editorial-review", "enabled": true, "title": "Overview", "content": "" },
-    { "id": "tips", "type": "tips", "enabled": true, "title": "Good To Know", "content": "" }
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    }
   ],
   "images": [
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59han9lzmyOH490TilXyexRchUNGmAMZLwKkFvI", "alt": "Đà Lạt --- photo 1", "width": 4032, "height": 6048 },
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hwIAk7zhTQDH0hL5Ild1c8EfBpZCgP4y2MATX", "alt": "Đà Lạt --- photo 2", "width": 2636, "height": 3248 },
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjZCZm294KrOISaFPdMJw9ClQ8qRiYZespBUG", "alt": "Đà Lạt --- photo 3", "width": 6048, "height": 4032 },
-    { "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbQBtISkAEiMVyIw93QvFdHjfCaP5rqRXL4bO", "alt": "Đà Lạt --- photo 4", "width": 6000, "height": 3368 }
-  ]
+    {
+      "src": "/assets/photos/da-lat/686062925_122132386719021222_6069436736295099422_n.jpg",
+      "alt": "Đà Lạt --- photo 1",
+      "width": 2048,
+      "height": 1368,
+      "order": 1
+    },
+    {
+      "src": "/assets/photos/da-lat/686150565_122132386539021222_6475848779978691120_n.jpg",
+      "alt": "Đà Lạt --- photo 2",
+      "width": 2048,
+      "height": 1368,
+      "order": 2
+    },
+    {
+      "src": "/assets/photos/da-lat/687027191_122132386521021222_7548338530772748055_n.jpg",
+      "alt": "Đà Lạt --- photo 3",
+      "width": 2048,
+      "height": 1368,
+      "order": 3
+    },
+    {
+      "src": "/assets/photos/da-lat/C36672AC-5B08-4A2B-899E-6AE2CAD092AC.jpg",
+      "alt": "Đà Lạt --- photo 4",
+      "width": 4032,
+      "height": 4032,
+      "order": 4
+    },
+    {
+      "src": "/assets/photos/da-lat/DSC_1253.png",
+      "alt": "Đà Lạt --- photo 5",
+      "width": 6048,
+      "height": 4032,
+      "order": 5
+    },
+    {
+      "src": "/assets/photos/da-lat/DSC_1258.png",
+      "alt": "Đà Lạt --- photo 6",
+      "width": 4032,
+      "height": 6048,
+      "order": 6
+    },
+    {
+      "src": "/assets/photos/da-lat/DSC_1268.jpeg",
+      "alt": "Đà Lạt --- photo 7",
+      "width": 3103,
+      "height": 4655,
+      "order": 7
+    },
+    {
+      "src": "/assets/photos/da-lat/DSC_1309.png",
+      "alt": "Đà Lạt --- photo 8",
+      "width": 4032,
+      "height": 6048,
+      "order": 8
+    },
+    {
+      "src": "/assets/photos/da-lat/f5273088.jpg",
+      "alt": "Đà Lạt --- photo 9",
+      "width": 6000,
+      "height": 3368,
+      "order": 9
+    },
+    {
+      "src": "/assets/photos/da-lat/f5285760.jpg",
+      "alt": "Đà Lạt --- photo 10",
+      "width": 6000,
+      "height": 3368,
+      "order": 10
+    },
+    {
+      "src": "/assets/photos/da-lat/f10051392.jpg",
+      "alt": "Đà Lạt --- photo 11",
+      "width": 6000,
+      "height": 3368,
+      "order": 11
+    },
+    {
+      "src": "/assets/photos/da-lat/IMG_0019.JPG",
+      "alt": "Đà Lạt --- photo 12",
+      "width": 1707,
+      "height": 2560,
+      "order": 12
+    },
+    {
+      "src": "/assets/photos/da-lat/IMG_0026.JPG",
+      "alt": "Đà Lạt --- photo 13",
+      "width": 1447,
+      "height": 1847,
+      "order": 13
+    },
+    {
+      "src": "/assets/photos/da-lat/IMG_1938.jpg",
+      "alt": "Đà Lạt --- photo 14",
+      "width": 3368,
+      "height": 6000,
+      "order": 14
+    },
+    {
+      "src": "/assets/photos/da-lat/IMG_1940.jpg",
+      "alt": "Đà Lạt --- photo 15",
+      "width": 3368,
+      "height": 6000,
+      "order": 15
+    },
+    {
+      "src": "/assets/photos/da-lat/IMG_1980.JPG",
+      "alt": "Đà Lạt --- photo 16",
+      "width": 6000,
+      "height": 3368,
+      "order": 16
+    },
+    {
+      "src": "/assets/photos/da-lat/IMG_2014.jpg",
+      "alt": "Đà Lạt --- photo 17",
+      "width": 3368,
+      "height": 6000,
+      "order": 17
+    },
+    {
+      "src": "/assets/photos/da-lat/IMG_9269.JPG",
+      "alt": "Đà Lạt --- photo 18",
+      "width": 3316,
+      "height": 4974,
+      "order": 18
+    }
+  ],
+  "type": "check-in",
+  "heroImage": {
+    "src": "/assets/photos/da-lat/686062925_122132386719021222_6069436736295099422_n.jpg",
+    "alt": "Đà Lạt --- photo 1",
+    "width": 2048,
+    "height": 1368,
+    "order": 1,
+    "isCover": true
+  }
 }
