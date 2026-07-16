@@ -104,43 +104,43 @@
   ],
   "images": [
     {
-      "src": "/assets/photos/ha-giang/56AAEBD4-F4B8-4C38-8414-79801D144DC8.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
       "alt": "Hà Giang --- photo 1",
       "width": 1440,
       "height": 1439,
       "order": 1
     },
     {
-      "src": "/assets/photos/ha-giang/80BED570-20E0-40F7-8425-F84E263C3B5A.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJ8faHhKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
       "alt": "Hà Giang --- photo 2",
-      "width": 1290,
-      "height": 2293,
+      "width": 900,
+      "height": 1600,
       "order": 2
     },
     {
-      "src": "/assets/photos/ha-giang/BAAD8359-FAB6-44AA-9ED0-C11FB04268ED.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTMCGJil2OjWmzQ4oDLka9nlegFi1h3xyH6Zw",
       "alt": "Hà Giang --- photo 3",
       "width": 1440,
       "height": 1439,
       "order": 3
     },
     {
-      "src": "/assets/photos/ha-giang/IMG_1548.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hcqtMCmbThEQNO0PsaegXLFyGlidrRmUCfDJv",
       "alt": "Hà Giang --- photo 4",
-      "width": 6000,
-      "height": 3368,
+      "width": 898,
+      "height": 1600,
       "order": 4
     },
     {
-      "src": "/assets/photos/ha-giang/IMG_8672.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjuW17G94KrOISaFPdMJw9ClQ8qRiYZespBUG",
       "alt": "Hà Giang --- photo 5",
-      "width": 3368,
-      "height": 6000,
+      "width": 898,
+      "height": 1600,
       "order": 5
     }
   ],
   "heroImage": {
-    "src": "/assets/photos/ha-giang/56AAEBD4-F4B8-4C38-8414-79801D144DC8.jpg",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
     "alt": "Hà Giang --- photo 1",
     "width": 1440,
     "height": 1439,

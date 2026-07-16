@@ -106,75 +106,75 @@
   ],
   "images": [
     {
-      "src": "/assets/photos/phu-quy/IMG_0404.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbUqpjKkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
       "alt": "Phú Quý --- photo 1",
-      "width": 1707,
-      "height": 2560,
+      "width": 1067,
+      "height": 1600,
       "order": 1
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0410.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwiiolvVakbn1yzps80IBrPeT6cf5toMx9Zu",
       "alt": "Phú Quý --- photo 2",
-      "width": 1707,
-      "height": 2560,
+      "width": 1067,
+      "height": 1600,
       "order": 2
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0541.PNG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4HY8QJst2SauPZhDd1JkterOsqjvc6In5YK9",
       "alt": "Phú Quý --- photo 3",
-      "width": 5762,
-      "height": 3814,
+      "width": 1600,
+      "height": 1059,
       "order": 3
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0556.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h0UUSi9jMS59hamFXwUDgpCVz6RfNLtxKjPTY",
       "alt": "Phú Quý --- photo 4",
-      "width": 1920,
-      "height": 2560,
+      "width": 1200,
+      "height": 1600,
       "order": 4
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0586.PNG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnGA3GRJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
       "alt": "Phú Quý --- photo 5",
-      "width": 4032,
-      "height": 6048,
+      "width": 1067,
+      "height": 1600,
       "order": 5
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0588.PNG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZwy9OysiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
       "alt": "Phú Quý --- photo 6",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 6
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0590.PNG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hD1cqIt4Q021dYenszMLNrbPgXCUpWoif9D4l",
       "alt": "Phú Quý --- photo 7",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 7
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0597.PNG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnNCgrNJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
       "alt": "Phú Quý --- photo 8",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 8
     },
     {
-      "src": "/assets/photos/phu-quy/IMG_0598.PNG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVj2TapiW6tUiNOoXB108SdsMHZayFfJrLGkP",
       "alt": "Phú Quý --- photo 9",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 9
     }
   ],
   "type": "check-in",
   "heroImage": {
-    "src": "/assets/photos/phu-quy/IMG_0404.JPG",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbUqpjKkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
     "alt": "Phú Quý --- photo 1",
-    "width": 1707,
-    "height": 2560,
+    "width": 1067,
+    "height": 1600,
     "order": 1,
     "isCover": true
   }

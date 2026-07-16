@@ -3,6 +3,7 @@ import { writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { isCmsRequestAuthorized } from "../../../../lib/cms-auth";
+import { uploadToUploadThing } from "../../../../lib/uploadthing-server";
 
 export const prerender = false;
 
@@ -48,6 +49,11 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const buffer = await file.arrayBuffer();
+    const remoteUrl = await uploadToUploadThing(buffer, filename);
+    if (remoteUrl) {
+      return json({ success: true, url: remoteUrl });
+    }
+
     await writeFile(path.join(uploadDir, filename), new Uint8Array(buffer));
 
     const url = `/uploads/writing/${filename}`;

@@ -2441,15 +2441,13 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                   Upload to location
                 </SmallButton>
                 <span className="cms-upload-note">
-                  Saves to src/assets/photos/{photoDraft.slug || "location-slug"}/
+                  Saves to UploadThing
                 </span>
               </div>
               {(photoDraft.images.length > 0 || uploadingImages.length > 0) && (
                 <div className="cms-photo-grid cms-photo-grid-edit">
                   {photoDraft.images.map((photo, index) => {
-                    const src = photo.src.startsWith("/assets/photos/")
-                      ? photo.src.replace("/assets/photos/", "/api/cms/assets/")
-                      : photo.src;
+                    const src = photo.src;
                     return (
                       <figure key={`${photo.src}-${index}`}>
                         <button type="button" className="cms-photo-preview-btn" onClick={() => setPreviewImage({ src, alt: photo.alt })}>
@@ -2481,7 +2479,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
                 {photoDraft.relatedLocations.map((item, index) => {
                   const related = locationOptions.find((loc) => loc.slug === item.slug);
                   const image = related?.heroImage?.src || related?.images[0]?.src || "";
-                  const imageSrc = image.startsWith("/assets/photos/") ? image.replace("/assets/photos/", "/api/cms/assets/") : image;
+                  const imageSrc = image;
                   return (
                     <div className="cms-relation-row" key={`${item.slug}-${index}`}>
                       <div className="cms-relation-preview">

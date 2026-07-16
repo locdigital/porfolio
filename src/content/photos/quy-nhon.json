@@ -113,40 +113,40 @@
   ],
   "images": [
     {
-      "src": "/assets/photos/quy-nhon/65412C2F-5F00-47B7-881E-7270274F0DAE.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFnOdChzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
       "alt": "Quy Nhơn --- photo 1",
-      "width": 1260,
-      "height": 2240,
+      "width": 900,
+      "height": 1600,
       "order": 1
     },
     {
-      "src": "/assets/photos/quy-nhon/f37995328.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hs0z4YkdgRA7eybCWUmuSqx5Evhs86daj2tDQ",
       "alt": "Quy Nhơn --- photo 2",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 2
     },
     {
-      "src": "/assets/photos/quy-nhon/f38140608%202.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hSEio2YqGLjkfMJpy5iVZWIbmNwQxY3Shz4D9",
       "alt": "Quy Nhơn --- photo 3",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 3
     },
     {
-      "src": "/assets/photos/quy-nhon/f38178432.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h65D03rMgx3rw7LHmJhekT2K4Uy81ajfobtSv",
       "alt": "Quy Nhơn --- photo 4",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 4
     }
   ],
   "type": "check-in",
   "heroImage": {
-    "src": "/assets/photos/quy-nhon/65412C2F-5F00-47B7-881E-7270274F0DAE.jpg",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFnOdChzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
     "alt": "Quy Nhơn --- photo 1",
-    "width": 1260,
-    "height": 2240,
+    "width": 900,
+    "height": 1600,
     "order": 1,
     "isCover": true
   }

@@ -15,59 +15,59 @@
   "description": "A compact gallery from Kiên Giang.",
   "images": [
     {
-      "src": "/assets/photos/kien-giang/9C452514-5DBE-4AA4-BD21-F28C333366EA.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyJTU8RGxsFHdfJjrMPbwZN7OcmnvgYRak59A",
       "alt": "Kiên Giang --- photo 1",
-      "width": 3071,
-      "height": 4096,
+      "width": 1200,
+      "height": 1600,
       "order": 1
     },
     {
-      "src": "/assets/photos/kien-giang/DSC_1832.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hT9cCrvl2OjWmzQ4oDLka9nlegFi1h3xyH6Zw",
       "alt": "Kiên Giang --- photo 2",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 2
     },
     {
-      "src": "/assets/photos/kien-giang/DSC_1847.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haMmcFuyOH490TilXyexRchUNGmAMZLwKkFvI",
       "alt": "Kiên Giang --- photo 3",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 3
     },
     {
-      "src": "/assets/photos/kien-giang/DSC_1860.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbV9X1rkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
       "alt": "Kiên Giang --- photo 4",
-      "width": 2751,
-      "height": 4127,
+      "width": 1067,
+      "height": 1600,
       "order": 4
     },
     {
-      "src": "/assets/photos/kien-giang/DSC_1874.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwqdkiEVakbn1yzps80IBrPeT6cf5toMx9Zu",
       "alt": "Kiên Giang --- photo 5",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 5
     },
     {
-      "src": "/assets/photos/kien-giang/DSC_1893.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUsdy2POYtE95AXOuIBLNQ3GyKFm2qSCfe1MP",
       "alt": "Kiên Giang --- photo 6",
-      "width": 4320,
-      "height": 2880,
+      "width": 1600,
+      "height": 1067,
       "order": 6
     },
     {
-      "src": "/assets/photos/kien-giang/DSC_1944.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3qjchuDasckjKiLzdrWVS5CtlQufPeYbDvX6",
       "alt": "Kiên Giang --- photo 7",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 7
     },
     {
-      "src": "/assets/photos/kien-giang/DSC_1962.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hzukJPoNrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
       "alt": "Kiên Giang --- photo 8",
-      "width": 4032,
-      "height": 6048,
+      "width": 1067,
+      "height": 1600,
       "order": 8
     }
   ],
@@ -81,10 +81,10 @@
     }
   ],
   "heroImage": {
-    "src": "/assets/photos/kien-giang/9C452514-5DBE-4AA4-BD21-F28C333366EA.jpg",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyJTU8RGxsFHdfJjrMPbwZN7OcmnvgYRak59A",
     "alt": "Kiên Giang --- photo 1",
-    "width": 3071,
-    "height": 4096,
+    "width": 1200,
+    "height": 1600,
     "order": 1,
     "isCover": true
   }

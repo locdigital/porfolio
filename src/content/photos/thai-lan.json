@@ -15,70 +15,70 @@
   "description": "A compact gallery from Thái Lan.",
   "images": [
     {
-      "src": "/assets/photos/thai-lan/image%201.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLDkWJoajGe643sM1SqBZJPX8cKmUu2oyYNOz",
       "alt": "Thái Lan --- photo 1",
       "width": 1080,
       "height": 1440,
       "order": 1
     },
     {
-      "src": "/assets/photos/thai-lan/image%202.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUq9Tl7YtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
       "alt": "Thái Lan --- photo 2",
       "width": 1080,
       "height": 720,
       "order": 2
     },
     {
-      "src": "/assets/photos/thai-lan/image%203.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDxZ7th4Q021dYenszMLNrbPgXCUpWoif9D4l",
       "alt": "Thái Lan --- photo 3",
       "width": 1080,
       "height": 1440,
       "order": 3
     },
     {
-      "src": "/assets/photos/thai-lan/image%204.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h6YuapfxMgx3rw7LHmJhekT2K4Uy81ajfobtS",
       "alt": "Thái Lan --- photo 4",
       "width": 1080,
       "height": 1440,
       "order": 4
     },
     {
-      "src": "/assets/photos/thai-lan/image%205.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7ZGYbc54ylS30dX98IkbwjPC6iqWEvHMFax2",
       "alt": "Thái Lan --- photo 5",
       "width": 1080,
       "height": 1440,
       "order": 5
     },
     {
-      "src": "/assets/photos/thai-lan/image%206.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hEVoy6eLJAcikP3dXFgzMuOvfmReKxhrVpCW2",
       "alt": "Thái Lan --- photo 6",
       "width": 1080,
       "height": 720,
       "order": 6
     },
     {
-      "src": "/assets/photos/thai-lan/image%207.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5Fc4cRnzPCHf8h9G7Slp6scrUVuR10JngFBO",
       "alt": "Thái Lan --- photo 7",
       "width": 1080,
       "height": 720,
       "order": 7
     },
     {
-      "src": "/assets/photos/thai-lan/image%208.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRdIQr7xhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
       "alt": "Thái Lan --- photo 8",
       "width": 1080,
       "height": 1440,
       "order": 8
     },
     {
-      "src": "/assets/photos/thai-lan/image%209.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hF6EPJuzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
       "alt": "Thái Lan --- photo 9",
       "width": 1080,
       "height": 720,
       "order": 9
     },
     {
-      "src": "/assets/photos/thai-lan/image%2010.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmntASKgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
       "alt": "Thái Lan --- photo 10",
       "width": 1080,
       "height": 1440,
@@ -95,7 +95,7 @@
     }
   ],
   "heroImage": {
-    "src": "/assets/photos/thai-lan/image%201.png",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLDkWJoajGe643sM1SqBZJPX8cKmUu2oyYNOz",
     "alt": "Thái Lan --- photo 1",
     "width": 1080,
     "height": 1440,

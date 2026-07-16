@@ -110,60 +110,60 @@
   ],
   "images": [
     {
-      "src": "/assets/photos/hue/545291857_24392382083758682_8004547080967898061_n.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvbBy2uVakbn1yzps80IBrPeT6cf5toMx9Zuj",
       "alt": "Huế --- photo 1",
-      "width": 1966,
-      "height": 1106,
+      "width": 1600,
+      "height": 900,
       "order": 1
     },
     {
-      "src": "/assets/photos/hue/545590386_24392381640425393_8236979995412601418_n.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7tPfqP54ylS30dX98IkbwjPC6iqWEvHMFax2",
       "alt": "Huế --- photo 2",
-      "width": 1572,
-      "height": 1966,
+      "width": 1279,
+      "height": 1600,
       "order": 2
     },
     {
-      "src": "/assets/photos/hue/545852486_24392381767092047_2268179313710849140_n.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5kzq1xnzPCHf8h9G7Slp6scrUVuR10JngFBO",
       "alt": "Huế --- photo 3",
-      "width": 1572,
-      "height": 1966,
+      "width": 1279,
+      "height": 1600,
       "order": 3
     },
     {
-      "src": "/assets/photos/hue/546154614_24392382357091988_6132473400039708928_n.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hA0Y86IXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
       "alt": "Huế --- photo 4",
-      "width": 1572,
-      "height": 1966,
+      "width": 1279,
+      "height": 1600,
       "order": 4
     },
     {
-      "src": "/assets/photos/hue/546616470_24392382517091972_4348713963531715607_n.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvG3IEoVakbn1yzps80IBrPeT6cf5toMx9Zuj",
       "alt": "Huế --- photo 5",
-      "width": 1966,
-      "height": 1106,
+      "width": 1600,
+      "height": 900,
       "order": 5
     },
     {
-      "src": "/assets/photos/hue/546619737_24392381587092065_6821042461666650166_n.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTcLJKiW6tUiNOoXB108SdsMHZayFfJrLGkP",
       "alt": "Huế --- photo 6",
-      "width": 1572,
-      "height": 1966,
+      "width": 1279,
+      "height": 1600,
       "order": 6
     },
     {
-      "src": "/assets/photos/hue/546621941_24392382420425315_5515318189503263980_n.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9NNaMzAjg6WNtr8hLCiUqlodfFy1IQpxbYHs",
       "alt": "Huế --- photo 7",
-      "width": 1572,
-      "height": 1966,
+      "width": 1279,
+      "height": 1600,
       "order": 7
     }
   ],
   "heroImage": {
-    "src": "/assets/photos/hue/545291857_24392382083758682_8004547080967898061_n.jpg",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvbBy2uVakbn1yzps80IBrPeT6cf5toMx9Zuj",
     "alt": "Huế --- photo 1",
-    "width": 1966,
-    "height": 1106,
+    "width": 1600,
+    "height": 900,
     "order": 1,
     "isCover": true
   }

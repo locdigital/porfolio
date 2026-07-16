@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { uploadedAssetUrl } from "../../../lib/uploadthing-assets";
 
 export const prerender = false;
 
@@ -36,6 +37,8 @@ function resolvePhoto(params: Record<string, string | undefined>) {
 export const GET: APIRoute = async ({ params }) => {
   const photo = resolvePhoto(params);
   if (!photo) return new Response("Not found", { status: 404 });
+  const remoteUrl = uploadedAssetUrl(`/assets/photos/${params.path ?? ""}`);
+  if (remoteUrl.startsWith("https://")) return Response.redirect(remoteUrl, 302);
 
   try {
     const file = await readFile(photo.filePath);
@@ -53,6 +56,8 @@ export const GET: APIRoute = async ({ params }) => {
 export const HEAD: APIRoute = async ({ params }) => {
   const photo = resolvePhoto(params);
   if (!photo) return new Response(null, { status: 404 });
+  const remoteUrl = uploadedAssetUrl(`/assets/photos/${params.path ?? ""}`);
+  if (remoteUrl.startsWith("https://")) return Response.redirect(remoteUrl, 302);
 
   try {
     const file = await stat(photo.filePath);

@@ -104,81 +104,74 @@
   ],
   "images": [
     {
-      "src": "/assets/photos/dak-nong/DSC_1309.png",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h6qo8giMgx3rw7LHmJhekT2K4Uy81ajfobtSv",
       "alt": "Đắk Nông --- photo 1",
-      "width": 4032,
-      "height": 6048,
+      "width": 1600,
+      "height": 1067,
       "order": 1
     },
     {
-      "src": "/assets/photos/dak-nong/DSC_1485.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5KVihwxnzPCHf8h9G7Slp6scrUVuR10JngFB",
       "alt": "Đắk Nông --- photo 2",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 2
     },
     {
-      "src": "/assets/photos/dak-nong/DSC_1505.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5DfVwDnzPCHf8h9G7Slp6scrUVuR10JngFBO",
       "alt": "Đắk Nông --- photo 3",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 3
     },
     {
-      "src": "/assets/photos/dak-nong/DSC_1545.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hhROfJyHf5yp1VcajsQ0mDlbuT3iS78NqYEMe",
       "alt": "Đắk Nông --- photo 4",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 4
     },
     {
-      "src": "/assets/photos/dak-nong/DSC_1586.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h2jaFlE5Oea5MEcd3qUyNCzQGSL4AOYKJuXsD",
       "alt": "Đắk Nông --- photo 5",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 5
     },
     {
-      "src": "/assets/photos/dak-nong/DSC_1599.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hM83AqpU15DKkGrxHn3sZOlpRXP4veiquwVQB",
       "alt": "Đắk Nông --- photo 6",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 6
     },
     {
-      "src": "/assets/photos/dak-nong/DSC_1716.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hlboiudIVosc2meTERZLnJqOQNKtDhCdYfW5b",
       "alt": "Đắk Nông --- photo 7",
-      "width": 6048,
-      "height": 4032,
+      "width": 1600,
+      "height": 1067,
       "order": 7
     },
     {
-      "src": "/assets/photos/dak-nong/DSC_1721.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4If6Est2SauPZhDd1JkterOsqjvc6In5YK9L",
       "alt": "Đắk Nông --- photo 8",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 8
     },
     {
-      "src": "/assets/photos/dak-nong/IMG_0739.JPG",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hm2qBzUgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
       "alt": "Đắk Nông --- photo 9",
-      "width": 1707,
-      "height": 2560,
+      "width": 1600,
+      "height": 1067,
       "order": 9
-    },
-    {
-      "src": "/assets/photos/dak-nong/IMG_0809.JPG",
-      "alt": "Đắk Nông --- photo 10",
-      "width": 2560,
-      "height": 1707,
-      "order": 10
     }
   ],
   "heroImage": {
-    "src": "/assets/photos/dak-nong/DSC_1309.png",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h6qo8giMgx3rw7LHmJhekT2K4Uy81ajfobtSv",
     "alt": "Đắk Nông --- photo 1",
-    "width": 4032,
-    "height": 6048,
+    "width": 1600,
+    "height": 1067,
     "order": 1,
     "isCover": true
   }

@@ -4,6 +4,7 @@ import path from "node:path";
 import sharp from "sharp";
 import type { Filter } from "mongodb";
 import { createMongoDocument, getCmsCollection } from "./cms-db";
+import { canUploadToUploadThing, uploadToUploadThing } from "./uploadthing-server";
 
 const rootDir = process.cwd();
 const contentDir = path.join(rootDir, "src", "content");
@@ -1381,7 +1382,9 @@ export async function uploadAssets(options: {
         ? `/uploads/writing/${targetSlug || "draft"}`
         : "/uploads";
 
-  if (!useGithub) {
+  const useUploadThing = canUploadToUploadThing();
+
+  if (!useUploadThing && !useGithub) {
     await mkdir(folder, { recursive: true });
   }
 
@@ -1391,15 +1394,18 @@ export async function uploadAssets(options: {
     const buffer = processed.buffer;
     const metadata = await imageMetadata(buffer);
     const filePath = path.join(folder, uniqueName);
+    const remoteUrl = useUploadThing ? await uploadToUploadThing(buffer, uniqueName) : null;
 
-    if (useGithub) {
-      await writeGithubFile(filePath, buffer);
-    } else {
-      await writeFile(filePath, new Uint8Array(buffer));
+    if (!remoteUrl) {
+      if (useGithub) {
+        await writeGithubFile(filePath, buffer);
+      } else {
+        await writeFile(filePath, new Uint8Array(buffer));
+      }
     }
 
     uploaded.push({
-      src: `${publicPrefix}/${uniqueName}`,
+      src: remoteUrl ?? `${publicPrefix}/${uniqueName}`,
       alt: targetSlug ? `${targetSlug} photo` : processed.name.replace(/\.[^.]+$/, ""),
       ...metadata,
     });

@@ -113,61 +113,61 @@
   ],
   "images": [
     {
-      "src": "/assets/photos/phu-yen/f36095680.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
       "alt": "Phú Yên --- photo 1",
-      "width": 4032,
-      "height": 6048,
+      "width": 1067,
+      "height": 1600,
       "order": 1
     },
     {
-      "src": "/assets/photos/phu-yen/f36795840.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heoTRYkF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
       "alt": "Phú Yên --- photo 2",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 2
     },
     {
-      "src": "/assets/photos/phu-yen/f37035968.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVT7AwdiW6tUiNOoXB108SdsMHZayFfJrLGkP",
       "alt": "Phú Yên --- photo 3",
-      "width": 5462,
-      "height": 3641,
+      "width": 1600,
+      "height": 1066,
       "order": 3
     },
     {
-      "src": "/assets/photos/phu-yen/f37074176.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJtpdXQKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
       "alt": "Phú Yên --- photo 4",
-      "width": 5356,
-      "height": 3570,
+      "width": 1600,
+      "height": 1066,
       "order": 4
     },
     {
-      "src": "/assets/photos/phu-yen/f37475520.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUdn0P6YtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
       "alt": "Phú Yên --- photo 5",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 5
     },
     {
-      "src": "/assets/photos/phu-yen/f37606016.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZj4VoAsiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
       "alt": "Phú Yên --- photo 6",
-      "width": 6048,
-      "height": 4032,
+      "width": 1067,
+      "height": 1600,
       "order": 6
     },
     {
-      "src": "/assets/photos/phu-yen/f37926720%202.jpg",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hX8878LnStspGgq204jCZLK86PEcraN5Bviwm",
       "alt": "Phú Yên --- photo 7",
-      "width": 4032,
-      "height": 2687,
+      "width": 1600,
+      "height": 1066,
       "order": 7
     }
   ],
   "type": "check-in",
   "heroImage": {
-    "src": "/assets/photos/phu-yen/f36095680.jpg",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
     "alt": "Phú Yên --- photo 1",
-    "width": 4032,
-    "height": 6048,
+    "width": 1067,
+    "height": 1600,
     "order": 1,
     "isCover": true
   }
