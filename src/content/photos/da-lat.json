@@ -1,9 +1,11 @@
 {
   "slug": "da-lat",
-  "order": 6,
+  "order": 13,
+  "type": "check-in",
   "location": "Đà Lạt",
   "name": "Đà Lạt",
   "city": "Đà Lạt",
+  "district": "",
   "country": "Vietnam",
   "province": "Lâm Đồng",
   "region": "Tây Nguyên",
@@ -11,12 +13,13 @@
   "subheadline": "Cool air and flower fields.",
   "introduction": "Đà Lạt is a soft reset: pine roads, cool air, old villas, garden light, and mornings that make coffee feel like the main plan.",
   "shortDescription": "Pine forests, flower fields, hillside cafes, and the cool air of Vietnam's highland city.",
-  "description": "Pine forests in the mist, flower fields, and the cool air of Vietnam's highland city.",
+  "description": "The city where I started traveling alone: cool weather, good food, kind people, and a place that still feels like home.",
   "longDescription": "The city is most memorable when the pace stays slow. Walk early, let the weather change, and save time for small roadside scenes instead of only chasing landmarks.",
   "travelFrom": "HCM City",
   "travelTime": "45m flight or 6-8h road",
-  "recommendedStay": "3-4 days",
-  "bestMonths": "Nov - Mar",
+  "recommendedStay": "90 days",
+  "bestMonths": "All year round",
+  "budgetNote": "Flexible",
   "transportation": [
     "Flight",
     "Sleeper bus",
@@ -29,7 +32,10 @@
     "Nature walks",
     "Photography"
   ],
-  "overview": "A highland escape for cool mornings, pine textures, quiet cafes, and a slower rhythm than the coast.",
+  "overview": "Đà Lạt has a special place in my memory because it was where I started traveling alone. I loved the weather, the people, the food, and apparently loved them enough to visit ten times in one year.\n\nIt is one of those cities that feels both modern and wild in small doses, like a place where you can disappear for a bit and still feel at home.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 8.6,
   "wouldReturn": "definitely",
   "scores": {
@@ -60,6 +66,207 @@
   "notFor": [
     "Travelers who only want beaches or hot weather."
   ],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hj4ixmk94kroisafpdmjw9clq8qriyzespbug-da-la",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hj4IxMk94KrOISaFPdMJw9ClQ8qRiYZespBUG",
+    "alt": "Đà Lạt --- photo 1",
+    "width": 1600,
+    "height": 1069,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hj4ixmk94kroisafpdmjw9clq8qriyzespbug-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hj4IxMk94KrOISaFPdMJw9ClQ8qRiYZespBUG",
+      "alt": "Đà Lạt --- photo 1",
+      "width": 1600,
+      "height": 1069,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hfhx3imzsm0iwjj82zlsrnacxbfxrnf4wlyko-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFHx3iMzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
+      "alt": "Đà Lạt --- photo 2",
+      "width": 1600,
+      "height": 1069,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hakimpiyoh490tilxyexrchungmamzlwkkfvi-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haKIMPIyOH490TilXyexRchUNGmAMZLwKkFvI",
+      "alt": "Đà Lạt --- photo 3",
+      "width": 1600,
+      "height": 1069,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h6jypl3mgx3rw7lhmjhekt2k4uy81ajfobtsv-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h6JYpl3Mgx3rw7LHmJhekT2K4Uy81ajfobtSv",
+      "alt": "Đà Lạt --- photo 4",
+      "width": 1600,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hfd0clkpfsdimakx05cnwwrqupcsg96p2nyk4-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfd0CLKPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
+      "alt": "Đà Lạt --- photo 5",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59havqfosxpdbzjueulcst3mgn5fskqxwk62hae-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAVQfosXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
+      "alt": "Đà Lạt --- photo 6",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hivuo2zwbmu9poiye6g824a0bwcxcl37yufzh-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hivUo2ZwbmU9pOiYE6G824a0BWCXcl37yufzH",
+      "alt": "Đà Lạt --- photo 7",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvtatsggiw6tuinooxb108sdsmhzayffjrlgk-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTAtSgGiW6tUiNOoXB108SdsMHZayFfJrLGk",
+      "alt": "Đà Lạt --- photo 8",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h3vsoyedasckjkilzdrwvs5ctlqufpeybdvx6-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3vSoYEDasckjKiLzdrWVS5CtlQufPeYbDvX6",
+      "alt": "Đà Lạt --- photo 9",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hlytwrlajge643sm1sqbzjpx8ckmuu2oyynoz-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLYtwrlajGe643sM1SqBZJPX8cKmUu2oyYNOz",
+      "alt": "Đà Lạt --- photo 10",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hfxdwhgzsm0iwjj82zlsrnacxbfxrnf4wlyko-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFXDWHGzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
+      "alt": "Đà Lạt --- photo 11",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hv6w9kkvakbn1yzps80ibrpet6cf5tomx9zuj-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hv6W9kkVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+      "alt": "Đà Lạt --- photo 12",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h3zrdaidasckjkilzdrwvs5ctlqufpeybdvx6-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3zrdaIDasckjKiLzdrWVS5CtlQufPeYbDvX6",
+      "alt": "Đà Lạt --- photo 13",
+      "width": 1253,
+      "height": 1600,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hxipfkjcylc3supv5qh4oejxkafp0j8muoc19-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hxipfKJcyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
+      "alt": "Đà Lạt --- photo 14",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hssokexdgra7eybcwumusqx5evhs86daj2tdq-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hsSoKEXdgRA7eybCWUmuSqx5Evhs86daj2tDQ",
+      "alt": "Đà Lạt --- photo 15",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hspwwutqgljkfmjpy5ivzwibmnwqxy3shz4d9-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hSpwwUTqGLjkfMJpy5iVZWIbmNwQxY3Shz4D9",
+      "alt": "Đà Lạt --- photo 16",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 16,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hzpp1iv6nrqn89v1s2gcyzlrdnh3u0j4kfwya-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hzPP1Iv6NrQN89V1S2GcyZlRdnh3U0J4kfWYA",
+      "alt": "Đà Lạt --- photo 17",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 17,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h3cb0rbdasckjkilzdrwvs5ctlqufpeybdvx6-da-la",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3cb0rbDasckjKiLzdrWVS5CtlQufPeYbDvX6",
+      "alt": "Đà Lạt --- photo 18",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 18,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Highland",
     "Pine forest",
@@ -71,6 +278,7 @@
   "published": true,
   "seoTitle": "Đà Lạt Photo Notes | Pine Forests and Highland Air",
   "seoDescription": "A short editorial photo note from Đà Lạt: pine forests, cool weather, hillside cafes, flower fields, and slow highland mornings.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "dak-nong",
@@ -84,6 +292,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -105,143 +345,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hj4IxMk94KrOISaFPdMJw9ClQ8qRiYZespBUG",
-      "alt": "Đà Lạt --- photo 1",
-      "width": 1600,
-      "height": 1069,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFHx3iMzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
-      "alt": "Đà Lạt --- photo 2",
-      "width": 1600,
-      "height": 1069,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haKIMPIyOH490TilXyexRchUNGmAMZLwKkFvI",
-      "alt": "Đà Lạt --- photo 3",
-      "width": 1600,
-      "height": 1069,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h6JYpl3Mgx3rw7LHmJhekT2K4Uy81ajfobtSv",
-      "alt": "Đà Lạt --- photo 4",
-      "width": 1600,
-      "height": 1600,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfd0CLKPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
-      "alt": "Đà Lạt --- photo 5",
-      "width": 1600,
-      "height": 1067,
-      "order": 5
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAVQfosXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
-      "alt": "Đà Lạt --- photo 6",
-      "width": 1067,
-      "height": 1600,
-      "order": 6
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hivUo2ZwbmU9pOiYE6G824a0BWCXcl37yufzH",
-      "alt": "Đà Lạt --- photo 7",
-      "width": 1067,
-      "height": 1600,
-      "order": 7
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTAtSgGiW6tUiNOoXB108SdsMHZayFfJrLGk",
-      "alt": "Đà Lạt --- photo 8",
-      "width": 1067,
-      "height": 1600,
-      "order": 8
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3vSoYEDasckjKiLzdrWVS5CtlQufPeYbDvX6",
-      "alt": "Đà Lạt --- photo 9",
-      "width": 898,
-      "height": 1600,
-      "order": 9
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLYtwrlajGe643sM1SqBZJPX8cKmUu2oyYNOz",
-      "alt": "Đà Lạt --- photo 10",
-      "width": 898,
-      "height": 1600,
-      "order": 10
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFXDWHGzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
-      "alt": "Đà Lạt --- photo 11",
-      "width": 898,
-      "height": 1600,
-      "order": 11
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hv6W9kkVakbn1yzps80IBrPeT6cf5toMx9Zuj",
-      "alt": "Đà Lạt --- photo 12",
-      "width": 1067,
-      "height": 1600,
-      "order": 12
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3zrdaIDasckjKiLzdrWVS5CtlQufPeYbDvX6",
-      "alt": "Đà Lạt --- photo 13",
-      "width": 1253,
-      "height": 1600,
-      "order": 13
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hxipfKJcyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
-      "alt": "Đà Lạt --- photo 14",
-      "width": 898,
-      "height": 1600,
-      "order": 14
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hsSoKEXdgRA7eybCWUmuSqx5Evhs86daj2tDQ",
-      "alt": "Đà Lạt --- photo 15",
-      "width": 898,
-      "height": 1600,
-      "order": 15
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hSpwwUTqGLjkfMJpy5iVZWIbmNwQxY3Shz4D9",
-      "alt": "Đà Lạt --- photo 16",
-      "width": 898,
-      "height": 1600,
-      "order": 16
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hzPP1Iv6NrQN89V1S2GcyZlRdnh3U0J4kfWYA",
-      "alt": "Đà Lạt --- photo 17",
-      "width": 898,
-      "height": 1600,
-      "order": 17
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3cb0rbDasckjKiLzdrWVS5CtlQufPeYbDvX6",
-      "alt": "Đà Lạt --- photo 18",
-      "width": 1067,
-      "height": 1600,
-      "order": 18
-    }
-  ],
-  "type": "check-in",
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hj4IxMk94KrOISaFPdMJw9ClQ8qRiYZespBUG",
-    "alt": "Đà Lạt --- photo 1",
-    "width": 1600,
-    "height": 1069,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

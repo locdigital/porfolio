@@ -1,9 +1,11 @@
 {
   "slug": "da-nang",
-  "order": 11,
+  "order": 8,
+  "type": "check-in",
   "location": "Đà Nẵng",
   "name": "Đà Nẵng",
   "city": "Đà Nẵng",
+  "district": "",
   "country": "Vietnam",
   "province": "Đà Nẵng",
   "region": "Miền Trung",
@@ -11,12 +13,15 @@
   "subheadline": "Beach mornings, river bridges, and quick road trips.",
   "introduction": "Đà Nẵng is the kind of city that makes travel feel light: sea air in the morning, city lights at night, and enough day-trip options to keep the route open.",
   "shortDescription": "Beach mornings, river bridges, mountain roads, and a clean central base for exploring nearby old towns and coastlines.",
-  "description": "Beach mornings, river bridges, mountain roads, and a clean central base for exploring nearby old towns and coastlines.",
+  "description": "My favorite beach city: Sơn Trà runs, cafe workdays, afternoon swims, paddleboarding, and nights that feel light.",
   "longDescription": "Đà Nẵng works best when it is not overplanned. Start close to the beach, keep one slow cafe block in the day, then leave room for a bridge walk, a mountain road, or a short ride toward Hội An.",
   "travelFrom": "HCM City",
   "travelTime": "1h20 flight",
-  "recommendedStay": "3-4 days",
-  "bestMonths": "Feb - Aug",
+  "recommendedStay": "14 days",
+  "bestMonths": "Mar - May",
+  "budgetMin": 500,
+  "budgetMax": 600,
+  "budgetNote": "",
   "transportation": [
     "Flight",
     "Taxi",
@@ -28,7 +33,10 @@
     "Food",
     "Photography"
   ],
-  "overview": "A practical coastal base with enough calm for slow mornings and enough access for road days across central Vietnam.",
+  "overview": "Đà Nẵng is still my favorite beach city, and probably the place I would choose if I had to settle down somewhere by the sea. A perfect day there is simple: wake up, run around Sơn Trà, eat breakfast, work or sit at a cafe, swim or paddleboard in the afternoon, then walk around the city at night.\n\nThe cost of living is reasonable, the air feels lighter, and life does not need to try too hard to feel good.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 8.2,
   "wouldReturn": "definitely",
   "scores": {
@@ -59,6 +67,187 @@
   "notFor": [
     "Travelers looking for a remote or quiet-only beach town."
   ],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h9to5t9ajg6wntr8hlciuqlodffy1iqpxbyhs-da-na",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9To5T9Ajg6WNtr8hLCiUqlodfFy1IQpxbYHs",
+    "alt": "Đà Nẵng --- photo 1",
+    "width": 1280,
+    "height": 1600,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h9to5t9ajg6wntr8hlciuqlodffy1iqpxbyhs-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9To5T9Ajg6WNtr8hLCiUqlodfFy1IQpxbYHs",
+      "alt": "Đà Nẵng --- photo 1",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hnerxygj5tfbskzkhujxqqsnbdeect3lipphg-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnErXYgJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
+      "alt": "Đà Nẵng --- photo 2",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hv0mtviw6tuinooxb108sdsmhzayffjrlgkpi-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hV0MtviW6tUiNOoXB108SdsMHZayFfJrLGkPI",
+      "alt": "Đà Nẵng --- photo 3",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hg19hnsbcjrvf5su9wdbp1zmn2bohaiqskawk-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hG19hNSBcjrVF5sU9WdBP1Zmn2bOHaiQSKAwk",
+      "alt": "Đà Nẵng --- photo 4",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hc7wqdr8btheqno0psaegxlfyglidrrmucfdj-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hc7wQdR8bThEQNO0PsaegXLFyGlidrRmUCfDJ",
+      "alt": "Đà Nẵng --- photo 5",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h9grus5ajg6wntr8hlciuqlodffy1iqpxbyhs-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9gRUS5Ajg6WNtr8hLCiUqlodfFy1IQpxbYHs",
+      "alt": "Đà Nẵng --- photo 6",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvwqqqkavakbn1yzps80ibrpet6cf5tomx9zu-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwqqQKaVakbn1yzps80IBrPeT6cf5toMx9Zu",
+      "alt": "Đà Nẵng --- photo 7",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hhfmsngzhf5yp1vcajsq0mdlbut3is78nqyem-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hhFmSnGZHf5yp1VcajsQ0mDlbuT3iS78NqYEM",
+      "alt": "Đà Nẵng --- photo 8",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hep8zg6f5szbgwmylorq7kjutxfnz84xbwqdi-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heP8zg6F5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
+      "alt": "Đà Nẵng --- photo 9",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hfmur0tjpfsdimakx05cnwwrqupcsg96p2nyk-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfMUr0tJPFsdIMAkx05cnwWRQUPCSG96p2NyK",
+      "alt": "Đà Nẵng --- photo 10",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hbospvmkaeimvyiw93qvfdhjfcap5rqrxl4bo-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hboSpVMkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
+      "alt": "Đà Nẵng --- photo 11",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hayjxz6yoh490tilxyexrchungmamzlwkkfvi-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haYJXz6yOH490TilXyexRchUNGmAMZLwKkFvI",
+      "alt": "Đà Nẵng --- photo 12",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59htmficoh6jorxdly3omd9zir1mlwhbb284hfe-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59htmfiCOh6JORXdlY3oMD9zir1mLWHbB284hFE",
+      "alt": "Đà Nẵng --- photo 13",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hts35r2h6jorxdly3omd9zir1mlwhbb284hfe-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59htS35R2h6JORXdlY3oMD9zir1mLWHbB284hFE",
+      "alt": "Đà Nẵng --- photo 14",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hrbihlymxhax3dzfvph6m2nymlcsedt9j8bqy-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRbiHLyMxhAX3dzFvPH6M2nYmLcSEDt9j8BQy",
+      "alt": "Đà Nẵng --- photo 15",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hils5qcjwbmu9poiye6g824a0bwcxcl37yufz-da-na",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hilS5QcjwbmU9pOiYE6G824a0BWCXcl37yufz",
+      "alt": "Đà Nẵng --- photo 16",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 16,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Beach city",
     "Central Vietnam",
@@ -70,6 +259,7 @@
   "published": true,
   "seoTitle": "Đà Nẵng Photo Notes | Beach City in Central Vietnam",
   "seoDescription": "A short editorial photo note from Đà Nẵng: beach mornings, river bridges, central Vietnam road trips, food, and easy coastal days.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "hoi-an",
@@ -88,6 +278,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -109,129 +331,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9To5T9Ajg6WNtr8hLCiUqlodfFy1IQpxbYHs",
-      "alt": "Đà Nẵng --- photo 1",
-      "width": 1280,
-      "height": 1600,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnErXYgJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-      "alt": "Đà Nẵng --- photo 2",
-      "width": 1279,
-      "height": 1600,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hV0MtviW6tUiNOoXB108SdsMHZayFfJrLGkPI",
-      "alt": "Đà Nẵng --- photo 3",
-      "width": 1280,
-      "height": 1600,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hG19hNSBcjrVF5sU9WdBP1Zmn2bOHaiQSKAwk",
-      "alt": "Đà Nẵng --- photo 4",
-      "width": 1600,
-      "height": 900,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hc7wQdR8bThEQNO0PsaegXLFyGlidrRmUCfDJ",
-      "alt": "Đà Nẵng --- photo 5",
-      "width": 1600,
-      "height": 900,
-      "order": 5
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9gRUS5Ajg6WNtr8hLCiUqlodfFy1IQpxbYHs",
-      "alt": "Đà Nẵng --- photo 6",
-      "width": 1280,
-      "height": 1600,
-      "order": 6
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwqqQKaVakbn1yzps80IBrPeT6cf5toMx9Zu",
-      "alt": "Đà Nẵng --- photo 7",
-      "width": 1280,
-      "height": 1600,
-      "order": 7
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hhFmSnGZHf5yp1VcajsQ0mDlbuT3iS78NqYEM",
-      "alt": "Đà Nẵng --- photo 8",
-      "width": 1600,
-      "height": 900,
-      "order": 8
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heP8zg6F5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
-      "alt": "Đà Nẵng --- photo 9",
-      "width": 1280,
-      "height": 1600,
-      "order": 9
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfMUr0tJPFsdIMAkx05cnwWRQUPCSG96p2NyK",
-      "alt": "Đà Nẵng --- photo 10",
-      "width": 1280,
-      "height": 1600,
-      "order": 10
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hboSpVMkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
-      "alt": "Đà Nẵng --- photo 11",
-      "width": 1600,
-      "height": 900,
-      "order": 11
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haYJXz6yOH490TilXyexRchUNGmAMZLwKkFvI",
-      "alt": "Đà Nẵng --- photo 12",
-      "width": 1280,
-      "height": 1600,
-      "order": 12
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59htmfiCOh6JORXdlY3oMD9zir1mLWHbB284hFE",
-      "alt": "Đà Nẵng --- photo 13",
-      "width": 1280,
-      "height": 1600,
-      "order": 13
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59htS35R2h6JORXdlY3oMD9zir1mLWHbB284hFE",
-      "alt": "Đà Nẵng --- photo 14",
-      "width": 1280,
-      "height": 1600,
-      "order": 14
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRbiHLyMxhAX3dzFvPH6M2nYmLcSEDt9j8BQy",
-      "alt": "Đà Nẵng --- photo 15",
-      "width": 1280,
-      "height": 1600,
-      "order": 15
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hilS5QcjwbmU9pOiYE6G824a0BWCXcl37yufz",
-      "alt": "Đà Nẵng --- photo 16",
-      "width": 1280,
-      "height": 1600,
-      "order": 16
-    }
-  ],
-  "type": "check-in",
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9To5T9Ajg6WNtr8hLCiUqlodfFy1IQpxbYHs",
-    "alt": "Đà Nẵng --- photo 1",
-    "width": 1280,
-    "height": 1600,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

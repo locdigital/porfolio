@@ -1,9 +1,11 @@
 {
   "slug": "phu-yen",
-  "order": 9,
+  "order": 7,
+  "type": "check-in",
   "location": "Phú Yên",
   "name": "Phú Yên",
   "city": "Tuy Hòa",
+  "district": "",
   "country": "Vietnam",
   "province": "Phú Yên",
   "region": "Nam Trung Bộ",
@@ -11,12 +13,14 @@
   "subheadline": "Blue sky, stone cliffs, winding roads.",
   "introduction": "Phú Yên feels open: long coastal roads, low-key towns, clean horizons, and golden light that makes the landscape look wider than it is.",
   "shortDescription": "Stone cliffs, empty roads, blue sky, fishing villages, and one of central Vietnam's quieter coastal moods.",
-  "description": "Golden hour on Gành Đá Đĩa, winding roads along the coast, and the bluest sky.",
+  "description": "A local-led coastal ride through Hòn Yến, Gành Đá Đĩa, Mũi Đại Lãnh, cheap food, and unfairly beautiful roads.",
   "longDescription": "The best version of Phú Yên is a road day with space between stops. The coast is the main character, but the quiet transitions between places are where the photos breathe.",
   "travelFrom": "HCM City",
   "travelTime": "1h15 flight",
-  "recommendedStay": "3 days",
-  "bestMonths": "Jan - Aug",
+  "recommendedStay": "5 days",
+  "bestMonths": "Mar",
+  "budgetMin": 150,
+  "budgetNote": "",
   "transportation": [
     "Flight",
     "Taxi",
@@ -28,7 +32,10 @@
     "Seafood",
     "Quiet travel"
   ],
-  "overview": "A quieter coastal province for road-light, cliffs, seafood stops, and wide blue frames.",
+  "overview": "Phú Yên felt almost unfairly beautiful. I was lucky to have a local friend show me around, so I got to see places like Hòn Yến, Gành Đá Đĩa, and Mũi Đại Lãnh without just following a saved map.\n\nCycling along one of Vietnam's most beautiful coastal roads was a real highlight. The food was cheap, the people were kind, and the whole place had that \"I should come back every year\" kind of charm.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 8.4,
   "wouldReturn": "definitely",
   "scores": {
@@ -59,6 +66,97 @@
   "notFor": [
     "Travelers who want dense nightlife or a packed city base."
   ],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hztjpsonrqn89v1s2gcyzlrdnh3u0j4kfwyax-phu-y",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
+    "alt": "Phú Yên --- photo 1",
+    "width": 1067,
+    "height": 1600,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hztjpsonrqn89v1s2gcyzlrdnh3u0j4kfwyax-phu-y",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
+      "alt": "Phú Yên --- photo 1",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59heotrykf5szbgwmylorq7kjutxfnz84xbwqdi-phu-y",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heoTRYkF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
+      "alt": "Phú Yên --- photo 2",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvt7awdiw6tuinooxb108sdsmhzayffjrlgkp-phu-y",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVT7AwdiW6tUiNOoXB108SdsMHZayFfJrLGkP",
+      "alt": "Phú Yên --- photo 3",
+      "width": 1600,
+      "height": 1066,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjtpdxqkgpnlew4qezijraqkphdbcxs3tc1i7-phu-y",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJtpdXQKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
+      "alt": "Phú Yên --- photo 4",
+      "width": 1600,
+      "height": 1066,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hudn0p6yte95axouiblnq3gykfm2qscfe1mp6-phu-y",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUdn0P6YtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
+      "alt": "Phú Yên --- photo 5",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hzj4voasiyjswr4itvhoqh9aswb7rdt13x8jq-phu-y",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZj4VoAsiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
+      "alt": "Phú Yên --- photo 6",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hx8878lnstspggq204jczlk86pecran5bviwm-phu-y",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hX8878LnStspGgq204jCZLK86PEcraN5Bviwm",
+      "alt": "Phú Yên --- photo 7",
+      "width": 1600,
+      "height": 1066,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Coast",
     "Road trip",
@@ -70,6 +168,7 @@
   "published": true,
   "seoTitle": "Phú Yên Photo Notes | Coastal Roads and Golden Hour",
   "seoDescription": "A short editorial photo note from Phú Yên: coastal roads, stone cliffs, blue skies, seafood stops, and golden-hour landscapes.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "quy-nhon",
@@ -88,6 +187,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -109,66 +240,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
-      "alt": "Phú Yên --- photo 1",
-      "width": 1067,
-      "height": 1600,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heoTRYkF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
-      "alt": "Phú Yên --- photo 2",
-      "width": 1067,
-      "height": 1600,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVT7AwdiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-      "alt": "Phú Yên --- photo 3",
-      "width": 1600,
-      "height": 1066,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJtpdXQKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
-      "alt": "Phú Yên --- photo 4",
-      "width": 1600,
-      "height": 1066,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUdn0P6YtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
-      "alt": "Phú Yên --- photo 5",
-      "width": 1067,
-      "height": 1600,
-      "order": 5
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZj4VoAsiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
-      "alt": "Phú Yên --- photo 6",
-      "width": 1067,
-      "height": 1600,
-      "order": 6
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hX8878LnStspGgq204jCZLK86PEcraN5Bviwm",
-      "alt": "Phú Yên --- photo 7",
-      "width": 1600,
-      "height": 1066,
-      "order": 7
-    }
-  ],
-  "type": "check-in",
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
-    "alt": "Phú Yên --- photo 1",
-    "width": 1067,
-    "height": 1600,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

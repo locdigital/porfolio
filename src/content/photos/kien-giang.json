@@ -1,76 +1,190 @@
 {
   "slug": "kien-giang",
-  "order": 18,
+  "order": 3,
   "type": "check-in",
-  "location": "Kiên Giang",
-  "name": "Kiên Giang",
+  "location": "Nam Du / Hòn Sơn",
+  "name": "Nam Du / Hòn Sơn",
   "city": "Kiên Giang",
+  "district": "",
   "country": "Vietnam",
   "province": "Kiên Giang",
   "region": "Tây Nam Bộ",
-  "headline": "Kiên Giang in frames.",
+  "headline": "Rainy island days by the sea.",
   "subheadline": "A small photo note from the road.",
-  "introduction": "Photos from Kiên Giang.",
-  "shortDescription": "A compact gallery from Kiên Giang.",
-  "description": "A compact gallery from Kiên Giang.",
+  "introduction": "An island-sun plan that turned into a rainy Kiên Giang story: Rạch Giá food, sea coffee, lost AirPods, and stormy little lessons.",
+  "shortDescription": "An island-sun plan that turned into a rainy Kiên Giang story: Rạch Giá food, sea coffee, lost AirPods, and stormy little lessons.",
+  "description": "An island-sun plan that turned into a rainy Kiên Giang story: Rạch Giá food, sea coffee, lost AirPods, and stormy little lessons.",
+  "longDescription": "A compact gallery from Kiên Giang.",
+  "travelFrom": "",
+  "travelTime": "",
+  "recommendedStay": "7 days",
+  "bestMonths": "Jul",
+  "budgetMin": 300,
+  "budgetNote": "",
+  "transportation": [],
+  "suitableFor": [
+    "Island trip",
+    "Seafood",
+    "Slow travel"
+  ],
+  "overview": "I went to Kiên Giang expecting island sun, forest runs, Ma Thiên Lãnh peak, Nam Du, and snorkeling at Hòn Hai Bờ Đập. Instead, five out of seven days came with rain. Not exactly the postcard version, but still a funny little lesson: sometimes the island trip becomes a storm trip.\n\nRạch Giá food was easy to love, especially grilled dried squid and coffee by the sea. I also lost my AirPods, chased the location for two days, then lost a power bank the day after. That was how the trip signed off.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
+  "scores": {},
+  "bestTimeOfDay": [
+    "Morning",
+    "After the rain"
+  ],
+  "localTransport": [],
+  "weatherNote": "",
+  "travelTips": [
+    "Keep backup plans for rainy days.",
+    "Track small valuables carefully.",
+    "Save time for Rạch Giá food and sea coffee."
+  ],
+  "notFor": [],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hyjtu8rgxsfhdfjjrmpbwzn7ocmnvgyrak59a-kien-",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyJTU8RGxsFHdfJjrMPbwZN7OcmnvgYRak59A",
+    "alt": "Kiên Giang --- photo 1",
+    "width": 1200,
+    "height": 1600,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
   "images": [
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hyjtu8rgxsfhdfjjrmpbwzn7ocmnvgyrak59a-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyJTU8RGxsFHdfJjrMPbwZN7OcmnvgYRak59A",
       "alt": "Kiên Giang --- photo 1",
       "width": 1200,
       "height": 1600,
-      "order": 1
+      "caption": "",
+      "order": 1,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59ht9ccrvl2ojwmzq4odlka9nlegfi1h3xyh6zw-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hT9cCrvl2OjWmzQ4oDLka9nlegFi1h3xyH6Zw",
       "alt": "Kiên Giang --- photo 2",
       "width": 1600,
       "height": 1067,
-      "order": 2
+      "caption": "",
+      "order": 2,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hammcfuyoh490tilxyexrchungmamzlwkkfvi-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haMmcFuyOH490TilXyexRchUNGmAMZLwKkFvI",
       "alt": "Kiên Giang --- photo 3",
       "width": 1067,
       "height": 1600,
-      "order": 3
+      "caption": "",
+      "order": 3,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hbv9x1rkaeimvyiw93qvfdhjfcap5rqrxl4bo-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbV9X1rkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
       "alt": "Kiên Giang --- photo 4",
       "width": 1067,
       "height": 1600,
-      "order": 4
+      "caption": "",
+      "order": 4,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvwqdkievakbn1yzps80ibrpet6cf5tomx9zu-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwqdkiEVakbn1yzps80IBrPeT6cf5toMx9Zu",
       "alt": "Kiên Giang --- photo 5",
       "width": 1067,
       "height": 1600,
-      "order": 5
+      "caption": "",
+      "order": 5,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59husdy2poyte95axouiblnq3gykfm2qscfe1mp-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUsdy2POYtE95AXOuIBLNQ3GyKFm2qSCfe1MP",
       "alt": "Kiên Giang --- photo 6",
       "width": 1600,
       "height": 1067,
-      "order": 6
+      "caption": "",
+      "order": 6,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h3qjchudasckjkilzdrwvs5ctlqufpeybdvx6-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3qjchuDasckjKiLzdrWVS5CtlQufPeYbDvX6",
       "alt": "Kiên Giang --- photo 7",
       "width": 1600,
       "height": 1067,
-      "order": 7
+      "caption": "",
+      "order": 7,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hzukjponrqn89v1s2gcyzlrdnh3u0j4kfwyax-kien-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hzukJPoNrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
       "alt": "Kiên Giang --- photo 8",
       "width": 1067,
       "height": 1600,
-      "order": 8
+      "caption": "",
+      "order": 8,
+      "isCover": false
     }
   ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
+  "tags": [],
+  "featured": false,
+  "published": true,
+  "seoTitle": "",
+  "seoDescription": "",
+  "seoImage": "",
+  "relatedLocations": [],
+  "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "editorial-review",
@@ -78,14 +192,83 @@
       "enabled": true,
       "title": "Overview",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Tips",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyJTU8RGxsFHdfJjrMPbwZN7OcmnvgYRak59A",
-    "alt": "Kiên Giang --- photo 1",
-    "width": 1200,
-    "height": 1600,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

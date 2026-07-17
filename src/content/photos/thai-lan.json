@@ -1,90 +1,210 @@
 {
   "slug": "thai-lan",
-  "order": 23,
+  "order": 2,
   "type": "check-in",
-  "location": "Thái Lan",
-  "name": "Thái Lan",
-  "city": "Thailand",
+  "location": "Bangkok",
+  "name": "Bangkok",
+  "city": "Bangkok",
+  "district": "",
   "country": "Thailand",
   "province": "Thailand",
   "region": "Southeast Asia",
-  "headline": "Thái Lan in frames.",
+  "headline": "Bangkok heat and street-food momentum.",
   "subheadline": "A small photo note from the road.",
-  "introduction": "Photos from Thái Lan.",
-  "shortDescription": "A compact gallery from Thái Lan.",
-  "description": "A compact gallery from Thái Lan.",
+  "introduction": "A quick Bangkok detour after Bali: new-friend recommendations, loose plans, two fast days, and food that made the whole trip worth it",
+  "shortDescription": "A quick Bangkok detour after Bali: new-friend recommendations, loose plans, two fast days, and food that made the whole trip worth it",
+  "description": "A quick Bangkok detour after Bali: new-friend recommendations, loose plans, two fast days, and food that made the whole trip worth it.",
+  "longDescription": "A compact gallery from Thái Lan.",
+  "travelFrom": "",
+  "travelTime": "",
+  "recommendedStay": "3 days",
+  "bestMonths": "Jul",
+  "budgetMin": 500,
+  "budgetNote": "",
+  "transportation": [],
+  "suitableFor": [
+    "Food",
+    "City break",
+    "Short escape"
+  ],
+  "overview": "Thailand happened almost by accident after Bali. A few new friends recommended Bangkok, and I thought, why not, then booked it with the confidence of someone who had clearly not planned enough.\n\nThe trip was only two days and one night, so I barely scratched the surface, but Bangkok food left a very serious impression. Short trip, big appetite, no regrets.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
+  "scores": {},
+  "bestTimeOfDay": [
+    "Evening",
+    "Night market hours"
+  ],
+  "localTransport": [],
+  "weatherNote": "",
+  "travelTips": [
+    "Keep the plan loose if the trip is short.",
+    "Leave real time for food stops.",
+    "Stay central to avoid losing the day in transit."
+  ],
+  "notFor": [],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hldkwjoajge643sm1sqbzjpx8ckmuu2oyynoz-thai-",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLDkWJoajGe643sM1SqBZJPX8cKmUu2oyYNOz",
+    "alt": "Thái Lan --- photo 1",
+    "width": 1080,
+    "height": 1440,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
   "images": [
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hldkwjoajge643sm1sqbzjpx8ckmuu2oyynoz-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLDkWJoajGe643sM1SqBZJPX8cKmUu2oyYNOz",
       "alt": "Thái Lan --- photo 1",
       "width": 1080,
       "height": 1440,
-      "order": 1
+      "caption": "",
+      "order": 1,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59huq9tl7yte95axouiblnq3gykfm2qscfe1mp6-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUq9Tl7YtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
       "alt": "Thái Lan --- photo 2",
       "width": 1080,
       "height": 720,
-      "order": 2
+      "caption": "",
+      "order": 2,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hdxz7th4q021dyenszmlnrbpgxcupwoif9d4l-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDxZ7th4Q021dYenszMLNrbPgXCUpWoif9D4l",
       "alt": "Thái Lan --- photo 3",
       "width": 1080,
       "height": 1440,
-      "order": 3
+      "caption": "",
+      "order": 3,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h6yuapfxmgx3rw7lhmjhekt2k4uy81ajfobts-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h6YuapfxMgx3rw7LHmJhekT2K4Uy81ajfobtS",
       "alt": "Thái Lan --- photo 4",
       "width": 1080,
       "height": 1440,
-      "order": 4
+      "caption": "",
+      "order": 4,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h7zgybc54yls30dx98ikbwjpc6iqwevhmfax2-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7ZGYbc54ylS30dX98IkbwjPC6iqWEvHMFax2",
       "alt": "Thái Lan --- photo 5",
       "width": 1080,
       "height": 1440,
-      "order": 5
+      "caption": "",
+      "order": 5,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hevoy6eljacikp3dxfgzmuovfmrekxhrvpcw2-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hEVoy6eLJAcikP3dXFgzMuOvfmReKxhrVpCW2",
       "alt": "Thái Lan --- photo 6",
       "width": 1080,
       "height": 720,
-      "order": 6
+      "caption": "",
+      "order": 6,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h5fc4crnzpchf8h9g7slp6scruvur10jngfbo-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5Fc4cRnzPCHf8h9G7Slp6scrUVuR10JngFBO",
       "alt": "Thái Lan --- photo 7",
       "width": 1080,
       "height": 720,
-      "order": 7
+      "caption": "",
+      "order": 7,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hrdiqr7xhax3dzfvph6m2nymlcsedt9j8bqye-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRdIQr7xhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
       "alt": "Thái Lan --- photo 8",
       "width": 1080,
       "height": 1440,
-      "order": 8
+      "caption": "",
+      "order": 8,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hf6epjuzsm0iwjj82zlsrnacxbfxrnf4wlyko-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hF6EPJuzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
       "alt": "Thái Lan --- photo 9",
       "width": 1080,
       "height": 720,
-      "order": 9
+      "caption": "",
+      "order": 9,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hmntaskgfbdea7i1ncdivuruaxzrsklnkxmpf-thai-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmntASKgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
       "alt": "Thái Lan --- photo 10",
       "width": 1080,
       "height": 1440,
-      "order": 10
+      "caption": "",
+      "order": 10,
+      "isCover": false
     }
   ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
+  "tags": [],
+  "featured": false,
+  "published": true,
+  "seoTitle": "",
+  "seoDescription": "",
+  "seoImage": "",
+  "relatedLocations": [],
+  "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "editorial-review",
@@ -92,14 +212,83 @@
       "enabled": true,
       "title": "Overview",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Tips",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLDkWJoajGe643sM1SqBZJPX8cKmUu2oyYNOz",
-    "alt": "Thái Lan --- photo 1",
-    "width": 1080,
-    "height": 1440,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

@@ -1,9 +1,11 @@
 {
   "slug": "phu-quy",
-  "order": 16,
-  "location": "Phú Quý",
-  "name": "Phú Quý",
+  "order": 12,
+  "type": "check-in",
+  "location": "Phú Quý / Mũi Né",
+  "name": "Phú Quý / Mũi Né",
   "city": "Phú Quý",
+  "district": "",
   "country": "Vietnam",
   "province": "Bình Thuận",
   "region": "Nam Trung Bộ",
@@ -11,12 +13,15 @@
   "subheadline": "Turquoise water and slow days.",
   "introduction": "Phú Quý is small enough to feel personal and bright enough to make every road look like a detour worth taking.",
   "shortDescription": "Turquoise water, fishing boats, volcanic rocks, open roads, and slow island light.",
-  "description": "Island life at its most untouched --- turquoise water, fishing boats, and red-rock cliffs.",
+  "description": "Bình Thuận in two moods: Phú Quý island firsts, Milky Way nights, snorkeling, sea confessions, and a short Mũi Né reset.",
   "longDescription": "The island is less about a checklist and more about timing: ride early, rest when the light gets harsh, and come back outside when the sea turns silver again.",
   "travelFrom": "Phan Thiết",
   "travelTime": "2.5-3.5h ferry",
-  "recommendedStay": "2-3 days",
-  "bestMonths": "Mar - Aug",
+  "recommendedStay": "10 days",
+  "bestMonths": "May",
+  "budgetMin": 400,
+  "budgetMax": 500,
+  "budgetNote": "",
   "transportation": [
     "Ferry",
     "Motorbike"
@@ -27,7 +32,10 @@
     "Seafood",
     "Slow travel"
   ],
-  "overview": "A compact island for bright water, fishing village textures, red rocks, and simple days built around the weather.",
+  "overview": "Phú Quý is the most beautiful island I have visited so far. I stayed there for around two weeks, made a few new friends, and kept being surprised by how good the views were.\n\nIt also gave me a few firsts: seeing the Milky Way, snorkeling, and confessing feelings by the sea. A little dramatic, but life needs some scenes like that.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 8.5,
   "wouldReturn": "definitely",
   "scores": {
@@ -57,6 +65,147 @@
   "notFor": [
     "Travelers who need big-city convenience or luxury options."
   ],
+  "heroImage": {
+    "id": "phu-quy-01",
+    "src": "/assets/photos/phu-quy/phu-quy-01.webp",
+    "alt": "Phú Quý --- photo 1",
+    "width": 1080,
+    "height": 1440,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "phu-quy-01",
+      "src": "/assets/photos/phu-quy/phu-quy-01.webp",
+      "alt": "Phú Quý --- photo 1",
+      "width": 1080,
+      "height": 1440,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-02",
+      "src": "/assets/photos/phu-quy/phu-quy-02.webp",
+      "alt": "Phú Quý --- photo 2",
+      "width": 1080,
+      "height": 1440,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-03",
+      "src": "/assets/photos/phu-quy/phu-quy-03.webp",
+      "alt": "Phú Quý --- photo 3",
+      "width": 1080,
+      "height": 1440,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-04",
+      "src": "/assets/photos/phu-quy/phu-quy-04.webp",
+      "alt": "Phú Quý --- photo 4",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-05",
+      "src": "/assets/photos/phu-quy/phu-quy-05.webp",
+      "alt": "Phú Quý --- photo 5",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-06",
+      "src": "/assets/photos/phu-quy/phu-quy-06.webp",
+      "alt": "Phú Quý --- photo 6",
+      "width": 1600,
+      "height": 1059,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-07",
+      "src": "/assets/photos/phu-quy/phu-quy-07.webp",
+      "alt": "Phú Quý --- photo 7",
+      "width": 1200,
+      "height": 1600,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-08",
+      "src": "/assets/photos/phu-quy/phu-quy-08.webp",
+      "alt": "Phú Quý --- photo 8",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-09",
+      "src": "/assets/photos/phu-quy/phu-quy-09.webp",
+      "alt": "Phú Quý --- photo 9",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-10",
+      "src": "/assets/photos/phu-quy/phu-quy-10.webp",
+      "alt": "Phú Quý --- photo 10",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-11",
+      "src": "/assets/photos/phu-quy/phu-quy-11.webp",
+      "alt": "Phú Quý --- photo 11",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "phu-quy-12",
+      "src": "/assets/photos/phu-quy/phu-quy-12.webp",
+      "alt": "Phú Quý --- photo 12",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Island",
     "Ferry",
@@ -68,6 +217,7 @@
   "published": true,
   "seoTitle": "Phú Quý Photo Notes | Island Light and Fishing Boats",
   "seoDescription": "A short editorial photo note from Phú Quý island: turquoise water, fishing boats, red-rock cliffs, ferry days, and slow coastal light.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "quy-nhon",
@@ -81,6 +231,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -102,80 +284,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbUqpjKkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
-      "alt": "Phú Quý --- photo 1",
-      "width": 1067,
-      "height": 1600,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwiiolvVakbn1yzps80IBrPeT6cf5toMx9Zu",
-      "alt": "Phú Quý --- photo 2",
-      "width": 1067,
-      "height": 1600,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4HY8QJst2SauPZhDd1JkterOsqjvc6In5YK9",
-      "alt": "Phú Quý --- photo 3",
-      "width": 1600,
-      "height": 1059,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h0UUSi9jMS59hamFXwUDgpCVz6RfNLtxKjPTY",
-      "alt": "Phú Quý --- photo 4",
-      "width": 1200,
-      "height": 1600,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnGA3GRJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-      "alt": "Phú Quý --- photo 5",
-      "width": 1067,
-      "height": 1600,
-      "order": 5
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZwy9OysiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
-      "alt": "Phú Quý --- photo 6",
-      "width": 1600,
-      "height": 1067,
-      "order": 6
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hD1cqIt4Q021dYenszMLNrbPgXCUpWoif9D4l",
-      "alt": "Phú Quý --- photo 7",
-      "width": 1600,
-      "height": 1067,
-      "order": 7
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnNCgrNJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-      "alt": "Phú Quý --- photo 8",
-      "width": 1600,
-      "height": 1067,
-      "order": 8
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVj2TapiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-      "alt": "Phú Quý --- photo 9",
-      "width": 1600,
-      "height": 1067,
-      "order": 9
-    }
-  ],
-  "type": "check-in",
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbUqpjKkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
-    "alt": "Phú Quý --- photo 1",
-    "width": 1067,
-    "height": 1600,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

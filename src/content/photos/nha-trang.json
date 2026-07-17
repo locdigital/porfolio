@@ -1,10 +1,11 @@
 {
   "slug": "nha-trang",
-  "order": 8,
+  "order": 5,
   "type": "check-in",
   "location": "Nha Trang",
   "name": "Nha Trang",
   "city": "Nha Trang",
+  "district": "",
   "country": "Vietnam",
   "province": "Khánh Hòa",
   "region": "Nam Trung Bộ",
@@ -16,8 +17,10 @@
   "longDescription": "Nha Trang is best when treated as a beach-city base rather than a remote escape. Keep mornings near the water and save evenings for food and the city lights.",
   "travelFrom": "HCM City",
   "travelTime": "1h flight",
-  "recommendedStay": "2-3 days",
-  "bestMonths": "Jan - Aug",
+  "recommendedStay": "5 days",
+  "bestMonths": "Jul",
+  "budgetMin": 400,
+  "budgetNote": "",
   "transportation": [
     "Flight",
     "Taxi",
@@ -29,7 +32,10 @@
     "Family",
     "Short escape"
   ],
-  "overview": "A lively coastal city for people who want beach access, seafood, simple logistics, and a more active city base.",
+  "overview": "Nha Trang is brighter, louder, and more city-like than the quieter coastal stops. The beach is easy to reach, the seafood is close, the logistics are simple, and the whole place has an active rhythm that works well for a short trip with very little planning stress.\n\nThe photos are about that beach-city mix: clear morning water, busy streets behind the shoreline, island views in the distance, and evenings that move quickly from sunset to dinner. It is not a hidden escape, but it is useful, sunny, and good at giving you a coastal reset without making the route complicated.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 7.8,
   "wouldReturn": "maybe",
   "scores": {
@@ -60,6 +66,177 @@
   "notFor": [
     "Travelers looking for a quiet hidden beach mood."
   ],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjcqfzi94kroisafpdmjw9clq8qriyzespbug-nha-t",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjcQFZI94KrOISaFPdMJw9ClQ8qRiYZespBUG",
+    "alt": "Nha Trang --- photo 1",
+    "width": 900,
+    "height": 1600,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjcqfzi94kroisafpdmjw9clq8qriyzespbug-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjcQFZI94KrOISaFPdMJw9ClQ8qRiYZespBUG",
+      "alt": "Nha Trang --- photo 1",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hsmggs6qgljkfmjpy5ivzwibmnwqxy3shz4d9-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hSMgGS6qGLjkfMJpy5iVZWIbmNwQxY3Shz4D9",
+      "alt": "Nha Trang --- photo 2",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h5sllh6nzpchf8h9g7slp6scruvur10jngfbo-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5slLh6nzPCHf8h9G7Slp6scrUVuR10JngFBO",
+      "alt": "Nha Trang --- photo 3",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hhzd697beqp1bpln5zfba2gk4ux9ogvzci6fv-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hHzd697beQp1bPln5ZfBa2gk4uX9OGVzCi6Fv",
+      "alt": "Nha Trang --- photo 4",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h5edg12nzpchf8h9g7slp6scruvur10jngfbo-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5EDG12nzPCHf8h9G7Slp6scrUVuR10JngFBO",
+      "alt": "Nha Trang --- photo 5",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hkzbflevwelqqsknwarcdg0efydvvs3bxgzr5-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKzbflEvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
+      "alt": "Nha Trang --- photo 6",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjcwxqnkgpnlew4qezijraqkphdbcxs3tc1i7-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJCWXQnKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
+      "alt": "Nha Trang --- photo 7",
+      "width": 899,
+      "height": 1600,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hrsm79pxhax3dzfvph6m2nymlcsedt9j8bqye-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRsM79pxhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
+      "alt": "Nha Trang --- photo 8",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hftkpiczsm0iwjj82zlsrnacxbfxrnf4wlyko-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFtkpiczSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
+      "alt": "Nha Trang --- photo 9",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hki2n4ugvwelqqsknwarcdg0efydvvs3bxgzr-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKi2n4UGvWeLQqSKNwarCDg0EFydvVs3BXGZR",
+      "alt": "Nha Trang --- photo 10",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hnv3e16f7rf1o6cym3jxphedqvcuxekpsobrj-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hNV3e16f7Rf1o6cym3JxPheDqvCUXEKpSOBrj",
+      "alt": "Nha Trang --- photo 11",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h7ti4sj54yls30dx98ikbwjpc6iqwevhmfax2-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7Ti4sj54ylS30dX98IkbwjPC6iqWEvHMFax2",
+      "alt": "Nha Trang --- photo 12",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hkjdast7xp9l2wiefouaq5nzugod3mbyct70c-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkJDAst7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+      "alt": "Nha Trang --- photo 13",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hfi79wcpfsdimakx05cnwwrqupcsg96p2nyk4-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfi79WCPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
+      "alt": "Nha Trang --- photo 14",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvuw8tuiw6tuinooxb108sdsmhzayffjrlgkp-nha-t",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVUW8TuiW6tUiNOoXB108SdsMHZayFfJrLGkP",
+      "alt": "Nha Trang --- photo 15",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 15,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Beach city",
     "Seafood",
@@ -71,6 +248,7 @@
   "published": true,
   "seoTitle": "Nha Trang Photo Notes | Bright Water and Beach City Days",
   "seoDescription": "A short editorial photo note from Nha Trang: bright beach water, seafood, island views, city lights, and easy coastal travel.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "phu-yen",
@@ -84,6 +262,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -105,121 +315,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjcQFZI94KrOISaFPdMJw9ClQ8qRiYZespBUG",
-      "alt": "Nha Trang --- photo 1",
-      "width": 900,
-      "height": 1600,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hSMgGS6qGLjkfMJpy5iVZWIbmNwQxY3Shz4D9",
-      "alt": "Nha Trang --- photo 2",
-      "width": 900,
-      "height": 1600,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5slLh6nzPCHf8h9G7Slp6scrUVuR10JngFBO",
-      "alt": "Nha Trang --- photo 3",
-      "width": 900,
-      "height": 1600,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hHzd697beQp1bPln5ZfBa2gk4uX9OGVzCi6Fv",
-      "alt": "Nha Trang --- photo 4",
-      "width": 900,
-      "height": 1600,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5EDG12nzPCHf8h9G7Slp6scrUVuR10JngFBO",
-      "alt": "Nha Trang --- photo 5",
-      "width": 900,
-      "height": 1600,
-      "order": 5
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKzbflEvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
-      "alt": "Nha Trang --- photo 6",
-      "width": 900,
-      "height": 1600,
-      "order": 6
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJCWXQnKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
-      "alt": "Nha Trang --- photo 7",
-      "width": 899,
-      "height": 1600,
-      "order": 7
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRsM79pxhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
-      "alt": "Nha Trang --- photo 8",
-      "width": 900,
-      "height": 1600,
-      "order": 8
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFtkpiczSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
-      "alt": "Nha Trang --- photo 9",
-      "width": 900,
-      "height": 1600,
-      "order": 9
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKi2n4UGvWeLQqSKNwarCDg0EFydvVs3BXGZR",
-      "alt": "Nha Trang --- photo 10",
-      "width": 900,
-      "height": 1600,
-      "order": 10
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hNV3e16f7Rf1o6cym3JxPheDqvCUXEKpSOBrj",
-      "alt": "Nha Trang --- photo 11",
-      "width": 900,
-      "height": 1600,
-      "order": 11
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7Ti4sj54ylS30dX98IkbwjPC6iqWEvHMFax2",
-      "alt": "Nha Trang --- photo 12",
-      "width": 900,
-      "height": 1600,
-      "order": 12
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkJDAst7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
-      "alt": "Nha Trang --- photo 13",
-      "width": 900,
-      "height": 1600,
-      "order": 13
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfi79WCPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
-      "alt": "Nha Trang --- photo 14",
-      "width": 900,
-      "height": 1600,
-      "order": 14
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVUW8TuiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-      "alt": "Nha Trang --- photo 15",
-      "width": 900,
-      "height": 1600,
-      "order": 15
-    }
-  ],
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjcQFZI94KrOISaFPdMJw9ClQ8qRiYZespBUG",
-    "alt": "Nha Trang --- photo 1",
-    "width": 900,
-    "height": 1600,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

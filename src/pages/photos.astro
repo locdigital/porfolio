@@ -3,11 +3,15 @@ import Layout from "../layouts/Layout.astro";
 import { getPhotoLocations } from "../lib/cms";
 import BlurText from "../components/ui/BlurText.astro";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
+import { generateSlug } from "../lib/writing/slug";
 
 const sourceLocations = await getPhotoLocations();
+const anchorFor = (loc: (typeof sourceLocations)[number]) =>
+  generateSlug(loc.location || loc.name || loc.slug) || loc.slug;
 const optimizedLocations = await Promise.all(
   sourceLocations.map(async (loc) => ({
     ...loc,
+    anchorId: anchorFor(loc),
     photos: await Promise.all(
       loc.photos.map(async (photo) => {
         if (!photo.src.startsWith("/assets/photos/")) {
@@ -67,16 +71,16 @@ function formatBudget(loc: PhotoLocationView) {
     : min || max
       ? formatMoney(min || max)
       : "";
-  return amount;
+  return amount || loc.budgetNote || "";
 }
 
 function formatMoney(value: number) {
   return `$${value.toLocaleString("en-US")}`;
 }
 
-function reviewSectionsFor(loc: PhotoLocationView) {
+function reviewSectionsFor(loc: PhotoLocationView): Array<[string, string[]]> {
   const overview = loc.overview || loc.shortDescription || loc.description || loc.introduction;
-  return overview ? [["Overview", overview]] : [];
+  return overview ? [["Overview", overview.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean)]] : [];
 }
 
 function goodToKnowChipsFor(loc: PhotoLocationView) {
@@ -128,9 +132,10 @@ function hasDetailsFor(loc: PhotoLocationView) {
               <button
                 type="button"
                 class={`photos-nav-link ${i === 0 ? 'active' : ''}`}
-                data-target={loc.slug}
+                data-target={loc.anchorId}
+                data-slug={loc.slug}
                 aria-current={i === 0 ? "true" : undefined}
-                aria-controls={loc.slug}
+                aria-controls={loc.anchorId}
               >
                 {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
               </button>
@@ -145,7 +150,8 @@ function hasDetailsFor(loc: PhotoLocationView) {
     {optimizedLocations.map((loc, locIdx) => (
       <section
         class={`loc-section ${locIdx === 0 ? 'active' : ''}`}
-        id={loc.slug}
+        id={loc.anchorId}
+        data-slug={loc.slug}
         aria-label={`Photos from ${loc.name}`}
         hidden={locIdx !== 0}
       >
@@ -182,10 +188,10 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
               {enabledBlock(loc, "editorial-review") && reviewSectionsFor(loc).length > 0 && (
                 <section class="loc-info-section loc-rich">
-                  {reviewSectionsFor(loc).map(([label, value]) => (
+                  {reviewSectionsFor(loc).map(([label, paragraphs]) => (
                     <>
                       <h3>{label}</h3>
-                      <p>{value}</p>
+                      {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
                     </>
                   ))}
                 </section>
@@ -231,7 +237,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
         <!-- Photo grid --- full-bleed inside container -->
         <div class="container">
-          <div class="loc-grid" data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
+          <div class="loc-grid" data-gallery={`gallery-${loc.anchorId}`} aria-label={`${loc.name} gallery`}>
             {loc.photos.map((photo, i) => (
               <div
                 class={`loc-photo-item ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
@@ -310,7 +316,10 @@ function hasDetailsFor(loc: PhotoLocationView) {
     };
 
     const activate = (id?: string) => {
-      const nextTab = tabs.find((tab) => tab.getAttribute("data-target") === id) || tabs[0];
+      const nextTab = tabs.find((tab) => (
+        tab.getAttribute("data-target") === id ||
+        tab.getAttribute("data-slug") === id
+      )) || tabs[0];
       const nextId = nextTab?.getAttribute("data-target");
       if (!nextId) return;
       const scrollX = window.scrollX;
@@ -370,8 +379,8 @@ function hasDetailsFor(loc: PhotoLocationView) {
     font-family: var(--serif);
     font-size: var(--type-display-xl);
     font-weight: 400;
-    line-height: 1.06;
-    letter-spacing: -.025em;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-normal);
     color: var(--text);
     margin-bottom: 20px;
     margin-top: 0;
@@ -386,7 +395,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
     font-size: var(--type-body);
     color: var(--muted);
     max-width: 480px;
-    line-height: 1.7;
+    line-height: var(--leading-body);
   }
 
   #photos-nav-sentinel {
@@ -548,8 +557,8 @@ function hasDetailsFor(loc: PhotoLocationView) {
     font-family: var(--serif);
     font-size: var(--type-display);
     font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -.025em;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-normal);
     color: var(--text);
     margin-bottom: var(--loc-heading-gap);
   }
@@ -557,7 +566,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
   .loc-desc {
     max-width: var(--loc-prose-measure);
     font-family: var(--sans);
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: var(--loc-prose-leading);
     color: #6e6e6e;
     letter-spacing: 0;
@@ -688,7 +697,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
   .loc-rich li,
   .loc-muted {
     font-family: var(--sans);
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: var(--loc-prose-leading);
     color: #6e6e6e;
   }
@@ -849,7 +858,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
     gap: var(--space-2);
     max-width: var(--loc-sidebar-measure);
     color: #6e6e6e;
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: var(--loc-sidebar-leading);
   }
 
@@ -860,7 +869,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
     padding-left: 1.1em;
     list-style: disc;
     color: #6e6e6e;
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: var(--loc-sidebar-leading);
   }
 

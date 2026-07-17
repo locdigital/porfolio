@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-16T10:36:03.171Z",
+  "generatedAt": "2026-07-17T14:49:23.642Z",
   "appId": "65wv0vnolo",
   "totals": {
     "files": 225,
-    "images": 451,
-    "unique": 252,
+    "images": 433,
+    "unique": 243,
     "uploaded": 130
   },
   "images": {
@@ -399,24 +399,6 @@
     "src/assets/photos/nha-trang/nha-trang-14.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfi79WCPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
     "public/assets/photos/nha-trang/nha-trang-15.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVUW8TuiW6tUiNOoXB108SdsMHZayFfJrLGkP",
     "src/assets/photos/nha-trang/nha-trang-15.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVUW8TuiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-    "public/assets/photos/phu-quy/phu-quy-01.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbUqpjKkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
-    "src/assets/photos/phu-quy/phu-quy-01.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbUqpjKkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
-    "public/assets/photos/phu-quy/phu-quy-02.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwiiolvVakbn1yzps80IBrPeT6cf5toMx9Zu",
-    "src/assets/photos/phu-quy/phu-quy-02.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwiiolvVakbn1yzps80IBrPeT6cf5toMx9Zu",
-    "public/assets/photos/phu-quy/phu-quy-03.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4HY8QJst2SauPZhDd1JkterOsqjvc6In5YK9",
-    "src/assets/photos/phu-quy/phu-quy-03.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4HY8QJst2SauPZhDd1JkterOsqjvc6In5YK9",
-    "public/assets/photos/phu-quy/phu-quy-04.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h0UUSi9jMS59hamFXwUDgpCVz6RfNLtxKjPTY",
-    "src/assets/photos/phu-quy/phu-quy-04.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h0UUSi9jMS59hamFXwUDgpCVz6RfNLtxKjPTY",
-    "public/assets/photos/phu-quy/phu-quy-05.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnGA3GRJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-    "src/assets/photos/phu-quy/phu-quy-05.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnGA3GRJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-    "public/assets/photos/phu-quy/phu-quy-06.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZwy9OysiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
-    "src/assets/photos/phu-quy/phu-quy-06.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZwy9OysiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
-    "public/assets/photos/phu-quy/phu-quy-07.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hD1cqIt4Q021dYenszMLNrbPgXCUpWoif9D4l",
-    "src/assets/photos/phu-quy/phu-quy-07.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hD1cqIt4Q021dYenszMLNrbPgXCUpWoif9D4l",
-    "public/assets/photos/phu-quy/phu-quy-08.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnNCgrNJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-    "src/assets/photos/phu-quy/phu-quy-08.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnNCgrNJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-    "public/assets/photos/phu-quy/phu-quy-09.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVj2TapiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-    "src/assets/photos/phu-quy/phu-quy-09.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVj2TapiW6tUiNOoXB108SdsMHZayFfJrLGkP",
     "public/assets/photos/phu-yen/phu-yen-01.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
     "src/assets/photos/phu-yen/phu-yen-01.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hztJPSONrQN89V1S2GcyZlRdnh3U0J4kfWYAX",
     "public/assets/photos/phu-yen/phu-yen-02.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heoTRYkF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
@@ -2204,69 +2186,6 @@
       "paths": [
         "public/assets/photos/nha-trang/nha-trang-15.webp",
         "src/assets/photos/nha-trang/nha-trang-15.webp"
-      ]
-    },
-    "cc974d8e89f62dff15d9369e9dfa8c6194c03de74b3ab23e6cd9ae3d58506586": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbUqpjKkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-01.webp",
-        "src/assets/photos/phu-quy/phu-quy-01.webp"
-      ]
-    },
-    "d2bbd1ce07533e546ad2b2b57ebe3fa7f5774d87b9f370625f34c9095ca9a2d8": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwiiolvVakbn1yzps80IBrPeT6cf5toMx9Zu",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-02.webp",
-        "src/assets/photos/phu-quy/phu-quy-02.webp"
-      ]
-    },
-    "844dd58c19e7c67804447acad515f40d3f992dae661c204f17c2ae9188279390": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4HY8QJst2SauPZhDd1JkterOsqjvc6In5YK9",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-03.webp",
-        "src/assets/photos/phu-quy/phu-quy-03.webp"
-      ]
-    },
-    "92120a88cf372daffba9e888dba4ec3af8dcfad158c7aedc5e69b089a35bdaf0": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h0UUSi9jMS59hamFXwUDgpCVz6RfNLtxKjPTY",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-04.webp",
-        "src/assets/photos/phu-quy/phu-quy-04.webp"
-      ]
-    },
-    "d98e6abae215726098e4f6ccff7d9b2ade1c46fdd42879ff49c20d37bfe3bd52": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnGA3GRJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-05.webp",
-        "src/assets/photos/phu-quy/phu-quy-05.webp"
-      ]
-    },
-    "b596ef407f6b188b1c80674d878859b1ceea71b318ea37707d6dbb56fa08e353": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hZwy9OysiYJsWR4ITvHoQh9ASwb7rDt13X8jq",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-06.webp",
-        "src/assets/photos/phu-quy/phu-quy-06.webp"
-      ]
-    },
-    "d42bb60a80cb3af1b98d61cae8e280fcc02d787d0393d4fde0b9dc062d2590fd": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hD1cqIt4Q021dYenszMLNrbPgXCUpWoif9D4l",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-07.webp",
-        "src/assets/photos/phu-quy/phu-quy-07.webp"
-      ]
-    },
-    "f1754c05c6dba7f0c92c64a0cb444dcc8ffac0478886c26fad5fbb55727825ea": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnNCgrNJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-08.webp",
-        "src/assets/photos/phu-quy/phu-quy-08.webp"
-      ]
-    },
-    "a2c7c29643c19bbb539fc57133478c43da0d37b8f69fce3261247e570fdda610": {
-      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVj2TapiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-      "paths": [
-        "public/assets/photos/phu-quy/phu-quy-09.webp",
-        "src/assets/photos/phu-quy/phu-quy-09.webp"
       ]
     },
     "1fbeb6731c09335d38cca2f5386d590a64bc7f1b473d7ce3587d67f288deb04c": {

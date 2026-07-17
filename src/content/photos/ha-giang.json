@@ -1,10 +1,11 @@
 {
   "slug": "ha-giang",
-  "order": 15,
+  "order": 11,
   "type": "check-in",
   "location": "Hà Giang",
   "name": "Hà Giang",
   "city": "Hà Giang",
+  "district": "",
   "country": "Vietnam",
   "province": "Hà Giang",
   "region": "Miền Bắc",
@@ -12,12 +13,15 @@
   "subheadline": "Stone plateaus, sharp roads, and northern light.",
   "introduction": "Hà Giang is built around movement: winding passes, limestone valleys, roadside pauses, and the feeling that every turn changes the scale of the landscape.",
   "shortDescription": "Northern mountain roads, stone plateaus, deep valleys, and one of Vietnam's most cinematic riding routes.",
-  "description": "Northern mountain roads, stone plateaus, deep valleys, and one of Vietnam's most cinematic riding routes.",
+  "description": "A peak northern ride through Mã Pí Lèng, Nho Quế, Đồng Văn, Pao's House, and Lô Lô Chải village.",
   "longDescription": "The route rewards patience more than speed. Keep the days realistic, respect the weather, and treat the road itself as the main destination.",
   "travelFrom": "Hà Nội",
   "travelTime": "6-8h road to Hà Giang city",
-  "recommendedStay": "4-5 days",
-  "bestMonths": "Oct - Apr",
+  "recommendedStay": "7 days",
+  "bestMonths": "Jan",
+  "budgetMin": 300,
+  "budgetMax": 400,
+  "budgetNote": "",
   "transportation": [
     "Bus",
     "Motorbike",
@@ -29,7 +33,10 @@
     "Adventure",
     "Landscape"
   ],
-  "overview": "A northern mountain route for dramatic passes, limestone textures, villages, and slow travel through changing weather.",
+  "overview": "Every time I think of Hà Giang, that song \"Hà Giang sao mà yêu thế\" starts playing in my head, and honestly it already says most of the review.\n\nRiding a motorbike around Mã Pí Lèng, floating on the Nho Quế river, looking at the Đồng Văn karst plateau, visiting places like Pao's House and Lô Lô Chải village, all of it felt unreal in the best way. Hà Giang was not just beautiful. It was peak.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 9,
   "wouldReturn": "definitely",
   "scores": {
@@ -60,6 +67,77 @@
   "notFor": [
     "Travelers who dislike long road days or exposed mountain routes."
   ],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hknwguh57xp9l2wiefouaq5nzugod3mbyct70-ha-gi",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
+    "alt": "Hà Giang --- photo 1",
+    "width": 1440,
+    "height": 1439,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hknwguh57xp9l2wiefouaq5nzugod3mbyct70-ha-gi",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
+      "alt": "Hà Giang --- photo 1",
+      "width": 1440,
+      "height": 1439,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hj8fahhkgpnlew4qezijraqkphdbcxs3tc1i7-ha-gi",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJ8faHhKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
+      "alt": "Hà Giang --- photo 2",
+      "width": 900,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59htmcgjil2ojwmzq4odlka9nlegfi1h3xyh6zw-ha-gi",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTMCGJil2OjWmzQ4oDLka9nlegFi1h3xyH6Zw",
+      "alt": "Hà Giang --- photo 3",
+      "width": 1440,
+      "height": 1439,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hcqtmcmbtheqno0psaegxlfyglidrrmucfdjv-ha-gi",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hcqtMCmbThEQNO0PsaegXLFyGlidrRmUCfDJv",
+      "alt": "Hà Giang --- photo 4",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjuw17g94kroisafpdmjw9clq8qriyzespbug-ha-gi",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjuW17G94KrOISaFPdMJw9ClQ8qRiYZespBUG",
+      "alt": "Hà Giang --- photo 5",
+      "width": 898,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Mountain",
     "Loop",
@@ -71,6 +149,7 @@
   "published": true,
   "seoTitle": "Hà Giang Photo Notes | Mountain Passes and Stone Plateaus",
   "seoDescription": "A short editorial photo note from Hà Giang: northern mountain passes, stone plateaus, valleys, road days, and dramatic landscape travel.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "da-lat",
@@ -79,6 +158,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -100,51 +211,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
-      "alt": "Hà Giang --- photo 1",
-      "width": 1440,
-      "height": 1439,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJ8faHhKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
-      "alt": "Hà Giang --- photo 2",
-      "width": 900,
-      "height": 1600,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTMCGJil2OjWmzQ4oDLka9nlegFi1h3xyH6Zw",
-      "alt": "Hà Giang --- photo 3",
-      "width": 1440,
-      "height": 1439,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hcqtMCmbThEQNO0PsaegXLFyGlidrRmUCfDJv",
-      "alt": "Hà Giang --- photo 4",
-      "width": 898,
-      "height": 1600,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hjuW17G94KrOISaFPdMJw9ClQ8qRiYZespBUG",
-      "alt": "Hà Giang --- photo 5",
-      "width": 898,
-      "height": 1600,
-      "order": 5
-    }
-  ],
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
-    "alt": "Hà Giang --- photo 1",
-    "width": 1440,
-    "height": 1439,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

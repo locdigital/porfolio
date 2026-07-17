@@ -202,7 +202,7 @@ export async function getPhotoLocations() {
     const sortedImages = [...(data.images ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     const heroImage = data.heroImage ?? sortedImages.find((image) => image.isCover) ?? sortedImages[0];
     const name = data.name || data.location;
-    const introduction = data.introduction ?? data.shortDescription ?? data.description ?? "";
+    const introduction = data.description ?? data.introduction ?? data.shortDescription ?? "";
 
     return {
       ...data,

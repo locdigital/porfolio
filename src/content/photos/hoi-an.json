@@ -1,10 +1,11 @@
 {
   "slug": "hoi-an",
-  "order": 13,
+  "order": 10,
   "type": "check-in",
   "location": "Hội An",
   "name": "Hội An",
   "city": "Hội An",
+  "district": "",
   "country": "Vietnam",
   "province": "Quảng Nam",
   "region": "Miền Trung",
@@ -12,12 +13,14 @@
   "subheadline": "A small city made for walking before sunset.",
   "introduction": "Hội An is softest at the edges of the day: quiet lanes in the morning, yellow walls in late light, and lantern reflections after dark.",
   "shortDescription": "Old-town lanes, yellow walls, riverside evenings, lanterns, and a slower central Vietnam mood.",
-  "description": "Old-town lanes, yellow walls, riverside evenings, lanterns, and a slower central Vietnam mood.",
+  "description": "A morning old-town walk, yellow walls, bougainvillea shadows, ridiculous food, lantern nights, and a full moon glow.",
   "longDescription": "The town can get crowded, so the trick is timing. Walk early, rest through the busiest heat, then return when the light turns warm and the river starts to glow.",
   "travelFrom": "Đà Nẵng",
   "travelTime": "45-60m road",
-  "recommendedStay": "2-3 days",
-  "bestMonths": "Feb - Aug",
+  "recommendedStay": "2 days",
+  "bestMonths": "Apr",
+  "budgetMin": 150,
+  "budgetNote": "",
   "transportation": [
     "Car",
     "Taxi",
@@ -30,7 +33,10 @@
     "Walking",
     "Photography"
   ],
-  "overview": "A compact heritage town for yellow walls, lantern light, riverside walks, tailoring stops, and soft evening scenes.",
+  "overview": "Hội An Ancient Town is small enough to walk through in one morning, but timing changes everything. Go early and you get a calmer Hội An, before the tourist crowd arrives, when local life is still setting up for the day. The food was ridiculously good.\n\nI still remember the yellow walls, bougainvillea shadows, hot Central Vietnam sunlight, then the night version with lanterns, jazz bars, and old streets feeling strangely modern. I was lucky to visit on a full moon night, when the lights went down and the town became even prettier.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 8.3,
   "wouldReturn": "maybe",
   "scores": {
@@ -61,6 +67,157 @@
   "notFor": [
     "Travelers who dislike tourist crowds."
   ],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hnvv91cij5tfbskzkhujxqqsnbdeect3lipph-hoi-a",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnvv91CIJ5TFbsKzkHujxQqSNBdEect3LIpPh",
+    "alt": "Hội An --- photo 1",
+    "width": 1600,
+    "height": 900,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hnvv91cij5tfbskzkhujxqqsnbdeect3lipph-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnvv91CIJ5TFbsKzkHujxQqSNBdEect3LIpPh",
+      "alt": "Hội An --- photo 1",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hdhhsgxm2anbkmuljnrvvl8io5cqdbf73ji9h-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hdhHsgXm2AnbkmuljNRvVL8io5CqdBF73JI9H",
+      "alt": "Hội An --- photo 2",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59he6sueof5szbgwmylorq7kjutxfnz84xbwqdi-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59he6SueOF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
+      "alt": "Hội An --- photo 3",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hlehllrajge643sm1sqbzjpx8ckmuu2oyynoz-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLehlLrajGe643sM1SqBZJPX8cKmUu2oyYNOz",
+      "alt": "Hội An --- photo 4",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hbmrocy3shuyksxcxwebjqfof4tbyzjl93ou1-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hBmrocY3shUYKSXcxweBJqFof4TbyZjL93Ou1",
+      "alt": "Hội An --- photo 5",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvtwgwgyiw6tuinooxb108sdsmhzayffjrlgk-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTwgwGYiW6tUiNOoXB108SdsMHZayFfJrLGk",
+      "alt": "Hội An --- photo 6",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hffmdljdzsm0iwjj82zlsrnacxbfxrnf4wlyk-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFfMDlJDzSM0IwjJ82zLsrNaCxbfXRnF4WlyK",
+      "alt": "Hội An --- photo 7",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59haqobvsxpdbzjueulcst3mgn5fskqxwk62hae-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAQoBvSXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
+      "alt": "Hội An --- photo 8",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hfa3ohazsm0iwjj82zlsrnacxbfxrnf4wlyko-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFa3OHAzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
+      "alt": "Hội An --- photo 9",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hug729jyte95axouiblnq3gykfm2qscfe1mp6-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUg729jYtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
+      "alt": "Hội An --- photo 10",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hkh4i6kvwelqqsknwarcdg0efydvvs3bxgzr5-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKh4I6kvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
+      "alt": "Hội An --- photo 11",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h7jlxrsy54yls30dx98ikbwjpc6iqwevhmfax-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7JlxrsY54ylS30dX98IkbwjPC6iqWEvHMFax",
+      "alt": "Hội An --- photo 12",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hwkzpl7tqdh0hl5ild1c8efbpzcgp4y2matxv-hoi-a",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hwKZpL7TQDH0hL5Ild1c8EfBpZCgP4y2MATXV",
+      "alt": "Hội An --- photo 13",
+      "width": 1280,
+      "height": 1600,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Old town",
     "Lanterns",
@@ -72,6 +229,7 @@
   "published": true,
   "seoTitle": "Hội An Photo Notes | Lanterns and Old-Town Evenings",
   "seoDescription": "A short editorial photo note from Hội An: yellow walls, lanterns, riverside evenings, old-town walks, food, and central Vietnam light.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "da-nang",
@@ -85,6 +243,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -106,107 +296,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnvv91CIJ5TFbsKzkHujxQqSNBdEect3LIpPh",
-      "alt": "Hội An --- photo 1",
-      "width": 1600,
-      "height": 900,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hdhHsgXm2AnbkmuljNRvVL8io5CqdBF73JI9H",
-      "alt": "Hội An --- photo 2",
-      "width": 1279,
-      "height": 1600,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59he6SueOF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
-      "alt": "Hội An --- photo 3",
-      "width": 1279,
-      "height": 1600,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLehlLrajGe643sM1SqBZJPX8cKmUu2oyYNOz",
-      "alt": "Hội An --- photo 4",
-      "width": 1280,
-      "height": 1600,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hBmrocY3shUYKSXcxweBJqFof4TbyZjL93Ou1",
-      "alt": "Hội An --- photo 5",
-      "width": 1279,
-      "height": 1600,
-      "order": 5
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTwgwGYiW6tUiNOoXB108SdsMHZayFfJrLGk",
-      "alt": "Hội An --- photo 6",
-      "width": 1600,
-      "height": 900,
-      "order": 6
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFfMDlJDzSM0IwjJ82zLsrNaCxbfXRnF4WlyK",
-      "alt": "Hội An --- photo 7",
-      "width": 1600,
-      "height": 900,
-      "order": 7
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAQoBvSXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
-      "alt": "Hội An --- photo 8",
-      "width": 1279,
-      "height": 1600,
-      "order": 8
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFa3OHAzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
-      "alt": "Hội An --- photo 9",
-      "width": 1600,
-      "height": 900,
-      "order": 9
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUg729jYtE95AXOuIBLNQ3GyKFm2qSCfe1MP6",
-      "alt": "Hội An --- photo 10",
-      "width": 1600,
-      "height": 900,
-      "order": 10
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKh4I6kvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
-      "alt": "Hội An --- photo 11",
-      "width": 1600,
-      "height": 900,
-      "order": 11
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7JlxrsY54ylS30dX98IkbwjPC6iqWEvHMFax",
-      "alt": "Hội An --- photo 12",
-      "width": 1280,
-      "height": 1600,
-      "order": 12
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hwKZpL7TQDH0hL5Ild1c8EfBpZCgP4y2MATXV",
-      "alt": "Hội An --- photo 13",
-      "width": 1280,
-      "height": 1600,
-      "order": 13
-    }
-  ],
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hnvv91CIJ5TFbsKzkHujxQqSNBdEect3LIpPh",
-    "alt": "Hội An --- photo 1",
-    "width": 1600,
-    "height": 900,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

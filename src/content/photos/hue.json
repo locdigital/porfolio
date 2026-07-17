@@ -1,10 +1,11 @@
 {
   "slug": "hue",
-  "order": 12,
+  "order": 9,
   "type": "check-in",
   "location": "Huế",
   "name": "Huế",
   "city": "Huế",
+  "district": "",
   "country": "Vietnam",
   "province": "Thừa Thiên Huế",
   "region": "Miền Trung",
@@ -12,12 +13,14 @@
   "subheadline": "Old walls, rainy streets, and slow central light.",
   "introduction": "Huế carries a quieter weight: citadel walls, river air, garden houses, soft rain, and food that feels tied to memory.",
   "shortDescription": "Imperial architecture, river walks, old walls, garden houses, and one of Vietnam's most atmospheric food cities.",
-  "description": "Imperial architecture, river walks, old walls, garden houses, and one of Vietnam's most atmospheric food cities.",
+  "description": "A short, quiet stop with food that clicked immediately, slow roads around the Imperial City, and old walls that stayed with me.",
   "longDescription": "Huế is best when approached slowly. Let the day move between heritage stops, small bowls of food, and weather that gives the city its softer, older mood.",
   "travelFrom": "Đà Nẵng",
   "travelTime": "2-3h road",
-  "recommendedStay": "2-3 days",
-  "bestMonths": "Jan - Apr",
+  "recommendedStay": "3 days",
+  "bestMonths": "Apr",
+  "budgetMin": 200,
+  "budgetNote": "",
   "transportation": [
     "Train",
     "Car",
@@ -30,7 +33,10 @@
     "Slow travel",
     "Photography"
   ],
-  "overview": "A heritage city for imperial architecture, river light, quiet streets, rain, and deeply local food.",
+  "overview": "Huế was a short stop, only two days and one night, so I did not get to experience much. But the food fit my taste almost immediately, which is always a strong argument.\n\nCycling around the Imperial City was the kind of quiet memory that stays: slow roads, old walls, and a city that feels like it speaks softly.",
+  "favoriteThings": "",
+  "whatIWouldDoAgain": "",
+  "editorialReview": "",
   "personalRating": 8.5,
   "wouldReturn": "definitely",
   "scores": {
@@ -61,6 +67,97 @@
   "notFor": [
     "Travelers who want only beaches or nightlife."
   ],
+  "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvbby2uvakbn1yzps80ibrpet6cf5tomx9zuj-hue-p",
+    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvbBy2uVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+    "alt": "Huế --- photo 1",
+    "width": 1600,
+    "height": 900,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvbby2uvakbn1yzps80ibrpet6cf5tomx9zuj-hue-p",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvbBy2uVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+      "alt": "Huế --- photo 1",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 1,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h7tpfqp54yls30dx98ikbwjpc6iqwevhmfax2-hue-p",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7tPfqP54ylS30dX98IkbwjPC6iqWEvHMFax2",
+      "alt": "Huế --- photo 2",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h5kzq1xnzpchf8h9g7slp6scruvur10jngfbo-hue-p",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5kzq1xnzPCHf8h9G7Slp6scrUVuR10JngFBO",
+      "alt": "Huế --- photo 3",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59ha0y86ixpdbzjueulcst3mgn5fskqxwk62hae-hue-p",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hA0Y86IXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
+      "alt": "Huế --- photo 4",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvg3ieovakbn1yzps80ibrpet6cf5tomx9zuj-hue-p",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvG3IEoVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+      "alt": "Huế --- photo 5",
+      "width": 1600,
+      "height": 900,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvtcljkiw6tuinooxb108sdsmhzayffjrlgkp-hue-p",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTcLJKiW6tUiNOoXB108SdsMHZayFfJrLGkP",
+      "alt": "Huế --- photo 6",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h9nnamzajg6wntr8hlciuqlodffy1iqpxbyhs-hue-p",
+      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9NNaMzAjg6WNtr8hLCiUqlodfFy1IQpxbYHs",
+      "alt": "Huế --- photo 7",
+      "width": 1279,
+      "height": 1600,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    }
+  ],
+  "googleMapsUrl": "",
+  "latitude": "",
+  "longitude": "",
+  "openingHours": "",
+  "priceRange": "",
+  "website": "",
+  "phone": "",
+  "bookingUrl": "",
+  "instagram": "",
   "tags": [
     "Heritage",
     "Imperial city",
@@ -72,6 +169,7 @@
   "published": true,
   "seoTitle": "Huế Photo Notes | Imperial City and Perfume River",
   "seoDescription": "A short editorial photo note from Huế: imperial walls, Perfume River light, rainy streets, garden houses, heritage stops, and local food.",
+  "seoImage": "",
   "relatedLocations": [
     {
       "slug": "da-nang",
@@ -85,6 +183,38 @@
     }
   ],
   "relatedArticles": [],
+  "amenities": [],
+  "roomTypes": [],
+  "checkInTime": "",
+  "checkOutTime": "",
+  "breakfastIncluded": false,
+  "parking": false,
+  "petFriendly": false,
+  "pricePerNight": "",
+  "bookingLinks": [],
+  "cuisine": "",
+  "menuImages": [],
+  "mustTryDishes": [],
+  "averagePrice": "",
+  "reservationRequired": false,
+  "delivery": false,
+  "outdoorSeating": false,
+  "coffeeType": "",
+  "workingFriendly": false,
+  "powerOutlets": false,
+  "wifi": false,
+  "viewRating": "",
+  "indoor": false,
+  "outdoor": false,
+  "openingStyle": "",
+  "entranceFee": "",
+  "bestTime": "",
+  "sunrise": false,
+  "sunset": false,
+  "walkingTime": "",
+  "difficulty": "",
+  "droneAllowed": false,
+  "thingsToKnow": "",
   "blocks": [
     {
       "id": "quick-facts",
@@ -106,65 +236,69 @@
       "enabled": true,
       "title": "Good To Know",
       "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    },
+    {
+      "id": "pros-and-cons",
+      "type": "pros-and-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
     }
-  ],
-  "images": [
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvbBy2uVakbn1yzps80IBrPeT6cf5toMx9Zuj",
-      "alt": "Huế --- photo 1",
-      "width": 1600,
-      "height": 900,
-      "order": 1
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7tPfqP54ylS30dX98IkbwjPC6iqWEvHMFax2",
-      "alt": "Huế --- photo 2",
-      "width": 1279,
-      "height": 1600,
-      "order": 2
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5kzq1xnzPCHf8h9G7Slp6scrUVuR10JngFBO",
-      "alt": "Huế --- photo 3",
-      "width": 1279,
-      "height": 1600,
-      "order": 3
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hA0Y86IXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
-      "alt": "Huế --- photo 4",
-      "width": 1279,
-      "height": 1600,
-      "order": 4
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvG3IEoVakbn1yzps80IBrPeT6cf5toMx9Zuj",
-      "alt": "Huế --- photo 5",
-      "width": 1600,
-      "height": 900,
-      "order": 5
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTcLJKiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-      "alt": "Huế --- photo 6",
-      "width": 1279,
-      "height": 1600,
-      "order": 6
-    },
-    {
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h9NNaMzAjg6WNtr8hLCiUqlodfFy1IQpxbYHs",
-      "alt": "Huế --- photo 7",
-      "width": 1279,
-      "height": 1600,
-      "order": 7
-    }
-  ],
-  "heroImage": {
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvbBy2uVakbn1yzps80IBrPeT6cf5toMx9Zuj",
-    "alt": "Huế --- photo 1",
-    "width": 1600,
-    "height": 900,
-    "order": 1,
-    "isCover": true
-  }
+  ]
 }

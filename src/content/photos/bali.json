@@ -7,21 +7,21 @@
   "city": "Bali",
   "district": "Canggu / Ubud / Uluwatu",
   "country": "Indonesia",
-  "province": "Bali",
+  "province": "Indonesia",
   "region": "",
-  "headline": "Bali in small, golden days.",
+  "headline": "First passport stamp in island light.",
   "subheadline": "A quick visual note from Canggu, Ubud, and Uluwatu.",
   "introduction": "A short Bali overview for the photo page: soft mornings, green inland roads, cliff light, and a slower island pace.",
   "shortDescription": "A short Bali overview: cafe mornings, rice-field roads, cliff views, and soft sunset light.",
-  "description": "A short Bali overview: cafe mornings, rice-field roads, cliff views, and soft sunset light.",
+  "description": "My first trip abroad: digital nomad friends, Galungan days, mall food survival, and a chaotic first passport stamp.",
   "longDescription": "A short Bali overview for the photo page.",
   "travelFrom": "HCM City",
   "travelTime": "7h",
-  "recommendedStay": "7 days",
-  "bestMonths": "Apr - Oct",
+  "recommendedStay": "5 days",
+  "bestMonths": "June",
   "budgetMin": 500,
   "budgetMax": 1000,
-  "budgetNote": "per person / 7 days",
+  "budgetNote": "per person / 5 days",
   "transportation": [
     "Flight",
     "Driver",
@@ -32,7 +32,7 @@
     "Cafe hopping",
     "Photography"
   ],
-  "overview": "A compact island overview: Canggu for easy mornings, Ubud for green quiet, and Uluwatu for cliff-side sunset light.",
+  "overview": "Bali was my first trip abroad, so everything felt a little bigger than usual: the air, the roads, and the small courage of talking to strangers. I first knew Bali through the digital nomad community, and somehow came home with a few first international friends.\n\nThe food and I did not get along very well, so instant noodles and mall food quietly carried me through the trip. I was also lucky to be there during Galungan, a sacred Balinese Hindu celebration of Dharma winning over Adharma. A good first stamp on the passport, with a little chaos included.",
   "favoriteThings": "",
   "whatIWouldDoAgain": "",
   "editorialReview": "",
@@ -65,76 +65,105 @@
     "Travelers who dislike traffic or moving between areas."
   ],
   "heroImage": {
+    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hydneh7vzz3doqnyxsfinldib12geh8oemltj-bali-",
     "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hYdnEH7vZz3DOQNyxSFInldiB12geh8oEmLtJ",
     "alt": "Bali --- photo 1",
     "width": 1066,
     "height": 1600,
+    "caption": "",
     "order": 1,
     "isCover": true
   },
   "images": [
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hydneh7vzz3doqnyxsfinldib12geh8oemltj-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hYdnEH7vZz3DOQNyxSFInldiB12geh8oEmLtJ",
       "alt": "Bali --- photo 1",
       "width": 1066,
       "height": 1600,
-      "order": 1
+      "caption": "",
+      "order": 1,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hknnfc8vwelqqsknwarcdg0efydvvs3bxgzr5-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKnnfC8vWeLQqSKNwarCDg0EFydvVs3BXGZR5",
       "alt": "Bali --- photo 2",
       "width": 1066,
       "height": 1600,
-      "order": 2
+      "caption": "",
+      "order": 2,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hn6dtplyf7rf1o6cym3jxphedqvcuxekpsobr-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hN6dtPlYf7Rf1o6cym3JxPheDqvCUXEKpSOBr",
       "alt": "Bali --- photo 3",
       "width": 1066,
       "height": 1600,
-      "order": 3
+      "caption": "",
+      "order": 3,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hxnmjysstspggq204jczlk86pecran5bviwmd-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hXnmJYsStspGgq204jCZLK86PEcraN5Bviwmd",
       "alt": "Bali --- photo 4",
       "width": 1066,
       "height": 1600,
-      "order": 4
+      "caption": "",
+      "order": 4,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvtocrgciw6tuinooxb108sdsmhzayffjrlgk-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTOcrgCiW6tUiNOoXB108SdsMHZayFfJrLGk",
       "alt": "Bali --- photo 5",
       "width": 1066,
       "height": 1600,
-      "order": 5
+      "caption": "",
+      "order": 5,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjjsw8qkgpnlew4qezijraqkphdbcxs3tc1i7-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJjSW8qKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
       "alt": "Bali --- photo 6",
       "width": 1066,
       "height": 1600,
-      "order": 6
+      "caption": "",
+      "order": 6,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hdmgunk4q021dyenszmlnrbpgxcupwoif9d4l-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDMguNK4Q021dYenszMLNrbPgXCUpWoif9D4l",
       "alt": "Bali --- photo 7",
       "width": 1066,
       "height": 1600,
-      "order": 7
+      "caption": "",
+      "order": 7,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hymtnhwgxsfhdfjjrmpbwzn7ocmnvgyrak59a-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyMTnhWGxsFHdfJjrMPbwZN7OcmnvgYRak59A",
       "alt": "Bali --- photo 8",
       "width": 1066,
       "height": 1600,
-      "order": 8
+      "caption": "",
+      "order": 8,
+      "isCover": false
     },
     {
+      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hcpqzk0btheqno0psaegxlfyglidrrmucfdjv-bali-",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hcpQZK0bThEQNO0PsaegXLFyGlidrRmUCfDJv",
       "alt": "Bali --- photo 9",
       "width": 1066,
       "height": 1600,
-      "order": 9
+      "caption": "",
+      "order": 9,
+      "isCover": false
     }
   ],
   "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Bali%2C%20Indonesia",
