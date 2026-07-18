@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { cn } from '../../lib/utils';
-import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Pause, PenLine, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from 'lucide-react';
+import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from 'lucide-react';
 
 interface DraggableCollageProps {
   portraitSrc?: string;
@@ -152,7 +152,6 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
     notion: 8,
     learning: 9,
     clock: 10,
-    rating: 11,
     folder: 12,
   });
   const [, setMaxZIndex] = useState(15);
@@ -176,10 +175,6 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
   const [isPlaying, setIsPlaying] = useState(false);
   const [spotifyProgress, setSpotifyProgress] = useState(125);
   const spotifyTotalSeconds = 259;
-
-  // Star ratings
-  const [rating, setRating] = useState(0);
-  const [hoveredRating, setHoveredRating] = useState(0);
 
   // Cursor-following pill label
   const [cursorLabel, setCursorLabel] = useState('');
@@ -277,12 +272,12 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           --input: 0 0% 88%;
           --ring: 222 89% 55%;
           --radius: 0.5rem;
-          --type-micro: 12px;
-          --type-caption: 12px;
+          --type-micro: 0.8rem;
+          --type-caption: 0.8rem;
           --type-ui: 0.875rem;
-          --type-body: 12px;
-          --type-subhead: 12px;
-          --type-data: 1.375rem;
+          --type-body: 0.8rem;
+          --type-subhead: clamp(1.375rem, 2.2vw, 1.625rem);
+          --type-data: 1.875rem;
           --type-display-lg: clamp(3rem, 7vw, 5.75rem);
           --type-display-xl: clamp(3rem, 6.5vw, 6rem);
         }
@@ -293,25 +288,13 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           letter-spacing: -0.015em;
         }
 
-        .draggable-collage-container p {
-          font-size: 12px;
-        }
-
         .collage-card-label {
           font-family: var(--sans);
-          font-size: 12px;
+          font-size: 14px;
           line-height: 1.35;
           font-weight: 400;
           letter-spacing: 0;
           text-transform: none;
-        }
-
-        .collage-card-text {
-          font-family: var(--sans);
-          font-size: 12px;
-          line-height: 1.4;
-          font-weight: 400;
-          letter-spacing: 0;
         }
 
         @media (min-width: 1800px) {
@@ -360,7 +343,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
             <div className="overflow-hidden rounded-lg w-full">
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
-            <p className="mt-2.5 collage-card-text text-muted-foreground text-center">Phuc Loc · Saigon</p>
+            <p className="mt-2.5 text-[var(--type-micro)] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
           </div>
 
           <div className="bg-[#BDF8D1] border border-[#4fb77a]/25 text-[#073b24] rounded-xl px-4 py-4 rotate-[1.5deg] flex flex-col justify-between">
@@ -373,43 +356,41 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
                 <span className="collage-card-label opacity-60">Available Now</span>
               </div>
               <div className="h-px bg-[#073b24]/18 mb-2.5"></div>
-              <p className="collage-card-text mb-2.5">Performance Marketer</p>
+              <p className="italic text-[var(--type-subhead)] leading-tight mb-2.5" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             </div>
             <div className="space-y-1" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Remote Vietnam</span></div>
-              <div className="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Global remote</span></div>
+              <div className="flex items-center gap-1.5"><MapPin className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-1.5"><Laptop className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Remote Vietnam</span></div>
+              <div className="flex items-center gap-1.5"><Globe2 className="opacity-60" size={11} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Global remote</span></div>
             </div>
           </div>
         </div>
 
-        {/* Sub-grid 2: Music widget and Star rate */}
-        <div className="grid grid-cols-2 gap-3" style={{ fontFamily: 'var(--sans)' }}>
+        {/* Sub-grid 2: Music widget */}
+        <div className="grid grid-cols-1 gap-3" style={{ fontFamily: 'var(--sans)' }}>
           {/* Spotify */}
-          <div className="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2">
+          <div className="bg-[#444444] text-background rounded-xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <div className="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-                <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKk6DszvWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="Photograph" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+              <div className="shrink-0 w-9 h-9 rounded-md overflow-hidden bg-background/10">
+                <img src="https://i.ytimg.com/vi/AqM6KmEYTgU/hqdefault.jpg" alt="Vierd Blues album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[var(--type-micro)] font-normal text-background truncate">Photograph</p>
-                <p className="text-[var(--type-micro)] text-background/50 truncate">Ed Sheeran</p>
+                <p className="text-[var(--type-caption)] font-semibold leading-tight text-background truncate">Vierd Blues</p>
+                <p className="text-[var(--type-micro)] text-background/55 truncate">Bill Evans</p>
               </div>
+              <span className="inline-flex items-end gap-[2px] h-4" aria-hidden="true">
+                {staticVisualizer.map((height, i) => (
+                  <span
+                    key={i}
+                    className={cn("w-[2px] rounded-full bg-white/75 origin-bottom", isPlaying && `sound-animate-${i}`)}
+                    style={{ height: '14px', transform: !isPlaying ? `scaleY(${height})` : undefined }}
+                  />
+                ))}
+              </span>
             </div>
-            
-            {/* Audio wave */}
-            <span className="inline-flex items-end gap-[2px] h-3">
-              {staticVisualizer.map((height, i) => (
-                <span 
-                  key={i} 
-                  className={cn("w-[2px] rounded-full bg-white/70 origin-bottom", isPlaying && `sound-animate-${i}`)} 
-                  style={{ height: '12px', transform: !isPlaying ? `scaleY(${height})` : undefined }} 
-                />
-              ))}
-            </span>
 
             {/* Slider */}
-            <div className="relative h-[3px] bg-white/20 rounded-full overflow-hidden">
+            <div className="relative h-[3px] bg-white/20 rounded-full overflow-hidden mt-1">
               <div className="absolute left-0 top-0 h-full bg-white/80 rounded-full" style={{ width: `${(spotifyProgress / spotifyTotalSeconds) * 100}%` }}></div>
             </div>
             <div className="flex justify-between" style={{ fontFamily: 'var(--mono)' }}>
@@ -420,60 +401,31 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
               <button aria-label="Previous track" className="text-background/40 transition-colors hover:text-background/70">
                 <SkipBack size={14} strokeWidth={1.8} aria-hidden="true" />
               </button>
-              <button 
-                onClick={() => setIsPlaying(!isPlaying)} 
-                aria-label={isPlaying ? "Pause" : "Play"} 
+              <a
+                href="https://www.youtube.com/watch?v=AqM6KmEYTgU"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Play on YouTube"
                 className="w-7 h-7 rounded-full bg-background flex items-center justify-center text-foreground"
               >
-                {isPlaying ? <Pause size={13} strokeWidth={2} fill="currentColor" aria-hidden="true" /> : <Play size={13} strokeWidth={2} fill="currentColor" aria-hidden="true" />}
-              </button>
+                <Play size={13} strokeWidth={2} fill="currentColor" aria-hidden="true" />
+              </a>
               <button aria-label="Next track" className="text-background/40 transition-colors hover:text-background/70">
                 <SkipForward size={14} strokeWidth={1.8} aria-hidden="true" />
               </button>
             </div>
           </div>
 
-          {/* Rating */}
-          <div className="-rotate-[1deg]">
-            <div className="relative">
-              <div className="bg-card border border-border/60 rounded-xl px-4 py-4 shadow-card w-full">
-                <p className="collage-card-label text-muted-foreground mb-3">Rate This Portfolio</p>
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((starIdx) => {
-                    const isFilled = starIdx <= (hoveredRating || rating);
-                    return (
-                      <button 
-                        key={starIdx}
-                        onMouseEnter={() => setHoveredRating(starIdx)}
-                        onMouseLeave={() => setHoveredRating(0)}
-                        onClick={() => setRating(starIdx)}
-                        className="leading-none transition-transform duration-100 hover:scale-125 cursor-pointer" 
-                        aria-label={`Rate ${starIdx} stars`}
-                      >
-                        <span style={{ display: 'inline-block', transform: 'none' }}>
-                          <span className="relative inline-block w-6 h-6" style={{ color: '#FABE15' }}>
-                            <svg viewBox="0 0 24 24" className="absolute inset-0 w-full h-full transition-opacity duration-200" style={{ fill: 'currentColor' }}>
-                              <path d={isFilled ? "M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5Z" : "M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5ZM12 4.75L14 9.33L18.7 9.75L15 13.07L16.18 17.75L12 15.16L7.82 17.75L9 13.07L5.3 9.75L10 9.33L12 4.75Z"}></path>
-                            </svg>
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Sub-grid 3: Details */}
         <div className="grid grid-cols-2 gap-3" style={{ fontFamily: 'var(--sans)' }}>
           <div className="bg-[#FF6B47] text-white rounded-xl px-4 py-4 -rotate-[1deg]">
-            <p className="collage-card-text">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
+            <p className="text-[var(--type-micro)] leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
           </div>
           <div className="bg-accent text-accent-foreground rounded-xl px-4 py-4 rotate-[2deg]">
             <p className="collage-card-label text-accent-foreground/60 mb-1.5">Currently Building</p>
-            <p className="collage-card-text">This demo site.<br /><span className="text-accent-foreground/70">(meta, right?)</span></p>
+            <p className="text-[var(--type-micro)] leading-snug font-normal">This demo site.<br /><span className="text-accent-foreground/70">(meta, right?)</span></p>
           </div>
         </div>
 
@@ -492,8 +444,8 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
 
         {/* Writings Folder */}
         <div className="flex flex-col items-center mt-4">
-          <a href="/blog" className="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-[var(--type-caption)]" style={{ fontFamily: 'var(--sans)' }}>
-            <FolderOpen size={15} strokeWidth={1.8} aria-hidden="true" /> View My Writings
+          <a href="/blog" className="grid size-11 place-items-center bg-amber-600 text-white rounded-xl shadow-lg" style={{ fontFamily: 'var(--sans)' }} aria-label="View writings">
+            <FolderOpen size={17} strokeWidth={1.8} aria-hidden="true" />
           </a>
         </div>
       </div>
@@ -570,7 +522,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
             <div className="overflow-hidden rounded-lg w-[160px]">
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
-            <p className="mt-3 collage-card-text text-muted-foreground text-center">Phuc Loc · Saigon</p>
+            <p className="mt-3 text-[var(--type-caption)] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
           </div>
         </DraggableCard>
 
@@ -596,11 +548,11 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
               <span className="collage-card-label opacity-60">Available Now</span>
             </div>
             <div className="h-px bg-[#073b24]/18 mb-3"></div>
-            <p className="collage-card-text mb-3">Performance Marketer</p>
+            <p className="italic text-[var(--type-subhead)] leading-tight mb-3" style={{ fontFamily: 'var(--serif)' }}>Performance Marketer</p>
             <div className="space-y-1.5" style={{ fontFamily: 'var(--sans)' }}>
-              <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Ho Chi Minh City</span></div>
-              <div className="flex items-center gap-2"><Laptop className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Remote Vietnam</span></div>
-              <div className="flex items-center gap-2"><Globe2 className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="collage-card-text">Global remote</span></div>
+              <div className="flex items-center gap-2"><MapPin className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Ho Chi Minh City</span></div>
+              <div className="flex items-center gap-2"><Laptop className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Remote Vietnam</span></div>
+              <div className="flex items-center gap-2"><Globe2 className="opacity-60" size={12} strokeWidth={1.8} aria-hidden="true" /><span className="text-[var(--type-micro)]">Global remote</span></div>
             </div>
           </div>
         </DraggableCard>
@@ -618,23 +570,23 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           onMouseEnter={() => setCursorLabel("currently vibing 🎵")}
           onMouseLeave={() => setCursorLabel('')}
         >
-          <div className="bg-foreground text-background rounded-2xl p-4 w-[220px] shadow-xl">
+          <div className="bg-[#444444] text-background rounded-xl p-4 w-[244px] shadow-xl">
             <div className="flex items-center gap-3 mb-3">
-              <div className="shrink-0 w-10 h-10 rounded-lg overflow-hidden">
-                <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKk6DszvWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="Photograph album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
+              <div className="shrink-0 w-10 h-10 rounded-md overflow-hidden bg-background/10">
+                <img src="https://i.ytimg.com/vi/AqM6KmEYTgU/hqdefault.jpg" alt="Vierd Blues album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0" style={{ fontFamily: 'var(--sans)' }}>
-                <p className="text-[var(--type-caption)] font-normal text-background truncate">Photograph</p>
-                <p className="text-[var(--type-micro)] text-background/50 truncate">Ed Sheeran</p>
+                <p className="text-[var(--type-caption)] font-semibold leading-tight text-background truncate">Vierd Blues</p>
+                <p className="text-[var(--type-micro)] text-background/55 truncate">Bill Evans</p>
               </div>
               
               {/* Audio wave */}
-              <span className="inline-flex items-end gap-[2px] h-3">
+              <span className="inline-flex items-end gap-[2px] h-4" aria-hidden="true">
                 {staticVisualizer.map((height, i) => (
                   <span 
                     key={i} 
-                    className={cn("w-[2px] rounded-full bg-white/70 origin-bottom", isPlaying && `sound-animate-${i}`)} 
-                    style={{ height: '12px', transform: !isPlaying ? `scaleY(${height})` : undefined }} 
+                    className={cn("w-[2px] rounded-full bg-white/75 origin-bottom", isPlaying && `sound-animate-${i}`)} 
+                    style={{ height: '14px', transform: !isPlaying ? `scaleY(${height})` : undefined }} 
                   />
                 ))}
               </span>
@@ -654,15 +606,15 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
               <button aria-label="Previous track" className="text-background/40 hover:text-background/70 transition-colors">
                 <SkipBack size={15} strokeWidth={1.8} aria-hidden="true" />
               </button>
-              <button 
-                onClick={() => {
-                  setIsPlaying(!isPlaying);
-                }} 
-                aria-label={isPlaying ? "Pause" : "Play"} 
+              <a
+                href="https://www.youtube.com/watch?v=AqM6KmEYTgU"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Play on YouTube"
                 className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-foreground text-[var(--type-caption)] hover:scale-105 transition-transform"
               >
-                  {isPlaying ? <Pause size={14} strokeWidth={2} fill="currentColor" aria-hidden="true" /> : <Play size={14} strokeWidth={2} fill="currentColor" aria-hidden="true" />}
-                </button>
+                <Play size={14} strokeWidth={2} fill="currentColor" aria-hidden="true" />
+              </a>
               <button aria-label="Next track" className="text-background/40 hover:text-background/70 transition-colors">
                 <SkipForward size={15} strokeWidth={1.8} aria-hidden="true" />
               </button>
@@ -842,47 +794,6 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           </div>
         </DraggableCard>
 
-        {/* 11. Rate Portfolio Stars Card */}
-        <DraggableCard
-          id="rating"
-          dragConstraints={containerRef}
-          initialRotate={-4}
-          savedPosition={savedPositions.rating}
-          onPositionChange={keepCardPosition}
-          className="bottom-[20%] left-[25%]"
-          onPointerDown={() => bringToFront('rating')}
-          zIndex={cardZIndices.rating}
-          onMouseEnter={() => setCursorLabel("rate my work ⭐")}
-          onMouseLeave={() => setCursorLabel('')}
-        >
-          <div className="bg-card border border-border/60 rounded-xl px-5 py-4 shadow-card w-full">
-            <p className="collage-card-label text-muted-foreground mb-3">Rate This Portfolio</p>
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4, 5].map((starIdx) => {
-                const isFilled = starIdx <= (hoveredRating || rating);
-                return (
-                  <button 
-                    key={starIdx}
-                    onMouseEnter={() => setHoveredRating(starIdx)}
-                    onMouseLeave={() => setHoveredRating(0)}
-                    onClick={() => setRating(starIdx)}
-                    className="leading-none transition-transform duration-100 hover:scale-125 cursor-pointer" 
-                    aria-label={`Rate ${starIdx} stars`}
-                  >
-                    <span style={{ display: 'inline-block', transform: 'none' }}>
-                      <span className="relative inline-block w-7 h-7" style={{ color: '#FABE15' }}>
-                        <svg viewBox="0 0 24 24" className="absolute inset-0 w-full h-full transition-opacity duration-200" style={{ fill: 'currentColor' }}>
-                          <path d={isFilled ? "M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5Z" : "M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5ZM12 4.75L14 9.33L18.7 9.75L15 13.07L16.18 17.75L12 15.16L7.82 17.75L9 13.07L5.3 9.75L10 9.33L12 4.75Z"}></path>
-                        </svg>
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </DraggableCard>
-
         {/* 12. My writings folder card */}
         <DraggableCard
           id="folder"
@@ -929,10 +840,6 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
             {/* Front flap */}
             <div className="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all duration-300 origin-bottom flex items-end group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
           </a>
-          <p className="mt-6 inline-flex items-center gap-1.5 collage-card-label text-muted-foreground select-none" style={{ fontSize: "24px" }}>
-            <PenLine size={24} strokeWidth={1.8} aria-hidden="true" />
-            My Writings
-          </p>
         </DraggableCard>
 
         {/* -------------------- END DYNAMIC CARDS -------------------- */}

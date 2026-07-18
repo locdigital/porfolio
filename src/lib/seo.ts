@@ -8,6 +8,7 @@ export const DEFAULT_OG_IMAGE = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hz9GQ9ON
 export const sameAs = [
   "https://www.instagram.com/henrygoodkid",
   "https://www.linkedin.com/in/phucloc",
+  "https://x.com/vuaecom",
   "https://www.pexels.com/@henrygoodkid",
 ];
 

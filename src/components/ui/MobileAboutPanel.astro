@@ -42,32 +42,30 @@ const { portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNw
     </div>
   </div>
 
-  <!-- Sub-grid 2: Music widget and Star rate -->
-  <div class="grid grid-cols-2 gap-3">
+  <!-- Sub-grid 2: Music widget -->
+  <div class="grid grid-cols-1 gap-3">
     <!-- Spotify -->
-    <div class="bg-foreground text-background rounded-2xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2" id="mobile-spotify">
+    <div class="bg-[#444444] text-background rounded-xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2" id="mobile-spotify">
       <div class="flex items-center gap-2">
-        <div class="shrink-0 w-8 h-8 rounded-md overflow-hidden">
-          <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKk6DszvWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="Photograph" loading="lazy" decoding="async" draggable="false" class="w-full h-full object-cover pointer-events-none" />
+        <div class="shrink-0 w-9 h-9 rounded-md overflow-hidden bg-background/10">
+          <img src="https://i.ytimg.com/vi/AqM6KmEYTgU/hqdefault.jpg" alt="Vierd Blues album art" loading="lazy" decoding="async" draggable="false" class="w-full h-full object-cover pointer-events-none" />
         </div>
         <div class="flex-1 min-w-0">
-          <p class="text-[var(--type-micro)] font-semibold text-background truncate">Photograph</p>
-          <p class="text-[var(--type-micro)] text-background/50 truncate">Ed Sheeran</p>
+          <p class="text-[var(--type-caption)] font-semibold leading-tight text-background truncate">Vierd Blues</p>
+          <p class="text-[var(--type-micro)] text-background/55 truncate">Bill Evans</p>
         </div>
+        <span class="inline-flex items-end gap-[2px] h-4" aria-hidden="true">
+          {[0.25, 0.69, 0.62, 0.41, 0.59].map((height, i) => (
+            <span
+              class={`w-[2px] rounded-full bg-white/75 origin-bottom sound-bar sound-bar-${i}`}
+              style={`height: 14px; transform: scaleY(${height});`}
+            />
+          ))}
+        </span>
       </div>
-      
-      <!-- Audio wave -->
-      <span class="inline-flex items-end gap-[2px] h-3">
-        {[0.25, 0.69, 0.62, 0.41, 0.59].map((height, i) => (
-          <span 
-            class={`w-[2px] rounded-full bg-white/70 origin-bottom sound-bar sound-bar-${i}`} 
-            style={`height: 12px; transform: scaleY(${height});`} 
-          />
-        ))}
-      </span>
 
       <!-- Slider -->
-      <div class="relative h-[3px] bg-white/20 rounded-full overflow-hidden">
+      <div class="relative h-[3px] bg-white/20 rounded-full overflow-hidden mt-1">
         <div class="absolute left-0 top-0 h-full bg-white/80 rounded-full" id="spotify-progress" style="width: 48%;"></div>
       </div>
       <div class="flex justify-between" style="font-family: var(--mono);">
@@ -76,40 +74,16 @@ const { portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNw
       </div>
       <div class="flex items-center justify-center gap-3">
         <button aria-label="Previous track" class="text-background/40 text-[var(--type-caption)]">⏮</button>
-        <button 
-          id="spotify-play-btn"
-          aria-label="Play" 
+        <a
+          href="https://www.youtube.com/watch?v=AqM6KmEYTgU"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Play on YouTube"
           class="w-7 h-7 rounded-full bg-background flex items-center justify-center text-foreground text-[var(--type-caption)]"
         >
           ▶
-        </button>
+        </a>
         <button aria-label="Next track" class="text-background/40 text-[var(--type-caption)]">⏭</button>
-      </div>
-    </div>
-
-    <!-- Rating -->
-    <div class="-rotate-[1deg]">
-      <div class="relative">
-        <div class="bg-card border border-border/60 rounded-xl px-4 py-4 shadow-card w-full">
-          <p class="text-[var(--type-micro)] uppercase tracking-widest text-muted-foreground mb-3">rate this portfolio</p>
-          <div class="flex gap-0.5" id="mobile-rating">
-            {[1, 2, 3, 4, 5].map((starIdx) => (
-              <button 
-                data-index={starIdx}
-                class="star-btn leading-none transition-transform duration-100 hover:scale-125 cursor-pointer" 
-                aria-label={`Rate ${starIdx} stars`}
-              >
-                <span style="display: inline-block; transform: none;">
-                  <span class="relative inline-block w-6 h-6 text-neutral-300 transition-colors duration-200" style="color: #d1d5db;">
-                    <svg viewBox="0 0 24 24" class="absolute inset-0 w-full h-full fill-current">
-                      <path d="M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5ZM12 4.75L14 9.33L18.7 9.75L15 13.07L16.18 17.75L12 15.16L7.82 17.75L9 13.07L5.3 9.75L10 9.33L12 4.75Z"></path>
-                    </svg>
-                  </span>
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -137,8 +111,8 @@ const { portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNw
 
   <!-- Writings Folder -->
   <div class="flex flex-col items-center mt-4">
-    <a href="/blog" class="flex items-center gap-2 px-6 py-3 bg-amber-600 text-white rounded-xl shadow-lg text-[var(--type-caption)]">
-      <FolderOpen size={15} strokeWidth={1.8} aria-hidden="true" /> View My Writings
+    <a href="/blog" class="grid size-11 place-items-center bg-amber-600 text-white rounded-xl shadow-lg" aria-label="View writings">
+      <FolderOpen size={17} strokeWidth={1.8} aria-hidden="true" />
     </a>
   </div>
 </div>
@@ -216,30 +190,6 @@ const { portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNw
       updatePlayState();
     });
 
-    // Star Rating
-    const stars = document.querySelectorAll('#mobile-rating .star-btn');
-    stars.forEach((star) => {
-      star.addEventListener('click', () => {
-        const selectedIndex = parseInt(star.getAttribute('data-index') || '0');
-        stars.forEach((s) => {
-          const idx = parseInt(s.getAttribute('data-index') || '0');
-          const iconContainer = s.querySelector('.relative.inline-block');
-          if (iconContainer) {
-            if (idx <= selectedIndex) {
-              iconContainer.classList.remove('text-neutral-300');
-              (iconContainer as HTMLElement).style.color = '#FABE15';
-              iconContainer.querySelector('svg')?.setAttribute('style', 'fill: currentColor;');
-              iconContainer.querySelector('path')?.setAttribute('d', 'M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5Z');
-            } else {
-              iconContainer.classList.add('text-neutral-300');
-              (iconContainer as HTMLElement).style.color = '#d1d5db';
-              iconContainer.querySelector('svg')?.removeAttribute('style');
-              iconContainer.querySelector('path')?.setAttribute('d', 'M12 2.5L9.45 8.5L3 9.06L7.725 13.39L6.25 19.82L12 16.5L17.75 19.82L16.275 13.39L21 9.06L14.55 8.5L12 2.5ZM12 4.75L14 9.33L18.7 9.75L15 13.07L16.18 17.75L12 15.16L7.82 17.75L9 13.07L5.3 9.75L10 9.33L12 4.75Z');
-            }
-          }
-        });
-      });
-    });
   }
 
   // Run on first load and after page transitions

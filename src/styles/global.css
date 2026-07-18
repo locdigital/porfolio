@@ -487,7 +487,7 @@
       min-height: 31px;
       padding: 6px 12px;
       border-radius: 12px;
-      font-size: var(--fs-xs);
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--muted);
       transition: color .2s ease, background-color .2s ease;
@@ -1541,17 +1541,18 @@
     }
 
     .footer {
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+      gap: clamp(24px, 6vw, 72px);
       padding: 60px 0 40px;
     }
 
     .footer-contact {
       font-family: var(--serif);
-      font-size: var(--fs-xl);
+      font-size: 34px;
       font-style: italic;
+      line-height: 1.1;
       color: var(--text);
     }
 
@@ -1601,6 +1602,7 @@
       flex-direction: column;
       gap: 12px;
       align-items: flex-end;
+      justify-self: stretch;
     }
 
     .footer-links a {
@@ -1764,6 +1766,13 @@
         color: var(--accent);
       }
 
+      @media (max-width: 420px) {
+        .mobile-pill-link {
+          padding-inline: 7px;
+          font-size: 11px;
+        }
+      }
+
       .hamburger {
         display: none;
       }
@@ -1841,7 +1850,7 @@
       }
 
       .mobile-bottom-nav-list a .nav-label {
-        font-size: var(--type-micro);
+        font-size: 0.75rem;
         font-weight: 600;
         letter-spacing: 0.01em;
         transition: color 0.25s var(--ease-out);
@@ -1855,11 +1864,11 @@
       /* Active states style */
       .mobile-bottom-nav-list a.active {
         color: var(--text);
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .mobile-bottom-nav-list a.active .nav-label {
-        font-weight: 700;
+        font-weight: 600;
       }
 
       /* Target exact active item styles to match desktop glow menu */
@@ -1892,14 +1901,6 @@
         color: var(--accent);
       }
       .mobile-bottom-nav-list a[href="/photos"].active .nav-icon {
-        stroke: var(--accent);
-      }
-
-      .mobile-bottom-nav-list a[href="/gear"].active {
-        background: transparent;
-        color: var(--accent);
-      }
-      .mobile-bottom-nav-list a[href="/gear"].active .nav-icon {
         stroke: var(--accent);
       }
 
@@ -2012,18 +2013,23 @@
       }
 
       .footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 40px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: start;
+        gap: 18px;
       }
 
       .footer-links {
-        align-items: flex-start;
+        align-items: flex-end;
+        justify-self: end;
         gap: 16px;
       }
 
       .footer-links a {
         font-size: var(--type-ui);
+      }
+
+      .footer-contact {
+        max-width: 100%;
       }
 
       .colophon {
@@ -2907,7 +2913,7 @@
 
 @media (max-width: 620px) {
   main p {
-    font-size: 0.625rem !important;
+    font-size: 0.75rem !important;
   }
 
   main :where(
@@ -2986,7 +2992,7 @@
     .cms-page-header h1,
     .home-projects-head h2
   ) {
-    font-size: 1.5625rem !important;
+    font-size: 2.25rem !important;
   }
 
   main .gear-hero-title,
@@ -2998,10 +3004,14 @@
   main .project-name,
   main .about-hero-title,
   main .home-projects-head h2 {
-    font-size: 1.5625rem !important;
+    font-size: 2.25rem !important;
   }
 
   main .typing-line {
-    font-size: 1.875rem !important;
+    font-size: inherit !important;
+  }
+
+  .footer-contact {
+    font-size: 34px !important;
   }
 }

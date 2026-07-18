@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import BlurFade from "../components/ui/BlurFade.astro";
-import { BriefcaseBusiness, ExternalLink, FileText, Mail } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, ExternalLink, FileText, Mail } from "lucide-react";
 
 const questionAvatar = { src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNwarCDg0EFydvVs3BXGZR" };
 ---
@@ -86,13 +86,11 @@ const questionAvatar = { src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvW
           />
           <button
             type="submit"
-            id="qp-submit"
-            class="qp-submit"
-            aria-label="Send question"
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M3 8h10M9 4l4 4-4 4"></path>
-            </svg>
+          id="qp-submit"
+          class="qp-submit"
+          aria-label="Send question"
+        >
+            <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
           </button>
         </label>
       </form>

@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import BlurText from "../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 const serviceHeadlineText = "Growth systems for acquisition, tracking, and fast websites.";
 
@@ -315,8 +315,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
         </div>
 
         <div class="saas-grid">
-          {services.map((service) => (
-            <div class="saas-card">
+          {services.map((service, index) => (
+            <div class="saas-card" id={`service-card-${service.id}`} data-service-card data-index={index}>
               <div class="card-header">
                 <span class="card-num">{service.num}</span>
                 <span class="card-metric">{service.metric}</span>
@@ -328,9 +328,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
               <ul class="card-checklist">
                 {service.checklist.map((item) => (
                   <li>
-                    <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
+                    <Check className="check-icon" size={15} strokeWidth={2} aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -342,6 +340,18 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
                 ))}
               </div>
             </div>
+          ))}
+        </div>
+        <div class="saas-pagination" aria-label="Service carousel pagination">
+          {services.map((service, index) => (
+            <button
+              class={`saas-pagination-dot ${index === 0 ? "active" : ""}`}
+              type="button"
+              aria-label={`Show ${service.title}`}
+              aria-current={index === 0 ? "true" : undefined}
+              data-service-dot
+              data-index={index}
+            ></button>
           ))}
         </div>
       </section>
@@ -395,9 +405,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
                       {service.capabilities.map((cap) => (
                         <div class="pane-cap-item">
                           <div class="pane-cap-header">
-                            <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                            </svg>
+                            <Check className="check-icon" size={15} strokeWidth={2} aria-hidden="true" />
                             <span class="pane-cap-name">{cap.name}</span>
                           </div>
                           <p class="pane-cap-desc">{cap.desc}</p>
@@ -455,9 +463,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
               <ul class="plan-features">
                 {plan.features.map((feat) => (
                   <li>
-                    <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
+                    <Check className="check-icon" size={15} strokeWidth={2} aria-hidden="true" />
                     <span>{feat}</span>
                   </li>
                 ))}
@@ -591,6 +597,123 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
           period.textContent = isProjectMode ? ' total' : '/month';
         });
       });
+    }
+
+    /* ── Horizontal Scroll Service Stack ── */
+    const serviceStackScroller = document.querySelector('.saas-grid');
+
+    if (serviceStackScroller) {
+      const serviceCards = Array.from(serviceStackScroller.querySelectorAll('[data-service-card]'));
+      const serviceDots = Array.from(document.querySelectorAll('[data-service-dot]'));
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const autoplayDelay = 4000;
+      let activeServiceIndex = 0;
+      let autoplayTimer = 0;
+      let isCarouselPaused = false;
+
+      const setActiveServiceDot = (activeIndex) => {
+        activeServiceIndex = activeIndex;
+        serviceDots.forEach((dot, index) => {
+          const isActive = index === activeIndex;
+          if (isActive) {
+            if (dot.classList.contains('active')) {
+              dot.classList.remove('active');
+              void dot.offsetWidth;
+            }
+            dot.classList.add('active');
+            dot.setAttribute('aria-current', 'true');
+          } else {
+            dot.classList.remove('active');
+            dot.removeAttribute('aria-current');
+          }
+        });
+      };
+
+      const scrollToServiceCard = (targetIndex, behavior = 'smooth') => {
+        const targetCard = serviceCards[targetIndex];
+        if (!targetCard) return;
+
+        serviceStackScroller.scrollTo({
+          left: targetCard.offsetLeft,
+          behavior: reducedMotion.matches ? 'auto' : behavior,
+        });
+      };
+
+      const scheduleServiceAutoplay = () => {
+        window.clearTimeout(autoplayTimer);
+        if (reducedMotion.matches || isCarouselPaused || serviceCards.length < 2) return;
+
+        autoplayTimer = window.setTimeout(() => {
+          const nextIndex = (activeServiceIndex + 1) % serviceCards.length;
+          setActiveServiceDot(nextIndex);
+          scrollToServiceCard(nextIndex);
+          scheduleServiceAutoplay();
+        }, autoplayDelay);
+      };
+
+      const syncServiceDots = () => {
+        const activeIndex = serviceCards.reduce((closestIndex, card, index) => {
+          const closestCard = serviceCards[closestIndex];
+          return Math.abs(card.offsetLeft - serviceStackScroller.scrollLeft) <
+            Math.abs(closestCard.offsetLeft - serviceStackScroller.scrollLeft)
+            ? index
+            : closestIndex;
+        }, 0);
+
+        if (activeIndex !== activeServiceIndex) {
+          setActiveServiceDot(activeIndex);
+        }
+      };
+
+      serviceDots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const clickedIndex = Number(dot.dataset.index || 0);
+          const targetIndex = clickedIndex === activeServiceIndex
+            ? (activeServiceIndex + 1) % serviceCards.length
+            : clickedIndex;
+          scrollToServiceCard(targetIndex);
+          setActiveServiceDot(targetIndex);
+          scheduleServiceAutoplay();
+        });
+      });
+
+      serviceStackScroller.addEventListener('scroll', () => {
+        window.requestAnimationFrame(syncServiceDots);
+      }, { passive: true });
+
+      serviceStackScroller.addEventListener('pointerdown', () => {
+        scheduleServiceAutoplay();
+      }, { passive: true });
+
+      serviceStackScroller.addEventListener('mouseenter', () => {
+        isCarouselPaused = true;
+        window.clearTimeout(autoplayTimer);
+        serviceDots.forEach((dot) => dot.classList.add('paused'));
+      });
+
+      serviceStackScroller.addEventListener('mouseleave', () => {
+        isCarouselPaused = false;
+        serviceDots.forEach((dot) => dot.classList.remove('paused'));
+        scheduleServiceAutoplay();
+      });
+
+      serviceDots.forEach((dot) => {
+        dot.addEventListener('focus', () => {
+          isCarouselPaused = true;
+          window.clearTimeout(autoplayTimer);
+          serviceDots.forEach((item) => item.classList.add('paused'));
+        });
+
+        dot.addEventListener('blur', () => {
+          isCarouselPaused = false;
+          serviceDots.forEach((item) => item.classList.remove('paused'));
+          scheduleServiceAutoplay();
+        });
+      });
+
+      reducedMotion.addEventListener('change', scheduleServiceAutoplay);
+      syncServiceDots();
+      scheduleServiceAutoplay();
     }
 
     /* ── Collapsible Accordion FAQs ── */
@@ -771,21 +894,36 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   /* ── 3. SaaS Feature Cards Grid ── */
   .features-section {
+    position: relative;
     margin-bottom: 104px;
   }
 
   .saas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 16px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1px;
+    -webkit-overflow-scrolling: touch;
     border-top: 1px solid var(--divider);
     border-left: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 56px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 56px), transparent 100%);
+    scrollbar-width: none;
+  }
+
+  .saas-grid::-webkit-scrollbar {
+    display: none;
   }
 
   .saas-card {
+    flex: 0 0 clamp(340px, 36vw, 460px);
+    scroll-snap-align: start;
     background: rgba(255, 255, 255, 0.22);
     border-right: 1px solid var(--divider);
-    border-bottom: 1px solid var(--divider);
     padding: 32px 28px;
     transition: background 0.24s var(--ease-out), border-color 0.24s var(--ease-out);
     display: flex;
@@ -802,6 +940,40 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   .saas-card:hover {
     background: rgba(255, 255, 255, 0.58);
+  }
+
+  .saas-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .saas-pagination-dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--rounded-full);
+    background: rgba(28, 28, 28, 0.22);
+    cursor: pointer;
+    overflow: hidden;
+    transition: width 0.22s var(--ease-out), background 0.22s var(--ease-out), transform 0.22s var(--ease-out);
+  }
+
+  .saas-pagination-dot:hover,
+  .saas-pagination-dot:focus-visible {
+    background: rgba(28, 28, 28, 0.48);
+  }
+
+  .saas-pagination-dot:focus-visible {
+    outline: 2px solid var(--accent-solid);
+    outline-offset: 4px;
+  }
+
+  .saas-pagination-dot.active {
+    width: 34px;
+    background: var(--text);
   }
 
   .saas-card .card-header {
@@ -1529,12 +1701,20 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
       font-size: var(--fs-base);
     }
 
-    .pricing-grid, .saas-grid {
+    .pricing-grid {
       grid-template-columns: 1fr;
     }
 
     .saas-grid {
-      gap: 0;
+      margin-inline: calc(var(--page-gutter) * -1);
+      padding-inline: var(--page-gutter);
+      border-left: 0;
+      mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
+    }
+
+    .saas-card {
+      flex-basis: min(84vw, 360px);
     }
 
     .cta-buttons {

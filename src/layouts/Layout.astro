@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
+import { ArrowUp, BarChart3, Bookmark, Folder } from "lucide-react";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
 const { 
   title = "Phuc Loc Nguyen | Senior Performance Marketing Executive",
@@ -23,26 +24,26 @@ const desktopNavItems = [
     label: "Work",
     href: "/work",
     active: pathname.startsWith("/work"),
-    icon: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+    Icon: Folder,
   },
   {
     label: "Services",
     href: "/service",
     active: pathname.startsWith("/service"),
-    icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-  },
-  {
-    label: "Gear",
-    href: "/gear",
-    active: pathname.startsWith("/gear"),
-    icon: '<rect width="18" height="12" x="3" y="4" rx="2" ry="2"/><line x1="2" x2="22" y1="20" y2="20"/><line x1="5" x2="19" y1="16" y2="16"/>',
+    Icon: BarChart3,
   },
   {
     label: "Photos",
     href: "/photos",
     active: pathname.startsWith("/photos"),
-    icon: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+    Icon: Bookmark,
   },
+];
+const footerLinks = [
+  { label: "Social", href: "/social", ariaLabel: "Social links" },
+  { label: "Gear", href: "/gear", ariaLabel: "Gear" },
+  { label: "Tools", href: "#", ariaLabel: "Tools" },
+  { label: "Ask me", href: "/question", ariaLabel: "Ask me" },
 ];
 ---
 
@@ -233,14 +234,17 @@ const desktopNavItems = [
           <div class="header-nav-desktop">
             <nav class="header-menu" aria-label="Primary navigation">
               <ul>
-                {desktopNavItems.map((item) => (
-                  <li>
-                    <a href={item.href} class={item.active ? "active" : ""} aria-current={item.active ? "page" : undefined}>
-                      <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={item.icon}></svg>
-                      <span>{item.label}</span>
-                    </a>
-                  </li>
-                ))}
+                {desktopNavItems.map((item) => {
+                  const Icon = item.Icon;
+                  return (
+                    <li>
+                      <a href={item.href} class={item.active ? "active" : ""} aria-current={item.active ? "page" : undefined}>
+                        <Icon className="nav-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
+                        <span>{item.label}</span>
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </div>
@@ -263,25 +267,19 @@ const desktopNavItems = [
         <ul class="mobile-bottom-nav-list">
           <li>
             <a href="/work" class={pathname.startsWith('/work') ? 'active' : ''} aria-label="Work">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+              <Folder className="nav-icon" size={20} strokeWidth={1.8} aria-hidden="true" />
               <span class="nav-label">Work</span>
             </a>
           </li>
           <li>
             <a href="/service" class={pathname.startsWith('/service') ? 'active' : ''} aria-label="Services">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <BarChart3 className="nav-icon" size={20} strokeWidth={1.8} aria-hidden="true" />
               <span class="nav-label">Services</span>
             </a>
           </li>
           <li>
-            <a href="/gear" class={pathname.startsWith('/gear') ? 'active' : ''} aria-label="Gear">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect width="18" height="12" x="3" y="4" rx="2" ry="2"/><line x1="2" x2="22" y1="20" y2="20"/><line x1="5" x2="19" y1="16" y2="16"/></svg>
-              <span class="nav-label">Gear</span>
-            </a>
-          </li>
-          <li>
             <a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''} aria-label="Photos">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              <Bookmark className="nav-icon" size={20} strokeWidth={1.8} aria-hidden="true" />
               <span class="nav-label">Photos</span>
             </a>
           </li>
@@ -296,9 +294,7 @@ const desktopNavItems = [
 
   {!hideFooter && (
     <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" title="Back to top">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 19V5M5 12l7-7 7 7" />
-      </svg>
+      <ArrowUp size={16} strokeWidth={1.8} aria-hidden="true" />
     </button>
   )}
 
@@ -317,14 +313,15 @@ const desktopNavItems = [
             </button>
           </div>
           <ul class="footer-links">
-            <li><a href="https://www.instagram.com/henrygoodkid" target="_blank" rel="noopener noreferrer"
-                aria-label="Instagram">Instagram ↗</a></li>
-            <li><a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer"
-                aria-label="LinkedIn">LinkedIn ↗</a></li>
-            <li><a href="https://x.com/vuaecom" target="_blank" rel="noopener noreferrer"
-                aria-label="X">X ↗</a></li>
-            <li><a href="https://www.pexels.com/@henrygoodkid" target="_blank" rel="noopener noreferrer"
-                aria-label="Pexels">Pexels ↗</a></li>
+            {footerLinks.map((link) => {
+              return (
+                <li>
+                  <a href={link.href} aria-label={link.ariaLabel}>
+                    <span>{link.label}</span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </footer>
         <div class="colophon">
