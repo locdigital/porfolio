@@ -499,7 +499,7 @@
     }
 
     .header-menu a.active {
-      font-weight: 700;
+      font-weight: 500;
     }
 
     .header-menu .nav-icon {
@@ -1534,6 +1534,12 @@
       margin-top: clamp(45px, 5.5vw, 70px);
     }
 
+    .footer-container {
+      width: min(calc(100% - (var(--page-gutter) * 2)), var(--main-content-max));
+      max-width: var(--main-content-max);
+      margin-inline: auto;
+    }
+
     .footer {
       display: flex;
       align-items: center;
@@ -1749,7 +1755,7 @@
 
       .mobile-pill-link.active {
         color: var(--text);
-        font-weight: 700;
+        font-weight: 500;
         background: rgba(0, 0, 0, 0.04);
       }
 
@@ -2897,4 +2903,105 @@
 
 .skeleton-loading-img.loaded {
   opacity: 1 !important;
+}
+
+@media (max-width: 620px) {
+  main p {
+    font-size: 0.625rem !important;
+  }
+
+  main :where(
+    button,
+    [role="button"],
+    a[class*="button"],
+    a[class*="btn"],
+    .link-primary,
+    .link-secondary,
+    .card-cta
+  ) {
+    font-size: 0.625rem !important;
+  }
+
+  main :where(
+    button,
+    [role="button"],
+    a[class*="button"],
+    a[class*="btn"]
+  ) :where(*) {
+    font-size: inherit !important;
+  }
+
+  main :where(
+    .tag,
+    .sidebar-tag,
+    .card-tag,
+    .plan-tag,
+    .article-tags span,
+    .project-tools span,
+    .sidebar-tags li,
+    .loc-pill-list li,
+    .loc-score-pill,
+    .loc-fact-pill,
+    .popular-badge,
+    .pane-badge,
+    .badge,
+    [class*="badge"],
+    [class*="chip"]
+  ) {
+    font-size: 0.625rem !important;
+  }
+
+  main :where(
+    .tag,
+    .sidebar-tag,
+    .card-tag,
+    .plan-tag,
+    .article-tags span,
+    .project-tools span,
+    .sidebar-tags li,
+    .loc-pill-list li,
+    .loc-score-pill,
+    .loc-fact-pill,
+    .popular-badge,
+    .pane-badge,
+    .badge,
+    [class*="badge"],
+    [class*="chip"]
+  ) :where(*) {
+    font-size: inherit !important;
+  }
+
+  main :where(
+    h1,
+    h2,
+    h3,
+    .gear-hero-title,
+    .detail-title,
+    .career-map-title,
+    .hero-title,
+    .section-title,
+    .card-title,
+    .project-name,
+    .about-hero-title,
+    .cms-page-header h1,
+    .home-projects-head h2
+  ) {
+    font-size: 1.5625rem !important;
+  }
+
+  main .gear-hero-title,
+  main .detail-title,
+  main .career-map-title,
+  main .hero-title,
+  main .section-title,
+  main .card-title,
+  main .project-name,
+  main .about-hero-title,
+  main .home-projects-head h2 {
+    font-size: 1.5625rem !important;
+  }
+
+  main .typing-line {
+    font-size: 1.875rem !important;
+  }
 }

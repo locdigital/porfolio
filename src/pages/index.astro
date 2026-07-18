@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 import DraggableCollage from "../components/ui/draggable-collage";
-import MobileAboutPanel from "../components/ui/MobileAboutPanel.astro";
 
 const pageTitle = "Nguyen Phuc Loc | Senior Performance Marketing Executive";
 const pageDescription = "Senior Performance Marketing Executive scaling multi-channel paid media, TikTok Shop GMV, SEO growth, and AI-powered conversion funnels.";
@@ -70,9 +69,8 @@ const heroAbout = { src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqS
     </section>
 
     <!-- PLAYGROUND ------------------------------ -->
-    <section class="relative w-full h-auto md:h-[100dvh] overflow-visible md:overflow-hidden toki-r" data-d="5" aria-label="Interactive collage">
-      <MobileAboutPanel portraitSrc={heroAbout.src} />
-      <div class="hidden md:block h-full w-full">
+    <section class="relative hidden w-full h-[100dvh] overflow-hidden toki-r md:block" data-d="5" aria-label="Interactive collage">
+      <div class="h-full w-full">
         <DraggableCollage client:idle portraitSrc={heroAbout.src} />
       </div>
     </section>

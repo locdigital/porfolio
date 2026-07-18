@@ -274,7 +274,7 @@ const creativeWorkSchema = {
   /* ── Meta row ── */
   .detail-meta {
     display: flex;
-    gap: clamp(28px, 5vw, 64px);
+    gap: clamp(40px, 7.15vw, 91px);
     padding-top: 24px;
     border-top: 1px solid var(--divider);
   }
@@ -527,11 +527,27 @@ const creativeWorkSchema = {
 
     .detail-meta {
       flex-wrap: wrap;
-      gap: 24px;
+      gap: 34px;
     }
   }
 
   @media (max-width: 600px) {
+    .project-detail-page {
+      --work-mobile-copy: 0.625rem;
+    }
+
+    .meta-label,
+    .meta-value,
+    .detail-summary,
+    .detail-para,
+    .detail-link,
+    .sidebar-label,
+    .sidebar-tag,
+    .sidebar-value,
+    .sidebar-link {
+      font-size: var(--work-mobile-copy);
+    }
+
     .project-nav-inner {
       grid-template-columns: 1fr;
     }

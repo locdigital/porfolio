@@ -902,6 +902,14 @@ function hasDetailsFor(loc: PhotoLocationView) {
       display: none !important;
     }
 
+    .photos-nav-link {
+      font-size: 0.75rem;
+    }
+
+    .photos-nav-count {
+      font-size: 0.625rem;
+    }
+
     .loc-grid {
       column-count: 1;
     }
@@ -912,13 +920,23 @@ function hasDetailsFor(loc: PhotoLocationView) {
     }
 
     .loc-section {
-      --loc-prose-size: 0.875rem;
-      --loc-sidebar-size: 0.875rem;
+      --loc-prose-size: 0.625rem;
+      --loc-sidebar-size: 0.625rem;
     }
 
     .loc-fact-pill {
       width: 100%;
       min-width: 0;
+    }
+
+    .loc-fact-pill,
+    .loc-fact-pill span,
+    .loc-fact-pill strong,
+    .loc-text-link,
+    .loc-link-list a,
+    .loc-score-pill,
+    .loc-score-pill strong {
+      font-size: 0.625rem !important;
     }
 
     .loc-pill-list,
