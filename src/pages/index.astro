@@ -10,6 +10,7 @@ const heroAbout = { src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqS
 <Layout
   title={pageTitle}
   description={pageDescription}
+  hideHeader={true}
   schema={[
     pageSchema({
       url: absoluteUrl("/"),
@@ -27,51 +28,10 @@ const heroAbout = { src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqS
        MAIN
   ============================================================ -->
   <main style="display:flex;flex-direction:column;">
-
-    <!-- CAREER ---------------------------------- -->
-    <section class="career-map toki-r" data-d="1" aria-label="Past, current, and future work">
-      <div class="container career-map-container">
-        <div class="career-map-intro career-map-intro--horizontal">
-          <div class="career-map-statement">
-            <h1 class="career-map-title career-map-title--typing">
-              <span class="typing-line" style="--steps: 14; --target: 14ch; --typing-delay: 0ms;">Design Better.</span>
-              <span class="typing-line" style="--steps: 15; --target: 15ch; --typing-delay: 820ms;">Market Smarter.</span>
-              <span class="typing-line" style="--steps: 13; --target: 13ch; --typing-delay: 1640ms;">Scale Faster.</span>
-            </h1>
-            <p class="career-map-description">
-              loc.digital helps businesses grow through modern websites, strategic social media, digital marketing, and AI automation&mdash;creating systems that save time, attract customers, and deliver measurable results.
-            </p>
-          </div>
-
-          <div class="career-map-copy">
-            <div class="career-map-copy-item career-map-copy-item--current">
-              <span>Now</span>
-              <p>
-                Building growth at <strong>AnyMind Group</strong>.
-              </p>
-            </div>
-            <div class="career-map-copy-item">
-              <span>Systems</span>
-              <p>
-                Media spend into measurable revenue across TikTok Shop, Meta, Google, SEO, landing pages, and AI-assisted funnels.
-              </p>
-            </div>
-            <div class="career-map-copy-item">
-              <span>Focus</span>
-              <p>
-                Commerce scaling, branch launches, and creative testing systems in Vietnam. <a href="mailto:hi@loc.digital">Let’s talk.</a>
-              </p>
-            </div>
-            <small>SAIGON, VIETNAM / PERFORMANCE, SEO, AI FUNNELS</small>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- PLAYGROUND ------------------------------ -->
-    <section class="relative hidden w-full h-[100dvh] overflow-hidden toki-r md:block" data-d="5" aria-label="Interactive collage">
+    <section class="relative w-full h-[100dvh] overflow-hidden toki-r" data-d="1" aria-label="Interactive portfolio collage">
       <div class="h-full w-full">
-        <DraggableCollage client:idle portraitSrc={heroAbout.src} />
+        <DraggableCollage client:load portraitSrc={heroAbout.src} />
       </div>
     </section>
 

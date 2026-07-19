@@ -433,8 +433,7 @@ import Layout from "../layouts/Layout.astro";
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     padding: 12px 16px;
-    border-radius: 16px;
-    border-top-left-radius: 4px;
+    border-radius: 4px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.5);
   }
@@ -566,7 +565,7 @@ import Layout from "../layouts/Layout.astro";
     align-items: center;
     gap: 16px;
     padding: 12px 14px;
-    border-radius: 16px;
+    border-radius: 4px;
     border: 1px solid rgba(232, 232, 226, 0.85);
     background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(14px);
@@ -595,7 +594,7 @@ import Layout from "../layouts/Layout.astro";
   .plink-thumb {
     width: 112px;
     height: 56px;
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
     flex-shrink: 0;
     background: transparent;
@@ -647,13 +646,10 @@ import Layout from "../layouts/Layout.astro";
     flex-shrink: 0;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
-    border: 1px solid var(--divider);
     display: grid;
     place-items: center;
     color: var(--muted);
     transition:
-      border-color 0.22s ease,
       color 0.22s ease,
       transform 0.22s ease;
   }
@@ -664,7 +660,6 @@ import Layout from "../layouts/Layout.astro";
   }
 
   .plink-card:hover .plink-arrow {
-    border-color: var(--accent-solid);
     color: var(--accent-solid);
     transform: translateX(3px);
   }

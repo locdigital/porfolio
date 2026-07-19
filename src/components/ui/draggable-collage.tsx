@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from 'lucide-react';
 
@@ -27,6 +27,7 @@ interface CardProps {
   onPointerDown?: () => void;
   zIndex?: number;
   noShadow?: boolean;
+  revealDelay?: number;
 }
 
 function DraggableCard({ 
@@ -45,10 +46,12 @@ function DraggableCard({
   onMouseLeave,
   onPointerDown,
   zIndex = 1,
-  noShadow = false
+  noShadow = false,
+  revealDelay = 0
 }: CardProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const shouldReduceMotion = useReducedMotion();
   const { x: initialX = 0, y: initialY = 0, ...restStyle } = style as React.CSSProperties & {
     x?: number;
     y?: number;
@@ -91,6 +94,8 @@ function DraggableCard({
           isDraggingRef.current = false;
         }
       }}
+      initial={shouldReduceMotion ? false : { opacity: 0, filter: "blur(12px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
       style={{ ...restStyle, x, y, rotate, scale: initialScale, zIndex }}
       whileDrag={{ 
         scale: initialScale * 1.08, 
@@ -101,7 +106,12 @@ function DraggableCard({
         scale: initialScale * 1.03,
         ...(noShadow ? {} : { boxShadow: "0 15px 30px -8px rgba(0, 0, 0, 0.12)" }),
       }}
-      transition={{ duration: 0 }}
+      transition={shouldReduceMotion
+        ? { duration: 0 }
+        : {
+            opacity: { duration: 0.72, delay: revealDelay / 1000, ease: [0.16, 1, 0.3, 1] },
+            filter: { duration: 0.82, delay: revealDelay / 1000, ease: [0.16, 1, 0.3, 1] },
+          }}
       className={cn("absolute cursor-grab active:cursor-grabbing select-none", className)}
     >
       {children}
@@ -114,30 +124,11 @@ function DraggableCard({
 // ----------------------------------------------------
 export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNwarCDg0EFydvVs3BXGZR" }: DraggableCollageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const positionStorageKey = 'loc-draggable-collage-positions-v2';
+  const shouldReduceMotion = useReducedMotion();
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>({});
 
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(positionStorageKey);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object') {
-        setSavedPositions(parsed);
-      }
-    } catch {
-      window.localStorage.removeItem(positionStorageKey);
-    }
-  }, []);
-
   const keepCardPosition = (id: string, position: { x: number; y: number }) => {
-    setSavedPositions(prev => {
-      const next = { ...prev, [id]: position };
-      try {
-        window.localStorage.setItem(positionStorageKey, JSON.stringify(next));
-      } catch {}
-      return next;
-    });
+    setSavedPositions(prev => ({ ...prev, [id]: position }));
   };
 
   // Stacking z-index tracking
@@ -318,6 +309,61 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         .sound-animate-2 { animation: soundwave-bounce 2.6s ease-in-out infinite alternate 0.6s; }
         .sound-animate-3 { animation: soundwave-bounce 1.6s ease-in-out infinite alternate 0.1s; }
         .sound-animate-4 { animation: soundwave-bounce 2.0s ease-in-out infinite alternate 0.45s; }
+
+        @keyframes collage-reload-fade {
+          from {
+            opacity: 0;
+            filter: blur(12px);
+          }
+          to {
+            opacity: 1;
+            filter: blur(0);
+          }
+        }
+
+        .mobile-about-panel > * {
+          opacity: 0;
+          animation: collage-reload-fade 760ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          animation-delay: var(--mobile-reveal-delay, 0ms);
+        }
+
+        .mobile-about-panel {
+          overflow-x: hidden;
+        }
+
+        .mobile-about-panel > *,
+        .mobile-about-panel .grid,
+        .mobile-about-panel .grid > * {
+          min-width: 0;
+        }
+
+        .mobile-split-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 0.75rem;
+          width: 100%;
+        }
+
+        @media (max-width: 520px) {
+          .mobile-split-grid {
+            grid-template-columns: minmax(0, 1fr);
+          }
+        }
+
+        .mobile-about-panel > :nth-child(1) { --mobile-reveal-delay: 120ms; }
+        .mobile-about-panel > :nth-child(2) { --mobile-reveal-delay: 240ms; }
+        .mobile-about-panel > :nth-child(3) { --mobile-reveal-delay: 360ms; }
+        .mobile-about-panel > :nth-child(4) { --mobile-reveal-delay: 480ms; }
+        .mobile-about-panel > :nth-child(5) { --mobile-reveal-delay: 600ms; }
+        .mobile-about-panel > :nth-child(6) { --mobile-reveal-delay: 720ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .mobile-about-panel > * {
+            opacity: 1;
+            filter: none;
+            animation: none;
+          }
+        }
       ` }} />
 
       {/* Grid background mesh */}
@@ -332,13 +378,13 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
       {/* ==============================================
           MOBILE CONTAINER (md:hidden list layout)
           ============================================== */}
-      <div className="mobile-about-panel md:hidden h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10">
-        <h2 className="italic text-[var(--type-display-lg)] leading-[1.05] mb-2 font-light" style={{ fontFamily: 'var(--serif)' }}>
+      <div className="mobile-about-panel lg:hidden h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex flex-col gap-3 px-4 pt-14 pb-8 pointer-events-auto relative z-10">
+        <h2 className="max-w-[9.5ch] italic text-[clamp(2.55rem,11vw,3.15rem)] leading-[0.96] mb-2 font-light" style={{ fontFamily: 'var(--serif)' }}>
           I turn paid traffic into profit.
         </h2>
 
         {/* Sub-grid 1: Profile and Available status */}
-        <div className="grid grid-cols-2 gap-3" style={{ fontFamily: 'var(--sans)' }}>
+        <div className="mobile-split-grid" style={{ fontFamily: 'var(--sans)' }}>
           <div className="bg-card border border-border/60 rounded-xl p-2.5 pb-6 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)] -rotate-[2deg]">
             <div className="overflow-hidden rounded-lg w-full">
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
@@ -419,7 +465,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         </div>
 
         {/* Sub-grid 3: Details */}
-        <div className="grid grid-cols-2 gap-3" style={{ fontFamily: 'var(--sans)' }}>
+        <div className="mobile-split-grid" style={{ fontFamily: 'var(--sans)' }}>
           <div className="bg-[#FF6B47] text-white rounded-xl px-4 py-4 -rotate-[1deg]">
             <p className="text-[var(--type-micro)] leading-snug">CrossFit before work,<br />restaurants on weekends,<br />music always on.</p>
           </div>
@@ -456,7 +502,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           ============================================== */}
       <div 
         ref={containerRef}
-        className="hidden md:block absolute inset-0 z-10 overflow-hidden w-full h-full"
+        className="hidden lg:block absolute inset-0 z-10 overflow-hidden w-full h-full"
         style={{ cursor: 'none' }}
         onMouseMove={(e) => {
           const rect = containerRef.current?.getBoundingClientRect();
@@ -469,11 +515,21 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         onMouseLeave={() => { setCursorVisible(false); setCursorLabel(''); }}
       >
         {/* Background Center Header */}
-        <div className="absolute inset-0 z-0 flex flex-col items-center justify-center px-8 -translate-y-[4%] pointer-events-none">
+        <motion.div
+          className="absolute inset-0 z-0 flex flex-col items-center justify-center px-8 -translate-y-[4%] pointer-events-none"
+          initial={shouldReduceMotion ? false : { opacity: 0, filter: "blur(10px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={shouldReduceMotion
+            ? { duration: 0 }
+            : {
+                opacity: { duration: 0.86, delay: 0.18, ease: [0.16, 1, 0.3, 1] },
+                filter: { duration: 0.92, delay: 0.18, ease: [0.16, 1, 0.3, 1] },
+              }}
+        >
           <h2 className="collage-headline italic text-center whitespace-nowrap font-light" style={{ fontFamily: 'var(--serif)' }}>
             I turn paid traffic into profit.
           </h2>
-        </div>
+        </motion.div>
 
         {/* Cursor-following pill label */}
         <motion.div
@@ -512,11 +568,12 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           initialRotate={-5}
           savedPosition={savedPositions.portrait}
           onPositionChange={keepCardPosition}
-          className="top-[10%] left-[5%]"
+          className="top-[10%] left-[15%]"
           onPointerDown={() => bringToFront('portrait')}
           zIndex={cardZIndices.portrait}
           onMouseEnter={() => setCursorLabel("that's me 👋")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={280}
         >
           <div className="bg-card border border-border/60 rounded-xl p-3 pb-8 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)]">
             <div className="overflow-hidden rounded-lg w-[160px]">
@@ -538,6 +595,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.available}
           onMouseEnter={() => setCursorLabel("let's work together ✦")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={580}
         >
           <div className="bg-[#BDF8D1] border border-[#4fb77a]/25 text-[#073b24] rounded-xl px-6 py-5 w-[198px] shadow-lg">
             <div className="flex items-center gap-2 mb-3">
@@ -569,6 +627,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.spotify}
           onMouseEnter={() => setCursorLabel("currently vibing 🎵")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={380}
         >
           <div className="bg-[#444444] text-background rounded-xl p-4 w-[244px] shadow-xl">
             <div className="flex items-center gap-3 mb-3">
@@ -634,6 +693,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.movie}
           onMouseEnter={() => setCursorLabel("still watching 🎬")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={1180}
         >
           <div className="bg-card border border-border/60 rounded-xl p-4 w-[180px] shadow-sm">
             <p className="collage-card-label text-muted-foreground mb-2.5">Currently Watching</p>
@@ -656,11 +716,12 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           initialRotate={3}
           savedPosition={savedPositions.interests}
           onPositionChange={keepCardPosition}
-          className="bottom-[7%] left-[5%]"
+          className="bottom-[6%] left-[24%]"
           onPointerDown={() => bringToFront('interests')}
           zIndex={cardZIndices.interests}
           onMouseEnter={() => setCursorLabel("yes, all of these ✦")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={980}
         >
           <div className="bg-card border border-border/60 rounded-xl px-6 py-5 shadow-card w-[250px]">
             <p className="collage-card-label text-muted-foreground mb-3">Interests</p>
@@ -687,6 +748,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.linkedin}
           onMouseEnter={() => setCursorLabel("find me here ✦")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={1280}
         >
           <a href="https://www.linkedin.com/in/phucloc/" target="_blank" rel="noopener noreferrer" draggable="false" className="block border border-white/30 rounded-xl px-5 py-4 w-[190px] shadow-lg hover:opacity-95 transition-all text-white bg-[#0a66c2]" style={{ fontFamily: 'var(--sans)' }}>
             <p className="collage-card-label text-white/60 mb-2">Find Me Online</p>
@@ -709,6 +771,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.resume}
           onMouseEnter={() => setCursorLabel("download CV ✦")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={780}
         >
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-2xl px-5 py-4 w-[180px] shadow-lg hover:opacity-95 transition-all select-none" style={{ fontFamily: 'var(--sans)' }}>
             <p className="collage-card-label opacity-40 mb-3 text-[11px] uppercase tracking-wider font-semibold">CV</p>
@@ -734,6 +797,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.notion}
           onMouseEnter={() => setCursorLabel("let's talk ✦")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={480}
         >
           <a href="mailto:hi@loc.digital" draggable="false" className="block bg-foreground text-background rounded-xl px-5 py-4 w-[190px] shadow-lg hover:opacity-95 transition-all" style={{ fontFamily: 'var(--sans)' }}>
             <p className="collage-card-label text-background/50 mb-2">Open To Work</p>
@@ -756,6 +820,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.learning}
           onMouseEnter={() => setCursorLabel("still learning ✦")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={880}
         >
           <div className="bg-[#FFF3CD] border border-[#F0C040]/40 text-[#7a5c00] rounded-xl px-4 py-3 w-[170px] shadow-sm" style={{ fontFamily: 'var(--sans)' }}>
             <p className="text-[var(--type-micro)] leading-snug">
@@ -781,6 +846,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           zIndex={cardZIndices.clock}
           onMouseEnter={() => setCursorLabel("Saigon time 🕐")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={680}
         >
           <div className="bg-card border border-border/60 rounded-xl px-5 py-4 shadow-card w-fit whitespace-nowrap">
             <p className="collage-card-label text-muted-foreground mb-2">Saigon, VN</p>
@@ -808,6 +874,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           noShadow
           onMouseEnter={() => setCursorLabel("read my writings ✦")}
           onMouseLeave={() => setCursorLabel('')}
+          revealDelay={1080}
         >
           <a className="file relative w-60 h-40 cursor-pointer [perspective:1500px] z-50 block" href="/blog" draggable="false">
             {/* Folder background */}
