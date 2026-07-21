@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getPhotoLocations } from "../lib/cms";
-import BlurText from "../components/ui/BlurText.astro";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
 import { generateSlug } from "../lib/writing/slug";
 
@@ -41,7 +40,6 @@ const optimizedLocations = await Promise.all(
   })),
 );
 const photosHeadline = "Places I've <em>wandered.</em>";
-const photosHeadlineText = "Places I've wandered.";
 type PhotoLocationView = Omit<Awaited<ReturnType<typeof getPhotoLocations>>[number], "photos"> & {
   photos?: unknown[];
 };
@@ -100,22 +98,14 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
 <Layout title="Photos | Phuc Loc Nguyen">
 
-  <main class="gear-page">
+  <main class="gear-page photos-page">
     <div class="gear-container">
       <!-- PAGE HERO -->
       <section class="gear-hero photos-hero-copy" aria-label="Photos introduction">
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My photos</span>
         </div>
-        <h1 class="sr-only" set:html={photosHeadline} />
-        <BlurText
-          text={photosHeadlineText}
-          animateBy="words"
-          direction="top"
-          delay={70}
-          stepDuration={0.42}
-          className="gear-hero-title"
-        />
+        <h1 class="gear-hero-title" set:html={photosHeadline} />
         <p class="gear-intro">
           Shot on whatever was in my pocket. These are the places that stayed with me.
         </p>
@@ -365,6 +355,17 @@ function hasDetailsFor(loc: PhotoLocationView) {
 </script>
 
 <style>
+  :global(.photos-page .reveal),
+  :global(.photos-page .r),
+  :global(.photos-page .toki-r),
+  :global(.photos-page .animated-card),
+  :global(.photos-page .reveal.in),
+  :global(.photos-page .r.in),
+  :global(.photos-page .toki-r.in),
+  :global(.photos-page .animated-card.card-in) {
+    filter: none !important;
+  }
+
   /* ------ Page ------ */
   .photos-page {
     padding-top: var(--hdr-h);
@@ -903,11 +904,11 @@ function hasDetailsFor(loc: PhotoLocationView) {
     }
 
     .photos-nav-link {
-      font-size: 0.75rem;
+      font-size: var(--type-caption);
     }
 
     .photos-nav-count {
-      font-size: 0.625rem;
+      font-size: var(--type-caption);
     }
 
     .loc-grid {
@@ -920,8 +921,8 @@ function hasDetailsFor(loc: PhotoLocationView) {
     }
 
     .loc-section {
-      --loc-prose-size: 0.625rem;
-      --loc-sidebar-size: 0.625rem;
+      --loc-prose-size: var(--type-body);
+      --loc-sidebar-size: var(--type-caption);
     }
 
     .loc-fact-pill {
@@ -936,7 +937,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
     .loc-link-list a,
     .loc-score-pill,
     .loc-score-pill strong {
-      font-size: 0.625rem !important;
+      font-size: var(--type-caption) !important;
     }
 
     .loc-pill-list,

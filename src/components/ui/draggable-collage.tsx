@@ -773,7 +773,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           onMouseLeave={() => setCursorLabel('')}
           revealDelay={780}
         >
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-2xl px-5 py-4 w-[180px] shadow-lg hover:opacity-95 transition-all select-none" style={{ fontFamily: 'var(--sans)' }}>
+          <a href="/resume" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-2xl px-5 py-4 w-[180px] shadow-lg hover:opacity-95 transition-all select-none" style={{ fontFamily: 'var(--sans)' }}>
             <p className="collage-card-label opacity-40 mb-3 text-[11px] uppercase tracking-wider font-semibold">CV</p>
             <div className="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 shrink-0 opacity-80"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>

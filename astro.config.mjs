@@ -7,9 +7,6 @@ import vercel from '@astrojs/vercel/serverless';
 export default defineConfig({
   site: 'https://loc.digital',
   output: 'server',
-  redirects: {
-    '/resume': '/resume.pdf',
-  },
   adapter: vercel({
     imageService: true,
     imagesConfig: {

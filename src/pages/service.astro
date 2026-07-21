@@ -756,7 +756,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .section-desc {
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: 1.62;
     color: #6e6e6e;
   }
@@ -946,8 +946,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-top: 18px;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
   }
 
   .saas-pagination-dot {
@@ -973,7 +973,29 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   .saas-pagination-dot.active {
     width: 34px;
-    background: var(--text);
+    color: var(--text);
+    background: rgba(28, 28, 28, 0.16);
+  }
+
+  .saas-pagination-dot.active::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: service-pagination-progress 4000ms linear forwards;
+  }
+
+  .saas-pagination-dot.active.paused::after {
+    animation-play-state: paused;
+  }
+
+  @keyframes service-pagination-progress {
+    to {
+      transform: scaleX(1);
+    }
   }
 
   .saas-card .card-header {
@@ -1011,7 +1033,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .saas-card .card-desc {
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: 1.6;
     color: #6e6e6e;
     margin-bottom: 28px;
@@ -1226,7 +1248,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .pane-desc {
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     color: #6e6e6e;
     line-height: 1.6;
     margin-bottom: 24px;
@@ -1263,7 +1285,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .pane-cap-desc {
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     color: #6e6e6e;
     line-height: 1.5;
     padding-left: 16px;
@@ -1409,7 +1431,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .plan-desc {
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: 1.55;
     color: #6e6e6e;
   }
@@ -1639,7 +1661,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .cta-desc {
-    font-size: 0.875rem;
+    font-size: var(--type-body);
     line-height: 1.7;
     color: #6e6e6e;
     max-width: 600px;
@@ -1651,6 +1673,15 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     gap: 16px;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .gear-page p {
+    font-size: var(--type-body);
+  }
+
+  .gear-page li,
+  .gear-page li span {
+    font-size: var(--type-body);
   }
 
   /* ── Responsive ── */
@@ -1702,7 +1733,33 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     }
 
     .pricing-grid {
-      grid-template-columns: 1fr;
+      display: flex;
+      gap: 0;
+      margin-inline: calc(var(--page-gutter) * -1);
+      padding-inline: var(--page-gutter);
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--page-gutter);
+      -webkit-overflow-scrolling: touch;
+      mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
+      scrollbar-width: none;
+    }
+
+    .pricing-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pricing-card {
+      flex: 0 0 min(84vw, 360px);
+      scroll-snap-align: start;
+      border-radius: var(--rounded-md);
+    }
+
+    .pricing-card + .pricing-card {
+      margin-left: 14px;
     }
 
     .saas-grid {
