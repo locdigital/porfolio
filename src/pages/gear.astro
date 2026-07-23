@@ -181,8 +181,8 @@ const gearHeadlineText = safeGearHeadline.replace(/<\/?em>/g, "");
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
-        <h1 class="sr-only" set:html={safeGearHeadline} />
         <BlurText
+          as="h1"
           text={gearHeadlineText}
           animateBy="words"
           direction="top"

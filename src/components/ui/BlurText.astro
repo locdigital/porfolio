@@ -1,6 +1,7 @@
 ---
 interface Props {
   text: string;
+  as?: "p" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   delay?: number;
   className?: string;
   animateBy?: "words" | "letters";
@@ -10,17 +11,19 @@ interface Props {
 
 const {
   text = "",
+  as = "p",
   delay = 60,
   className = "",
   animateBy = "words",
   direction = "top",
   stepDuration = 0.38,
-} = Astro.props;
+} = Astro.props as Props;
 
+const Tag = as;
 const elements = animateBy === "words" ? text.split(" ") : text.split("");
 ---
 
-<p class={`blur-text-container ${className}`} data-direction={direction} data-delay={delay} data-duration={stepDuration}>
+<Tag class={`blur-text-container ${className}`} data-direction={direction} data-delay={delay} data-duration={stepDuration}>
   {elements.map((segment, index) => (
     <span 
       class="blur-text-word inline-block will-change-[transform,filter,opacity]"
@@ -30,7 +33,7 @@ const elements = animateBy === "words" ? text.split(" ") : text.split("");
       {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
     </span>
   ))}
-</p>
+</Tag>
 
 <style>
   .blur-text-container {

@@ -7,7 +7,6 @@ import { absoluteUrl, pageSchema } from "../../lib/seo";
 const sortedProjects = await getProjects();
 const workTitle = "Work | Phuc Loc Nguyen";
 const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
-const workHeadline = "Selected work & <em>case studies</em>";
 const workHeadlineText = "Selected work &\ncase studies";
 ---
 
@@ -43,8 +42,8 @@ const workHeadlineText = "Selected work &\ncase studies";
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My work</span>
         </div>
-        <h1 class="sr-only" set:html={workHeadline} />
         <BlurText
+          as="h1"
           text={workHeadlineText}
           animateBy="words"
           direction="top"
@@ -264,7 +263,7 @@ const workHeadlineText = "Selected work &\ncase studies";
 
   .tag {
     font-family: var(--mono);
-    font-size: var(--type-caption);
+    font-size: var(--type-micro) !important;
     letter-spacing: 0.02em;
     color: color-mix(in srgb, var(--text) 72%, var(--muted));
     border: 1px solid var(--divider);
