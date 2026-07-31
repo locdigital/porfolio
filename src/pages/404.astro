@@ -63,10 +63,10 @@ import Layout from "../layouts/Layout.astro";
 
           <!-- Actual content - Title (hidden initially) -->
           <div class="notfound-content-title" id="nf-title">
-            <h1 class="notfound-heading">
+            <div class="notfound-heading" style="font-size: 42px !important; line-height: 1.2 !important;">
               Hmm, that page doesn't exist.<br>
-              <em class="notfound-sub">Want to see my work instead?</em>
-            </h1>
+              <em class="notfound-sub" style="font-size: 42px !important; line-height: 1.2 !important;">Want to see my work instead?</em>
+            </div>
           </div>
 
           <!-- Actual content - Cards & Navigation (hidden initially) -->
@@ -201,6 +201,7 @@ import Layout from "../layouts/Layout.astro";
      ANIMATED GRADIENT BLOBS
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
   .notfound-bg {
+    display: none;
     position: absolute;
     inset: 0;
     z-index: 0;
@@ -262,6 +263,7 @@ import Layout from "../layouts/Layout.astro";
      NOISE OVERLAY (adds depth / premium texture)
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
   .notfound-noise {
+    display: none;
     position: absolute;
     inset: 0;
     z-index: 1;
@@ -350,7 +352,7 @@ import Layout from "../layouts/Layout.astro";
   .avatar-ring {
     width: 52px;
     height: 52px;
-    border-radius: 50%;
+    border-radius: 4px;
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.75);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
@@ -367,7 +369,7 @@ import Layout from "../layouts/Layout.astro";
     height: 100% !important;
     max-width: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: var(--image-radius);
     display: block;
   }
 
@@ -481,7 +483,7 @@ import Layout from "../layouts/Layout.astro";
 
   .notfound-heading {
     font-family: var(--serif);
-    font-size: var(--type-section-title);
+    font-size: 42px !important;
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.02em;
@@ -565,7 +567,7 @@ import Layout from "../layouts/Layout.astro";
     align-items: center;
     gap: 16px;
     padding: 12px 14px;
-    border-radius: 4px;
+    border-radius: var(--image-radius);
     border: 1px solid rgba(232, 232, 226, 0.85);
     background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(14px);
@@ -594,7 +596,7 @@ import Layout from "../layouts/Layout.astro";
   .plink-thumb {
     width: 112px;
     height: 56px;
-    border-radius: 4px;
+    border-radius: var(--image-radius);
     overflow: hidden;
     flex-shrink: 0;
     background: transparent;
@@ -615,7 +617,7 @@ import Layout from "../layouts/Layout.astro";
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 0;
+    border-radius: var(--image-radius);
     display: block;
     transition: transform 0.4s var(--ease-out);
   }
@@ -691,10 +693,6 @@ import Layout from "../layouts/Layout.astro";
       gap: 14px;
     }
 
-    .notfound-heading {
-      font-size: var(--type-card-title);
-    }
-
     .plink-thumb {
       width: 80px;
       height: 40px;
@@ -709,5 +707,16 @@ import Layout from "../layouts/Layout.astro";
     .plink-title {
       font-size: var(--type-caption);
     }
+  }
+
+  html body .notfound-heading,
+  html body .notfound-heading .notfound-sub,
+  html body .notfound-heading em {
+    font-size: 42px !important;
+  }
+
+  html body .avatar-ring,
+  html body .avatar-img {
+    border-radius: 50% !important;
   }
 </style>

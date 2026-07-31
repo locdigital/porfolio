@@ -84,7 +84,10 @@ function enhanceHtmlHeadings(html: string) {
   return { html: htmlWithIds, toc };
 }
 
-let mdRendered: any = null;
+type MarkdownPost = NonNullable<typeof mdPost>;
+type MarkdownRenderResult = Awaited<ReturnType<MarkdownPost["render"]>>;
+
+let mdRendered: MarkdownRenderResult | null = null;
 let postTitle = "";
 let postDescription = "";
 let featuredImage: string | undefined;
@@ -382,7 +385,7 @@ const primaryCategory = tags[0] || "Writing";
     width: 34px;
     height: 34px;
     flex: 0 0 auto;
-    border-radius: 999px;
+    border-radius: var(--image-radius);
     object-fit: cover;
   }
 
@@ -410,14 +413,14 @@ const primaryCategory = tags[0] || "Writing";
     min-height: 0;
     overflow: hidden;
     border: 1px solid var(--article-border);
-    border-radius: var(--rounded-md);
+    border-radius: var(--image-radius);
     background: #ece8dc;
   }
 
   .article-cover img {
     width: 100%;
     height: 100%;
-    border-radius: 0;
+    border-radius: var(--image-radius);
     object-fit: cover;
     transform: scale(1.045);
     transition: transform 1.35s cubic-bezier(0.16, 1, 0.3, 1);

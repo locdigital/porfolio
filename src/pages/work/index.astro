@@ -1,13 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
-import BlurText from "../../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
+
+export const prerender = true;
 
 const sortedProjects = await getProjects();
 const workTitle = "Work | Phuc Loc Nguyen";
 const workDescription = "Selected projects by Phuc Loc Nguyen: paid media scaling, TikTok Shop growth, SEO, lead generation, and community strategy.";
-const workHeadlineText = "Selected work &\ncase studies";
+const workHeadlineHtml = "Selected work & <em>case studies</em>";
 ---
 
 <Layout
@@ -42,15 +43,7 @@ const workHeadlineText = "Selected work &\ncase studies";
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My work</span>
         </div>
-        <BlurText
-          as="h1"
-          text={workHeadlineText}
-          animateBy="words"
-          direction="top"
-          delay={70}
-          stepDuration={0.42}
-          className="gear-hero-title"
-        />
+        <h1 class="gear-hero-title" set:html={workHeadlineHtml} />
         <p class="gear-intro">
           Paid media scaling, TikTok Shop growth, technical SEO,
           lead generation, and community work across e-commerce,
@@ -71,7 +64,7 @@ const workHeadlineText = "Selected work &\ncase studies";
                 <a href={`/work/${project.slug}`} class="project-title-link">
                   <h2 class="project-name">{project.title}</h2>
                 </a>
-                <p class="project-summary">{project.summary}</p>
+                <div class="project-summary">{project.summary}</div>
 
                 <p class="project-tools">
                   {project.tags.map((tag) => (
@@ -79,16 +72,18 @@ const workHeadlineText = "Selected work &\ncase studies";
                   ))}
                 </p>
 
-                <div class="project-links">
-                  <a href={`/work/${project.slug}`} class="link-primary">
-                    See case study
-                  </a>
-                  {project.link && (
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" class="link-secondary">
-                      {project.linkLabel ?? "Visit site"}
+                {project.slug !== "playah" && (
+                  <div class="project-links">
+                    <a href={`/work/${project.slug}`} class="link-primary">
+                      See case study
                     </a>
-                  )}
-                </div>
+                    {project.link && (
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" class="link-secondary">
+                        {project.linkLabel ?? "Visit site"}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
 
               {project.coverImage && (
@@ -246,7 +241,9 @@ const workHeadlineText = "Selected work &\ncase studies";
   }
 
   .project-summary {
+    font-family: var(--sans);
     font-size: 0.875rem;
+    font-weight: 400;
     line-height: 1.72;
     color: #6e6e6e;
     margin-bottom: 20px;
@@ -285,7 +282,7 @@ const workHeadlineText = "Selected work &\ncase studies";
   }
 
   .link-primary {
-    font-size: var(--type-ui);
+    font-size: 12px;
     font-weight: 500;
     color: var(--text);
     text-decoration: underline;
@@ -301,7 +298,7 @@ const workHeadlineText = "Selected work &\ncase studies";
   }
 
   .link-secondary {
-    font-size: var(--type-ui);
+    font-size: 12px;
     font-family: var(--mono);
     color: color-mix(in srgb, var(--text) 72%, var(--muted));
     transition: color 0.25s ease;
@@ -319,7 +316,7 @@ const workHeadlineText = "Selected work &\ncase studies";
   }
 
   .project-card-img {
-    --thumb-radius: var(--rounded-md);
+    --thumb-radius: var(--image-radius);
     --thumb-border-width: 1.5px;
     --thumb-inner-radius: calc(var(--thumb-radius) - var(--thumb-border-width));
 
@@ -411,9 +408,8 @@ const workHeadlineText = "Selected work &\ncase studies";
       padding: 48px 0;
     }
 
-    /* On mobile: image first, text below */
     .project-visual {
-      order: -1;
+      display: none;
     }
 
     .project-summary {
@@ -432,6 +428,10 @@ const workHeadlineText = "Selected work &\ncase studies";
 
     .project-row-inner {
       padding: 36px 0;
+    }
+
+    .project-tools .tag {
+      font-size: 9px !important;
     }
 
     .project-links {

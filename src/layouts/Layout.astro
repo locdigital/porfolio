@@ -48,7 +48,7 @@ const footerLinks = [
 ---
 
 <!DOCTYPE html>
-<html lang="en" style="background:#FAFAF7">
+<html lang="en" style="background:#FAF8EE">
 
 <head>
   <meta charset="UTF-8">
@@ -219,6 +219,8 @@ const footerLinks = [
 </head>
 
 <body>
+  <div id="pipo-gradient-bg" class="pipo-gradient-bg" aria-hidden="true"></div>
+
   <!-- ============================================================
        HEADER
   ============================================================ -->
@@ -886,6 +888,85 @@ const footerLinks = [
         }
       });
     });
+  </script>
+
+  <script is:inline>
+    (() => {
+      const NOISE_LAYER = `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.305'/></svg>")`;
+      const SPEED = 0.86;
+      const MOTION_AMOUNT = 0.72;
+      const DIRECTION = 1;
+      const SEED = 1;
+
+      const blobs = [
+        {
+          x: 68.1,
+          y: 46.03,
+          rgb: '230, 176, 147',
+          stops: [10.28, 20.55, 30.83, 41.1],
+        },
+        {
+          x: 25.17,
+          y: 75.99,
+          rgb: '163, 206, 255',
+          stops: [11.15, 22.3, 33.45, 44.6],
+        },
+        {
+          x: 53.11,
+          y: 12.71,
+          rgb: '250, 249, 239',
+          stops: [16.66, 33.33, 49.99, 66.65],
+        },
+      ].map((blob, index) => ({
+        ...blob,
+        p: hashPhase(SEED + index * 17.31),
+        p2: hashPhase(SEED + index * 29.73 + 8.41),
+      }));
+
+      function hashPhase(value) {
+        const hashed = Math.sin(value * 127.1 + 311.7) * 43758.5453123;
+        return (hashed - Math.floor(hashed)) * Math.PI * 2;
+      }
+
+      function buildBlob(blob, ph) {
+        const x = blob.x + (Math.sin(ph * 0.55 + blob.p) - Math.sin(blob.p)) * 14 * MOTION_AMOUNT;
+        const y = blob.y + (Math.sin(ph * 0.43 + blob.p2) - Math.sin(blob.p2)) * 14 * MOTION_AMOUNT;
+        const [s1, s2, s3, s4] = blob.stops;
+
+        return `radial-gradient(circle at ${x}% ${y}%, rgba(${blob.rgb}, 1) 0%, rgba(${blob.rgb}, 0.844) ${s1}%, rgba(${blob.rgb}, 0.5) ${s2}%, rgba(${blob.rgb}, 0.156) ${s3}%, rgba(${blob.rgb}, 0) ${s4}%)`;
+      }
+
+      function applyPipoGradient(element, seconds) {
+        const ph = seconds * SPEED;
+        const spin = ph * DIRECTION;
+        element.style.backgroundImage = [NOISE_LAYER, ...blobs.map((blob) => buildBlob(blob, spin))].join(', ');
+      }
+
+      function startPipoGradient() {
+        const element = document.getElementById('pipo-gradient-bg');
+        if (!element) return;
+
+        if (window.__pipoGradientFrame) {
+          cancelAnimationFrame(window.__pipoGradientFrame);
+        }
+
+        applyPipoGradient(element, 0);
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        const start = performance.now();
+        const tick = (now) => {
+          applyPipoGradient(element, (now - start) / 1000);
+          window.__pipoGradientFrame = requestAnimationFrame(tick);
+        };
+
+        window.__pipoGradientFrame = requestAnimationFrame(tick);
+      }
+
+      document.addEventListener('astro:page-load', startPipoGradient);
+      if (document.readyState !== 'loading') startPipoGradient();
+    })();
   </script>
 
 </body>
