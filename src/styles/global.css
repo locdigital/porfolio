@@ -284,6 +284,19 @@
       text-wrap: pretty;
     }
 
+    mark,
+    .highlight-text {
+      background-color: #FFF88F;
+      color: #1C1C1C;
+      font-weight: 500;
+      border-radius: 3px;
+      padding: 1px 5px;
+      margin: 0 1px;
+      display: inline;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
     small,
     figcaption,
     caption {
@@ -3142,9 +3155,16 @@ html body :is(h1, #site-h1-size-override) {
   font-size: var(--site-h1-size) !important;
 }
 
-html body :is(h2, h3, h4, h5, h6, #site-heading-size-override) {
+html body :is(h2, h4, h5, h6, #site-heading-size-override) {
   font-family: var(--serif) !important;
   font-size: var(--site-heading-size) !important;
+}
+
+html body h3 {
+  font-family: var(--serif) !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
 }
 
 html body :is(p, div, span, #site-copy-size-override) {

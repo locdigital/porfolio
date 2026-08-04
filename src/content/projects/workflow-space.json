@@ -10,8 +10,11 @@
   "description": "Led performance marketing campaigns for new WorkFlow Space branch launches in Go Vap and District 8, managing approximately VND 300M in paid media budget.\n\nGenerated 2,000+ qualified leads and 4M+ impressions across launch campaigns while coordinating paid media, landing pages, and creative production.\n\nRebranded the visual identity and designed conversion-optimized landing pages for paid campaigns, driving 400+ website leads per month at a 35-40% conversion rate.\n\nOversaw production of 200+ creative assets and improved CTR by more than 70% through data-driven creative optimization.",
   "tools": ["Meta Ads", "Google Ads", "Landing Pages", "Creative Production", "Looker Studio"],
   "skills": ["Lead Generation", "Branch Launches", "Creative Optimization"],
-  "coverImage": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmbsYDVgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
-  "images": [],
+  "coverImage": "/images/workflow-dashboard.png",
+  "images": [
+    "/images/workflow-dashboard.png",
+    "/images/table-component.png"
+  ],
   "link": "https://www.workflowspace.vn/",
   "linkLabel": "Visit WorkFlow Space",
   "caseStudyLink": ""

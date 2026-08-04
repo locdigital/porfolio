@@ -1,10 +1,54 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import AboutHero from "../components/ui/AboutHero.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 
 const aboutTitle = "About | Phuc Loc Nguyen";
 const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance Marketing Executive focused on paid media, TikTok Shop growth, SEO, automation, and full-funnel execution.";
+
+const experiences = [
+  {
+    company: "Google",
+    role: "UX Design Intern",
+    when: "Summer 2026",
+    logo: "google",
+  },
+  {
+    company: "Apple",
+    role: "Product Design Intern",
+    when: "Summer 2025",
+    logo: "apple",
+  },
+  {
+    company: "Microsoft",
+    role: "Campus Ambassador",
+    when: "Fall 2025",
+    logo: "microsoft",
+  },
+  {
+    company: "Lenovo",
+    role: "Product Design Consultant",
+    when: "Spring 2025",
+    logo: "lenovo",
+  },
+  {
+    company: "SoFi",
+    role: "Product Design Consultant",
+    when: "Spring 2024",
+    logo: "sofi",
+  },
+];
+
+
+const skills = [
+  { name: "Meta Ads", desc: "Paid Social Campaigns & Attribution" },
+  { name: "Google Ads", desc: "Performance Max, Search & Web Conversion" },
+  { name: "TikTok Ads", desc: "Spark Ads, GMV Max & TikTok Shop" },
+  { name: "Google Analytics", desc: "Data Audits & GA4 Custom Reporting" },
+  { name: "Figma", desc: "Interface Design & Creative Mockups" },
+  { name: "n8n", desc: "AI-powered Funnel Automation" },
+  { name: "Ahrefs", desc: "SEO Keyword & Competitor Audits" },
+  { name: "Looker Studio", desc: "Dashboarding & Growth Analytics" },
+];
 ---
 
 <Layout
@@ -17,443 +61,203 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
     type: "AboutPage",
   })}
 >
-  <main class="about-minimal-page">
-    <div class="about-minimal-container">
-      <section class="about-intro gear-hero" aria-label="About me">
-        <AboutHero />
-      </section>
+  <main class="gear-page bg-background text-foreground">
+    <div class="about-container">
 
-      <section class="about-section">
-        <div class="about-section-header">
-          <p class="section-kicker">Selected work</p>
-          <h2 class="card-title">What I Do</h2>
-          <p class="card-desc">Campaigns, funnels, and communities scaled across e-commerce, education, and entertainment.</p>
-        </div>
-        <div class="about-section-body">
-          <div class="evidence-panel">
-            <div class="work-list">
-              <a href="/work/playah" class="work-list-item is-link">
-                <div class="item-main">PlayAh!</div>
-                <div class="item-desc">Revenue Scaling & TikTok Shop GMV</div>
-                <div class="item-meta">playahvietnam.com</div>
-              </a>
-              <a href="/work/workflow-space" class="work-list-item is-link">
-                <div class="item-main">WorkFlow Space</div>
-                <div class="item-desc">Branch Launches & Lead Generation</div>
-                <div class="item-meta">workflowspace.vn</div>
-              </a>
-              <a href="/work/tomato-childrens-home" class="work-list-item is-link">
-                <div class="item-main">TOMATO Children's Home</div>
-                <div class="item-desc">Marketing 360 & Enrollment Growth</div>
-                <div class="item-meta">education growth</div>
-              </a>
-              <a href="/work/pops-worldwide" class="work-list-item is-link">
-                <div class="item-main">POPS Worldwide</div>
-                <div class="item-desc">Technical SEO & Organic Growth</div>
-                <div class="item-meta">pops.vn</div>
-              </a>
-              <a href="/work/education-communities" class="work-list-item is-link">
-                <div class="item-main">Education Communities</div>
-                <div class="item-desc">3M+ and 1M Member Communities</div>
-                <div class="item-meta">founding member</div>
-              </a>
+      <!-- HERO SECTION (Erica Zoe Lee Layout) -->
+      <section class="gear-hero pb-12 md:pb-16 border-b border-border" aria-label="Introduction">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_260px] gap-10 md:gap-16 items-start">
+          
+          <!-- LEFT HERO CONTENT -->
+          <div>
+            <div class="page-kicker-wrapper mb-3">
+              <span class="page-kicker-text">About</span>
             </div>
+            <h1 class="font-display text-display-md sm:text-display-lg leading-[1.05] tracking-[-0.02em] text-foreground">
+              Hi there, I&rsquo;m Loc.
+            </h1>
+
+            <!-- BADGES / EYEBROW ROW -->
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 text-caption font-mono text-muted-foreground">
+              <span class="inline-flex items-center gap-2">
+                <svg viewBox="0 0 12.65 18.185" class="w-3 h-4 fill-current text-accent" aria-hidden="true">
+                  <path d="M 9.488 7.907 C 9.488 6.159 8.073 4.744 6.325 4.744 C 4.578 4.744 3.163 6.159 3.163 7.907 C 3.163 9.654 4.578 11.069 6.325 11.069 C 8.073 11.069 9.488 9.654 9.488 7.907 Z M 4.744 7.907 C 4.744 7.037 5.455 6.325 6.325 6.325 C 7.195 6.325 7.906 7.037 7.906 7.907 C 7.906 8.776 7.195 9.488 6.325 9.488 C 5.455 9.488 4.744 8.776 4.744 7.907 Z"/>
+                  <path d="M 5.867 18.012 C 6.001 18.121 6.167 18.185 6.325 18.185 C 6.483 18.185 6.649 18.13 6.784 18.012 C 7.021 17.812 12.674 13.132 12.65 7.27 C 12.65 3.263 9.812 0 6.325 0 C 2.838 0 0 3.263 0 7.27 C -0.024 13.123 5.629 17.812 5.867 18.012 Z M 6.325 1.827 C 8.942 1.827 11.069 4.271 11.069 7.279 C 11.085 11.314 7.598 14.94 6.325 16.131 C 5.052 14.94 1.566 11.323 1.581 7.279 C 1.581 4.271 3.708 1.827 6.325 1.827 Z"/>
+                </svg>
+                Ho Chi Minh City, Vietnam
+              </span>
+              <span class="inline-flex items-center gap-2">
+                <svg viewBox="0 0 18 18" class="w-4 h-4 stroke-current fill-none text-accent" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M 9 1 L 1 5 L 9 9 L 17 5 L 9 1 Z"/>
+                  <path d="M 4 6.6 V 11 C 4 12.3 6.2 13.4 9 13.4 C 11.8 13.4 14 12.3 14 11 V 6.6"/>
+                  <path d="M 17 5 V 9.5"/>
+                </svg>
+                Digital Marketing · FPT University (Honors)
+              </span>
+            </div>
+
+            <!-- BIO PARAGRAPHS -->
+            <div class="mt-6 space-y-4 text-body leading-[1.7] text-muted-foreground">
+              <p>
+                I&rsquo;ve always enjoyed the sensation of making things—whether scaling multi-channel paid media, designing conversion landing pages, or building automated marketing funnels. My early growth experiments sparked a deep interest in crafting campaign systems that feel intentional, high-converting, and joyful.
+              </p>
+              <p>
+                Today, I focus on designing accessible, data-driven growth strategies for e-commerce, education, and brand platforms. My approach bridges creative production with full-funnel analytics to turn ad spend into measurable, long-term ROI.
+              </p>
+            </div>
+
           </div>
-        </div>
-      </section>
 
-      <section class="about-section">
-        <div class="about-section-header">
-          <p class="section-kicker">Toolset & skills</p>
-          <h2 class="card-title">Toolset & Skills</h2>
-          <p class="card-desc">Platforms and systems I use to scale performance, attribution, SEO, and automation.</p>
-        </div>
-        <div class="about-section-body">
-          <div class="skills-grid">
-            <div class="skill-item">
-              <div class="item-main">Meta Ads</div>
-              <div class="item-desc">Paid Social Campaigns</div>
-              <div class="item-meta">facebook.com</div>
-            </div>
-            <div class="skill-item">
-              <div class="item-main">Google Ads</div>
-              <div class="item-desc">Performance Max, Search & Web Conversion</div>
-              <div class="item-meta">ads.google.com</div>
-            </div>
-            <div class="skill-item">
-              <div class="item-main">TikTok Ads</div>
-              <div class="item-desc">Spark Ads, GMV Max & TikTok Shop</div>
-              <div class="item-meta">ads.tiktok.com</div>
-            </div>
-            <div class="skill-item">
-              <div class="item-main">Google Analytics</div>
-              <div class="item-desc">Data Audits & GA4 Reporting</div>
-              <div class="item-meta">analytics.google.com</div>
-            </div>
-            <div class="skill-item">
-              <div class="item-main">Figma</div>
-              <div class="item-desc">Interface Design & Creative Mockups</div>
-              <div class="item-meta">figma.com</div>
-            </div>
-            <div class="skill-item">
-              <div class="item-main">n8n</div>
-              <div class="item-desc">AI-powered Funnel Automation</div>
-              <div class="item-meta">n8n.io</div>
-            </div>
-            <div class="skill-item">
-              <div class="item-main">Ahrefs</div>
-              <div class="item-desc">SEO Keyword & Competitor Research</div>
-              <div class="item-meta">ahrefs.com</div>
-            </div>
-            <div class="skill-item">
-              <div class="item-main">Looker Studio</div>
-              <div class="item-desc">Dashboarding & Performance Reporting</div>
-              <div class="item-meta">lookerstudio.google.com</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="about-section">
-        <div class="about-section-header">
-          <p class="section-kicker">Education</p>
-          <h2 class="card-title">Education & Credentials</h2>
-          <p class="card-desc">Formal degree and professional marketing certifications.</p>
-        </div>
-        <div class="about-section-body">
-          <div class="evidence-panel is-compact">
-            <div class="work-list">
-              <div class="work-list-item">
-                <div class="item-main">FPT University</div>
-                <div class="item-desc">Bachelor of Digital Marketing, Graduated with Honors</div>
-                <div class="item-meta">2019-2023 · GPA 9.4/10</div>
-              </div>
-              <div class="work-list-item">
-                <div class="item-main">Google</div>
-                <div class="item-desc">Digital Marketing Specialization</div>
-                <div class="item-meta">Issued 2022</div>
+          <!-- RIGHT POLAROID PORTRAIT CARD -->
+          <div class="w-full">
+            <div class="bg-card border border-border rounded-xl p-3.5 shadow-sm">
+              <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-secondary">
+                <img
+                  src="/images/loc-portrait.png"
+                  alt="Nguyen Phuc Loc"
+                  loading="eager"
+                  decoding="async"
+                  class="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
+
         </div>
       </section>
+
+      <!-- EXPERIENCES SECTION -->
+      <section class="py-16 border-b border-border" aria-label="Experiences">
+        <div class="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
+          
+          <!-- SECTION SUBHEAD -->
+          <div class="flex items-center gap-3 pt-1">
+            <!-- Pencil icon -->
+            <svg width="26" height="28" viewBox="0 0 46 50" fill="none" class="text-foreground shrink-0" aria-hidden="true">
+              <path d="M35.4417 28.7269C35.4266 28.6772 35.1258 28.2854 33.8666 26.9903C32.9349 26.0321 31.2699 24.581 29.5191 23.1761C27.7683 21.7712 25.9468 20.4867 24.8004 19.638C23.6541 18.7893 23.2383 18.4155 22.0763 17.4936C20.9144 16.5718 19.0189 15.1133 17.8586 14.1811C16.6983 13.2489 16.3306 12.8871 16.0732 12.6263C15.8159 12.3654 15.6801 12.2165 15.5463 12.0891" stroke="currentColor" stroke-width="3.33" stroke-linejoin="round"/>
+              <path d="M9.71981 23.4483C9.74083 23.47 9.76185 23.4917 10.8517 24.3107C11.9416 25.1298 14.0996 26.7455 16.0472 28.4335C17.9947 30.1215 19.6663 31.8328 20.746 32.924C22.2528 34.4467 23.2735 35.4743 24.5826 36.7637C25.3316 37.4453 28.7557 39.2073 29.2873 39.6223C29.8189 40.0373 27.4301 39.0829 27.575 39.0454" stroke="currentColor" stroke-width="3.33" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M36.2731 28.5002C36.0374 28.5935 35.4225 29.012 34.4072 30.9836C33.5366 32.7586 31.9446 36.1059 31.0913 37.9277C30.2381 39.7495 30.1721 39.9443 30.1271 40.2305" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M35.5002 30.002C35.4986 29.9967 35.6403 28.3399 36.0002 29.502C36.3601 30.664 38.6017 34.7846 39.8261 36.5886C43.5002 42.002 42.7323 40.971 42.7282 41.173C42.7282 41.173 42.0968 41.1121 39.8253 40.8224C37.8803 40.5743 31.4281 39.6773 29.4998 39.5019" stroke="currentColor" stroke-width="3.33" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2 class="font-sans font-semibold text-2xl text-foreground tracking-tight">Experiences</h2>
+          </div>
+
+          <!-- EXPERIENCE LIST TABLE -->
+          <div class="w-full overflow-x-auto">
+            <table class="w-full border-collapse font-sans text-body">
+              <tbody>
+                {experiences.map((item) => (
+                  <tr class="border-b border-border first:border-t">
+                    <td class="py-5.5 w-16 align-middle">
+                      <div class="w-10 h-10 grid place-items-center">
+                        {item.logo === "google" && (
+                          <svg viewBox="0 0 48 48" class="w-8 h-8">
+                            <path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8a12 12 0 1 1 7.9-21l5.7-5.7A20 20 0 1 0 44 24c0-1.2-.1-2.3-.4-3.5z"/>
+                            <path fill="#34A853" d="M6.3 14.7l6.6 4.8A12 12 0 0 1 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7A20 20 0 0 0 6.3 14.7z"/>
+                            <path fill="#FBBC05" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0 1 12.7 28l-6.5 5A20 20 0 0 0 24 44z"/>
+                            <path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C40 35 44 30 44 24c0-1.2-.1-2.3-.4-3.5z"/>
+                          </svg>
+                        )}
+                        {item.logo === "apple" && (
+                          <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current text-foreground">
+                            <path d="M17.5 12.6c0-2.5 2-3.7 2.1-3.8-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.9-1.6 0-3.2.9-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3.1 2.5 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.7-1-2.7-3.8zM15 4.6c.7-.8 1.1-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/>
+                          </svg>
+                        )}
+                        {item.logo === "microsoft" && (
+                          <svg viewBox="0 0 24 24" class="w-6 h-6">
+                            <rect x="1" y="1" width="10" height="10" fill="#F25022"/>
+                            <rect x="13" y="1" width="10" height="10" fill="#7FBA00"/>
+                            <rect x="1" y="13" width="10" height="10" fill="#00A4EF"/>
+                            <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
+                          </svg>
+                        )}
+                        {item.logo === "lenovo" && (
+                          <svg viewBox="0 0 48 48" class="w-8 h-8">
+                            <circle cx="24" cy="24" r="22" fill="#E2231A"/>
+                            <text x="24" y="28" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#fff" letter-spacing="-0.3">Lenovo.</text>
+                          </svg>
+                        )}
+                        {item.logo === "sofi" && (
+                          <svg viewBox="0 0 48 48" class="w-8 h-8">
+                            <g fill="#29ABE2" stroke="#29ABE2" stroke-width="2.5">
+                              <circle cx="10" cy="10" r="6.5"/>
+                              <circle cx="24" cy="10" r="6.5"/>
+                              <circle cx="38" cy="10" r="6.5" fill="none"/>
+                              <circle cx="10" cy="24" r="6.5" fill="none"/>
+                              <circle cx="24" cy="24" r="6.5" fill="none"/>
+                              <circle cx="38" cy="24" r="6.5" fill="none"/>
+                              <circle cx="10" cy="38" r="6.5"/>
+                              <circle cx="24" cy="38" r="6.5" fill="none"/>
+                              <circle cx="38" cy="38" r="6.5"/>
+                            </g>
+                          </svg>
+                        )}
+                        {!["google", "apple", "microsoft", "lenovo", "sofi"].includes(item.logo || "") && (
+                          <div class="w-9 h-9 rounded-lg bg-secondary border border-border flex items-center justify-center font-mono text-xs font-semibold text-foreground">
+                            {item.company.slice(0, 2).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td class="py-5.5 font-semibold text-foreground w-48 sm:w-56 align-middle tracking-tight">
+                      {item.company}
+                    </td>
+                    <td class="py-5.5 text-muted-foreground align-middle">
+                      {item.role}
+                    </td>
+                    <td class="py-5.5 text-right font-mono text-caption text-muted-foreground whitespace-nowrap w-36 sm:w-40 align-middle tracking-wider">
+                      {item.when}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- TOOLSET & SKILLS SECTION -->
+      <section class="py-16" aria-label="Toolset & Skills">
+        <div class="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
+          
+          <!-- SECTION SUBHEAD -->
+          <div class="flex items-center gap-3 pt-1">
+            <svg viewBox="0 0 24 24" class="w-6 h-6 stroke-current fill-none text-foreground shrink-0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+            <h2 class="font-display text-display-xs text-foreground">Toolset & Skills</h2>
+          </div>
+
+          <!-- SKILLS GRID -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {skills.map((skill) => (
+              <div class="p-4 rounded-xl border border-border bg-card">
+                <div class="font-sans text-body font-semibold text-foreground">
+                  {skill.name}
+                </div>
+                <div class="text-caption text-muted-foreground mt-0.5">
+                  {skill.desc}
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
     </div>
   </main>
 </Layout>
 
 <style>
-  .about-minimal-page {
-    padding: calc(var(--hdr-h) + clamp(44px, 7vw, 84px)) 0 clamp(72px, 10vw, 128px);
-    background: transparent;
+  .gear-hero {
+    max-width: 100%;
   }
 
-  .about-minimal-container {
-    width: min(calc(100% - (var(--page-gutter) * 2)), var(--main-content-max));
-    max-width: var(--main-content-max);
+  .about-container {
+    width: min(calc(100% - (var(--page-gutter) * 2)), var(--header-content-max));
     margin: 0 auto;
-    padding: 0;
-  }
-
-  .about-intro {
-    margin-bottom: clamp(64px, 8vw, 108px);
-    padding-bottom: clamp(44px, 7vw, 80px);
-    border-bottom: 1px solid var(--divider);
-  }
-
-  :global(.about-hero-shell) {
-    max-width: 1120px;
-  }
-
-  :global(.about-kicker),
-  .section-kicker {
-    margin-bottom: 18px;
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    color: #005fb8;
-  }
-
-  :global(.about-hero-title) {
-    max-width: 980px;
-    font-family: var(--serif);
-    font-size: var(--type-display-lg);
-    font-weight: 400;
-    line-height: 0.98;
-    letter-spacing: 0;
-    color: var(--text);
-    text-wrap: balance;
-  }
-
-  :global(.about-hero-grid) {
-    display: grid;
-    grid-template-columns: minmax(0, 620px) minmax(220px, 1fr);
-    gap: clamp(28px, 7vw, 96px);
-    align-items: end;
-    margin-top: clamp(24px, 4vw, 44px);
-  }
-
-  :global(.about-hero-copy) {
-    max-width: 68ch;
-    font-family: var(--sans);
-    font-size: var(--type-body);
-    line-height: 1.72;
-    color: #6e6e6e;
-    text-wrap: pretty;
-  }
-
-  :global(.about-hero-aside) {
-    display: grid;
-    gap: 6px;
-    justify-items: end;
-    padding-bottom: 2px;
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    line-height: 1.45;
-    color: var(--muted);
-    text-align: right;
-  }
-
-  :global(.about-hero-aside strong) {
-    color: var(--text);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-  }
-
-  :global(.about-hero-actions) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 28px;
-  }
-
-  :global(.about-hero-actions a) {
-    display: inline-flex;
-    min-height: 36px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--divider);
-    border-radius: var(--rounded-sm);
-    padding: 8px 13px;
-    font-family: var(--sans);
-    font-size: var(--type-ui);
-    font-weight: 600;
-    line-height: 1;
-    color: var(--text);
-    background: rgba(255, 255, 255, 0.42);
-    transition: border-color 180ms var(--ease-out), color 180ms var(--ease-out), background 180ms var(--ease-out);
-  }
-
-  :global(.about-hero-actions a:hover) {
-    border-color: var(--accent-border);
-    color: var(--accent);
-    background: var(--accent-soft);
-  }
-
-  .about-section {
-    display: grid;
-    grid-template-columns: minmax(220px, 0.82fr) minmax(0, 1.35fr);
-    gap: clamp(28px, 6vw, 84px);
-    align-items: start;
-    margin-bottom: clamp(64px, 8vw, 104px);
-  }
-
-  .about-section:last-child {
-    margin-bottom: 0;
-  }
-
-  .about-section-header {
-    position: sticky;
-    top: calc(var(--hdr-h) + 32px);
-  }
-
-  .card-title {
-    font-family: var(--serif);
-    font-size: var(--type-section-title);
-    font-weight: 400;
-    line-height: 1.05;
-    color: var(--text);
-    text-wrap: balance;
-  }
-
-  .card-desc {
-    max-width: 34ch;
-    margin-top: 14px;
-    font-family: var(--sans);
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: #6e6e6e;
-    text-wrap: pretty;
-  }
-
-  .about-section-body {
-    min-width: 0;
-  }
-
-  .evidence-panel {
-    border-top: 1px solid var(--text);
-    border-bottom: 1px solid var(--divider);
-  }
-
-  .evidence-panel.is-compact {
-    border-top-color: var(--divider);
-  }
-
-  .work-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .work-list-item {
-    display: grid;
-    grid-template-columns: minmax(150px, 0.9fr) minmax(220px, 1.45fr) minmax(128px, 0.8fr);
-    gap: clamp(14px, 2.5vw, 28px);
-    align-items: baseline;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--divider);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: var(--type-body);
-    transition: color 180ms var(--ease-out), background 180ms var(--ease-out);
-  }
-
-  .work-list-item:last-child {
-    border-bottom: none;
-  }
-
-  a.work-list-item:hover {
-    color: var(--accent);
-    background: var(--accent-soft);
-  }
-
-  a.work-list-item:hover .item-desc,
-  a.work-list-item:hover .item-meta {
-    color: var(--text);
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    border-top: 1px solid var(--text);
-    border-left: 1px solid var(--divider);
-  }
-
-  .skill-item {
-    min-height: 132px;
-    padding: 18px;
-    border-right: 1px solid var(--divider);
-    border-bottom: 1px solid var(--divider);
-    background: rgba(255, 255, 255, 0.28);
-  }
-
-  .item-main {
-    font-family: var(--serif);
-    font-size: var(--type-subhead);
-    font-weight: 400;
-    line-height: 1.05;
-    color: var(--text);
-  }
-
-  .item-desc {
-    font-size: 0.875rem;
-    color: #6e6e6e;
-    transition: color 180ms var(--ease-out);
-  }
-
-  .item-meta {
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    line-height: 1.5;
-    color: var(--muted);
-    text-align: right;
-    transition: color 180ms var(--ease-out);
-  }
-
-  .skill-item .item-desc {
-    margin-top: 10px;
-    line-height: 1.5;
-  }
-
-  .skill-item .item-meta {
-    display: block;
-    margin-top: 22px;
-    text-align: left;
-  }
-
-  @media (max-width: 992px) {
-    .about-section {
-      grid-template-columns: 1fr;
-      gap: 32px;
-      margin-bottom: 72px;
-    }
-
-    .about-section-header {
-      position: static;
-    }
-
-    :global(.about-hero-grid) {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-
-    :global(.about-hero-aside) {
-      justify-items: start;
-      text-align: left;
-    }
-
-    .card-desc {
-      max-width: 58ch;
-    }
-  }
-
-  @media (max-width: 760px) {
-    .work-list-item {
-      grid-template-columns: 1fr;
-      gap: 7px;
-      padding: 17px 0;
-    }
-
-    a.work-list-item:hover {
-      padding-inline: 0;
-      background: transparent;
-    }
-
-    .item-meta {
-      text-align: left;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .about-minimal-page {
-      padding-top: calc(var(--hdr-h) + 36px);
-    }
-
-    .about-intro {
-      margin-bottom: 176px;
-    }
-
-    :global(.about-hero-title) {
-      font-size: var(--type-display-lg);
-      line-height: 0.98;
-    }
-
-    :global(.about-hero-copy),
-    .card-desc,
-    .work-list-item {
-      font-size: var(--type-body);
-    }
-
-    .skills-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .skill-item {
-      min-height: 0;
-      padding: 16px 0;
-      border-right: none;
-      background: transparent;
-    }
   }
 </style>

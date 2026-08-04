@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
 import BlurFade from "../../components/ui/BlurFade.astro";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
-import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 export const prerender = true;
 
@@ -20,10 +20,7 @@ if (!project) {
   return Astro.redirect("/work");
 }
 
-// Find prev / next for navigation
-const currentIndex = projects.findIndex((p) => p.slug === slug);
-const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
-const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
+const otherProjects = projects.filter((p) => p.slug !== slug).slice(0, 2);
 
 // Split description into paragraphs
 const paragraphs = project.description.split("\n\n").filter(Boolean);
@@ -60,505 +57,294 @@ const creativeWorkSchema = {
     creativeWorkSchema,
   ]}
 >
-  <main class="project-detail-page">
-    <div class="container">
+  <main class="min-h-screen bg-background text-foreground case-study-page">
 
-      <!-- Back link -->
-      <a href="/work" class="back-link r">
-        <ArrowLeft size={14} strokeWidth={1.8} aria-hidden="true" />
-        All work
-      </a>
-
-      <!-- Project header -->
-      <header class="detail-header">
-        <div class="detail-header-top r">
-          <span class="detail-number">{project.number}</span>
-          <span class="detail-year">{project.year}</span>
+    <!-- HERO TITLE SECTION -->
+    <div class="relative overflow-hidden px-6 sm:px-12 md:px-20 pt-0 pb-16 border-b border-border">
+      <div class="relative z-10 mx-auto max-w-[1100px]">
+        <div>
+          <p class="font-mono-label text-accent mb-4">Case study · {project.client}</p>
+          
+          <BlurFade>
+            <h1 class="font-display text-display-sm sm:text-display-md md:text-display-lg leading-[1.05] tracking-[-0.025em] text-foreground">
+              {project.title}
+            </h1>
+          </BlurFade>
         </div>
+      </div>
+    </div>
 
-        <BlurFade>
-          <h1 class="detail-title r" data-d="1">{project.title}</h1>
-        </BlurFade>
-
-        <div class="detail-summary r" data-d="2">{project.summary}</div>
-
-        <div class="detail-meta r" data-d="3">
-          <div class="meta-item">
-            <span class="meta-label">Client</span>
-            <span class="meta-value">{project.client}</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-label">Role</span>
-            <span class="meta-value">{project.role}</span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-label">Year</span>
-            <span class="meta-value">{project.year}</span>
-          </div>
-        </div>
-      </header>
-
-      {project.coverImage && (
-        <!-- Hero visual -->
-        <div class="detail-hero r" data-d="3">
-          <div class="detail-hero-img">
-            <div class="hero-logo-wrapper">
-              <img
-                src={project.coverImage}
-                alt={project.client}
-                class="hero-logo"
-                loading="eager"
-                decoding="async"
-                fetchpriority="high"
-              />
+    <!-- TL;DR SECTION -->
+    <div class="border-b border-border">
+      <div class="px-6 sm:px-12 md:px-20 py-12 md:py-16">
+        <div class="mx-auto max-w-[1100px]">
+          <div class="md:grid md:grid-cols-[200px_1fr] md:gap-16">
+            <div>
+              <p class="font-mono-label text-foreground">TL;DR</p>
             </div>
+            <div class="mt-4 md:mt-0 space-y-10">
+              <dl class="divide-y divide-border max-w-3xl">
+                <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                  <dt class="font-mono-label text-foreground">Background</dt>
+                  <dd class="text-body-lg leading-[1.55] text-foreground/85">
+                    {project.client} ({project.year}). {project.summary}
+                  </dd>
+                </div>
+
+                {paragraphs[0] && (
+                  <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                    <dt class="font-mono-label text-foreground">Problem</dt>
+                    <dd class="text-body-lg leading-[1.55] text-foreground/85">{paragraphs[0]}</dd>
+                  </div>
+                )}
+
+                <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                  <dt class="font-mono-label text-foreground">Approach</dt>
+                  <dd class="text-body-lg leading-[1.55] text-foreground/85">
+                    {paragraphs[1] || project.tags.join(" · ")}
+                  </dd>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                  <dt class="font-mono-label text-foreground">Outcome</dt>
+                  <dd class="text-body-lg leading-[1.55] text-foreground/85">
+                    {paragraphs[2] || "Successfully executed strategy and delivered high performance growth."}
+                  </dd>
+                </div>
+
+                {project.link && (
+                  <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                    <dt class="font-mono-label text-foreground">Live Site</dt>
+                    <dd class="text-body-lg leading-[1.55] text-foreground/85">
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 underline underline-offset-4 hover:text-accent transition-colors">
+                        <span>{projectLinkLabel}</span>
+                        <ExternalLink size={13} strokeWidth={1.8} />
+                      </a>
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT & SIDEBAR GRID SECTION -->
+    <div class="px-6 sm:px-12 md:px-20">
+      <div class="mx-auto max-w-[1100px] md:grid md:grid-cols-[200px_1fr] md:gap-16">
+        
+        <!-- STICKY TOC NAV -->
+        <nav aria-label="Section navigation" class="hidden md:block pt-20 pb-20">
+          <div class="sticky top-24">
+            <ul class="space-y-3">
+              <li>
+                <a href="#overview" class="block text-body font-sans transition-colors text-foreground font-semibold">
+                  Overview
+                </a>
+              </li>
+              {project.images && project.images.length > 0 && (
+                <li>
+                  <a href="#showcase" class="block text-body font-sans transition-colors text-muted-foreground hover:text-foreground">
+                    Showcase
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        </nav>
+
+        <!-- MAIN BODY CONTENT -->
+        <div>
+          <section id="overview" class="py-20 border-b border-border/40 last:border-0 scroll-mt-20">
+            <div>
+              <p class="font-mono-label text-accent">Overview</p>
+              <h2 class="mt-3 font-display text-display-xs leading-[1.2] tracking-[-0.02em] text-foreground">
+                {project.title}
+              </h2>
+            </div>
+
+            <div class="mt-6 text-body sm:text-body-lg leading-[1.7] text-muted-foreground">
+              <p set:html={project.summary} />
+
+              <!-- 3 NUMBERED CARDS (01, 02, 03) -->
+              {paragraphs.length > 0 && (
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {paragraphs.slice(0, 3).map((para, idx) => (
+                    <div class="p-5 rounded-xl border border-border bg-secondary">
+                      <div class="font-mono-label mb-3 text-accent">0{idx + 1}</div>
+                      <p class="text-body-lg leading-[1.55] text-foreground" set:html={para} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div class="mt-6 space-y-4">
+                {paragraphs.slice(3).map((para) => (
+                  <p class="text-body sm:text-body-lg leading-[1.7] text-muted-foreground" set:html={para} />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <!-- EXTRA IMAGES SHOWCASE GALLERY -->
+          {project.images && project.images.length > 0 && (
+            <section id="showcase" class="py-20 border-b border-border/40 last:border-0 scroll-mt-20">
+              <div>
+                <p class="font-mono-label text-accent">Showcase</p>
+                <h2 class="mt-3 font-display text-display-xs leading-[1.2] tracking-[-0.02em] text-foreground">
+                  Project Visuals
+                </h2>
+              </div>
+
+              <div class="mt-10 space-y-6">
+                {project.images.map((imgUrl, idx) => (
+                  <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-4">
+                    <img
+                      src={imgUrl}
+                      alt={`${project.title} image ${idx + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                      class="block w-full h-auto object-contain rounded-lg"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+      </div>
+
+      <!-- MORE CASE STUDIES SECTION (Outside sticky TOC container so TOC stops scrolling above it) -->
+      {otherProjects.length > 0 && (
+        <div class="mx-auto max-w-[1100px] md:grid md:grid-cols-[200px_1fr] md:gap-16">
+          <div class="hidden md:block"></div>
+          <div>
+            <section class="py-16 border-t border-border mt-8">
+              <p class="font-mono-label text-muted-foreground mb-5">More case studies</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {otherProjects.map((item) => (
+                <a
+                  href={`/work/${item.slug}`}
+                  class="more-case-card group block rounded-xl border border-border bg-card overflow-hidden transition-all duration-300"
+                >
+                  <div class="w-full aspect-[16/9] max-h-[180px] bg-secondary overflow-hidden flex items-center justify-center p-2.5">
+                    {item.coverImage ? (
+                      <img
+                        src={item.coverImage}
+                        alt={item.title}
+                        loading="lazy"
+                        decoding="async"
+                        class="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : item.images && item.images[0] ? (
+                      <img
+                        src={item.images[0]}
+                        alt={item.title}
+                        loading="lazy"
+                        decoding="async"
+                        class="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <div class="w-full h-full bg-secondary flex items-center justify-center text-muted font-mono text-xs">
+                        {item.client}
+                      </div>
+                    )}
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-display more-case-title mb-1 text-foreground group-hover:text-accent transition-colors">
+                      {item.title}
+                    </h3>
+                    <p class="text-caption text-muted-foreground leading-relaxed line-clamp-2">
+                      {item.summary}
+                    </p>
+                  </div>
+                </a>
+              ))}
+              </div>
+            </section>
           </div>
         </div>
       )}
-
-      <!-- Content grid -->
-      <div class="detail-content r" data-d="4">
-
-        <!-- Main body -->
-        <div class="detail-body">
-          {paragraphs.map((para) => (
-            <p class="detail-para">{para}</p>
-          ))}
-
-        </div>
-
-        <!-- Sidebar -->
-        <aside class="detail-sidebar">
-          <div class="sidebar-block">
-            <span class="sidebar-label">Tools / Skills</span>
-            <ul class="sidebar-tags">
-              {project.tags.map((tag) => (
-                <li class="sidebar-tag">{tag}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div class="sidebar-block">
-            <span class="sidebar-label">Client</span>
-            <span class="sidebar-value">{project.client}</span>
-          </div>
-
-          <div class="sidebar-block">
-            <span class="sidebar-label">Year</span>
-            <span class="sidebar-value">{project.year}</span>
-          </div>
-
-          {project.link && (
-            <div class="sidebar-block">
-              <span class="sidebar-label">Live</span>
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="sidebar-link"
-              >
-                <span>{projectLinkLabel}</span>
-                <ExternalLink size={13} strokeWidth={1.8} aria-hidden="true" />
-              </a>
-            </div>
-          )}
-        </aside>
-
-      </div>
-
     </div>
-
-    <!-- Project navigation -->
-    <nav class="project-nav" aria-label="Project navigation">
-      <div class="container">
-        <div class="project-nav-inner">
-          {prevProject ? (
-            <a href={`/work/${prevProject.slug}`} class="pnav-item pnav-prev r">
-              <span class="pnav-dir"><ArrowLeft size={13} strokeWidth={1.8} aria-hidden="true" />Previous</span>
-              <span class="pnav-title">{prevProject.title}</span>
-            </a>
-          ) : (
-            <div></div>
-          )}
-
-          {nextProject ? (
-            <a href={`/work/${nextProject.slug}`} class="pnav-item pnav-next r" data-d="2">
-              <span class="pnav-dir">Next<ArrowRight size={13} strokeWidth={1.8} aria-hidden="true" /></span>
-              <span class="pnav-title">{nextProject.title}</span>
-            </a>
-          ) : (
-            <a href="/work" class="pnav-item pnav-next r" data-d="2">
-              <span class="pnav-dir">Back to</span>
-              <span class="pnav-title">All Work</span>
-            </a>
-          )}
-        </div>
-      </div>
-    </nav>
 
   </main>
 </Layout>
 
 <style>
-  .project-detail-page {
-    padding: calc(var(--hdr-h) + 48px) 0 0;
-  }
-
-  /* ── Back link ── */
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: var(--type-ui);
-    font-family: var(--mono);
-    color: var(--muted);
-    text-decoration: none;
-    margin-bottom: 44px;
-    transition: color 0.25s ease, gap 0.25s ease;
-  }
-
-  .back-link:hover {
-    color: var(--accent);
-    gap: 12px;
-  }
-
-  /* ── Detail header ── */
-  .detail-header {
-    margin-bottom: clamp(44px, 6vw, 72px);
-  }
-
-  .detail-header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-
-  .detail-number {
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    color: var(--muted);
-    letter-spacing: 0.12em;
-  }
-
-  .detail-year {
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-
-  .detail-title {
-    font-family: var(--serif);
-    font-size: 56px;
-    font-weight: 400;
-    line-height: 1.04;
-    letter-spacing: 0;
+  .case-study-page {
+    background-color: var(--bg);
     color: var(--text);
-    margin-bottom: 18px;
-    max-width: 920px;
-    text-wrap: balance;
+    padding-top: calc(var(--hdr-h) + 64px);
+    padding-bottom: 120px;
   }
 
-  /* ── Meta row ── */
-  .detail-meta {
-    display: flex;
-    gap: clamp(40px, 7.15vw, 91px);
-    padding-top: 24px;
-    border-top: 1px solid var(--divider);
-  }
-
-  .meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .meta-label {
+  .font-mono-label {
     font-family: var(--mono);
     font-size: var(--type-micro);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
   }
 
-  .meta-value {
-    font-size: var(--type-body);
-    color: var(--text);
-  }
-
-  /* ── Hero image ── */
-  .detail-hero {
-    margin-bottom: clamp(56px, 7vw, 88px);
-  }
-
-  .detail-hero-img {
-    position: relative;
-    aspect-ratio: 2 / 1;
-    background: transparent;
-    border-radius: var(--image-radius);
-    overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-  }
-
-  .hero-logo-wrapper {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-  }
-
-  @media (max-width: 600px) {
-    .hero-logo-wrapper {
-      padding: 0;
-    }
-  }
-
-  .hero-logo {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: var(--image-radius);
-  }
-
-  /* ── Content grid ── */
-  .detail-content {
-    display: grid;
-    grid-template-columns: minmax(0, 0.74fr) minmax(240px, 0.26fr);
-    gap: clamp(52px, 7vw, 96px);
-    margin-bottom: 0;
-    padding-bottom: clamp(72px, 8vw, 108px);
-    border-bottom: 1px solid var(--divider);
-  }
-
-  .detail-body {
-    max-width: 780px;
-  }
-
-  /* ── Body text ── */
-  .detail-summary {
-    font-family: var(--sans);
-    font-size: var(--type-card-title);
+  .font-display {
+    font-family: var(--serif);
     font-weight: 400;
-    line-height: 1.42;
-    color: #6e6e6e;
-    margin-bottom: 32px;
-    letter-spacing: 0;
-    text-wrap: pretty;
   }
 
-  .detail-para {
+  .text-display-lg {
+    font-size: var(--type-display-lg);
+    line-height: 1.04;
+  }
+
+  .text-display-md {
+    font-size: var(--type-display);
+    line-height: 1.08;
+  }
+
+  .text-display-sm {
+    font-size: var(--type-section-title);
+    line-height: 1.1;
+  }
+
+  .text-display-xs {
+    font-size: var(--type-card-title);
+    line-height: 1.15;
+  }
+
+  .text-caption {
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+  }
+
+  .text-body-lg {
+    font-family: var(--sans);
     font-size: 0.875rem;
     line-height: var(--leading-prose);
-    color: #6e6e6e;
-    margin-bottom: 18px;
-    max-width: 72ch;
   }
 
-  .detail-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 12px;
-    font-size: var(--type-body);
-    font-weight: 500;
-    color: var(--text);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 1px;
-    text-decoration-color: var(--divider);
-    transition: color 0.25s ease, text-decoration-color 0.25s ease;
+  .bg-secondary {
+    background-color: color-mix(in srgb, var(--bg) 92%, #e2e2dd);
   }
 
-  .detail-link:hover {
-    color: var(--accent);
-    text-decoration-color: var(--accent);
-  }
-
-  /* ── Sidebar ── */
-  .detail-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    padding-top: 8px;
-    position: sticky;
-    top: calc(var(--hdr-h) + 32px);
-  }
-
-  .sidebar-block {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .sidebar-label {
-    font-family: var(--mono);
-    font-size: var(--type-micro);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .sidebar-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .sidebar-tag {
-    font-family: var(--mono);
-    font-size: 12px !important;
-    color: var(--text);
-    list-style: none;
+  .more-case-card {
+    background: color-mix(in srgb, var(--bg) 95%, #ffffff);
     border: 1px solid var(--divider);
-    border-radius: 3px;
-    padding: 4px 8px;
-  }
-
-  .sidebar-value {
-    font-size: var(--type-body);
-    color: var(--text);
-  }
-
-  .sidebar-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: var(--type-ui);
-    color: var(--muted);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: color 0.25s ease;
-  }
-
-  .sidebar-link:hover {
-    color: var(--accent);
-  }
-
-  /* ── Project nav ── */
-  .project-nav {
-    border-top: 1px solid var(--divider);
-    padding: 0;
-  }
-
-  .project-nav-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid var(--divider);
-  }
-
-  .pnav-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 24px;
-    padding: 48px 0;
+    border-radius: 14px;
     text-decoration: none;
-    color: var(--text);
-    transition: color 0.25s ease;
-    border-right: 1px solid var(--divider);
+    transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
   }
 
-  .pnav-next {
-    border-right: none;
-    text-align: right;
-    align-items: flex-end;
-    padding-left: 40px;
-  }
-
-  .pnav-prev {
-    padding-right: 40px;
-  }
-
-  .pnav-dir {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    transition: color 0.25s ease;
-  }
-
-  .pnav-title {
+  .more-case-title {
     font-family: var(--serif);
-    font-size: var(--type-subhead);
-    font-weight: 400;
+    font-size: 18px !important;
+    font-weight: 400 !important;
     line-height: 1.25;
-    transition: color 0.25s ease;
   }
 
-  .pnav-item:hover .pnav-title {
-    color: var(--accent);
+  .more-case-card:hover {
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.14), 0 0 24px -4px rgba(0, 0, 0, 0.06);
   }
 
-  .pnav-item:hover .pnav-dir {
-    color: var(--text);
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 900px) {
-    .detail-content {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-
-    .detail-sidebar {
-      position: static;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 24px;
-      border-top: 1px solid var(--divider);
-      padding-top: 32px;
-    }
-
-    .detail-meta {
-      flex-wrap: wrap;
-      gap: 34px;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .project-detail-page {
-      --work-mobile-copy: 0.625rem;
-    }
-
-    .meta-label,
-    .meta-value,
-    .detail-para,
-    .detail-link,
-    .sidebar-label,
-    .sidebar-tag,
-    .sidebar-value,
-    .sidebar-link {
-      font-size: var(--work-mobile-copy);
-    }
-
-    .detail-summary {
-      font-size: 1rem !important;
-    }
-
-    .project-nav-inner {
-      grid-template-columns: 1fr;
-    }
-
-    .pnav-item {
-      border-right: none;
-      border-bottom: 1px solid var(--divider);
-      padding: 32px 0;
-    }
-
-    .pnav-next {
-      padding-left: 0;
-      text-align: left;
-      align-items: flex-start;
-    }
-
-    .pnav-item:last-child {
-      border-bottom: none;
-    }
-  }
 </style>
