@@ -29,7 +29,7 @@ function patchTargetDir(dir) {
     // 1. Match and replace 'Activity' named imports from 'react'
     const activityImportRegex = /import\s*\{([^}]*)\bActivity\b([^}]*)\}\s*from\s*["']react["'];?/g;
     if (activityImportRegex.test(content)) {
-      content = content.replace(activityImportRegex, (match, before, after) => {
+      content = content.replace(activityImportRegex, (_match, before, after) => {
         const cleanImports = `${before}${after}`.replace(/,\s*,/g, ',').replace(/^\s*,\s*|\s*,\s*$/g, '').trim();
         const importStatement = cleanImports ? `import { ${cleanImports} } from "react";` : '';
         return `${importStatement}\nconst Activity = ({ children }) => children;`;
@@ -39,7 +39,7 @@ function patchTargetDir(dir) {
     // 2. Match and replace 'useEffectEvent' named imports from 'react'
     const useEffectEventRegex = /import\s*\{([^}]*)\buseEffectEvent\b([^}]*)\}\s*from\s*["']react["'];?/g;
     if (useEffectEventRegex.test(content)) {
-      content = content.replace(useEffectEventRegex, (match, before, after) => {
+      content = content.replace(useEffectEventRegex, (_match, before, after) => {
         const cleanImports = `${before}${after}`.replace(/,\s*,/g, ',').replace(/^\s*,\s*|\s*,\s*$/g, '').trim();
         const importStatement = cleanImports ? `import { ${cleanImports} } from "react";` : '';
         

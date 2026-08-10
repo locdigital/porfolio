@@ -3,18 +3,13 @@ import { writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { isCmsRequestAuthorized } from "../../../../lib/cms-auth";
+import { json } from "../../../../lib/http";
 import { uploadToUploadThing } from "../../../../lib/uploadthing-server";
 
 export const prerender = false;
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
 
 export const POST: APIRoute = async ({ request }) => {
   if (!isCmsRequestAuthorized(request)) {

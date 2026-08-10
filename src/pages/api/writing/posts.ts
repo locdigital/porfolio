@@ -2,14 +2,9 @@ import type { APIRoute } from "astro";
 import { createPost, listPosts } from "../../../lib/writing/posts";
 import { generateSlug } from "../../../lib/writing/slug";
 import { isCmsRequestAuthorized } from "../../../lib/cms-auth";
+import { json } from "../../../lib/http";
 
 export const prerender = false;
-
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
 
 export const GET: APIRoute = async ({ request }) => {
   if (!isCmsRequestAuthorized(request)) {

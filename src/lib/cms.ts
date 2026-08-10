@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { getCmsCollection, stripMongoId } from "./cms-db";
+import { readSupabaseCmsCollection, readSupabaseCmsEntry } from "./cms-store";
 
 type ProjectData = {
   slug: string;
@@ -174,18 +174,14 @@ type GearData = {
 };
 
 export async function getProjects() {
-  const collection = await getCmsCollection<ProjectData>("cms_projects");
-  if (collection) {
-    const projects = await collection.find({}).sort({ order: 1 }).toArray();
-    if (projects.length > 0) {
-      return projects.map((project) => {
-        const data = stripMongoId(project);
-        return {
-          ...data,
-          tags: [...data.tools, ...data.skills],
-        };
-      });
-    }
+  const supabaseProjects = await readSupabaseCmsCollection<ProjectData>("cms_projects");
+  if (supabaseProjects.length > 0) {
+    return supabaseProjects
+      .map((project) => ({
+        ...project,
+        tags: [...project.tools, ...project.skills],
+      }))
+      .sort((a, b) => a.order - b.order);
   }
 
   const entries = await getCollection("projects");
@@ -226,12 +222,11 @@ export async function getPhotoLocations() {
     };
   };
 
-  const collection = await getCmsCollection<PhotoLocationData>("cms_photos");
-  if (collection) {
-    const locations = await collection.find({}).sort({ order: 1 }).toArray();
-    if (locations.length > 0) {
-      return locations.map((location) => mapPhotoLocation(stripMongoId(location)));
-    }
+  const supabaseLocations = await readSupabaseCmsCollection<PhotoLocationData>("cms_photos");
+  if (supabaseLocations.length > 0) {
+    return supabaseLocations
+      .map((location) => mapPhotoLocation(location))
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }
 
   const entries = await getCollection("photos");
@@ -245,11 +240,8 @@ export async function getPhotoLocations() {
 }
 
 export async function getGear() {
-  const collection = await getCmsCollection<GearData>("cms_gear");
-  if (collection) {
-    const gear = await collection.findOne({ _id: "setup" });
-    if (gear) return stripMongoId(gear);
-  }
+  const supabaseGear = await readSupabaseCmsEntry<GearData>("cms_gear", "setup");
+  if (supabaseGear) return supabaseGear;
 
   const entries = await getCollection("gear");
   return entries[0]?.data;

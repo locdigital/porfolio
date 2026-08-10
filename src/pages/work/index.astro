@@ -316,17 +316,18 @@ const workHeadlineHtml = "Selected work & <em>case studies</em>";
   }
 
   .project-card-img {
-    --thumb-radius: var(--image-radius);
-    --thumb-border-width: 1.5px;
-    --thumb-inner-radius: calc(var(--thumb-radius) - var(--thumb-border-width));
+    --thumb-radius: 12px;
+    --thumb-border-width: 0px;
+    --thumb-inner-radius: var(--thumb-radius);
 
     position: relative;
     aspect-ratio: 2 / 1;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.72);
     border-radius: var(--thumb-radius);
     overflow: hidden;
-    border: var(--thumb-border-width) solid rgba(0, 0, 0, 0.06);
-    transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out);
+    border: 0;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.52), 0 12px 32px rgba(28, 28, 28, 0.055);
+    transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
   }
 
   .project-card-link:focus-visible .project-card-img {

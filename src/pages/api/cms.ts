@@ -11,22 +11,14 @@ import {
   type CollectionName,
 } from "../../lib/cms-admin";
 import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../../lib/cms-auth";
+import { json, jsonError, readJsonBody } from "../../lib/http";
 
 export const prerender = false;
 
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
-
-async function parseBody(request: Request) {
-  try {
-    const rawBody = await request.text();
-    return JSON.parse(rawBody);
-  } catch {
-    throw new Error("Invalid JSON payload.");
-  }
+function asRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : {};
 }
 
 export const GET: APIRoute = async ({ request }) => {
@@ -52,9 +44,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const body = await parseBody(request);
+    const body = await readJsonBody<Record<string, unknown>>(request);
     const resource = String(body.resource ?? "");
     const action = String(body.action ?? "save");
+    const data = asRecord(body.data);
 
     if (action === "delete") {
       await deleteEntry(resource, body.slug);
@@ -62,27 +55,21 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     if (resource === "writing") {
-      await saveWritingPost(body.data ?? {});
+      await saveWritingPost(data);
     } else if (resource === "gear") {
-      await saveGear(body.data ?? {});
+      await saveGear(data);
     } else if (resource === "projects") {
-      await saveProject(body.data ?? {});
+      await saveProject(data);
     } else if (resource === "photos") {
-      await savePhotoLocation(body.data ?? {});
+      await savePhotoLocation(data);
     } else if (collectionNames.includes(resource as CollectionName)) {
-      await saveCollectionEntry(resource as CollectionName, body.data ?? {});
+      await saveCollectionEntry(resource as CollectionName, data);
     } else {
       return json({ success: false, error: "Unknown CMS resource." }, { status: 400 });
     }
 
     return json({ success: true, data: await readCmsPayload() });
   } catch (error) {
-    return json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "Unable to save CMS data.",
-      },
-      { status: 400 },
-    );
+    return jsonError(error, { status: 400, fallbackMessage: "Unable to save CMS data." });
   }
 };

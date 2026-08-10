@@ -1,8 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getGear } from "../lib/cms";
-import BlurText from "../components/ui/BlurText.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
+
+export const prerender = true;
 
 const fallbackGearSections = [
   {
@@ -144,7 +145,6 @@ const gearPageDescription = "The hardware, camera kit, audio gear, and apps Phuc
 const safeGearHeadline = gearHeadline
   .replace(/<em[^>]*>/gi, "<em>")
   .replace(/<(?!\/?em>)[^>]*>/gi, "");
-const gearHeadlineText = safeGearHeadline.replace(/<\/?em>/g, "");
 ---
 
 <Layout
@@ -181,15 +181,7 @@ const gearHeadlineText = safeGearHeadline.replace(/<\/?em>/g, "");
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
-        <BlurText
-          as="h1"
-          text={gearHeadlineText}
-          animateBy="words"
-          direction="top"
-          delay={70}
-          stepDuration={0.42}
-          className="gear-hero-title"
-        />
+        <h1 class="gear-hero-title gear-hero-title--single-line" set:html={safeGearHeadline} />
         <p class="gear-intro">{gearDescription}</p>
       </section>
 

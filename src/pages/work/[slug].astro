@@ -2,6 +2,8 @@
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
 import BlurFade from "../../components/ui/BlurFade.astro";
+import BeforeAfterPerformance from "../../components/ui/BeforeAfterPerformance";
+import type { BeforeAfterPerformanceProps } from "../../components/ui/BeforeAfterPerformance";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 import { ExternalLink } from "lucide-react";
 
@@ -20,9 +22,173 @@ if (!project) {
   return Astro.redirect("/work");
 }
 
-const otherProjects = projects.filter((p) => p.slug !== slug).slice(0, 2);
+const otherProjects = projects.filter((p) => p.slug !== slug).slice(0, 3);
 
-// Split description into paragraphs
+const performanceComparisons: Record<string, BeforeAfterPerformanceProps> = {
+  playah: {
+    badge: "",
+    heading: "From fragmented spend to scalable growth.",
+    description: "A draggable before/after view for the performance system behind the PlayAh! case study.",
+    beforeLabel: "Before",
+    afterLabel: "After",
+    beforeImage: {
+      src: "/images/playah/playah-before.png?v=before-125801419",
+      alt: "PlayAh! Baseline Spend & Channel Performance (Before)",
+    },
+    afterImage: {
+      src: "/images/playah/playah-after.png?v=after-146b",
+      alt: "PlayAh! Scaled Conversion Engine Performance (After)",
+    },
+    beforePanel: {
+      eyebrow: "Before",
+      title: "Fragmented acquisition",
+      description: "Paid media, TikTok Shop, and web conversion work were not yet operating as one measurable growth loop.",
+      metrics: [
+        { value: "1×", label: "Revenue baseline" },
+        { value: "0", label: "TikTok Shop GMV" },
+        { value: "Manual", label: "Funnel learning" },
+      ],
+    },
+    afterPanel: {
+      eyebrow: "After",
+      title: "Scaled conversion engine",
+      description: "Performance Max, Spark Ads, Meta conversion campaigns, and Shop operations worked together around ROAS guardrails.",
+      metrics: [
+        { value: "10×", label: "Website revenue" },
+        { value: "30×+", label: "Shop GMV growth" },
+        { value: "10+", label: "Maintained ROAS" },
+      ],
+    },
+    highlights: [
+      { id: "playah-1", icon: "zap", title: "Faster learning loop", description: "Creative, budget, and channel decisions connected to weekly performance signals." },
+      { id: "playah-2", icon: "sparkles", title: "Cleaner funnel view", description: "Website, TikTok Shop, and paid media outcomes moved into one optimization model." },
+      { id: "playah-3", icon: "check", title: "ROAS-first scaling", description: "Growth focused on profitable expansion instead of raw spend increases." },
+    ],
+  },
+  "workflow-space": {
+    badge: "Launch performance",
+    heading: "From launch setup to lead engine.",
+    description: "Compare the branch-launch baseline with the optimized paid funnel after creative and landing-page iteration.",
+    beforeLabel: "Before",
+    afterLabel: "After",
+    beforeImage: {
+      src: "/images/workflow/workflow-before.jpg",
+      alt: "WorkFlow Space Launch Setup Baseline (Before)",
+    },
+    afterImage: {
+      src: "/images/workflow/workflow-after.png",
+      alt: "WorkFlow Space Optimized Lead Machine (After)",
+    },
+    beforePanel: {
+      eyebrow: "Before",
+      title: "New branch baseline",
+      description: "New locations needed campaign structure, landing-page clarity, and creative testing before paid traffic could scale.",
+      metrics: [
+        { value: "0", label: "Launch leads" },
+        { value: "New", label: "Branch funnel" },
+        { value: "Manual", label: "Reporting flow" },
+      ],
+    },
+    afterPanel: {
+      eyebrow: "After",
+      title: "Qualified lead system",
+      description: "Campaigns, landing pages, dashboards, and creative production were connected into a repeatable branch-launch machine.",
+      metrics: [
+        { value: "2,000+", label: "Qualified leads" },
+        { value: "4M+", label: "Impressions" },
+        { value: "35–40%", label: "Website CVR" },
+      ],
+    },
+    highlights: [
+      { id: "workflow-1", icon: "check", title: "Landing-page clarity", description: "Paid traffic had a sharper destination for inquiry and booking intent." },
+      { id: "workflow-2", icon: "zap", title: "Creative throughput", description: "200+ assets supported faster testing across branch campaigns." },
+      { id: "workflow-3", icon: "sparkles", title: "Dashboard feedback", description: "Looker-style reporting made weekly optimization easier to read." },
+    ],
+  },
+  "pops-worldwide": {
+    badge: "SEO performance",
+    heading: "From roadmap backlog to organic scale.",
+    description: "A before/after view of the technical SEO execution that helped scale POPS properties.",
+    beforeLabel: "Before",
+    afterLabel: "After",
+    beforeImage: {
+      src: "/images/pops/pops-before.png",
+      alt: "POPS Worldwide Organic SEO Baseline (Before)",
+    },
+    afterImage: {
+      src: "/images/pops/pops-after.png",
+      alt: "POPS Worldwide Scaled Organic Traffic (After)",
+    },
+    beforePanel: {
+      eyebrow: "Before",
+      title: "Technical SEO backlog",
+      description: "SEO opportunities needed prioritization across data, product, and technology teams before compounding growth could happen.",
+      metrics: [
+        { value: "Backlog", label: "Tech SEO work" },
+        { value: "Split", label: "Team ownership" },
+        { value: "Slow", label: "Organic loop" },
+      ],
+    },
+    afterPanel: {
+      eyebrow: "After",
+      title: "Organic growth system",
+      description: "Roadmap execution tied product improvements, technical fixes, and content surfaces to measurable user growth.",
+      metrics: [
+        { value: "10×", label: "Monthly users" },
+        { value: "2.5M", label: "Users / month" },
+        { value: "400K", label: "POPS Kids users" },
+      ],
+    },
+    highlights: [
+      { id: "pops-1", icon: "check", title: "Prioritized roadmap", description: "SEO work moved from scattered requests to planned technical delivery." },
+      { id: "pops-2", icon: "zap", title: "Faster indexability", description: "Technical fixes improved the path from publishing to discoverability." },
+      { id: "pops-3", icon: "sparkles", title: "New property growth", description: "POPS Kids and POPS Kids Learn launched with clearer organic foundations." },
+    ],
+  },
+  "tomato-childrens-home": {
+    badge: "Enrollment performance",
+    heading: "From expensive leads to efficient enrollment.",
+    description: "Compare the enrollment funnel before and after paid media, landing-page, and lifecycle optimization.",
+    beforeLabel: "Before",
+    afterLabel: "After",
+    beforeImage: {
+      src: "/images/tomato/tomato-before.png",
+      alt: "TOMATO Children's Home Enrollment Baseline (Before)",
+    },
+    afterImage: {
+      src: "/images/tomato/tomato-after.png",
+      alt: "TOMATO Children's Home High Conversion Funnel (After)",
+    },
+    beforePanel: {
+      eyebrow: "Before",
+      title: "High-friction funnel",
+      description: "Lead generation needed stronger channel decisions, clearer landing pages, and more consistent lifecycle follow-up.",
+      metrics: [
+        { value: "High", label: "Cost per lead" },
+        { value: "Split", label: "Campaign flow" },
+        { value: "Manual", label: "Lifecycle ops" },
+      ],
+    },
+    afterPanel: {
+      eyebrow: "After",
+      title: "Enrollment growth loop",
+      description: "Integrated marketing connected social, landing pages, paid media, OOH, CRM, and email automation around student enrollment.",
+      metrics: [
+        { value: "3×", label: "Monthly enrollment" },
+        { value: "-60%", label: "Cost per lead" },
+        { value: "+85%", label: "CTR increase" },
+      ],
+    },
+    highlights: [
+      { id: "tomato-1", icon: "check", title: "Lower acquisition cost", description: "Budget decisions and funnel fixes reduced CPL while enrollment grew." },
+      { id: "tomato-2", icon: "sparkles", title: "Sharper creative", description: "Campaign and landing-page messaging improved click intent." },
+      { id: "tomato-3", icon: "zap", title: "Automated nurture", description: "Email automation supported follow-up across 40,000+ contacts." },
+    ],
+  },
+};
+
+const performanceComparison = project.slug === "playah" ? performanceComparisons.playah : undefined;
+
 const paragraphs = project.description.split("\n\n").filter(Boolean);
 const projectUrl = absoluteUrl(`/work/${project.slug}`);
 const projectLinkLabel = project.linkLabel?.replace(/\s*->\s*$/, "") ?? "Visit site";
@@ -60,8 +226,8 @@ const creativeWorkSchema = {
   <main class="min-h-screen bg-background text-foreground case-study-page">
 
     <!-- HERO TITLE SECTION -->
-    <div class="relative overflow-hidden px-6 sm:px-12 md:px-20 pt-0 pb-16 border-b border-border">
-      <div class="relative z-10 mx-auto max-w-[1100px]">
+    <div class="relative overflow-hidden px-[var(--page-gutter)] pt-0 pb-16 border-b border-border">
+      <div class="relative z-10 mx-auto max-w-[1280px]">
         <div>
           <p class="font-mono-label text-accent mb-4">Case study · {project.client}</p>
           
@@ -74,16 +240,12 @@ const creativeWorkSchema = {
       </div>
     </div>
 
-    <!-- TL;DR SECTION -->
+    <!-- SUMMARY SECTION -->
     <div class="border-b border-border">
-      <div class="px-6 sm:px-12 md:px-20 py-12 md:py-16">
-        <div class="mx-auto max-w-[1100px]">
-          <div class="md:grid md:grid-cols-[200px_1fr] md:gap-16">
-            <div>
-              <p class="font-mono-label text-foreground">TL;DR</p>
-            </div>
-            <div class="mt-4 md:mt-0 space-y-10">
-              <dl class="divide-y divide-border max-w-3xl">
+      <div class="px-[var(--page-gutter)] py-12 md:py-16">
+        <div class="mx-auto max-w-[1280px]">
+          <div class="space-y-10">
+              <dl class="divide-y divide-border max-w-5xl">
                 <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
                   <dt class="font-mono-label text-foreground">Background</dt>
                   <dd class="text-body-lg leading-[1.55] text-foreground/85">
@@ -124,68 +286,17 @@ const creativeWorkSchema = {
                   </div>
                 )}
               </dl>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- MAIN CONTENT & SIDEBAR GRID SECTION -->
-    <div class="px-6 sm:px-12 md:px-20">
-      <div class="mx-auto max-w-[1100px] md:grid md:grid-cols-[200px_1fr] md:gap-16">
-        
-        <!-- STICKY TOC NAV -->
-        <nav aria-label="Section navigation" class="hidden md:block pt-20 pb-20">
-          <div class="sticky top-24">
-            <ul class="space-y-3">
-              <li>
-                <a href="#overview" class="block text-body font-sans transition-colors text-foreground font-semibold">
-                  Overview
-                </a>
-              </li>
-              {project.images && project.images.length > 0 && (
-                <li>
-                  <a href="#showcase" class="block text-body font-sans transition-colors text-muted-foreground hover:text-foreground">
-                    Showcase
-                  </a>
-                </li>
-              )}
-            </ul>
-          </div>
-        </nav>
-
+    <!-- MAIN CONTENT SECTION -->
+    <div class="px-[var(--page-gutter)]">
+      <div class="mx-auto max-w-[1280px]">
         <!-- MAIN BODY CONTENT -->
         <div>
-          <section id="overview" class="py-20 border-b border-border/40 last:border-0 scroll-mt-20">
-            <div>
-              <p class="font-mono-label text-accent">Overview</p>
-              <h2 class="mt-3 font-display text-display-xs leading-[1.2] tracking-[-0.02em] text-foreground">
-                {project.title}
-              </h2>
-            </div>
-
-            <div class="mt-6 text-body sm:text-body-lg leading-[1.7] text-muted-foreground">
-              <p set:html={project.summary} />
-
-              <!-- 3 NUMBERED CARDS (01, 02, 03) -->
-              {paragraphs.length > 0 && (
-                <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {paragraphs.slice(0, 3).map((para, idx) => (
-                    <div class="p-5 rounded-xl border border-border bg-secondary">
-                      <div class="font-mono-label mb-3 text-accent">0{idx + 1}</div>
-                      <p class="text-body-lg leading-[1.55] text-foreground" set:html={para} />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div class="mt-6 space-y-4">
-                {paragraphs.slice(3).map((para) => (
-                  <p class="text-body sm:text-body-lg leading-[1.7] text-muted-foreground" set:html={para} />
-                ))}
-              </div>
-            </div>
-          </section>
+          {performanceComparison && <BeforeAfterPerformance client:load {...performanceComparison} />}
 
           <!-- EXTRA IMAGES SHOWCASE GALLERY -->
           {project.images && project.images.length > 0 && (
@@ -216,14 +327,13 @@ const creativeWorkSchema = {
 
       </div>
 
-      <!-- MORE CASE STUDIES SECTION (Outside sticky TOC container so TOC stops scrolling above it) -->
+      <!-- MORE CASE STUDIES SECTION -->
       {otherProjects.length > 0 && (
-        <div class="mx-auto max-w-[1100px] md:grid md:grid-cols-[200px_1fr] md:gap-16">
-          <div class="hidden md:block"></div>
+        <div class="mx-auto max-w-[1280px]">
           <div>
-            <section class="py-16 border-t border-border mt-8">
+            <section class="py-16 mt-8">
               <p class="font-mono-label text-muted-foreground mb-5">More case studies</p>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               {otherProjects.map((item) => (
                 <a
                   href={`/work/${item.slug}`}
@@ -256,7 +366,7 @@ const creativeWorkSchema = {
                     <h3 class="font-display more-case-title mb-1 text-foreground group-hover:text-accent transition-colors">
                       {item.title}
                     </h3>
-                    <p class="text-caption text-muted-foreground leading-relaxed line-clamp-2">
+                    <p class="text-caption more-case-excerpt text-muted-foreground leading-relaxed line-clamp-2">
                       {item.summary}
                     </p>
                   </div>
@@ -338,9 +448,13 @@ const creativeWorkSchema = {
 
   .more-case-title {
     font-family: var(--serif);
-    font-size: 18px !important;
+    font-size: 24px !important;
     font-weight: 400 !important;
     line-height: 1.25;
+  }
+
+  .more-case-excerpt {
+    font-size: 12px !important;
   }
 
   .more-case-card:hover {

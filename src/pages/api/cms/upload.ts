@@ -1,18 +1,9 @@
 import type { APIRoute } from "astro";
 import { readCmsPayload, uploadAssets } from "../../../lib/cms-admin";
 import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../../../lib/cms-auth";
+import { isFormFile, json, jsonError } from "../../../lib/http";
 
 export const prerender = false;
-
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
-
-function isFile(value: FormDataEntryValue): value is File {
-  return typeof value === "object" && "arrayBuffer" in value && "name" in value;
-}
 
 export const POST: APIRoute = async ({ request }) => {
   if (isCmsDisabledInProduction()) {
@@ -27,7 +18,7 @@ export const POST: APIRoute = async ({ request }) => {
     const form = await request.formData();
     const target = String(form.get("target") ?? "");
     const slug = String(form.get("slug") ?? "");
-    const files = form.getAll("files").filter(isFile);
+    const files = form.getAll("files").filter(isFormFile);
 
     if (target !== "photos" && target !== "gear" && target !== "writing") {
       return json({ success: false, error: "Upload target must be photos, gear, or writing." }, { status: 400 });
@@ -49,12 +40,6 @@ export const POST: APIRoute = async ({ request }) => {
       data: await readCmsPayload(),
     });
   } catch (error) {
-    return json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "Unable to upload files.",
-      },
-      { status: 400 },
-    );
+    return jsonError(error, { status: 400, fallbackMessage: "Unable to upload files." });
   }
 };

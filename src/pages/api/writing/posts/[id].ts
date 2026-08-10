@@ -1,15 +1,10 @@
 import type { APIRoute } from "astro";
 import { deletePost, getPost, updatePost } from "../../../../lib/writing/posts";
 import { isCmsRequestAuthorized } from "../../../../lib/cms-auth";
+import { json } from "../../../../lib/http";
 import { countWords, computeReadingTime, extractTextFromHtml } from "../../../../lib/writing/reading-time";
 
 export const prerender = false;
-
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
 
 export const GET: APIRoute = async ({ request, params }) => {
   if (!isCmsRequestAuthorized(request)) {

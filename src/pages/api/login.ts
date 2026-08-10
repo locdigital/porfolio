@@ -5,6 +5,7 @@ import {
   getCmsAuthConfig,
   isCmsDisabledInProduction,
 } from '../../lib/cms-auth';
+import { json } from '../../lib/http';
 
 export const prerender = false;
 
@@ -34,31 +35,21 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     credentials = await readCredentials(request);
   } catch {
-    return new Response(JSON.stringify({ success: false, error: 'Invalid request' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ success: false, error: 'Invalid request' }, { status: 400 });
   }
 
   const { username, password } = credentials;
   const authConfig = getCmsAuthConfig();
 
   if (!authConfig.configured) {
-    return new Response(JSON.stringify({ success: false, error: 'CMS auth is not configured.' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ success: false, error: 'CMS auth is not configured.' }, { status: 500 });
   }
 
   if (username === authConfig.username && password === authConfig.password) {
     const headers = new Headers();
     headers.append('Set-Cookie', createCmsSessionCookie());
-    headers.append('Content-Type', 'application/json');
-    return new Response(JSON.stringify({ success: true }), { status: 200, headers });
+    return json({ success: true }, { status: 200, headers });
   }
 
-  return new Response(JSON.stringify({ success: false, error: 'Invalid credentials' }), {
-    status: 401,
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return json({ success: false, error: 'Invalid credentials' }, { status: 401 });
 };

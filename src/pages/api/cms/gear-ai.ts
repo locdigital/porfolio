@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../../../lib/cms-auth";
+import { json, readJsonBody } from "../../../lib/http";
 
 export const prerender = false;
 
@@ -14,12 +15,6 @@ type GearAiResult = {
   description: string;
   source: "gemini" | "fallback";
 };
-
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
 
 function readEnv(name: string) {
   return process.env[name] || import.meta.env[name];
@@ -125,7 +120,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   let payload: GearAiPayload;
   try {
-    payload = await request.json();
+    payload = await readJsonBody<GearAiPayload>(request);
   } catch {
     return json({ success: false, error: "Invalid JSON payload." }, { status: 400 });
   }

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { isCmsRequestAuthorized } from "../../../lib/cms-auth";
+import { json, readJsonBody } from "../../../lib/http";
 import type { Post } from "../../../lib/writing/posts";
 import {
   applySeoAutofill,
@@ -14,12 +15,6 @@ export const prerender = false;
 type SeoAiPayload = {
   post?: Partial<Post>;
 };
-
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
 
 function readEnv(name: string) {
   return process.env[name] || import.meta.env[name];
@@ -102,7 +97,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   let payload: SeoAiPayload;
   try {
-    payload = await request.json();
+    payload = await readJsonBody<SeoAiPayload>(request);
   } catch {
     return json({ success: false, error: "Invalid JSON payload." }, { status: 400 });
   }

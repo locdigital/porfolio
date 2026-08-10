@@ -1,11 +1,18 @@
 import { existsSync } from "node:fs";
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { Collection } from "mongodb";
-import { getMongoDb, isMongoConfigured } from "../mongodb";
+import {
+  deleteSupabaseCmsEntry,
+  findSupabaseCmsEntryBySlug,
+  isSupabaseCmsConfigured,
+  readSupabaseCmsCollection,
+  readSupabaseCmsEntry,
+  writeSupabaseCmsEntry,
+} from "../cms-store";
 
 const rootDir = process.cwd();
 const postsDir = path.join(rootDir, "data", "writing-posts");
+const SUPABASE_COLLECTION = "writing_posts";
 
 export type PostStatus = "draft" | "published" | "archived";
 
@@ -42,10 +49,6 @@ export type CreatePostInput = Partial<Omit<Post, "id" | "createdAt" | "updatedAt
 
 export type UpdatePostInput = Partial<Omit<Post, "id" | "createdAt">>;
 
-type StoredPost = Post & { _id: string };
-
-let indexesReady = false;
-
 function generateId(): string {
   return `post_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
@@ -58,32 +61,6 @@ async function ensureDir() {
   if (!existsSync(postsDir)) {
     await mkdir(postsDir, { recursive: true });
   }
-}
-
-function stripMongoId(post: StoredPost): Post {
-  const { _id, ...rest } = post;
-  return rest;
-}
-
-function withoutUndefined<T extends Record<string, unknown>>(value: T): T {
-  return Object.fromEntries(
-    Object.entries(value).filter(([, entry]) => entry !== undefined)
-  ) as T;
-}
-
-async function getPostsCollection(): Promise<Collection<StoredPost> | null> {
-  if (!isMongoConfigured()) return null;
-
-  const db = await getMongoDb();
-  const collection = db.collection<StoredPost>("writing_posts");
-
-  if (!indexesReady) {
-    await collection.createIndex({ slug: 1 });
-    await collection.createIndex({ status: 1, updatedAt: -1 });
-    indexesReady = true;
-  }
-
-  return collection;
 }
 
 async function listFilePosts(): Promise<Post[]> {
@@ -143,26 +120,27 @@ async function deleteFilePost(id: string): Promise<void> {
 }
 
 export async function listPosts(): Promise<Post[]> {
-  const collection = await getPostsCollection();
-  if (!collection) return listFilePosts();
+  if (isSupabaseCmsConfigured()) {
+    const posts = await readSupabaseCmsCollection<Post>(SUPABASE_COLLECTION);
+    return posts.sort(
+      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }
 
-  const posts = await collection.find({}).sort({ updatedAt: -1 }).toArray();
-  return posts.map(stripMongoId);
+  return listFilePosts();
 }
 
 export async function getPost(id: string): Promise<Post | null> {
-  const collection = await getPostsCollection();
-  if (!collection) return getFilePost(id);
+  if (isSupabaseCmsConfigured()) {
+    return readSupabaseCmsEntry<Post>(SUPABASE_COLLECTION, id);
+  }
 
-  const post = await collection.findOne({ _id: id });
-  return post ? stripMongoId(post) : null;
+  return getFilePost(id);
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const collection = await getPostsCollection();
-  if (collection) {
-    const post = await collection.findOne({ slug });
-    return post ? stripMongoId(post) : null;
+  if (isSupabaseCmsConfigured()) {
+    return findSupabaseCmsEntryBySlug<Post>(SUPABASE_COLLECTION, slug);
   }
 
   const posts = await listPosts();
@@ -199,37 +177,39 @@ export async function createPost(input: CreatePostInput): Promise<Post> {
     publishedAt: input.publishedAt,
   };
 
-  const collection = await getPostsCollection();
-  if (!collection) return createFilePost(post);
+  if (isSupabaseCmsConfigured()) {
+    await writeSupabaseCmsEntry(SUPABASE_COLLECTION, id, post);
+    return post;
+  }
 
-  const storedPost = withoutUndefined({ ...post, _id: id });
-  await collection.insertOne(storedPost);
-  return post;
+  return createFilePost(post);
 }
 
 export async function updatePost(id: string, input: UpdatePostInput): Promise<Post> {
-  const collection = await getPostsCollection();
-  if (!collection) return updateFilePost(id, input);
+  if (isSupabaseCmsConfigured()) {
+    const existing = await getPost(id);
+    if (!existing) throw new Error(`Post not found: ${id}`);
+    const updated: Post = {
+      ...existing,
+      ...input,
+      id,
+      createdAt: existing.createdAt,
+      updatedAt: new Date().toISOString(),
+    };
+    await writeSupabaseCmsEntry(SUPABASE_COLLECTION, id, updated);
+    return updated;
+  }
 
-  const existing = await getPost(id);
-  if (!existing) throw new Error(`Post not found: ${id}`);
-  const updated: Post = {
-    ...existing,
-    ...input,
-    id,
-    createdAt: existing.createdAt,
-    updatedAt: new Date().toISOString(),
-  };
-  const storedPost = withoutUndefined({ ...updated, _id: id });
-  await collection.replaceOne({ _id: id }, storedPost);
-  return updated;
+  return updateFilePost(id, input);
 }
 
 export async function deletePost(id: string): Promise<void> {
-  const collection = await getPostsCollection();
-  if (!collection) return deleteFilePost(id);
+  if (isSupabaseCmsConfigured()) {
+    await deleteSupabaseCmsEntry(SUPABASE_COLLECTION, id);
+    return;
+  }
 
-  await collection.deleteOne({ _id: id });
+  return deleteFilePost(id);
 }
 
 export async function publishPost(id: string): Promise<Post> {

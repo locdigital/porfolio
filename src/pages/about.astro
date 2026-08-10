@@ -7,48 +7,101 @@ const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance
 
 const experiences = [
   {
-    company: "Google",
-    role: "UX Design Intern",
-    when: "Summer 2026",
-    logo: "google",
+    company: "AnyMind Group",
+    role: "Senior Media Account Executive",
+    when: "2026 - Present",
+    logo: "/assets/logos/logo-anymind.png",
   },
   {
-    company: "Apple",
-    role: "Product Design Intern",
-    when: "Summer 2025",
-    logo: "apple",
+    company: "Sony",
+    role: "D2C Senior Executive",
+    when: "2025 - Present",
+    logo: "/assets/logos/logo-sony.png",
   },
   {
-    company: "Microsoft",
-    role: "Campus Ambassador",
-    when: "Fall 2025",
-    logo: "microsoft",
+    company: "WorkFlow Space",
+    role: "Digital Marketing Executive",
+    when: "2024 - Present",
+    logo: "/assets/logos/logo-workflow.webp",
   },
   {
-    company: "Lenovo",
-    role: "Product Design Consultant",
-    when: "Spring 2025",
-    logo: "lenovo",
+    company: "Đi Làm Đừng Đi Lầm",
+    role: "Co-Founder & Community Lead",
+    when: "2023 - Present",
+    logo: "/assets/logos/logo-dlddl.png",
   },
   {
-    company: "SoFi",
-    role: "Product Design Consultant",
-    when: "Spring 2024",
-    logo: "sofi",
+    company: "Đại Học Đừng Học Đại",
+    role: "Co-Founder & Community Lead",
+    when: "2021 - Present",
+    logo: "/assets/logos/logo-community.png",
+  },
+  {
+    company: "PlayAh!",
+    role: "Performance Senior Executive",
+    when: "2024 - Present",
+    logo: "/assets/logos/logo-playah.webp",
+  },
+  {
+    company: "Asia Strategic Holdings",
+    role: "Performance Marketing",
+    when: "2025 - 2026",
+    logo: "/assets/logos/logo-asia-strategic.png",
+  },
+  {
+    company: "Vinh Cara",
+    role: "Digital Marketing Specialist",
+    when: "2024 - 2025",
+    logo: "/assets/logos/logo-vinhcara.png",
+  },
+  {
+    company: "TOMATO Children's Home",
+    role: "Digital Marketing Executive",
+    when: "2023 - 2024",
+    logo: "/assets/logos/logo-tomato.webp",
+  },
+  {
+    company: "POPS Worldwide",
+    role: "Search Engine Optimization Executive",
+    when: "2022 - 2023",
+    logo: "/assets/logos/logo-pops.webp",
+  },
+];
+
+const freeTimeActivities = [
+  {
+    title: "Landscape & Street Photography",
+    tag: "Photography",
+    src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hj4IxMk94KrOISaFPdMJw9ClQ8qRiYZespBUG",
+  },
+  {
+    title: "Community & Youth Mentorship",
+    tag: "Community",
+    src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAVQfosXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
+  },
+  {
+    title: "Highland Trails & Nature Exploration",
+    tag: "Exploration",
+    src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haKIMPIyOH490TilXyexRchUNGmAMZLwKkFvI",
+  },
+  {
+    title: "Slow Coffee & Morning Quiet",
+    tag: "Mindfulness",
+    src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h6JYpl3Mgx3rw7LHmJhekT2K4Uy81ajfobtSv",
+  },
+  {
+    title: "AI Workflows & Automation Experiments",
+    tag: "Tech & Growth",
+    src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hivUo2ZwbmU9pOiYE6G824a0BWCXcl37yufzH",
+  },
+  {
+    title: "Documenting Local Stories & Scenes",
+    tag: "Storytelling",
+    src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTAtSgGiW6tUiNOoXB108SdsMHZayFfJrLGk",
   },
 ];
 
 
-const skills = [
-  { name: "Meta Ads", desc: "Paid Social Campaigns & Attribution" },
-  { name: "Google Ads", desc: "Performance Max, Search & Web Conversion" },
-  { name: "TikTok Ads", desc: "Spark Ads, GMV Max & TikTok Shop" },
-  { name: "Google Analytics", desc: "Data Audits & GA4 Custom Reporting" },
-  { name: "Figma", desc: "Interface Design & Creative Mockups" },
-  { name: "n8n", desc: "AI-powered Funnel Automation" },
-  { name: "Ahrefs", desc: "SEO Keyword & Competitor Audits" },
-  { name: "Looker Studio", desc: "Dashboarding & Growth Analytics" },
-];
 ---
 
 <Layout
@@ -62,18 +115,18 @@ const skills = [
   })}
 >
   <main class="gear-page bg-background text-foreground">
-    <div class="about-container">
+    <div class="gear-container">
 
-      <!-- HERO SECTION (Erica Zoe Lee Layout) -->
+      <!-- HERO SECTION (Reference Layout with Pill/Arch Avatar) -->
       <section class="gear-hero pb-12 md:pb-16 border-b border-border" aria-label="Introduction">
-        <div class="grid grid-cols-1 md:grid-cols-[1fr_260px] gap-10 md:gap-16 items-start">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_340px] gap-10 md:gap-12 lg:gap-16 items-center">
           
           <!-- LEFT HERO CONTENT -->
           <div>
-            <div class="page-kicker-wrapper mb-3">
+            <div class="page-kicker-wrapper">
               <span class="page-kicker-text">About</span>
             </div>
-            <h1 class="font-display text-display-md sm:text-display-lg leading-[1.05] tracking-[-0.02em] text-foreground">
+            <h1 class="font-display text-display-md sm:text-display-lg leading-[1.08] tracking-[-0.02em] text-foreground">
               Hi there, I&rsquo;m Loc.
             </h1>
 
@@ -84,7 +137,7 @@ const skills = [
                   <path d="M 9.488 7.907 C 9.488 6.159 8.073 4.744 6.325 4.744 C 4.578 4.744 3.163 6.159 3.163 7.907 C 3.163 9.654 4.578 11.069 6.325 11.069 C 8.073 11.069 9.488 9.654 9.488 7.907 Z M 4.744 7.907 C 4.744 7.037 5.455 6.325 6.325 6.325 C 7.195 6.325 7.906 7.037 7.906 7.907 C 7.906 8.776 7.195 9.488 6.325 9.488 C 5.455 9.488 4.744 8.776 4.744 7.907 Z"/>
                   <path d="M 5.867 18.012 C 6.001 18.121 6.167 18.185 6.325 18.185 C 6.483 18.185 6.649 18.13 6.784 18.012 C 7.021 17.812 12.674 13.132 12.65 7.27 C 12.65 3.263 9.812 0 6.325 0 C 2.838 0 0 3.263 0 7.27 C -0.024 13.123 5.629 17.812 5.867 18.012 Z M 6.325 1.827 C 8.942 1.827 11.069 4.271 11.069 7.279 C 11.085 11.314 7.598 14.94 6.325 16.131 C 5.052 14.94 1.566 11.323 1.581 7.279 C 1.581 4.271 3.708 1.827 6.325 1.827 Z"/>
                 </svg>
-                Ho Chi Minh City, Vietnam
+                Ho Chi Minh City, Vietnam 🇻🇳
               </span>
               <span class="inline-flex items-center gap-2">
                 <svg viewBox="0 0 18 18" class="w-4 h-4 stroke-current fill-none text-accent" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -92,12 +145,12 @@ const skills = [
                   <path d="M 4 6.6 V 11 C 4 12.3 6.2 13.4 9 13.4 C 11.8 13.4 14 12.3 14 11 V 6.6"/>
                   <path d="M 17 5 V 9.5"/>
                 </svg>
-                Digital Marketing · FPT University (Honors)
+                Digital Marketing · FPT University (Honors 🎓)
               </span>
             </div>
 
             <!-- BIO PARAGRAPHS -->
-            <div class="mt-6 space-y-4 text-body leading-[1.7] text-muted-foreground">
+            <div class="mt-6 space-y-4 text-body leading-[1.75] text-muted-foreground">
               <p>
                 I&rsquo;ve always enjoyed the sensation of making things—whether scaling multi-channel paid media, designing conversion landing pages, or building automated marketing funnels. My early growth experiments sparked a deep interest in crafting campaign systems that feel intentional, high-converting, and joyful.
               </p>
@@ -105,21 +158,18 @@ const skills = [
                 Today, I focus on designing accessible, data-driven growth strategies for e-commerce, education, and brand platforms. My approach bridges creative production with full-funnel analytics to turn ad spend into measurable, long-term ROI.
               </p>
             </div>
-
           </div>
 
-          <!-- RIGHT POLAROID PORTRAIT CARD -->
-          <div class="w-full">
-            <div class="bg-card border border-border rounded-xl p-3.5 shadow-sm">
-              <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-secondary">
-                <img
-                  src="/images/loc-portrait.png"
-                  alt="Nguyen Phuc Loc"
-                  loading="eager"
-                  decoding="async"
-                  class="w-full h-full object-cover"
-                />
-              </div>
+          <!-- RIGHT ARCH / CAPSULE AVATAR FRAME -->
+          <div class="w-full flex justify-center md:justify-end">
+            <div class="relative w-full max-w-[280px] sm:max-w-[320px] aspect-[3/4] rounded-[130px] sm:rounded-[150px] overflow-hidden bg-secondary shadow-lg border border-border/50 rotate-2 md:rotate-[2deg] transition-transform duration-500 hover:rotate-0 group">
+              <img
+                src="/images/loc-avatar.jpg"
+                alt="Nguyen Phuc Loc avatar"
+                loading="eager"
+                decoding="async"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
             </div>
           </div>
 
@@ -131,15 +181,8 @@ const skills = [
         <div class="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
           
           <!-- SECTION SUBHEAD -->
-          <div class="flex items-center gap-3 pt-1">
-            <!-- Pencil icon -->
-            <svg width="26" height="28" viewBox="0 0 46 50" fill="none" class="text-foreground shrink-0" aria-hidden="true">
-              <path d="M35.4417 28.7269C35.4266 28.6772 35.1258 28.2854 33.8666 26.9903C32.9349 26.0321 31.2699 24.581 29.5191 23.1761C27.7683 21.7712 25.9468 20.4867 24.8004 19.638C23.6541 18.7893 23.2383 18.4155 22.0763 17.4936C20.9144 16.5718 19.0189 15.1133 17.8586 14.1811C16.6983 13.2489 16.3306 12.8871 16.0732 12.6263C15.8159 12.3654 15.6801 12.2165 15.5463 12.0891" stroke="currentColor" stroke-width="3.33" stroke-linejoin="round"/>
-              <path d="M9.71981 23.4483C9.74083 23.47 9.76185 23.4917 10.8517 24.3107C11.9416 25.1298 14.0996 26.7455 16.0472 28.4335C17.9947 30.1215 19.6663 31.8328 20.746 32.924C22.2528 34.4467 23.2735 35.4743 24.5826 36.7637C25.3316 37.4453 28.7557 39.2073 29.2873 39.6223C29.8189 40.0373 27.4301 39.0829 27.575 39.0454" stroke="currentColor" stroke-width="3.33" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M36.2731 28.5002C36.0374 28.5935 35.4225 29.012 34.4072 30.9836C33.5366 32.7586 31.9446 36.1059 31.0913 37.9277C30.2381 39.7495 30.1721 39.9443 30.1271 40.2305" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-              <path d="M35.5002 30.002C35.4986 29.9967 35.6403 28.3399 36.0002 29.502C36.3601 30.664 38.6017 34.7846 39.8261 36.5886C43.5002 42.002 42.7323 40.971 42.7282 41.173C42.7282 41.173 42.0968 41.1121 39.8253 40.8224C37.8803 40.5743 31.4281 39.6773 29.4998 39.5019" stroke="currentColor" stroke-width="3.33" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h2 class="font-sans font-semibold text-2xl text-foreground tracking-tight">Experiences</h2>
+          <div class="pt-1">
+            <h2 class="font-sans font-medium text-2xl text-foreground tracking-tight">Experiences</h2>
           </div>
 
           <!-- EXPERIENCE LIST TABLE -->
@@ -148,64 +191,30 @@ const skills = [
               <tbody>
                 {experiences.map((item) => (
                   <tr class="border-b border-border first:border-t">
-                    <td class="py-5.5 w-16 align-middle">
-                      <div class="w-10 h-10 grid place-items-center">
-                        {item.logo === "google" && (
-                          <svg viewBox="0 0 48 48" class="w-8 h-8">
-                            <path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8a12 12 0 1 1 7.9-21l5.7-5.7A20 20 0 1 0 44 24c0-1.2-.1-2.3-.4-3.5z"/>
-                            <path fill="#34A853" d="M6.3 14.7l6.6 4.8A12 12 0 0 1 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7A20 20 0 0 0 6.3 14.7z"/>
-                            <path fill="#FBBC05" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0 1 12.7 28l-6.5 5A20 20 0 0 0 24 44z"/>
-                            <path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C40 35 44 30 44 24c0-1.2-.1-2.3-.4-3.5z"/>
-                          </svg>
-                        )}
-                        {item.logo === "apple" && (
-                          <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current text-foreground">
-                            <path d="M17.5 12.6c0-2.5 2-3.7 2.1-3.8-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.9-1.6 0-3.2.9-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3.1 2.5 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.7-1-2.7-3.8zM15 4.6c.7-.8 1.1-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/>
-                          </svg>
-                        )}
-                        {item.logo === "microsoft" && (
-                          <svg viewBox="0 0 24 24" class="w-6 h-6">
-                            <rect x="1" y="1" width="10" height="10" fill="#F25022"/>
-                            <rect x="13" y="1" width="10" height="10" fill="#7FBA00"/>
-                            <rect x="1" y="13" width="10" height="10" fill="#00A4EF"/>
-                            <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
-                          </svg>
-                        )}
-                        {item.logo === "lenovo" && (
-                          <svg viewBox="0 0 48 48" class="w-8 h-8">
-                            <circle cx="24" cy="24" r="22" fill="#E2231A"/>
-                            <text x="24" y="28" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#fff" letter-spacing="-0.3">Lenovo.</text>
-                          </svg>
-                        )}
-                        {item.logo === "sofi" && (
-                          <svg viewBox="0 0 48 48" class="w-8 h-8">
-                            <g fill="#29ABE2" stroke="#29ABE2" stroke-width="2.5">
-                              <circle cx="10" cy="10" r="6.5"/>
-                              <circle cx="24" cy="10" r="6.5"/>
-                              <circle cx="38" cy="10" r="6.5" fill="none"/>
-                              <circle cx="10" cy="24" r="6.5" fill="none"/>
-                              <circle cx="24" cy="24" r="6.5" fill="none"/>
-                              <circle cx="38" cy="24" r="6.5" fill="none"/>
-                              <circle cx="10" cy="38" r="6.5"/>
-                              <circle cx="24" cy="38" r="6.5" fill="none"/>
-                              <circle cx="38" cy="38" r="6.5"/>
-                            </g>
-                          </svg>
-                        )}
-                        {!["google", "apple", "microsoft", "lenovo", "sofi"].includes(item.logo || "") && (
-                          <div class="w-9 h-9 rounded-lg bg-secondary border border-border flex items-center justify-center font-mono text-xs font-semibold text-foreground">
+                    <td class="py-6 w-10 align-middle">
+                      <div class="w-[25px] h-[25px] grid place-items-center overflow-hidden rounded-full bg-secondary/40 border border-border/50 shrink-0">
+                        {item.logo ? (
+                          <img
+                            src={item.logo}
+                            alt={`${item.company} logo`}
+                            class="w-full h-full object-cover rounded-full"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div class="w-full h-full rounded-full bg-secondary border border-border flex items-center justify-center font-mono text-xs font-medium text-foreground">
                             {item.company.slice(0, 2).toUpperCase()}
                           </div>
                         )}
                       </div>
                     </td>
-                    <td class="py-5.5 font-semibold text-foreground w-48 sm:w-56 align-middle tracking-tight">
+                    <td class="py-6 font-medium text-foreground w-48 sm:w-56 align-middle tracking-tight">
                       {item.company}
                     </td>
-                    <td class="py-5.5 text-muted-foreground align-middle">
+                    <td class="py-6 text-muted-foreground align-middle">
                       {item.role}
                     </td>
-                    <td class="py-5.5 text-right font-mono text-caption text-muted-foreground whitespace-nowrap w-36 sm:w-40 align-middle tracking-wider">
+                    <td class="py-6 text-right font-mono text-caption text-muted-foreground whitespace-nowrap w-36 sm:w-40 align-middle tracking-wider">
                       {item.when}
                     </td>
                   </tr>
@@ -217,31 +226,44 @@ const skills = [
         </div>
       </section>
 
-
-      <!-- TOOLSET & SKILLS SECTION -->
-      <section class="py-16" aria-label="Toolset & Skills">
+      <!-- IN MY FREE TIME SECTION (2-Column Layout) -->
+      <section class="py-16 border-b border-border" aria-label="Free time pursuits">
         <div class="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
           
-          <!-- SECTION SUBHEAD -->
-          <div class="flex items-center gap-3 pt-1">
-            <svg viewBox="0 0 24 24" class="w-6 h-6 stroke-current fill-none text-foreground shrink-0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-            </svg>
-            <h2 class="font-display text-display-xs text-foreground">Toolset & Skills</h2>
+          <!-- LEFT COLUMN: SUBHEAD -->
+          <div class="pt-1">
+            <h2 class="font-sans font-medium text-2xl text-foreground tracking-tight">
+              In My Free Time, I...
+            </h2>
           </div>
 
-          <!-- SKILLS GRID -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {skills.map((skill) => (
-              <div class="p-4 rounded-xl border border-border bg-card">
-                <div class="font-sans text-body font-semibold text-foreground">
-                  {skill.name}
+          <!-- RIGHT COLUMN: ACCORDION IMAGE GALLERY -->
+          <div class="w-full">
+            <div class="free-time-accordion flex items-center gap-2.5 h-[380px] sm:h-[420px] w-full overflow-hidden">
+              {freeTimeActivities.map((item, idx) => (
+                <div
+                  key={idx}
+                  class="accordion-card relative group h-full rounded-2xl overflow-hidden cursor-pointer border border-border/40 shadow-sm"
+                >
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <!-- Gradient Overlay & Content -->
+                  <div class="accordion-overlay absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 text-left">
+                    <span class="text-xs font-mono uppercase tracking-wider text-amber-300 font-semibold">
+                      {item.tag}
+                    </span>
+                    <h3 class="text-white font-sans font-medium text-base sm:text-lg leading-tight mt-1">
+                      {item.title}
+                    </h3>
+                  </div>
                 </div>
-                <div class="text-caption text-muted-foreground mt-0.5">
-                  {skill.desc}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
         </div>
@@ -256,8 +278,41 @@ const skills = [
     max-width: 100%;
   }
 
-  .about-container {
-    width: min(calc(100% - (var(--page-gutter) * 2)), var(--header-content-max));
-    margin: 0 auto;
+  .free-time-accordion .accordion-card {
+    flex: 1;
+    min-width: 0;
+    transition: flex 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .free-time-accordion .accordion-overlay {
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  /* Default open 1st item when section is idle */
+  .free-time-accordion .accordion-card:first-child {
+    flex: 3.5;
+  }
+
+  .free-time-accordion .accordion-card:first-child .accordion-overlay {
+    opacity: 1;
+  }
+
+  /* Hovering container collapses 1st item */
+  .free-time-accordion:hover .accordion-card:first-child {
+    flex: 1;
+  }
+
+  .free-time-accordion:hover .accordion-card:first-child .accordion-overlay {
+    opacity: 0;
+  }
+
+  /* Hovered item expands */
+  .free-time-accordion .accordion-card:hover {
+    flex: 3.5 !important;
+  }
+
+  .free-time-accordion .accordion-card:hover .accordion-overlay {
+    opacity: 1 !important;
   }
 </style>

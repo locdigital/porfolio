@@ -2,8 +2,21 @@ import { existsSync } from "node:fs";
 import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import type { Filter } from "mongodb";
-import { createMongoDocument, getCmsCollection } from "./cms-db";
+import {
+  deleteSupabaseCmsEntry,
+  isSupabaseCmsConfigured,
+  readSupabaseCmsCollection,
+  readSupabaseCmsEntry,
+  writeSupabaseCmsEntry,
+} from "./cms-store";
+import {
+  deleteGithubFile,
+  isGithubContentConfigured,
+  readGithubDir,
+  readGithubFile,
+  shouldUseGithubContent,
+  writeGithubFile,
+} from "./github-content";
 import { canUploadToUploadThing, uploadToUploadThing } from "./uploadthing-server";
 
 const rootDir = process.cwd();
@@ -19,139 +32,18 @@ const uploadImageSettings = {
   photos: { maxEdge: 1600, quality: 75 },
   writing: { maxEdge: 1400, quality: 75 },
 } as const;
-const MONGO_GEAR_ID = "setup";
+const GEAR_ID = "setup";
 
-// --- GitHub API Configuration ---
-const githubConfig = {
-  token: process.env.GITHUB_TOKEN,
-  owner: process.env.GITHUB_OWNER || process.env.VERCEL_GIT_REPO_OWNER,
-  repo: process.env.GITHUB_REPO || process.env.VERCEL_GIT_REPO_SLUG,
-  branch: process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || "main",
-};
-
-const isGithubEnabled = !!(githubConfig.token && githubConfig.owner && githubConfig.repo);
-const useGithub = (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") && isGithubEnabled;
-
-// Converts an absolute path to a path relative to the workspace root for GitHub API calls
-function toGitPath(fullPath: string): string {
-  return path.relative(rootDir, fullPath).replace(/\\/g, "/");
-}
+const isGithubEnabled = isGithubContentConfigured();
+const useGithub = shouldUseGithubContent();
 
 function checkWriteAccess() {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") {
-    if (!isGithubEnabled && !process.env.MONGODB_URI) {
-      throw new Error(
-        "CMS is read-only in production. Add MONGODB_URI for database writes or GITHUB_TOKEN for file writes."
-      );
+    if (!isGithubEnabled && !isSupabaseCmsConfigured()) {
+      throw new Error("CMS is read-only in production. Add Supabase or GITHUB_TOKEN for writes.");
     }
   }
 }
-
-// --- GitHub REST API client helpers ---
-async function fetchGithub<T>(urlPath: string, options: RequestInit = {}): Promise<T> {
-  const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/${urlPath}`;
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      Authorization: `token ${githubConfig.token}`,
-      Accept: "application/vnd.github.v3+json",
-      "User-Agent": "Astro-CMS-Agent",
-      "Cache-Control": "no-cache",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`GitHub API error (${response.status}): ${errorText}`);
-  }
-
-  return response.json() as Promise<T>;
-}
-
-interface GithubContentItem {
-  name: string;
-  path: string;
-  sha: string;
-  type: "file" | "dir";
-  content?: string;
-}
-
-async function getGithubFileSha(filePath: string): Promise<string | undefined> {
-  try {
-    const gitPath = toGitPath(filePath);
-    const res = await fetchGithub<GithubContentItem>(`contents/${gitPath}?ref=${githubConfig.branch}`);
-    return res.sha;
-  } catch (err) {
-    if (err instanceof Error && err.message.includes("404")) {
-      return undefined;
-    }
-    throw err;
-  }
-}
-
-async function readGithubFile(filePath: string): Promise<string> {
-  const gitPath = toGitPath(filePath);
-  const res = await fetchGithub<GithubContentItem>(`contents/${gitPath}?ref=${githubConfig.branch}`);
-  if (res.content) {
-    return Buffer.from(res.content.replace(/\n/g, ""), "base64").toString("utf8");
-  }
-  throw new Error(`File ${gitPath} has no content from GitHub API.`);
-}
-
-async function readGithubDir(dirPath: string): Promise<string[]> {
-  try {
-    const gitPath = toGitPath(dirPath);
-    const items = await fetchGithub<GithubContentItem[]>(`contents/${gitPath}?ref=${githubConfig.branch}`);
-    return items
-      .filter((item) => item.type === "file")
-      .map((item) => item.name);
-  } catch (err) {
-    if (err instanceof Error && err.message.includes("404")) {
-      return [];
-    }
-    throw err;
-  }
-}
-
-async function writeGithubFile(filePath: string, content: string | Buffer) {
-  const gitPath = toGitPath(filePath);
-  const sha = await getGithubFileSha(filePath);
-  const base64Content = typeof content === "string"
-    ? Buffer.from(content).toString("base64")
-    : content.toString("base64");
-
-  const body = {
-    message: `cms: update ${gitPath}`,
-    content: base64Content,
-    branch: githubConfig.branch,
-    ...(sha ? { sha } : {}),
-  };
-
-  await fetchGithub(`contents/${gitPath}`, {
-    method: "PUT",
-    body: JSON.stringify(body),
-  });
-}
-
-async function deleteGithubFile(filePath: string) {
-  const gitPath = toGitPath(filePath);
-  const sha = await getGithubFileSha(filePath);
-  if (!sha) return;
-
-  const body = {
-    message: `cms: delete ${gitPath}`,
-    sha,
-    branch: githubConfig.branch,
-  };
-
-  await fetchGithub(`contents/${gitPath}`, {
-    method: "DELETE",
-    body: JSON.stringify(body),
-  });
-}
-
-// --- End of GitHub Helpers ---
 
 const textFields = [
   "title",
@@ -617,56 +509,11 @@ async function readJsonCollection<T extends OrderedJsonEntry>(dir: string): Prom
   return entries.sort((a, b) => asNumber(a.order) - asNumber(b.order));
 }
 
-function stripMongoDocument<T extends object>(document: T & { _id: string }) {
-  const { _id, ...rest } = document;
-  return rest as T;
-}
-
-async function readMongoSingle<T extends object>(
-  collectionName: string,
-  id: string,
-  fallback: T,
-): Promise<T> {
-  const collection = await getCmsCollection<T>(collectionName);
-  if (!collection) return fallback;
-
-  const document = await collection.findOne({ _id: id } as Filter<T & { _id: string }>);
-  return document ? (stripMongoDocument(document) as T) : fallback;
-}
-
-async function writeMongoSingle<T extends object>(
-  collectionName: string,
-  id: string,
-  value: T,
-): Promise<T> {
-  const collection = await getCmsCollection<T>(collectionName);
-  if (!collection) throw new Error(`MongoDB collection not available: ${collectionName}`);
-
-  const document = createMongoDocument(id, value);
-  await collection.replaceOne({ _id: id } as Filter<typeof document>, document, { upsert: true });
-  return value;
-}
-
-async function readMongoCollection<T extends OrderedJsonEntry>(
-  collectionName: string,
-): Promise<T[]> {
-  const collection = await getCmsCollection<T>(collectionName);
-  if (!collection) return [];
-
-  const entries = await collection.find({}).sort({ order: 1 }).toArray();
-  return entries.map((entry) => stripMongoDocument(entry as T & { _id: string }));
-}
-
-async function deleteMongoEntry(collectionName: string, slug: string): Promise<void> {
-  const collection = await getCmsCollection<object>(collectionName);
-  if (!collection) return;
-  await collection.deleteOne({ _id: slug });
-}
 
 export async function readWritingPosts(): Promise<CmsWritingPost[]> {
-  const mongoWriting = await readMongoCollection<CmsWritingPost>("cms_writing");
-  if (mongoWriting.length > 0) {
-    return mongoWriting.sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  const supabaseWriting = await readSupabaseCmsCollection<CmsWritingPost>("cms_writing");
+  if (supabaseWriting.length > 0) {
+    return supabaseWriting.sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
   }
 
   let files: string[] = [];
@@ -709,22 +556,15 @@ export async function readWritingPosts(): Promise<CmsWritingPost[]> {
 }
 
 async function readGear(): Promise<CmsGear> {
-  const mongoGear = await readMongoSingle<CmsGear>("cms_gear", MONGO_GEAR_ID, {
-    title: "",
-    headline: "",
-    description: "",
-    sections: [],
-  });
-  if (mongoGear.title || mongoGear.headline || mongoGear.description || mongoGear.sections.length > 0) {
-    return mongoGear;
-  }
+  const supabaseGear = await readSupabaseCmsEntry<CmsGear>("cms_gear", GEAR_ID);
+  if (supabaseGear) return supabaseGear;
 
   return readJsonFile<CmsGear>(gearPath, { title: "", headline: "", description: "", sections: [] });
 }
 
 async function readProjects(): Promise<CmsProject[]> {
-  const mongoProjects = await readMongoCollection<CmsProject>("cms_projects");
-  if (mongoProjects.length > 0) return mongoProjects;
+  const supabaseProjects = await readSupabaseCmsCollection<CmsProject>("cms_projects");
+  if (supabaseProjects.length > 0) return supabaseProjects;
   return readJsonCollection<CmsProject>(projectsDir);
 }
 
@@ -748,8 +588,8 @@ function normalizeCollectionEntry(input: Record<string, unknown>, fallbackOrder 
 }
 
 async function readCollectionEntries(name: CollectionName): Promise<CmsCollectionEntry[]> {
-  const mongoEntries = await readMongoCollection<CmsCollectionEntry>(`cms_${name}`);
-  if (mongoEntries.length > 0) return mongoEntries;
+  const supabaseEntries = await readSupabaseCmsCollection<CmsCollectionEntry>(`cms_${name}`);
+  if (supabaseEntries.length > 0) return supabaseEntries;
   return readJsonCollection<CmsCollectionEntry>(path.join(cmsDataDir, name));
 }
 
@@ -764,9 +604,8 @@ async function readCmsCollections(): Promise<CmsCollections> {
 export async function saveCollectionEntry(resource: CollectionName, input: Record<string, unknown>) {
   checkWriteAccess();
   const entry = normalizeCollectionEntry(input);
-  const collection = await getCmsCollection<CmsCollectionEntry>(`cms_${resource}`);
-  if (collection) {
-    await writeMongoSingle(`cms_${resource}`, entry.slug, entry);
+  if (isSupabaseCmsConfigured()) {
+    await writeSupabaseCmsEntry(`cms_${resource}`, entry.slug, entry);
     return entry;
   }
 
@@ -775,8 +614,8 @@ export async function saveCollectionEntry(resource: CollectionName, input: Recor
 }
 
 async function readPhotoLocations(): Promise<CmsPhotoLocation[]> {
-  const mongoPhotos = await readMongoCollection<CmsPhotoLocation>("cms_photos");
-  if (mongoPhotos.length > 0) return mongoPhotos;
+  const supabasePhotos = await readSupabaseCmsCollection<CmsPhotoLocation>("cms_photos");
+  if (supabasePhotos.length > 0) return supabasePhotos;
   return readJsonCollection<CmsPhotoLocation>(photosDir);
 }
 
@@ -795,9 +634,8 @@ export async function readCmsPayload(): Promise<CmsPayload> {
 export async function saveWritingPost(input: Record<string, unknown>) {
   checkWriteAccess();
   const post = normalizeWritingPost(input);
-  const collection = await getCmsCollection<CmsWritingPost>("cms_writing");
-  if (collection) {
-    await writeMongoSingle("cms_writing", post.slug, post);
+  if (isSupabaseCmsConfigured()) {
+    await writeSupabaseCmsEntry("cms_writing", post.slug, post);
     return post;
   }
 
@@ -853,9 +691,8 @@ function normalizeGear(input: Record<string, unknown>) {
 export async function saveGear(input: Record<string, unknown>) {
   checkWriteAccess();
   const gear = normalizeGear(input);
-  const collection = await getCmsCollection<CmsGear>("cms_gear");
-  if (collection) {
-    await writeMongoSingle("cms_gear", MONGO_GEAR_ID, gear);
+  if (isSupabaseCmsConfigured()) {
+    await writeSupabaseCmsEntry("cms_gear", GEAR_ID, gear);
     return gear;
   }
 
@@ -894,9 +731,8 @@ function normalizeProject(input: Record<string, unknown>) {
 export async function saveProject(input: Record<string, unknown>) {
   checkWriteAccess();
   const project = normalizeProject(input);
-  const collection = await getCmsCollection<CmsProject>("cms_projects");
-  if (collection) {
-    await writeMongoSingle("cms_projects", project.slug, project);
+  if (isSupabaseCmsConfigured()) {
+    await writeSupabaseCmsEntry("cms_projects", project.slug, project);
     return project;
   }
 
@@ -1127,9 +963,8 @@ function normalizePhotoLocation(input: Record<string, unknown>) {
 export async function savePhotoLocation(input: Record<string, unknown>) {
   checkWriteAccess();
   const location = normalizePhotoLocation(input);
-  const collection = await getCmsCollection<CmsPhotoLocation>("cms_photos");
-  if (collection) {
-    await writeMongoSingle("cms_photos", location.slug, location);
+  if (isSupabaseCmsConfigured()) {
+    await writeSupabaseCmsEntry("cms_photos", location.slug, location);
     return location;
   }
 
@@ -1140,7 +975,7 @@ export async function savePhotoLocation(input: Record<string, unknown>) {
 export async function deleteEntry(resource: string, slugValue: unknown) {
   checkWriteAccess();
   const slug = safeSlug(slugValue);
-  const mongoCollection =
+  const supabaseCollection =
     resource === "writing"
       ? "cms_writing"
       : resource === "projects"
@@ -1151,12 +986,9 @@ export async function deleteEntry(resource: string, slugValue: unknown) {
             ? `cms_${resource}`
             : "";
 
-  if (mongoCollection) {
-    const collection = await getCmsCollection<object>(mongoCollection);
-    if (collection) {
-      await deleteMongoEntry(mongoCollection, slug);
-      return;
-    }
+  if (supabaseCollection && isSupabaseCmsConfigured()) {
+    await deleteSupabaseCmsEntry(supabaseCollection, slug);
+    return;
   }
 
   const target =
@@ -1420,20 +1252,17 @@ export async function uploadAssets(options: {
       description: "",
       images: [],
     };
-    const collection = await getCmsCollection<CmsPhotoLocation>("cms_photos");
-    const mongoCurrent = collection
-      ? await collection.findOne({ _id: targetSlug } as Filter<CmsPhotoLocation & { _id: string }>)
-      : null;
+    const supabaseCurrent = await readSupabaseCmsEntry<Record<string, unknown>>("cms_photos", targetSlug);
     const filePath = path.join(photosDir, `${targetSlug}.json`);
-    const current = mongoCurrent
-      ? stripMongoDocument(mongoCurrent as CmsPhotoLocation & { _id: string })
+    const current = supabaseCurrent
+      ? supabaseCurrent
       : await readJsonFile<Record<string, unknown>>(filePath, fallback);
     const location = normalizePhotoLocation({
       ...current,
       images: [...(Array.isArray(current.images) ? current.images : []), ...uploaded],
     });
-    if (collection) {
-      await writeMongoSingle("cms_photos", location.slug, location);
+    if (isSupabaseCmsConfigured()) {
+      await writeSupabaseCmsEntry("cms_photos", location.slug, location);
     } else {
       await writeJsonFile(filePath, location);
     }

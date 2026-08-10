@@ -4,6 +4,8 @@ import { getPhotoLocations } from "../lib/cms";
 import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
 import { generateSlug } from "../lib/writing/slug";
 
+export const prerender = true;
+
 const sourceLocations = await getPhotoLocations();
 const anchorFor = (loc: (typeof sourceLocations)[number]) =>
   generateSlug(loc.location || loc.name || loc.slug) || loc.slug;
@@ -225,59 +227,68 @@ function hasDetailsFor(loc: PhotoLocationView) {
           )}
         </div>
 
-        <!-- Photo grid --- full-bleed inside container -->
+        <!-- Responsive Image Gallery (Efferd inspired) -->
         <div class="container">
-          <div class="loc-grid" data-gallery={`gallery-${loc.anchorId}`} aria-label={`${loc.name} gallery`}>
-            {loc.photos.map((photo, i) => (
-              <div
-                class={`loc-photo-item ${photo.h > photo.w ? 'loc-photo-tall' : ''}`}
-                data-pswp-width={photo.fullWidth}
-                data-pswp-height={photo.fullHeight}
-                aria-label={photo.alt}
-                style={`aspect-ratio: ${photo.previewWidth} / ${photo.previewHeight};`}
-              >
-                {photo.previewSrcSet ? (
-                  <picture>
-                    <source
-                      type="image/avif"
-                      srcset={photo.previewSrcSet}
-                      sizes={photo.previewSizes}
-                    />
-                    {photo.webpSrcSet && (
-                      <source
-                        type="image/webp"
-                        srcset={photo.webpSrcSet}
-                        sizes={photo.previewSizes}
+          <div class="efferd-gallery" data-gallery={`gallery-${loc.anchorId}`} aria-label={`${loc.name} gallery`}>
+            {loc.photos.map((photo, i) => {
+              const isTall = photo.previewHeight > photo.previewWidth;
+              const captionText = ("caption" in photo && typeof photo.caption === "string") ? photo.caption : "";
+              return (
+                <div
+                  class={`efferd-gallery-item ${isTall ? 'is-tall' : 'is-wide'}`}
+                  data-pswp-width={photo.fullWidth}
+                  data-pswp-height={photo.fullHeight}
+                  aria-label={photo.alt}
+                  style={`transition-delay: ${(i % 6) * 0.06}s;`}
+                >
+                  <div class="efferd-card-inner">
+                    {photo.previewSrcSet ? (
+                      <picture class="efferd-picture">
+                        <source
+                          type="image/avif"
+                          srcset={photo.previewSrcSet}
+                          sizes={photo.previewSizes}
+                        />
+                        {photo.webpSrcSet && (
+                          <source
+                            type="image/webp"
+                            srcset={photo.webpSrcSet}
+                            sizes={photo.previewSizes}
+                          />
+                        )}
+                        <img
+                          src={photo.previewSrc}
+                          width={photo.previewWidth}
+                          height={photo.previewHeight}
+                          alt={photo.alt || `${loc.name} photo ${i + 1}`}
+                          loading={locIdx === 0 && i < 4 ? "eager" : "lazy"}
+                          decoding="async"
+                          fetchpriority={locIdx === 0 && i < 2 ? "high" : "auto"}
+                          class="efferd-img"
+                          onerror="this.style.opacity='0'; this.closest('.efferd-card-inner').style.backgroundColor='#e5e7eb';"
+                        />
+                      </picture>
+                    ) : (
+                      <img
+                        src={photo.previewSrc}
+                        width={photo.previewWidth}
+                        height={photo.previewHeight}
+                        alt={photo.alt || `${loc.name} photo ${i + 1}`}
+                        loading={locIdx === 0 && i < 4 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchpriority={locIdx === 0 && i < 2 ? "high" : "auto"}
+                        class="efferd-img"
+                        onerror="this.style.opacity='0'; this.closest('.efferd-card-inner').style.backgroundColor='#e5e7eb';"
                       />
                     )}
-                    <img
-                      src={photo.previewSrc}
-                      width={photo.previewWidth}
-                      height={photo.previewHeight}
-                      alt={photo.alt}
-                      loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
-                      decoding="async"
-                      fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
-                      onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
-                    />
-                  </picture>
-                ) : (
-                  <img
-                    src={photo.previewSrc}
-                    width={photo.previewWidth}
-                    height={photo.previewHeight}
-                    alt={photo.alt}
-                    loading={locIdx === 0 && i < 3 ? "eager" : "lazy"}
-                    decoding="async"
-                    fetchpriority={locIdx === 0 && i === 0 ? "high" : "auto"}
-                    onerror="this.style.opacity='0'; this.closest('.loc-photo-item').style.backgroundColor='#e5e7eb';"
-                  />
-                )}
-                <div class="loc-photo-overlay" aria-hidden="true">
-                  <span class="loc-photo-index">{String(i + 1).padStart(2, '0')}</span>
+                    <div class="efferd-overlay" aria-hidden="true">
+                      <span class="efferd-badge">{String(i + 1).padStart(2, '0')}</span>
+                      {captionText && <span class="efferd-caption">{captionText}</span>}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -350,8 +361,36 @@ function hasDetailsFor(loc: PhotoLocationView) {
     window.addEventListener("hashchange", () => activate(location.hash.slice(1)));
   }
 
-  document.addEventListener("astro:page-load", initPhotoTabs);
+  function initGalleryInView() {
+    const items = document.querySelectorAll(".efferd-gallery-item");
+    if (!items.length) return;
+
+    if (!("IntersectionObserver" in window)) {
+      items.forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "80px 0px" }
+    );
+
+    items.forEach((item) => observer.observe(item));
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    initPhotoTabs();
+    initGalleryInView();
+  });
   initPhotoTabs();
+  initGalleryInView();
 </script>
 
 <style>
@@ -405,10 +444,10 @@ function hasDetailsFor(loc: PhotoLocationView) {
   /* ------ Nav wrapper ------ */
   .photos-nav-wrapper {
     position: relative;
-    z-index: 50;
+    z-index: 20;
     background: transparent;
     padding: 24px 0 0;
-    margin-bottom: 40px;
+    margin-bottom: 52px;
     margin-top: -1px;
   }
 
@@ -510,7 +549,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
     display: none;
     opacity: 1;
     overflow-anchor: none;
-    padding: clamp(24px, 4vw, 40px) 0 clamp(60px, 8vw, 100px) 0;
+    padding: clamp(32px, 5.2vw, 52px) 0 clamp(60px, 8vw, 100px) 0;
     scroll-margin-top: calc(var(--hdr-h, 80px) + 70px);
     content-visibility: visible;
   }
@@ -580,62 +619,103 @@ function hasDetailsFor(loc: PhotoLocationView) {
     letter-spacing: .06em;
   }
 
-  .loc-grid {
-    display: block;
+  /* ------ Efferd Image Gallery ------ */
+  .efferd-gallery {
     column-count: 3;
-    column-gap: 8px;
+    column-gap: 16px;
+    margin-top: clamp(24px, 4vw, 40px);
+    width: 100%;
   }
 
-  .loc-photo-item {
-    display: block;
-    position: relative;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.05);
-    margin-bottom: 8px;
-    border-radius: 6px;
+  .efferd-gallery-item {
     break-inside: avoid;
-    aspect-ratio: auto !important;
-    transform: translateZ(0);
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
   }
 
-  .loc-photo-item picture::after {
-    display: none;
+  .efferd-gallery-item.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 
-  .loc-photo-item picture {
+  .efferd-card-inner {
+    position: relative;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+    box-shadow:
+      0 4px 20px -2px rgba(0, 0, 0, 0.08),
+      0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent);
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+  }
+
+  .efferd-gallery-item:hover .efferd-card-inner {
+    box-shadow:
+      0 12px 32px -4px rgba(0, 0, 0, 0.16),
+      0 0 0 1px color-mix(in srgb, var(--text) 15%, transparent);
+  }
+
+  .efferd-picture {
     display: block;
     width: 100%;
   }
 
-  .loc-photo-item img {
+  .efferd-img {
     display: block;
     width: 100%;
     height: auto;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
     backface-visibility: hidden;
   }
 
-  /* Overlay: appears on hover */
-  .loc-photo-overlay {
+  .efferd-gallery-item:hover .efferd-img {
+    transform: scale(1.035);
+  }
+
+  .efferd-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,.3) 0%, transparent 55%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 55%);
     opacity: 0;
-    transition: opacity .35s ease;
+    transition: opacity 0.35s ease;
     pointer-events: none;
     display: flex;
     align-items: flex-end;
-    padding: 12px 14px;
+    justify-content: space-between;
+    padding: 14px 16px;
   }
 
-  .loc-photo-item:hover .loc-photo-overlay {
+  .efferd-gallery-item:hover .efferd-overlay {
     opacity: 1;
   }
 
-  .loc-photo-index {
+  .efferd-badge {
     font-family: var(--mono);
     font-size: var(--type-caption);
-    color: rgba(255,255,255,.82);
-    letter-spacing: .1em;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 0.1em;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .efferd-caption {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 65%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   /* ------ CMS location details ------ */
@@ -872,10 +952,6 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
   /* ------ Responsive ------ */
   @media (max-width: 900px) {
-    .loc-grid {
-      column-count: 2;
-    }
-
     .loc-cms-detail {
       grid-template-columns: 1fr;
       margin-left: 0;
@@ -894,6 +970,12 @@ function hasDetailsFor(loc: PhotoLocationView) {
     }
   }
 
+  @media (max-width: 768px) {
+    .efferd-caption {
+      display: none;
+    }
+  }
+
   @media (max-width: 600px) {
     :global(.mobile-bottom-nav) {
       display: none !important;
@@ -905,10 +987,6 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
     .photos-nav-count {
       font-size: var(--type-caption);
-    }
-
-    .loc-grid {
-      column-count: 1;
     }
 
     .loc-facts {

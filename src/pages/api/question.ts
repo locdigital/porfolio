@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { getProjects } from "../../lib/cms";
+import { json, readJsonBody } from "../../lib/http";
 
 export const prerender = false;
 
@@ -9,12 +10,6 @@ type QuestionPayload = {
 
 const REFUSAL =
   "Mình chỉ trả lời các câu hỏi về Loc, công việc/ngành nghề của Loc, portfolio, kỹ năng, kinh nghiệm, availability và thông tin liên hệ thôi nha.";
-
-function json(data: unknown, init: ResponseInit = {}) {
-  const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
-  return new Response(JSON.stringify(data), { ...init, headers });
-}
 
 function readEnv(name: string) {
   return process.env[name] || import.meta.env[name];
@@ -148,7 +143,7 @@ async function askGemini(question: string, context: string, apiKey: string) {
 export const POST: APIRoute = async ({ request }) => {
   let payload: QuestionPayload;
   try {
-    payload = await request.json();
+    payload = await readJsonBody<QuestionPayload>(request);
   } catch {
     return json({ success: false, answer: "Invalid JSON payload." }, { status: 400 });
   }

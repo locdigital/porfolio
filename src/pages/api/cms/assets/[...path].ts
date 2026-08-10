@@ -1,10 +1,27 @@
 import type { APIRoute } from "astro";
-import { promises as fs } from "node:fs";
-import path from "node:path";
 import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { isCmsDisabledInProduction, isCmsRequestAuthorized } from "../../../../lib/cms-auth";
+import { readGithubRawFile, shouldUseGithubContent } from "../../../../lib/github-content";
 
 export const prerender = false;
+
+const photoAssetsDir = path.join(process.cwd(), "src", "assets", "photos");
+
+function normalizeAssetPath(filePath: string) {
+  if (filePath.includes("\0")) return "";
+  return path.posix
+    .normalize(filePath.replace(/\\/g, "/"))
+    .replace(/^(\.\.\/)+/, "")
+    .replace(/^\/+/, "");
+}
+
+function localAssetPath(safePath: string) {
+  const absolutePath = path.resolve(photoAssetsDir, safePath);
+  if (!absolutePath.startsWith(`${photoAssetsDir}${path.sep}`)) return "";
+  return absolutePath;
+}
 
 export const GET: APIRoute = async ({ params, request }) => {
   if (isCmsDisabledInProduction()) {
@@ -20,54 +37,35 @@ export const GET: APIRoute = async ({ params, request }) => {
     return new Response("Not found", { status: 404 });
   }
 
-  const rootDir = process.cwd();
-  // Safe path normalization to prevent directory traversal
-  const safePath = path.normalize(filePathParam).replace(/^(\.\.(\/|\\|$))+/, '');
-
-  // GitHub configuration
-  const githubConfig = {
-    token: process.env.GITHUB_TOKEN,
-    owner: process.env.GITHUB_OWNER || process.env.VERCEL_GIT_REPO_OWNER,
-    repo: process.env.GITHUB_REPO || process.env.VERCEL_GIT_REPO_SLUG,
-    branch: process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || "main",
-  };
-  const isGithubEnabled = !!(githubConfig.token && githubConfig.owner && githubConfig.repo);
-  const useGithub = (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") && isGithubEnabled;
+  const safePath = normalizeAssetPath(filePathParam);
+  if (!safePath) {
+    return new Response("Not found", { status: 404 });
+  }
 
   let fileBuffer: ArrayBuffer;
   const ext = path.extname(safePath).toLowerCase();
 
-  if (useGithub) {
+  if (shouldUseGithubContent()) {
     try {
-      const gitPath = `src/assets/photos/${safePath}`;
-      const url = `https://api.github.com/repos/${githubConfig.owner}/${githubConfig.repo}/contents/${gitPath}?ref=${githubConfig.branch}`;
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `token ${githubConfig.token}`,
-          Accept: "application/vnd.github.v3.raw",
-          "User-Agent": "Astro-CMS-Agent",
-        },
-      });
-
-      if (!response.ok) {
-        return new Response(`GitHub Asset not found: ${response.status}`, { status: response.status });
-      }
-
-      fileBuffer = await response.arrayBuffer();
+      fileBuffer = await readGithubRawFile(`src/assets/photos/${safePath}`);
     } catch (error) {
-      return new Response("Error fetching asset from GitHub", { status: 500 });
+      const status = error instanceof Error ? error.message.match(/(\d{3})/)?.[1] : undefined;
+      return new Response(
+        status ? `GitHub Asset not found: ${status}` : "Error fetching asset from GitHub",
+        { status: status ? Number(status) : 500 },
+      );
     }
   } else {
-    const absolutePath = path.join(rootDir, "src", "assets", "photos", safePath);
+    const absolutePath = localAssetPath(safePath);
 
-    if (!existsSync(absolutePath)) {
+    if (!absolutePath || !existsSync(absolutePath)) {
       return new Response("Not found", { status: 404 });
     }
 
     try {
-      const buffer = await fs.readFile(absolutePath);
+      const buffer = await readFile(absolutePath);
       fileBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
-    } catch (error) {
+    } catch {
       return new Response("Error reading file", { status: 500 });
     }
   }
