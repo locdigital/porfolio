@@ -305,8 +305,8 @@
 }
 
 .cms-sidebar-logout:hover {
-  color: #b42318;
-  background: rgba(180, 35, 24, 0.08);
+  color: var(--state-error);
+  background: var(--state-error-soft);
 }
 
 /* ------ Topbar --------------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -438,7 +438,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #ef4444;
+  background: var(--state-error);
   border: 2px solid #fff;
 }
 
@@ -546,7 +546,7 @@
 }
 
 .cms-stat-icon-wrap.blue   { background: rgba(0, 117, 222, 0.1);  color: var(--accent); }
-.cms-stat-icon-wrap.green  { background: rgba(22, 163, 74, 0.1);   color: #16a34a; }
+.cms-stat-icon-wrap.green  { background: var(--state-success-soft); color: var(--state-success); }
 .cms-stat-icon-wrap.amber  { background: rgba(217, 119, 6, 0.1);   color: #d97706; }
 .cms-stat-icon-wrap.purple { background: rgba(124, 58, 237, 0.1);  color: #7c3aed; }
 
@@ -559,7 +559,7 @@
 .cms-stat-growth {
   font-family: var(--sans);
   font-size: var(--type-caption);
-  color: #16a34a;
+  color: var(--state-success);
   font-weight: 600;
 }
 
@@ -816,7 +816,7 @@
   white-space: nowrap;
 }
 
-.cms-badge-published { background: rgba(22, 163, 74, 0.1);  color: #15803d; }
+.cms-badge-published { background: var(--state-success-soft); color: var(--state-success); }
 .cms-badge-draft     { background: rgba(217, 119, 6, 0.1);  color: #b45309; }
 .cms-badge-scheduled { background: rgba(0, 117, 222, 0.1);  color: var(--accent); }
 
@@ -1036,8 +1036,8 @@
 
 .cms-button-danger {
   background: var(--cms-surface);
-  color: #b42318;
-  border-color: rgba(180, 35, 24, 0.22);
+  color: var(--state-error);
+  border-color: var(--state-error-border);
 }
 
 .cms-button-ghost {
@@ -1080,13 +1080,13 @@
 }
 
 .cms-status-success {
-  border-color: rgba(25, 135, 84, 0.28);
-  color: #1f7a4d;
+  border-color: var(--state-success-border);
+  color: var(--state-success);
 }
 
 .cms-status-error {
-  border-color: rgba(180, 35, 24, 0.28);
-  color: #b42318;
+  border-color: var(--state-error-border);
+  color: var(--state-error);
 }
 
 /* ------ Spin animation --------------------------------------------------------------------------------------------------------------------------- */
@@ -1197,7 +1197,7 @@
   border: 1px solid var(--cms-border);
   border-radius: var(--cms-radius-control);
   background: var(--cms-surface);
-  color: #b42318;
+  color: var(--state-error);
 }
 
 .cms-writing-seo-score.is-ok {
@@ -1205,7 +1205,7 @@
 }
 
 .cms-writing-seo-score.is-strong {
-  color: #167047;
+  color: var(--state-success);
 }
 
 .cms-writing-seo-score span {
@@ -1275,12 +1275,15 @@
 }
 
 .cms-writing-seo-check.pass svg {
-  color: #167047;
+  color: var(--state-success);
 }
 
-.cms-writing-seo-check.warning svg,
-.cms-writing-seo-check.fail svg {
+.cms-writing-seo-check.warning svg {
   color: #b45309;
+}
+
+.cms-writing-seo-check.fail svg {
+  color: var(--state-error);
 }
 
 .cms-writing-seo-check strong {

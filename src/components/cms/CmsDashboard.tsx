@@ -1237,8 +1237,8 @@ function TrafficChart() {
               <stop offset="100%" stopColor="#0075de" stopOpacity="0"    />
             </linearGradient>
             <linearGradient id="cms-grad-green" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stopColor="#16a34a" stopOpacity="0.15" />
-              <stop offset="100%" stopColor="#16a34a" stopOpacity="0"    />
+              <stop offset="0%"   stopColor="var(--state-success)" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="var(--state-success)" stopOpacity="0"    />
             </linearGradient>
           </defs>
 
@@ -1265,7 +1265,7 @@ function TrafficChart() {
           />
           <path
             d={readsPath}
-            fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"
+            fill="none" stroke="var(--state-success)" strokeWidth="2" strokeLinecap="round"
           />
         </svg>
       </div>
@@ -1276,7 +1276,7 @@ function TrafficChart() {
           Page views
         </div>
         <div className="cms-legend-item">
-          <div className="cms-legend-dot" style={{ background: "#16a34a" }} />
+          <div className="cms-legend-dot" style={{ background: "var(--state-success)" }} />
           Writing reads
         </div>
       </div>
@@ -2553,7 +2553,7 @@ export default function CmsDashboard({ initialData }: CmsDashboardProps) {
     if (loadError) {
       return (
         <div className="editor-loading-screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'var(--sans)', gap: 16 }}>
-          <div style={{ color: 'red' }}>Error: {loadError}</div>
+          <div style={{ color: "var(--state-error)" }}>Error: {loadError}</div>
           <a href="/cms/writing" style={{ padding: '8px 16px', background: '#1a1a1a', color: 'white', borderRadius: 8, textDecoration: 'none' }}>Back to Writing</a>
         </div>
       );

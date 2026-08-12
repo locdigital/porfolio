@@ -4,6 +4,7 @@ import { getProjects } from "../../lib/cms";
 import BlurFade from "../../components/ui/BlurFade.astro";
 import BeforeAfterPerformance from "../../components/ui/BeforeAfterPerformance";
 import type { BeforeAfterPerformanceProps } from "../../components/ui/BeforeAfterPerformance";
+import ShowcasePassGate from "../../components/ui/ShowcasePassGate.astro";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 import { ExternalLink } from "lucide-react";
 
@@ -188,6 +189,20 @@ const performanceComparisons: Record<string, BeforeAfterPerformanceProps> = {
 };
 
 const performanceComparison = project.slug === "playah" ? performanceComparisons.playah : undefined;
+const showcaseGate = project.slug === "workflow-space"
+  ? {
+      id: "workflow-showcase-gate",
+      password: "workflow2024",
+      storageKey: "workflow-space-showcase-unlocked",
+      eyebrow: "Private showcase",
+      title: "Unlock WorkFlow Space visuals.",
+      description: "A few campaign screenshots are kept behind a light access gate for portfolio sharing.",
+      inputLabel: "Access code",
+      placeholder: "workflow2024",
+      buttonLabel: "Unlock",
+      successLabel: "Access granted",
+    }
+  : undefined;
 
 const paragraphs = project.description.split("\n\n").filter(Boolean);
 const projectUrl = absoluteUrl(`/work/${project.slug}`);
@@ -308,19 +323,37 @@ const creativeWorkSchema = {
                 </h2>
               </div>
 
-              <div class="mt-10 space-y-6">
-                {project.images.map((imgUrl, idx) => (
-                  <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-4">
-                    <img
-                      src={imgUrl}
-                      alt={`${project.title} image ${idx + 1}`}
-                      loading="lazy"
-                      decoding="async"
-                      class="block w-full h-auto object-contain rounded-lg"
-                    />
+              {showcaseGate ? (
+                <ShowcasePassGate {...showcaseGate}>
+                  <div class="mt-10 space-y-6">
+                    {project.images.map((imgUrl, idx) => (
+                      <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-4">
+                        <img
+                          src={imgUrl}
+                          alt={`${project.title} image ${idx + 1}`}
+                          loading="lazy"
+                          decoding="async"
+                          class="block w-full h-auto object-contain rounded-lg"
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </ShowcasePassGate>
+              ) : (
+                <div class="mt-10 space-y-6">
+                  {project.images.map((imgUrl, idx) => (
+                    <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-4">
+                      <img
+                        src={imgUrl}
+                        alt={`${project.title} image ${idx + 1}`}
+                        loading="lazy"
+                        decoding="async"
+                        class="block w-full h-auto object-contain rounded-lg"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
           )}
         </div>

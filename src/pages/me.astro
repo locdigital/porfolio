@@ -1,9 +1,25 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CursorAvatar from "../components/ui/CursorAvatar";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 
-const aboutTitle = "About | Phuc Loc Nguyen";
-const aboutDescription = "Learn more about Nguyen Phuc Loc, a Senior Performance Marketing Executive focused on paid media, TikTok Shop growth, SEO, automation, and full-funnel execution.";
+export const prerender = true;
+
+const pageTitle = "Me | Phuc Loc Nguyen";
+const pageDescription =
+  "A more personal page for Phuc Loc Nguyen: work rhythm, current focus, photography, and a cursor-reactive avatar.";
+
+const avatarImages = {
+  center: "/images/avatar-poses/center.png",
+  left: "/images/avatar-poses/left.png",
+  right: "/images/avatar-poses/right.png",
+  up: "/images/avatar-poses/up.png",
+  down: "/images/avatar-poses/down.png",
+  upLeft: "/images/avatar-poses/upLeft.png",
+  upRight: "/images/avatar-poses/upRight.png",
+  downLeft: "/images/avatar-poses/downLeft.png",
+  downRight: "/images/avatar-poses/downRight.png",
+};
 
 const experiences = [
   {
@@ -100,37 +116,31 @@ const freeTimeActivities = [
     src: "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTAtSgGiW6tUiNOoXB108SdsMHZayFfJrLGk",
   },
 ];
-
-
 ---
 
 <Layout
-  title={aboutTitle}
-  description={aboutDescription}
+  title={pageTitle}
+  description={pageDescription}
   schema={pageSchema({
-    url: absoluteUrl("/about"),
-    title: aboutTitle,
-    description: aboutDescription,
-    type: "AboutPage",
+    url: absoluteUrl("/me"),
+    title: pageTitle,
+    description: pageDescription,
+    type: "ProfilePage",
   })}
 >
   <main class="gear-page bg-background text-foreground">
     <div class="gear-container">
-
-      <!-- HERO SECTION (Reference Layout with Pill/Arch Avatar) -->
-      <section class="gear-hero pb-12 md:pb-16 border-b border-border" aria-label="Introduction">
+      <section class="gear-hero me-about-hero pb-12 md:pb-16 border-b border-border" aria-label="Introduction">
         <div class="grid grid-cols-1 md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_340px] gap-10 md:gap-12 lg:gap-16 items-center">
-          
-          <!-- LEFT HERO CONTENT -->
           <div>
             <div class="page-kicker-wrapper">
-              <span class="page-kicker-text">About</span>
+              <span class="page-kicker-text">Me</span>
             </div>
+
             <h1 class="font-display text-display-md sm:text-display-lg leading-[1.08] tracking-[-0.02em] text-foreground">
               Hi there, I&rsquo;m Loc.
             </h1>
 
-            <!-- BADGES / EYEBROW ROW -->
             <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-5 text-caption font-mono text-muted-foreground">
               <span class="inline-flex items-center gap-2">
                 <svg viewBox="0 0 12.65 18.185" class="w-3 h-4 fill-current text-accent" aria-hidden="true">
@@ -149,10 +159,9 @@ const freeTimeActivities = [
               </span>
             </div>
 
-            <!-- BIO PARAGRAPHS -->
             <div class="mt-6 space-y-4 text-body leading-[1.75] text-muted-foreground">
               <p>
-                I&rsquo;ve always enjoyed the sensation of making things—whether scaling multi-channel paid media, designing conversion landing pages, or building automated marketing funnels. My early growth experiments sparked a deep interest in crafting campaign systems that feel intentional, high-converting, and joyful.
+                I&rsquo;ve always enjoyed the sensation of making things, whether scaling multi-channel paid media, designing conversion landing pages, or building automated marketing funnels. My early growth experiments sparked a deep interest in crafting campaign systems that feel intentional, high-converting, and joyful.
               </p>
               <p>
                 Today, I focus on designing accessible, data-driven growth strategies for e-commerce, education, and brand platforms. My approach bridges creative production with full-funnel analytics to turn ad spend into measurable, long-term ROI.
@@ -160,32 +169,34 @@ const freeTimeActivities = [
             </div>
           </div>
 
-          <!-- RIGHT ARCH / CAPSULE AVATAR FRAME -->
           <div class="w-full flex justify-center md:justify-end">
-            <div class="relative w-full max-w-[280px] sm:max-w-[320px] aspect-[3/4] rounded-[130px] sm:rounded-[150px] overflow-hidden bg-secondary shadow-lg border border-border/50 rotate-2 md:rotate-[2deg] transition-transform duration-500 hover:rotate-0 group">
-              <img
-                src="/images/loc-avatar.jpg"
-                alt="Nguyen Phuc Loc avatar"
-                loading="eager"
-                decoding="async"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            <div class="me-avatar-shell">
+              <CursorAvatar
+                {...avatarImages}
+                className="me-avatar"
+                style={{ width: "100%", height: "100%" }}
+                alt="3D illustrated avatar of Phuc Loc"
+                ariaLabel="Interactive 3D avatar of Phuc Loc"
+                trackingRadius={420}
+                springStiffness={150}
+                springDamping={20}
+                trackingStrength={1.15}
+                directionThreshold={0.16}
+                hysteresis={0.07}
+                subtleMotion={false}
+                client:load
               />
             </div>
           </div>
-
         </div>
       </section>
 
-      <!-- EXPERIENCES SECTION -->
       <section class="py-16 border-b border-border" aria-label="Experiences">
         <div class="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
-          
-          <!-- SECTION SUBHEAD -->
           <div class="pt-1">
             <h2 class="font-sans font-medium text-2xl text-foreground tracking-tight">Experiences</h2>
           </div>
 
-          <!-- EXPERIENCE LIST TABLE -->
           <div class="w-full overflow-x-auto">
             <table class="w-full border-collapse font-sans text-body">
               <tbody>
@@ -222,22 +233,17 @@ const freeTimeActivities = [
               </tbody>
             </table>
           </div>
-
         </div>
       </section>
 
-      <!-- IN MY FREE TIME SECTION (2-Column Layout) -->
       <section class="py-16 border-b border-border" aria-label="Free time pursuits">
         <div class="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
-          
-          <!-- LEFT COLUMN: SUBHEAD -->
           <div class="pt-1">
             <h2 class="font-sans font-medium text-2xl text-foreground tracking-tight">
               In My Free Time, I...
             </h2>
           </div>
 
-          <!-- RIGHT COLUMN: ACCORDION IMAGE GALLERY -->
           <div class="w-full">
             <div class="free-time-accordion flex items-center gap-2.5 h-[380px] sm:h-[420px] w-full overflow-hidden">
               {freeTimeActivities.map((item) => (
@@ -251,7 +257,6 @@ const freeTimeActivities = [
                     loading="lazy"
                     decoding="async"
                   />
-                  <!-- Gradient Overlay & Content -->
                   <div class="accordion-overlay absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 text-left">
                     <span class="text-xs font-mono uppercase tracking-wider text-amber-300 font-semibold">
                       {item.tag}
@@ -264,17 +269,50 @@ const freeTimeActivities = [
               ))}
             </div>
           </div>
-
         </div>
       </section>
-
     </div>
   </main>
 </Layout>
 
 <style>
-  .gear-hero {
+  .me-about-hero {
     max-width: 100%;
+  }
+
+  .me-avatar-shell {
+    width: min(100%, 320px);
+    aspect-ratio: 1;
+    border-radius: 8px;
+  }
+
+  .me-avatar {
+    border-radius: 8px;
+    border: 1px solid rgba(0, 117, 222, 0.22);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+    overflow: hidden !important;
+    transition:
+      border-color 220ms var(--ease-out),
+      filter 280ms var(--ease-out);
+  }
+
+  .me-avatar .cursor-avatar-image {
+    border-radius: 0 !important;
+    object-position: 50% 50%;
+    filter: drop-shadow(0 10px 10px rgba(28, 28, 28, 0.12));
+    transition: filter 260ms var(--ease-out), opacity 260ms var(--ease-out);
+  }
+
+  .me-avatar:hover,
+  .me-avatar:focus-visible {
+    border-color: color-mix(in srgb, var(--accent-solid) 36%, transparent);
+    filter: saturate(1.04) contrast(1.02);
+  }
+
+  .me-avatar:focus-visible {
+    outline: 2px solid var(--accent-solid);
+    outline-offset: 6px;
   }
 
   .free-time-accordion .accordion-card {
@@ -288,7 +326,6 @@ const freeTimeActivities = [
     transition: opacity 300ms ease;
   }
 
-  /* Default open 1st item when section is idle */
   .free-time-accordion .accordion-card:first-child {
     flex: 3.5;
   }
@@ -297,7 +334,6 @@ const freeTimeActivities = [
     opacity: 1;
   }
 
-  /* Hovering container collapses 1st item */
   .free-time-accordion:hover .accordion-card:first-child {
     flex: 1;
   }
@@ -306,12 +342,28 @@ const freeTimeActivities = [
     opacity: 0;
   }
 
-  /* Hovered item expands */
   .free-time-accordion .accordion-card:hover {
     flex: 3.5 !important;
   }
 
   .free-time-accordion .accordion-card:hover .accordion-overlay {
     opacity: 1 !important;
+  }
+
+  @media (max-width: 640px) {
+    .me-avatar-shell {
+      width: min(100%, 300px);
+      margin-inline: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .me-avatar,
+    .me-avatar .cursor-avatar-image,
+    .free-time-accordion .accordion-card,
+    .free-time-accordion .accordion-overlay,
+    .free-time-accordion img {
+      transition: none !important;
+    }
   }
 </style>

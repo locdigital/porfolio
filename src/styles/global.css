@@ -14,6 +14,14 @@
       --accent-solid: #0075de;
       --accent-soft: rgba(0, 117, 222, 0.08);
       --accent-border: rgba(0, 117, 222, 0.24);
+      --state-error: rgb(246, 73, 50);
+      --state-error-soft: rgba(246, 73, 50, 0.1);
+      --state-error-border: rgba(246, 73, 50, 0.28);
+      --state-success: rgb(39, 145, 141);
+      --state-success-soft: rgba(39, 145, 141, 0.1);
+      --state-success-border: rgba(39, 145, 141, 0.28);
+      --state-approved: var(--state-success);
+      --state-accepted: var(--state-success);
       --background: 60 11% 98%;
       --foreground: 0 0% 11%;
       --border: 60 9% 91%;
@@ -84,10 +92,10 @@
       }
 
       span {
-        font-size: var(--type-caption) !important;
+        font-size: inherit;
       }
 
-      :where(h1, h2, h3, h4, h5, h6, button, [role="button"], a[class*="button"], a[class*="btn"]) span {
+      :where(h1, h2, h3, h4, h5, h6, button, [role="button"], a[class*="button"], a[class*="btn"], li, .loc-pill-list li, .loc-good-to-know li) span {
         font-size: inherit !important;
       }
 
@@ -166,6 +174,71 @@
       --text-muted: var(--muted);
       --border-subtle: var(--divider);
       --focus-ring: 0 0 0 3px rgba(0, 117, 222, 0.12);
+    }
+
+    :where(.text-red-400, .text-red-500, .text-red-600, .text-red-700, .text-rose-500, .text-rose-600) {
+      color: var(--state-error) !important;
+    }
+
+    :where(.bg-red-400, .bg-red-500, .bg-red-600, .bg-rose-500, .bg-rose-600) {
+      background-color: var(--state-error) !important;
+    }
+
+    :where(.border-red-400, .border-red-500, .border-red-600, .border-rose-500, .border-rose-600) {
+      border-color: var(--state-error) !important;
+    }
+
+    :where(.text-emerald-500, .text-emerald-600, .text-emerald-700, .text-green-500, .text-green-600, .text-green-700) {
+      color: var(--state-success) !important;
+    }
+
+    :where(.bg-emerald-400, .bg-emerald-500, .bg-emerald-600, .bg-green-400, .bg-green-500, .bg-green-600) {
+      background-color: var(--state-success) !important;
+    }
+
+    :where(.border-emerald-400, .border-emerald-500, .border-emerald-600, .border-green-400, .border-green-500, .border-green-600) {
+      border-color: var(--state-success) !important;
+    }
+
+    :where(
+      .state-error,
+      .status-error,
+      .is-error,
+      .is-invalid,
+      .is-wrong,
+      .is-failed,
+      .is-rejected,
+      [data-state="error"],
+      [data-state="invalid"],
+      [data-state="wrong"],
+      [data-state="failed"],
+      [data-state="rejected"],
+      [data-status="error"],
+      [data-status="invalid"],
+      [data-status="wrong"],
+      [data-status="failed"],
+      [data-status="rejected"]
+    ) {
+      color: var(--state-error) !important;
+    }
+
+    :where(
+      .state-success,
+      .status-success,
+      .is-success,
+      .is-approved,
+      .is-accepted,
+      .is-accept,
+      [data-state="success"],
+      [data-state="approved"],
+      [data-state="accepted"],
+      [data-state="accept"],
+      [data-status="success"],
+      [data-status="approved"],
+      [data-status="accepted"],
+      [data-status="accept"]
+    ) {
+      color: var(--state-success) !important;
     }
 
     @media (max-width: 767px) {
@@ -3088,6 +3161,8 @@
     .project-tools span,
     .sidebar-tags li,
     .loc-pill-list li,
+    .loc-pill-list li span,
+    .loc-good-to-know li span,
     .loc-score-pill,
     .loc-fact-pill,
     .popular-badge,
@@ -3108,6 +3183,8 @@
     .project-tools span,
     .sidebar-tags li,
     .loc-pill-list li,
+    .loc-pill-list li span,
+    .loc-good-to-know li span,
     .loc-score-pill,
     .loc-fact-pill,
     .popular-badge,
@@ -3209,6 +3286,14 @@ html body h3 {
 
 html body :is(p, div, span, #site-copy-size-override) {
   font-size: var(--site-copy-size) !important;
+}
+
+html body :is(
+  .photos-page .loc-good-to-know .loc-pill-list li,
+  .photos-page .loc-good-to-know .loc-pill-list li span,
+  #site-copy-size-override
+) {
+  font-size: var(--type-micro) !important;
 }
 
 html body :is(.price-val, #site-price-size-override) {

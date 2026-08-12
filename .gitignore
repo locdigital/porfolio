@@ -18,6 +18,8 @@ tsconfig.tsbuildinfo
 .DS_Store
 _local/
 *.dmg
+g/
+g.zip
 Go Vap 1 - 9m5 v2/
 
 # Local agent/git stores
