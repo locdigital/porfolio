@@ -47,6 +47,7 @@ const projects = defineCollection({
     link: z.string().optional(),
     linkLabel: z.string().optional(),
     caseStudyLink: z.string().optional(),
+    password: z.string().optional(),
   }),
 });
 

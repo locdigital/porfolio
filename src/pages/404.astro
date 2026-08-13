@@ -88,12 +88,6 @@ import Layout from "../layouts/Layout.astro";
                   <p class="plink-title">PlayAh! Brand Growth &amp; Performance</p>
                   <p class="plink-meta">PlayAh! Vietnam &middot; 2024-Present</p>
                 </div>
-                <div class="plink-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
-                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
-                </div>
               </a>
 
               <a href="/work/workflow-space" class="plink-card" id="nf-link-workflow">
@@ -110,12 +104,6 @@ import Layout from "../layouts/Layout.astro";
                   <p class="plink-title">WorkFlow Space: Community &amp; Content</p>
                   <p class="plink-meta">+800% Instagram growth</p>
                 </div>
-                <div class="plink-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
-                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
-                </div>
               </a>
 
               <a href="/work/pops-worldwide" class="plink-card" id="nf-link-pops">
@@ -131,12 +119,6 @@ import Layout from "../layouts/Layout.astro";
                 <div class="plink-info">
                   <p class="plink-title">POPS Worldwide: SEO &amp; Organic Growth</p>
                   <p class="plink-meta">+22 rank positions on target KWs</p>
-                </div>
-                <div class="plink-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
-                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
                 </div>
               </a>
 
@@ -584,13 +566,7 @@ import Layout from "../layouts/Layout.astro";
     cursor: pointer;
   }
 
-  .plink-card:hover {
-    border-color: var(--accent-solid);
-    box-shadow:
-      0 0 0 1px rgba(0, 117, 222, 0.12),
-      0 8px 32px rgba(0, 117, 222, 0.1);
-    transform: translateY(-1px);
-  }
+  /* Hover effects disabled */
 
   /* Thumbnail */
   .plink-thumb {
@@ -656,16 +632,6 @@ import Layout from "../layouts/Layout.astro";
       transform 0.22s ease;
   }
 
-  .plink-arrow svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .plink-card:hover .plink-arrow {
-    color: var(--accent-solid);
-    transform: translateX(3px);
-  }
-
   /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
      BACK LINK
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -676,13 +642,10 @@ import Layout from "../layouts/Layout.astro";
     text-transform: uppercase;
     color: var(--muted);
     text-decoration: none;
-    transition: color 0.22s ease;
     display: inline-block;
   }
 
-  .nf-back:hover {
-    color: var(--accent);
-  }
+
 
   /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
      RESPONSIVE

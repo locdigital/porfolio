@@ -18,6 +18,7 @@ type ProjectData = {
   link?: string;
   linkLabel?: string;
   caseStudyLink?: string;
+  password?: string;
 };
 
 type PhotoLocationData = {
