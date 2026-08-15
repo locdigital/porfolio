@@ -192,28 +192,6 @@ const pricingPlans = [
   }
 ];
 
-const faqs = [
-  {
-    q: "How do monthly retainers work?",
-    a: "We establish a scoped set of weekly milestones and retainers are billed monthly in advance. You gain direct Slack access and regular syncs, and the scope can be scaled up or down with a simple 15-day notice.",
-    iconName: "calendar"
-  },
-  {
-    q: "What is your typical web development workflow?",
-    a: "We start by auditing existing layouts or assets, proceed to prototype clean responsive layouts in Astro, hook up any requested headless CMS content fields, optimize performance scores, and handle DNS/Vercel settings for launch.",
-    iconName: "code"
-  },
-  {
-    q: "Can you implement advanced server-side tracking?",
-    a: "Yes. I routinely set up Google Tag Manager Server-Side containers, set up Meta Conversions API via Stape.io or AWS, resolve GA4 tracking gaps, and configure cookie consent parameters.",
-    iconName: "zap"
-  },
-  {
-    q: "How do you ensure organic social seeding doesn't look like ads?",
-    a: "Authenticity is key. I script real-life user experiences, engage on active accounts, ask questions instead of hard-selling, and thread brand references naturally into existing group dialogues.",
-    iconName: "message"
-  }
-];
 const serviceTitle = "Digital Services | Phuc Loc Nguyen";
 const serviceDescription = "Scale conversions, build community trust, and deploy lightning-fast headless websites. Explore my modern digital marketing and engineering services.";
 ---
@@ -240,18 +218,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
           description: service.desc,
           serviceType: service.kicker,
           provider: { "@id": `${absoluteUrl("/")}#person` },
-        },
-      })),
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${absoluteUrl("/service")}#faq`,
-      mainEntity: faqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.q,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.a,
         },
       })),
     },
@@ -471,59 +437,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
         </div>
       </section>
 
-      <!-- FAQ ACCORDION -->
-      <section class="faq-section toki-r" data-d="5">
-        <div class="section-header">
-          <h2 class="section-title">Frequently Asked Questions</h2>
-          <p class="section-desc">Clear answers about collaboration processes, scope, and technical setups.</p>
-        </div>
-
-        <div class="faq-accordion-container">
-          {faqs.map((faq, index) => (
-            <div class="faq-item">
-              <button class="faq-header" aria-expanded="false" aria-controls={`faq-answer-${index}`}>
-                <span class="faq-question-wrapper">
-                  {faq.iconName === "calendar" && (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-question-icon">
-                      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                      <line x1="16" x2="16" y1="2" y2="6" />
-                      <line x1="8" x2="8" y1="2" y2="6" />
-                      <line x1="3" x2="21" y1="10" y2="10" />
-                    </svg>
-                  )}
-                  {faq.iconName === "code" && (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-question-icon">
-                      <polyline points="16 18 22 12 16 6" />
-                      <polyline points="8 6 2 12 8 18" />
-                    </svg>
-                  )}
-                  {faq.iconName === "zap" && (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-question-icon">
-                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                    </svg>
-                  )}
-                  {faq.iconName === "message" && (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-question-icon">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                    </svg>
-                  )}
-                  <span class="faq-question">{faq.q}</span>
-                </span>
-                <svg class="faq-toggle-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M2 8h12" />
-                  <path class="vertical-line" d="M8 2v12" />
-                </svg>
-              </button>
-              <div class="faq-answer-wrapper" id={`faq-answer-${index}`} aria-hidden="true">
-                <div class="faq-answer">
-                  <p>{faq.a}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
     </div>
   </main>
 </Layout>
@@ -700,25 +613,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
       scheduleServiceAutoplay();
     }
 
-    /* ── Collapsible Accordion FAQs ── */
-    const faqHeaders = document.querySelectorAll('.faq-header');
-
-    faqHeaders.forEach(header => {
-      header.addEventListener('click', () => {
-        const isExpanded = header.getAttribute('aria-expanded') === 'true';
-        const wrapper = header.nextElementSibling;
-        
-        // Toggle state
-        header.setAttribute('aria-expanded', !isExpanded);
-        header.classList.toggle('active', !isExpanded);
-        
-        if (wrapper) {
-          wrapper.setAttribute('aria-hidden', isExpanded);
-          
-          wrapper.style.opacity = !isExpanded ? '1' : '0';
-        }
-      });
-    });
   });
 </script>
 
@@ -1120,7 +1014,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   .tab-button:focus-visible,
   .pricing-toggle-btn:focus-visible,
-  .faq-header:focus-visible,
   .plan-cta-btn:focus-visible,
   .btn:focus-visible {
     outline: 2px solid var(--accent-solid);
@@ -1439,19 +1332,20 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .price-val {
-    font-family: var(--sans);
+    font-family: var(--serif);
     font-size: 72px !important;
-    font-weight: 800;
-    letter-spacing: -0.075em;
+    font-weight: 500;
+    letter-spacing: 0;
     color: var(--accent-solid);
     line-height: 0.88;
   }
 
   .price-period {
+    font-family: var(--serif);
     font-size: 32px !important;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--muted);
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
   }
 
   .plan-cta-btn {
@@ -1518,123 +1412,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
 
-
-  /* ── 6. FAQ Accordion ── */
-  .faq-section {
-    margin-bottom: 104px;
-  }
-
-  .faq-accordion-container {
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .faq-item {
-    border-bottom: 1px solid var(--divider);
-  }
-
-  .faq-item:first-child {
-    border-top: 1px solid var(--divider);
-  }
-
-  .faq-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 0;
-    cursor: pointer;
-    background: transparent;
-    text-align: left;
-    outline: none;
-  }
-
-  .faq-question-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-right: 24px;
-  }
-
-  .faq-question-icon {
-    width: 16px;
-    height: 16px;
-    color: var(--muted);
-    opacity: 0.6;
-    flex-shrink: 0;
-    transition: color 0.22s var(--ease-out), opacity 0.22s var(--ease-out);
-  }
-
-  .faq-header:hover .faq-question-icon,
-  .faq-header.active .faq-question-icon {
-    color: var(--accent);
-    opacity: 1;
-  }
-
-  .faq-question {
-    font-family: var(--sans);
-    font-size: var(--fs-base);
-    font-weight: 600;
-    color: var(--text);
-    transition: color 0.2s ease;
-  }
-
-  .faq-header:hover .faq-question,
-  .faq-header.active .faq-question {
-    color: var(--accent);
-  }
-
-  .faq-toggle-icon {
-    width: 16px;
-    height: 16px;
-    color: var(--text);
-    opacity: 0.6;
-    transition: transform 0.22s var(--ease-out), opacity 0.22s var(--ease-out);
-    flex-shrink: 0;
-  }
-
-  .faq-header:hover .faq-toggle-icon {
-    opacity: 0.9;
-  }
-
-  .faq-header.active .faq-toggle-icon {
-    opacity: 0.9;
-    transform: rotate(180deg);
-  }
-
-  .faq-toggle-icon .vertical-line {
-    transform-origin: center;
-    transition: transform 0.22s var(--ease-out), opacity 0.22s var(--ease-out);
-  }
-
-  .faq-header.active .faq-toggle-icon .vertical-line {
-    transform: rotate(90deg);
-    opacity: 0;
-  }
-
-  .faq-answer-wrapper {
-    display: grid;
-    grid-template-rows: 0fr;
-    opacity: 0;
-    transition: grid-template-rows 0.32s var(--ease-out), opacity 0.22s linear;
-  }
-
-  .faq-header.active + .faq-answer-wrapper {
-    grid-template-rows: 1fr;
-  }
-
-  .faq-answer {
-    overflow: hidden;
-    padding-bottom: 24px;
-    padding-left: 28px;
-  }
-
-  .faq-answer p {
-    font-size: var(--fs-sm);
-    line-height: 1.65;
-    color: var(--muted);
-  }
 
   .gear-page p {
     font-size: var(--type-body);
