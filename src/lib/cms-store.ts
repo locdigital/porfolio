@@ -49,15 +49,23 @@ export async function readSupabaseCmsEntry<T extends object>(
 ): Promise<T | null> {
   if (!isSupabaseCmsConfigured()) return null;
 
-  const { data, error } = await getSupabaseServerClient()
-    .from("cms_entries")
-    .select("payload")
-    .eq("collection", collectionName)
-    .eq("id", id)
-    .maybeSingle();
+  try {
+    const { data, error } = await getSupabaseServerClient()
+      .from("cms_entries")
+      .select("payload")
+      .eq("collection", collectionName)
+      .eq("id", id)
+      .maybeSingle();
 
-  if (error) throw new Error(formatSupabaseError(error));
-  return data ? rowToPayload<T>(data) : null;
+    if (error) {
+      console.warn(`[Supabase CMS] ${formatSupabaseError(error)}`);
+      return null;
+    }
+    return data ? rowToPayload<T>(data) : null;
+  } catch (err) {
+    console.warn(`[Supabase CMS] Network or fetch error reading entry ${id}:`, err);
+    return null;
+  }
 }
 
 export async function findSupabaseCmsEntryBySlug<T extends object>(
@@ -66,15 +74,23 @@ export async function findSupabaseCmsEntryBySlug<T extends object>(
 ): Promise<T | null> {
   if (!isSupabaseCmsConfigured()) return null;
 
-  const { data, error } = await getSupabaseServerClient()
-    .from("cms_entries")
-    .select("payload")
-    .eq("collection", collectionName)
-    .eq("slug", slug)
-    .maybeSingle();
+  try {
+    const { data, error } = await getSupabaseServerClient()
+      .from("cms_entries")
+      .select("payload")
+      .eq("collection", collectionName)
+      .eq("slug", slug)
+      .maybeSingle();
 
-  if (error) throw new Error(formatSupabaseError(error));
-  return data ? rowToPayload<T>(data) : null;
+    if (error) {
+      console.warn(`[Supabase CMS] ${formatSupabaseError(error)}`);
+      return null;
+    }
+    return data ? rowToPayload<T>(data) : null;
+  } catch (err) {
+    console.warn(`[Supabase CMS] Network or fetch error finding entry by slug ${slug}:`, err);
+    return null;
+  }
 }
 
 export async function readSupabaseCmsCollection<T extends object>(
@@ -82,15 +98,23 @@ export async function readSupabaseCmsCollection<T extends object>(
 ): Promise<T[]> {
   if (!isSupabaseCmsConfigured()) return [];
 
-  const { data, error } = await getSupabaseServerClient()
-    .from("cms_entries")
-    .select("payload")
-    .eq("collection", collectionName)
-    .order("order_index", { ascending: true, nullsFirst: false })
-    .order("updated_at", { ascending: false });
+  try {
+    const { data, error } = await getSupabaseServerClient()
+      .from("cms_entries")
+      .select("payload")
+      .eq("collection", collectionName)
+      .order("order_index", { ascending: true, nullsFirst: false })
+      .order("updated_at", { ascending: false });
 
-  if (error) throw new Error(formatSupabaseError(error));
-  return (data ?? []).map(rowToPayload<T>);
+    if (error) {
+      console.warn(`[Supabase CMS] ${formatSupabaseError(error)}`);
+      return [];
+    }
+    return (data ?? []).map(rowToPayload<T>);
+  } catch (err) {
+    console.warn(`[Supabase CMS] Network or fetch error reading collection ${collectionName}:`, err);
+    return [];
+  }
 }
 
 export async function writeSupabaseCmsEntry<T extends object>(
