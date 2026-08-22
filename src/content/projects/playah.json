@@ -6,13 +6,17 @@
   "client": "PlayAh! Vietnam",
   "year": "2024-Present",
   "role": "Performance Senior Executive",
-  "summary": "Multi-channel paid media and conversion funnel work that scaled website revenue 10x and grew TikTok Shop GMV from zero to billion-VND scale.",
-  "description": "Manage and optimize paid media budgets across TikTok, Meta, and Google using ROAS and marginal-return decision-making to maximize scalable profitability.\n\nScaled website revenue by 10x within 2 months through Google Ads Performance Max and Search, TikTok Spark Ads, and Meta-to-Web conversion campaigns.\n\nGrew Meta Ads performance 2x month-over-month through AI-automated conversion funnels while sustaining ROAS above 5. Built TikTok Shop from zero to 30x+ GMV growth within 2 months, maintaining ROAS above 10 and driving the brand to a #1 category ranking.\n\nMentor junior marketers and coordinate creative, operations, and affiliate stakeholders to improve campaign execution quality.",
+  "summary": "Scaled TikTokShop revenue from tens of millions to over 1B VND/mo, boosted website revenue 10x in 2 months, and grew Facebook revenue by 300% via AI sales funnels.",
+  "description": "Faced with fragmented channel performance, the priority was building a unified, scalable growth engine across TikTokShop, Website, and Facebook while maintaining ROAS above industry benchmarks.\n\nScaled TikTokShop revenue to 1B+ VND monthly by building KOC booking channels and AI sales personas. Increased website revenue by 1,000% through multi-channel ad strategies across Google (PMax & Search), TikTok Spark Ads, and Meta-to-Web funnels. Deployed automated AI conversion flows on Facebook Fanpage to raise conversion rates and drive 300% revenue growth. Led cross-functional alignment with Creative (website rebuild), Brand (asset production), and Affiliate teams (content briefs), while coaching internal execution teams on Meta and TikTok Ads.\n\nAchieved 10x website revenue growth within 2 months through integrated paid media funnels while maintaining high ROAS, establishing category leadership on TikTokShop, and elevating team marketing capabilities.",
   "tools": ["TikTok Ads", "TikTok Shop", "Meta Ads", "Google Ads", "AI Funnels"],
   "skills": ["ROAS Optimization", "Budget Management", "Creative Testing"],
   "coverImage": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVRK6quiW6tUiNOoXB108SdsMHZayFfJrLGkP",
-  "images": [],
+  "images": [
+    "/images/playah/playah-after.png",
+    "/images/playah/playah-before.png"
+  ],
   "link": "https://playahvietnam.com/",
   "linkLabel": "Visit PlayAh!",
-  "caseStudyLink": ""
+  "caseStudyLink": "",
+  "password": "playah2026"
 }

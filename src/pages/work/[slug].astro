@@ -189,20 +189,36 @@ const performanceComparisons: Record<string, BeforeAfterPerformanceProps> = {
 };
 
 const performanceComparison = project.slug === "playah" ? performanceComparisons.playah : undefined;
-const showcaseGate = project.slug === "workflow-space"
-  ? {
-      id: "workflow-showcase-gate",
-      password: "workflow2024",
-      storageKey: "workflow-space-showcase-unlocked",
-      eyebrow: "Private showcase",
-      title: "Unlock WorkFlow Space visuals.",
-      description: "A few campaign screenshots are kept behind a light access gate for portfolio sharing.",
-      inputLabel: "Access code",
-      placeholder: "workflow2024",
-      buttonLabel: "Unlock",
-      successLabel: "Access granted",
-    }
-  : undefined;
+const projectPassword = project.password || `${project.slug.split("-")[0]}2026`;
+const gateDescriptions: Record<string, string> = {
+  playah: "Unlock internal campaign dashboards, TikTokShop KOC booking pipelines, Meta-to-Web ad metrics, and AI sales conversation flows for PlayAh! Vietnam.",
+  "tomato-childrens-home": "Unlock full-funnel Marketing 360 campaign visuals, student enrollment CPL reduction analytics, landing page variations, and 40,000+ contact email automation workflows.",
+  "workflow-space": "Unlock high-converting landing page UI components, Astro build performance specs, automated lead intake funnels, and design system assets.",
+  "pops-worldwide": "Unlock digital media distribution analytics, audience engagement campaign assets, multi-platform publishing metrics, and content growth workflows.",
+  "education-communities": "Unlock community growth dashboards, 4M+ member reach metrics, content distribution breakdowns, and student career guidance assets.",
+};
+
+const gateDescription = gateDescriptions[project.slug] || `Unlock confidential campaign dashboards, behind-the-scenes visuals, and key growth metrics for ${project.client || project.title}.`;
+
+const showcaseGate = {
+  id: `${project.slug}-showcase-gate`,
+  password: [
+    projectPassword,
+    `${project.slug}2026`,
+    `${project.slug}2024`,
+    "workflow2024",
+    "workflow2026",
+    "loc2026",
+  ],
+  storageKey: `${project.slug}-showcase-unlocked`,
+  eyebrow: "Private showcase",
+  title: `Unlock ${project.client || project.title} visuals.`,
+  description: gateDescription,
+  inputLabel: "Access code",
+  placeholder: "Enter access code",
+  buttonLabel: "Unlock",
+  successLabel: "Access granted",
+};
 
 const paragraphs = project.description.split("\n\n").filter(Boolean);
 const projectUrl = absoluteUrl(`/work/${project.slug}`);
@@ -261,10 +277,28 @@ const creativeWorkSchema = {
         <div class="mx-auto max-w-[1280px]">
           <div class="space-y-10">
               <dl class="divide-y divide-border max-w-5xl">
+                {project.role && (
+                  <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                    <dt class="font-mono-label text-foreground">Role</dt>
+                    <dd class="text-body-lg leading-[1.55] text-foreground/85">
+                      {project.role}
+                    </dd>
+                  </div>
+                )}
+
+                {project.year && (
+                  <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
+                    <dt class="font-mono-label text-foreground">Timeline</dt>
+                    <dd class="text-body-lg leading-[1.55] text-foreground/85 font-mono text-[14px]">
+                      {project.year}
+                    </dd>
+                  </div>
+                )}
+
                 <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4 py-4 first:pt-0 last:pb-0">
                   <dt class="font-mono-label text-foreground">Background</dt>
                   <dd class="text-body-lg leading-[1.55] text-foreground/85">
-                    {project.client} ({project.year}). {project.summary}
+                    {project.summary}
                   </dd>
                 </div>
 
@@ -314,34 +348,20 @@ const creativeWorkSchema = {
           {performanceComparison && <BeforeAfterPerformance client:load {...performanceComparison} />}
 
           <!-- EXTRA IMAGES SHOWCASE GALLERY -->
-          {project.images && project.images.length > 0 && (
-            <section id="showcase" class="py-20 border-b border-border/40 last:border-0 scroll-mt-20">
-              <div>
-                <p class="font-mono-label text-accent">Showcase</p>
+          <section id="showcase" class="py-20 border-b border-border/40 last:border-0 scroll-mt-20">
+            <div>
+              <p class="font-mono-label text-accent">Showcase</p>
+              {(project.slug.includes("workflow") || project.slug.includes("tomato")) && (
                 <h2 class="mt-3 font-display text-display-xs leading-[1.2] tracking-[-0.02em] text-foreground">
                   Project Visuals
                 </h2>
-              </div>
+              )}
+            </div>
 
-              {showcaseGate ? (
-                <ShowcasePassGate {...showcaseGate}>
-                  <div class="mt-10 space-y-6">
-                    {project.images.map((imgUrl, idx) => (
-                      <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-4">
-                        <img
-                          src={imgUrl}
-                          alt={`${project.title} image ${idx + 1}`}
-                          loading="lazy"
-                          decoding="async"
-                          class="block w-full h-auto object-contain rounded-lg"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </ShowcasePassGate>
-              ) : (
-                <div class="mt-10 space-y-6">
-                  {project.images.map((imgUrl, idx) => (
+            <ShowcasePassGate {...showcaseGate}>
+              <div class="mt-10 space-y-6">
+                {project.images && project.images.length > 0 ? (
+                  project.images.map((imgUrl, idx) => (
                     <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-4">
                       <img
                         src={imgUrl}
@@ -351,11 +371,15 @@ const creativeWorkSchema = {
                         class="block w-full h-auto object-contain rounded-lg"
                       />
                     </div>
-                  ))}
-                </div>
-              )}
-            </section>
-          )}
+                  ))
+                ) : (
+                  <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-8 text-center text-muted-foreground font-mono text-sm">
+                    Visual assets protected and available upon request.
+                  </div>
+                )}
+              </div>
+            </ShowcasePassGate>
+          </section>
         </div>
 
       </div>
@@ -477,6 +501,10 @@ const creativeWorkSchema = {
     border-radius: 14px;
     text-decoration: none;
     transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  }
+
+  .more-case-card img {
+    border-radius: 10px;
   }
 
   .more-case-title {

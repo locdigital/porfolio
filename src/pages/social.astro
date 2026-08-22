@@ -1,64 +1,83 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
+import { Folder, BookOpen, Camera, ArrowUpRight, ArrowRight } from "lucide-react";
 
 export const prerender = true;
 
-const socialTitle = "Social | Phuc Loc Nguyen";
-const socialDescription = "Find Phuc Loc Nguyen on LinkedIn, email, writing, work, photos, and the main channels for collaboration.";
+const socialTitle = "Social & Contact | Phuc Loc Nguyen";
+const socialDescription = "Connect with Phuc Loc Nguyen via email, LinkedIn, Instagram, X, Pexels, or explore selected work and writing.";
 
 const primaryLinks = [
   {
     label: "Email",
     handle: "hi@loc.digital",
-    description: "Best for work, collaborations, consulting, and anything that needs context.",
+    description: "Best channel for performance marketing inquiries, website engineering projects, consulting, or strategic growth partnerships.",
     href: "mailto:hi@loc.digital",
-    meta: "Fastest reply",
+    meta: "Direct Channel",
+    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
   },
   {
     label: "LinkedIn",
-    handle: "/in/phucloc",
-    description: "Career updates, marketing notes, growth work, and professional conversations.",
+    handle: "linkedin.com/in/phucloc",
+    description: "Career highlights, paid media experiments, marketing breakdowns, and professional networking.",
     href: "https://www.linkedin.com/in/phucloc",
     meta: "Professional",
+    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>`,
   },
 ];
 
-const siteLinks = [
+const platformLinks = [
   {
     label: "Instagram",
-    description: "Everyday photos, travel frames, and lighter personal updates.",
+    handle: "@henrygoodkid",
+    description: "Everyday photography, travel frames, and lighter personal updates.",
     href: "https://www.instagram.com/henrygoodkid",
+    category: "Social",
+    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`,
   },
   {
-    label: "X",
-    description: "Short thoughts on ecommerce, growth, tools, and experiments.",
+    label: "X / Twitter",
+    handle: "@vuaecom",
+    description: "Short thoughts on e-commerce CRO, growth tactics, tools, and AI workflows.",
     href: "https://x.com/vuaecom",
+    category: "Social",
+    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>`,
   },
   {
     label: "Pexels",
-    description: "A small public photo archive for free visual references.",
+    handle: "@henrygoodkid",
+    description: "Public photo archive with free high-resolution visual assets.",
     href: "https://www.pexels.com/@henrygoodkid",
+    category: "Creative",
+    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`,
   },
+];
+
+const siteDestinations = [
   {
-    label: "Work",
-    description: "Selected growth, SEO, paid media, commerce, and funnel projects.",
+    label: "Selected Work",
+    handle: "/work",
+    description: "Case studies across paid ads, SEO, TikTok Shop scaling, and headless web builds.",
     href: "/work",
+    category: "Portfolio",
+    Icon: Folder,
   },
   {
-    label: "Writing",
-    description: "Notes on marketing systems, growth decisions, and digital execution.",
+    label: "Writing & Notes",
+    handle: "/blog",
+    description: "Articles on performance marketing frameworks, automation, and web execution.",
     href: "/blog",
+    category: "Editorial",
+    Icon: BookOpen,
   },
   {
-    label: "Photos",
-    description: "Travel, street, and landscape frames from places I have passed through.",
+    label: "Photo Gallery",
+    handle: "/photos",
+    description: "Landscape, street, and nature photography from locations across Vietnam.",
     href: "/photos",
-  },
-  {
-    label: "Ask me",
-    description: "Send a quick question if email feels too formal.",
-    href: "/question",
+    category: "Visuals",
+    Icon: Camera,
   },
 ];
 ---
@@ -75,249 +94,534 @@ const siteLinks = [
 >
   <main class="gear-page social-page">
     <div class="gear-container social-container">
-      <section class="gear-hero social-hero" aria-label="Social links introduction">
-        <div class="page-kicker-wrapper">
-          <span class="page-kicker-text">Social</span>
+      
+      <!-- HERO HEADER -->
+      <section class="gear-hero social-hero toki-r t-stagger" data-d="1" aria-label="Social links introduction">
+        <div class="status-pill-wrapper t-stagger-line t-stagger-line--1">
+          <span class="status-dot"></span>
+          <span class="status-text t-shimmer" data-text="Available for consulting & growth projects">Available for consulting & growth projects</span>
         </div>
-        <h1 class="gear-hero-title">Let’s keep the conversation <em>useful.</em></h1>
-        <p class="gear-intro social-intro">
-          The shortest route to me is email. For public updates, work history, and marketing notes, LinkedIn is the cleanest place to connect.
+
+        <h1 class="social-hero-title t-stagger-line t-stagger-line--2">
+          Let’s connect & <em>collaborate.</em>
+        </h1>
+        <p class="social-intro t-stagger-line t-stagger-line--3">
+          Whether you're scaling acquisition, optimizing conversion funnels, or engineering a fast web build—reach out directly or follow along on public channels.
         </p>
       </section>
 
-      <section class="social-primary" aria-label="Primary contact links">
+      <!-- PRIMARY CONTACT CARDS (Email & LinkedIn) -->
+      <section class="social-primary toki-r" data-d="2" aria-label="Primary contact channels">
         {primaryLinks.map((link) => (
-          <a class="social-card social-card--primary" href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}>
-            <span class="social-card-meta">{link.meta}</span>
-            <div class="social-card-main">
-              <h2>{link.label}</h2>
-              <span aria-hidden="true">↗</span>
+          <div class="social-card social-card--primary t-tilt">
+            <div class="t-tilt-card p-6 flex flex-col justify-between h-full">
+              <div class="card-top">
+                <div class="card-badge">
+                  <Fragment set:html={link.iconSvg} />
+                  <span>{link.meta}</span>
+                </div>
+                <a 
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="card-arrow-link"
+                  aria-label={`Open ${link.label}`}
+                >
+                  <ArrowUpRight size={22} strokeWidth={2} aria-hidden="true" />
+                </a>
+              </div>
+
+              <div class="card-body my-4">
+                <a 
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="card-title-link"
+                >
+                  <h2 class="card-title">{link.label}</h2>
+                </a>
+                <p class="card-handle">{link.handle}</p>
+                <p class="card-desc">{link.description}</p>
+              </div>
+
+              <div class="card-footer">
+                <a 
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="card-action-btn t-learn"
+                >
+                  <span>Connect on {link.label}</span>
+                  <span class="t-learn-chevron"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                </a>
+              </div>
             </div>
-            <p class="social-handle">{link.handle}</p>
-            <p>{link.description}</p>
-          </a>
+          </div>
         ))}
       </section>
 
-      <section class="social-section" aria-label="More places to browse">
-        <div class="gear-section-head social-section-head">
+      <!-- SOCIAL CHANNELS GRID -->
+      <section class="social-section toki-r" data-d="3" aria-label="Social networks">
+        <div class="section-head">
           <div>
-            <h2>More places</h2>
-            <p>Browse the site by what you need: proof, ideas, visual references, or a lightweight question.</p>
+            <span class="section-eyebrow">CHANNELS & PLATFORMS</span>
+            <h2 class="section-title">Public feeds & creative archives</h2>
           </div>
-          <span>{String(siteLinks.length).padStart(2, "0")}</span>
+          <span class="section-count">{String(platformLinks.length).padStart(2, "0")}</span>
         </div>
 
-        <div class="social-link-list">
-          {siteLinks.map((link) => (
-            <a class="social-row" href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}>
-              <div>
-                <h3>{link.label}</h3>
-                <p>{link.description}</p>
+        <div class="social-grid">
+          {platformLinks.map((item) => (
+            <a 
+              class="social-tile" 
+              href={item.href} 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <div class="tile-header">
+                <div class="tile-icon-box">
+                  <Fragment set:html={item.iconSvg} />
+                </div>
+                <span class="tile-category">{item.category}</span>
               </div>
-              <span aria-hidden="true">→</span>
+
+              <div class="tile-content">
+                <h3 class="tile-title">{item.label}</h3>
+                <span class="tile-handle">{item.handle}</span>
+                <p class="tile-desc">{item.description}</p>
+              </div>
+
+              <div class="tile-footer">
+                <span class="tile-action">Visit profile</span>
+                <ArrowUpRight className="tile-arrow" size={16} strokeWidth={2} aria-hidden="true" />
+              </div>
             </a>
           ))}
         </div>
       </section>
+
+      <!-- SITE DESTINATIONS -->
+      <section class="social-section site-section toki-r" data-d="4" aria-label="Explore the site">
+        <div class="section-head">
+          <div>
+            <span class="section-eyebrow">EXPLORE PORTFOLIO</span>
+            <h2 class="section-title">Case studies, essays & photography</h2>
+          </div>
+          <span class="section-count">{String(siteDestinations.length).padStart(2, "0")}</span>
+        </div>
+
+        <div class="social-grid">
+          {siteDestinations.map((item) => (
+            <a class="social-tile" href={item.href}>
+              <div class="tile-header">
+                <div class="tile-icon-box">
+                  <item.Icon size={18} strokeWidth={1.8} aria-hidden="true" />
+                </div>
+                <span class="tile-category">{item.category}</span>
+              </div>
+
+              <div class="tile-content">
+                <h3 class="tile-title">{item.label}</h3>
+                <span class="tile-handle">{item.handle}</span>
+                <p class="tile-desc">{item.description}</p>
+              </div>
+
+              <div class="tile-footer">
+                <span class="tile-action">Explore page</span>
+                <ArrowRight className="tile-arrow" size={16} strokeWidth={2} aria-hidden="true" />
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
     </div>
   </main>
 </Layout>
 
 <style>
+  /* ── PAGE LAYOUT & BACKGROUND ── */
   .social-page {
     background:
-      radial-gradient(circle at 78% 12%, rgba(0, 117, 222, 0.08), transparent 28rem),
+      radial-gradient(circle at 82% 10%, rgba(0, 117, 222, 0.06), transparent 32rem),
+      radial-gradient(circle at 18% 50%, rgba(0, 117, 222, 0.03), transparent 24rem),
       var(--bg);
+    min-height: 85vh;
   }
 
   .social-container {
-    max-width: 980px;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-11);
   }
 
+  /* ── HERO HEADER ── */
   .social-hero {
-    margin-bottom: 34px;
+    margin-bottom: clamp(40px, 6vw, 64px);
   }
 
-  .social-hero em {
+  .status-pill-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--bg) 92%, #ffffff);
+    border: 1px solid var(--divider);
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    animation: statusPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.9); }
+  }
+
+  .status-text {
+    font-family: var(--mono);
+    font-size: 11px !important;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .social-hero-title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 6.5vw, 76px) !important;
+    font-weight: 400 !important;
+    line-height: 1.05 !important;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+
+  .social-hero-title em {
     font-style: italic;
     color: var(--accent);
   }
 
   .social-intro {
     font-family: var(--sans);
-    font-size: var(--type-body);
+    font-size: 14px !important;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 580px;
+    margin: 0;
   }
 
+  /* ── PRIMARY CARDS GRID ── */
   .social-primary {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 72px;
-  }
-
-  .social-card {
-    color: var(--text);
-    text-decoration: none;
+    gap: 24px;
+    margin-bottom: clamp(56px, 8vw, 88px);
   }
 
   .social-card--primary {
     display: flex;
-    min-height: 280px;
     flex-direction: column;
     justify-content: space-between;
+    min-height: 320px;
+    background: color-mix(in srgb, var(--bg) 95%, #ffffff);
     border: 1px solid var(--divider);
-    border-radius: var(--rounded-sm);
-    padding: 24px;
-    background: rgba(255, 255, 255, 0.42);
-    transition:
-      border-color 180ms var(--ease-out),
-      background 180ms var(--ease-out),
-      transform 180ms var(--ease-out);
+    border-radius: var(--rounded-lg);
+    padding: 32px 28px;
+    position: relative;
+    transition: transform 0.28s var(--spring), border-color 0.28s ease, box-shadow 0.28s ease;
   }
 
-  .social-card--primary:hover,
-  .social-card--primary:focus-visible {
-    border-color: var(--accent-border);
-    background: rgba(255, 255, 255, 0.68);
-    transform: translateY(-2px);
+  .social-card--primary:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--divider));
+    box-shadow: 0 16px 36px -10px rgba(0, 117, 222, 0.08);
   }
 
-  .social-card-meta {
-    width: fit-content;
-    border: 1px solid rgba(0, 117, 222, 0.18);
-    border-radius: var(--rounded-full);
-    padding: 6px 10px;
-    color: var(--accent);
-    background: var(--accent-soft);
-    font-family: var(--mono);
-    font-size: var(--type-micro) !important;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .social-card-main {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 18px;
-    margin-top: 46px;
-  }
-
-  .social-card-main h2 {
-    font-family: var(--serif);
-    font-size: clamp(2.5rem, 7vw, 5.5rem);
-    font-weight: 400;
-    line-height: 0.88;
-    letter-spacing: -0.03em;
-  }
-
-  .social-card-main span {
-    color: var(--accent);
-    font-family: var(--sans);
-    font-size: 28px !important;
-    line-height: 1;
-    transition: transform 180ms var(--ease-out);
-  }
-
-  .social-card--primary:hover .social-card-main span,
-  .social-card--primary:focus-visible .social-card-main span {
-    transform: translate(2px, -2px);
-  }
-
-  .social-handle {
-    margin: 18px 0 10px;
-    color: var(--accent);
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    letter-spacing: 0.02em;
-  }
-
-  .social-card--primary p:not(.social-handle) {
-    max-width: 34rem;
-    color: #6e6e6e;
-    font-family: var(--sans);
-    font-size: 0.875rem;
-    line-height: 1.65;
-    text-wrap: pretty;
-  }
-
-  .social-section {
-    scroll-margin-top: calc(var(--hdr-h) + 24px);
-  }
-
-  .social-section-head {
-    margin-bottom: 16px;
-  }
-
-  .social-link-list {
-    display: grid;
-    border-top: 1px solid var(--divider);
-  }
-
-  .social-row {
+  .card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
-    border-bottom: 1px solid var(--divider);
-    padding: 22px 0;
+    margin-bottom: 24px;
+  }
+
+  .card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--accent) 10%, #ffffff);
+    border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px !important;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .card-arrow-link {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--bg) 80%, #ffffff);
+    border: 1px solid var(--divider);
+    color: var(--text);
+    transition: all 0.22s ease;
+  }
+
+  .social-card--primary:hover .card-arrow-link {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    transform: translate(2px, -2px);
+  }
+
+  .card-title-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card-title {
+    font-family: var(--serif);
+    font-size: clamp(38px, 4.5vw, 56px) !important;
+    font-weight: 400 !important;
+    line-height: 0.95 !important;
+    color: var(--text);
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+  }
+
+  .card-handle {
+    font-family: var(--mono);
+    font-size: 12px !important;
+    font-weight: 500;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+
+  .card-desc {
+    font-family: var(--sans);
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .card-footer {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--divider);
+  }
+
+  .card-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 13px !important;
+    font-weight: 600;
     color: var(--text);
     text-decoration: none;
-    transition: color 180ms var(--ease-out), padding 180ms var(--ease-out);
+    transition: color 0.2s ease;
   }
 
-  .social-row:hover,
-  .social-row:focus-visible {
+  .social-card--primary:hover .card-action-btn {
     color: var(--accent);
-    padding-inline: 8px;
   }
 
-  .social-row h3 {
-    margin-bottom: 5px;
+  /* ── SECTION HEADERS & COUNTERS ── */
+  .social-section {
+    margin-bottom: clamp(48px, 7vw, 76px);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px !important;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .section-title {
     font-family: var(--serif);
-    font-size: 2rem;
-    font-weight: 400;
-    line-height: 1;
+    font-size: clamp(26px, 3vw, 36px) !important;
+    font-weight: 400 !important;
+    line-height: 1.1 !important;
+    color: var(--text);
+    margin: 0;
   }
 
-  .social-row p {
-    color: #6e6e6e;
+  .section-count {
+    font-family: var(--mono);
+    font-size: 14px !important;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  /* ── GRID OF PLATFORM & SITE TILES ── */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .social-tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: color-mix(in srgb, var(--bg) 96%, #ffffff);
+    border: 1px solid var(--divider);
+    border-radius: var(--rounded-md);
+    padding: 24px 20px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.25s var(--spring), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+
+  .social-tile:hover {
+    transform: translateY(-3px);
+    background: #FFFFFF;
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--divider));
+    box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.05);
+  }
+
+  .tile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .tile-icon-box {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--accent);
+    transition: transform 0.22s ease;
+  }
+
+  .social-tile:hover .tile-icon-box {
+    transform: scale(1.06);
+    background: var(--accent);
+    color: #FFFFFF;
+  }
+
+  .tile-category {
+    font-family: var(--mono);
+    font-size: 11px !important;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .tile-content {
+    margin-bottom: 20px;
+  }
+
+  .tile-title {
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.2vw, 26px) !important;
+    font-weight: 400 !important;
+    line-height: 1.15 !important;
+    color: var(--text);
+    margin: 0 0 4px;
+  }
+
+  .tile-handle {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px !important;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .tile-desc {
     font-family: var(--sans);
-    font-size: 0.875rem;
-    line-height: 1.55;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+    color: var(--muted);
+    margin: 0;
   }
 
-  .social-row > span {
-    color: currentColor;
+  .tile-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid color-mix(in srgb, var(--divider) 70%, transparent);
+  }
+
+  .tile-action {
     font-family: var(--sans);
-    font-size: 22px !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.2s ease;
   }
 
-  @media (max-width: 720px) {
+  .tile-arrow {
+    color: var(--muted);
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .social-tile:hover .tile-action {
+    color: var(--text);
+  }
+
+  .social-tile:hover .tile-arrow {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 992px) {
+    .social-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
     .social-primary {
       grid-template-columns: 1fr;
-      margin-bottom: 56px;
+      gap: 16px;
     }
 
     .social-card--primary {
-      min-height: 230px;
-      padding: 20px;
+      min-height: auto;
+      padding: 24px 20px;
     }
 
-    .social-card-main {
-      margin-top: 34px;
-    }
-
-    .social-row {
-      align-items: flex-start;
-      padding: 20px 0;
-    }
-
-    .social-row h3 {
-      font-size: 1.75rem;
+    .social-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
     }
   }
 </style>

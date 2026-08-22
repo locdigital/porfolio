@@ -1,0 +1,13 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ClayHeroSection from "../components/ui/lunar-gravity-card";
+---
+
+<Layout 
+  title="Clay - Shaping Crypto into the Future Everyone Believes In" 
+  description="We transform crypto branding, web design, and UX to make your Web3 project shine."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <ClayHeroSection client:only="react" />
+</Layout>

@@ -1,10 +1,10 @@
 ---
 import { createHash } from "node:crypto";
-import { ArrowRight, CheckCircle2, KeyRound, LockKeyhole } from "lucide-react";
+import { ArrowRight, CheckCircle2, KeyRound } from "lucide-react";
 
 interface Props {
   id: string;
-  password: string;
+  password: string | string[];
   storageKey?: string;
   eyebrow?: string;
   title?: string;
@@ -13,6 +13,7 @@ interface Props {
   placeholder?: string;
   buttonLabel?: string;
   successLabel?: string;
+  errorMessage?: string;
 }
 
 const {
@@ -23,23 +24,21 @@ const {
   title = "Protected project details",
   description = "Enter the access code to view the private campaign visuals and notes.",
   inputLabel = "Access code",
-  placeholder = "Enter pass",
+  placeholder = "Enter access code",
   buttonLabel = "Unlock",
   successLabel = "Unlocked",
+  errorMessage = "Incorrect access code. Please try again.",
 } = Astro.props;
 
-const passwordHash = createHash("sha256").update(password).digest("hex");
+const passList = Array.isArray(password) ? password : [password];
+const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().toLowerCase()).digest("hex"));
 ---
 
 <div class="showcase-pass-gate" id={id} data-showcase-pass-gate>
   <div class="showcase-pass-gate-panel" data-gate-panel>
-    <div class="showcase-pass-gate-lock" aria-hidden="true">
-      <LockKeyhole size={18} strokeWidth={1.8} />
-    </div>
-
     <div class="showcase-pass-gate-copy">
       <p class="showcase-pass-gate-eyebrow">{eyebrow}</p>
-      <h3 class="showcase-pass-gate-title">{title}</h3>
+      <div class="showcase-pass-gate-title" style="font-size: 24px !important;">{title}</div>
       <p class="showcase-pass-gate-description">{description}</p>
 
       <p class="showcase-pass-gate-success" data-gate-success hidden>
@@ -50,8 +49,8 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
 
     <form class="showcase-pass-gate-form" data-gate-form>
       <label class="showcase-pass-gate-label" for={`${id}-input`}>{inputLabel}</label>
-      <div class="showcase-pass-gate-row">
-        <div class="showcase-pass-gate-input-wrap">
+      <div class="showcase-pass-gate-row t-input-wrap">
+        <div class="showcase-pass-gate-input-wrap t-input" data-gate-input-wrap>
           <KeyRound size={15} strokeWidth={1.8} aria-hidden="true" />
           <input
             id={`${id}-input`}
@@ -60,7 +59,6 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
             autocomplete="off"
             inputmode="text"
             placeholder={placeholder}
-            aria-describedby={`${id}-error`}
           />
         </div>
         <button class="showcase-pass-gate-button" type="submit">
@@ -68,9 +66,6 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
           <ArrowRight size={15} strokeWidth={1.8} aria-hidden="true" />
         </button>
       </div>
-      <p class="showcase-pass-gate-error" id={`${id}-error`} data-gate-error hidden>
-        Pass chưa đúng, thử lại nha.
-      </p>
     </form>
   </div>
 
@@ -79,7 +74,7 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
   </div>
 </div>
 
-<script is:inline define:vars={{ id, passwordHash, storageKey }}>
+<script is:inline define:vars={{ id, passwordHashes, storageKey, errorMessage }}>
   (() => {
     const root = document.getElementById(id);
     if (!root || root.dataset.gateReady === "true") return;
@@ -88,12 +83,14 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
 
     const form = root.querySelector("[data-gate-form]");
     const input = root.querySelector("[data-gate-input]");
-    const error = root.querySelector("[data-gate-error]");
+    const inputWrap = root.querySelector("[data-gate-input-wrap]");
     const reveal = root.querySelector("[data-gate-reveal]");
     const success = root.querySelector("[data-gate-success]");
     const button = form?.querySelector("button");
 
     if (!form || !input || !reveal || !button) return;
+
+    let isShowingError = false;
 
     const toHex = (buffer) =>
       Array.from(new Uint8Array(buffer))
@@ -113,6 +110,34 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
       if (success) success.hidden = false;
     };
 
+    const resetErrorState = () => {
+      if (!isShowingError) return;
+      isShowingError = false;
+      input.type = "password";
+      input.value = "";
+      inputWrap?.classList.remove("has-error", "is-shaking");
+    };
+
+    const showErrorState = () => {
+      isShowingError = true;
+      input.type = "text";
+      input.value = errorMessage || "Incorrect access code. Please try again.";
+      if (inputWrap) {
+        inputWrap.classList.add("has-error");
+        inputWrap.classList.remove("is-shaking");
+        void inputWrap.offsetWidth;
+        inputWrap.classList.add("is-shaking");
+      }
+    };
+
+    input.addEventListener("focus", resetErrorState);
+    input.addEventListener("click", resetErrorState);
+    input.addEventListener("keydown", (e) => {
+      if (isShowingError && e.key !== "Enter") {
+        resetErrorState();
+      }
+    });
+
     try {
       if (window.sessionStorage.getItem(storageKey) === "true") unlock();
     } catch {
@@ -121,12 +146,23 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (error) error.hidden = true;
+
+      if (isShowingError) {
+        showErrorState();
+        return;
+      }
 
       button.disabled = true;
-      const digest = await hash(input.value.trim());
+      const rawVal = input.value.trim().toLowerCase();
+      if (!rawVal) {
+        showErrorState();
+        button.disabled = false;
+        return;
+      }
 
-      if (digest === passwordHash) {
+      const digest = await hash(rawVal);
+
+      if (passwordHashes.includes(digest)) {
         try {
           window.sessionStorage.setItem(storageKey, "true");
         } catch {
@@ -134,9 +170,7 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
         }
         unlock();
       } else {
-        if (error) error.hidden = false;
-        input.focus();
-        input.select();
+        showErrorState();
       }
 
       button.disabled = false;
@@ -156,27 +190,15 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
 
   .showcase-pass-gate-panel {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) minmax(280px, 0.78fr);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.78fr);
     gap: clamp(16px, 3vw, 28px);
-    align-items: start;
+    align-items: center;
     padding: clamp(18px, 3vw, 28px);
     border: 1px solid var(--divider);
     border-radius: 10px;
     background:
       linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.22)),
       color-mix(in srgb, var(--bg) 92%, #ffffff);
-  }
-
-  .showcase-pass-gate-lock {
-    display: inline-flex;
-    width: 38px;
-    height: 38px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
-    border-radius: 999px;
-    color: var(--text);
-    background: rgba(255, 255, 255, 0.56);
   }
 
   .showcase-pass-gate-copy {
@@ -195,7 +217,7 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
   .showcase-pass-gate-title {
     margin: 0;
     font-family: var(--serif);
-    font-size: clamp(1.5rem, 1.28rem + 0.95vw, 2rem) !important;
+    font-size: 24px !important;
     font-weight: 400 !important;
     line-height: 1.14 !important;
     color: var(--text);
@@ -243,12 +265,39 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.72);
     color: color-mix(in srgb, var(--text) 58%, var(--muted));
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
 
   .showcase-pass-gate-input-wrap:focus-within {
     border-color: color-mix(in srgb, var(--accent) 70%, var(--text));
     box-shadow: var(--focus-ring);
     color: var(--accent);
+  }
+
+  .showcase-pass-gate-input-wrap.has-error {
+    border-color: var(--state-error) !important;
+    background: color-mix(in srgb, var(--state-error) 5%, rgba(255, 255, 255, 0.9)) !important;
+    color: var(--state-error) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--state-error) 22%, transparent) !important;
+  }
+
+  .showcase-pass-gate-input-wrap.has-error input {
+    color: var(--state-error);
+  }
+
+  .showcase-pass-gate-input-wrap.has-error input::placeholder {
+    color: color-mix(in srgb, var(--state-error) 60%, var(--bg));
+  }
+
+  .showcase-pass-gate-input-wrap.is-shaking {
+    animation: gateInputShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
+
+  @keyframes gateInputShake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
   }
 
   .showcase-pass-gate-input-wrap input {
@@ -305,6 +354,19 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
     font-family: var(--sans);
     font-size: var(--type-micro) !important;
     color: var(--state-error);
+    margin-top: 0.15rem;
+    animation: gateErrorFade 0.2s ease-out;
+  }
+
+  @keyframes gateErrorFade {
+    from {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .showcase-pass-gate-reveal {
@@ -326,7 +388,7 @@ const passwordHash = createHash("sha256").update(password).digest("hex");
 
   @media (max-width: 860px) {
     .showcase-pass-gate-panel {
-      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-columns: 1fr;
     }
 
     .showcase-pass-gate-form {

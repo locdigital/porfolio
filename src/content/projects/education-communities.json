@@ -10,9 +10,13 @@
   "description": "Co-founded Đại Học Đừng Học Đại and Đi Làm Đừng Đi Làm, two education and career communities built for students and early-career professionals.\n\nScaled the communities to approximately 3M and 1M members respectively within 12 months through content strategy, community positioning, and consistent audience development.\n\nHelp students and early-career professionals identify suitable schools, academic majors, and long-term career directions aligned with their interests.",
   "tools": ["Community Strategy", "Content Strategy", "Social Media", "Audience Development", "Education"],
   "skills": ["Community Growth", "Career Guidance", "Founder-Led Growth"],
-  "coverImage": "",
-  "images": [],
+  "coverImage": "/images/education-communities-cover.png",
+  "images": [
+    "/images/workflow-dashboard.png",
+    "/images/table-component.png"
+  ],
   "link": "https://linktr.ee/daihocdunghoclai",
   "linkLabel": "Visit Communities",
-  "caseStudyLink": ""
+  "caseStudyLink": "",
+  "password": "edu2026"
 }

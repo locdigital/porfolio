@@ -1,4 +1,4 @@
-import { Check, ChevronLeft, ChevronRight, GripHorizontal, Sparkles, Zap } from "lucide-react";
+import { ChevronLeft, ChevronRight, GripHorizontal } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 
@@ -45,12 +45,6 @@ export interface BeforeAfterPerformanceProps {
   dividerWidth?: number;
   className?: string;
 }
-
-const iconMap = {
-  check: Check,
-  sparkles: Sparkles,
-  zap: Zap,
-};
 
 const DIVIDER_COLOR = "#0075de";
 const MIN_DIVIDER_WIDTH = 1.5;
@@ -308,31 +302,31 @@ export default function BeforeAfterPerformance({
         }
 
         .bap-highlights {
-          display: grid;
-          gap: 10px;
-          margin-top: 8px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          margin-top: 10px;
+          padding: 0;
+          list-style: none;
         }
 
         .bap-highlight {
-          align-items: flex-start;
-          background: rgba(255, 255, 255, 0.48);
-          border: 1px solid rgba(232, 232, 226, 0.72);
-          border-radius: 12px;
-          display: grid;
-          gap: 12px;
-          grid-template-columns: 28px 1fr;
-          padding: 13px 14px;
+          position: relative;
+          padding-left: 18px;
+          background: none;
+          border: none;
+          border-radius: 0;
         }
 
-        .bap-highlight-icon {
-          align-items: center;
-          background: color-mix(in srgb, var(--accent) 12%, #ffffff);
+        .bap-highlight::before {
+          content: "";
+          position: absolute;
+          left: 2px;
+          top: 7px;
+          width: 5px;
+          height: 5px;
           border-radius: 999px;
-          color: var(--accent);
-          display: inline-flex;
-          height: 28px;
-          justify-content: center;
-          width: 28px;
+          background-color: color-mix(in srgb, var(--text) 45%, var(--muted));
         }
 
         .bap-highlight-title {
@@ -340,16 +334,16 @@ export default function BeforeAfterPerformance({
           font-family: var(--sans);
           font-size: 14px !important;
           font-weight: 600;
-          line-height: 1.25;
+          line-height: 1.3;
           margin: 0;
         }
 
         .bap-highlight-desc {
           color: var(--muted);
           font-family: var(--sans);
-          font-size: 12px !important;
-          line-height: 1.45;
-          margin: 4px 0 0;
+          font-size: 13px !important;
+          line-height: 1.5;
+          margin: 3px 0 0;
         }
 
         .bap-slider-wrap {
@@ -658,23 +652,14 @@ export default function BeforeAfterPerformance({
           {description && <p className="bap-description">{description}</p>}
 
           {highlights.length > 0 && (
-            <div className="bap-highlights">
-              {highlights.map((highlight) => {
-                const Icon = iconMap[highlight.icon ?? "check"];
-
-                return (
-                  <div className="bap-highlight" key={highlight.id}>
-                    <span className="bap-highlight-icon" aria-hidden="true">
-                      <Icon size={15} strokeWidth={2} />
-                    </span>
-                    <div>
-                      <p className="bap-highlight-title">{highlight.title}</p>
-                      {highlight.description && <p className="bap-highlight-desc">{highlight.description}</p>}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <ul className="bap-highlights">
+              {highlights.map((highlight) => (
+                <li className="bap-highlight" key={highlight.id}>
+                  <p className="bap-highlight-title">{highlight.title}</p>
+                  {highlight.description && <p className="bap-highlight-desc">{highlight.description}</p>}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
 

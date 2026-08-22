@@ -6,13 +6,17 @@
   "client": "POPS Worldwide",
   "year": "2022-2023",
   "role": "Search Engine Optimization Executive",
-  "summary": "Technical SEO roadmap and organic growth work that scaled POPS Vietnam to 2.5M monthly users and launched POPS Kids properties.",
-  "description": "Partnered with Data, Product, and Technology teams to define and execute the technical SEO roadmap, keeping delivery on schedule and tied to measurable organic performance improvement.\n\nScaled POPS Vietnam to 10x monthly users, reaching 2.5M users per month, while launching POPS Kids and acquiring nearly 400,000 users within 6 months.\n\nBuilt and launched POPS Kids Learn, growing 10,000+ new users within 4 months in a competitive education vertical.",
+  "summary": "Technical SEO strategy and global cross-functional alignment scaling POPS Vietnam 10x to 2.5M monthly users and launching POPS Kids properties.",
+  "description": "Scaling organic performance across regional entertainment platforms required deep market insights, technical excellence, and unified SEO priorities across global product and data teams.\n\nProvided strategic SEO advisory and technical guidance across global departments while performing deep competitor research to uncover market opportunities. Partnered with Data teams to build custom BI reporting dashboards for tracking organic KPIs and growth metrics. Collaborated with Product & Technology to define and execute Technical SEO Roadmaps on schedule and within budget, maintaining regional alignment around technical performance, link building, and content quality.\n\nScaled POPS Vietnam (pops.vn) monthly active users 10x YoY to 2.5M, while successfully launching POPS Kids (kids.pops.vn) and gaining 400,000 users in 6 months. In 2022, launched POPS Kids Learn in a competitive EdTech market, acquiring 10,000+ new users within 4 months.",
   "tools": ["Technical SEO", "Ahrefs", "SEMRush", "Google Analytics", "Content SEO"],
   "skills": ["SEO Roadmap", "Organic Growth", "Product SEO"],
   "coverImage": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hdWtbYEm2AnbkmuljNRvVL8io5CqdBF73JI9H",
-  "images": [],
+  "images": [
+    "/images/pops/pops-after.png",
+    "/images/pops/pops-before.png"
+  ],
   "link": "https://pops.vn/",
   "linkLabel": "Visit POPS",
-  "caseStudyLink": ""
+  "caseStudyLink": "",
+  "password": "pops2026"
 }

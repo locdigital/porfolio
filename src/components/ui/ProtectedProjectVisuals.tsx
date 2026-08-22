@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Lock, Eye, EyeOff, KeyRound, AlertCircle, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { Lock, Eye, EyeOff, KeyRound, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 
 interface ProtectedProjectVisualsProps {
   images: string[];
   title: string;
   password?: string;
   projectSlug: string;
+  description?: string;
 }
+
+const gateDescriptions: Record<string, string> = {
+  playah: "Unlock internal campaign dashboards, TikTokShop KOC booking pipelines, Meta-to-Web ad metrics, and AI sales conversation flows for PlayAh! Vietnam.",
+  "tomato-childrens-home": "Unlock full-funnel Marketing 360 campaign visuals, student enrollment CPL reduction analytics, landing page variations, and 40,000+ contact email automation workflows.",
+  "workflow-space": "Unlock high-converting landing page UI components, Astro build performance specs, automated lead intake funnels, and design system assets.",
+  "pops-worldwide": "Unlock digital media distribution analytics, audience engagement campaign assets, multi-platform publishing metrics, and content growth workflows.",
+  "education-communities": "Unlock community growth dashboards, 4M+ member reach metrics, content distribution breakdowns, and student career guidance assets.",
+};
 
 export default function ProtectedProjectVisuals({
   images,
   title,
   password,
   projectSlug,
+  description,
 }: ProtectedProjectVisualsProps) {
+  const activeDescription =
+    description ||
+    gateDescriptions[projectSlug] ||
+    `Enter the passcode to unlock confidential campaign dashboards, analytics, and visual assets for ${title}.`;
   const storageKey = `protected_visuals_${projectSlug}`;
   const [isUnlocked, setIsUnlocked] = useState<boolean>(!password);
   const [inputPassword, setInputPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [isError, setIsError] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
 
   useEffect(() => {
@@ -37,26 +51,43 @@ export default function ProtectedProjectVisuals({
     }
   }, [storageKey, password]);
 
+  const resetError = () => {
+    if (!isError) return;
+    setIsError(false);
+    setInputPassword("");
+    setShowPassword(false);
+  };
+
+  const showErrorState = () => {
+    setIsError(true);
+    setInputPassword("Incorrect access code. Please try again.");
+    setShowPassword(true);
+    triggerShake();
+  };
+
   const handleUnlock = (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
 
-    if (!inputPassword.trim()) {
-      setError("Please enter the access code.");
+    if (isError) {
       triggerShake();
+      return;
+    }
+
+    if (!inputPassword.trim()) {
+      showErrorState();
       return;
     }
 
     if (password && inputPassword.trim() === password.trim()) {
       setIsUnlocked(true);
-      setError("");
+      setIsError(false);
       try {
         sessionStorage.setItem(storageKey, "unlocked");
       } catch (e) {
         // Ignore storage errors
       }
     } else {
-      setError("Invalid access code. Please try again.");
-      triggerShake();
+      showErrorState();
     }
   };
 
@@ -88,9 +119,11 @@ export default function ProtectedProjectVisuals({
             <Sparkles size={12} className="shrink-0" />
             <span>Showcase</span>
           </p>
-          <h2 className="mt-2 font-display text-display-xs leading-[1.2] tracking-[-0.02em] text-foreground">
-            Project Visuals
-          </h2>
+          {(projectSlug.includes("workflow") || projectSlug.includes("tomato")) && (
+            <h2 className="mt-2 font-display text-display-xs leading-[1.2] tracking-[-0.02em] text-foreground">
+              Project Visuals
+            </h2>
+          )}
         </div>
 
         {isUnlocked && password && (
@@ -130,8 +163,7 @@ export default function ProtectedProjectVisuals({
               </h3>
 
               <p className="font-sans text-sm text-muted-foreground mt-3 max-w-md leading-relaxed">
-                Enter the passcode to unlock confidential dashboards, analytics, and visual assets for{" "}
-                <span className="text-foreground font-semibold">{title}</span>.
+                {activeDescription}
               </p>
 
               {/* Password Form */}
@@ -144,31 +176,36 @@ export default function ProtectedProjectVisuals({
                   <input
                     type={showPassword ? "text" : "password"}
                     value={inputPassword}
+                    onFocus={resetError}
+                    onClick={resetError}
                     onChange={(e) => {
-                      setInputPassword(e.target.value);
-                      if (error) setError("");
+                      if (isError) {
+                        resetError();
+                      } else {
+                        setInputPassword(e.target.value);
+                      }
                     }}
                     placeholder="Enter access code..."
-                    className="w-full pl-11 pr-12 py-3.5 bg-secondary/40 border border-border focus:border-accent focus:ring-2 focus:ring-accent/20 rounded-xl font-sans text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-all shadow-inner"
+                    className={`w-full pl-11 pr-12 py-3.5 rounded-xl font-sans text-sm outline-none transition-all shadow-inner ${
+                      isError
+                        ? "border-2 border-red-500 bg-red-500/10 text-red-500 font-medium placeholder:text-red-400/60 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                        : "bg-secondary/40 border border-border focus:border-accent focus:ring-2 focus:ring-accent/20 text-foreground placeholder:text-muted-foreground/60"
+                    }`}
                     autoFocus
                   />
 
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => {
+                      if (isError) resetError();
+                      setShowPassword(!showPassword);
+                    }}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 text-muted-foreground/70 hover:text-foreground transition-colors rounded-lg hover:bg-secondary/80"
                     title={showPassword ? "Hide passcode" : "Show passcode"}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-
-                {error && (
-                  <div className="flex items-center justify-center gap-2 text-xs font-mono text-red-500 dark:text-red-400 bg-red-500/10 border border-red-500/20 py-2.5 px-3.5 rounded-xl animate-fadeIn">
-                    <AlertCircle size={15} className="shrink-0" />
-                    <span>{error}</span>
-                  </div>
-                )}
 
                 <button
                   type="submit"

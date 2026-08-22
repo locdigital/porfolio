@@ -354,6 +354,33 @@ function hasDetailsFor(loc: PhotoLocationView) {
       tab.addEventListener("click", () => activate(tab.getAttribute("data-target") || undefined));
     });
 
+    /* ── Photos Toggle Logic ── */
+    const photoToggleBtns = document.querySelectorAll('.photo-toggle-btn');
+    photoToggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const locSection = btn.closest('.loc-section');
+        if (!locSection) return;
+        const extraPhotos = locSection.querySelectorAll('.photo-extra');
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const textSpan = btn.querySelector('.btn-text');
+
+        if (isExpanded) {
+          btn.setAttribute('aria-expanded', 'false');
+          btn.classList.remove('expanded');
+          extraPhotos.forEach(photo => photo.classList.add('hidden'));
+          if (textSpan) textSpan.textContent = btn.getAttribute('data-more-text');
+        } else {
+          btn.setAttribute('aria-expanded', 'true');
+          btn.classList.add('expanded');
+          extraPhotos.forEach(photo => {
+            photo.classList.remove('hidden');
+            photo.classList.add('is-visible');
+          });
+          if (textSpan) textSpan.textContent = btn.getAttribute('data-less-text');
+        }
+      });
+    });
+
     activate(location.hash.slice(1));
     window.addEventListener("resize", () => {
       moveLine(tablist.querySelector(".photos-nav-link.active"));
@@ -637,9 +664,51 @@ function hasDetailsFor(loc: PhotoLocationView) {
     will-change: opacity, transform;
   }
 
+  .efferd-gallery-item.photo-extra.hidden {
+    display: none !important;
+  }
+
   .efferd-gallery-item.is-visible {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+
+  .photo-toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+
+  .photo-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--accent-soft, rgba(0, 117, 222, 0.08));
+    border: 1px dashed var(--accent-border, rgba(0, 117, 222, 0.24));
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: var(--fs-xs, 13px);
+    font-weight: 600;
+    color: var(--accent, #0075de);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .photo-toggle-btn:hover {
+    background: rgba(0, 117, 222, 0.14);
+    border-style: solid;
+    transform: translateY(-1px);
+  }
+
+  .photo-toggle-btn .chevron-icon {
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .photo-toggle-btn.expanded .chevron-icon {
+    transform: rotate(180deg);
   }
 
   .efferd-card-inner {
