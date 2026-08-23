@@ -3,18 +3,8 @@
  * Needed because @astrojs/vercel@7.x hardcodes nodejs18.x but Vercel has
  * deprecated Node 18 serverless runtime support.
  */
-import { readdir, readFile, rm, writeFile } from 'fs/promises';
+import { readdir, readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
-
-const uploadedStaticAssets = [
-  '.vercel/output/static/assets/logos',
-  '.vercel/output/static/assets/photos',
-  '.vercel/output/static/images',
-  '.vercel/output/static/uploads',
-  '.vercel/output/static/author-cat.webp',
-  '.vercel/output/static/himmel-vua.jpeg',
-  '.vercel/output/static/og-image.jpg',
-];
 
 async function patchDir(dir) {
   let entries;
@@ -42,7 +32,4 @@ async function patchDir(dir) {
 
 console.log('[patch-vercel-runtime] Patching Vercel output nodejs18.x → nodejs20.x...');
 await patchDir('.vercel/output');
-for (const assetPath of uploadedStaticAssets) {
-  await rm(assetPath, { recursive: true, force: true });
-}
 console.log('[patch-vercel-runtime] Done.');
