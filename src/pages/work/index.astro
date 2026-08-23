@@ -72,18 +72,6 @@ const workHeadlineHtml = "Selected work & <em>case studies</em>";
                   ))}
                 </p>
 
-                {project.slug !== "playah" && (
-                  <div class="project-links">
-                    <a href={`/work/${project.slug}`} class="link-primary">
-                      See case study
-                    </a>
-                    {project.link && (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" class="link-secondary">
-                        {project.linkLabel ?? "Visit site"}
-                      </a>
-                    )}
-                  </div>
-                )}
               </div>
 
               {project.coverImage && (

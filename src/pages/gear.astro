@@ -191,18 +191,6 @@ const safeGearHeadline = gearHeadline
         ))}
       </nav>
 
-      <section class="gear-featured" aria-label="Featured setup">
-        <div class="desk-visual">
-          <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hLRLgGZajGe643sM1SqBZJPX8cKmUu2oyYNOz" alt="Future desk setup" loading="eager" decoding="async" />
-        </div>
-        <div class="gear-featured-copy">
-          <span class="gear-count">{gearSections.reduce((sum, section) => sum + section.items.length, 0)} items</span>
-          <h2>Desk, camera, audio, and apps in one place.</h2>
-          <p>
-            A curated list of my workstation equipment, camera kit, audio gear, and productivity software that I use on a daily basis.
-          </p>
-        </div>
-      </section>
 
       {gearSections.map((section, sectionIndex) => (
         <section class="gear-section" id={section.slug}>
@@ -329,7 +317,7 @@ const safeGearHeadline = gearHeadline
   }
 
   .gear-section {
-    margin-bottom: 76px;
+    margin-bottom: 99px;
     scroll-margin-top: calc(var(--hdr-h) + 24px);
     content-visibility: visible;
   }

@@ -7,7 +7,6 @@ import {
   MessageSquare, 
   Image as ImageIcon, 
   Brain, 
-  AudioWaveform, 
   Briefcase, 
   Code, 
   Compass, 
@@ -19,11 +18,9 @@ import {
   CreditCard, 
   BarChart3, 
   ShieldCheck, 
-  Shield, 
   TrendingUp, 
   Zap, 
-  FlaskConical,
-  Building2 
+  FlaskConical
 } from "lucide-react";
 
 const serviceHeadlineHtml = "Acquisition, tracking, and <em>fast websites.</em>";
@@ -34,20 +31,21 @@ const services = [
     num: "01",
     kicker: "PERFORMANCE MARKETING",
     title: "Performance Ads & Attribution",
+    Icon: BarChart3,
     metric: "4.2x Avg ROAS",
     desc: "Scale conversions and lower CAC through high-intent paid campaigns and modern server-side measurement frameworks.",
     alt: "Performance Marketing Analytics",
     tags: ["Meta Ads", "Google Ads", "TikTok Ads", "GA4 Server-Side", "Looker Studio"],
     checklist: [
-      "Custom pixel tracking & server-side CAPI integration",
-      "Full-funnel Google, Meta, and TikTok ad accounts build",
-      "Advanced attribution auditing & GA4 tracking setups",
-      "Weekly analytics dashboards (Looker Studio)"
+      { text: "Custom pixel tracking & server-side CAPI integration", Icon: Workflow },
+      { text: "Full-funnel Google, Meta, and TikTok ad accounts build", Icon: TrendingUp },
+      { text: "Advanced attribution auditing & GA4 tracking setups", Icon: BarChart3 },
+      { text: "Weekly analytics dashboards (Looker Studio)", Icon: LayoutGrid }
     ],
     capabilities: [
-      { name: "Attribution Setup", desc: "Setting up server-side Conversions API (CAPI), GTM Server container, and GA4 for perfect tracking accuracy." },
-      { name: "Paid Acquisition", desc: "Building, bidding, and scaling ads campaigns on Meta, Google Search/PMax, and TikTok Shop." },
-      { name: "A/B Testing Funnels", desc: "Configuring landing page variations and optimizing the user signup path to maximize conversion rates." }
+      { name: "Attribution Setup", desc: "Setting up server-side Conversions API (CAPI), GTM Server container, and GA4 for perfect tracking accuracy.", Icon: Workflow },
+      { name: "Paid Acquisition", desc: "Building, bidding, and scaling ads campaigns on Meta, Google Search/PMax, and TikTok Shop.", Icon: TrendingUp },
+      { name: "A/B Testing Funnels", desc: "Configuring landing page variations and optimizing the user signup path to maximize conversion rates.", Icon: FlaskConical }
     ]
   },
   {
@@ -55,20 +53,21 @@ const services = [
     num: "02",
     kicker: "SOCIAL SEEDING",
     title: "Organic Seeding & Advocacy",
+    Icon: MessageSquare,
     metric: "85% Trust Index",
     desc: "Deploy natural forum discussion threads and community seeding campaigns that establish genuine peer recommendation.",
     alt: "Social Seeding and Community Advocacy",
     tags: ["Forum Seeding", "Reddit & Facebook", "Sentiment Mgmt", "KOC Booking"],
     checklist: [
-      "Organic discussion angle engineering across Reddit & Forums",
-      "Targeted niche group monitoring & sentiment control",
-      "Validating brand trust via micro-influencers & KOCs",
-      "Viral community response playbook creation"
+      { text: "Organic discussion angle engineering across Reddit & Forums", Icon: MessageSquare },
+      { text: "Targeted niche group monitoring & sentiment control", Icon: ShieldCheck },
+      { text: "Validating brand trust via micro-influencers & KOCs", Icon: Sparkles },
+      { text: "Viral community response playbook creation", Icon: Compass }
     ],
     capabilities: [
-      { name: "Dialogue Engineering", desc: "Drafting organic discussion scenarios that introduce product recommendations naturally." },
-      { name: "Forum Outreach", desc: "Leading campaigns across tech platforms, general groups, Facebook hubs, and Reddit pages." },
-      { name: "Crisis Sentiment Control", desc: "Monitoring social threads and proactively resolving negative community discussions." }
+      { name: "Dialogue Engineering", desc: "Drafting organic discussion scenarios that introduce product recommendations naturally.", Icon: MessageSquare },
+      { name: "Forum Outreach", desc: "Leading campaigns across tech platforms, general groups, Facebook hubs, and Reddit pages.", Icon: Globe },
+      { name: "Crisis Sentiment Control", desc: "Monitoring social threads and proactively resolving negative community discussions.", Icon: ShieldCheck }
     ]
   },
   {
@@ -76,20 +75,21 @@ const services = [
     num: "03",
     kicker: "BRAND MARKETING",
     title: "Strategic Brand Positioning",
+    Icon: Sparkles,
     metric: "100% Alignment",
     desc: "Outline your core positioning, styleguides, and messaging maps to stand out in crowded tech markets.",
     alt: "Brand Identity Layout",
     tags: ["Market Positioning", "Messaging Maps", "Visual Styleguides", "Tone of Voice"],
     checklist: [
-      "Brand voice guidelines & copywriting frameworks",
-      "Core market positioning audits & value proposition design",
-      "Launch campaign themes and key message mapping",
-      "Cohesive typographic, palette, and symbol rulebooks"
+      { text: "Brand voice guidelines & copywriting frameworks", Icon: Briefcase },
+      { text: "Core market positioning audits & value proposition design", Icon: Compass },
+      { text: "Launch campaign themes and key message mapping", Icon: Sparkles },
+      { text: "Cohesive typographic, palette, and symbol rulebooks", Icon: Layers }
     ],
     capabilities: [
-      { name: "Positioning Strategy", desc: "Defining clear target personas, competitor gaps, and your core unique value proposition." },
-      { name: "Messaging Frameworks", desc: "Building modular copy blocks that scale from landing page hooks to email headers." },
-      { name: "Visual System Rules", desc: "Standardizing logo grids, typography, and palettes for developers and creative teams." }
+      { name: "Positioning Strategy", desc: "Defining clear target personas, competitor gaps, and your core unique value proposition.", Icon: Compass },
+      { name: "Messaging Frameworks", desc: "Building modular copy blocks that scale from landing page hooks to email headers.", Icon: Briefcase },
+      { name: "Visual System Rules", desc: "Standardizing logo grids, typography, and palettes for developers and creative teams.", Icon: Layers }
     ]
   },
   {
@@ -97,20 +97,21 @@ const services = [
     num: "04",
     kicker: "E-COMMERCE GROWTH",
     title: "DTC Storefront Optimization",
+    Icon: CreditCard,
     metric: "+28% Conversion",
     desc: "Refine store interfaces and configure retention flows to increase Customer Lifetime Value and average order index.",
     alt: "E-Commerce Funnel Optimization",
     tags: ["Shopify CRO", "Cart Funnel optimization", "Klaviyo CRM", "Catalog Feed"],
     checklist: [
-      "Cart drawer & dynamic checkout design edits (CRO)",
-      "Automated email customer flows (Klaviyo CRM)",
-      "Highly catalog ad feeds optimized for social shopping",
-      "DTC performance audits & order value diagnostics"
+      { text: "Cart drawer & dynamic checkout design edits (CRO)", Icon: CreditCard },
+      { text: "Automated email customer flows (Klaviyo CRM)", Icon: Plug },
+      { text: "Highly catalog ad feeds optimized for social shopping", Icon: LayoutGrid },
+      { text: "DTC performance audits & order value diagnostics", Icon: BarChart3 }
     ],
     capabilities: [
-      { name: "Checkout Optimization", desc: "Redesigning checkout pages, trust indicators, and cart flows to prevent basket abandonment." },
-      { name: "Retention Loops", desc: "Configuring welcome streams, recovery paths, and post-purchase sequences in Klaviyo." },
-      { name: "Feed Optimization", desc: "Refining custom product feeds to pass structured variables to TikTok and Meta catalogs." }
+      { name: "Checkout Optimization", desc: "Redesigning checkout pages, trust indicators, and cart flows to prevent basket abandonment.", Icon: Zap },
+      { name: "Retention Loops", desc: "Configuring welcome streams, recovery paths, and post-purchase sequences in Klaviyo.", Icon: Plug },
+      { name: "Feed Optimization", desc: "Refining custom product feeds to pass structured variables to TikTok and Meta catalogs.", Icon: LayoutGrid }
     ]
   },
   {
@@ -118,20 +119,21 @@ const services = [
     num: "05",
     kicker: "WEB DEVELOPMENT",
     title: "Headless Web Engineering",
+    Icon: Code,
     metric: "100/100 Speed",
     desc: "Build lightning-fast, fully responsive websites on Astro and React that score perfect Lighthouse diagnostics.",
     alt: "Modern Web Engineering Workspace",
     tags: ["Astro Framework", "React & TS", "Keystatic CMS", "Core Web Vitals"],
     checklist: [
-      "Headless static sites deployment using modern framework architectures",
-      "Interactive interfaces with smooth, lightweight micro-animations",
-      "Technical SEO markup, automated sitemaps, and strict schema",
-      "User-friendly headless content editing fields integration"
+      { text: "Headless static sites deployment using modern framework architectures", Icon: Code },
+      { text: "Interactive interfaces with smooth, lightweight micro-animations", Icon: Zap },
+      { text: "Technical SEO markup, automated sitemaps, and strict schema", Icon: Compass },
+      { text: "User-friendly headless content editing fields integration", Icon: Layers }
     ],
     capabilities: [
-      { name: "Astro Static Builds", desc: "Creating static page assemblies that load in milliseconds and deliver perfect SEO crawls." },
-      { name: "Dynamic React Modules", desc: "Building snappier components (collages, listings, query tabs) that run securely in browser frames." },
-      { name: "Headless CMS Integration", desc: "Linking repositories with easy Markdown editors (Keystatic/Decap) for simple client-side updates." }
+      { name: "Astro Static Builds", desc: "Creating static page assemblies that load in milliseconds and deliver perfect SEO crawls.", Icon: Code },
+      { name: "Dynamic React Modules", desc: "Building snappier components (collages, listings, query tabs) that run securely in browser frames.", Icon: Layers },
+      { name: "Headless CMS Integration", desc: "Linking repositories with easy Markdown editors (Keystatic/Decap) for simple client-side updates.", Icon: Globe }
     ]
   },
   {
@@ -139,20 +141,21 @@ const services = [
     num: "06",
     kicker: "GROWTH AUTOMATION",
     title: "AI Funnels & Growth Automation",
+    Icon: Workflow,
     metric: "95% Automation",
     desc: "Streamline manual marketing loops and unlock inbound scale by deploying automated lead generation workflows, custom CRM syncs, and AI content engines.",
     alt: "Growth Automation & AI Funnels Setup",
     tags: ["Make.com", "Zapier", "AI Scripting", "CRM Flows", "SEO Auto"],
     checklist: [
-      "Automated multi-channel lead routing (CRM & Slack)",
-      "AI-assisted content optimization & programmatic SEO",
-      "Custom database syncs and automated reports (API/SQL)",
-      "Interactive email sequence automation & drip campaigns"
+      { text: "Automated multi-channel lead routing (CRM & Slack)", Icon: Workflow },
+      { text: "AI-assisted content optimization & programmatic SEO", Icon: Brain },
+      { text: "Custom database syncs and automated reports (API/SQL)", Icon: Plug },
+      { text: "Interactive email sequence automation & drip campaigns", Icon: Zap }
     ],
     capabilities: [
-      { name: "Workflow Integration", desc: "Connecting ads, email tools, and internal CRMs via Make.com/Zapier to automate lead transfers instantly." },
-      { name: "Programmatic SEO & AI", desc: "Setting up AI pipelines to clean data, generate page variations, and auto-check formatting rules." },
-      { name: "Database & API Custom Syncs", desc: "Writing simple server-side hooks to pass lead data, sync sheets, and feed automation dashboards." }
+      { name: "Workflow Integration", desc: "Connecting ads, email tools, and internal CRMs via Make.com/Zapier to automate lead transfers instantly.", Icon: Workflow },
+      { name: "Programmatic SEO & AI", desc: "Setting up AI pipelines to clean data, generate page variations, and auto-check formatting rules.", Icon: Brain },
+      { name: "Database & API Custom Syncs", desc: "Writing simple server-side hooks to pass lead data, sync sheets, and feed automation dashboards.", Icon: Plug }
     ]
   }
 ];
@@ -212,112 +215,6 @@ const pricingPlans = [
       "Deployment, QA, and handoff docs"
     ],
     tag: "Code & SEO"
-  }
-];
-
-const chatgptPlans = [
-  {
-    id: "go",
-    title: "Go",
-    subtitle: "Keep chatting with expanded access",
-    priceMonthly: "132,000",
-    priceCurrency: "₫",
-    priceUnit: "VND / month (inclusive of VAT)",
-    ctaText: "Switch to Go",
-    ctaVariant: "outline",
-    features: [
-      { text: "Core model", Icon: Sparkles },
-      { text: "More messages and uploads", Icon: MessageSquare },
-      { text: "More image creation", Icon: ImageIcon },
-      { text: "Longer memory", Icon: Brain },
-      { text: "Expanded voice mode", Icon: AudioWaveform }
-    ],
-    footnote: "This plan may include ads.",
-    footnoteLink: "Learn more"
-  },
-  {
-    id: "plus",
-    title: "Plus",
-    subtitle: "More access to advanced intelligence",
-    priceMonthly: "0",
-    priceOriginal: "522,500",
-    priceCurrency: "₫",
-    priceUnit: "VND / month (including VAT) until Aug 23, 2026",
-    ctaText: "Your current plan",
-    ctaVariant: "disabled",
-    features: [
-      { text: "Advanced models", Icon: Sparkles },
-      { text: "Advanced image creation with Thinking", Icon: ImageIcon },
-      { text: "Expanded memory across chats", Icon: Brain },
-      { text: "Work agent for multi-step tasks", Icon: Briefcase },
-      { text: "Codex agent for coding", Icon: Code },
-      { text: "Expanded deep research", Icon: Compass },
-      { text: "Projects and custom GPTs", Icon: LayoutGrid }
-    ],
-    footnoteLink: "I need help with a billing issue"
-  },
-  {
-    id: "business",
-    title: "Business",
-    badge: "RECOMMENDED",
-    subtitle: "A secure workspace with company context and tools for teams, built for growing companies",
-    priceMonthly: "519,000",
-    priceCurrency: "₫",
-    priceUnit: "/ user / month (exclusive of VAT)",
-    ctaText: "Add Business workspace",
-    ctaVariant: "primary-blue",
-    featured: true,
-    features: [
-      { text: "Access ChatGPT and Codex across desktop and mobile apps", Icon: Globe },
-      { text: "AI for chat, coding, analysis, and workflows", Icon: Workflow },
-      { text: "Work agent for multi-step tasks", Icon: Briefcase },
-      { text: "Connect tools like Microsoft 365, Google Drive, Slack, GitHub, Linear, Figma, and more", Icon: Plug },
-      { text: "Build on company knowledge and team context with custom team agent plugins", Icon: Layers },
-      { text: "Centralized billing and administration", Icon: CreditCard },
-      { text: "Usage analytics, budgeting, and spend controls", Icon: BarChart3 },
-      { text: "Secure workspace with SAML SSO and MFA", Icon: ShieldCheck },
-      { text: "No training on your business data by default", Icon: Shield }
-    ],
-    footnote: "For 2+ seats, billed annually. Unlimited subject to abuse guardrails.",
-    footnoteLink: "Learn more",
-    extraVatNote: "VAT excluded at checkout with a valid VAT ID"
-  },
-  {
-    id: "pro",
-    title: "Pro",
-    hasToggle: true,
-    subtitle: "Maximize your productivity",
-    price5x: "2,849,000",
-    price20x: "11,396,000",
-    priceCurrency: "₫",
-    priceUnit: "VND / month (inclusive of VAT)",
-    ctaText: "Upgrade to Pro",
-    ctaVariant: "primary-dark",
-    features: [
-      { text: "Everything in Plus and:", isHeader: true },
-      { text: "5x more usage than Plus", Icon: TrendingUp },
-      { text: "Frontier Pro model", Icon: Sparkles },
-      { text: "Maximum access to Codex agent", Icon: Code },
-      { text: "Maximum access to Work agent", Icon: Briefcase },
-      { text: "Unlimited core chat", Icon: MessageSquare },
-      { text: "Unlimited and faster image creation", Icon: Zap },
-      { text: "Maximum memory and context", Icon: Brain },
-      { text: "Early access to experimental features", Icon: FlaskConical }
-    ],
-    features5x: [
-      { text: "Everything in Plus and:", isHeader: true },
-      { text: "5x more usage than Plus", Icon: TrendingUp },
-      { text: "Frontier Pro model", Icon: Sparkles },
-      { text: "Maximum access to Codex agent", Icon: Code },
-      { text: "Maximum access to Work agent", Icon: Briefcase },
-      { text: "Unlimited core chat", Icon: MessageSquare },
-      { text: "Unlimited and faster image creation", Icon: Zap },
-      { text: "Maximum memory and context", Icon: Brain },
-      { text: "Early access to experimental features", Icon: FlaskConical }
-    ],
-    footnote: "Unlimited subject to abuse guardrails.",
-    footnoteLink: "Learn about limits and promos on both tiers",
-    secondaryFootnoteLink: "I need help with a billing issue"
   }
 ];
 
@@ -420,8 +317,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
         <div class="saas-grid">
           {services.map((service, index) => (
-            <div class="saas-card t-tilt" id={`service-card-${service.id}`} data-service-card data-index={index}>
-              <div class="t-tilt-card p-6 h-full flex flex-col">
+            <div class="saas-card" id={`service-card-${service.id}`} data-service-card data-index={index}>
+              <div class="p-6 h-full flex flex-col">
                 <div class="card-header">
                   <span class="card-num">{service.num}</span>
                   <span class="card-metric">{service.metric}</span>
@@ -432,7 +329,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
                 <ul class="card-checklist">
                   {service.checklist.map((item) => (
                     <li>
-                      <span>{item}</span>
+                      {item.Icon && <item.Icon className="w-4 h-4 text-accent shrink-0 mt-0.5" size={16} strokeWidth={1.8} />}
+                      <span>{item.text}</span>
                     </li>
                   ))}
                 </ul>
@@ -479,6 +377,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
                 aria-controls={`pane-${service.id}`}
                 aria-selected={index === 0 ? "true" : "false"}
               >
+                {service.Icon && <service.Icon className="tab-service-icon text-accent mr-2 shrink-0 inline-block" size={16} strokeWidth={1.8} />}
                 <span class="tab-num">{service.num}</span>
                 <span class="tab-title">{service.title}</span>
                 <ArrowRight className="tab-arrow" size={16} strokeWidth={1.8} aria-hidden="true" />
@@ -507,7 +406,12 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
                     
                     <div class="pane-cap-list">
                       {service.capabilities.map((cap) => (
-                        <div class="pane-cap-item">
+                        <div class="pane-cap-item flex items-start gap-3">
+                          {cap.Icon && (
+                            <div class="pane-cap-icon-box p-2 rounded-lg bg-accent/10 text-accent shrink-0">
+                              <cap.Icon size={18} strokeWidth={1.8} />
+                            </div>
+                          )}
                           <div class="pane-cap-copy">
                             <span class="pane-cap-name">{cap.name}</span>
                             <p class="pane-cap-desc">{cap.desc}</p>
@@ -566,9 +470,11 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
           {pricingPlans.map((plan) => (
             <div class={`pricing-card t-tilt ${plan.popular ? 'popular' : ''}`}>
               <div class="t-tilt-card p-8 h-full flex flex-col">
-                {plan.popular && <span class="popular-badge">RECOMMENDED</span>}
                 <div class="plan-header">
-                  <span class="plan-tag">{plan.tag}</span>
+                  <div class="plan-tag-row">
+                    <span class="plan-tag">{plan.tag}</span>
+                    {plan.popular && <span class="popular-badge">RECOMMENDED</span>}
+                  </div>
                   <h3 class="plan-title">{plan.title}</h3>
                   <p class="plan-desc">{plan.desc}</p>
                 </div>
@@ -583,10 +489,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
                   </div>
                 </div>
 
-                <a href="mailto:hi@loc.digital" class={`plan-cta-btn ${plan.popular ? 'btn-primary' : 'btn-secondary'} t-learn`}>
-                  <span>Start this plan</span>
-                  <span class="t-learn-chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
-                </a>
 
                 <div class="plan-features-header">Scope parameters:</div>
                 <ul class="plan-features">
@@ -599,116 +501,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      <!-- CHATGPT PLANS MATRIX SHOWCASE SECTION -->
-      <section class="cg-plans-section toki-r" data-d="5" id="plans-matrix">
-        <div class="cg-modal-wrapper">
-          <div class="cg-modal-header">
-            <h2 class="cg-modal-title">Upgrade your plan</h2>
-            <p class="cg-modal-subtitle">Choose the intelligence tier, workspace capacity, or enterprise model that fits your team's workflow.</p>
-          </div>
-
-          <div class="cg-plans-grid">
-            {chatgptPlans.map((plan) => (
-              <div class={`cg-plan-card ${plan.featured ? 'is-featured' : ''} ${plan.id === 'pro' ? 'is-pro' : ''}`} data-plan-id={plan.id}>
-                {plan.badge && (
-                  <div class="cg-badge-wrapper">
-                    <span class="cg-plan-badge">{plan.badge}</span>
-                  </div>
-                )}
-
-                <div class="cg-card-head">
-                  <div class="cg-title-row">
-                    <h3 class="cg-plan-name">{plan.title}</h3>
-                    {plan.hasToggle && (
-                      <div class="cg-pro-toggle-container" role="radiogroup" aria-label="Pro usage multiplier">
-                        <button type="button" class="cg-toggle-btn active" data-pro-multiplier="5x" aria-checked="true">5x</button>
-                        <button type="button" class="cg-toggle-btn" data-pro-multiplier="20x" aria-checked="false">20x</button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div class="cg-price-box">
-                    {plan.priceOriginal ? (
-                      <div class="cg-price-promo">
-                        <span class="cg-price-strike"><span class="cg-price-curr">{plan.priceCurrency}</span>{plan.priceOriginal}</span>
-                        <span class="cg-price-main-val"><span class="cg-price-curr">{plan.priceCurrency}</span><span class="cg-price-val">{plan.priceMonthly}</span></span>
-                      </div>
-                    ) : plan.hasToggle ? (
-                      <div class="cg-price-main">
-                        <span class="cg-price-curr">{plan.priceCurrency}</span>
-                        <span class="cg-price-val" id="pro-price-display">{plan.price5x}</span>
-                      </div>
-                    ) : (
-                      <div class="cg-price-main">
-                        <span class="cg-price-curr">{plan.priceCurrency}</span>
-                        <span class="cg-price-val">{plan.priceMonthly}</span>
-                      </div>
-                    )}
-                    <span class="cg-price-unit">{plan.priceUnit}</span>
-                  </div>
-
-                  <p class="cg-plan-sub">{plan.subtitle}</p>
-
-                  <div class="cg-cta-wrapper">
-                    {plan.ctaVariant === 'disabled' ? (
-                      <button type="button" class="cg-btn cg-btn-disabled" disabled>{plan.ctaText}</button>
-                    ) : plan.ctaVariant === 'primary-blue' ? (
-                      <a href="mailto:hi@loc.digital?subject=Add%20Business%20Workspace" class="cg-btn cg-btn-blue">{plan.ctaText}</a>
-                    ) : plan.ctaVariant === 'primary-dark' ? (
-                      <a href="mailto:hi@loc.digital?subject=Upgrade%20to%20Pro" class="cg-btn cg-btn-dark">{plan.ctaText}</a>
-                    ) : (
-                      <a href="mailto:hi@loc.digital?subject=Switch%20to%20Go" class="cg-btn cg-btn-outline">{plan.ctaText}</a>
-                    )}
-                  </div>
-                </div>
-
-                <div class="cg-card-body">
-                  {plan.hasToggle ? (
-                    <ul class="cg-feature-list" id="pro-feature-list">
-                      {plan.features5x.map((item) => (
-                        <li class={item.isHeader ? 'cg-feat-header' : 'cg-feat-item'}>
-                          {item.isHeader ? (
-                            <span class="cg-feat-hdr-txt">{item.text}</span>
-                          ) : (
-                            <>
-                              {item.Icon && <item.Icon className="cg-feat-icon" size={16} strokeWidth={1.8} />}
-                              <span class="cg-feat-txt">{item.text}</span>
-                            </>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <ul class="cg-feature-list">
-                      {plan.features.map((item) => (
-                        <li class="cg-feat-item">
-                          {item.Icon && <item.Icon className="cg-feat-icon" size={16} strokeWidth={1.8} />}
-                          <span class="cg-feat-txt">{item.text}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div class="cg-card-foot">
-                  {plan.footnote && <span class="cg-foot-text">{plan.footnote} {plan.footnoteLink && <a href="#pricing-block" class="cg-foot-link">{plan.footnoteLink}</a>}</span>}
-                  {!plan.footnote && plan.footnoteLink && <a href="#pricing-block" class="cg-foot-link">{plan.footnoteLink}</a>}
-                  {plan.secondaryFootnoteLink && <a href="#pricing-block" class="cg-foot-link">{plan.secondaryFootnoteLink}</a>}
-                  {plan.extraVatNote && <span class="cg-foot-text cg-vat-note">{plan.extraVatNote}</span>}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div class="cg-bottom-bar">
-            <Building2 className="cg-bottom-icon" size={16} />
-            <a href="mailto:hi@loc.digital?subject=Enterprise%20Business%20Inquiry" class="cg-bottom-link">
-              Need more capabilities for your business?
-            </a>
-          </div>
         </div>
       </section>
 
@@ -767,35 +559,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
         pricePeriods.forEach(period => {
           period.textContent = isProjectMode ? ' total' : '/month';
-        });
-      });
-    }
-
-    /* ── ChatGPT Pro Toggle Logic ── */
-    const proToggleBtns = document.querySelectorAll('[data-pro-multiplier]');
-    const proPriceDisplay = document.getElementById('pro-price-display');
-    const proFeatureList = document.getElementById('pro-feature-list');
-
-    if (proToggleBtns.length > 0) {
-      proToggleBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          proToggleBtns.forEach(b => {
-            b.classList.remove('active');
-            b.setAttribute('aria-checked', 'false');
-          });
-          btn.classList.add('active');
-          btn.setAttribute('aria-checked', 'true');
-
-          const mult = btn.dataset.proMultiplier;
-          if (proPriceDisplay) {
-            proPriceDisplay.textContent = mult === '20x' ? '11,396,000' : '2,849,000';
-          }
-          if (proFeatureList) {
-            const featTextEl = proFeatureList.querySelector('.cg-feat-item:nth-child(2) .cg-feat-txt');
-            if (featTextEl) {
-              featTextEl.textContent = mult === '20x' ? '20x more usage than Plus' : '5x more usage than Plus';
-            }
-          }
         });
       });
     }
@@ -923,8 +686,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 <style>
   /* ── TRUSTED BY SECTION ── */
   .trust-by-section {
-    margin-top: clamp(64px, 8vw, 104px);
-    margin-bottom: clamp(64px, 8vw, 104px);
+    margin-top: clamp(83px, 10.4vw, 135px);
+    margin-bottom: clamp(83px, 10.4vw, 135px);
   }
 
   .trust-by-header {
@@ -1155,7 +918,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     border-top: 1px solid var(--divider);
     border-bottom: 1px solid var(--divider);
     padding: 32px 0;
-    margin-bottom: 88px;
+    margin-bottom: 115px;
     display: flex;
     flex-direction: column;
     gap: 21px;
@@ -1224,7 +987,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   /* ── 3. SaaS Feature Cards Grid ── */
   .features-section {
     position: relative;
-    margin-bottom: 104px;
+    margin-bottom: 135px;
   }
 
   .saas-grid {
@@ -1267,9 +1030,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     }
   }
 
-  .saas-card:hover {
-    background: rgba(255, 255, 255, 0.58);
-  }
 
   .saas-pagination {
     display: flex;
@@ -1402,15 +1162,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .card-checklist li::before,
-  .plan-features li::before,
   .pane-cap-item::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    flex-shrink: 0;
-    margin-top: 0.58em;
+    display: none !important;
   }
 
   .card-tags {
@@ -1436,7 +1189,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   /* ── 4. Capabilities Switcher (Tabbed Dashboard) ── */
   .capabilities-dashboard {
-    margin-bottom: 104px;
+    margin-bottom: 135px;
   }
 
   .dashboard-container {
@@ -1601,16 +1354,11 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   }
 
   .pane-cap-item {
-    display: grid;
-    grid-template-columns: 8px minmax(0, 1fr);
-    column-gap: 12px;
-    align-items: start;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
     border-bottom: 1px solid var(--divider);
     padding-bottom: 12px;
-  }
-
-  .pane-cap-item::before {
-    margin-top: 0.62em;
   }
 
   .pane-cap-item:last-child {
@@ -1660,7 +1408,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   /* ── 5. Pricing Tiers ── */
   .pricing-section {
-    margin-bottom: 104px;
+    margin-bottom: 135px;
   }
 
   .pricing-toggle-container {
@@ -1749,10 +1497,17 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     box-shadow: 0 16px 36px rgba(0, 117, 222, 0.12);
   }
 
+  .plan-tag-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    min-height: 24px;
+  }
+
   .popular-badge {
-    position: absolute;
-    top: 24px;
-    right: 24px;
+    position: static;
     background: color-mix(in srgb, var(--accent) 12%, #ffffff);
     color: var(--accent);
     border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
@@ -1763,6 +1518,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     border-radius: 9999px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .plan-header {
@@ -1776,8 +1533,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     color: var(--accent);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    display: block;
-    margin-bottom: 8px;
+    display: inline-block;
+    margin-bottom: 0;
   }
 
   .plan-title {

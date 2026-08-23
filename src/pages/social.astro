@@ -337,7 +337,7 @@ const siteDestinations = [
     border-radius: var(--rounded-lg);
     padding: 32px 28px;
     position: relative;
-    transition: transform 0.28s var(--spring), border-color 0.28s ease, box-shadow 0.28s ease;
+    transition: transform 0.28s var(--spring), border-color 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease, filter 0.28s ease;
   }
 
   .social-card--primary:hover {
@@ -345,6 +345,8 @@ const siteDestinations = [
     border-color: color-mix(in srgb, var(--accent) 50%, var(--divider));
     box-shadow: 0 16px 36px -10px rgba(0, 117, 222, 0.08);
   }
+
+
 
   .card-top {
     display: flex;
@@ -499,7 +501,7 @@ const siteDestinations = [
     padding: 24px 20px;
     text-decoration: none;
     color: var(--text);
-    transition: transform 0.25s var(--spring), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    transition: transform 0.25s var(--spring), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
   }
 
   .social-tile:hover {
@@ -507,6 +509,13 @@ const siteDestinations = [
     background: #FFFFFF;
     border-color: color-mix(in srgb, var(--accent) 40%, var(--divider));
     box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Global sibling dimming across all channel cards on the page */
+  .social-container:has(.social-tile:hover, .social-card--primary:hover) .social-tile:not(:hover),
+  .social-container:has(.social-tile:hover, .social-card--primary:hover) .social-card--primary:not(:hover) {
+    opacity: 0.45;
+    filter: grayscale(0.6);
   }
 
   .tile-header {
@@ -525,13 +534,6 @@ const siteDestinations = [
     background: color-mix(in srgb, var(--accent) 8%, transparent);
     border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
     color: var(--accent);
-    transition: transform 0.22s ease;
-  }
-
-  .social-tile:hover .tile-icon-box {
-    transform: scale(1.06);
-    background: var(--accent);
-    color: #FFFFFF;
   }
 
   .tile-category {

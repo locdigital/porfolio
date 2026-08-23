@@ -1,7 +1,6 @@
 import { getCollection } from "astro:content";
-import { readSupabaseCmsCollection, readSupabaseCmsEntry } from "./cms-store";
 
-type ProjectData = {
+export type ProjectData = {
   slug: string;
   order: number;
   number: string;
@@ -21,7 +20,7 @@ type ProjectData = {
   password?: string;
 };
 
-type PhotoLocationData = {
+export type PhotoLocationData = {
   slug: string;
   order: number;
   type?: "hotel" | "restaurant" | "cafe" | "check-in";
@@ -152,7 +151,7 @@ type PhotoLocationData = {
   }[];
 };
 
-type GearData = {
+export type GearData = {
   title: string;
   headline: string;
   description: string;
@@ -175,16 +174,6 @@ type GearData = {
 };
 
 export async function getProjects() {
-  const supabaseProjects = await readSupabaseCmsCollection<ProjectData>("cms_projects");
-  if (supabaseProjects.length > 0) {
-    return supabaseProjects
-      .map((project) => ({
-        ...project,
-        tags: [...project.tools, ...project.skills],
-      }))
-      .sort((a, b) => a.order - b.order);
-  }
-
   const entries = await getCollection("projects");
   return entries
     .map((entry) => ({
@@ -223,13 +212,6 @@ export async function getPhotoLocations() {
     };
   };
 
-  const supabaseLocations = await readSupabaseCmsCollection<PhotoLocationData>("cms_photos");
-  if (supabaseLocations.length > 0) {
-    return supabaseLocations
-      .map((location) => mapPhotoLocation(location))
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  }
-
   const entries = await getCollection("photos");
   return entries
     .map((entry) => mapPhotoLocation(entry.data))
@@ -241,9 +223,6 @@ export async function getPhotoLocations() {
 }
 
 export async function getGear() {
-  const supabaseGear = await readSupabaseCmsEntry<GearData>("cms_gear", "setup");
-  if (supabaseGear) return supabaseGear;
-
   const entries = await getCollection("gear");
   return entries[0]?.data;
 }

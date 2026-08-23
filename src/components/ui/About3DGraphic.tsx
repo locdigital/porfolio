@@ -1,160 +1,217 @@
 "use client";
 
-import React, { useRef, Suspense, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-// White matte clay material settings
-const clayMaterialProps = {
-  color: "#f5f5f7",
-  roughness: 0.32,
-  metalness: 0.04,
-  clearcoat: 0.08,
-  clearcoatRoughness: 0.3,
-};
+export default function About3DGraphic() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [webglSupported, setWebglSupported] = useState(true);
 
-const SatelliteDishScene = () => {
-  const groupRef = useRef<THREE.Group>(null);
-  const dishGroupRef = useRef<THREE.Group>(null);
-  const purpleSphereRef = useRef<THREE.Mesh>(null);
-  const orangeSphereRef = useRef<THREE.Group>(null);
-  const targetRotation = useRef({ x: 0, y: 0 });
-
-  // Mouse move listener for smooth 3D tilt interaction
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth) * 2 - 1;
-      const y = -(e.clientY / innerHeight) * 2 + 1;
-      
-      targetRotation.current = {
-        x: y * 0.35,
-        y: x * 0.45,
-      };
+    const container = containerRef.current;
+    const canvas = canvasRef.current;
+    if (!container || !canvas) return;
+
+    // Dimension helper with guaranteed positive min dimensions
+    const getDims = () => {
+      const w = Math.max(container.clientWidth || 0, container.offsetWidth || 0, 340);
+      const h = Math.max(container.clientHeight || 0, container.offsetHeight || 0, w);
+      return { w, h };
     };
 
+    let { w, h } = getDims();
+
+    // 1. Scene & Camera setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 1000);
+    camera.position.set(0, 0, 7.2);
+
+    // 2. WebGL Renderer with graceful fallback check
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
+    } catch (err) {
+      console.warn("WebGL not supported or context creation failed:", err);
+      setWebglSupported(false);
+      return;
+    }
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(w, h);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // 3. Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    scene.add(ambientLight);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xe2e8f0, 1.2);
+    scene.add(hemiLight);
+
+    const mainLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    mainLight.position.set(6, 8, 6);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.width = 1024;
+    mainLight.shadow.mapSize.height = 1024;
+    scene.add(mainLight);
+
+    const fillLight = new THREE.DirectionalLight(0xe0e7ff, 0.8);
+    fillLight.position.set(-6, -4, 4);
+    scene.add(fillLight);
+
+    // 4. Main Root Group (Mouse Tilt + Floating)
+    const rootGroup = new THREE.Group();
+    scene.add(rootGroup);
+
+    // 5. White Clay Hemisphere Dish Group
+    const dishGroup = new THREE.Group();
+    dishGroup.rotation.set(0.45, -0.55, -0.35);
+    rootGroup.add(dishGroup);
+
+    const clayMaterial = new THREE.MeshStandardMaterial({
+      color: 0xf5f5f7,
+      roughness: 0.32,
+      metalness: 0.04,
+      side: THREE.DoubleSide,
+    });
+
+    // Outer Dome
+    const domeGeo = new THREE.SphereGeometry(2.0, 64, 64, 0, Math.PI * 2, 0, Math.PI * 0.5);
+    const domeMesh = new THREE.Mesh(domeGeo, clayMaterial);
+    domeMesh.castShadow = true;
+    domeMesh.receiveShadow = true;
+    dishGroup.add(domeMesh);
+
+    // Flat Inner Circle
+    const circleGeo = new THREE.CircleGeometry(1.99, 64);
+    const circleMesh = new THREE.Mesh(circleGeo, clayMaterial);
+    circleMesh.rotation.x = Math.PI / 2;
+    circleMesh.receiveShadow = true;
+    dishGroup.add(circleMesh);
+
+    // Center Pivot
+    const pivotGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.04, 32);
+    const pivotMat = new THREE.MeshStandardMaterial({ color: 0xc4c4c8, roughness: 0.45 });
+    const pivotMesh = new THREE.Mesh(pivotGeo, pivotMat);
+    pivotMesh.rotation.x = Math.PI / 2;
+    pivotMesh.position.z = 0.02;
+    dishGroup.add(pivotMesh);
+
+    // 6. 3D Purple Orb (Orbiting 360° around dish)
+    const purpleGeo = new THREE.SphereGeometry(0.18, 32, 32);
+    const purpleMat = new THREE.MeshStandardMaterial({
+      color: 0xc084fc,
+      emissive: 0x9333ea,
+      emissiveIntensity: 0.9,
+      roughness: 0.15,
+      metalness: 0.8,
+    });
+    const purpleSphere = new THREE.Mesh(purpleGeo, purpleMat);
+    purpleSphere.castShadow = true;
+    rootGroup.add(purpleSphere);
+
+    // 7. 3D Orange Orb & PointLight (Orbiting 360° around dish inner bowl)
+    const orangeGroup = new THREE.Group();
+    rootGroup.add(orangeGroup);
+
+    const orangeGeo = new THREE.SphereGeometry(0.16, 32, 32);
+    const orangeMat = new THREE.MeshStandardMaterial({
+      color: 0xff6b00,
+      emissive: 0xff3d00,
+      emissiveIntensity: 1.5,
+      roughness: 0.1,
+      metalness: 0.8,
+    });
+    const orangeSphere = new THREE.Mesh(orangeGeo, orangeMat);
+    orangeSphere.castShadow = true;
+    orangeGroup.add(orangeSphere);
+
+    const orangeLight = new THREE.PointLight(0xff5500, 5.0, 4.0, 2);
+    orangeGroup.add(orangeLight);
+
+    // 8. Mouse Interactive Tilt & Window Resize
+    let mouseX = 0;
+    let mouseY = 0;
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      mouseX = y * 0.35;
+      mouseY = x * 0.45;
+    };
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+
+    const handleResize = () => {
+      if (!container || !renderer) return;
+      const { w: newW, h: newH } = getDims();
+      camera.aspect = newW / newH;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newW, newH);
+    };
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
+
+    // 9. Animation Loop (60 FPS)
+    let animationFrameId: number;
+    const startTime = performance.now();
+
+    const animate = () => {
+      const t = (performance.now() - startTime) * 0.001;
+
+      // Mouse tilt lerp + floating
+      rootGroup.rotation.x += (mouseX + Math.sin(t * 0.7) * 0.03 - rootGroup.rotation.x) * 0.05;
+      rootGroup.rotation.y += (mouseY + Math.cos(t * 0.5) * 0.04 - rootGroup.rotation.y) * 0.05;
+      rootGroup.position.y = Math.sin(t * 1.0) * 0.05;
+
+      // Purple Orb 360 Degree Orbit
+      const purpleAngle = t * 0.85;
+      purpleSphere.position.x = Math.cos(purpleAngle) * 2.3 - 0.2;
+      purpleSphere.position.y = Math.sin(purpleAngle) * 1.4 + 0.8;
+      purpleSphere.position.z = Math.sin(purpleAngle * 2) * 0.6 + 0.3;
+
+      // Orange Orb 360 Degree Counter-Orbit
+      const orangeAngle = -t * 1.1 + Math.PI;
+      orangeGroup.position.x = Math.cos(orangeAngle) * 1.7 + 0.3;
+      orangeGroup.position.y = Math.sin(orangeAngle) * 1.0 - 0.35;
+      orangeGroup.position.z = Math.cos(orangeAngle * 1.5) * 0.55 + 0.5;
+
+      renderer.render(scene, camera);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // Cleanup on unmount
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("mousemove", handleMouseMove);
+      resizeObserver.disconnect();
+      renderer.dispose();
+    };
   }, []);
 
-  useFrame((state, delta) => {
-    if (!groupRef.current) return;
-    const t = state.clock.getElapsedTime();
-
-    // Smooth 3D tilt interaction tracking mouse movement + gentle breathing drift
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(
-      groupRef.current.rotation.x,
-      targetRotation.current.x + Math.sin(t * 0.8) * 0.03,
-      delta * 4
-    );
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(
-      groupRef.current.rotation.y,
-      targetRotation.current.y + Math.cos(t * 0.6) * 0.04,
-      delta * 4
-    );
-
-    // Subtle floating breathing effect
-    groupRef.current.position.y = Math.sin(t * 1.0) * 0.04;
-
-    // Floating animation for top purple sphere
-    if (purpleSphereRef.current) {
-      purpleSphereRef.current.position.y = 2.1 + Math.sin(t * 1.4) * 0.08;
-      purpleSphereRef.current.position.x = -0.2 + Math.cos(t * 0.9) * 0.04;
-    }
-
-    // Floating animation for inner glowing orange sphere
-    if (orangeSphereRef.current) {
-      orangeSphereRef.current.position.y = -0.45 + Math.cos(t * 1.2) * 0.05;
-      orangeSphereRef.current.position.x = 0.65 + Math.sin(t * 0.8) * 0.03;
-    }
-  });
-
   return (
-    <group ref={groupRef} scale={0.92}>
-      {/* Tilted Hemisphere Dish Group */}
-      <group ref={dishGroupRef} rotation={[0.45, -0.55, -0.35]}>
-        {/* Outer Curved Dome */}
-        <mesh castShadow receiveShadow>
-          <sphereGeometry args={[2.0, 64, 64, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
-          <meshStandardMaterial {...clayMaterialProps} side={THREE.DoubleSide} />
-        </mesh>
-
-        {/* Flat Inner Surface */}
-        <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-          <circleGeometry args={[1.99, 64]} />
-          <meshStandardMaterial {...clayMaterialProps} side={THREE.DoubleSide} />
-        </mesh>
-
-        {/* Center Pivot Indentation */}
-        <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0.02]}>
-          <cylinderGeometry args={[0.18, 0.18, 0.04, 32]} />
-          <meshStandardMaterial color="#c4c4c8" roughness={0.45} />
-        </mesh>
-      </group>
-
-      {/* Floating Purple/Pink Accent Sphere (Top Left) */}
-      <mesh ref={purpleSphereRef} position={[-0.2, 2.1, 0.3]} castShadow>
-        <sphereGeometry args={[0.18, 32, 32]} />
-        <meshStandardMaterial
-          color="#c084fc"
-          emissive="#9333ea"
-          emissiveIntensity={0.85}
-          roughness={0.15}
-          metalness={0.8}
+    <div
+      ref={containerRef}
+      className="w-full h-full min-h-[380px] sm:min-h-[460px] relative flex items-center justify-center overflow-hidden"
+    >
+      <canvas ref={canvasRef} className="w-full h-full block relative z-10" />
+      
+      {/* Fallback image if WebGL fails */}
+      {!webglSupported && (
+        <img
+          src="/images/about-dish.png"
+          alt="3D geometric graphic of white hemisphere dish"
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
         />
-      </mesh>
-
-      {/* Floating Orange Accent Sphere & Point Light (Bottom Right Inner Bowl) */}
-      <group ref={orangeSphereRef} position={[0.65, -0.45, 0.85]}>
-        <mesh castShadow>
-          <sphereGeometry args={[0.15, 32, 32]} />
-          <meshStandardMaterial
-            color="#ff6b00"
-            emissive="#ff3d00"
-            emissiveIntensity={1.4}
-            roughness={0.1}
-            metalness={0.8}
-          />
-        </mesh>
-        
-        {/* Point light casting warm orange glow onto white inner dish */}
-        <pointLight color="#ff5500" intensity={4.2} distance={3.5} decay={2} />
-      </group>
-    </group>
-  );
-};
-
-export default function About3DGraphic() {
-  return (
-    <div className="w-full h-full min-h-[380px] sm:min-h-[440px] relative flex items-center justify-center">
-      <Canvas
-        shadows
-        camera={{ position: [0, 0, 7.5], fov: 42 }}
-        dpr={[1, 2]}
-        className="w-full h-full"
-      >
-        <ambientLight intensity={0.7} />
-        
-        {/* Main studio directional light */}
-        <directionalLight
-          position={[6, 8, 6]}
-          intensity={2.2}
-          color="#ffffff"
-          castShadow
-          shadow-mapSize={[1024, 1024]}
-          shadow-bias={-0.0001}
-        />
-        
-        {/* Fill lights */}
-        <directionalLight position={[-6, -4, 4]} intensity={0.7} color="#e0e7ff" />
-        <directionalLight position={[0, -5, -4]} intensity={0.4} color="#ffffff" />
-
-        <Suspense fallback={null}>
-          <SatelliteDishScene />
-          <Environment preset="studio" />
-        </Suspense>
-      </Canvas>
+      )}
     </div>
   );
 }

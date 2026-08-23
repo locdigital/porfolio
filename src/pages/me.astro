@@ -234,18 +234,21 @@ const freeTimeActivities = [
 
           <div class="w-full">
             <div class="free-time-accordion flex items-center gap-2.5 h-[380px] sm:h-[420px] w-full overflow-hidden">
-              {freeTimeActivities.map((item) => (
+              {freeTimeActivities.map((item, idx) => (
                 <div
-                  class="accordion-card relative group h-full rounded-2xl overflow-hidden cursor-pointer border border-border/40 shadow-sm"
+                  class={`accordion-card relative group h-full rounded-2xl overflow-hidden cursor-pointer border border-border/40 shadow-sm ${idx === 0 ? 'is-active' : ''}`}
+                  tabindex="0"
+                  role="button"
+                  aria-expanded={idx === 0 ? "true" : "false"}
                 >
                   <img
                     src={item.src}
                     alt={item.title}
-                    class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    class="h-full w-full object-cover object-center"
                     loading="lazy"
                     decoding="async"
                   />
-                  <div class="accordion-overlay absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 text-left">
+                  <div class="accordion-overlay absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 text-left pointer-events-none">
                     <span class="text-xs font-mono uppercase tracking-wider text-amber-300 font-semibold">
                       {item.tag}
                     </span>
@@ -321,28 +324,26 @@ const freeTimeActivities = [
     transition: opacity 600ms ease, transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .free-time-accordion .accordion-card:first-child {
-    flex: 3.5;
+  /* Active state activated by click */
+  .free-time-accordion .accordion-card.is-active {
+    flex: 3.8;
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.3);
   }
 
-  .free-time-accordion .accordion-card:first-child .accordion-overlay {
+  .free-time-accordion .accordion-card.is-active img {
+    filter: brightness(1);
+    transform: scale(1.03);
+  }
+
+  .free-time-accordion .accordion-card.is-active .accordion-overlay {
     opacity: 1;
+    transform: translateY(0);
+    transition-delay: 150ms;
   }
 
-  .free-time-accordion:hover .accordion-card:first-child {
-    flex: 1;
-  }
-
-  .free-time-accordion:hover .accordion-card:first-child .accordion-overlay {
-    opacity: 0;
-  }
-
-  .free-time-accordion .accordion-card:hover {
-    flex: 3.5 !important;
-  }
-
-  .free-time-accordion .accordion-card:hover .accordion-overlay {
-    opacity: 1 !important;
+  /* Hover state on inactive cards */
+  .free-time-accordion .accordion-card:not(.is-active):hover img {
+    filter: brightness(0.92);
   }
 
   @media (max-width: 640px) {
@@ -362,3 +363,34 @@ const freeTimeActivities = [
     }
   }
 </style>
+
+<script>
+  function setupAccordion() {
+    const accordions = document.querySelectorAll('.free-time-accordion');
+    accordions.forEach((accordion) => {
+      const cards = accordion.querySelectorAll('.accordion-card');
+      cards.forEach((card) => {
+        const activate = () => {
+          cards.forEach((c) => {
+            c.classList.remove('is-active');
+            c.setAttribute('aria-expanded', 'false');
+          });
+          card.classList.add('is-active');
+          card.setAttribute('aria-expanded', 'true');
+        };
+
+        card.addEventListener('click', activate);
+        card.addEventListener('keydown', (e) => {
+          const keyboardEvent = e as KeyboardEvent;
+          if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
+            keyboardEvent.preventDefault();
+            activate();
+          }
+        });
+      });
+    });
+  }
+
+  setupAccordion();
+  document.addEventListener('astro:page-load', setupAccordion);
+</script>

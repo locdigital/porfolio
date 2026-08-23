@@ -18,8 +18,7 @@
     "pretest": "node scripts/ensure-node-20.mjs",
     "test": "vitest run",
     "preview": "astro preview",
-    "astro": "astro",
-    "cms:migrate-to-supabase": "node scripts/migrate-cms-to-supabase.mjs"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

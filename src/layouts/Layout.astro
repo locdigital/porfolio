@@ -395,8 +395,10 @@ const footerLinks = [
 
           if (img.complete && img.naturalWidth > 0) {
             img.classList.add('loaded');
-          } else if (img.complete && img.naturalWidth === 0) {
-            showFallbackImage();
+            img.classList.remove('skeleton-loading-img');
+            if (wrapper) {
+              wrapper.classList.remove('skeleton-loading');
+            }
           } else {
             if (wrapper) {
               wrapper.classList.add('skeleton-loading');
@@ -405,6 +407,7 @@ const footerLinks = [
 
             const handleLoad = () => {
               img.classList.add('loaded');
+              img.classList.remove('skeleton-loading-img');
               if (wrapper) {
                 wrapper.classList.remove('skeleton-loading');
               }

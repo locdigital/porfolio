@@ -212,11 +212,11 @@
       --space-5: 1.5rem;
       --space-6: 2rem;
       --space-7: 3rem;
-      --space-8: 4rem;
-      --space-9: 5rem;
-      --space-10: 6rem;
-      --space-11: 8rem;
-      --space-12: 8rem;
+      --space-8: 5.2rem;
+      --space-9: 6.5rem;
+      --space-10: 7.8rem;
+      --space-11: 10.4rem;
+      --space-12: 10.4rem;
       --space-14: 8rem;
       --space-16: 8rem;
       --space-20: 8rem;
@@ -1442,7 +1442,7 @@
     .about,
     .gallery,
     .writing {
-      padding: clamp(58px, 7vw, 90px) 0;
+      padding: clamp(75px, 9.1vw, 117px) 0;
     }
 
     /* ============================================================
@@ -2603,7 +2603,7 @@
   max-width: none;
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(4.05rem, 7.4vw, 6rem);
+  font-size: clamp(8.1rem, 14.8vw, 12rem);
   font-weight: 400;
   line-height: 0.96;
   letter-spacing: 0;
@@ -2799,7 +2799,7 @@
   }
 
   .career-map-title {
-    font-size: clamp(3.45rem, 10.5vw, 5.4rem);
+    font-size: clamp(6.9rem, 20vw, 10.8rem);
   }
 
   .career-map-copy {
@@ -2833,7 +2833,7 @@
   }
 
   .career-map-title {
-    font-size: clamp(3rem, 12.2vw, 4.55rem);
+    font-size: clamp(6rem, 22vw, 9.1rem);
     line-height: 1.02;
   }
 
@@ -3324,7 +3324,7 @@
   }
 
   main .career-map-title--typing {
-    font-size: 2.5rem !important;
+    font-size: 5rem !important;
   }
 
   .footer-contact {
@@ -3354,6 +3354,16 @@
 html body :is(h1, #site-h1-size-override) {
   font-family: var(--serif) !important;
   font-size: var(--site-h1-size) !important;
+}
+
+html body :is(h1.career-map-title, #site-h1-size-override.career-map-title) {
+  font-size: clamp(5rem, 11vw, 128px) !important;
+}
+
+@media (max-width: 620px) {
+  html body :is(h1.career-map-title, #site-h1-size-override.career-map-title) {
+    font-size: clamp(3.5rem, 14vw, 72px) !important;
+  }
 }
 
 html body :is(h2, h4, h5, h6, #site-heading-size-override) {

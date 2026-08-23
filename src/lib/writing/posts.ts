@@ -1,18 +1,9 @@
 import { existsSync } from "node:fs";
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import {
-  deleteSupabaseCmsEntry,
-  findSupabaseCmsEntryBySlug,
-  isSupabaseCmsConfigured,
-  readSupabaseCmsCollection,
-  readSupabaseCmsEntry,
-  writeSupabaseCmsEntry,
-} from "../cms-store";
 
 const rootDir = process.cwd();
 const postsDir = path.join(rootDir, "data", "writing-posts");
-const SUPABASE_COLLECTION = "writing_posts";
 
 export type PostStatus = "draft" | "published" | "archived";
 
@@ -120,29 +111,14 @@ async function deleteFilePost(id: string): Promise<void> {
 }
 
 export async function listPosts(): Promise<Post[]> {
-  if (isSupabaseCmsConfigured()) {
-    const posts = await readSupabaseCmsCollection<Post>(SUPABASE_COLLECTION);
-    return posts.sort(
-      (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
-  }
-
   return listFilePosts();
 }
 
 export async function getPost(id: string): Promise<Post | null> {
-  if (isSupabaseCmsConfigured()) {
-    return readSupabaseCmsEntry<Post>(SUPABASE_COLLECTION, id);
-  }
-
   return getFilePost(id);
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  if (isSupabaseCmsConfigured()) {
-    return findSupabaseCmsEntryBySlug<Post>(SUPABASE_COLLECTION, slug);
-  }
-
   const posts = await listPosts();
   return posts.find((p) => p.slug === slug) ?? null;
 }
@@ -177,38 +153,14 @@ export async function createPost(input: CreatePostInput): Promise<Post> {
     publishedAt: input.publishedAt,
   };
 
-  if (isSupabaseCmsConfigured()) {
-    await writeSupabaseCmsEntry(SUPABASE_COLLECTION, id, post);
-    return post;
-  }
-
   return createFilePost(post);
 }
 
 export async function updatePost(id: string, input: UpdatePostInput): Promise<Post> {
-  if (isSupabaseCmsConfigured()) {
-    const existing = await getPost(id);
-    if (!existing) throw new Error(`Post not found: ${id}`);
-    const updated: Post = {
-      ...existing,
-      ...input,
-      id,
-      createdAt: existing.createdAt,
-      updatedAt: new Date().toISOString(),
-    };
-    await writeSupabaseCmsEntry(SUPABASE_COLLECTION, id, updated);
-    return updated;
-  }
-
   return updateFilePost(id, input);
 }
 
 export async function deletePost(id: string): Promise<void> {
-  if (isSupabaseCmsConfigured()) {
-    await deleteSupabaseCmsEntry(SUPABASE_COLLECTION, id);
-    return;
-  }
-
   return deleteFilePost(id);
 }
 

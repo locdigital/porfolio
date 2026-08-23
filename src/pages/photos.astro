@@ -239,7 +239,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
                   data-pswp-width={photo.fullWidth}
                   data-pswp-height={photo.fullHeight}
                   aria-label={photo.alt}
-                  style={`transition-delay: ${(i % 6) * 0.06}s;`}
+                  style={`--photo-index: ${i}; transition-delay: ${(i % 6) * 0.06}s;`}
                 >
                   <div class="efferd-card-inner">
                     {photo.previewSrcSet ? (
@@ -334,8 +334,15 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
       panels.forEach((panel) => {
         const isActive = panel.id === nextId;
-        panel.classList.toggle("active", isActive);
-        panel.toggleAttribute("hidden", !isActive);
+        if (isActive) {
+          panel.removeAttribute("hidden");
+          panel.classList.remove("active");
+          void (panel as HTMLElement).offsetWidth; // Restart stagger reveal animation
+          panel.classList.add("active");
+        } else {
+          panel.classList.remove("active");
+          panel.setAttribute("hidden", "true");
+        }
       });
 
       if (location.hash.slice(1) !== nextId) {
@@ -471,16 +478,17 @@ function hasDetailsFor(loc: PhotoLocationView) {
   /* ------ Nav wrapper ------ */
   .photos-nav-wrapper {
     position: relative;
-    z-index: 20;
+    z-index: 5;
     background: transparent;
-    padding: 24px 0 0;
-    margin-bottom: 52px;
+    padding: 12px 0 0;
+    margin-bottom: 40px;
     margin-top: -1px;
+    border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.08));
   }
 
   /* ------ Nav ------ */
   .photos-nav {
-    border-bottom: 1px solid var(--divider);
+    border-bottom: none;
     padding-bottom: 0;
   }
 
@@ -491,7 +499,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
     gap: 6px;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 0 8px;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-y: none;
@@ -504,21 +512,19 @@ function hasDetailsFor(loc: PhotoLocationView) {
   .photos-nav-list:active { cursor: grabbing; }
   .photos-nav-list::-webkit-scrollbar { display: none; }
 
-
-
   /* Active underline */
   .photos-nav-active-line {
     position: absolute;
-    bottom: -1px;
+    bottom: 0;
     height: 2px;
-    background: var(--text);
+    background: var(--accent, #0075de);
     pointer-events: none;
     z-index: 2;
     left: 0;
     width: 0;
     transform: translateX(0);
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-                width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+                width 280ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Tab links */
@@ -588,17 +594,36 @@ function hasDetailsFor(loc: PhotoLocationView) {
   .loc-section.active {
     display: block;
     opacity: 1;
-    animation: photos-tab-in 0.28s ease both;
+    animation: photos-tab-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Stagger photos reveal on tab switch */
+  .loc-section.active .efferd-gallery-item {
+    animation: efferdPhotoStaggerIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc((var(--photo-index, 0) % 8) * 40ms);
   }
 
   @keyframes photos-tab-in {
-    from {
+    0% {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(14px);
     }
-    to {
+    100% {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes efferdPhotoStaggerIn {
+    0% {
+      opacity: 0;
+      transform: translateY(22px) scale(0.975);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
     }
   }
 
