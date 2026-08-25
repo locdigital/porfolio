@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-17T14:49:23.642Z",
+  "generatedAt": "2026-08-25T09:02:21.257Z",
   "appId": "65wv0vnolo",
   "totals": {
-    "files": 225,
-    "images": 433,
-    "unique": 243,
-    "uploaded": 130
+    "files": 112,
+    "images": 498,
+    "unique": 295,
+    "uploaded": 52
   },
   "images": {
     "public/assets/photos/img-portfolio/photo-16.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hHCrTBIeQp1bPln5ZfBa2gk4uX9OGVzCi6Fvh",
@@ -440,7 +440,72 @@
     "public/assets/photos/thai-lan/thai-lan-09.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hF6EPJuzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
     "src/assets/photos/thai-lan/thai-lan-09.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hF6EPJuzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
     "public/assets/photos/thai-lan/thai-lan-10.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmntASKgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
-    "src/assets/photos/thai-lan/thai-lan-10.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmntASKgFbDEA7I1nCdiVUruaxZRSkLNKXMPf"
+    "src/assets/photos/thai-lan/thai-lan-10.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmntASKgFbDEA7I1nCdiVUruaxZRSkLNKXMPf",
+    "public/assets/logos/logo-anymind.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTr5VSAl2OjWmzQ4oDLka9nlegFi1h3xyH6Zw",
+    "public/assets/logos/logo-asia-strategic.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hHho67oeQp1bPln5ZfBa2gk4uX9OGVzCi6Fvh",
+    "public/assets/logos/logo-community.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h56dx3KnzPCHf8h9G7Slp6scrUVuR10JngFBO",
+    "public/assets/logos/logo-dlddl.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h31Um3pDasckjKiLzdrWVS5CtlQufPeYbDvX6",
+    "public/assets/logos/logo-fpt.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmuitadSgFbDEA7I1nCdiVUruaxZRSkLNKXMP",
+    "public/assets/logos/logo-fpt.svg": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkTf18V7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+    "public/assets/logos/logo-ftu.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59ht5bH2Fh6JORXdlY3oMD9zir1mLWHbB284hFE",
+    "public/assets/logos/logo-hcmut.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUh4K8YtE95AXOuIBLNQ3GyKFm2qSCfe1MP64",
+    "public/assets/logos/logo-hcmut.svg": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7HsBXR54ylS30dX98IkbwjPC6iqWEvHMFax2",
+    "public/assets/logos/logo-hsu.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDBRgjb4Q021dYenszMLNrbPgXCUpWoif9D4l",
+    "public/assets/logos/logo-rmit.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haaIU3tyOH490TilXyexRchUNGmAMZLwKkFvI",
+    "public/assets/logos/logo-rmit.svg": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hftnJD3PFsdIMAkx05cnwWRQUPCSG96p2NyK4",
+    "public/assets/logos/logo-sony.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKuFF0dvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
+    "public/assets/logos/logo-tdtu.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hir8kmTwbmU9pOiYE6G824a0BWCXcl37yufzH",
+    "public/assets/logos/logo-ueh.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heTifKOF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
+    "public/assets/logos/logo-vinhcara.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTWc8NUiW6tUiNOoXB108SdsMHZayFfJrLGk",
+    "public/assets/logos/logo-vlu.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hcarvkjbThEQNO0PsaegXLFyGlidrRmUCfDJv",
+    "public/images/about-dish.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJIbj2lKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
+    "public/images/avatar-poses/center.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hioaY41wbmU9pOiYE6G824a0BWCXcl37yufzH",
+    "public/images/avatar-poses/down.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hdKKBfQm2AnbkmuljNRvVL8io5CqdBF73JI9H",
+    "public/images/avatar-poses/downLeft.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hspLCAXdgRA7eybCWUmuSqx5Evhs86daj2tDQ",
+    "public/images/avatar-poses/downRight.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5Kvo0bxnzPCHf8h9G7Slp6scrUVuR10JngFB",
+    "public/images/avatar-poses/left.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkiTLcV7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+    "public/images/avatar-poses/right.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h0EOGqijMS59hamFXwUDgpCVz6RfNLtxKjPTY",
+    "public/images/avatar-poses/up.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hI9X7LqWlPNf9shR3SkuyHBoXviJTb1wmZFOj",
+    "public/images/avatar-poses/upLeft.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59ha54r1TyOH490TilXyexRchUNGmAMZLwKkFvI",
+    "public/images/avatar-poses/upRight.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvzGDSQVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+    "public/images/avatar.jpg": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5KW7gAynzPCHf8h9G7Slp6scrUVuR10JngFB",
+    "public/images/loc-portrait.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5KW7gAynzPCHf8h9G7Slp6scrUVuR10JngFB",
+    "public/images/education-communities-cover.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hntQYTlJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
+    "public/images/loc-avatar.jpg": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h2DrFrVOea5MEcd3qUyNCzQGSL4AOYKJuXsDh",
+    "public/images/playah/playah-after.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwWW493Vakbn1yzps80IBrPeT6cf5toMx9Zu",
+    "public/images/playah/playah-before.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7J93JN54ylS30dX98IkbwjPC6iqWEvHMFax2",
+    "public/images/pops/pops-after.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hwI8c6l9TQDH0hL5Ild1c8EfBpZCgP4y2MATX",
+    "public/images/pops/pops-before.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hK0O0KavWeLQqSKNwarCDg0EFydvVs3BXGZR5",
+    "public/images/table-component.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAqEPdyXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
+    "public/images/tomato/tomato-after.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hIgPJ4OWlPNf9shR3SkuyHBoXviJTb1wmZFOj",
+    "public/images/tomato/tomato-before.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h04DqWSjMS59hamFXwUDgpCVz6RfNLtxKjPTY",
+    "public/images/workflow-dashboard.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h213KaiOea5MEcd3qUyNCzQGSL4AOYKJuXsDh",
+    "public/images/workflow/workflow-after.png": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hadhPEhyOH490TilXyexRchUNGmAMZLwKkFvI",
+    "public/images/workflow/workflow-before.jpg": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRXiJvnxhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
+    "public/assets/photos/phu-quy/phu-quy-01.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hxWNJW5cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
+    "src/assets/photos/phu-quy/phu-quy-01.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hxWNJW5cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
+    "public/assets/photos/phu-quy/phu-quy-02.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hx8rGh7cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
+    "src/assets/photos/phu-quy/phu-quy-02.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hx8rGh7cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
+    "public/assets/photos/phu-quy/phu-quy-03.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTWIyU06l2OjWmzQ4oDLka9nlegFi1h3xyH6Z",
+    "src/assets/photos/phu-quy/phu-quy-03.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTWIyU06l2OjWmzQ4oDLka9nlegFi1h3xyH6Z",
+    "public/assets/photos/phu-quy/phu-quy-04.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hMZZv1atU15DKkGrxHn3sZOlpRXP4veiquwVQ",
+    "src/assets/photos/phu-quy/phu-quy-04.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hMZZv1atU15DKkGrxHn3sZOlpRXP4veiquwVQ",
+    "public/assets/photos/phu-quy/phu-quy-05.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hW0XOXzX2QiOP6pqzN9dESsBlGD0KV7FZvL2C",
+    "src/assets/photos/phu-quy/phu-quy-05.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hW0XOXzX2QiOP6pqzN9dESsBlGD0KV7FZvL2C",
+    "public/assets/photos/phu-quy/phu-quy-06.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFhHWuDzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
+    "src/assets/photos/phu-quy/phu-quy-06.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFhHWuDzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
+    "public/assets/photos/phu-quy/phu-quy-07.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfIkeaOPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
+    "src/assets/photos/phu-quy/phu-quy-07.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfIkeaOPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
+    "public/assets/photos/phu-quy/phu-quy-08.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvA2PTbVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+    "src/assets/photos/phu-quy/phu-quy-08.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvA2PTbVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+    "public/assets/photos/phu-quy/phu-quy-09.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkyQntJ7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+    "src/assets/photos/phu-quy/phu-quy-09.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkyQntJ7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+    "public/assets/photos/phu-quy/phu-quy-10.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hN6LEZef7Rf1o6cym3JxPheDqvCUXEKpSOBrj",
+    "src/assets/photos/phu-quy/phu-quy-10.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hN6LEZef7Rf1o6cym3JxPheDqvCUXEKpSOBrj",
+    "public/assets/photos/phu-quy/phu-quy-11.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4wppaRt2SauPZhDd1JkterOsqjvc6In5YK9L",
+    "src/assets/photos/phu-quy/phu-quy-11.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4wppaRt2SauPZhDd1JkterOsqjvc6In5YK9L",
+    "public/assets/photos/phu-quy/phu-quy-12.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3wyx7MDasckjKiLzdrWVS5CtlQufPeYbDvX6",
+    "src/assets/photos/phu-quy/phu-quy-12.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3wyx7MDasckjKiLzdrWVS5CtlQufPeYbDvX6"
   },
   "unique": {
     "022836a0f7b6524412a375cddec9f421830b3fabe6736042b94eaee996ac2089": {
@@ -2333,6 +2398,331 @@
       "paths": [
         "public/assets/photos/thai-lan/thai-lan-10.webp",
         "src/assets/photos/thai-lan/thai-lan-10.webp"
+      ]
+    },
+    "2e22561388125a198e237ea0adf670a4b390b7461ccb2d14c6ffd040b3be2aec": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTr5VSAl2OjWmzQ4oDLka9nlegFi1h3xyH6Zw",
+      "paths": [
+        "public/assets/logos/logo-anymind.png"
+      ]
+    },
+    "5ccbb33a17cfa0b16a971032062356fff75a4e8986422ad7c52aaf77847fd3d9": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hHho67oeQp1bPln5ZfBa2gk4uX9OGVzCi6Fvh",
+      "paths": [
+        "public/assets/logos/logo-asia-strategic.png"
+      ]
+    },
+    "b99658ae3a27e6be9300a3e71b35c9e3c7e1bd11cc79b18ccc65628f25cdf545": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h56dx3KnzPCHf8h9G7Slp6scrUVuR10JngFBO",
+      "paths": [
+        "public/assets/logos/logo-community.png"
+      ]
+    },
+    "7511c998c7f4f762b17c72356bf979045c0a3f083e1859cae15d452f04de5311": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h31Um3pDasckjKiLzdrWVS5CtlQufPeYbDvX6",
+      "paths": [
+        "public/assets/logos/logo-dlddl.png"
+      ]
+    },
+    "e17e413ed098eedd0b0b6f3eb913002fed2ddbd4c98484eb7e0d2e5763905a9e": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hmuitadSgFbDEA7I1nCdiVUruaxZRSkLNKXMP",
+      "paths": [
+        "public/assets/logos/logo-fpt.png"
+      ]
+    },
+    "46db52d6966a4a92baf7ffc413c698093ee47b795360bea21d608f15724269fa": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkTf18V7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+      "paths": [
+        "public/assets/logos/logo-fpt.svg"
+      ]
+    },
+    "3f70da285635ed7b0baf5304448b121dbd52240ca279bdb175a14a589a712bbd": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59ht5bH2Fh6JORXdlY3oMD9zir1mLWHbB284hFE",
+      "paths": [
+        "public/assets/logos/logo-ftu.png"
+      ]
+    },
+    "24f9d81741a6a875b53c1c622879498d413bf98ee7d55bc04c82c096b54fbe7c": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hUh4K8YtE95AXOuIBLNQ3GyKFm2qSCfe1MP64",
+      "paths": [
+        "public/assets/logos/logo-hcmut.png"
+      ]
+    },
+    "39f978f26df2958f152a0af49956f6cd1d6af8f3aca57f09439d18dd99ef9b7f": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7HsBXR54ylS30dX98IkbwjPC6iqWEvHMFax2",
+      "paths": [
+        "public/assets/logos/logo-hcmut.svg"
+      ]
+    },
+    "7624c4039955842e66f06344829796e4dd90cd7eda5cbe9b0a7914ca38fcfeae": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDBRgjb4Q021dYenszMLNrbPgXCUpWoif9D4l",
+      "paths": [
+        "public/assets/logos/logo-hsu.png"
+      ]
+    },
+    "9cf54eb26447d614f116b00c7a89a3d5b6c064cee957cd4099d4d41789697e61": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59haaIU3tyOH490TilXyexRchUNGmAMZLwKkFvI",
+      "paths": [
+        "public/assets/logos/logo-rmit.png"
+      ]
+    },
+    "b86b2e2eeb62bcfe4f51dd7e403b123bdb0c9e17b95758a536da5270d86a62e6": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hftnJD3PFsdIMAkx05cnwWRQUPCSG96p2NyK4",
+      "paths": [
+        "public/assets/logos/logo-rmit.svg"
+      ]
+    },
+    "5d007d982f1472efa7c6856b9547943dc0d91bc7c4e7c878ddae0d7af3233c4f": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKuFF0dvWeLQqSKNwarCDg0EFydvVs3BXGZR5",
+      "paths": [
+        "public/assets/logos/logo-sony.png"
+      ]
+    },
+    "559f1fedcc312a6d063034d79b1e5a58d975306a6ba89aa6905e18d26f0b4556": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hir8kmTwbmU9pOiYE6G824a0BWCXcl37yufzH",
+      "paths": [
+        "public/assets/logos/logo-tdtu.png"
+      ]
+    },
+    "7abedbfe31b50ee3df642f899d1d5a389cafda4275346ee923c42d2b583a4fb4": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heTifKOF5SZbgwmYlorQ7kjUtxfnz84XBWqDi",
+      "paths": [
+        "public/assets/logos/logo-ueh.png"
+      ]
+    },
+    "692e56970e407898c65345de30d674982749b0f4387a36761f63378cf6ec7d09": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTWc8NUiW6tUiNOoXB108SdsMHZayFfJrLGk",
+      "paths": [
+        "public/assets/logos/logo-vinhcara.png"
+      ]
+    },
+    "a4d2e21fd00b14417438e5217ef2402845b3cc675e911f26a1ea74e846de2874": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hcarvkjbThEQNO0PsaegXLFyGlidrRmUCfDJv",
+      "paths": [
+        "public/assets/logos/logo-vlu.png"
+      ]
+    },
+    "5cf2897b451d60a63c607e10110c06ec2f8798437557ea6f932cbd9d558ba0e9": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJIbj2lKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
+      "paths": [
+        "public/images/about-dish.png"
+      ]
+    },
+    "93fe55a36e4f5be5b53c003ecf2758cb73b0f29f3d26b71d53f0fba7208d9b4f": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hioaY41wbmU9pOiYE6G824a0BWCXcl37yufzH",
+      "paths": [
+        "public/images/avatar-poses/center.png"
+      ]
+    },
+    "e80a2adaf9a527b44014640418e1fabb0cf4915f3fc5a9b59cd6bf936b8ad442": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hdKKBfQm2AnbkmuljNRvVL8io5CqdBF73JI9H",
+      "paths": [
+        "public/images/avatar-poses/down.png"
+      ]
+    },
+    "c4af03d3540f158c65de494eeb3c9798ddee5cf30bca4e51e9002297a81764fa": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hspLCAXdgRA7eybCWUmuSqx5Evhs86daj2tDQ",
+      "paths": [
+        "public/images/avatar-poses/downLeft.png"
+      ]
+    },
+    "0a206b30837f5ff867415db99991d45fdb607a2b106a1c6f060e08c364c328cb": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5Kvo0bxnzPCHf8h9G7Slp6scrUVuR10JngFB",
+      "paths": [
+        "public/images/avatar-poses/downRight.png"
+      ]
+    },
+    "d344b72558f1aae8059ef4c02e371b64be52959a8ee61a6ea483df82ba9744c6": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkiTLcV7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+      "paths": [
+        "public/images/avatar-poses/left.png"
+      ]
+    },
+    "5b3c520ad98f686f707a0996efe1da48e86e7d256e8a72ea58465ccfca50ace2": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h0EOGqijMS59hamFXwUDgpCVz6RfNLtxKjPTY",
+      "paths": [
+        "public/images/avatar-poses/right.png"
+      ]
+    },
+    "4b69f7b55482f3f98ecf24bbb7d2c718cb1a481e0286fe5e723de1f08cba20a9": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hI9X7LqWlPNf9shR3SkuyHBoXviJTb1wmZFOj",
+      "paths": [
+        "public/images/avatar-poses/up.png"
+      ]
+    },
+    "d6888036020c7dcb2609b6aa2fe66d33eaa89d20dcd09ff293d6d40788d3b246": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59ha54r1TyOH490TilXyexRchUNGmAMZLwKkFvI",
+      "paths": [
+        "public/images/avatar-poses/upLeft.png"
+      ]
+    },
+    "6dc26e5283e22c5ca830e7b28387ea163760b8be351809bc12bbaf95d4638528": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvzGDSQVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+      "paths": [
+        "public/images/avatar-poses/upRight.png"
+      ]
+    },
+    "b154b3c5e7355b167f021abe115c5827a117e38e9dad43925fcd14e8f80f1b59": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h5KW7gAynzPCHf8h9G7Slp6scrUVuR10JngFB",
+      "paths": [
+        "public/images/avatar.jpg",
+        "public/images/loc-portrait.png"
+      ]
+    },
+    "ebeb76d61f0ec81834288527f8f8e81c1e5e2a90e018521b058477d7f2c54105": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hntQYTlJ5TFbsKzkHujxQqSNBdEect3LIpPhg",
+      "paths": [
+        "public/images/education-communities-cover.png"
+      ]
+    },
+    "069650d6d865102ed8a5939ba0db7b0ac005489eefc8cc8689d6324ecefd9e2e": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h2DrFrVOea5MEcd3qUyNCzQGSL4AOYKJuXsDh",
+      "paths": [
+        "public/images/loc-avatar.jpg"
+      ]
+    },
+    "433c5b34e41abed856692de74c4a6bfe8d626f60416c49a050fdad8d8856edbd": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvwWW493Vakbn1yzps80IBrPeT6cf5toMx9Zu",
+      "paths": [
+        "public/images/playah/playah-after.png"
+      ]
+    },
+    "b84d4ebd4208a65d2e3f5f5d34765bd07fa542420cbfdc2227b88ea17872c687": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h7J93JN54ylS30dX98IkbwjPC6iqWEvHMFax2",
+      "paths": [
+        "public/images/playah/playah-before.png"
+      ]
+    },
+    "c42951cf209cd8f23d53dbcf0f8907c67987b40408c4bee0dd33b6bea558eff6": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hwI8c6l9TQDH0hL5Ild1c8EfBpZCgP4y2MATX",
+      "paths": [
+        "public/images/pops/pops-after.png"
+      ]
+    },
+    "42c790658e214090cba9cec93795c392a04d73680752419f5f5d56cbf3b0f7ab": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hK0O0KavWeLQqSKNwarCDg0EFydvVs3BXGZR5",
+      "paths": [
+        "public/images/pops/pops-before.png"
+      ]
+    },
+    "b633502e8c647487359e6a73a773d3ec12fea92b62815f80f900102bd36bf567": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hAqEPdyXpDBZJUeuLCSt3Mgn5FsKqXWk62HaE",
+      "paths": [
+        "public/images/table-component.png"
+      ]
+    },
+    "ec6b83eed8d3e3008e0fa6626532bf6a30bb7623cfdb8475c7008edbca3ad2b3": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hIgPJ4OWlPNf9shR3SkuyHBoXviJTb1wmZFOj",
+      "paths": [
+        "public/images/tomato/tomato-after.png"
+      ]
+    },
+    "caf920a9ecdb8be59edabd49dc3ad1c2702ac0325b2a15a518b8494e6ef69411": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h04DqWSjMS59hamFXwUDgpCVz6RfNLtxKjPTY",
+      "paths": [
+        "public/images/tomato/tomato-before.png"
+      ]
+    },
+    "80ae0a258cb84938f53ef873979414e6c55ac1f0b1bf776b41cd3d9035bc83a4": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h213KaiOea5MEcd3qUyNCzQGSL4AOYKJuXsDh",
+      "paths": [
+        "public/images/workflow-dashboard.png"
+      ]
+    },
+    "eedfe11cc5855151451c28597c5d18f37677fab1c1b5b7953b864c9d3125dba8": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hadhPEhyOH490TilXyexRchUNGmAMZLwKkFvI",
+      "paths": [
+        "public/images/workflow/workflow-after.png"
+      ]
+    },
+    "39f80210202f3eccbc2b9f9832aa0d5846cd97cbe259ed3d1d14f7c067ce51fa": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hRXiJvnxhAX3dzFvPH6M2nYmLcSEDt9j8BQye",
+      "paths": [
+        "public/images/workflow/workflow-before.jpg"
+      ]
+    },
+    "84c2900e3bb151b431af629f2b14a97fe8941f04d20db337ad86ad2d0aa34594": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hxWNJW5cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-01.webp",
+        "src/assets/photos/phu-quy/phu-quy-01.webp"
+      ]
+    },
+    "2d4c4918741c20667afa28b0d154bc8db33662eafc152444f4a22e1b7d8cdea2": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hx8rGh7cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-02.webp",
+        "src/assets/photos/phu-quy/phu-quy-02.webp"
+      ]
+    },
+    "7cfdc5a8fa49bb7eb56719b6f1982db70587926831280a39dbd02b22cf5cbe21": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hTWIyU06l2OjWmzQ4oDLka9nlegFi1h3xyH6Z",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-03.webp",
+        "src/assets/photos/phu-quy/phu-quy-03.webp"
+      ]
+    },
+    "5bccc345acafa59eec9096a8df3d67a3584e426311f37a612d1e7b174a85a46c": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hMZZv1atU15DKkGrxHn3sZOlpRXP4veiquwVQ",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-04.webp",
+        "src/assets/photos/phu-quy/phu-quy-04.webp"
+      ]
+    },
+    "368102a282eb388dc2af6eea64434f8fd5088798541588caff618b6c704e987d": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hW0XOXzX2QiOP6pqzN9dESsBlGD0KV7FZvL2C",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-05.webp",
+        "src/assets/photos/phu-quy/phu-quy-05.webp"
+      ]
+    },
+    "a811ad4e84a5f5807878438ba7121b5f3163c49297e5fac9f7c6e615bdadb176": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hFhHWuDzSM0IwjJ82zLsrNaCxbfXRnF4WlyKO",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-06.webp",
+        "src/assets/photos/phu-quy/phu-quy-06.webp"
+      ]
+    },
+    "35272d448b01a1d663d7a53e293adffb0e0209913bd492113d2d0f2097dcf9b5": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hfIkeaOPFsdIMAkx05cnwWRQUPCSG96p2NyK4",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-07.webp",
+        "src/assets/photos/phu-quy/phu-quy-07.webp"
+      ]
+    },
+    "72544fd917580bb9f2fa54ee6143643eceaf88f6d707d467b1f536b3d7b2cfdd": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hvA2PTbVakbn1yzps80IBrPeT6cf5toMx9Zuj",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-08.webp",
+        "src/assets/photos/phu-quy/phu-quy-08.webp"
+      ]
+    },
+    "75ac4cfe2724fee32c26d8f1c689b1cc466cd953c5b6957cd310351e47f9cb10": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hkyQntJ7Xp9L2WIefOuAq5NzUGoD3MbYCT70c",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-09.webp",
+        "src/assets/photos/phu-quy/phu-quy-09.webp"
+      ]
+    },
+    "1a74eef1cd04a624260c1057b67f12ff5de2d29cdfa6ab54f32e43f7f2cde81b": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hN6LEZef7Rf1o6cym3JxPheDqvCUXEKpSOBrj",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-10.webp",
+        "src/assets/photos/phu-quy/phu-quy-10.webp"
+      ]
+    },
+    "8dde48012f674004f54a452851e5f75f622ab8ece0153cec8910fdcad06125b1": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h4wppaRt2SauPZhDd1JkterOsqjvc6In5YK9L",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-11.webp",
+        "src/assets/photos/phu-quy/phu-quy-11.webp"
+      ]
+    },
+    "0dd68db93710833f1fb76054d0b2893c0b9bc9ab90fffd9bddbd9cb147170291": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h3wyx7MDasckjKiLzdrWVS5CtlQufPeYbDvX6",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-12.webp",
+        "src/assets/photos/phu-quy/phu-quy-12.webp"
       ]
     }
   }
