@@ -1,0 +1,1325 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { absoluteUrl, pageSchema } from "../lib/seo";
+
+const pageTitle = "Certifications | Phuc Loc Nguyen";
+const pageDescription =
+  "Professional certifications and platform credentials earned by Phuc Loc Nguyen across Google, Meta, TikTok, HubSpot, and the marketing industry.";
+
+const certifications = [
+  {
+    id: "google-ads-search",
+    issuer: "Google",
+    name: "Ads Search",
+    fullName: "Google Ads Search Certification",
+    desc: "Search campaign strategy, keyword planning & Smart Bidding optimization.",
+    skills: ["Search Ads", "Smart Bidding", "Keyword Planning", "ROAS Optimization", "Quality Score"],
+    issued: "2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png",
+    credential: "https://skillshop.credential.net/",
+    tag: "Paid Search",
+    color: "#4285F4",
+    credentialId: "SKILL-GOOG-882194",
+  },
+  {
+    id: "google-analytics-ga4",
+    issuer: "Google",
+    name: "Analytics (GA4)",
+    fullName: "Google Analytics Certification",
+    desc: "GA4 event tracking, conversion funnels & audience segmentation.",
+    skills: ["GA4 Setup", "Custom Events", "Conversion Funnels", "Audience Builder", "BigQuery Export"],
+    issued: "2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png",
+    credential: "https://skillshop.credential.net/",
+    tag: "Analytics",
+    color: "#34A853",
+    credentialId: "SKILL-GA4-541298",
+  },
+  {
+    id: "google-ads-display",
+    issuer: "Google",
+    name: "Ads Display",
+    fullName: "Google Ads Display Certification",
+    desc: "Audience targeting, visual creative testing & display network reach.",
+    skills: ["Display Network", "Audience Targeting", "Responsive Display", "Remarketing"],
+    issued: "2023",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png",
+    credential: "https://skillshop.credential.net/",
+    tag: "Display",
+    color: "#FBBC05",
+    credentialId: "SKILL-DISP-339102",
+  },
+  {
+    id: "google-ads-video",
+    issuer: "Google",
+    name: "Ads Video",
+    fullName: "Google Ads Video Certification",
+    desc: "YouTube campaign formats, skippable ads & video reach objectives.",
+    skills: ["YouTube Ads", "Skippable In-Stream", "Bumper Ads", "Video Action Campaigns"],
+    issued: "2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/120px-Google_%22G%22_logo.svg.png",
+    credential: "https://skillshop.credential.net/",
+    tag: "Video Ads",
+    color: "#EA4335",
+    credentialId: "SKILL-VID-902143",
+  },
+  {
+    id: "meta-digital-marketing",
+    issuer: "Meta",
+    name: "Digital Marketing",
+    fullName: "Meta Certified Digital Marketing Associate",
+    desc: "Meta Ads Manager, campaign structure, creative & pixel retargeting.",
+    skills: ["Meta Ads Manager", "Lookalike Audiences", "Conversions API (CAPI)", "Advantage+ Campaigns"],
+    issued: "2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Meta_Platforms_Inc._logo.svg/240px-Meta_Platforms_Inc._logo.svg.png",
+    credential: "https://www.facebook.com/business/learn/certification",
+    tag: "Paid Social",
+    color: "#0081FB",
+    credentialId: "META-CERT-204192",
+  },
+  {
+    id: "hubspot-inbound",
+    issuer: "HubSpot",
+    name: "Inbound Marketing",
+    fullName: "HubSpot Inbound Marketing Certification",
+    desc: "Content strategy, lead nurturing & full-funnel inbound conversion.",
+    skills: ["Inbound Strategy", "Lead Nurturing", "Email Automation", "Buyer Personas"],
+    issued: "2023",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/HubSpot_Logo.svg/240px-HubSpot_Logo.svg.png",
+    credential: "https://academy.hubspot.com/",
+    tag: "Inbound",
+    color: "#FF7A59",
+    credentialId: "HS-INB-771829",
+  },
+  {
+    id: "hubspot-content",
+    issuer: "HubSpot",
+    name: "Content Marketing",
+    fullName: "HubSpot Content Marketing Certification",
+    desc: "Editorial strategy, multi-channel distribution & content growth.",
+    skills: ["Content Creation", "Topic Clusters", "SEO Copywriting", "Content Repurposing"],
+    issued: "2023",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/HubSpot_Logo.svg/240px-HubSpot_Logo.svg.png",
+    credential: "https://academy.hubspot.com/",
+    tag: "Content",
+    color: "#FF7A59",
+    credentialId: "HS-CNT-883912",
+  },
+  {
+    id: "tiktok-marketing-science",
+    issuer: "TikTok",
+    name: "Marketing Science",
+    fullName: "TikTok Ads Marketing Science Certification",
+    desc: "TikTok algorithm mechanics, creative best practices & measurement.",
+    skills: ["TikTok Ads Manager", "Spark Ads", "TikTok Shop Growth", "Creative Optimization"],
+    issued: "2024",
+    logo: "https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/TikTok_logo.svg/240px-TikTok_logo.svg.png",
+    credential: "https://www.tiktok.com/business/en-US/academy",
+    tag: "TikTok Ads",
+    color: "#010101",
+    credentialId: "TT-SCI-651094",
+  },
+  {
+    id: "semrush-seo",
+    issuer: "SEMrush",
+    name: "SEO Fundamentals",
+    fullName: "SEMrush SEO Fundamentals Certification",
+    desc: "Technical SEO audits, keyword research & backlink architecture.",
+    skills: ["Technical SEO", "Keyword Research", "On-Page SEO", "Backlink Analysis", "SERP Tracking"],
+    issued: "2023",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Semrush_logo.svg/240px-Semrush_logo.svg.png",
+    credential: "https://www.semrush.com/academy/",
+    tag: "SEO",
+    color: "#FF642D",
+    credentialId: "SEM-SEO-441203",
+  },
+  {
+    id: "semrush-content",
+    issuer: "SEMrush",
+    name: "Content Toolkit",
+    fullName: "SEMrush Content Marketing Toolkit",
+    desc: "Content audits, topic clustering, competitive gap analysis & KPIs.",
+    skills: ["Topic Research", "SEO Writing Assistant", "Content Audit", "Competitor Analysis"],
+    issued: "2023",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Semrush_logo.svg/240px-Semrush_logo.svg.png",
+    credential: "https://www.semrush.com/academy/",
+    tag: "Strategy",
+    color: "#FF642D",
+    credentialId: "SEM-TKT-319082",
+  },
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  schema={pageSchema({
+    url: absoluteUrl("/certifications"),
+    title: pageTitle,
+    description: pageDescription,
+    type: "WebPage",
+  })}
+>
+  <main class="gear-page">
+    <div class="gear-container">
+
+      <!-- HERO -->
+      <section class="gear-hero" aria-label="Page introduction">
+        <div class="page-kicker-wrapper">
+          <span class="page-kicker-text">Credentials</span>
+        </div>
+        <h1 class="gear-hero-title">Certifications</h1>
+        <p class="gear-intro">
+          A verified collection of professional marketing certifications and credentials. Click any folder to inspect official credentials.
+        </p>
+      </section>
+
+      <!-- 5-COLUMN INTERACTIVE FOLDER GRID -->
+      <section class="cert-section" aria-label="Certifications">
+        <div class="folder-grid">
+          {certifications.map((cert, index) => (
+            <div class="folder-item">
+              <button
+                type="button"
+                class="folder-wrapper"
+                data-folder-trigger
+                data-cert-id={cert.id}
+                data-cert-index={index}
+                aria-label={`Open ${cert.fullName} folder`}
+              >
+                <!-- FOLDER 3D COMPONENT -->
+                <div class="folder" data-folder-surface>
+                  
+                  <!-- 1. BACK FOLDER FLAP -->
+                  <div class="folder-back">
+                    <div class="folder-back-tab"></div>
+                  </div>
+
+                  <!-- 2. SECONDARY DOCUMENT (peeks out behind on hover) -->
+                  <div class="folder-paper-secondary" aria-hidden="true">
+                    <div class="paper-line line-1"></div>
+                    <div class="paper-line line-2"></div>
+                  </div>
+
+                  <!-- 3. MAIN CERTIFICATE CARD -->
+                  <div class="folder-card">
+                    <!-- Top Logo & Year -->
+                    <div class="card-header">
+                      <div class="card-logo-wrap">
+                        <img
+                          src={cert.logo}
+                          alt={`${cert.issuer} logo`}
+                          class="card-logo"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <span class="card-year">{cert.issued}</span>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="card-body">
+                      <span class="card-issuer">{cert.issuer}</span>
+                      <h3 class="card-name">{cert.name}</h3>
+                      <p class="card-desc">{cert.desc}</p>
+                    </div>
+                  </div>
+
+                  <!-- 4. FRONT FOLDER FLAP (folds forward on hover) -->
+                  <div class="folder-front">
+                    <div class="folder-front-tab"></div>
+                    <div class="folder-front-shine"></div>
+                  </div>
+
+                  <!-- 5. AMBIENT FLOOR SHADOW -->
+                  <div class="folder-floor-shadow"></div>
+
+                </div>
+
+                <!-- FOLDER LABEL TEXT BELOW -->
+                <div class="folder-caption">
+                  <span class="folder-caption-text">{cert.name}</span>
+                </div>
+
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       EXPANDED MACOS FOLDER WINDOW MODAL (FLIP MORPHING ANIMATION)
+       ============================================================ -->
+  <div id="cert-modal-root" class="cert-modal-root" aria-hidden="true">
+    <!-- Backdrop overlay -->
+    <div id="cert-modal-backdrop" class="cert-modal-backdrop"></div>
+
+    <!-- Morphing Window -->
+    <div
+      id="cert-modal-window"
+      class="cert-modal-window"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cert-modal-title"
+    >
+      <!-- macOS Window Titlebar with Traffic Lights -->
+      <div class="modal-titlebar">
+        <div class="modal-traffic-lights">
+          <button
+            type="button"
+            id="cert-modal-close-dot"
+            class="traffic-dot dot-close"
+            title="Close Window (Esc)"
+            aria-label="Close"
+          ></button>
+          <span class="traffic-dot dot-minimize"></span>
+          <span class="traffic-dot dot-expand"></span>
+        </div>
+        <div class="modal-titlebar-title">
+          <span id="cert-modal-window-title">Certificate Details</span>
+        </div>
+        <button
+          type="button"
+          id="cert-modal-close-btn"
+          class="modal-close-text-btn"
+          aria-label="Close modal"
+        >
+          Esc
+        </button>
+      </div>
+
+      <!-- Window Content Container (staggered fade-in) -->
+      <div id="cert-modal-content" class="modal-content">
+        <!-- Top Banner with Issuer Accent Glow -->
+        <div class="modal-hero-banner" id="cert-modal-banner">
+          <div class="modal-logo-shell">
+            <img
+              id="cert-modal-logo"
+              src=""
+              alt="Platform Logo"
+              class="modal-logo-img"
+            />
+          </div>
+          <div class="modal-hero-meta">
+            <div class="modal-badge-row">
+              <span id="cert-modal-tag" class="modal-pill-tag">Category</span>
+              <span class="modal-verified-badge">
+                <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+                Verified Active
+              </span>
+            </div>
+            <h2 id="cert-modal-title" class="modal-main-title">Certification Title</h2>
+            <p id="cert-modal-issuer-row" class="modal-issuer-text">Issued by Google · 2024</p>
+          </div>
+        </div>
+
+        <!-- Details Body -->
+        <div class="modal-body-grid">
+          <div class="modal-body-left">
+            <h3 class="modal-subhead">Overview</h3>
+            <p id="cert-modal-desc" class="modal-desc-text">Description goes here</p>
+
+            <h3 class="modal-subhead" style="margin-top: 20px;">Skills & Competencies</h3>
+            <div id="cert-modal-skills" class="modal-skills-list"></div>
+          </div>
+
+          <div class="modal-body-right">
+            <div class="modal-info-card">
+              <div class="info-row">
+                <span class="info-label">Credential ID</span>
+                <span id="cert-modal-id" class="info-val font-mono">SKILL-00000</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Issue Year</span>
+                <span id="cert-modal-year" class="info-val">2024</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Verification</span>
+                <span class="info-val text-emerald-600 font-medium">Official Partner Portal</span>
+              </div>
+            </div>
+
+            <!-- Action CTA -->
+            <a
+              id="cert-modal-link"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="modal-verify-btn"
+            >
+              <span>Verify Official Credential</span>
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M13.6136 4.89949L10.1005 4.89949V5.98268L13.3658 5.98307L5.18592 14.1859L5.95197 14.952L14.1548 6.72614L14.1548 10.0378H15.238L15.2384 6.52428C15.2373 6.09369 15.0658 5.68103 14.7613 5.37656C14.4569 5.07208 14.0442 4.90056 13.6136 4.89949Z" fill="currentColor"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Raw Certification Data injected for Client Script -->
+  <script is:inline define:vars={{ certifications }}>
+    window.__CERTIFICATIONS_DATA__ = certifications;
+  </script>
+</Layout>
+
+<style>
+  /* ── Section ── */
+  .cert-section {
+    border-top: 1px solid var(--divider);
+    padding: 56px 0 180px;
+  }
+
+  /* ── 5-Column Grid Layout (x2 Gap) ── */
+  .folder-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 40px;
+    grid-row-gap: 176px;
+    padding-top: 44px;
+  }
+
+  @media (max-width: 1300px) {
+    .folder-grid {
+      grid-column-gap: 28px;
+      grid-row-gap: 160px;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .folder-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 36px;
+      grid-row-gap: 160px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .folder-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 24px;
+      grid-row-gap: 140px;
+      padding-top: 36px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .folder-grid {
+      grid-template-columns: 1fr;
+      grid-row-gap: 120px;
+    }
+  }
+
+  /* ── Folder Item Container ── */
+  .folder-item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .folder-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    cursor: pointer;
+  }
+
+  .folder-wrapper:focus-visible {
+    outline: none;
+  }
+
+  .folder-wrapper:focus-visible .folder-back {
+    box-shadow: 0 0 0 3px var(--accent), 0 4px 16px rgba(224, 140, 16, 0.22);
+  }
+
+  /* ── Folder 3D Scene ── */
+  .folder {
+    position: relative;
+    width: 100%;
+    height: 156px;
+    perspective: 800px;
+  }
+
+  /* ── 1. BACK FOLDER FLAP (Golden / Amber Manila Tone) ── */
+  .folder-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fbb829 0%, #f5a623 40%, #e08c10 100%);
+    box-shadow:
+      0 4px 16px rgba(224, 140, 16, 0.22),
+      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    z-index: 1;
+    transition: box-shadow 300ms ease;
+  }
+
+  /* Back flap tab on top-left */
+  .folder-back-tab {
+    position: absolute;
+    top: -14px;
+    left: 0;
+    width: 44%;
+    height: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 12px;
+    background: linear-gradient(180deg, #ffc74a 0%, #fbb829 100%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  }
+
+  .folder-back-tab::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: -12px;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle at 100% 0%, transparent 12px, #fbb829 13px);
+    pointer-events: none;
+  }
+
+  /* ── 2. SECONDARY DOCUMENT (Peeks out to the right on hover) ── */
+  .folder-paper-secondary {
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    right: 14px;
+    height: 150px;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 2;
+    padding: 18px 16px;
+    transform: translateY(0) rotate(0deg);
+    transform-origin: bottom center;
+    opacity: 0.6;
+    transition:
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .paper-line {
+    height: 5px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 3px;
+    margin-bottom: 8px;
+  }
+  .paper-line.line-1 { width: 35%; }
+  .paper-line.line-2 { width: 75%; }
+
+  .folder-wrapper:hover .folder-paper-secondary {
+    transform: translateY(-44px) translateX(14px) rotate(6.5deg);
+    opacity: 1;
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* ── 3. MAIN CERTIFICATE CARD ── */
+  .folder-card {
+    position: absolute;
+    top: -8px;
+    left: 12px;
+    right: 12px;
+    height: 154px;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      0 10px 24px -4px rgba(0, 0, 0, 0.12);
+    z-index: 3;
+    padding: 12px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Resting state: Perfectly straight */
+    transform: translateY(0) rotate(0deg);
+    transform-origin: bottom center;
+    transition:
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  /* When Hovering: Opens up from center to the left! */
+  .folder-wrapper:hover .folder-card,
+  .folder-wrapper:focus-visible .folder-card {
+    transform: translateY(-68px) translateX(-14px) rotate(-6.5deg) scale(1.03);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      0 24px 44px -8px rgba(0, 0, 0, 0.22);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-logo-wrap {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--bg);
+    border: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+  }
+
+  .card-logo {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    border-radius: 0 !important;
+  }
+
+  .card-year {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .card-body {
+    margin: 4px 0;
+  }
+
+  .card-issuer {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .card-name {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .card-desc {
+    font-family: var(--sans);
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── 4. FRONT FOLDER FLAP (Warm Golden Amber with Cutout Tab) ── */
+  .folder-front {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 108px;
+    border-radius: 0 0 12px 12px;
+    background: linear-gradient(
+      180deg,
+      #ffc74a 0%,
+      #fba81f 35%,
+      #f29400 100%
+    );
+    box-shadow:
+      inset 0 1.5px 1px rgba(255, 255, 255, 0.8),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.12),
+      0 10px 24px -4px rgba(220, 130, 0, 0.28);
+    border-top: 1px solid rgba(255, 255, 255, 0.9);
+    z-index: 4;
+    transform-origin: bottom center;
+    transform: rotateX(0deg);
+    transition:
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  /* Cutout tab on front flap */
+  .folder-front-tab {
+    position: absolute;
+    top: -12px;
+    right: 0;
+    width: 55%;
+    height: 16px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: linear-gradient(180deg, #ffd466 0%, #ffc74a 100%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  }
+
+  .folder-front-tab::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -12px;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 0% 0%, transparent 10px, #ffc74a 11px);
+    pointer-events: none;
+  }
+
+  /* Specular Highlight Sheen */
+  .folder-front-shine {
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+  }
+
+  /* On Hover: Folder Opens Wide! */
+  .folder-wrapper:hover .folder-front,
+  .folder-wrapper:focus-visible .folder-front {
+    transform: rotateX(-32deg);
+    filter: brightness(1.04);
+  }
+
+  /* ── 5. AMBIENT FLOOR SHADOW ── */
+  .folder-floor-shadow {
+    position: absolute;
+    bottom: -10px;
+    left: 12px;
+    right: 12px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(180, 100, 0, 0.24);
+    filter: blur(8px);
+    z-index: 0;
+    transition:
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 680ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .folder-wrapper:hover .folder-floor-shadow {
+    transform: scaleX(1.1) translateY(4px);
+    opacity: 0.35;
+  }
+
+  /* ── FOLDER CAPTION LABEL BELOW ── */
+  .folder-caption {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  .folder-caption-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    transition: color 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .folder-wrapper:hover .folder-caption-text {
+    color: var(--text);
+  }
+
+  /* ============================================================
+     EXPANDED MACOS WINDOW MODAL (FLIP MORPHING STYLES)
+     ============================================================ */
+  .cert-modal-root {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    pointer-events: none;
+  }
+
+  .cert-modal-root.is-active {
+    display: flex;
+    pointer-events: auto;
+  }
+
+  /* Backdrop */
+  .cert-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(18, 18, 20, 0.45);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    opacity: 0;
+    pointer-events: auto;
+  }
+
+  /* Morphing Window */
+  .cert-modal-window {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 620px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow:
+      0 32px 80px -12px rgba(0, 0, 0, 0.28),
+      0 12px 28px -6px rgba(0, 0, 0, 0.14),
+      0 0 0 1px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transform-origin: center center;
+    opacity: 0;
+  }
+
+  /* macOS Titlebar */
+  .modal-titlebar {
+    height: 44px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #fbfbf9 0%, #f4f4f0 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    user-select: none;
+  }
+
+  .modal-traffic-lights {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .traffic-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .dot-close {
+    background: #ff5f56;
+    border-color: #e0443e;
+    cursor: pointer;
+    padding: 0;
+  }
+  .dot-close:hover {
+    background: #e0443e;
+  }
+
+  .dot-minimize {
+    background: #ffbd2e;
+    border-color: #dea123;
+  }
+
+  .dot-expand {
+    background: #27c93f;
+    border-color: #1aab29;
+  }
+
+  .modal-titlebar-title {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+  }
+
+  .modal-close-text-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    padding: 2px 7px;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 150ms ease, color 150ms ease;
+  }
+
+  .modal-close-text-btn:hover {
+    background: rgba(0, 0, 0, 0.09);
+    color: var(--text);
+  }
+
+  /* Content Stagger Fade Container */
+  .modal-content {
+    padding: 24px 28px 28px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .modal-content.is-ready {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Modal Hero Banner */
+  .modal-hero-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .modal-logo-shell {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    background: var(--bg);
+    border: 1px solid var(--divider);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  .modal-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0 !important;
+  }
+
+  .modal-hero-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .modal-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .modal-pill-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: rgba(0, 117, 222, 0.08);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 99px;
+  }
+
+  .modal-verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: #16a34a;
+    background: rgba(22, 163, 74, 0.08);
+    padding: 2px 8px;
+    border-radius: 99px;
+    letter-spacing: 0.02em;
+  }
+
+  .modal-main-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    margin: 2px 0 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .modal-issuer-text {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Modal Body Grid */
+  .modal-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 24px;
+    margin-top: 22px;
+  }
+
+  @media (max-width: 580px) {
+    .modal-body-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .modal-subhead {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .modal-desc-text {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .modal-skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  :global(.modal-skill-chip) {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--divider);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  /* Info Card */
+  .modal-info-card {
+    background: var(--bg);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .info-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .info-val {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .modal-verify-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 14px;
+    background: var(--accent);
+    color: #ffffff;
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0, 117, 222, 0.25);
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      background 180ms ease;
+  }
+
+  .modal-verify-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 117, 222, 0.35);
+    background: #0066c8;
+  }
+
+  /* Reduced Motion Support */
+  @media (prefers-reduced-motion: reduce) {
+    .folder-card,
+    .folder-front,
+    .folder-paper-secondary,
+    .folder-floor-shadow,
+    .cert-modal-window,
+    .cert-modal-backdrop,
+    .modal-content {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<!-- ============================================================
+     CLIENT-SIDE SCRIPT: 60FPS FLIP MORPHING FOLDER ANIMATION
+     ============================================================ -->
+<script>
+  function setupCertModal() {
+    const certData = (window as any).__CERTIFICATIONS_DATA__ || [];
+    const root = document.getElementById("cert-modal-root");
+    const backdrop = document.getElementById("cert-modal-backdrop");
+    const windowEl = document.getElementById("cert-modal-window");
+    const content = document.getElementById("cert-modal-content");
+    const closeDot = document.getElementById("cert-modal-close-dot");
+    const closeBtn = document.getElementById("cert-modal-close-btn");
+
+    if (!root || !backdrop || !windowEl || !content) return;
+
+    const modalRoot: HTMLElement = root;
+    const modalBackdrop: HTMLElement = backdrop;
+    const modalWindow: HTMLElement = windowEl;
+    const modalContent: HTMLElement = content;
+
+    // Elements inside modal
+    const modalTitle = document.getElementById("cert-modal-title");
+    const modalWindowTitle = document.getElementById("cert-modal-window-title");
+    const modalLogo = document.getElementById("cert-modal-logo") as HTMLImageElement | null;
+    const modalTag = document.getElementById("cert-modal-tag");
+    const modalIssuerRow = document.getElementById("cert-modal-issuer-row");
+    const modalDesc = document.getElementById("cert-modal-desc");
+    const modalSkills = document.getElementById("cert-modal-skills");
+    const modalId = document.getElementById("cert-modal-id");
+    const modalYear = document.getElementById("cert-modal-year");
+    const modalLink = document.getElementById("cert-modal-link") as HTMLAnchorElement | null;
+
+    let activeTriggerEl: HTMLElement | null = null;
+    let isAnimating = false;
+    let isOpen = false;
+
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function populateData(cert: any) {
+      if (!cert) return;
+      if (modalTitle) modalTitle.textContent = cert.fullName || cert.name;
+      if (modalWindowTitle) modalWindowTitle.textContent = `${cert.name} — ${cert.issuer}`;
+      if (modalLogo) {
+        modalLogo.src = cert.logo;
+        modalLogo.alt = `${cert.issuer} logo`;
+      }
+      if (modalTag) {
+        modalTag.textContent = cert.tag;
+        modalTag.style.color = cert.color;
+        modalTag.style.background = `color-mix(in srgb, ${cert.color} 10%, #f4f4ee)`;
+      }
+      if (modalIssuerRow) modalIssuerRow.textContent = `Issued by ${cert.issuer} · ${cert.issued}`;
+      if (modalDesc) modalDesc.textContent = cert.desc;
+      if (modalId) modalId.textContent = cert.credentialId || "VERIFIED-PARTNER";
+      if (modalYear) modalYear.textContent = cert.issued;
+      if (modalLink) {
+        modalLink.href = cert.credential;
+        modalLink.style.background = cert.color;
+      }
+      if (modalSkills) {
+        modalSkills.innerHTML = "";
+        (cert.skills || [cert.tag, "Certified", cert.issuer]).forEach((skill: string) => {
+          const chip = document.createElement("span");
+          chip.className = "modal-skill-chip";
+          chip.textContent = skill;
+          modalSkills.appendChild(chip);
+        });
+      }
+    }
+
+    function openModal(trigger: HTMLElement, certIndex: number) {
+      if (isAnimating || isOpen) return;
+      isAnimating = true;
+      isOpen = true;
+      activeTriggerEl = trigger;
+
+      const cert = certData[certIndex];
+      populateData(cert);
+
+      const surface = (trigger.querySelector("[data-folder-surface]") as HTMLElement) || trigger;
+      const originRect = surface.getBoundingClientRect();
+
+      // Show root
+      modalRoot.classList.add("is-active");
+      modalRoot.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      if (prefersReducedMotion) {
+        modalWindow.style.transform = "none";
+        modalWindow.style.opacity = "1";
+        modalBackdrop.style.opacity = "1";
+        modalContent.classList.add("is-ready");
+        isAnimating = false;
+        return;
+      }
+
+      // Measure target final position
+      modalWindow.style.transition = "none";
+      modalWindow.style.transform = "none";
+      modalWindow.style.opacity = "0";
+      modalWindow.style.visibility = "hidden";
+      modalBackdrop.style.transition = "none";
+      modalBackdrop.style.opacity = "0";
+      modalContent.classList.remove("is-ready");
+
+      const finalRect = modalWindow.getBoundingClientRect();
+
+      // Compute exact deltas & scale
+      const dx = originRect.left + originRect.width / 2 - (finalRect.left + finalRect.width / 2);
+      const dy = originRect.top + originRect.height / 2 - (finalRect.top + finalRect.height / 2);
+      const sx = originRect.width / finalRect.width;
+      const sy = originRect.height / finalRect.height;
+
+      // Set initial FLIP morph starting position matching clicked folder
+      modalWindow.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${sx}, ${sy})`;
+      modalWindow.style.borderRadius = "12px";
+      modalWindow.style.opacity = "0.95";
+      modalWindow.style.visibility = "visible";
+      modalWindow.style.willChange = "transform, opacity, border-radius";
+
+      // Trigger animation on next frame
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          modalWindow.style.transition =
+            "transform 560ms cubic-bezier(0.22, 1, 0.36, 1), border-radius 560ms cubic-bezier(0.22, 1, 0.36, 1), opacity 320ms ease";
+          modalBackdrop.style.transition = "opacity 460ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+          modalWindow.style.transform = "translate3d(0, 0, 0) scale(1, 1)";
+          modalWindow.style.borderRadius = "16px";
+          modalWindow.style.opacity = "1";
+          modalBackdrop.style.opacity = "1";
+
+          // Stagger inner content fade-in slightly after morph begins
+          setTimeout(() => {
+            if (isOpen) {
+              modalContent.classList.add("is-ready");
+            }
+          }, 90);
+
+          const onTransitionEnd = (e: TransitionEvent) => {
+            if (e.target === modalWindow && e.propertyName === "transform") {
+              modalWindow.removeEventListener("transitionend", onTransitionEnd);
+              modalWindow.style.willChange = "";
+              isAnimating = false;
+            }
+          };
+          modalWindow.addEventListener("transitionend", onTransitionEnd);
+        });
+      });
+    }
+
+    function closeModal() {
+      if (isAnimating || !isOpen) return;
+      isAnimating = true;
+      isOpen = false;
+
+      // Immediately fade content out gracefully
+      modalContent.classList.remove("is-ready");
+
+      if (prefersReducedMotion) {
+        modalRoot.classList.remove("is-active");
+        modalRoot.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        isAnimating = false;
+        return;
+      }
+
+      // Re-measure origin folder (handles any scroll/resize during open)
+      let originRect: DOMRect;
+      if (activeTriggerEl) {
+        const surface = (activeTriggerEl.querySelector("[data-folder-surface]") as HTMLElement) || activeTriggerEl;
+        originRect = surface.getBoundingClientRect();
+      } else {
+        originRect = new DOMRect(window.innerWidth / 2, window.innerHeight / 2, 220, 156);
+      }
+
+      const finalRect = modalWindow.getBoundingClientRect();
+      const dx = originRect.left + originRect.width / 2 - (finalRect.left + finalRect.width / 2);
+      const dy = originRect.top + originRect.height / 2 - (finalRect.top + finalRect.height / 2);
+      const sx = originRect.width / finalRect.width;
+      const sy = originRect.height / finalRect.height;
+
+      modalWindow.style.willChange = "transform, opacity, border-radius";
+      modalWindow.style.transition =
+        "transform 480ms cubic-bezier(0.22, 1, 0.36, 1), border-radius 480ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease";
+      modalBackdrop.style.transition = "opacity 420ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+      modalWindow.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${sx}, ${sy})`;
+      modalWindow.style.borderRadius = "12px";
+      modalWindow.style.opacity = "0";
+      modalBackdrop.style.opacity = "0";
+
+      const onTransitionEnd = (e: TransitionEvent) => {
+        if (e.target === modalWindow && e.propertyName === "transform") {
+          modalWindow.removeEventListener("transitionend", onTransitionEnd);
+          modalRoot.classList.remove("is-active");
+          modalRoot.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
+          modalWindow.style.willChange = "";
+          modalWindow.style.transform = "none";
+          isAnimating = false;
+        }
+      };
+      modalWindow.addEventListener("transitionend", onTransitionEnd);
+    }
+
+    // Attach click listeners to folders
+    document.querySelectorAll("[data-folder-trigger]").forEach((trigger) => {
+      trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        const indexStr = trigger.getAttribute("data-cert-index");
+        const index = indexStr ? parseInt(indexStr, 10) : 0;
+        openModal(trigger as HTMLElement, index);
+      });
+    });
+
+    // Close handlers
+    modalBackdrop.addEventListener("click", closeModal);
+    if (closeDot) closeDot.addEventListener("click", closeModal);
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+    // Escape key
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isOpen) {
+        closeModal();
+      }
+    });
+  }
+
+  // Initialize
+  setupCertModal();
+  document.addEventListener("astro:page-load", setupCertModal);
+</script>

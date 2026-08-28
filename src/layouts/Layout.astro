@@ -167,50 +167,68 @@ const footerLinks = [
   <script is:inline type="application/ld+json" set:html={jsonLd}></script>
 
   <style is:global>
-    /* ── Page transition: global blur fade ── */
+    /* ── Page transition: cinematic smooth 1000ms ease-out ── */
+    ::view-transition-group(root),
+    ::view-transition-image-pair(root),
     ::view-transition-old(root),
     ::view-transition-new(root) {
-      animation-duration: 360ms;
-      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-      animation-fill-mode: both;
-      mix-blend-mode: normal;
+      animation-duration: 1000ms !important;
     }
 
     ::view-transition-old(root) {
-      animation-name: loc-page-blur-out;
+      animation: page-out 1000ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+      mix-blend-mode: normal !important;
     }
 
     ::view-transition-new(root) {
-      animation-name: loc-page-blur-in;
+      animation: page-in 1000ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+      mix-blend-mode: normal !important;
     }
 
-    @keyframes loc-page-blur-out {
-      from {
+    @keyframes page-out {
+      0% {
         opacity: 1;
-        filter: blur(0);
+        transform: scale(1);
+        filter: blur(0px);
       }
-      to {
+      45% {
         opacity: 0;
-        filter: blur(12px);
+        transform: scale(0.985);
+        filter: blur(6px);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.985);
+        filter: blur(6px);
       }
     }
 
-    @keyframes loc-page-blur-in {
-      from {
+    @keyframes page-in {
+      0% {
         opacity: 0;
-        filter: blur(12px);
+        transform: scale(1.015);
+        filter: blur(6px);
       }
-      to {
+      30% {
+        opacity: 0;
+        transform: scale(1.015);
+        filter: blur(6px);
+      }
+      100% {
         opacity: 1;
-        filter: blur(0);
+        transform: scale(1);
+        filter: blur(0px);
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
+      ::view-transition-group(root),
+      ::view-transition-image-pair(root),
       ::view-transition-old(root),
       ::view-transition-new(root) {
         animation: none !important;
         filter: none !important;
+        transform: none !important;
       }
     }
   </style>
