@@ -394,7 +394,7 @@ const creativeWorkSchema = {
               {otherProjects.map((item) => (
                 <a
                   href={`/work/${item.slug}`}
-                  class="more-case-card group block rounded-xl border border-border bg-card overflow-hidden transition-all duration-300"
+                  class="more-case-card group block rounded-[6px] border border-border bg-card overflow-hidden transition-all duration-300"
                 >
                   <div class="w-full aspect-[16/9] max-h-[180px] bg-secondary overflow-hidden flex items-center justify-center p-2.5">
                     {item.coverImage ? (
@@ -403,7 +403,7 @@ const creativeWorkSchema = {
                         alt={item.title}
                         loading="lazy"
                         decoding="async"
-                        class="w-full h-full object-cover rounded-lg"
+                        class="w-full h-full object-cover rounded-[6px]"
                       />
                     ) : item.images && item.images[0] ? (
                       <img
@@ -411,7 +411,7 @@ const creativeWorkSchema = {
                         alt={item.title}
                         loading="lazy"
                         decoding="async"
-                        class="w-full h-full object-cover rounded-lg"
+                        class="w-full h-full object-cover rounded-[6px]"
                       />
                     ) : (
                       <div class="w-full h-full bg-secondary flex items-center justify-center text-muted font-mono text-xs">
@@ -498,13 +498,13 @@ const creativeWorkSchema = {
   .more-case-card {
     background: color-mix(in srgb, var(--bg) 95%, #ffffff);
     border: 1px solid var(--divider);
-    border-radius: 14px;
+    border-radius: 6px;
     text-decoration: none;
     transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
   }
 
   .more-case-card img {
-    border-radius: 10px;
+    border-radius: 6px;
   }
 
   .more-case-title {

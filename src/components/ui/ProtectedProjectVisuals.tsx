@@ -229,14 +229,14 @@ export default function ProtectedProjectVisuals({
           {images.map((imgUrl, idx) => (
             <div
               key={idx}
-              className="w-full rounded-2xl overflow-hidden bg-secondary border border-border p-4 shadow-sm group hover:border-border/80 transition-all duration-300"
+              className="w-full rounded-[6px] overflow-hidden bg-secondary border border-border p-4 shadow-sm group hover:border-border/80 transition-all duration-300"
             >
               <img
                 src={imgUrl}
                 alt={`${title} visual ${idx + 1}`}
                 loading="lazy"
                 decoding="async"
-                className="block w-full h-auto object-contain rounded-xl group-hover:scale-[1.01] transition-transform duration-500"
+                className="block w-full h-auto object-contain rounded-[6px] group-hover:scale-[1.01] transition-transform duration-500"
               />
             </div>
           ))}

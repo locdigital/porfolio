@@ -252,7 +252,7 @@
       --rounded-lg: 20px;
       --rounded-xl: 24px;
       --rounded-full: 9999px;
-      --image-radius: 8px;
+      --image-radius: 6px;
 
       --radius-xs: var(--rounded-xs);
       --radius-sm: var(--rounded-sm);
@@ -508,24 +508,24 @@
     img {
       display: block;
       max-width: 100%;
-      border-radius: var(--image-radius);
+      border-radius: var(--image-radius, 6px);
     }
 
     /* Global photo styling */
     picture, .ratio-box {
       display: block;
       position: relative;
-      border-radius: var(--image-radius);
+      border-radius: var(--image-radius, 6px);
       overflow: hidden;
     }
 
-    :where(main, article) :where(picture, .ratio-box, .loc-photo-item, .project-card-img, .detail-hero-img, .desk-visual, .gear-card-visual, .gallery-item, .gal-item, .big-card, .mobile-about-panel) {
-      border-radius: var(--image-radius);
+    :where(main, article, section, div, figure) :where(picture, .ratio-box, .loc-photo-item, .loc-photo-card, .project-card-img, .detail-hero-img, .desk-visual, .gear-card-visual, .gallery-item, .gal-item, .big-card, .mobile-about-panel, .more-case-card, .article-cover, .post-hover-preview, .pane-media, .accordion-card) {
+      border-radius: var(--image-radius, 6px);
       overflow: hidden;
     }
 
-    :where(main, article) img:not(.nav-icon):not([src$=".svg"]):not([src*="/assets/logos/"]):not([src*="/favicon"]) {
-      border-radius: var(--image-radius);
+    :where(main, article, section, div, figure, aside, header, footer) img:not(.nav-icon):not([src$=".svg"]):not([src*="/assets/logos/"]):not([src*="/favicon"]):not(.rounded-full):not([class*="rounded-full"]) {
+      border-radius: var(--image-radius, 6px);
     }
 
     picture::after, .ratio-box::after {
