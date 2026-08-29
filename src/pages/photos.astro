@@ -1002,23 +1002,29 @@ function hasDetailsFor(loc: PhotoLocationView) {
     gap: var(--space-2);
     width: 100%;
     max-width: var(--loc-sidebar-measure);
+    padding: 0;
+    margin: 0;
+    list-style: none;
   }
 
   .loc-good-to-know .loc-pill-list li {
     display: flex;
     align-items: center;
     width: 100%;
-    min-height: 52px;
+    min-height: 58px;
     padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--divider);
+    border: 1px solid var(--divider) !important;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.62);
     color: var(--text);
     line-height: 1.4;
+    box-sizing: border-box;
   }
 
   .loc-good-to-know .loc-pill-list li span {
+    display: block;
     padding: 0 !important;
+    margin: 0 !important;
     min-height: unset !important;
     font-family: var(--sans);
     font-size: 13px !important;
