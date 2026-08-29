@@ -396,6 +396,14 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     }
   }
 
+  @media (max-width: 640px) {
+    .showcase-pass-gate-input-wrap input,
+    .showcase-pass-gate-input-wrap input::placeholder,
+    input[data-gate-input] {
+      font-size: 12px !important;
+    }
+  }
+
   @media (max-width: 560px) {
     .showcase-pass-gate-panel {
       grid-template-columns: 1fr;

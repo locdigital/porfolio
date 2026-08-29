@@ -282,6 +282,17 @@
         font-size: 12px !important;
         line-height: 1.5 !important;
       }
+
+      input[data-gate-input],
+      input[data-gate-input]::placeholder,
+      .showcase-pass-gate input,
+      .showcase-pass-gate input::placeholder,
+      .showcase-pass-gate-input-wrap input,
+      .showcase-pass-gate-input-wrap input::placeholder,
+      input[placeholder*="access code" i],
+      input[placeholder*="access code" i]::placeholder {
+        font-size: 12px !important;
+      }
     }
 
     :where(.text-red-400, .text-red-500, .text-red-600, .text-red-700, .text-rose-500, .text-rose-600) {

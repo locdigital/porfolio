@@ -186,7 +186,7 @@ export default function ProtectedProjectVisuals({
                       }
                     }}
                     placeholder="Enter access code..."
-                    className={`w-full pl-11 pr-12 py-3.5 rounded-xl font-sans text-sm outline-none transition-all shadow-inner ${
+                    className={`w-full pl-11 pr-12 py-3.5 rounded-xl font-sans text-sm max-sm:text-[12px] placeholder:max-sm:text-[12px] outline-none transition-all shadow-inner ${
                       isError
                         ? "border-2 border-red-500 bg-red-500/10 text-red-500 font-medium placeholder:text-red-400/60 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
                         : "bg-secondary/40 border border-border focus:border-accent focus:ring-2 focus:ring-accent/20 text-foreground placeholder:text-muted-foreground/60"
