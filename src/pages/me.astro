@@ -323,12 +323,14 @@ const freeTimeActivities = [
     width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
     cursor: grab;
     padding-bottom: 6px;
     padding-right: clamp(16px, 4vw, 40px);
+    transform: translateZ(0);
   }
 
   .free-time-accordion:active {
@@ -347,23 +349,28 @@ const freeTimeActivities = [
     border-radius: 8px;
     overflow: hidden;
     position: relative;
-    will-change: flex-basis, width;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    scroll-snap-align: start;
     transition:
-      flex-basis 600ms cubic-bezier(0.16, 1, 0.3, 1),
-      width 600ms cubic-bezier(0.16, 1, 0.3, 1),
-      min-width 600ms cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 400ms ease;
+      flex-basis 400ms cubic-bezier(0.16, 1, 0.3, 1),
+      width 400ms cubic-bezier(0.16, 1, 0.3, 1),
+      min-width 400ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 300ms ease;
   }
 
   .free-time-accordion .accordion-card img {
-    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1), filter 600ms ease;
-    filter: brightness(0.82);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .free-time-accordion .accordion-overlay {
     opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 500ms ease, transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(8px);
+    transition: opacity 300ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   /* Active state: 1 main image */
@@ -375,31 +382,31 @@ const freeTimeActivities = [
   }
 
   .free-time-accordion .accordion-card.is-active img {
-    filter: brightness(1);
-    transform: scale(1.03);
+    transform: scale(1.02) translateZ(0);
   }
 
   .free-time-accordion .accordion-card.is-active .accordion-overlay {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 100ms;
   }
 
   /* Hover state on inactive cards */
   .free-time-accordion .accordion-card:not(.is-active):hover img {
-    filter: brightness(0.94);
+    filter: brightness(0.96);
   }
 
   @media (max-width: 640px) {
     .free-time-accordion {
       height: 400px;
       gap: 10px;
+      scroll-snap-type: x mandatory;
     }
 
     .free-time-accordion .accordion-card {
       flex: 0 0 68px;
       width: 68px;
       min-width: 68px;
+      scroll-snap-align: start;
     }
 
     /* Active image full-size on mobile */
@@ -407,6 +414,7 @@ const freeTimeActivities = [
       flex: 0 0 calc(100vw - 52px);
       width: calc(100vw - 52px);
       min-width: calc(100vw - 52px);
+      scroll-snap-align: start;
     }
   }
 
@@ -463,27 +471,29 @@ const freeTimeActivities = [
       const el = accordion as HTMLElement;
       const cards = el.querySelectorAll<HTMLElement>('.accordion-card');
       
-      let isDown = false;
+      let isMouseDown = false;
       let startX = 0;
       let scrollLeft = 0;
       let hasDragged = false;
 
-      el.addEventListener('pointerdown', (e) => {
-        isDown = true;
+      // Mouse drag for desktop only (touch uses 120Hz native GPU momentum scroll)
+      el.addEventListener('mousedown', (e) => {
+        isMouseDown = true;
         hasDragged = false;
         startX = e.pageX - el.offsetLeft;
         scrollLeft = el.scrollLeft;
       });
 
-      window.addEventListener('pointerup', () => {
-        isDown = false;
+      window.addEventListener('mouseup', () => {
+        isMouseDown = false;
       });
 
-      el.addEventListener('pointermove', (e) => {
-        if (!isDown) return;
+      el.addEventListener('mousemove', (e) => {
+        if (!isMouseDown) return;
+        e.preventDefault();
         const x = e.pageX - el.offsetLeft;
         const walk = (x - startX);
-        if (Math.abs(walk) > 5) {
+        if (Math.abs(walk) > 6) {
           hasDragged = true;
         }
         el.scrollLeft = scrollLeft - walk;
@@ -499,9 +509,9 @@ const freeTimeActivities = [
           card.classList.add('is-active');
           card.setAttribute('aria-expanded', 'true');
 
-          setTimeout(() => {
+          requestAnimationFrame(() => {
             card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-          }, 60);
+          });
         };
 
         card.addEventListener('click', activate);
