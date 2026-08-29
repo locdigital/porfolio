@@ -362,13 +362,13 @@ const creativeWorkSchema = {
               <div class="mt-10 space-y-6">
                 {project.images && project.images.length > 0 ? (
                   project.images.map((imgUrl, idx) => (
-                    <div class="w-full rounded-xl overflow-hidden bg-secondary border border-border p-4">
+                    <div class="w-full rounded-[6px] overflow-hidden bg-secondary border border-border p-2 sm:p-4">
                       <img
                         src={imgUrl}
                         alt={`${project.title} image ${idx + 1}`}
                         loading="lazy"
                         decoding="async"
-                        class="block w-full h-auto object-contain rounded-lg"
+                        class="block w-full h-auto object-contain rounded-[6px]"
                       />
                     </div>
                   ))

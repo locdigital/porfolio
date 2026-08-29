@@ -390,6 +390,26 @@ const freeTimeActivities = [
     filter: brightness(0.94);
   }
 
+  @media (max-width: 640px) {
+    .free-time-accordion {
+      height: 400px;
+      gap: 10px;
+    }
+
+    .free-time-accordion .accordion-card {
+      flex: 0 0 68px;
+      width: 68px;
+      min-width: 68px;
+    }
+
+    /* Active image full-size on mobile */
+    .free-time-accordion .accordion-card.is-active {
+      flex: 0 0 calc(100vw - 52px);
+      width: calc(100vw - 52px);
+      min-width: calc(100vw - 52px);
+    }
+  }
+
   @media (min-width: 768px) {
     .free-time-accordion .accordion-card {
       flex: 0 0 94px;
