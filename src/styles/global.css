@@ -275,6 +275,15 @@
       border-radius: 8px !important;
     }
 
+    @media (max-width: 640px) {
+      dd,
+      dl dd,
+      .text-body-lg:is(dd) {
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+      }
+    }
+
     :where(.text-red-400, .text-red-500, .text-red-600, .text-red-700, .text-rose-500, .text-rose-600) {
       color: var(--state-error) !important;
     }
