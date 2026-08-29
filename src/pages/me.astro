@@ -236,7 +236,7 @@ const freeTimeActivities = [
             <div class="free-time-accordion flex items-center gap-2.5 h-[380px] sm:h-[420px] w-full overflow-hidden">
               {freeTimeActivities.map((item, idx) => (
                 <div
-                  class={`accordion-card relative group h-full rounded-2xl overflow-hidden cursor-pointer border border-border/40 shadow-sm ${idx === 0 ? 'is-active' : ''}`}
+                  class={`accordion-card relative group h-full rounded-[8px] overflow-hidden cursor-pointer border border-border/40 shadow-sm ${idx === 0 ? 'is-active' : ''}`}
                   tabindex="0"
                   role="button"
                   aria-expanded={idx === 0 ? "true" : "false"}
@@ -309,6 +309,7 @@ const freeTimeActivities = [
   .free-time-accordion .accordion-card {
     flex: 1;
     min-width: 0;
+    border-radius: 8px;
     will-change: flex;
     transition: flex 1000ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 700ms ease;
   }

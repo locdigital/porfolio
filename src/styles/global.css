@@ -270,6 +270,11 @@
       --focus-ring: 0 0 0 3px rgba(0, 117, 222, 0.12);
     }
 
+    .rounded-2xl,
+    :where(.rounded-2xl) {
+      border-radius: 8px !important;
+    }
+
     :where(.text-red-400, .text-red-500, .text-red-600, .text-red-700, .text-rose-500, .text-rose-600) {
       color: var(--state-error) !important;
     }

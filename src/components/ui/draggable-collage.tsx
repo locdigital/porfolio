@@ -773,7 +773,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           onMouseLeave={() => setCursorLabel('')}
           revealDelay={780}
         >
-          <a href="/resume" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-2xl px-5 py-4 w-[180px] shadow-lg hover:opacity-95 transition-all select-none" style={{ fontFamily: 'var(--sans)' }}>
+          <a href="/resume" target="_blank" rel="noopener noreferrer" draggable="false" className="block bg-[#FFE45C] border border-[#3a2e00]/15 text-[#3a2e00] rounded-[8px] px-5 py-4 w-[180px] shadow-lg hover:opacity-95 transition-all select-none" style={{ fontFamily: 'var(--sans)' }}>
             <p className="collage-card-label opacity-40 mb-3 text-[11px] uppercase tracking-wider font-semibold">CV</p>
             <div className="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 shrink-0 opacity-80"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
@@ -878,10 +878,10 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         >
           <a className="file relative w-60 h-40 cursor-pointer [perspective:1500px] z-50 block" href="/blog" draggable="false">
             {/* Folder background */}
-            <div className="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none transition-all duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+            <div className="work-5 bg-amber-600 w-full h-full origin-top rounded-[8px] rounded-tl-none transition-all duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-[8px] before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
             
             {/* Sheet 4 */}
-            <div className="work-4 absolute inset-1 bg-white rounded-2xl border border-zinc-200 transition-all duration-[500ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom select-none group-hover:[transform:translate(-14px,-30px)_rotate(-7deg)] flex flex-col gap-2 p-4">
+            <div className="work-4 absolute inset-1 bg-white rounded-[8px] border border-zinc-200 transition-all duration-[500ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom select-none group-hover:[transform:translate(-14px,-30px)_rotate(-7deg)] flex flex-col gap-2 p-4">
               <div className="h-1.5 w-12 rounded-full bg-zinc-300" aria-hidden="true"></div>
               <div className="h-2.5 w-3/4 rounded-full bg-zinc-400/80 mt-1" aria-hidden="true"></div>
               <div className="h-1.5 w-full rounded-full bg-zinc-200 mt-auto" aria-hidden="true"></div>
@@ -889,7 +889,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
             </div>
             
             {/* Sheet 3 */}
-            <div className="work-3 absolute inset-1 bg-white rounded-2xl border border-zinc-200 transition-all duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(14px,-45px)_rotate(5deg)] flex flex-col gap-2 p-4">
+            <div className="work-3 absolute inset-1 bg-white rounded-[8px] border border-zinc-200 transition-all duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(14px,-45px)_rotate(5deg)] flex flex-col gap-2 p-4">
               <div className="h-1.5 w-12 rounded-full bg-zinc-300" aria-hidden="true"></div>
               <div className="h-2.5 w-2/3 rounded-full bg-zinc-400/80 mt-1" aria-hidden="true"></div>
               <div className="h-1.5 w-full rounded-full bg-zinc-200 mt-auto" aria-hidden="true"></div>
@@ -897,7 +897,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
             </div>
             
             {/* Sheet 2 */}
-            <div className="work-2 absolute inset-1 bg-white rounded-2xl border border-zinc-200 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(-4px,-65px)_rotate(-3deg)_scale(1.02)] flex flex-col gap-2 p-4">
+            <div className="work-2 absolute inset-1 bg-white rounded-[8px] border border-zinc-200 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(-4px,-65px)_rotate(-3deg)_scale(1.02)] flex flex-col gap-2 p-4">
               <div className="h-1.5 w-12 rounded-full bg-zinc-300" aria-hidden="true"></div>
               <div className="h-2.5 w-4/5 rounded-full bg-zinc-400/80 mt-1" aria-hidden="true"></div>
               <div className="h-1.5 w-full rounded-full bg-zinc-200 mt-auto" aria-hidden="true"></div>
@@ -905,7 +905,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
             </div>
             
             {/* Front flap */}
-            <div className="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all duration-300 origin-bottom flex items-end group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+            <div className="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-[8px] rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-[8px] before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all duration-300 origin-bottom flex items-end group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
           </a>
         </DraggableCard>
 
