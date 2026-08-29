@@ -27,6 +27,7 @@ export function personSchema(): JsonLd {
     image: DEFAULT_OG_IMAGE,
     jobTitle: "Senior Performance Marketing Executive",
     email: "mailto:hi@loc.digital",
+    telephone: "+84777779459",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Ho Chi Minh City",
@@ -67,6 +68,7 @@ export function professionalServiceSchema(): JsonLd {
     image: DEFAULT_OG_IMAGE,
     description: DEFAULT_DESCRIPTION,
     email: "hi@loc.digital",
+    telephone: "+84777779459",
     founder: { "@id": `${SITE_URL}/#person` },
     areaServed: ["Vietnam", "Thailand", "Singapore", "United States"],
     serviceType: [
