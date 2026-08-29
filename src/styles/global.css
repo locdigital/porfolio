@@ -251,6 +251,7 @@
       --rounded-md: 16px;
       --rounded-lg: 20px;
       --rounded-xl: 24px;
+      --rounded-2xl: 8px;
       --rounded-full: 9999px;
       --image-radius: 6px;
 
@@ -259,6 +260,7 @@
       --radius-md: var(--rounded-md);
       --radius-lg: var(--rounded-lg);
       --radius-xl: var(--rounded-xl);
+      --radius-2xl: var(--rounded-2xl);
       --radius-round: var(--rounded-full);
 
       --surface: #fff;
