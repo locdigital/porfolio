@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
-import { ArrowUp, BarChart3, Bookmark, Folder } from "lucide-react";
+import { ArrowUp, Award, BarChart3, Bookmark, Folder } from "lucide-react";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
 const { 
   title = "Phuc Loc Nguyen | Senior Performance Marketing Executive",
@@ -31,6 +31,12 @@ const desktopNavItems = [
     href: "/service",
     active: pathname.startsWith("/service"),
     Icon: BarChart3,
+  },
+  {
+    label: "Certifications",
+    href: "/certifications",
+    active: pathname.startsWith("/certifications"),
+    Icon: Award,
   },
   {
     label: "Photos",
@@ -294,6 +300,12 @@ const footerLinks = [
             <a href="/service" class={pathname.startsWith('/service') ? 'active' : ''} aria-label="Services">
               <BarChart3 className="nav-icon" size={20} strokeWidth={1.8} aria-hidden="true" />
               <span class="nav-label">Services</span>
+            </a>
+          </li>
+          <li>
+            <a href="/certifications" class={pathname.startsWith('/certifications') ? 'active' : ''} aria-label="Certifications">
+              <Award className="nav-icon" size={20} strokeWidth={1.8} aria-hidden="true" />
+              <span class="nav-label">Certifications</span>
             </a>
           </li>
           <li>
