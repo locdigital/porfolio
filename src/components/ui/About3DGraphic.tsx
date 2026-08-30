@@ -200,16 +200,18 @@ export default function About3DGraphic() {
   return (
     <div
       ref={containerRef}
-      className="w-full h-full min-h-[380px] sm:min-h-[460px] relative flex items-center justify-center overflow-hidden"
+      className="w-full h-full min-h-[380px] sm:min-h-[460px] relative flex items-center justify-center overflow-hidden pointer-events-none select-none"
+      onContextMenu={(e) => e.preventDefault()}
+      aria-hidden="true"
     >
-      <canvas ref={canvasRef} className="w-full h-full block relative z-10" />
+      <canvas ref={canvasRef} className="w-full h-full block relative z-10 pointer-events-none select-none" />
       
       {/* Fallback image if WebGL fails */}
       {!webglSupported && (
-        <img
-          src="/images/about-dish.png"
-          alt="3D geometric graphic of white hemisphere dish"
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        <div
+          className="absolute inset-0 w-full h-full bg-contain bg-center bg-no-repeat pointer-events-none select-none"
+          style={{ backgroundImage: "url('/images/about-dish.png')" }}
+          onContextMenu={(e) => e.preventDefault()}
         />
       )}
     </div>

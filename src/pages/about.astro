@@ -148,16 +148,14 @@ const freeTimeActivities = [
             </div>
           </div>
 
-          <!-- RIGHT HERO IMAGE FRAME -->
-          <div class="w-full flex justify-center md:justify-end about-hero-image-wrapper t-tilt">
-            <div class="about-hero-image-shell t-tilt-card">
-              <img
-                src="/images/about-dish.png"
-                alt="3D geometric graphic of white hemisphere dish with glowing purple and orange spheres"
-                class="w-full h-full object-contain"
-                loading="eager"
-                decoding="async"
-              />
+          <!-- RIGHT HERO IMAGE FRAME (Background visual layer, non-interactive) -->
+          <div class="w-full flex justify-center md:justify-end about-hero-image-wrapper t-tilt pointer-events-none select-none" aria-hidden="true">
+            <div class="about-hero-image-shell t-tilt-card relative w-full h-[360px] sm:h-[420px] md:h-[460px] pointer-events-none select-none">
+              <div
+                class="w-full h-full bg-contain bg-center bg-no-repeat pointer-events-none select-none"
+                style="background-image: url('/images/about-dish.png');"
+                oncontextmenu="return false;"
+              ></div>
             </div>
           </div>
 
