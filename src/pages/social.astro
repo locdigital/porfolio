@@ -6,87 +6,88 @@ import { Folder, BookOpen, Camera, ArrowUpRight, ArrowRight } from "lucide-react
 export const prerender = true;
 
 const socialTitle = "Social & Contact | Phuc Loc Nguyen";
-const socialDescription = "Connect with Phuc Loc Nguyen via email, LinkedIn, Instagram, X, Pexels, or explore selected work and writing.";
+const socialDescription = "Connect with Phuc Loc Nguyen via email, phone, LinkedIn, Instagram, X, Pexels, or explore selected work and writing.";
 
-const primaryLinks = [
+const directContacts = [
   {
     label: "Email",
-    handle: "hi@loc.digital",
-    description: "Best channel for performance marketing inquiries, website engineering projects, consulting, or strategic growth partnerships.",
+    value: "hi@loc.digital",
+    subtext: "Project inquiries & growth consulting",
     href: "mailto:hi@loc.digital",
-    meta: "Direct Email",
+    badge: "Direct Email",
+    isEmail: true,
     iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
   },
   {
     label: "Phone & Hotline",
-    handle: "+84 777 779 459",
-    description: "Direct lines for urgent consultations, client discussions, quick project syncs, and support via Phone, WhatsApp, or Zalo.",
+    value: "+84 777 779 459",
+    secondaryValue: "+84 888 886 038",
+    subtext: "Phone, WhatsApp & Zalo ready",
     href: "tel:+84777779459",
-    meta: "Direct Call",
-    phones: [
-      { label: "Line 1", number: "+84 777 779 459", href: "tel:+84777779459" },
-      { label: "Line 2", number: "+84 888 886 038", href: "tel:+84888886038" },
-    ],
+    secondaryHref: "tel:+84888886038",
+    badge: "Direct Call",
+    isPhone: true,
     iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
   },
   {
     label: "LinkedIn",
-    handle: "linkedin.com/in/phucloc",
-    description: "Career highlights, paid media experiments, marketing breakdowns, and professional networking.",
+    value: "linkedin.com/in/phucloc",
+    subtext: "Professional network & career updates",
     href: "https://www.linkedin.com/in/phucloc",
-    meta: "Professional",
+    badge: "Network",
+    isExternal: true,
     iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>`,
   },
 ];
 
-const platformLinks = [
+const publicChannels = [
   {
     label: "Instagram",
     handle: "@henrygoodkid",
-    description: "Everyday photography, travel frames, and lighter personal updates.",
+    desc: "Everyday photography & travel frames",
     href: "https://www.instagram.com/henrygoodkid",
-    category: "Social",
-    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`,
+    category: "Photos",
+    iconSvg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`,
   },
   {
     label: "X / Twitter",
     handle: "@vuaecom",
-    description: "Short thoughts on e-commerce CRO, growth tactics, tools, and AI workflows.",
+    desc: "E-commerce CRO, growth & AI workflows",
     href: "https://x.com/vuaecom",
-    category: "Social",
-    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>`,
+    category: "Notes",
+    iconSvg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>`,
   },
   {
     label: "Pexels",
     handle: "@henrygoodkid",
-    description: "Public photo archive with free high-resolution visual assets.",
+    desc: "Free high-res photography archive",
     href: "https://www.pexels.com/@henrygoodkid",
-    category: "Creative",
-    iconSvg: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`,
+    category: "Archive",
+    iconSvg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`,
   },
 ];
 
-const siteDestinations = [
+const sitePages = [
   {
     label: "Selected Work",
     handle: "/work",
-    description: "Case studies across paid ads, SEO, TikTok Shop scaling, and headless web builds.",
+    desc: "Performance marketing & tech case studies",
     href: "/work",
-    category: "Portfolio",
+    category: "Work",
     Icon: Folder,
   },
   {
     label: "Writing & Notes",
     handle: "/blog",
-    description: "Articles on performance marketing frameworks, automation, and web execution.",
+    desc: "Performance frameworks & marketing guides",
     href: "/blog",
-    category: "Editorial",
+    category: "Blog",
     Icon: BookOpen,
   },
   {
     label: "Photo Gallery",
     handle: "/photos",
-    description: "Landscape, street, and nature photography from locations across Vietnam.",
+    desc: "Landscape & street photography collection",
     href: "/photos",
     category: "Visuals",
     Icon: Camera,
@@ -107,165 +108,146 @@ const siteDestinations = [
   <main class="gear-page social-page">
     <div class="gear-container social-container">
       
-      <!-- HERO HEADER -->
-      <section class="gear-hero social-hero toki-r t-stagger" data-d="1" aria-label="Social links introduction">
-        <div class="status-pill-wrapper t-stagger-line t-stagger-line--1">
+      <!-- COMPACT HERO HEADER -->
+      <section class="social-hero" aria-label="Social links introduction">
+        <div class="status-pill-wrapper">
           <span class="status-dot"></span>
-          <span class="status-text t-shimmer" data-text="Available for consulting & growth projects">Available for consulting & growth projects</span>
+          <span class="status-text">Available for consulting & growth projects</span>
         </div>
 
-        <h1 class="social-hero-title t-stagger-line t-stagger-line--2">
+        <h1 class="social-hero-title">
           Let’s connect & <em>collaborate.</em>
         </h1>
-        <p class="social-intro t-stagger-line t-stagger-line--3">
-          Whether you're scaling acquisition, optimizing conversion funnels, or engineering a fast web build—reach out directly or follow along on public channels.
+        <p class="social-intro">
+          Direct channels for inquiries, performance marketing partnerships, and public social feeds.
         </p>
       </section>
 
-      <!-- PRIMARY CONTACT CARDS (Email, Phone, LinkedIn) -->
-      <section class="social-primary toki-r" data-d="2" aria-label="Primary contact channels">
-        {primaryLinks.map((link) => (
-          <div class="social-card social-card--primary t-tilt">
-            <div class="t-tilt-card p-6 flex flex-col justify-between h-full">
-              <div class="card-top">
-                <div class="card-badge">
-                  <Fragment set:html={link.iconSvg} />
-                  <span>{link.meta}</span>
+      <!-- STREAMLINED DIRECT CONTACT (3 Compact Cards) -->
+      <section class="social-direct-section" aria-label="Direct contact channels">
+        <div class="social-direct-grid">
+          {directContacts.map((c) => (
+            <div class="contact-card">
+              <div class="contact-card-top">
+                <div class="contact-badge">
+                  <Fragment set:html={c.iconSvg} />
+                  <span>{c.badge}</span>
                 </div>
-                <a 
-                  href={link.href}
-                  target={link.href.startsWith("http") ? "_blank" : undefined}
-                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  class="card-arrow-link"
-                  aria-label={`Open ${link.label}`}
-                >
-                  <ArrowUpRight size={22} strokeWidth={2} aria-hidden="true" />
-                </a>
+                {c.isPhone ? (
+                  <a href={c.href} class="contact-arrow-btn" aria-label={`Call ${c.value}`}>
+                    <ArrowUpRight size={16} strokeWidth={2} />
+                  </a>
+                ) : (
+                  <a
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    class="contact-arrow-btn"
+                    aria-label={`Open ${c.label}`}
+                  >
+                    <ArrowUpRight size={16} strokeWidth={2} />
+                  </a>
+                )}
               </div>
 
-              <div class="card-body my-4">
-                <a 
-                  href={link.href}
-                  target={link.href.startsWith("http") ? "_blank" : undefined}
-                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  class="card-title-link"
-                >
-                  <h2 class="card-title">{link.label}</h2>
-                </a>
-
-                {link.phones ? (
-                  <div class="phone-number-list flex flex-col gap-1 my-1.5">
-                    {link.phones.map((p) => (
-                      <a href={p.href} class="card-handle hover:text-accent transition-colors inline-flex items-center gap-1.5 font-mono text-[13px]">
-                        <span>{p.number}</span>
-                      </a>
-                    ))}
+              <div class="contact-card-body">
+                <h2 class="contact-label">{c.label}</h2>
+                
+                {c.isPhone ? (
+                  <div class="contact-phone-links">
+                    <a href={c.href} class="contact-val-link">{c.value}</a>
+                    <span class="contact-phone-sep">·</span>
+                    <a href={c.secondaryHref} class="contact-val-link">{c.secondaryValue}</a>
                   </div>
                 ) : (
-                  <p class="card-handle">{link.handle}</p>
-                )}
-
-                <p class="card-desc">{link.description}</p>
-              </div>
-
-              <div class="card-footer">
-                {link.phones ? (
-                  <a 
-                    href="tel:+84777779459"
-                    class="card-action-btn t-learn"
+                  <a
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    class="contact-val-link"
                   >
-                    <span>Call +84 777 779 459</span>
-                    <span class="t-learn-chevron"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
-                  </a>
-                ) : (
-                  <a 
-                    href={link.href}
-                    target={link.href.startsWith("http") ? "_blank" : undefined}
-                    rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    class="card-action-btn t-learn"
-                  >
-                    <span>Connect on {link.label}</span>
-                    <span class="t-learn-chevron"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+                    {c.value}
                   </a>
                 )}
+                
+                <p class="contact-sub">{c.subtext}</p>
               </div>
             </div>
-          </div>
-        ))}
-      </section>
-
-      <!-- SOCIAL CHANNELS GRID -->
-      <section class="social-section toki-r" data-d="3" aria-label="Social networks">
-        <div class="section-head">
-          <div>
-            <span class="section-eyebrow">CHANNELS & PLATFORMS</span>
-            <h2 class="section-title">Public feeds & creative archives</h2>
-          </div>
-          <span class="section-count">{String(platformLinks.length).padStart(2, "0")}</span>
-        </div>
-
-        <div class="social-grid">
-          {platformLinks.map((item) => (
-            <a 
-              class="social-tile" 
-              href={item.href} 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <div class="tile-header">
-                <div class="tile-icon-box">
-                  <Fragment set:html={item.iconSvg} />
-                </div>
-                <span class="tile-category">{item.category}</span>
-              </div>
-
-              <div class="tile-content">
-                <h3 class="tile-title">{item.label}</h3>
-                <span class="tile-handle">{item.handle}</span>
-                <p class="tile-desc">{item.description}</p>
-              </div>
-
-              <div class="tile-footer">
-                <span class="tile-action">Visit profile</span>
-                <ArrowUpRight className="tile-arrow" size={16} strokeWidth={2} aria-hidden="true" />
-              </div>
-            </a>
           ))}
         </div>
       </section>
 
-      <!-- SITE DESTINATIONS -->
-      <section class="social-section site-section toki-r" data-d="4" aria-label="Explore the site">
-        <div class="section-head">
-          <div>
-            <span class="section-eyebrow">EXPLORE PORTFOLIO</span>
-            <h2 class="section-title">Case studies, essays & photography</h2>
+      <!-- STREAMLINED 2-COLUMN SECTION: PUBLIC FEEDS & SITE DESTINATIONS -->
+      <section class="social-grouped-section" aria-label="Links and destinations">
+        <div class="grouped-grid">
+          
+          <!-- Column 1: Public Channels -->
+          <div class="grouped-col">
+            <div class="grouped-head">
+              <span class="grouped-eyebrow">CHANNELS & FEEDS</span>
+              <span class="grouped-count">{String(publicChannels.length).padStart(2, "0")}</span>
+            </div>
+
+            <div class="grouped-list">
+              {publicChannels.map((item) => (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="stream-tile"
+                >
+                  <div class="stream-tile-left">
+                    <div class="stream-icon-box">
+                      <Fragment set:html={item.iconSvg} />
+                    </div>
+                    <div class="stream-text">
+                      <div class="stream-title-row">
+                        <span class="stream-title">{item.label}</span>
+                        <span class="stream-tag">{item.category}</span>
+                      </div>
+                      <span class="stream-handle">{item.handle}</span>
+                    </div>
+                  </div>
+
+                  <div class="stream-arrow">
+                    <ArrowUpRight size={15} strokeWidth={2} />
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
-          <span class="section-count">{String(siteDestinations.length).padStart(2, "0")}</span>
-        </div>
 
-        <div class="social-grid">
-          {siteDestinations.map((item) => (
-            <a class="social-tile" href={item.href}>
-              <div class="tile-header">
-                <div class="tile-icon-box">
-                  <item.Icon size={18} strokeWidth={1.8} aria-hidden="true" />
-                </div>
-                <span class="tile-category">{item.category}</span>
-              </div>
+          <!-- Column 2: Portfolio Links -->
+          <div class="grouped-col">
+            <div class="grouped-head">
+              <span class="grouped-eyebrow">EXPLORE SITE</span>
+              <span class="grouped-count">{String(sitePages.length).padStart(2, "0")}</span>
+            </div>
 
-              <div class="tile-content">
-                <h3 class="tile-title">{item.label}</h3>
-                <span class="tile-handle">{item.handle}</span>
-                <p class="tile-desc">{item.description}</p>
-              </div>
+            <div class="grouped-list">
+              {sitePages.map((item) => (
+                <a href={item.href} class="stream-tile">
+                  <div class="stream-tile-left">
+                    <div class="stream-icon-box">
+                      <item.Icon size={16} strokeWidth={1.8} />
+                    </div>
+                    <div class="stream-text">
+                      <div class="stream-title-row">
+                        <span class="stream-title">{item.label}</span>
+                        <span class="stream-tag">{item.category}</span>
+                      </div>
+                      <span class="stream-handle">{item.handle}</span>
+                    </div>
+                  </div>
 
-              <div class="tile-footer">
-                <span class="tile-action">Explore page</span>
-                <ArrowRight className="tile-arrow" size={16} strokeWidth={2} aria-hidden="true" />
-              </div>
-            </a>
-          ))}
+                  <div class="stream-arrow">
+                    <ArrowRight size={15} strokeWidth={2} />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -274,49 +256,39 @@ const siteDestinations = [
 </Layout>
 
 <style>
-  /* ── PAGE LAYOUT & BACKGROUND ── */
   .social-page {
-    background:
-      radial-gradient(circle at 82% 10%, rgba(0, 117, 222, 0.06), transparent 32rem),
-      radial-gradient(circle at 18% 50%, rgba(0, 117, 222, 0.03), transparent 24rem),
-      var(--bg);
-    min-height: 85vh;
+    min-height: 80vh;
   }
 
   .social-container {
-    padding-top: var(--space-8);
-    padding-bottom: var(--space-11);
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-10);
+    max-width: 980px;
+    margin: 0 auto;
   }
 
-  /* ── HERO HEADER ── */
+  /* ── COMPACT HERO ── */
   .social-hero {
-    margin-bottom: clamp(40px, 6vw, 64px);
+    margin-bottom: clamp(32px, 5vw, 48px);
   }
 
   .status-pill-wrapper {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
+    gap: 7px;
+    padding: 5px 12px;
     border-radius: 9999px;
     background: color-mix(in srgb, var(--bg) 92%, #ffffff);
     border: 1px solid var(--divider);
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    margin-bottom: 16px;
   }
 
   .status-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #10b981;
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-    animation: statusPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes statusPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(0.9); }
   }
 
   .status-text {
@@ -324,18 +296,18 @@ const siteDestinations = [
     font-size: 11px !important;
     font-weight: 600;
     color: var(--muted);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   .social-hero-title {
     font-family: var(--serif);
-    font-size: clamp(40px, 6.5vw, 76px) !important;
+    font-size: clamp(36px, 5vw, 56px) !important;
     font-weight: 400 !important;
-    line-height: 1.05 !important;
+    line-height: 1.08 !important;
     color: var(--text);
     letter-spacing: -0.02em;
-    margin: 0 0 16px;
+    margin: 0 0 10px;
     text-wrap: balance;
   }
 
@@ -347,324 +319,291 @@ const siteDestinations = [
   .social-intro {
     font-family: var(--sans);
     font-size: 14px !important;
-    line-height: 1.65;
+    line-height: 1.6;
     color: var(--muted);
-    max-width: 580px;
+    max-width: 520px;
     margin: 0;
   }
 
-  /* ── PRIMARY CARDS GRID ── */
-  .social-primary {
+  /* ── DIRECT CONTACT 3-CARD GRID ── */
+  .social-direct-section {
+    margin-bottom: clamp(36px, 5vw, 52px);
+  }
+
+  .social-direct-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-    margin-bottom: clamp(56px, 8vw, 88px);
+    gap: 16px;
   }
 
-  @media (max-width: 1024px) {
-    .social-primary {
-      grid-template-columns: 1fr;
-      gap: 18px;
-    }
-  }
-
-  .social-card--primary {
+  .contact-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 320px;
     background: color-mix(in srgb, var(--bg) 95%, #ffffff);
     border: 1px solid var(--divider);
-    border-radius: var(--rounded-lg);
-    padding: 32px 28px;
-    position: relative;
-    transition: transform 0.28s var(--spring), border-color 0.28s ease, box-shadow 0.28s ease, opacity 0.28s ease, filter 0.28s ease;
+    border-radius: 8px;
+    padding: 18px 18px;
+    transition: transform 0.22s var(--spring), border-color 0.22s ease, box-shadow 0.22s ease;
   }
 
-  .social-card--primary:hover {
-    transform: translateY(-4px);
+  .contact-card:hover {
+    transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--accent) 50%, var(--divider));
-    box-shadow: 0 16px 36px -10px rgba(0, 117, 222, 0.08);
+    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.06);
   }
 
-
-
-  .card-top {
+  .contact-card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
   }
 
-  .card-badge {
+  .contact-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 12px;
+    padding: 4px 10px;
     border-radius: 9999px;
     background: color-mix(in srgb, var(--accent) 10%, #ffffff);
-    border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
     color: var(--accent);
     font-family: var(--mono);
     font-size: 11px !important;
     font-weight: 600;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 
-  .card-arrow-link {
+  .contact-arrow-btn {
     display: grid;
     place-items: center;
-    width: 38px;
-    height: 38px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--bg) 80%, #ffffff);
+    background: color-mix(in srgb, var(--bg) 85%, #ffffff);
     border: 1px solid var(--divider);
-    color: var(--text);
-    transition: all 0.22s ease;
+    color: var(--muted);
+    text-decoration: none;
+    transition: all 0.2s ease;
   }
 
-  .social-card--primary:hover .card-arrow-link {
+  .contact-card:hover .contact-arrow-btn {
     background: var(--text);
     color: var(--bg);
     border-color: var(--text);
-    transform: translate(2px, -2px);
+    transform: translate(1px, -1px);
   }
 
-  .card-title-link {
-    text-decoration: none;
-    color: inherit;
+  .contact-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
-  .card-title {
+  .contact-label {
     font-family: var(--serif);
-    font-size: clamp(38px, 4.5vw, 56px) !important;
+    font-size: 22px !important;
     font-weight: 400 !important;
-    line-height: 0.95 !important;
+    line-height: 1.2 !important;
     color: var(--text);
-    margin: 0 0 10px;
-    letter-spacing: -0.02em;
-  }
-
-  .card-handle {
-    font-family: var(--mono);
-    font-size: 12px !important;
-    font-weight: 500;
-    color: var(--accent);
-    margin: 0 0 12px;
-  }
-
-  .card-desc {
-    font-family: var(--sans);
-    font-size: 14px !important;
-    line-height: 1.6 !important;
-    color: var(--muted);
     margin: 0;
   }
 
-  .card-footer {
-    margin-top: 32px;
-    padding-top: 20px;
-    border-top: 1px solid var(--divider);
-  }
-
-  .card-action-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--sans);
+  .contact-val-link {
+    font-family: var(--mono);
     font-size: 13px !important;
-    font-weight: 600;
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .social-card--primary:hover .card-action-btn {
+    font-weight: 500;
     color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
   }
 
-  /* ── SECTION HEADERS & COUNTERS ── */
-  .social-section {
-    margin-bottom: clamp(48px, 7vw, 76px);
+  .contact-val-link:hover {
+    text-decoration: underline;
+    opacity: 0.85;
   }
 
-  .section-head {
+  .contact-phone-links {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .contact-phone-sep {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .contact-sub {
+    font-family: var(--sans);
+    font-size: 12px !important;
+    line-height: 1.45;
+    color: var(--muted);
+    margin: 2px 0 0;
+  }
+
+  /* ── GROUPED 2-COLUMN SECTION ── */
+  .social-grouped-section {
+    margin-bottom: var(--space-8);
+  }
+
+  .grouped-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .grouped-head {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
     border-bottom: 1px solid var(--divider);
   }
 
-  .section-eyebrow {
+  .grouped-eyebrow {
     font-family: var(--mono);
     font-size: 11px !important;
     font-weight: 600;
-    color: var(--accent);
+    color: var(--muted);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    display: block;
-    margin-bottom: 6px;
   }
 
-  .section-title {
-    font-family: var(--serif);
-    font-size: clamp(26px, 3vw, 36px) !important;
-    font-weight: 400 !important;
-    line-height: 1.1 !important;
-    color: var(--text);
-    margin: 0;
-  }
-
-  .section-count {
+  .grouped-count {
     font-family: var(--mono);
-    font-size: 14px !important;
-    font-weight: 500;
+    font-size: 12px !important;
     color: var(--muted);
   }
 
-  /* ── GRID OF PLATFORM & SITE TILES ── */
-  .social-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-  }
-
-  .social-tile {
+  .grouped-list {
     display: flex;
     flex-direction: column;
+    gap: 8px;
+  }
+
+  /* ── STREAMLINED TILES ── */
+  .stream-tile {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    background: color-mix(in srgb, var(--bg) 96%, #ffffff);
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--bg) 95%, #ffffff);
     border: 1px solid var(--divider);
-    border-radius: var(--rounded-md);
-    padding: 24px 20px;
     text-decoration: none;
     color: var(--text);
-    transition: transform 0.25s var(--spring), border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+    transition: transform 0.2s var(--spring), border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .social-tile:hover {
-    transform: translateY(-3px);
+  .stream-tile:hover {
+    transform: translateX(3px);
     background: #FFFFFF;
-    border-color: color-mix(in srgb, var(--accent) 40%, var(--divider));
-    box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.05);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--divider));
+    box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.04);
   }
 
-  /* Global sibling dimming across all channel cards on the page */
-  .social-container:has(.social-tile:hover, .social-card--primary:hover) .social-tile:not(:hover),
-  .social-container:has(.social-tile:hover, .social-card--primary:hover) .social-card--primary:not(:hover) {
-    opacity: 0.45;
-    filter: grayscale(0.6);
-  }
-
-  .tile-header {
+  .stream-tile-left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
+    gap: 12px;
+    min-width: 0;
   }
 
-  .tile-icon-box {
+  .stream-icon-box {
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     background: color-mix(in srgb, var(--accent) 8%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
     color: var(--accent);
+    flex-shrink: 0;
   }
 
-  .tile-category {
-    font-family: var(--mono);
-    font-size: 11px !important;
-    font-weight: 500;
-    color: var(--muted);
-    letter-spacing: 0.05em;
+  .stream-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
   }
 
-  .tile-content {
-    margin-bottom: 20px;
-  }
-
-  .tile-title {
-    font-family: var(--serif);
-    font-size: clamp(22px, 2.2vw, 26px) !important;
-    font-weight: 400 !important;
-    line-height: 1.15 !important;
-    color: var(--text);
-    margin: 0 0 4px;
-  }
-
-  .tile-handle {
-    display: block;
-    font-family: var(--mono);
-    font-size: 12px !important;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-
-  .tile-desc {
-    font-family: var(--sans);
-    font-size: 14px !important;
-    line-height: 1.55 !important;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  .tile-footer {
+  .stream-title-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-top: 14px;
-    border-top: 1px solid color-mix(in srgb, var(--divider) 70%, transparent);
+    gap: 6px;
   }
 
-  .tile-action {
+  .stream-title {
     font-family: var(--sans);
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 600;
-    color: var(--muted);
-    transition: color 0.2s ease;
+    color: var(--text);
+    line-height: 1.3;
   }
 
-  .tile-arrow {
+  .stream-tag {
+    font-family: var(--mono);
+    font-size: 10px !important;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+    color: var(--muted);
+  }
+
+  .stream-handle {
+    font-family: var(--mono);
+    font-size: 12px !important;
+    color: var(--muted);
+    line-height: 1.2;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stream-arrow {
+    display: grid;
+    place-items: center;
     color: var(--muted);
     transition: transform 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
   }
 
-  .social-tile:hover .tile-action {
-    color: var(--text);
-  }
-
-  .social-tile:hover .tile-arrow {
+  .stream-tile:hover .stream-arrow {
     color: var(--accent);
-    transform: translateX(3px);
+    transform: translateX(2px);
   }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 992px) {
-    .social-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (max-width: 860px) {
+    .social-direct-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .grouped-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
     }
   }
 
   @media (max-width: 640px) {
-    .social-primary {
-      grid-template-columns: 1fr;
-      gap: 16px;
+    .social-hero-title {
+      font-size: 34px !important;
     }
 
-    .social-card--primary {
-      min-height: auto;
-      padding: 24px 20px;
+    .contact-card {
+      padding: 14px 16px;
     }
 
-    .social-grid {
-      grid-template-columns: 1fr;
-      gap: 14px;
+    .stream-tile {
+      padding: 10px 12px;
     }
   }
 </style>
