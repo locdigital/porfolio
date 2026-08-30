@@ -411,8 +411,14 @@ const certificates = [
 
   @media (max-width: 480px) {
     .folder-grid {
-      grid-template-columns: 1fr;
-      grid-row-gap: 120px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 12px;
+      grid-row-gap: 130px;
+      padding-top: 24px;
+    }
+
+    .folder-wrapper {
+      max-width: 100%;
     }
   }
 
