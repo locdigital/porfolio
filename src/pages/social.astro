@@ -129,9 +129,8 @@ const sitePages = [
           {directContacts.map((c) => (
             <div class="contact-card">
               <div class="contact-card-top">
-                <div class="contact-badge">
+                <div class="contact-icon-box">
                   <Fragment set:html={c.iconSvg} />
-                  <span>{c.badge}</span>
                 </div>
                 {c.isPhone ? (
                   <a href={c.href} class="contact-arrow-btn" aria-label={`Call ${c.value}`}>
@@ -169,8 +168,6 @@ const sitePages = [
                     {c.value}
                   </a>
                 )}
-                
-                <p class="contact-sub">{c.subtext}</p>
               </div>
             </div>
           ))}
@@ -373,20 +370,15 @@ const sitePages = [
     margin-bottom: 12px;
   }
 
-  .contact-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--accent) 10%, #ffffff);
-    border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  .contact-icon-box {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
     color: var(--accent);
-    font-family: var(--mono);
-    font-size: 11px !important;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
   }
 
   .contact-arrow-btn {
