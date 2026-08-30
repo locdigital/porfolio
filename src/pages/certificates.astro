@@ -2,11 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import { absoluteUrl, pageSchema } from "../lib/seo";
 
-const pageTitle = "Certifications | Phuc Loc Nguyen";
+const pageTitle = "Certificates | Phuc Loc Nguyen";
 const pageDescription =
-  "Professional certifications and platform credentials earned by Phuc Loc Nguyen across Google, Meta, TikTok, HubSpot, and the marketing industry.";
+  "Professional certificates and platform credentials earned by Phuc Loc Nguyen across Google, Meta, TikTok, HubSpot, and the marketing industry.";
 
-const certifications = [
+const certificates = [
   {
     id: "google-ads-search",
     issuer: "Google",
@@ -154,7 +154,7 @@ const certifications = [
   title={pageTitle}
   description={pageDescription}
   schema={pageSchema({
-    url: absoluteUrl("/certifications"),
+    url: absoluteUrl("/certificates"),
     title: pageTitle,
     description: pageDescription,
     type: "WebPage",
@@ -168,16 +168,16 @@ const certifications = [
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">Credentials</span>
         </div>
-        <h1 class="gear-hero-title">Certifications</h1>
+        <h1 class="gear-hero-title">Certificates</h1>
         <p class="gear-intro">
-          A verified collection of professional marketing certifications and credentials. Click any folder to inspect official credentials.
+          A verified collection of professional marketing certificates and credentials. Click any folder to inspect official credentials.
         </p>
       </section>
 
       <!-- 5-COLUMN INTERACTIVE FOLDER GRID -->
-      <section class="cert-section" aria-label="Certifications">
+      <section class="cert-section" aria-label="Certificates">
         <div class="folder-grid">
-          {certifications.map((cert, index) => (
+          {certificates.map((cert, index) => (
             <div class="folder-item">
               <button
                 type="button"
@@ -363,9 +363,9 @@ const certifications = [
     </div>
   </div>
 
-  <!-- Raw Certification Data injected for Client Script -->
-  <script is:inline define:vars={{ certifications }}>
-    window.__CERTIFICATIONS_DATA__ = certifications;
+  <!-- Raw Certificate Data injected for Client Script -->
+  <script is:inline define:vars={{ certificates }}>
+    window.__CERTIFICATES_DATA__ = certificates;
   </script>
 </Layout>
 
@@ -1094,7 +1094,7 @@ const certifications = [
      ============================================================ -->
 <script>
   function setupCertModal() {
-    const certData = (window as any).__CERTIFICATIONS_DATA__ || [];
+    const certData = (window as any).__CERTIFICATES_DATA__ || [];
     const root = document.getElementById("cert-modal-root");
     const backdrop = document.getElementById("cert-modal-backdrop");
     const windowEl = document.getElementById("cert-modal-window");
