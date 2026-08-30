@@ -274,21 +274,26 @@ const certificates = [
             class="traffic-dot dot-close"
             title="Close Window (Esc)"
             aria-label="Close"
-          ></button>
-          <span class="traffic-dot dot-minimize"></span>
-          <span class="traffic-dot dot-expand"></span>
+          >
+            <svg class="dot-icon" viewBox="0 0 12 12" width="12" height="12" fill="none" aria-hidden="true">
+              <path d="M3.5 3.5L8.5 8.5M8.5 3.5L3.5 8.5" stroke="#4c0000" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <span class="traffic-dot dot-minimize">
+            <svg class="dot-icon" viewBox="0 0 12 12" width="12" height="12" fill="none" aria-hidden="true">
+              <path d="M2.5 6H9.5" stroke="#664600" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="traffic-dot dot-expand">
+            <svg class="dot-icon" viewBox="0 0 12 12" width="12" height="12" fill="none" aria-hidden="true">
+              <path d="M3 3.4C3 3.18 3.18 3 3.4 3H7.1C7.38 3 7.52 3.34 7.32 3.54L3.54 7.32C3.34 7.52 3 7.38 3 7.1V3.4Z" fill="#004d00"/>
+              <path d="M9 8.6C9 8.82 8.82 9 8.6 9H4.9C4.62 9 4.48 8.66 4.68 8.46L8.46 4.68C8.66 4.48 9 4.62 9 4.86V8.6Z" fill="#004d00"/>
+            </svg>
+          </span>
         </div>
         <div class="modal-titlebar-title">
           <span id="cert-modal-window-title">Certificate Details</span>
         </div>
-        <button
-          type="button"
-          id="cert-modal-close-btn"
-          class="modal-close-text-btn"
-          aria-label="Close modal"
-        >
-          Esc
-        </button>
       </div>
 
       <!-- Window Content Container (staggered fade-in) -->
@@ -819,21 +824,38 @@ const certificates = [
   }
 
   .traffic-dot {
-    width: 11px;
-    height: 11px;
+    position: relative;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    display: inline-block;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.5px solid rgba(0, 0, 0, 0.15);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .dot-icon {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 120ms ease;
+    pointer-events: none;
+  }
+
+  .modal-traffic-lights:hover .dot-icon {
+    opacity: 1;
   }
 
   .dot-close {
     background: #ff5f56;
     border-color: #e0443e;
     cursor: pointer;
-    padding: 0;
   }
   .dot-close:hover {
-    background: #e0443e;
+    background: #ff5f56;
   }
 
   .dot-minimize {
@@ -852,25 +874,6 @@ const certificates = [
     font-weight: 500;
     color: var(--muted);
     letter-spacing: -0.01em;
-  }
-
-  .modal-close-text-btn {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--muted);
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 4px;
-    padding: 2px 7px;
-    cursor: pointer;
-    line-height: 1;
-    transition: background 150ms ease, color 150ms ease;
-  }
-
-  .modal-close-text-btn:hover {
-    background: rgba(0, 0, 0, 0.09);
-    color: var(--text);
   }
 
   /* Content Stagger Fade Container */
