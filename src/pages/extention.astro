@@ -1,0 +1,91 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Download, Copy } from "lucide-react";
+
+export const prerender = true;
+
+const pageTitle = "Download Extension | Agent by Henry";
+const downloadUrl = "/downloads/workflow-extension.zip";
+---
+
+<Layout
+  title={pageTitle}
+  hideHeader={true}
+  hideFooter={true}
+>
+  <main class="min-h-screen flex items-center justify-center px-4 py-8 bg-[#FAF8EE]">
+    <div class="w-full max-w-sm bg-white border border-[#E5E5E0] rounded-xl p-6 shadow-sm font-medium text-[#1C1917]">
+      
+      <!-- TITLE & SUBTITLE -->
+      <h1 class="text-lg font-medium text-[#1C1917] tracking-tight mb-1 text-center">
+        Agent by Henry
+      </h1>
+      <p class="text-xs font-normal text-[#78716C] mb-5 text-center leading-relaxed">
+        Tiện ích mở rộng nội bộ hỗ trợ quy trình làm việc (Manifest V3)
+      </p>
+
+      <!-- DOWNLOAD BUTTON -->
+      <a 
+        href={downloadUrl} 
+        download="extension.zip"
+        class="flex items-center justify-center gap-2 w-full bg-[#1C1917] hover:bg-black text-white py-2.5 px-4 rounded-lg text-sm font-medium transition-colors mb-5"
+      >
+        <Download className="w-4 h-4" />
+        <span>Tải file ZIP</span>
+      </a>
+
+      <!-- INSTALL QUICK STEPS -->
+      <div class="border-t border-[#F0F0EB] pt-4">
+        <span class="text-[11px] uppercase tracking-wider text-[#A8A29E] font-medium block mb-2.5">
+          Hướng dẫn cài đặt
+        </span>
+        <ol class="space-y-2 text-xs font-normal text-[#57534E]">
+          <li class="flex items-start gap-1.5">
+            <span class="text-[#1C1917] font-medium">1.</span>
+            <span>Giải nén file ZIP.</span>
+          </li>
+          <li class="flex items-start gap-1.5">
+            <span class="text-[#1C1917] font-medium">2.</span>
+            <div class="flex-1">
+              <span>Mở tab mới vào:</span>
+              <div class="mt-1 flex items-center justify-between bg-[#F5F5F0] border border-[#E5E5E0] rounded px-2 py-1 font-mono text-[11px] text-[#1C1917]">
+                <span id="chrome-url">chrome://extensions</span>
+                <button type="button" id="copy-btn" class="text-[10px] text-[#78716C] hover:text-black flex items-center gap-1 font-sans">
+                  <Copy className="w-3 h-3" />
+                  <span id="copy-text">Copy</span>
+                </button>
+              </div>
+            </div>
+          </li>
+          <li class="flex items-start gap-1.5">
+            <span class="text-[#1C1917] font-medium">3.</span>
+            <span>Bật <strong>Developer mode</strong> &rarr; chọn <strong>Load unpacked</strong> &rarr; chọn thư mục vừa giải nén.</span>
+          </li>
+        </ol>
+      </div>
+
+    </div>
+  </main>
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const copyBtn = document.getElementById('copy-btn');
+    const copyText = document.getElementById('copy-text');
+    const chromeUrl = document.getElementById('chrome-url');
+
+    if (copyBtn && chromeUrl && copyText) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(chromeUrl.innerText.trim());
+          copyText.innerText = 'Đã chép!';
+          setTimeout(() => {
+            copyText.innerText = 'Copy';
+          }, 1500);
+        } catch (e) {
+          copyText.innerText = 'Lỗi';
+        }
+      });
+    }
+  });
+</script>

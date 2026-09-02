@@ -1,0 +1,407 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { absoluteUrl, pageSchema } from "../lib/seo";
+
+export const prerender = true;
+
+const resumePdfPath = "/Senior%20Porformance%20Marketing_NguyenPhucLoc_Resume.pdf";
+const pageTitle = "Resume V2 | Phuc Loc Nguyen";
+const pageDescription =
+  "A clean Harvard-style web resume for Phuc Loc Nguyen, Senior Performance Marketing Executive.";
+
+const contactLinks = [
+  { label: "loc.digital", href: "https://loc.digital/" },
+  { label: "hi@loc.digital", href: "mailto:hi@loc.digital" },
+  { label: "+84 888 886 038", href: "tel:+84888886038" },
+  { label: "linkedin.com/in/phucloc", href: "https://www.linkedin.com/in/phucloc" },
+];
+
+const experiences = [
+  {
+    company: "PlayAh! Vietnam",
+    role: "Performance Senior Executive",
+    period: "2024 — Present",
+    bullets: [
+      "Scaled TikTok Shop revenue from tens of millions to 1B+ VND per month by building KOC booking channels, paid media strategy, and shop operations.",
+      "Increased website revenue by 1,000% within 2 months through Google PMax, Search, TikTok Spark Ads, and Meta-to-Web funnels.",
+      "Built automated AI conversion flows on Facebook Fanpage, contributing to 300% Facebook revenue growth and faster response handling.",
+    ],
+  },
+  {
+    company: "WorkFlow Space",
+    role: "Digital Marketing Executive",
+    period: "2024 — Present",
+    bullets: [
+      "Owned full-funnel paid media for Go Vap and District 8 branch expansion across awareness, conversion, and retargeting campaigns.",
+      "Generated 5,000+ trial registrations for co-working spaces and pods while improving multi-channel conversion by 15%.",
+      "Worked with IT and Design to improve booking UX and test 100+ creative assets across Facebook and Google campaigns.",
+    ],
+  },
+  {
+    company: "TOMATO Children's Home",
+    role: "Digital Marketing Executive",
+    period: "2023 — 2024",
+    bullets: [
+      "Executed integrated Marketing 360 programs across social, landing pages, paid media, OOH, CRM, and lifecycle communication.",
+      "Scaled monthly student enrollment by approximately 3x while reducing cost per lead by 60% through funnel optimization.",
+      "Managed email automation for 40,000+ contacts with open rates above 60%.",
+    ],
+  },
+  {
+    company: "POPS Worldwide",
+    role: "Search Engine Optimization Executive",
+    period: "2022 — 2023",
+    bullets: [
+      "Built technical SEO roadmaps, competitor research, reporting dashboards, and cross-functional organic growth priorities.",
+      "Grew POPS Vietnam monthly active users 10x YoY to 2.5M through technical, content, and product SEO improvements.",
+      "Supported POPS Kids and POPS Kids Learn launches, adding 400,000 users in 6 months and 10,000+ new users in 4 months.",
+    ],
+  },
+  {
+    company: "Đại Học Đừng Học Đại & Đi Làm Đừng Đi Làm",
+    role: "Founding Member / Community Lead",
+    period: "2021 — Present",
+    bullets: [
+      "Co-founded education and career communities that help students and early-career talent choose schools, majors, and career paths.",
+      "Scaled two communities to approximately 3M and 1M members within 12 months through positioning and content strategy.",
+    ],
+  },
+];
+
+const skills = [
+  {
+    group: "Paid Media",
+    items: "Meta Ads, Google Ads, TikTok Ads, Performance Max, Search, Spark Ads, retargeting, budget allocation",
+  },
+  {
+    group: "Commerce & Growth",
+    items: "TikTok Shop, KOC booking, affiliate briefs, CRO, landing pages, creative testing, lifecycle funnels",
+  },
+  {
+    group: "Analytics",
+    items: "GA4, GTM, Looker Studio, attribution reporting, ROAS tracking, dashboarding, KPI design",
+  },
+  {
+    group: "SEO & Automation",
+    items: "Technical SEO, content SEO, Ahrefs, SEMrush, n8n, AI sales personas, email automation",
+  },
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  hideHeader={true}
+  hideFooter={true}
+  schema={pageSchema({
+    url: absoluteUrl("/resume-v2"),
+    title: pageTitle,
+    description: pageDescription,
+    type: "ProfilePage",
+  })}
+>
+  <main class="resume-v2" aria-labelledby="resume-title">
+    <div class="resume-toolbar" aria-label="Resume actions">
+      <a href="/">Back to portfolio</a>
+      <a href={resumePdfPath} target="_blank" rel="noopener noreferrer">Open PDF</a>
+    </div>
+
+    <article class="resume-sheet">
+      <header class="resume-header">
+        <h1 id="resume-title">Phuc Loc Nguyen</h1>
+        <p>Senior Performance Marketing Executive</p>
+        <nav aria-label="Contact links">
+          {contactLinks.map((link, index) => (
+            <>
+              <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}>
+                {link.label}
+              </a>
+              {index < contactLinks.length - 1 && <span aria-hidden="true">|</span>}
+            </>
+          ))}
+        </nav>
+      </header>
+
+      <section class="resume-section" aria-labelledby="summary-title">
+        <h2 id="summary-title">Professional Summary</h2>
+        <p>
+          Performance marketer based in Ho Chi Minh City with experience scaling paid acquisition, TikTok Shop revenue, SEO growth, and automation systems across e-commerce, education, community, and entertainment products. Strong in connecting channel strategy, creative testing, analytics, and funnel operations to measurable revenue outcomes.
+        </p>
+      </section>
+
+      <section class="resume-section" aria-labelledby="education-title">
+        <h2 id="education-title">Education</h2>
+        <div class="resume-row">
+          <div>
+            <h3>FPT University</h3>
+            <p>Bachelor of Digital Marketing; Honors; GPA 9.4/10</p>
+          </div>
+          <span>Ho Chi Minh City</span>
+        </div>
+        <div class="resume-row">
+          <div>
+            <h3>Google Digital Marketing Specialization</h3>
+            <p>Professional certificate issued by Google</p>
+          </div>
+          <span>2022</span>
+        </div>
+      </section>
+
+      <section class="resume-section" aria-labelledby="experience-title">
+        <h2 id="experience-title">Professional Experience</h2>
+        <div class="resume-experience-list">
+          {experiences.map((experience) => (
+            <section class="resume-experience" aria-label={`${experience.role} at ${experience.company}`}>
+              <div class="resume-row resume-row--role">
+                <div>
+                  <h3>{experience.company}</h3>
+                  <p>{experience.role}</p>
+                </div>
+                <span>{experience.period}</span>
+              </div>
+              <ul>
+                {experience.bullets.map((bullet) => <li>{bullet}</li>)}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section class="resume-section" aria-labelledby="skills-title">
+        <h2 id="skills-title">Skills</h2>
+        <div class="resume-skills">
+          {skills.map((skill) => (
+            <p><span>{skill.group}:</span> {skill.items}</p>
+          ))}
+        </div>
+      </section>
+
+      <section class="resume-section" aria-labelledby="selected-impact-title">
+        <h2 id="selected-impact-title">Selected Impact</h2>
+        <ul class="resume-impact">
+          <li>Scaled TikTok Shop revenue to 1B+ VND monthly.</li>
+          <li>Generated 5,000+ trial registrations for WorkFlow Space branch launches.</li>
+          <li>Grew education and career communities to 4M+ combined members.</li>
+          <li>Scaled POPS Vietnam monthly active users 10x YoY to 2.5M.</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .resume-v2 {
+    --resume-ink: #171717;
+    --resume-muted: #4f4f4a;
+    --resume-line: #d9d6cc;
+    --resume-paper: #fffdf8;
+    min-height: 100vh;
+    padding: clamp(20px, 4vw, 48px) var(--page-gutter) clamp(48px, 7vw, 88px);
+    color: var(--resume-ink);
+    background: #f7f3e8;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.52;
+  }
+
+  .resume-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(100%, 880px);
+    margin: 0 auto 14px;
+    font-size: 13px;
+  }
+
+  .resume-toolbar a,
+  .resume-header a {
+    color: var(--resume-ink);
+    font-weight: 500;
+    text-decoration-color: rgba(23, 23, 23, 0.28);
+    text-underline-offset: 3px;
+  }
+
+  .resume-sheet {
+    width: min(100%, 880px);
+    margin: 0 auto;
+    padding: clamp(28px, 5vw, 54px);
+    border: 1px solid var(--resume-line);
+    background: var(--resume-paper);
+    box-shadow: 0 18px 52px rgba(31, 25, 14, 0.08);
+  }
+
+  .resume-header {
+    padding-bottom: 18px;
+    text-align: center;
+  }
+
+  .resume-header h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(2.35rem, 5vw, 3.65rem);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.018em;
+  }
+
+  .resume-header p {
+    margin: 8px 0 9px;
+    color: var(--resume-ink);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .resume-header nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 9px;
+    color: var(--resume-muted);
+    font-size: 12.5px;
+  }
+
+  .resume-section {
+    padding-top: 16px;
+  }
+
+  .resume-section h2 {
+    margin: 0 0 9px;
+    border-bottom: 1px solid var(--resume-ink);
+    padding-bottom: 3px;
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  .resume-section p,
+  .resume-section li {
+    color: var(--resume-muted);
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .resume-section > p {
+    margin: 0;
+  }
+
+  .resume-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: start;
+    margin-top: 9px;
+  }
+
+  .resume-row h3 {
+    margin: 0;
+    color: var(--resume-ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .resume-row p {
+    margin: 1px 0 0;
+  }
+
+  .resume-row > span {
+    color: var(--resume-ink);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .resume-row--role {
+    margin-top: 0;
+  }
+
+  .resume-row--role p {
+    color: var(--resume-ink);
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .resume-experience-list {
+    display: grid;
+    gap: 13px;
+  }
+
+  .resume-experience ul,
+  .resume-impact {
+    display: grid;
+    gap: 4px;
+    margin: 6px 0 0;
+    padding-left: 18px;
+  }
+
+  .resume-experience li,
+  .resume-impact li {
+    padding-left: 2px;
+  }
+
+  .resume-skills {
+    display: grid;
+    gap: 5px;
+  }
+
+  .resume-skills p {
+    margin: 0;
+  }
+
+  .resume-skills span {
+    color: var(--resume-ink);
+    font-weight: 500;
+  }
+
+  @media (max-width: 680px) {
+    .resume-v2 {
+      padding-inline: 12px;
+      background: var(--resume-paper);
+    }
+
+    .resume-sheet {
+      padding: 24px 18px 36px;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .resume-toolbar {
+      padding-inline: 6px;
+    }
+
+    .resume-row {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+
+    .resume-row > span {
+      text-align: left;
+      white-space: normal;
+    }
+  }
+
+  @media print {
+    .resume-v2 {
+      padding: 0;
+      background: #fff;
+    }
+
+    .resume-toolbar {
+      display: none;
+    }
+
+    .resume-sheet {
+      width: 100%;
+      max-width: none;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      background: #fff;
+    }
+  }
+</style>

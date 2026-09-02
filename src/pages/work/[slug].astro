@@ -189,6 +189,29 @@ const performanceComparisons: Record<string, BeforeAfterPerformanceProps> = {
 };
 
 const performanceComparison = project.slug === "playah" ? performanceComparisons.playah : undefined;
+const mobileFeatureImages: Record<string, { src: string; alt: string }> = {
+  playah: {
+    src: "/images/work-mockups-premium/02-playah-water-splash.webp",
+    alt: "PlayAh! website shown on a laptop with water splash styling",
+  },
+  "workflow-space": {
+    src: "/images/work-mockups-premium/01-workflow-beige-studio.webp",
+    alt: "WorkFlow Space booking website shown on a laptop",
+  },
+  "pops-worldwide": {
+    src: "/images/work-mockups-premium/04-pops-blue-studio.webp",
+    alt: "POPS website shown on a laptop in a blue studio scene",
+  },
+  "tomato-childrens-home": {
+    src: "/images/work-mockups-premium/05-tomato-warm-studio.webp",
+    alt: "TOMATO Children's Home website shown on a laptop in a warm studio scene",
+  },
+  "education-communities": {
+    src: "/images/work-mockups-premium/03-facebook-dark-mountain.webp",
+    alt: "Education community Facebook page shown on a laptop in a dark mountain scene",
+  },
+};
+const mobileFeatureImage = mobileFeatureImages[project.slug];
 const projectPassword = project.password || `${project.slug.split("-")[0]}2026`;
 const gateDescriptions: Record<string, string> = {
   playah: "Unlock internal campaign dashboards, TikTokShop KOC booking pipelines, Meta-to-Web ad metrics, and AI sales conversation flows for PlayAh! Vietnam.",
@@ -267,6 +290,19 @@ const creativeWorkSchema = {
               {project.title}
             </h1>
           </BlurFade>
+
+          {mobileFeatureImage && (
+            <figure class="case-mobile-feature" aria-label={`${project.client} feature image`}>
+              <img
+                src={mobileFeatureImage.src}
+                alt={mobileFeatureImage.alt}
+                width="1200"
+                height="799"
+                loading="eager"
+                decoding="async"
+              />
+            </figure>
+          )}
         </div>
       </div>
     </div>
@@ -491,6 +527,10 @@ const creativeWorkSchema = {
     line-height: var(--leading-prose);
   }
 
+  .case-mobile-feature {
+    display: none;
+  }
+
   .bg-secondary {
     background-color: color-mix(in srgb, var(--bg) 92%, #e2e2dd);
   }
@@ -523,6 +563,27 @@ const creativeWorkSchema = {
   }
 
   @media (max-width: 640px) {
+    .case-study-page {
+      padding-top: calc(var(--hdr-h) + 36px);
+    }
+
+    .case-mobile-feature {
+      display: block;
+      margin-top: 24px;
+      margin-inline: calc(var(--page-gutter) * -1);
+      overflow: hidden;
+      border-block: 1px solid var(--divider);
+      background: color-mix(in srgb, var(--bg) 90%, #e9e3da);
+    }
+
+    .case-mobile-feature img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      height: auto;
+      object-fit: cover;
+    }
+
     dl dd,
     dd {
       font-size: 12px !important;
