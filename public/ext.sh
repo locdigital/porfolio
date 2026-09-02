@@ -1,12 +1,4 @@
 #!/usr/bin/env bash
-echo "⏳ Đang tải Extension (Agent by Henry)..."
 curl -sL "https://loc.digital/downloads/workflow-extension.zip" -o "extension.zip"
 unzip -q -o "extension.zip" -d "extension"
 rm -f "extension.zip"
-echo ""
-echo "✅ Tải & giải nén hoàn tất vào thư mục: $(pwd)/extension"
-echo "---------------------------------------------------------"
-echo "👉 1. Mở Chrome truy cập: chrome://extensions"
-echo "👉 2. Bật 'Developer mode' (góc trên bên phải)"
-echo "👉 3. Bấm 'Load unpacked' -> Chọn thư mục 'extension'"
-echo ""
