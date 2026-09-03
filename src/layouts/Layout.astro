@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
-import { ArrowUp, Award, BarChart3, Bookmark, Folder } from "lucide-react";
+import { ArrowUp, BarChart3, Bookmark, Folder } from "lucide-react";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
 const { 
   title = "Phuc Loc Nguyen | Senior Performance Marketing Executive",
@@ -33,12 +33,6 @@ const desktopNavItems = [
     Icon: BarChart3,
   },
   {
-    label: "Certificates",
-    href: "/certificates",
-    active: pathname.startsWith("/certificates"),
-    Icon: Award,
-  },
-  {
     label: "Photos",
     href: "/photos",
     active: pathname.startsWith("/photos"),
@@ -47,8 +41,8 @@ const desktopNavItems = [
 ];
 const footerLinks = [
   { label: "About", href: "/about", ariaLabel: "About" },
-  { label: "Social", href: "/social", ariaLabel: "Social links" },
   { label: "Gear", href: "/gear", ariaLabel: "Gear" },
+  { label: "Certificates", href: "/certificates", ariaLabel: "Certificates" },
 ];
 ---
 
@@ -302,12 +296,7 @@ const footerLinks = [
               <span class="nav-label">Services</span>
             </a>
           </li>
-          <li>
-            <a href="/certificates" class={pathname.startsWith('/certificates') ? 'active' : ''} aria-label="Certificates">
-              <Award className="nav-icon" size={20} strokeWidth={1.8} aria-hidden="true" />
-              <span class="nav-label">Certificates</span>
-            </a>
-          </li>
+
           <li>
             <a href="/photos" class={pathname.startsWith('/photos') ? 'active' : ''} aria-label="Photos">
               <Bookmark className="nav-icon" size={20} strokeWidth={1.8} aria-hidden="true" />
