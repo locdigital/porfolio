@@ -1088,19 +1088,6 @@ const certificates = [
     background: #0066c8;
   }
 
-  /* Reduced Motion Support */
-  @media (prefers-reduced-motion: reduce) {
-    .folder-card,
-    .folder-front,
-    .folder-paper-secondary,
-    .folder-floor-shadow,
-    .cert-modal-window,
-    .cert-modal-backdrop,
-    .modal-content {
-      transition: none !important;
-      animation: none !important;
-    }
-  }
 </style>
 
 <!-- ============================================================
@@ -1140,8 +1127,8 @@ const certificates = [
     let isAnimating = false;
     let isOpen = false;
 
-    // Check prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Force animations enabled
+    const prefersReducedMotion = false;
 
     function populateData(cert: any) {
       if (!cert) return;

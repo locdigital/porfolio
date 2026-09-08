@@ -61,7 +61,7 @@ const mobileFeatureImages: Record<string, { src: string; alt: string }> = {
     <div class="gear-container">
 
       <!-- PAGE HERO -->
-      <section class="gear-hero work-hero" aria-label="My work">
+      <section class="gear-hero work-hero about-reveal-hero toki-r" data-d="1" aria-label="My work">
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">My work</span>
         </div>
@@ -75,9 +75,9 @@ const mobileFeatureImages: Record<string, { src: string; alt: string }> = {
 
 
       <!-- Project List -->
-      <div class="project-list">
-        {sortedProjects.map((project) => (
-          <article class="project-row">
+      <div class="project-list reveal-group">
+        {sortedProjects.map((project, index) => (
+          <article class="project-row r" data-d={String((index % 5) + 1)}>
             <div class:list={["project-row-inner", !project.coverImage && "project-row-inner--text-only"]}>
 
               <!-- Left: text -->

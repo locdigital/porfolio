@@ -417,12 +417,4 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
       width: 100%;
     }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .showcase-pass-gate-button,
-    .showcase-pass-gate-reveal {
-      animation: none;
-      transition: none;
-    }
-  }
 </style>

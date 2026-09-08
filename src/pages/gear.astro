@@ -177,7 +177,7 @@ const safeGearHeadline = gearHeadline
 >
   <main class="gear-page">
     <div class="gear-container">
-      <section class="gear-hero" aria-label="My Gear introduction">
+      <section class="gear-hero about-reveal-hero toki-r" data-d="1" aria-label="My Gear introduction">
         <div class="page-kicker-wrapper">
           <span class="page-kicker-text">{gearTitle}</span>
         </div>
@@ -193,7 +193,7 @@ const safeGearHeadline = gearHeadline
 
 
       {gearSections.map((section, sectionIndex) => (
-        <section class="gear-section" id={section.slug}>
+        <section class="gear-section toki-r" data-d={String((sectionIndex % 4) + 1)} id={section.slug}>
           <div class="gear-section-head">
             <div>
               <h2>{section.title}</h2>

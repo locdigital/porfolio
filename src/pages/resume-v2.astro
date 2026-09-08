@@ -21,6 +21,8 @@ const experiences = [
     company: "PlayAh! Vietnam",
     role: "Performance Senior Executive",
     period: "2024 — Present",
+    roleDescription:
+      "Own multi-channel performance growth across TikTok Shop, website, Meta, Google, and AI-assisted sales funnels, turning creator supply, creative testing, and media buying into scalable revenue.",
     bullets: [
       "Scaled TikTok Shop revenue from tens of millions to 1B+ VND per month by building KOC booking channels, paid media strategy, and shop operations.",
       "Increased website revenue by 1,000% within 2 months through Google PMax, Search, TikTok Spark Ads, and Meta-to-Web funnels.",
@@ -31,6 +33,8 @@ const experiences = [
     company: "WorkFlow Space",
     role: "Digital Marketing Executive",
     period: "2024 — Present",
+    roleDescription:
+      "Lead branch-launch acquisition for co-working spaces and private pods, covering paid media, landing pages, booking UX, creative testing, and reporting.",
     bullets: [
       "Owned full-funnel paid media for Go Vap and District 8 branch expansion across awareness, conversion, and retargeting campaigns.",
       "Generated 5,000+ trial registrations for co-working spaces and pods while improving multi-channel conversion by 15%.",
@@ -41,6 +45,8 @@ const experiences = [
     company: "TOMATO Children's Home",
     role: "Digital Marketing Executive",
     period: "2023 — 2024",
+    roleDescription:
+      "Manage integrated enrollment marketing across paid media, social, landing pages, OOH, CRM, and email automation for early childhood education.",
     bullets: [
       "Executed integrated Marketing 360 programs across social, landing pages, paid media, OOH, CRM, and lifecycle communication.",
       "Scaled monthly student enrollment by approximately 3x while reducing cost per lead by 60% through funnel optimization.",
@@ -51,6 +57,8 @@ const experiences = [
     company: "POPS Worldwide",
     role: "Search Engine Optimization Executive",
     period: "2022 — 2023",
+    roleDescription:
+      "Lead technical and product SEO execution across POPS Vietnam, POPS Kids, and POPS Kids Learn, coordinating with data, product, and engineering teams.",
     bullets: [
       "Built technical SEO roadmaps, competitor research, reporting dashboards, and cross-functional organic growth priorities.",
       "Grew POPS Vietnam monthly active users 10x YoY to 2.5M through technical, content, and product SEO improvements.",
@@ -61,6 +69,8 @@ const experiences = [
     company: "Đại Học Đừng Học Đại & Đi Làm Đừng Đi Làm",
     role: "Founding Member / Community Lead",
     period: "2021 — Present",
+    roleDescription:
+      "Co-build education and career communities that translate student questions into content systems, guidance formats, and audience growth loops.",
     bullets: [
       "Co-founded education and career communities that help students and early-career talent choose schools, majors, and career paths.",
       "Scaled two communities to approximately 3M and 1M members within 12 months through positioning and content strategy.",
@@ -159,6 +169,7 @@ const skills = [
                 </div>
                 <span>{experience.period}</span>
               </div>
+              <p class="resume-role-description">{experience.roleDescription}</p>
               <ul>
                 {experience.bullets.map((bullet) => <li>{bullet}</li>)}
               </ul>
@@ -324,6 +335,12 @@ const skills = [
     color: var(--resume-ink);
     font-weight: 400;
     font-style: italic;
+  }
+
+  .resume-role-description {
+    max-width: 72ch;
+    margin: 4px 0 0;
+    text-wrap: pretty;
   }
 
   .resume-experience-list {

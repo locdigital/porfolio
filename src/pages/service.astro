@@ -569,7 +569,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     if (serviceStackScroller) {
       const serviceCards = Array.from(serviceStackScroller.querySelectorAll('[data-service-card]'));
       const serviceDots = Array.from(document.querySelectorAll('[data-service-dot]'));
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const reducedMotion = { matches: false, addEventListener: () => {} };
       const autoplayDelay = 4000;
       let activeServiceIndex = 0;
       let autoplayTimer = 0;
@@ -1078,11 +1078,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     animation: service-pagination-progress 4000ms linear forwards;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .saas-pagination-dot.active::after {
-      animation-duration: 4000ms !important;
-    }
-  }
 
   .saas-pagination-dot.active.paused::after {
     animation-play-state: paused;

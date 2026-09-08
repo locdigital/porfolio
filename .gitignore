@@ -21,6 +21,10 @@ _local/
 g/
 g.zip
 Go Vap 1 - 9m5 v2/
+*.docx
+*.xlsx
+/*.pdf
+/avt.png
 
 # Local agent/git stores
 git_store.nosync/

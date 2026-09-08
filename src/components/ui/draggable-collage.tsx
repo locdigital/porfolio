@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useVelocity, useTransform } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from 'lucide-react';
 
@@ -51,12 +51,17 @@ function DraggableCard({
 }: CardProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = false;
   const { x: initialX = 0, y: initialY = 0, ...restStyle } = style as React.CSSProperties & {
     x?: number;
     y?: number;
   };
-  const rotate = initialRotate;
+  
+  const xVelocity = useVelocity(x);
+  const rotateVelocity = useTransform(xVelocity, [-3000, 3000], [-20, 20]);
+  const rotateSpring = useSpring(rotateVelocity, { damping: 20, stiffness: 120 });
+  const dynamicRotate = useTransform(rotateSpring, (v) => v + initialRotate);
+  const rotate = shouldReduceMotion ? initialRotate : dynamicRotate;
   
   // Track dragging state to prevent link clicking during drag
   const isDraggingRef = useRef(false);
@@ -70,8 +75,8 @@ function DraggableCard({
     <motion.div
       drag
       dragConstraints={dragConstraints}
-      dragElastic={0}
-      dragTransition={{ power: 0, timeConstant: 0 }}
+      dragElastic={shouldReduceMotion ? 0 : 0.22}
+      dragTransition={shouldReduceMotion ? { power: 0, timeConstant: 0 } : { power: 0.22, timeConstant: 280 }}
       onDragStart={() => {
         isDraggingRef.current = true;
         onDragStart?.();
@@ -102,13 +107,15 @@ function DraggableCard({
         filter: "brightness(1.03)",
         ...(noShadow ? {} : { boxShadow: "0 35px 70px -15px rgba(0, 0, 0, 0.28)" }),
       }}
-      whileHover={{
+      whileHover={shouldReduceMotion ? {} : {
         scale: initialScale * 1.03,
         ...(noShadow ? {} : { boxShadow: "0 15px 30px -8px rgba(0, 0, 0, 0.12)" }),
       }}
       transition={shouldReduceMotion
         ? { duration: 0 }
         : {
+            scale: { type: "spring", stiffness: 260, damping: 22 },
+            boxShadow: { duration: 0.22, ease: "easeOut" },
             opacity: { duration: 0.72, delay: revealDelay / 1000, ease: [0.16, 1, 0.3, 1] },
             filter: { duration: 0.82, delay: revealDelay / 1000, ease: [0.16, 1, 0.3, 1] },
           }}
@@ -124,7 +131,7 @@ function DraggableCard({
 // ----------------------------------------------------
 export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKiIFGGTvWeLQqSKNwarCDg0EFydvVs3BXGZR" }: DraggableCollageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = false;
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>({});
 
   const keepCardPosition = (id: string, position: { x: number; y: number }) => {
@@ -356,14 +363,6 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         .mobile-about-panel > :nth-child(4) { --mobile-reveal-delay: 480ms; }
         .mobile-about-panel > :nth-child(5) { --mobile-reveal-delay: 600ms; }
         .mobile-about-panel > :nth-child(6) { --mobile-reveal-delay: 720ms; }
-
-        @media (prefers-reduced-motion: reduce) {
-          .mobile-about-panel > * {
-            opacity: 1;
-            filter: none;
-            animation: none;
-          }
-        }
       ` }} />
 
       {/* Grid background mesh */}

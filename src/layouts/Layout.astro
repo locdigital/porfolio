@@ -220,17 +220,6 @@ const footerLinks = [
         filter: blur(0px);
       }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      ::view-transition-group(root),
-      ::view-transition-image-pair(root),
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation: none !important;
-        filter: none !important;
-        transform: none !important;
-      }
-    }
   </style>
 
 </head>
@@ -359,7 +348,8 @@ const footerLinks = [
 
 
     document.addEventListener('astro:page-load', () => {
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Force animations enabled for full experience
+      const reduced = false;
       /* ── Image Loading Shimmer & Fade-in Loader ── */
       function setupImageLoaders() {
         const fallbackImageSrc = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
@@ -768,28 +758,28 @@ const footerLinks = [
         stripOuter.addEventListener('scroll', updateArrows, { passive: true });
         updateArrows();
 
-        // Auto scroll marquee loop disabled as per user request to turn off animations
-        /*
-        const scrollSpeed = 0.5; // px per frame
-        function tickAutoScroll() {
-          if (!down && !isHovered) {
-            const half = stripOuter.scrollWidth / 2;
-            if (half > 0) {
-              let nextScroll = stripOuter.scrollLeft + scrollSpeed;
-              if (nextScroll >= half) {
-                nextScroll -= half;
+        // Auto scroll marquee loop
+        if (!reduced) {
+          const scrollSpeed = 0.5; // px per frame
+          function tickAutoScroll() {
+            if (!down && !isHovered) {
+              const half = stripOuter.scrollWidth / 2;
+              if (half > 0) {
+                let nextScroll = stripOuter.scrollLeft + scrollSpeed;
+                if (nextScroll >= half) {
+                  nextScroll -= half;
+                }
+                stripOuter.scrollLeft = nextScroll;
               }
-              stripOuter.scrollLeft = nextScroll;
             }
+            requestAnimationFrame(tickAutoScroll);
           }
-          requestAnimationFrame(tickAutoScroll);
-        }
 
-        // Start auto scroll after short delay
-        setTimeout(() => {
-          requestAnimationFrame(tickAutoScroll);
-        }, 1000);
-        */
+          // Start auto scroll after short delay
+          setTimeout(() => {
+            requestAnimationFrame(tickAutoScroll);
+          }, 1000);
+        }
 
         // Drag-to-scroll (mouse only - touch uses native scroll which is smoother)
         let startX, startSL, vel = 0, lastX, lastT, rafG, rafMove;
@@ -967,9 +957,6 @@ const footerLinks = [
 
         applyPipoGradient(element, 0);
 
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
-
         const start = performance.now();
         const tick = (now) => {
           applyPipoGradient(element, (now - start) / 1000);
@@ -988,8 +975,6 @@ const footerLinks = [
   <script is:inline>
     (function initTransitionsDev() {
       function setupTransitions() {
-        const reduce = matchMedia("(prefers-reduced-motion: reduce)");
-
         // 1. Card Hover Tilt 3D (.t-tilt & .t-tilt-card)
         const tiltElems = document.querySelectorAll(".t-tilt");
         tiltElems.forEach((tilt) => {
@@ -1013,7 +998,6 @@ const footerLinks = [
           }
 
           function track(e) {
-            if (reduce.matches) return;
             const r = tilt.getBoundingClientRect();
             const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
             const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));

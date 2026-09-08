@@ -37,21 +37,8 @@ const {
     }
     to {
       opacity: 1;
-      transform: translateY(calc(-1 * var(--bf-y-offset)));
+      transform: translateY(0);
       filter: blur(0px);
-    }
-  }
-
-  /* Support prefers-reduced-motion for accessibility */
-  @media (prefers-reduced-motion: reduce) {
-    .blur-fade-container {
-      animation: fadeIn var(--bf-duration) ease-out var(--bf-delay) both;
-      transform: none !important;
-      filter: none !important;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
   }
 </style>

@@ -91,17 +91,6 @@ const elements = animateBy === "words" ? text.split(" ") : text.split("");
       transform: translateY(0);
     }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .blur-text-word {
-      opacity: 1;
-      filter: none;
-      transform: none;
-    }
-    .blur-text-container.in-view .blur-text-word {
-      animation: none;
-    }
-  }
 </style>
 
 <script>
