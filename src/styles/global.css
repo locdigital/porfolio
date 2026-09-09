@@ -3432,7 +3432,6 @@
     .sidebar-tags li,
     .loc-pill-list li,
     .loc-pill-list li span,
-    .loc-good-to-know li span,
     .loc-score-pill,
     .loc-fact-pill,
     .popular-badge,
@@ -3454,7 +3453,6 @@
     .sidebar-tags li,
     .loc-pill-list li,
     .loc-pill-list li span,
-    .loc-good-to-know li span,
     .loc-score-pill,
     .loc-fact-pill,
     .popular-badge,
@@ -3573,7 +3571,7 @@ html body :is(
   .photos-page .loc-good-to-know .loc-pill-list li span,
   #site-copy-size-override
 ) {
-  font-size: var(--type-micro) !important;
+  font-size: 14px !important;
 }
 
 html body :is(.price-val, #site-price-size-override) {
