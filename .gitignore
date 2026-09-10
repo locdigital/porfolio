@@ -17,6 +17,7 @@ tsconfig.tsbuildinfo
 # macOS and local-only workspace files
 .DS_Store
 _local/
+Location/
 *.dmg
 g/
 g.zip

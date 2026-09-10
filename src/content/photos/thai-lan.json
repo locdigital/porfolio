@@ -162,7 +162,7 @@
       "src": "/assets/photos/thai-lan/thai-lan-09.webp",
       "alt": "Iconic blue Tuk-Tuk navigating a bustling narrow Bangkok alley under overhead wiring",
       "width": 1280,
-      "height": 1600,
+      "height": 1599,
       "caption": "",
       "order": 9,
       "isCover": false
@@ -201,7 +201,7 @@
       "id": "thai-lan-13",
       "src": "/assets/photos/thai-lan/thai-lan-13.webp",
       "alt": "Friendly amulet market vendor giving a warm thumbs-up behind his collection",
-      "width": 1066,
+      "width": 1067,
       "height": 1600,
       "caption": "",
       "order": 13,
@@ -221,7 +221,7 @@
       "id": "thai-lan-15",
       "src": "/assets/photos/thai-lan/thai-lan-15.webp",
       "alt": "Long-tail boat with vibrant rainbow canopy cruising through Bangkok canal",
-      "width": 1600,
+      "width": 1599,
       "height": 1066,
       "caption": "",
       "order": 15,
@@ -245,6 +245,26 @@
       "height": 1176,
       "caption": "",
       "order": 17,
+      "isCover": false
+    },
+    {
+      "id": "thai-lan-18",
+      "src": "/assets/photos/thai-lan/thai-lan-18.webp",
+      "alt": "Street construction worker operating a yellow road roller compactor on urban asphalt",
+      "width": 1600,
+      "height": 1064,
+      "caption": "",
+      "order": 18,
+      "isCover": false
+    },
+    {
+      "id": "thai-lan-19",
+      "src": "/assets/photos/thai-lan/thai-lan-19.webp",
+      "alt": "Road construction worker in safety vest and hardhat operating heavy paving machinery at a street corner",
+      "width": 1600,
+      "height": 1064,
+      "caption": "",
+      "order": 19,
       "isCover": false
     }
   ],
