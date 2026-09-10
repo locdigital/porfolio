@@ -959,10 +959,10 @@
     .reveal {
       opacity: 0;
       transform: translateY(18px);
-      filter: blur(14px);
-      transition: opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: blur(10px);
+      transition: opacity 0.35s ease-out,
+                  transform 0.35s ease-out,
+                  filter 0.35s ease-out;
       will-change: transform, opacity, filter;
     }
 
@@ -972,6 +972,9 @@
       opacity: 1;
       transform: translateY(0);
       filter: blur(0px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .js .animated-card {
@@ -991,14 +994,14 @@
       filter: blur(0);
     }
 
-    /* Staggered transition delays for lists/grids */
-    .r[data-d="1"], .toki-r[data-d="1"], .reveal[data-d="1"] { transition-delay: 60ms; }
-    .r[data-d="2"], .toki-r[data-d="2"], .reveal[data-d="2"] { transition-delay: 140ms; }
-    .r[data-d="3"], .toki-r[data-d="3"], .reveal[data-d="3"] { transition-delay: 220ms; }
-    .r[data-d="4"], .toki-r[data-d="4"], .reveal[data-d="4"] { transition-delay: 300ms; }
-    .r[data-d="5"], .toki-r[data-d="5"], .reveal[data-d="5"] { transition-delay: 380ms; }
-    .r[data-d="6"], .toki-r[data-d="6"], .reveal[data-d="6"] { transition-delay: 460ms; }
-    .r[data-d="7"], .toki-r[data-d="7"], .reveal[data-d="7"] { transition-delay: 540ms; }
+    /* Staggered transition delays for lists/grids (only when entering) */
+    .r.in[data-d="1"], .toki-r.in[data-d="1"], .reveal.in[data-d="1"] { transition-delay: 60ms; }
+    .r.in[data-d="2"], .toki-r.in[data-d="2"], .reveal.in[data-d="2"] { transition-delay: 140ms; }
+    .r.in[data-d="3"], .toki-r.in[data-d="3"], .reveal.in[data-d="3"] { transition-delay: 220ms; }
+    .r.in[data-d="4"], .toki-r.in[data-d="4"], .reveal.in[data-d="4"] { transition-delay: 300ms; }
+    .r.in[data-d="5"], .toki-r.in[data-d="5"], .reveal.in[data-d="5"] { transition-delay: 380ms; }
+    .r.in[data-d="6"], .toki-r.in[data-d="6"], .reveal.in[data-d="6"] { transition-delay: 460ms; }
+    .r.in[data-d="7"], .toki-r.in[data-d="7"], .reveal.in[data-d="7"] { transition-delay: 540ms; }
 
     /* About-style hero reveal: blur/slide each hero fragment in sequence. */
     .about-reveal-hero > .gear-kicker,
@@ -1061,16 +1064,16 @@
     .about-reveal-hero.in > .gear-intro { transition-delay: 720ms; }
     .about-reveal-hero.in > .hero-ctas { transition-delay: 860ms; }
 
-    /* Auto-stagger for children inside a reveal-group */
-    .reveal-group > *:nth-child(1)  { transition-delay: 0ms; }
-    .reveal-group > *:nth-child(2)  { transition-delay: 70ms; }
-    .reveal-group > *:nth-child(3)  { transition-delay: 140ms; }
-    .reveal-group > *:nth-child(4)  { transition-delay: 210ms; }
-    .reveal-group > *:nth-child(5)  { transition-delay: 280ms; }
-    .reveal-group > *:nth-child(6)  { transition-delay: 350ms; }
-    .reveal-group > *:nth-child(7)  { transition-delay: 420ms; }
-    .reveal-group > *:nth-child(8)  { transition-delay: 490ms; }
-    .reveal-group > *:nth-child(n+9) { transition-delay: 560ms; }
+    /* Auto-stagger for children inside a reveal-group (only when entering) */
+    .reveal-group > *.in:nth-child(1)  { transition-delay: 0ms; }
+    .reveal-group > *.in:nth-child(2)  { transition-delay: 70ms; }
+    .reveal-group > *.in:nth-child(3)  { transition-delay: 140ms; }
+    .reveal-group > *.in:nth-child(4)  { transition-delay: 210ms; }
+    .reveal-group > *.in:nth-child(5)  { transition-delay: 280ms; }
+    .reveal-group > *.in:nth-child(6)  { transition-delay: 350ms; }
+    .reveal-group > *.in:nth-child(7)  { transition-delay: 420ms; }
+    .reveal-group > *.in:nth-child(8)  { transition-delay: 490ms; }
+    .reveal-group > *.in:nth-child(n+9) { transition-delay: 560ms; }
 
     /* Reduced motion override removed to ensure all animations play */
 

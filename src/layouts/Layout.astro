@@ -553,12 +553,12 @@ const footerLinks = [
       // Hero aside
       setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
 
-      /* ── IntersectionObserver: section reveals ── */
+      /* ── IntersectionObserver: section reveals (bidirectional scroll reveal) ── */
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
-          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+          e.target.classList.toggle('in', e.isIntersecting);
         });
-      }, { threshold: 0.07, rootMargin: '0px 0px -36px 0px' });
+      }, { threshold: 0.06, rootMargin: '20px 0px -30px 0px' });
 
       // Observe existing manual reveal elements and auto-reveal elements after a brief delay
       // to let the page entry fade/blur transition complete so animations are visible
@@ -596,12 +596,14 @@ const footerLinks = [
         ].join(', ');
 
         document.querySelectorAll(AUTO_REVEAL_SELECTORS).forEach((el) => {
-          // Skip if already has a reveal class or is inside hero
+          // Skip if already has a reveal class or is inside hero or photo gallery
           if (
             el.classList.contains('r') ||
             el.classList.contains('toki-r') ||
             el.classList.contains('reveal') ||
             el.classList.contains('gear-intro') ||
+            el.classList.contains('loc-section') ||
+            el.closest('.efferd-gallery') ||
             el.closest('.hero') ||
             el.closest('.hero-title') ||
             el.classList.contains('hero-line') ||

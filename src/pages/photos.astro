@@ -239,7 +239,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
                   data-pswp-width={photo.fullWidth}
                   data-pswp-height={photo.fullHeight}
                   aria-label={photo.alt}
-                  style={`--photo-index: ${i}; transition-delay: ${(i % 6) * 0.06}s;`}
+                  style={`--photo-index: ${i};`}
                 >
                   <div class="efferd-card-inner">
                     {photo.previewSrcSet ? (
@@ -395,6 +395,8 @@ function hasDetailsFor(loc: PhotoLocationView) {
     window.addEventListener("hashchange", () => activate(location.hash.slice(1)));
   }
 
+  let photosObserver: IntersectionObserver | null = null;
+
   function initGalleryInView() {
     const items = document.querySelectorAll(".efferd-gallery-item");
     if (!items.length) return;
@@ -404,19 +406,20 @@ function hasDetailsFor(loc: PhotoLocationView) {
       return;
     }
 
-    const observer = new IntersectionObserver(
+    if (photosObserver) {
+      photosObserver.disconnect();
+    }
+
+    photosObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
         });
       },
-      { threshold: 0.05, rootMargin: "80px 0px" }
+      { threshold: 0.08, rootMargin: "20px 0px -40px 0px" }
     );
 
-    items.forEach((item) => observer.observe(item));
+    items.forEach((item) => photosObserver!.observe(item));
   }
 
   document.addEventListener("astro:page-load", () => {
@@ -597,11 +600,6 @@ function hasDetailsFor(loc: PhotoLocationView) {
     animation: photos-tab-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  /* Stagger photos reveal on tab switch */
-  .loc-section.active .efferd-gallery-item {
-    animation: efferdPhotoStaggerIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc((var(--photo-index, 0) % 8) * 40ms);
-  }
 
   @keyframes photos-tab-in {
     0% {
@@ -683,9 +681,9 @@ function hasDetailsFor(loc: PhotoLocationView) {
     break-inside: avoid;
     margin-bottom: 16px;
     opacity: 0;
-    transform: translateY(24px) scale(0.97);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(28px) scale(0.96);
+    transition: opacity 0.35s ease-out,
+                transform 0.35s ease-out;
     will-change: opacity, transform;
   }
 
@@ -696,6 +694,9 @@ function hasDetailsFor(loc: PhotoLocationView) {
   .efferd-gallery-item.is-visible {
     opacity: 1;
     transform: translateY(0) scale(1);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc((var(--photo-index, 0) % 4) * 45ms);
   }
 
   .photo-toggle-wrapper {
