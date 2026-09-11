@@ -1,0 +1,242 @@
+{
+  "slug": "my-tho",
+  "order": 14,
+  "type": "check-in",
+  "location": "Mỹ Tho",
+  "name": "Mỹ Tho",
+  "city": "Mỹ Tho",
+  "district": "",
+  "country": "Vietnam",
+  "province": "Tiền Giang",
+  "region": "Mekong Delta",
+  "headline": "Slow river currents and Mekong breeze.",
+  "subheadline": "A quiet photo journal from the banks of Sông Tiền.",
+  "introduction": "A quiet weekend in Mỹ Tho: cathedral arches, riverside stilt houses, and sunset over Cầu Rạch Miễu.",
+  "shortDescription": "A quiet weekend in Mỹ Tho: cathedral arches, riverside stilt houses, and sunset over Cầu Rạch Miễu.",
+  "description": "A quiet weekend in Mỹ Tho: cathedral arches, riverside stilt houses, and sunset over Cầu Rạch Miễu.",
+  "longDescription": "A photo journal from Mỹ Tho, Tiền Giang.",
+  "travelFrom": "HCM City",
+  "travelTime": "1h30 by motorbike or bus",
+  "recommendedStay": "1-2 days",
+  "bestMonths": "Nov - Apr",
+  "budgetMin": 50,
+  "budgetMax": 120,
+  "budgetNote": "per person / weekend",
+  "transportation": [
+    "Motorbike",
+    "Local Bus",
+    "River Ferry"
+  ],
+  "suitableFor": [
+    "Food",
+    "River life",
+    "Photography",
+    "Culture"
+  ],
+  "overview": "A slow, breezy weekend escape just 1.5 hours from Saigon. Old cathedral arches, wooden stilt homes along the canals, and quiet ferry rides across the Mekong.",
+  "favoriteThings": "Hủ tiếu Mỹ Tho, the river breeze on the ferry to Cồn Tân Long, and sunset over Cầu Rạch Miễu.",
+  "whatIWouldDoAgain": "Take the ferry to Cồn Tân Long and spend more time along the river embankment at dusk.",
+  "editorialReview": "",
+  "scores": {
+    "scenery": 8,
+    "food": 10,
+    "cafe": 8,
+    "relaxation": 9,
+    "value": 10,
+    "accessibility": 10
+  },
+  "bestTimeOfDay": [
+    "Early morning",
+    "Golden hour & sunset"
+  ],
+  "localTransport": [
+    "Motorbike",
+    "River ferry",
+    "Walking"
+  ],
+  "weatherNote": "Warm and sunny. River breezes in late afternoon.",
+  "travelTips": [
+    "Try authentic hủ tiếu Mỹ Tho.",
+    "Sunset over Cầu Rạch Miễu from the 30 Tháng 4 embankment.",
+    "Take the local ferry to Cồn Tân Long."
+  ],
+  "notFor": [
+    "Nightlife seekers",
+    "Fast-paced itineraries"
+  ],
+  "heroImage": {
+    "id": "my-tho-01",
+    "src": "/assets/photos/my-tho/my-tho-01.webp",
+    "alt": "Nhà thờ Chánh tòa Mỹ Tho with illuminated golden crown atop bell tower at dusk",
+    "caption": "",
+    "width": 1600,
+    "height": 899,
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "my-tho-01",
+      "src": "/assets/photos/my-tho/my-tho-01.webp",
+      "alt": "Nhà thờ Chánh tòa Mỹ Tho with illuminated golden crown atop bell tower at dusk",
+      "caption": "",
+      "width": 1600,
+      "height": 899,
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "my-tho-02",
+      "src": "/assets/photos/my-tho/my-tho-02.webp",
+      "alt": "Wooden riverboat cruising past the blue tiled dome of Mỹ Tho Cathedral",
+      "caption": "",
+      "width": 899,
+      "height": 1600,
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "my-tho-03",
+      "src": "/assets/photos/my-tho/my-tho-03.webp",
+      "alt": "Soaring Gothic vaulted nave and chandelier inside Mỹ Tho Cathedral",
+      "caption": "",
+      "width": 899,
+      "height": 1600,
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "my-tho-04",
+      "src": "/assets/photos/my-tho/my-tho-04.webp",
+      "alt": "Illuminated golden crown and cross on cathedral bell tower framed through green leaves",
+      "caption": "",
+      "width": 899,
+      "height": 1600,
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "my-tho-05",
+      "src": "/assets/photos/my-tho/my-tho-05.webp",
+      "alt": "Traditional riverbank stilt houses over the silt-rich waters of Tiền Giang",
+      "caption": "",
+      "width": 1600,
+      "height": 1067,
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "my-tho-06",
+      "src": "/assets/photos/my-tho/my-tho-06.webp",
+      "alt": "Local passengers and motorbikes crossing Tiền River on the ferry",
+      "caption": "",
+      "width": 1600,
+      "height": 1091,
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "my-tho-07",
+      "src": "/assets/photos/my-tho/my-tho-07.webp",
+      "alt": "Fishing boats and river ferries moored along the riverbank at twilight with city skyline",
+      "caption": "",
+      "width": 1600,
+      "height": 1012,
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "my-tho-08",
+      "src": "/assets/photos/my-tho/my-tho-08.webp",
+      "alt": "Diocesan pastoral building and arched architectural walkway under sunny blue sky",
+      "caption": "",
+      "width": 1600,
+      "height": 900,
+      "order": 8,
+      "isCover": false
+    }
+  ],
+  "blocks": [
+    {
+      "id": "quick-facts",
+      "type": "quick-facts",
+      "enabled": true,
+      "title": "Quick Facts",
+      "content": ""
+    },
+    {
+      "id": "editorial-review",
+      "type": "editorial-review",
+      "enabled": true,
+      "title": "Overview",
+      "content": ""
+    },
+    {
+      "id": "tips",
+      "type": "tips",
+      "enabled": true,
+      "title": "Good To Know",
+      "content": ""
+    },
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true,
+      "title": "Hero",
+      "content": ""
+    },
+    {
+      "id": "gallery",
+      "type": "gallery",
+      "enabled": true,
+      "title": "Gallery",
+      "content": ""
+    },
+    {
+      "id": "pros-cons",
+      "type": "pros-cons",
+      "enabled": true,
+      "title": "Pros & Cons",
+      "content": ""
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "enabled": true,
+      "title": "Map",
+      "content": ""
+    },
+    {
+      "id": "nearby-places",
+      "type": "nearby-places",
+      "enabled": true,
+      "title": "Nearby Places",
+      "content": ""
+    },
+    {
+      "id": "related-articles",
+      "type": "related-articles",
+      "enabled": true,
+      "title": "Related Articles",
+      "content": ""
+    },
+    {
+      "id": "faq",
+      "type": "faq",
+      "enabled": true,
+      "title": "FAQ",
+      "content": ""
+    },
+    {
+      "id": "cta",
+      "type": "cta",
+      "enabled": true,
+      "title": "CTA",
+      "content": ""
+    }
+  ],
+  "personalRating": 9,
+  "wouldReturn": "definitely",
+  "crowdLevel": "moderate",
+  "travelDifficulty": "very_easy"
+}
