@@ -209,12 +209,30 @@
           "tag": "Camera"
         },
         {
+          "name": "Leica Q3",
+          "slug": "leica-q3",
+          "headline": "Full-Frame Compact Camera",
+          "description": "Full-frame compact camera with a fixed Summilux 28mm f/1.7 ASPH lens, 60MP BSI sensor, and iconic rangefinder handling.",
+          "image": "/uploads/leica_q3.webp",
+          "url": "https://leica-camera.com/en-US/photography/cameras/q/q3",
+          "tag": "Camera"
+        },
+        {
           "name": "Nikkor Z 24-70mm f/2.8 S",
           "slug": "nikkor-z-24-70mm-f28-s",
           "headline": "Professional Zoom Lens",
           "description": "Highly versatile professional-grade zoom lens delivering exceptional sharpness throughout the range.",
           "image": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hxoJd56cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
           "url": "https://www.nikonusa.com/p/nikkor-z-24-70mm-f28-s/20089",
+          "tag": "Lens"
+        },
+        {
+          "name": "Nikkor Z 24-120mm f/4 S",
+          "slug": "nikkor-z-24-120mm-f4-s",
+          "headline": "All-in-One Travel Zoom",
+          "description": "Versatile S-Line 5x travel zoom lens with a constant f/4 maximum aperture, close minimum focus distance, and edge-to-edge sharpness.",
+          "image": "/uploads/nikkor_z_24_120_f4_s.webp",
+          "url": "https://www.nikonusa.com/p/nikkor-z-24-120mm-f4-s/20105/overview",
           "tag": "Lens"
         },
         {
@@ -233,6 +251,33 @@
           "description": "Fast manual focus prime lens providing gorgeous vintage rendering and a circular bokeh.",
           "image": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hskuSnbdgRA7eybCWUmuSqx5Evhs86daj2tDQ",
           "url": "https://www.cosina.co.jp/voigtlander/",
+          "tag": "Lens"
+        },
+        {
+          "name": "Voigtlander NOKTON 40mm f/1.2",
+          "slug": "voigtlander-nokton-40mm-f12",
+          "headline": "Ultra-Fast Manual Prime",
+          "description": "Fast manual focus prime lens for Nikon Z mount, delivering distinctive vintage character, creamy bokeh, and precise mechanical focus ring.",
+          "image": "/uploads/voigtlander_nokton_40_f12.webp",
+          "url": "https://www.cosina.co.jp/voigtlander/z-mount/nokton-40mm-f1-2-aspherical/",
+          "tag": "Lens"
+        },
+        {
+          "name": "Viltrox AF 55mm f/1.8 EVO",
+          "slug": "viltrox-af-55mm-f18-evo",
+          "headline": "Standard Prime Lens",
+          "description": "Compact standard prime lens from the Viltrox EVO series, featuring fast STM autofocus, de-clickable aperture ring, and bright f/1.8 aperture.",
+          "image": "/uploads/viltrox_af_55_f18_evo.webp",
+          "url": "https://viltroxstore.com/products/viltrox-af-55mm-f1-8-fe",
+          "tag": "Lens"
+        },
+        {
+          "name": "Viltrox AF 85mm f/2.0 EVO",
+          "slug": "viltrox-af-85mm-f2-evo",
+          "headline": "Portrait Prime Lens",
+          "description": "Lightweight medium telephoto portrait lens from the Viltrox EVO lineup, offering smooth subject separation and quick eye-AF tracking.",
+          "image": "/uploads/viltrox_af_85_f2_evo.webp",
+          "url": "https://viltroxstore.com/",
           "tag": "Lens"
         }
       ]

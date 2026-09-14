@@ -3591,6 +3591,10 @@ html body :is(.plan-title, #site-plan-title-size-override) {
   font-weight: 400 !important;
 }
 
+html body :is(.folder-card .card-desc, #site-copy-size-override) {
+  font-size: 12px !important;
+}
+
 html body :is(.colophon, #site-copy-size-override),
 html body :is(.colophon, #site-copy-size-override) :is(span, #site-copy-size-override) {
   font-size: 12px !important;
