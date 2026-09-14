@@ -148,11 +148,17 @@ export default function BeforeAfterPerformance({
 }: BeforeAfterPerformanceProps) {
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
   const [pairIndex, setPairIndex] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const reqRef = useRef<number | null>(null);
   const latestPosRef = useRef<number>(initialPosition);
   const isHorizontal = orientation === "horizontal";
+
+  const setDragState = useCallback((dragging: boolean) => {
+    isDraggingRef.current = dragging;
+    setIsDragging(dragging);
+  }, []);
 
   useEffect(() => {
     // Randomize image pair on initial client render
@@ -165,12 +171,13 @@ export default function BeforeAfterPerformance({
   const effectiveAfterImage = afterImage ?? activePair.after;
   const visibleDividerWidth = Math.max(dividerWidth, MIN_DIVIDER_WIDTH);
 
-
   const updatePosition = useCallback(
     (clientX: number, clientY: number) => {
       if (!containerRef.current) return;
 
       const rect = containerRef.current.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
       const nextPosition = isHorizontal
         ? ((clientX - rect.left) / rect.width) * 100
         : ((clientY - rect.top) / rect.height) * 100;
@@ -188,13 +195,83 @@ export default function BeforeAfterPerformance({
     [isHorizontal]
   );
 
-  const handlePointerStart = useCallback(
+  const handleStart = useCallback(
     (clientX: number, clientY: number) => {
-      setIsDragging(true);
-      updatePosition(clientX, clientY);
+      setDragState(true);
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const nextPosition = isHorizontal
+          ? ((clientX - rect.left) / rect.width) * 100
+          : ((clientY - rect.top) / rect.height) * 100;
+        const clamped = Math.max(0, Math.min(100, nextPosition));
+        latestPosRef.current = clamped;
+        setPosition(clamped);
+      }
     },
-    [updatePosition]
+    [isHorizontal, setDragState]
   );
+
+  // Native touch handling on mobile with non-passive touchmove to prevent screen scrolling while dragging
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      handleStart(touch.clientX, touch.clientY);
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isDraggingRef.current || e.touches.length !== 1) return;
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+      const touch = e.touches[0];
+      updatePosition(touch.clientX, touch.clientY);
+    };
+
+    const onTouchEnd = () => {
+      if (isDraggingRef.current) {
+        setDragState(false);
+      }
+    };
+
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+    return () => {
+      container.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, [handleStart, updatePosition, setDragState]);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch (_) {}
+    handleStart(event.clientX, event.clientY);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    updatePosition(event.clientX, event.clientY);
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    try {
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      }
+    } catch (_) {}
+    setDragState(false);
+  };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const step = event.shiftKey ? 10 : 5;
@@ -224,22 +301,22 @@ export default function BeforeAfterPerformance({
     const previousUserSelect = document.body.style.userSelect;
     document.body.style.userSelect = "none";
 
-    const handlePointerMove = (event: PointerEvent) => {
+    const handleWindowPointerMove = (event: PointerEvent) => {
       updatePosition(event.clientX, event.clientY);
     };
-    const handleEnd = () => setIsDragging(false);
+    const handleWindowPointerEnd = () => setDragState(false);
 
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    window.addEventListener("pointerup", handleEnd);
-    window.addEventListener("pointercancel", handleEnd);
+    window.addEventListener("pointermove", handleWindowPointerMove, { passive: true });
+    window.addEventListener("pointerup", handleWindowPointerEnd);
+    window.addEventListener("pointercancel", handleWindowPointerEnd);
 
     return () => {
       document.body.style.userSelect = previousUserSelect;
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerup", handleEnd);
-      window.removeEventListener("pointercancel", handleEnd);
+      window.removeEventListener("pointermove", handleWindowPointerMove);
+      window.removeEventListener("pointerup", handleWindowPointerEnd);
+      window.removeEventListener("pointercancel", handleWindowPointerEnd);
     };
-  }, [isDragging, updatePosition]);
+  }, [isDragging, updatePosition, setDragState]);
 
   return (
     <section className={cn("before-after-performance", className)}>
@@ -409,6 +486,8 @@ export default function BeforeAfterPerformance({
           overflow: hidden;
           position: relative;
           touch-action: none;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
           user-select: none;
           -webkit-tap-highlight-color: transparent;
         }
@@ -553,6 +632,7 @@ export default function BeforeAfterPerformance({
           position: absolute;
           z-index: 75 !important;
           pointer-events: none;
+          touch-action: none;
           will-change: left, top;
         }
 
@@ -592,6 +672,17 @@ export default function BeforeAfterPerformance({
           width: 32px;
           box-shadow: 0 6px 20px rgba(28, 28, 28, 0.16), 0 0 0 3px rgba(255, 255, 255, 0.94);
           pointer-events: auto;
+          cursor: grab;
+          touch-action: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .bap-handle::after {
+          content: "";
+          position: absolute;
+          inset: -14px;
+          border-radius: 999px;
+          pointer-events: auto;
         }
 
         .bap-slider:hover .bap-handle {
@@ -599,9 +690,14 @@ export default function BeforeAfterPerformance({
           box-shadow: 0 8px 24px rgba(28, 28, 28, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.96);
         }
 
+        .bap-slider.is-dragging {
+          cursor: grabbing;
+        }
+
         .bap-slider.is-dragging .bap-handle {
           transform: translate(-50%, -50%) scale(1.15) !important;
           box-shadow: 0 10px 28px rgba(28, 28, 28, 0.24), 0 0 0 4px rgba(255, 255, 255, 0.96);
+          cursor: grabbing;
         }
 
         .bap-label {
@@ -678,14 +774,17 @@ export default function BeforeAfterPerformance({
             tabIndex={0}
             className={cn("bap-slider", !isHorizontal && "is-vertical", isDragging && "is-dragging")}
             style={{
+              touchAction: "none",
+              WebkitUserSelect: "none",
+              userSelect: "none",
               "--bap-divider-position": `${position}%`,
               "--bap-divider-size": `${visibleDividerWidth}px`,
             } as CSSProperties}
             onKeyDown={handleKeyDown}
-            onPointerDown={(event) => {
-              event.preventDefault();
-              handlePointerStart(event.clientX, event.clientY);
-            }}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
           >
             <div className="bap-layer bap-after-layer">
               {effectiveAfterImage?.src ? (
