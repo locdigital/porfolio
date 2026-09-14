@@ -380,8 +380,9 @@ const safeGearHeadline = gearHeadline
 
   .gear-card {
     display: grid;
-    grid-template-columns: 128px minmax(0, 1fr);
-    min-height: 180px;
+    grid-template-columns: 124px minmax(0, 1fr);
+    align-items: center;
+    min-height: 140px;
     border: 0;
     border-right: 1px solid var(--divider);
     border-bottom: 1px solid var(--divider);
@@ -400,6 +401,7 @@ const safeGearHeadline = gearHeadline
     align-items: center;
     justify-content: center;
     padding: 14px;
+    height: 100%;
     background: transparent;
     border-right: 0;
     border-radius: 0 !important;
@@ -409,6 +411,7 @@ const safeGearHeadline = gearHeadline
   .gear-card-visual img {
     width: 100%;
     height: 100%;
+    max-height: 105px;
     object-fit: contain;
   }
 
@@ -437,25 +440,30 @@ const safeGearHeadline = gearHeadline
 
   .gear-card-copy {
     min-width: 0;
-    padding: 18px;
+    padding: 14px 22px 14px 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
   }
 
   .gear-card-title {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
     justify-content: space-between;
-    gap: 14px;
-    margin-bottom: 4px;
+    gap: 12px;
+    margin-bottom: 0;
   }
 
   .gear-card-title h3 {
     font-family: var(--serif);
     font-size: 24px;
-    line-height: 1.05;
+    line-height: 1.1;
     font-weight: 400;
     color: var(--text);
     transition: color 0.2s ease;
     text-wrap: balance;
+    margin: 0;
   }
 
   .gear-card-title span {
@@ -465,13 +473,12 @@ const safeGearHeadline = gearHeadline
     color: var(--muted);
   }
 
-
-
   .gear-role {
     font-family: var(--mono);
     font-size: calc(var(--type-caption) * 0.8);
     color: #005fb8;
     margin-bottom: 0;
+    line-height: 1.35;
   }
 
   .gear-note {
@@ -553,6 +560,16 @@ const safeGearHeadline = gearHeadline
       min-height: 100px;
       border-right: 0;
       border-bottom: 1px solid var(--divider);
+    }
+
+    .gear-card-copy {
+      padding: 14px 18px 18px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .gear-card-title {
+      justify-content: center;
     }
 
     .gear-card-gami-crom-pro .gear-card-visual img {
