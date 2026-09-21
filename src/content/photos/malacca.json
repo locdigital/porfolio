@@ -1,0 +1,243 @@
+{
+  "slug": "malacca",
+  "order": 2,
+  "type": "check-in",
+  "location": "Malacca",
+  "name": "Malacca",
+  "city": "Melaka",
+  "district": "Central Melaka",
+  "country": "Malaysia",
+  "province": "Melaka",
+  "region": "Southeast Asia",
+  "headline": "Red terracotta walls and river twilight.",
+  "subheadline": "A heritage photo walk through UNESCO Melaka.",
+  "introduction": "A coach journey north from Queen Street into the slow rhythm of Melaka: terracotta red colonial facades at Dutch Square, fragrant bowls of Nyonya laksa, and the Straits Floating Mosque hovering over the sea at twilight.",
+  "shortDescription": "A coach journey north from Queen Street into the slow rhythm of Melaka: terracotta red colonial facades at Dutch Square, fragrant bowls of Nyonya laksa, and the Straits Floating Mosque hovering over the sea at twilight.",
+  "description": "A coach journey north from Queen Street into the slow rhythm of Melaka: terracotta red colonial facades at Dutch Square, fragrant bowls of Nyonya laksa, and the Straits Floating Mosque hovering over the sea at twilight.",
+  "longDescription": "A photo journal from Malacca, Malaysia.",
+  "travelFrom": "Singapore",
+  "travelTime": "4h by cross-border coach",
+  "recommendedStay": "2-3 days",
+  "bestMonths": "Year-round",
+  "budgetMin": 150,
+  "budgetMax": 300,
+  "budgetNote": "per person / 2-3 days",
+  "transportation": [
+    "Cross-border Coach (707-Inc)",
+    "River Cruise",
+    "Walking",
+    "Trishaw"
+  ],
+  "suitableFor": [
+    "Heritage",
+    "Street Photography",
+    "Peranakan Cuisine",
+    "Sunset Walk",
+    "History"
+  ],
+  "overview": "A cross-border coach from Singapore Queen Street straight into the storied history of Melaka. Red colonial facades of Christ Church and the Stadthuys dating back centuries, peaceful riverside shophouses, fragrant Peranakan feasts, and the breathtaking Melaka Straits Mosque perched above gentle ocean waves at blue hour.\n\nCompact, walkable, and brimming with character at every corner.",
+  "favoriteThings": "Masjid Selat Melaka floating over the sea at dusk, Peranakan cuisine on Jonker Street, and taking the river cruise under illuminated historic bridges.",
+  "whatIWouldDoAgain": "Take a Grab to the Straits Mosque right at sunset and stroll along the Malacca River after 8 PM when all the lights turn on.",
+  "editorialReview": "",
+  "scores": {
+    "scenery": 9,
+    "food": 10,
+    "cafe": 9,
+    "relaxation": 9,
+    "value": 9,
+    "accessibility": 8
+  },
+  "bestTimeOfDay": [
+    "Early morning for quiet Dutch Square",
+    "Late afternoon for Malacca River walk",
+    "Sunset at Melaka Straits Mosque"
+  ],
+  "localTransport": [
+    "Walking is best for Old Town & Jonker Street",
+    "Grab for Melaka Straits Mosque",
+    "Melaka River Cruise for evening views"
+  ],
+  "weatherNote": "Sunny and tropical. Coastal breeze along the Straits of Malacca in the late afternoon.",
+  "travelTips": [
+    "Take Grab to Masjid Selat Melaka 45 minutes before sunset for golden hour into blue hour.",
+    "Taste authentic Nyonya dishes (ayam pongteh, pie tee, laksa) in heritage shophouses.",
+    "Walk the river promenade at night when illuminated bridges reflect off the water.",
+    "Jonker Walk night market is especially lively on Friday and weekend evenings."
+  ],
+  "notFor": [
+    "Travelers seeking modern skyscraper metropolises.",
+    "Those looking for high-energy nightlife clubs."
+  ],
+  "heroImage": {
+    "id": "malacca-01",
+    "src": "/assets/photos/malacca/malacca-01.webp",
+    "alt": "Christ Church Melaka red colonial facade built in 1753",
+    "width": 1067,
+    "height": 1600,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "malacca-01",
+      "src": "/assets/photos/malacca/malacca-01.webp",
+      "alt": "Christ Church Melaka red colonial facade built in 1753",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "malacca-02",
+      "src": "/assets/photos/malacca/malacca-02.webp",
+      "alt": "Authentic Peranakan Nyonya dining feast spread",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "malacca-03",
+      "src": "/assets/photos/malacca/malacca-03.webp",
+      "alt": "Heritage Peranakan cafe with warm wooden furnishings and vintage tiles",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "malacca-04",
+      "src": "/assets/photos/malacca/malacca-04.webp",
+      "alt": "Malacca River cruise boat past colorful riverside shophouses",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "malacca-05",
+      "src": "/assets/photos/malacca/malacca-05.webp",
+      "alt": "Gothic spires of Church of St. Francis Xavier framed by streetscape",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "malacca-06",
+      "src": "/assets/photos/malacca/malacca-06.webp",
+      "alt": "Calico cat resting on ceramic tiles of a Jonker Street shophouse",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "malacca-07",
+      "src": "/assets/photos/malacca/malacca-07.webp",
+      "alt": "Golden lion sculpture atop the entrance arch of Jonker Walk",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "malacca-08",
+      "src": "/assets/photos/malacca/malacca-08.webp",
+      "alt": "Malacca River reflecting red colonial buildings of Dutch Square",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "malacca-09",
+      "src": "/assets/photos/malacca/malacca-09.webp",
+      "alt": "Terracotta tiled roofs of Dutch Square and the Stadthuys from above",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "malacca-10",
+      "src": "/assets/photos/malacca/malacca-10.webp",
+      "alt": "Dutch Square with flower-adorned musical trishaws and fountain",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "malacca-11",
+      "src": "/assets/photos/malacca/malacca-11.webp",
+      "alt": "Malacca River cruise boat glowing under neon lights gliding along the night waterway",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "malacca-12",
+      "src": "/assets/photos/malacca/malacca-12.webp",
+      "alt": "Narrow historic red alleyway flanked by weathered colonial brick walls",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "malacca-13",
+      "src": "/assets/photos/malacca/malacca-13.webp",
+      "alt": "Melaka Straits Floating Mosque standing above the ocean water",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "malacca-14",
+      "src": "/assets/photos/malacca/malacca-14.webp",
+      "alt": "Melaka Straits Mosque glowing at twilight blue hour",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "malacca-15",
+      "src": "/assets/photos/malacca/malacca-15.webp",
+      "alt": "The Stadthuys red clock tower illuminated in Dutch Square at night",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "malacca-16",
+      "src": "/assets/photos/malacca/malacca-16.webp",
+      "alt": "Malacca River at night with illuminated bridges and boats cruising by",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 16,
+      "isCover": false
+    }
+  ]
+}

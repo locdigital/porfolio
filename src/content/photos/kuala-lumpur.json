@@ -1,0 +1,243 @@
+{
+  "slug": "kuala-lumpur",
+  "order": 3,
+  "type": "check-in",
+  "location": "Kuala Lumpur",
+  "name": "Kuala Lumpur",
+  "city": "Kuala Lumpur",
+  "district": "Federal Territory",
+  "country": "Malaysia",
+  "province": "Kuala Lumpur",
+  "region": "Southeast Asia",
+  "headline": "Petronas towers, smoky satay, and golden domes.",
+  "subheadline": "A vibrant photo journal across Malaysia's capital.",
+  "introduction": "Two fast-paced, high-voltage days in KL: stainless steel twin towers gleaming against the night sky, charcoal smoke and sizzling woks down Jalan Alor, and the serene Ottoman domes of the Federal Territory Mosque.",
+  "shortDescription": "Two fast-paced, high-voltage days in KL: stainless steel twin towers gleaming against the night sky, charcoal smoke and sizzling woks down Jalan Alor, and the serene Ottoman domes of the Federal Territory Mosque.",
+  "description": "Two fast-paced, high-voltage days in KL: stainless steel twin towers gleaming against the night sky, charcoal smoke and sizzling woks down Jalan Alor, and the serene Ottoman domes of the Federal Territory Mosque.",
+  "longDescription": "A photo journal from Kuala Lumpur, Malaysia.",
+  "travelFrom": "Malacca",
+  "travelTime": "2h by express bus or car",
+  "recommendedStay": "2-3 days",
+  "bestMonths": "May - Sep & Dec - Feb",
+  "budgetMin": 250,
+  "budgetMax": 450,
+  "budgetNote": "per person / 3 days",
+  "transportation": [
+    "Express Bus",
+    "LRT / MRT / Monorail",
+    "Grab",
+    "Walking"
+  ],
+  "suitableFor": [
+    "Street Food",
+    "Urban Architecture",
+    "Temples & Mosques",
+    "Night Photography",
+    "City Life"
+  ],
+  "overview": "Two vibrant days in Malaysia's capital: the soaring silver spires of the Petronas Twin Towers at night, lively charcoal satay grills on Jalan Alor, red lanterns under Chinese eaves at Thean Hou Temple, and the breathtaking turquoise carpets and Ottoman geometry of the Federal Territory Mosque.\n\nA dynamic clash of futuristic skyscrapers, heritage colonial architecture, and unmatched Southeast Asian street food culture.",
+  "favoriteThings": "The Petronas Twin Towers soaring into the night sky, charcoal-grilled chicken satay on Jalan Alor, and the grand geometric dome of Masjid Wilayah Persekutuan.",
+  "whatIWouldDoAgain": "Visit Thean Hou Temple and Federal Territory Mosque in the morning, and spend the entire evening between KLCC Park and Jalan Alor.",
+  "editorialReview": "",
+  "scores": {
+    "scenery": 9,
+    "food": 10,
+    "cafe": 9,
+    "relaxation": 8,
+    "value": 9,
+    "accessibility": 9
+  },
+  "bestTimeOfDay": [
+    "Morning for Thean Hou Temple & Federal Territory Mosque",
+    "Afternoon for cafes and city explorations",
+    "Night for Petronas Towers and Jalan Alor"
+  ],
+  "localTransport": [
+    "LRT & MRT for quick city transit",
+    "Grab is readily available and cheap",
+    "Covered pedestrian walkways linking KLCC and Bukit Bintang"
+  ],
+  "weatherNote": "Warm tropical city weather. Afternoon showers are common; covered walkways and shopping centers offer easy shelter.",
+  "travelTips": [
+    "Photograph Petronas Twin Towers from the KLCC Park fountains after 8 PM.",
+    "Jalan Alor comes alive after sunset; bring cash for satay and street stalls.",
+    "Dress respectfully with covered shoulders and knees when visiting Federal Territory Mosque.",
+    "Thean Hou Temple offers great elevated skyline views over KL."
+  ],
+  "notFor": [
+    "Travelers looking for quiet, remote rural escapes.",
+    "Those sensitive to dense city traffic and bustling night crowds."
+  ],
+  "heroImage": {
+    "id": "kuala-lumpur-01",
+    "src": "/assets/photos/kuala-lumpur/kuala-lumpur-01.webp",
+    "alt": "Petronas Twin Towers soaring into the night sky, dramatic architectural symmetry",
+    "width": 1067,
+    "height": 1600,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "kuala-lumpur-01",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-01.webp",
+      "alt": "Petronas Twin Towers soaring into the night sky, dramatic architectural symmetry",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "kuala-lumpur-02",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-02.webp",
+      "alt": "Satay chef grilling skewers over flaming charcoal at Jalan Alor",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-03",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-03.webp",
+      "alt": "Vibrant street food skewers stall bathed in warm glow of Jalan Alor",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-04",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-04.webp",
+      "alt": "Sizzling street food dining scene at Jalan Alor night market",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-05",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-05.webp",
+      "alt": "Petronas Twin Towers gleaming silver against the evening sky",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-06",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-06.webp",
+      "alt": "Petronas Skybridge connecting the towers at night",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-07",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-07.webp",
+      "alt": "Pinnacle spire of the Petronas Twin Towers illuminated in stainless steel",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-08",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-08.webp",
+      "alt": "Thean Hou Temple multi-tiered Chinese roof and intricate carvings",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-09",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-09.webp",
+      "alt": "Golden Guan Yin shrine surrounded by prayer lights inside Thean Hou Temple",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-10",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-10.webp",
+      "alt": "Strings of glowing red lanterns hung beneath traditional Chinese temple eaves",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-11",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-11.webp",
+      "alt": "Slender minaret of the Federal Territory Mosque rising gracefully",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-12",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-12.webp",
+      "alt": "Grand central dome of Federal Territory Mosque with Ottoman geometric patterns",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-13",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-13.webp",
+      "alt": "Serene prayer hall inside the Federal Territory Mosque with turquoise carpets and arches",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-14",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-14.webp",
+      "alt": "Symmetrical marble archways and colonnades at Federal Territory Mosque",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-15",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-15.webp",
+      "alt": "Sultan Abdul Samad heritage building clock tower illuminated at Merdeka Square",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "kuala-lumpur-16",
+      "src": "/assets/photos/kuala-lumpur/kuala-lumpur-16.webp",
+      "alt": "Sultan Abdul Samad Building and copper domes glowing along Merdeka Square at night",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 16,
+      "isCover": false
+    }
+  ]
+}

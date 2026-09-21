@@ -1,0 +1,243 @@
+{
+  "slug": "singapore",
+  "order": 1,
+  "type": "check-in",
+  "location": "Singapore",
+  "name": "Singapore",
+  "city": "Singapore",
+  "district": "Central",
+  "country": "Singapore",
+  "province": "Singapore",
+  "region": "Southeast Asia",
+  "headline": "Vertical gardens, glass domes, and Sentosa lights.",
+  "subheadline": "A photo journal across the Lion City.",
+  "introduction": "Two days wandering through Singapore: the indoor waterfall at Jewel Changi, morning light at Fort Canning, Harry Potter Visions of Magic at Sentosa, and Gardens by the Bay under the night sky.",
+  "shortDescription": "Two days wandering through Singapore: the indoor waterfall at Jewel Changi, morning light at Fort Canning, Harry Potter Visions of Magic at Sentosa, and Gardens by the Bay under the night sky.",
+  "description": "Two days wandering through Singapore: the indoor waterfall at Jewel Changi, morning light at Fort Canning, Harry Potter Visions of Magic at Sentosa, and Gardens by the Bay under the night sky.",
+  "longDescription": "A photo journal from Singapore.",
+  "travelFrom": "HCM City",
+  "travelTime": "2h flight",
+  "recommendedStay": "3-4 days",
+  "bestMonths": "Nov - Mar",
+  "budgetMin": 500,
+  "budgetMax": 800,
+  "budgetNote": "per person / 3-4 days",
+  "transportation": [
+    "Direct Flight",
+    "MRT / Bus",
+    "Walking",
+    "Sentosa Express"
+  ],
+  "suitableFor": [
+    "Cityscapes",
+    "Architecture",
+    "Night Photography",
+    "Theme Parks",
+    "Modern Culture"
+  ],
+  "overview": "Two days wandering through Singapore: the thunderous indoor waterfall at Jewel Changi, quiet morning spirals at Fort Canning, Harry Potter: Visions of Magic and Sentosa by afternoon, and the glowing canopies of Gardens by the Bay under the night sky.\n\nA seamless blend of futuristic greenery and historic colonial corridors, best explored on foot with a camera in hand.",
+  "favoriteThings": "Jewel Changi waterfall from beneath the lattice dome, Fort Canning tree tunnel in morning mist, and the neon canopy glow of Supertree Grove at Gardens by the Bay.",
+  "whatIWouldDoAgain": "Take the morning walk from Merlion Park around Marina Bay Sands before the midday heat, and catch the evening Supertree light show.",
+  "editorialReview": "",
+  "scores": {
+    "scenery": 9,
+    "food": 9,
+    "cafe": 9,
+    "relaxation": 8,
+    "value": 7,
+    "accessibility": 10
+  },
+  "bestTimeOfDay": [
+    "Early morning for Fort Canning & Merlion Park",
+    "Afternoon for Jewel Changi & Sentosa",
+    "Evening & blue hour for Supertree Grove"
+  ],
+  "localTransport": [
+    "MRT with contactless card / Apple Pay",
+    "Underground air-conditioned walkways",
+    "Grab for late-night transit"
+  ],
+  "weatherNote": "Tropical warmth year-round. Brief afternoon showers are common; carry a compact umbrella.",
+  "travelTips": [
+    "Use tap-and-go contactless credit card for the MRT.",
+    "Visit Fort Canning tree tunnel early in the morning before crowds arrive.",
+    "Jewel Changi Rain Vortex is best viewed on arrival or right before flying home.",
+    "Walk from Old Hill Street Police Station across the river to Clarke Quay at dusk."
+  ],
+  "notFor": [
+    "Ultra-low budget backpackers seeking cheap street eats only.",
+    "Travelers who dislike walking or humid tropical climates."
+  ],
+  "heroImage": {
+    "id": "singapore-01",
+    "src": "/assets/photos/singapore/singapore-01.webp",
+    "alt": "Jewel Changi Rain Vortex waterfall cascading from circular dome skylight",
+    "width": 1600,
+    "height": 1067,
+    "caption": "",
+    "order": 1,
+    "isCover": true
+  },
+  "images": [
+    {
+      "id": "singapore-01",
+      "src": "/assets/photos/singapore/singapore-01.webp",
+      "alt": "Jewel Changi Rain Vortex waterfall cascading from circular dome skylight",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "singapore-02",
+      "src": "/assets/photos/singapore/singapore-02.webp",
+      "alt": "Jewel Changi indoor lush terraced rainforest garden",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "singapore-03",
+      "src": "/assets/photos/singapore/singapore-03.webp",
+      "alt": "Historic Peranakan shophouse covered corridor",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "singapore-04",
+      "src": "/assets/photos/singapore/singapore-04.webp",
+      "alt": "Fort Canning tree tunnel spiral staircase framed by lush overhead greenery",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "singapore-05",
+      "src": "/assets/photos/singapore/singapore-05.webp",
+      "alt": "CHIJMES Gothic chapel illuminated under the night sky",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "singapore-06",
+      "src": "/assets/photos/singapore/singapore-06.webp",
+      "alt": "Supertree Grove canopy glowing in warm ember and gold at Gardens by the Bay",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "singapore-07",
+      "src": "/assets/photos/singapore/singapore-07.webp",
+      "alt": "Supertree Grove intricate geometric foliage illuminated at night",
+      "width": 1600,
+      "height": 1067,
+      "caption": "",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "singapore-08",
+      "src": "/assets/photos/singapore/singapore-08.webp",
+      "alt": "Universal Studios Singapore iconic spinning globe at Sentosa",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "singapore-09",
+      "src": "/assets/photos/singapore/singapore-09.webp",
+      "alt": "Ancient Egypt monument at Universal Studios Singapore",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "singapore-10",
+      "src": "/assets/photos/singapore/singapore-10.webp",
+      "alt": "Harry Potter Visions of Magic glowing blue spheres installation",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "singapore-11",
+      "src": "/assets/photos/singapore/singapore-11.webp",
+      "alt": "Harry Potter Visions of Magic mystical purple hall installation",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "singapore-12",
+      "src": "/assets/photos/singapore/singapore-12.webp",
+      "alt": "Old Hill Street Police Station featuring 927 rainbow-painted window shutters",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "singapore-13",
+      "src": "/assets/photos/singapore/singapore-13.webp",
+      "alt": "Chinatown hanging roast meats food stall",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "singapore-14",
+      "src": "/assets/photos/singapore/singapore-14.webp",
+      "alt": "Victoria Theatre and Concert Hall clock tower illuminated in the evening",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "singapore-15",
+      "src": "/assets/photos/singapore/singapore-15.webp",
+      "alt": "Singapore city light trails and evening street traffic",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "singapore-16",
+      "src": "/assets/photos/singapore/singapore-16.webp",
+      "alt": "The Merlion spouting water with Marina Bay Sands rising across the bay in early morning light",
+      "width": 1067,
+      "height": 1600,
+      "caption": "",
+      "order": 16,
+      "isCover": false
+    }
+  ]
+}
