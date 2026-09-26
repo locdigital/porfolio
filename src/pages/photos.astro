@@ -46,55 +46,30 @@ type PhotoLocationView = Omit<Awaited<ReturnType<typeof getPhotoLocations>>[numb
   photos?: unknown[];
 };
 
-function enabledBlock(loc: PhotoLocationView, type: string) {
-  const blocks = Array.isArray(loc.blocks) ? loc.blocks : [];
-  if (blocks.length === 0) return true;
-  return blocks.some((block) => block.type === type && block.enabled);
+
+
+function personalReflectionFor(loc: PhotoLocationView): string {
+  if (loc.overview) {
+    const paras = loc.overview.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
+    if (paras.length > 0) {
+      if (paras.length > 1 && (paras[0].length + paras[1].length < 420)) {
+        return `${paras[0]} ${paras[1]}`;
+      }
+      return paras[0];
+    }
+  }
+  return loc.description || loc.shortDescription || loc.introduction || "";
 }
 
-function factsFor(loc: PhotoLocationView) {
-  const budget = formatBudget(loc);
-  return [
-    { label: "Place", value: loc.province || loc.city || loc.country, icon: "📍" },
-    { label: "Stay", value: loc.recommendedStay, icon: "🕒" },
-    { label: "Season", value: loc.bestMonths || loc.bestTime, icon: "🗓️" },
-    { label: "Budget", value: budget, icon: "💵" },
-    { label: "Best for", value: (loc.suitableFor ?? []).join(" / "), icon: "✨" },
-  ].filter((fact) => fact.value);
-}
 
-function formatBudget(loc: PhotoLocationView) {
-  const min = typeof loc.budgetMin === "number" ? loc.budgetMin : 0;
-  const max = typeof loc.budgetMax === "number" ? loc.budgetMax : 0;
-  const amount = min && max
-    ? `${formatMoney(min)} - ${formatMoney(max)}`
-    : min || max
-      ? formatMoney(min || max)
-      : "";
-  return amount || loc.budgetNote || "";
-}
 
-function formatMoney(value: number) {
-  return `$${value.toLocaleString("en-US")}`;
-}
-
-function reviewSectionsFor(loc: PhotoLocationView): Array<[string, string[]]> {
-  const overview = loc.overview || loc.shortDescription || loc.description || loc.introduction;
-  return overview ? [["Overview", overview.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean)]] : [];
-}
-
-function goodToKnowChipsFor(loc: PhotoLocationView) {
-  return [...(loc.bestTimeOfDay ?? []), ...(loc.travelTips ?? [])].filter(Boolean);
-}
-
-function hasDetailsFor(loc: PhotoLocationView) {
-  return (
-    (enabledBlock(loc, "quick-facts") && factsFor(loc).length > 0) ||
-    (enabledBlock(loc, "editorial-review") && reviewSectionsFor(loc).length > 0) ||
-    (enabledBlock(loc, "tips") && goodToKnowChipsFor(loc).length > 0) ||
-    (enabledBlock(loc, "related-articles") && (loc.relatedArticles ?? []).length > 0) ||
-    (enabledBlock(loc, "cta") && Boolean(loc.website || loc.bookingUrl || loc.instagram))
-  );
+function locationSubtitleFor(loc: PhotoLocationView): string {
+  const parts = [
+    loc.district,
+    loc.province && loc.province !== loc.name ? loc.province : "",
+    loc.country && loc.country !== loc.name ? loc.country : (loc.region || ""),
+  ].filter(Boolean);
+  return parts.join(", ");
 }
 ---
 
@@ -139,93 +114,33 @@ function hasDetailsFor(loc: PhotoLocationView) {
     </div>
 
     <!-- LOCATION SECTIONS -->
-    {optimizedLocations.map((loc, locIdx) => (
-      <section
-        class={`loc-section ${locIdx === 0 ? 'active' : ''}`}
-        id={loc.anchorId}
-        data-slug={loc.slug}
-        aria-label={`Photos from ${loc.name}`}
-        hidden={locIdx !== 0}
-      >
-        <div class="container">
-          <!-- Location header -->
-          <div class="loc-header">
-            <div class="loc-meta">
-              <div>
+    {optimizedLocations.map((loc, locIdx) => {
+      const personalNote = personalReflectionFor(loc);
+      const subtitle = locationSubtitleFor(loc);
+
+      return (
+        <section
+          class={`loc-section ${locIdx === 0 ? 'active' : ''}`}
+          id={loc.anchorId}
+          data-slug={loc.slug}
+          aria-label={`Photos from ${loc.name}`}
+          hidden={locIdx !== 0}
+        >
+          <div class="container">
+            <header class="loc-editorial-header">
+              <!-- Location title & short personal reflection -->
+              <div class="loc-intro">
+                <div class="loc-kicker-row">
+                  <span class="loc-kicker-tag">{loc.name}</span>
+                  {subtitle && <span class="loc-kicker-sub">{subtitle}</span>}
+                </div>
                 <h2 class="loc-name">{loc.headline || loc.name}</h2>
-                <p class="loc-desc">{loc.description}</p>
+                {personalNote && (
+                  <p class="loc-reflection">{personalNote}</p>
+                )}
               </div>
-            </div>
-            <span class="loc-count">{loc.photos.length} photos</span>
+            </header>
           </div>
-
-          {hasDetailsFor(loc) && (
-            <div class="loc-cms-detail" aria-label={`${loc.name} travel details`}>
-              {enabledBlock(loc, "quick-facts") && factsFor(loc).length > 0 && (
-                <section class="loc-info-section loc-quick-facts">
-                  <h3>Quick Facts</h3>
-                  <div class="loc-facts">
-                    {factsFor(loc).map(({ label, value, icon }) => (
-                      <span class="loc-fact-pill">
-                        <span class="loc-fact-label">
-                          <span class="loc-meta-icon" aria-hidden="true">{icon}</span>
-                          {label}
-                        </span>
-                        <strong>{value}</strong>
-                      </span>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {enabledBlock(loc, "editorial-review") && reviewSectionsFor(loc).length > 0 && (
-                <section class="loc-info-section loc-rich">
-                  {reviewSectionsFor(loc).map(([label, paragraphs]) => (
-                    <>
-                      <h3>{label}</h3>
-                      {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-                    </>
-                  ))}
-                </section>
-              )}
-
-              {enabledBlock(loc, "tips") && goodToKnowChipsFor(loc).length > 0 && (
-                <section class="loc-info-section loc-good-to-know">
-                  <h3>Good To Know</h3>
-                  <ul class="loc-pill-list">
-                    {goodToKnowChipsFor(loc).map((item) => (
-                      <li>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              )}
-
-              {enabledBlock(loc, "related-articles") && (loc.relatedArticles ?? []).length > 0 && (
-                <section class="loc-info-section">
-                  <h3>Related Articles</h3>
-                  <div class="loc-link-list">
-                    {(loc.relatedArticles ?? []).map((article) => (
-                      <a href={`/blog/${article.slug}`}>{article.title || article.slug}</a>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {enabledBlock(loc, "cta") && (loc.website || loc.bookingUrl || loc.instagram) && (
-                <section class="loc-info-section">
-                  <h3>Links</h3>
-                  <div class="loc-link-list">
-                    {loc.website && <a href={loc.website} target="_blank" rel="noopener noreferrer">Website</a>}
-                    {loc.bookingUrl && <a href={loc.bookingUrl} target="_blank" rel="noopener noreferrer">Booking</a>}
-                    {loc.instagram && <a href={loc.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>}
-                  </div>
-                </section>
-              )}
-            </div>
-          )}
-        </div>
 
         <!-- Responsive Image Gallery (Efferd inspired) -->
         <div class="container">
@@ -281,10 +196,11 @@ function hasDetailsFor(loc: PhotoLocationView) {
                         onerror="this.style.opacity='0'; this.closest('.efferd-card-inner').style.backgroundColor='#e5e7eb';"
                       />
                     )}
-                    <div class="efferd-overlay" aria-hidden="true">
-                      <span class="efferd-badge">{String(i + 1).padStart(2, '0')}</span>
-                      {captionText && <span class="efferd-caption">{captionText}</span>}
-                    </div>
+                    {captionText && (
+                      <div class="efferd-overlay" aria-hidden="true">
+                        <span class="efferd-caption">{captionText}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -292,7 +208,8 @@ function hasDetailsFor(loc: PhotoLocationView) {
           </div>
         </div>
       </section>
-    ))}
+      );
+    })}
 
 
 
@@ -395,31 +312,10 @@ function hasDetailsFor(loc: PhotoLocationView) {
     window.addEventListener("hashchange", () => activate(location.hash.slice(1)));
   }
 
-  let photosObserver: IntersectionObserver | null = null;
-
   function initGalleryInView() {
     const items = document.querySelectorAll(".efferd-gallery-item");
     if (!items.length) return;
-
-    if (!("IntersectionObserver" in window)) {
-      items.forEach((item) => item.classList.add("is-visible"));
-      return;
-    }
-
-    if (photosObserver) {
-      photosObserver.disconnect();
-    }
-
-    photosObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle("is-visible", entry.isIntersecting);
-        });
-      },
-      { threshold: 0.08, rootMargin: "20px 0px -40px 0px" }
-    );
-
-    items.forEach((item) => photosObserver!.observe(item));
+    items.forEach((item) => item.classList.add("is-visible"));
   }
 
   document.addEventListener("astro:page-load", () => {
@@ -625,66 +521,71 @@ function hasDetailsFor(loc: PhotoLocationView) {
     }
   }
 
-  .loc-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-6);
-    margin-bottom: var(--space-8);
+  /* ------ Editorial Location Header ------ */
+  .loc-editorial-header {
+    margin-bottom: clamp(48px, 6.5vw, 80px);
   }
 
-  .loc-meta {
+  .loc-intro {
+    max-width: var(--loc-prose-measure);
+    margin-bottom: 0;
+  }
+
+  .loc-kicker-row {
     display: flex;
-    align-items: flex-start;
-    gap: var(--space-4);
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .loc-kicker-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent, #0075de);
+  }
+
+  .loc-kicker-sub {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--muted);
   }
 
   .loc-name {
     font-family: var(--serif);
-    font-size: var(--type-display);
+    font-size: clamp(2rem, 3.8vw, 3rem);
     font-weight: 400;
-    line-height: var(--leading-heading);
+    line-height: 1.12;
     letter-spacing: var(--tracking-normal);
     color: var(--text);
-    margin-bottom: var(--loc-heading-gap);
+    margin: 0 0 12px 0;
+    text-wrap: balance;
   }
 
-  .loc-desc {
-    max-width: var(--loc-prose-measure);
+  .loc-reflection {
     font-family: var(--sans);
-    font-size: var(--type-body);
-    line-height: var(--loc-prose-leading);
-    color: #6e6e6e;
-    letter-spacing: 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--text) 78%, var(--muted));
+    margin: 0;
     text-wrap: pretty;
-  }
-
-  .loc-count {
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    color: var(--muted);
-    white-space: nowrap;
-    flex-shrink: 0;
-    padding-top: 6px;
-    letter-spacing: .06em;
   }
 
   /* ------ Efferd Image Gallery ------ */
   .efferd-gallery {
     column-count: 3;
     column-gap: 16px;
-    margin-top: clamp(24px, 4vw, 40px);
+    margin-top: 0;
     width: 100%;
   }
 
   .efferd-gallery-item {
     break-inside: avoid;
     margin-bottom: 16px;
-    opacity: 0;
-    transform: translateY(28px) scale(0.96);
-    transition: opacity 0.35s ease-out,
-                transform 0.35s ease-out;
-    will-change: opacity, transform;
+    opacity: 1;
+    transform: none;
   }
 
   .efferd-gallery-item.photo-extra.hidden {
@@ -693,10 +594,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
   .efferd-gallery-item.is-visible {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: calc((var(--photo-index, 0) % 4) * 45ms);
+    transform: none;
   }
 
   .photo-toggle-wrapper {
@@ -782,7 +680,7 @@ function hasDetailsFor(loc: PhotoLocationView) {
     pointer-events: none;
     display: flex;
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 14px 16px;
   }
 
@@ -790,289 +688,15 @@ function hasDetailsFor(loc: PhotoLocationView) {
     opacity: 1;
   }
 
-  .efferd-badge {
-    font-family: var(--mono);
-    font-size: var(--type-caption);
-    color: rgba(255, 255, 255, 0.95);
-    letter-spacing: 0.1em;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 3px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
   .efferd-caption {
     font-family: var(--sans);
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.85);
-    max-width: 65%;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-  }
-
-  /* ------ CMS location details ------ */
-  .loc-cms-detail {
-    display: grid;
-    grid-template-columns: minmax(12rem, 0.72fr) minmax(38ch, 1.48fr) minmax(14rem, 0.8fr);
-    gap: clamp(var(--space-5), 3vw, var(--space-10));
-    min-width: 0;
-    margin: var(--space-1) 0 clamp(var(--space-8), 4vw, var(--space-12));
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--divider);
-  }
-
-  .loc-info-section {
-    display: grid;
-    gap: var(--loc-copy-gap);
-    align-content: start;
-    min-width: 0;
-  }
-
-  .loc-info-section + .loc-info-section {
-    padding-left: clamp(var(--space-4), 2vw, var(--space-6));
-    border-left: 1px solid color-mix(in srgb, var(--divider) 72%, transparent);
-  }
-
-  .loc-info-section h3,
-  .loc-rich h3,
-  .loc-rich h4 {
-    font-family: var(--serif);
-    font-weight: 400;
-    letter-spacing: 0;
-    color: var(--text);
-  }
-
-  .loc-info-section h3,
-  .loc-rich h3 {
-    font-size: 1.5rem;
-    line-height: 1;
-    margin: 0;
-    text-wrap: balance;
-  }
-
-  :global(.loc-cms-detail h3) {
-    font-size: 1.5rem;
-  }
-
-  .loc-rich h4 {
-    font-size: var(--type-subhead);
-    line-height: 1.12;
-    margin-top: var(--space-2);
-    text-wrap: balance;
-  }
-
-.loc-rich,
-  .loc-rich p,
-  .loc-rich li,
-  .loc-muted {
-    font-family: var(--sans);
-    font-size: var(--type-body);
-    line-height: var(--loc-prose-leading);
-    color: #6e6e6e;
-  }
-
-  .loc-rich {
-    display: grid;
-    gap: var(--loc-rich-block-gap);
-    max-width: var(--loc-prose-measure);
-  }
-
-  .loc-quick-facts,
-  .loc-good-to-know {
-    gap: var(--loc-rich-block-gap);
-  }
-
-  .loc-rich > :not(:first-child):is(h3, h4) {
-    margin-top: 0;
-  }
-
-  .loc-rich p,
-  .loc-rich ul,
-  .loc-rich blockquote {
-    max-width: var(--loc-prose-measure);
-    min-width: 0;
-  }
-
-  .loc-rich ul {
-    display: grid;
-    gap: var(--space-2);
-    padding-left: 1.1em;
-  }
-
-  .loc-rich blockquote {
-    margin: 2px 0;
-    padding-left: 16px;
-    border-left: 2px solid var(--text);
-    color: var(--muted);
-    font-style: italic;
-  }
-
-  .loc-facts {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
-    max-width: var(--loc-sidebar-measure);
-  }
-
-  .loc-fact-pill,
-  .loc-fact-pill span,
-  .loc-fact-pill strong,
-  .loc-text-link,
-  .loc-link-list a {
-    font-family: var(--sans);
-    font-size: var(--loc-sidebar-size);
-  }
-
-  .loc-fact-pill {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    flex: 0 1 auto;
-    gap: var(--space-1);
-    min-width: 0;
-    min-height: 58px;
-    max-width: 100%;
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--divider);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.62);
-    color: var(--text);
-    line-height: 1.4;
-  }
-
-  .loc-fact-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: var(--muted);
-    font-size: var(--type-caption);
-    font-weight: 500;
-  }
-
-  .loc-meta-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    width: 1.1em;
-    font-size: 0.95rem;
-    line-height: 1;
-  }
-
-  .loc-fact-pill strong {
-    min-width: 0;
-    overflow-wrap: anywhere;
-    white-space: normal;
-    font-size: var(--type-body);
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .loc-pill-list,
-  .loc-link-list,
-  .loc-score-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .loc-pill-list li,
-  .loc-text-link,
-  .loc-link-list a,
-  .loc-score-pill {
-    display: inline-flex;
-    width: fit-content;
-    align-items: center;
-    gap: 0.4rem;
-    min-height: 32px;
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--divider);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.62);
-    color: var(--text);
-    line-height: 1.35;
-    overflow-wrap: anywhere;
-  }
-
-  .loc-good-to-know .loc-pill-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
-    width: 100%;
-    max-width: var(--loc-sidebar-measure);
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  .loc-good-to-know .loc-pill-list li {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 58px;
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--divider) !important;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.62);
-    color: var(--text);
-    font-size: 14px !important;
-    line-height: 1.4;
-    box-sizing: border-box;
-  }
-
-  .loc-good-to-know .loc-pill-list li span {
-    display: block;
-    padding: 0 !important;
-    margin: 0 !important;
-    min-height: unset !important;
-    font-family: var(--sans);
-    font-size: 14px !important;
-    line-height: 1.45 !important;
-    color: var(--text);
-  }
-
-  .loc-score-pill {
-    gap: var(--space-2);
-  }
-
-  .loc-score-pill span,
-  .loc-note-list,
-  .loc-note-list p,
-  .loc-bullet-list,
-  .loc-bullet-list li {
-    font-family: var(--sans);
-    font-size: var(--loc-sidebar-size);
-  }
-
-  .loc-score-pill span {
-    color: var(--muted);
-  }
-
-  .loc-score-pill strong {
-    font-weight: 600;
-  }
-
-  .loc-note-list {
-    display: grid;
-    gap: var(--space-2);
-    max-width: var(--loc-sidebar-measure);
-    color: #6e6e6e;
-    font-size: var(--type-body);
-    line-height: var(--loc-sidebar-leading);
-  }
-
-  .loc-bullet-list {
-    display: grid;
-    gap: var(--space-2);
-    max-width: var(--loc-sidebar-measure);
-    padding-left: 1.1em;
-    list-style: disc;
-    color: #6e6e6e;
-    font-size: var(--type-body);
-    line-height: var(--loc-sidebar-leading);
   }
 
   /* ------ Responsive ------ */
@@ -1080,25 +704,6 @@ function hasDetailsFor(loc: PhotoLocationView) {
     .efferd-gallery {
       column-count: 2;
       column-gap: 14px;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .loc-cms-detail {
-      grid-template-columns: 1fr;
-      margin-left: 0;
-      min-width: 0;
-    }
-
-    .loc-rich {
-      max-width: var(--loc-prose-measure);
-    }
-
-    .loc-info-section + .loc-info-section {
-      padding-left: 0;
-      padding-top: var(--space-5);
-      border-left: 0;
-      border-top: 1px solid color-mix(in srgb, var(--divider) 72%, transparent);
     }
   }
 
@@ -1149,54 +754,6 @@ function hasDetailsFor(loc: PhotoLocationView) {
 
     .photos-nav-count {
       font-size: var(--type-caption);
-    }
-
-    .loc-facts {
-      grid-template-columns: 1fr;
-      max-width: none;
-    }
-
-    .loc-section {
-      --loc-prose-size: var(--type-body);
-      --loc-sidebar-size: var(--type-caption);
-    }
-
-    .loc-fact-pill {
-      width: 100%;
-      min-width: 0;
-    }
-
-    .loc-fact-pill,
-    .loc-fact-pill span,
-    .loc-fact-pill strong,
-    .loc-text-link,
-    .loc-link-list a,
-    .loc-score-pill,
-    .loc-score-pill strong {
-      font-size: var(--type-caption) !important;
-    }
-
-    .loc-pill-list,
-    .loc-link-list,
-    .loc-score-list {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-
-    .loc-pill-list li,
-    .loc-link-list a,
-    .loc-score-pill {
-      width: 100%;
-    }
-
-    .loc-fact-pill strong {
-      white-space: normal;
-      overflow: visible;
-      text-overflow: clip;
-    }
-
-    .loc-header {
-      gap: var(--space-4);
     }
   }
 </style>

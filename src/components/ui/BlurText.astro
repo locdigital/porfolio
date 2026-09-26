@@ -42,73 +42,17 @@ const elements = animateBy === "words" ? text.split(" ") : text.split("");
   }
   
   .blur-text-word {
-    opacity: 0;
-  }
-
-  /* Trigger animation when parent has .in-view class */
-  .blur-text-container[data-direction="top"].in-view .blur-text-word {
-    animation: blur-in-top var(--word-duration) cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--word-delay);
-  }
-
-  .blur-text-container[data-direction="bottom"].in-view .blur-text-word {
-    animation: blur-in-bottom var(--word-duration) cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--word-delay);
-  }
-
-  @keyframes blur-in-top {
-    0% {
-      filter: blur(10px);
-      opacity: 0;
-      transform: translateY(-50px);
-    }
-    50% {
-      filter: blur(5px);
-      opacity: 0.5;
-      transform: translateY(5px);
-    }
-    100% {
-      filter: blur(0);
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes blur-in-bottom {
-    0% {
-      filter: blur(10px);
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    50% {
-      filter: blur(5px);
-      opacity: 0.5;
-      transform: translateY(-5px);
-    }
-    100% {
-      filter: blur(0);
-      opacity: 1;
-      transform: translateY(0);
-    }
+    opacity: 1;
   }
 </style>
 
 <script>
   function setupBlurTextObservers() {
     const containers = document.querySelectorAll('.blur-text-container');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.05 });
-
-    containers.forEach((el) => observer.observe(el));
+    containers.forEach((el) => el.classList.add('in-view'));
   }
 
-  // Set up observers immediately and on Astro page loads (view transitions)
+  // Set up immediately and on Astro page loads (view transitions)
   setupBlurTextObservers();
   document.addEventListener('astro:page-load', setupBlurTextObservers);
 </script>

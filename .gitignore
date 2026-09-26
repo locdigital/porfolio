@@ -35,3 +35,9 @@ git_store_broken.nosync/
 skills-lock.json
 .gstack/
 .vercel
+
+# Raw photos and scratch downloads
+img travel/
+img travel /
+/ec2f121e-*.jpeg
+/workflow-partner-ad*.png

@@ -952,90 +952,36 @@
     }
 
     /* ============================================================
-       SCROLL REVEAL (BlurFade style)
+       SCROLL REVEAL (Disabled: instant render for optimal UX)
     ============================================================ */
     .r,
     .toki-r,
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      filter: blur(10px);
-      transition: opacity 0.35s ease-out,
-                  transform 0.35s ease-out,
-                  filter 0.35s ease-out;
-      will-change: transform, opacity, filter;
-    }
-
+    .reveal,
     .r.in,
     .toki-r.in,
     .reveal.in {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0px);
-      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
     }
 
-    .js .animated-card {
-      opacity: 0;
-      transform: translateY(18px);
-      filter: blur(14px);
-      transition: opacity 0.72s var(--ease-out),
-                  transform 0.72s var(--ease-out),
-                  filter 0.72s var(--ease-out);
-      transition-delay: var(--card-delay, 0ms);
-      will-change: transform, opacity, filter;
-    }
-
+    .js .animated-card,
     .js .animated-card.card-in {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
     }
 
-    /* Staggered transition delays for lists/grids (only when entering) */
-    .r.in[data-d="1"], .toki-r.in[data-d="1"], .reveal.in[data-d="1"] { transition-delay: 60ms; }
-    .r.in[data-d="2"], .toki-r.in[data-d="2"], .reveal.in[data-d="2"] { transition-delay: 140ms; }
-    .r.in[data-d="3"], .toki-r.in[data-d="3"], .reveal.in[data-d="3"] { transition-delay: 220ms; }
-    .r.in[data-d="4"], .toki-r.in[data-d="4"], .reveal.in[data-d="4"] { transition-delay: 300ms; }
-    .r.in[data-d="5"], .toki-r.in[data-d="5"], .reveal.in[data-d="5"] { transition-delay: 380ms; }
-    .r.in[data-d="6"], .toki-r.in[data-d="6"], .reveal.in[data-d="6"] { transition-delay: 460ms; }
-    .r.in[data-d="7"], .toki-r.in[data-d="7"], .reveal.in[data-d="7"] { transition-delay: 540ms; }
-
-    /* About-style hero reveal: blur/slide each hero fragment in sequence. */
+    /* About-style hero reveal: rendered immediately */
     .about-reveal-hero > .gear-kicker,
     .about-reveal-hero > .page-kicker-wrapper,
     .about-reveal-hero > h1,
     .about-reveal-hero > .gear-intro,
     .about-reveal-hero > .hero-ctas,
     .about-reveal-hero > .qp-avatar,
-    .about-reveal-hero > .qp-headline {
-      opacity: 0;
-      transform: translateY(28px);
-      filter: blur(10px);
-      transition: opacity 0.75s var(--ease-out),
-                  transform 0.75s var(--ease-out),
-                  filter 0.75s var(--ease-out);
-      will-change: transform, opacity, filter;
-    }
-
-    .about-reveal-hero > .gear-kicker,
-    .about-reveal-hero > .page-kicker-wrapper,
-    .about-reveal-hero > .qp-avatar {
-      transform: translateY(16px);
-      filter: blur(8px);
-    }
-
-    .about-reveal-hero > h1 em {
-      display: inline-block;
-      opacity: 0;
-      filter: blur(8px);
-      transition: opacity 0.6s var(--ease-out),
-                  filter 0.6s var(--ease-out);
-      will-change: opacity, filter;
-    }
-
+    .about-reveal-hero > .qp-headline,
     .about-reveal-hero.in > .gear-kicker,
     .about-reveal-hero.in > .page-kicker-wrapper,
     .about-reveal-hero.in > h1,
@@ -1043,37 +989,18 @@
     .about-reveal-hero.in > .hero-ctas,
     .about-reveal-hero.in > .qp-avatar,
     .about-reveal-hero.in > .qp-headline {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
     }
 
+    .about-reveal-hero > h1 em,
     .about-reveal-hero.in > h1 em {
-      opacity: 1;
-      filter: blur(0);
+      opacity: 1 !important;
+      filter: none !important;
+      transition: none !important;
     }
-
-    .about-reveal-hero.in > .gear-kicker,
-    .about-reveal-hero.in > .page-kicker-wrapper,
-    .about-reveal-hero.in > .qp-avatar { transition-delay: 0ms; }
-    .about-reveal-hero.in > h1,
-    .about-reveal-hero.in > .qp-headline { transition-delay: 180ms; }
-    .about-reveal-hero.in > h1 em:nth-of-type(1) { transition-delay: 360ms; }
-    .about-reveal-hero.in > h1 em:nth-of-type(2) { transition-delay: 500ms; }
-    .about-reveal-hero.in > h1 em:nth-of-type(3) { transition-delay: 640ms; }
-    .about-reveal-hero.in > .gear-intro { transition-delay: 720ms; }
-    .about-reveal-hero.in > .hero-ctas { transition-delay: 860ms; }
-
-    /* Auto-stagger for children inside a reveal-group (only when entering) */
-    .reveal-group > *.in:nth-child(1)  { transition-delay: 0ms; }
-    .reveal-group > *.in:nth-child(2)  { transition-delay: 70ms; }
-    .reveal-group > *.in:nth-child(3)  { transition-delay: 140ms; }
-    .reveal-group > *.in:nth-child(4)  { transition-delay: 210ms; }
-    .reveal-group > *.in:nth-child(5)  { transition-delay: 280ms; }
-    .reveal-group > *.in:nth-child(6)  { transition-delay: 350ms; }
-    .reveal-group > *.in:nth-child(7)  { transition-delay: 420ms; }
-    .reveal-group > *.in:nth-child(8)  { transition-delay: 490ms; }
-    .reveal-group > *.in:nth-child(n+9) { transition-delay: 560ms; }
 
     /* Reduced motion override removed to ensure all animations play */
 
@@ -2860,33 +2787,15 @@
 
 .js .career-map-copy-item > span,
 .js .career-map-copy-item > p,
-.js .career-map-copy small {
-  opacity: 0;
-  transform: translateY(12px);
-  filter: blur(10px);
-  transition:
-    opacity 720ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 720ms cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: var(--career-copy-delay, 420ms);
-  will-change: opacity, transform, filter;
-}
-
+.js .career-map-copy small,
 .js .career-map.in .career-map-copy-item > span,
 .js .career-map.in .career-map-copy-item > p,
 .js .career-map.in .career-map-copy small {
   opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
+  transform: none;
+  filter: none;
+  transition: none;
 }
-
-.js .career-map-copy-item:nth-child(1) > span { --career-copy-delay: 420ms; }
-.js .career-map-copy-item:nth-child(1) > p { --career-copy-delay: 480ms; }
-.js .career-map-copy-item:nth-child(2) > span { --career-copy-delay: 540ms; }
-.js .career-map-copy-item:nth-child(2) > p { --career-copy-delay: 600ms; }
-.js .career-map-copy-item:nth-child(3) > span { --career-copy-delay: 660ms; }
-.js .career-map-copy-item:nth-child(3) > p { --career-copy-delay: 720ms; }
-.js .career-map-copy small { --career-copy-delay: 780ms; }
 
 .career-map-copy-item {
   display: grid;
@@ -3783,37 +3692,19 @@ body :where(
   opacity: var(--tilt-glare-opacity);
 }
 
-/* 2. Texts Reveal (Staggered Blur Rise) */
-.t-stagger-line {
-  display: block;
-  opacity: 0;
-  transform: translateY(var(--stagger-distance));
-  filter: blur(var(--stagger-blur));
-  transition:
-    opacity   var(--stagger-dur) var(--stagger-ease),
-    transform var(--stagger-dur) var(--stagger-ease),
-    filter    var(--stagger-dur) var(--stagger-ease);
-  will-change: transform, opacity, filter;
-}
-.t-stagger-line--1 { transition-delay: 0ms; }
-.t-stagger-line--2 { transition-delay: var(--stagger-stagger); }
-.t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger) * 2); }
-.t-stagger-line--4 { transition-delay: calc(var(--stagger-stagger) * 3); }
-
+/* 2. Texts Reveal (Staggered Blur Rise - disabled for instant display) */
+.t-stagger-line,
 .t-stagger.is-shown .t-stagger-line {
+  display: block;
   opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
+  transform: none;
+  filter: none;
+  transition: none;
 }
 .t-stagger.is-hiding .t-stagger-line {
-  opacity: 0;
-  transform: translateY(0);
-  filter: blur(0);
-  transition:
-    opacity 200ms ease,
-    transform 0s linear,
-    filter 0s linear;
-  transition-delay: 0s;
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 /* 3. Learn More Hover Arrow */

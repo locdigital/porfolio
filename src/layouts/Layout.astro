@@ -52,13 +52,17 @@ const footerLinks = [
 <head>
   <meta charset="UTF-8">
   {import.meta.env.DEV && (
-    <script type="module" is:inline>
-      import RefreshRuntime from "/@react-refresh"
-      RefreshRuntime.injectIntoGlobalHook(window)
-      window.$RefreshReg$ = () => {}
-      window.$RefreshSig$ = () => (type) => type
-      window.__vite_plugin_react_preamble_installed__ = true
-    </script>
+    <>
+      <script is:inline>
+        window.$RefreshReg$ = () => {};
+        window.$RefreshSig$ = () => (type) => type;
+        window.__vite_plugin_react_preamble_installed__ = true;
+      </script>
+      <script type="module" is:inline>
+        import RefreshRuntime from "/@react-refresh";
+        RefreshRuntime.injectIntoGlobalHook(window);
+      </script>
+    </>
   )}
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
   <meta name="description" content={description}>
@@ -458,54 +462,7 @@ const footerLinks = [
       function setupOrderedCardAnimations() {
         const cards = Array.from(document.querySelectorAll('.animated-card'));
         if (!cards.length) return;
-
-        if (reduced) {
-          cards.forEach((card) => card.classList.add('card-in'));
-          return;
-        }
-
-        const headlineTypes = new Set(['headline', 'featured', 'title']);
-        const rowTolerance = 24;
-
-        const getCardPriority = (card) => {
-          const type = (card.dataset.cardType || '').toLowerCase();
-          return headlineTypes.has(type) ||
-            card.classList.contains('headline-card') ||
-            card.classList.contains('featured-card') ||
-            card.classList.contains('title-card')
-            ? 0
-            : 1;
-        };
-
-        const sortedCards = cards
-          .map((card, originalIndex) => {
-            const rect = card.getBoundingClientRect();
-            return {
-              card,
-              originalIndex,
-              priority: getCardPriority(card),
-              top: rect.top + window.scrollY,
-              left: rect.left + window.scrollX,
-            };
-          })
-          .sort((a, b) => {
-            const sameRow = Math.abs(a.top - b.top) <= rowTolerance;
-            if (!sameRow) return a.top - b.top;
-            if (a.priority !== b.priority) return a.priority - b.priority;
-            if (Math.abs(a.left - b.left) > 2) return a.left - b.left;
-            return a.originalIndex - b.originalIndex;
-          });
-
-        sortedCards.forEach(({ card }, index) => {
-          card.classList.remove('card-in');
-          card.style.setProperty('--card-delay', `${Math.min(index * 100, 1200)}ms`);
-        });
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            sortedCards.forEach(({ card }) => card.classList.add('card-in'));
-          });
-        });
+        cards.forEach((card) => card.classList.add('card-in'));
       }
 
       let orderedCardAnimationFrame = 0;
@@ -553,77 +510,8 @@ const footerLinks = [
       // Hero aside
       setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
 
-      /* ── IntersectionObserver: section reveals (bidirectional scroll reveal) ── */
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          e.target.classList.toggle('in', e.isIntersecting);
-        });
-      }, { threshold: 0.06, rootMargin: '20px 0px -30px 0px' });
-
-      // Observe existing manual reveal elements and auto-reveal elements after a brief delay
-      // to let the page entry fade/blur transition complete so animations are visible
-      setTimeout(() => {
-        document.querySelectorAll('.r, .toki-r').forEach(el => io.observe(el));
-
-        // Auto-reveal: find all major content elements NOT already in a reveal or hero context
-        const AUTO_REVEAL_SELECTORS = [
-          'main section',
-          'main article',
-          'main h1:not(.hero-line)',
-          'main h2',
-          'main h3',
-          'main p:not(.hero-line)',
-          'main li',
-          'main figure',
-          'main picture',
-          'main blockquote',
-          'main .card',
-          'main .post-item',
-          'main .blog-post-link',
-          'main .gear-card',
-          'main .gear-item',
-          'main .photo-card',
-          'main .loc-photo-item',
-          'main .big-card',
-          'main .gear-section',
-          'main .timeline-row',
-          'main .project-row',
-          'main .writing-row',
-          'main .sh',
-          'main .about-layout',
-          'main .about-photo',
-          'main table',
-        ].join(', ');
-
-        document.querySelectorAll(AUTO_REVEAL_SELECTORS).forEach((el) => {
-          // Skip if already has a reveal class or is inside hero or photo gallery
-          if (
-            el.classList.contains('r') ||
-            el.classList.contains('toki-r') ||
-            el.classList.contains('reveal') ||
-            el.classList.contains('gear-intro') ||
-            el.classList.contains('loc-section') ||
-            el.closest('.efferd-gallery') ||
-            el.closest('.hero') ||
-            el.closest('.hero-title') ||
-            el.classList.contains('hero-line') ||
-            el.classList.contains('hero-aside')
-          ) return;
-
-          el.classList.add('reveal');
-          io.observe(el);
-        });
-
-        // Auto-stagger items inside reveal-group containers
-        document.querySelectorAll('.reveal-group').forEach((group) => {
-          Array.from(group.children).forEach((child) => {
-            if (!child.classList.contains('reveal')) {
-              child.classList.add('reveal');
-              io.observe(child);
-            }
-          });
-        });
-      }, 40);
+      /* ── Instant Reveal: all content elements visible on load for optimal UX ── */
+      document.querySelectorAll('.r, .toki-r, .reveal').forEach(el => el.classList.add('in'));
 
       /* ── Viewport observers: header and back-to-top state ── */
       const header = document.getElementById('site-header');
@@ -1024,19 +912,9 @@ const footerLinks = [
           });
         });
 
-        // 2. Texts Reveal (.t-stagger)
+        // 2. Texts Reveal (.t-stagger - immediate display)
         const staggerBlocks = document.querySelectorAll(".t-stagger");
-        if (staggerBlocks.length > 0) {
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("is-shown");
-              }
-            });
-          }, { threshold: 0.1 });
-
-          staggerBlocks.forEach((block) => observer.observe(block));
-        }
+        staggerBlocks.forEach((block) => block.classList.add("is-shown"));
 
         // 3. Sliding Tabs (.t-tabs)
         const tabBars = document.querySelectorAll(".t-tabs");

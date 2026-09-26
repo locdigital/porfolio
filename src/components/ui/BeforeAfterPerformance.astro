@@ -1,0 +1,696 @@
+---
+export interface PerformanceMetric {
+  label: string;
+  value: string;
+}
+
+export interface PerformancePanel {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  metrics?: PerformanceMetric[];
+}
+
+export interface PerformanceHighlight {
+  id: string;
+  title: string;
+  description?: string;
+  icon?: "check" | "sparkles" | "zap";
+}
+
+export interface ComparisonImage {
+  src: string;
+  alt: string;
+}
+
+export interface Props {
+  badge?: string;
+  heading?: string;
+  description?: string;
+  highlights?: PerformanceHighlight[];
+  beforeImage?: ComparisonImage;
+  afterImage?: ComparisonImage;
+  beforePanel?: PerformancePanel;
+  afterPanel?: PerformancePanel;
+  beforeLabel?: string;
+  afterLabel?: string;
+  showLabels?: boolean;
+  orientation?: "horizontal" | "vertical";
+  initialPosition?: number;
+  dividerWidth?: number;
+  className?: string;
+}
+
+const {
+  badge = "Performance compare",
+  heading = "Before / after performance lift",
+  description = "Drag the slider to compare before and after states.",
+  highlights = [],
+  beforeImage,
+  afterImage,
+  beforePanel,
+  afterPanel,
+  beforeLabel = "Before",
+  afterLabel = "After",
+  orientation = "horizontal",
+  initialPosition = 50,
+  dividerWidth = 1.5,
+  className = "",
+} = Astro.props;
+
+const isHorizontal = orientation === "horizontal";
+const visibleDividerWidth = Math.max(dividerWidth, 1.5);
+
+const defaultPair = {
+  category: "Analytics & Growth Dashboard",
+  before: {
+    src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80",
+    alt: "Baseline Analytics & Spend Dashboard",
+  },
+  after: {
+    src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80",
+    alt: "Scaled Conversion Engine & ROAS Dashboard",
+  },
+};
+
+const effectiveBefore = beforeImage ?? defaultPair.before;
+const effectiveAfter = afterImage ?? defaultPair.after;
+const categoryLabel = defaultPair.category;
+---
+
+<section class={`before-after-performance ${className}`}>
+  <div class="bap-shell">
+    <div class="bap-copy">
+      {badge && <span class="bap-badge">{badge}</span>}
+      {heading && <h2 class="bap-heading">{heading}</h2>}
+      {description && <p class="bap-description">{description}</p>}
+
+      {highlights.length > 0 && (
+        <ul class="bap-highlights">
+          {highlights.map((highlight) => (
+            <li class="bap-highlight">
+              <p class="bap-highlight-title">{highlight.title}</p>
+              {highlight.description && <p class="bap-highlight-desc">{highlight.description}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <div class="bap-slider-wrap">
+      <div class="bap-slider-header">
+        <span class="bap-slider-tag">{categoryLabel}</span>
+      </div>
+
+      <div
+        class={`bap-slider ${!isHorizontal ? 'is-vertical' : ''}`}
+        role="slider"
+        aria-label="Before and after performance comparison slider"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={Math.round(initialPosition)}
+        tabindex="0"
+        data-initial-pos={initialPosition}
+        data-orientation={orientation}
+        data-divider-width={visibleDividerWidth}
+        style={`--bap-divider-position: ${initialPosition}%; --bap-divider-size: ${visibleDividerWidth}px;`}
+      >
+        <!-- AFTER LAYER (Bottom) -->
+        <div class="bap-layer bap-after-layer">
+          {effectiveAfter?.src ? (
+            <img src={effectiveAfter.src} alt={effectiveAfter.alt} loading="lazy" decoding="async" />
+          ) : (
+            <div class="bap-state">
+              <div>
+                <p class="bap-state-eyebrow">{afterPanel?.eyebrow ?? afterLabel}</p>
+                <h3 class="bap-state-title">{afterPanel?.title ?? `${afterLabel} state`}</h3>
+                {afterPanel?.description && <p class="bap-state-desc">{afterPanel.description}</p>}
+              </div>
+              {afterPanel?.metrics && afterPanel.metrics.length > 0 && (
+                <div class="bap-metrics">
+                  {afterPanel.metrics.map((m) => (
+                    <div class="bap-metric">
+                      <span>{m.value}</span>
+                      <p>{m.label}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <!-- BEFORE LAYER (Top, clipped) -->
+        <div
+          class="bap-layer bap-before-layer"
+          style={`clip-path: ${isHorizontal ? `inset(0 ${100 - initialPosition}% 0 0)` : `inset(0 0 ${100 - initialPosition}% 0)`};`}
+        >
+          {effectiveBefore?.src ? (
+            <img src={effectiveBefore.src} alt={effectiveBefore.alt} loading="lazy" decoding="async" />
+          ) : (
+            <div class="bap-state">
+              <div>
+                <p class="bap-state-eyebrow">{beforePanel?.eyebrow ?? beforeLabel}</p>
+                <h3 class="bap-state-title">{beforePanel?.title ?? `${beforeLabel} state`}</h3>
+                {beforePanel?.description && <p class="bap-state-desc">{beforePanel.description}</p>}
+              </div>
+              {beforePanel?.metrics && beforePanel.metrics.length > 0 && (
+                <div class="bap-metrics">
+                  {beforePanel.metrics.map((m) => (
+                    <div class="bap-metric">
+                      <span>{m.value}</span>
+                      <p>{m.label}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <!-- DIVIDER LINE -->
+        <div
+          class={`bap-divider ${isHorizontal ? 'is-horizontal' : 'is-vertical'}`}
+          style={`${isHorizontal ? 'left' : 'top'}: ${initialPosition}%; ${isHorizontal ? 'width' : 'height'}: ${visibleDividerWidth}px;`}
+        />
+
+        <!-- HANDLE -->
+        <div
+          class="bap-handle"
+          aria-hidden="true"
+          style={`left: ${isHorizontal ? `${initialPosition}%` : '50%'}; top: ${isHorizontal ? '50%' : `${initialPosition}%`};`}
+        >
+          {isHorizontal ? (
+            <div class="bap-handle-chevrons">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="margin-left: -3px;">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="9" r="1" />
+              <circle cx="19" cy="9" r="1" />
+              <circle cx="5" cy="9" r="1" />
+              <circle cx="12" cy="15" r="1" />
+              <circle cx="19" cy="15" r="1" />
+              <circle cx="5" cy="15" r="1" />
+            </svg>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .before-after-performance,
+  .before-after-performance * {
+    box-sizing: border-box;
+  }
+
+  .before-after-performance :is(div, p, span) {
+    font-size: revert !important;
+  }
+
+  .bap-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
+    padding: clamp(56px, 8vw, 104px) 0;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .bap-copy {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .bap-badge {
+    align-self: flex-start;
+    border: 1px solid var(--divider);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px !important;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    padding: 8px 11px;
+    text-transform: uppercase;
+  }
+
+  .bap-heading {
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: clamp(36px, 5vw, 62px) !important;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    margin: 0;
+  }
+
+  .bap-description {
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 14px !important;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 48ch;
+  }
+
+  .bap-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bap-highlight {
+    position: relative;
+    padding-left: 18px;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  .bap-highlight::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 7px;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--text) 45%, var(--muted));
+  }
+
+  .bap-highlight-title {
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .bap-highlight-desc {
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px !important;
+    line-height: 1.5;
+    margin: 3px 0 0;
+  }
+
+  .bap-slider-wrap {
+    align-self: center;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(232, 232, 226, 0.72);
+    border-radius: 16px;
+    box-shadow: 0 18px 52px rgba(28, 28, 28, 0.08);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bap-slider-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px;
+  }
+
+  .bap-slider-tag {
+    font-family: var(--mono);
+    font-size: 11px !important;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .bap-slider {
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    cursor: ew-resize;
+    overflow: hidden;
+    position: relative;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bap-slider.is-vertical {
+    cursor: ns-resize;
+  }
+
+  .bap-slider * {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .bap-layer {
+    inset: 0;
+    position: absolute;
+    transition: opacity 0.3s ease;
+  }
+
+  .bap-layer img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .bap-after-layer {
+    background: linear-gradient(135deg, #f7fbff 0%, #ffffff 48%, #fff4ec 100%);
+    z-index: 1;
+  }
+
+  .bap-before-layer {
+    background: linear-gradient(135deg, #f0f3f5 0%, #f8f6ef 100%);
+    will-change: clip-path;
+    z-index: 2;
+    position: absolute;
+    inset: 0;
+  }
+
+  .bap-slider:not(.is-dragging) .bap-before-layer {
+    transition: clip-path 0.15s ease-out;
+  }
+
+  .bap-state {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    height: 100%;
+    justify-content: space-between;
+    padding: clamp(22px, 4vw, 42px);
+    width: 100%;
+  }
+
+  .bap-state-eyebrow {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px !important;
+    letter-spacing: 0.08em;
+    margin: 0 0 14px;
+    text-transform: uppercase;
+  }
+
+  .bap-state-title {
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: clamp(36px, 5vw, 58px) !important;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    margin: 0;
+  }
+
+  .bap-state-desc {
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 14px !important;
+    line-height: 1.55;
+    margin: 16px 0 0;
+    max-width: 42ch;
+  }
+
+  .bap-metrics {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bap-metric {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(232, 232, 226, 0.8);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .bap-metric span {
+    color: var(--text);
+    display: block;
+    font-family: var(--serif);
+    font-size: 30px !important;
+    line-height: 0.95;
+  }
+
+  .bap-metric p {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px !important;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    margin: 8px 0 0;
+    text-transform: uppercase;
+  }
+
+  .bap-divider {
+    background: #0075de !important;
+    border-radius: 0;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85), 0 0 18px rgba(0, 117, 222, 0.28);
+    position: absolute;
+    z-index: 75 !important;
+    pointer-events: none;
+    touch-action: none;
+    will-change: left, top;
+  }
+
+  .bap-slider:not(.is-dragging) .bap-divider {
+    transition: left 0.15s ease-out, top 0.15s ease-out;
+  }
+
+  .bap-divider.is-horizontal {
+    bottom: 0;
+    height: 100%;
+    top: 0;
+    transform: translateX(-50%) !important;
+  }
+
+  .bap-divider.is-vertical {
+    width: 100%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%) !important;
+  }
+
+  .bap-handle {
+    align-items: center;
+    background: #ffffff !important;
+    border: 2px solid #0075de;
+    border-radius: 999px;
+    color: #0075de !important;
+    display: inline-flex;
+    height: 34px;
+    justify-content: center;
+    position: absolute;
+    z-index: 100 !important;
+    transform: translate(-50%, -50%) !important;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    width: 34px;
+    box-shadow: 0 6px 20px rgba(28, 28, 28, 0.16), 0 0 0 3px rgba(255, 255, 255, 0.94);
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bap-handle::after {
+    content: "";
+    position: absolute;
+    inset: -14px;
+    border-radius: 999px;
+    pointer-events: auto;
+  }
+
+  .bap-slider:hover .bap-handle {
+    transform: translate(-50%, -50%) scale(1.08) !important;
+    box-shadow: 0 8px 24px rgba(28, 28, 28, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.96);
+  }
+
+  .bap-slider.is-dragging {
+    cursor: grabbing;
+  }
+
+  .bap-slider.is-dragging .bap-handle {
+    transform: translate(-50%, -50%) scale(1.15) !important;
+    box-shadow: 0 10px 28px rgba(28, 28, 28, 0.24), 0 0 0 4px rgba(255, 255, 255, 0.96);
+    cursor: grabbing;
+  }
+
+  .bap-handle-chevrons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    color: currentColor;
+  }
+
+  @media (max-width: 900px) {
+    .bap-shell {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .bap-shell {
+      padding: 48px 0;
+    }
+
+    .bap-metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function initBeforeAfterSliders() {
+    const sliders = document.querySelectorAll<HTMLElement>('.bap-slider');
+
+    sliders.forEach((slider) => {
+      if (slider.dataset.initialized === 'true') return;
+      slider.dataset.initialized = 'true';
+
+      const isHorizontal = slider.dataset.orientation !== 'vertical';
+      let position = parseFloat(slider.dataset.initialPos || '50');
+      let isDragging = false;
+
+      const beforeLayer = slider.querySelector<HTMLElement>('.bap-before-layer');
+      const divider = slider.querySelector<HTMLElement>('.bap-divider');
+      const handle = slider.querySelector<HTMLElement>('.bap-handle');
+
+      function updateSlider(newPos: number) {
+        position = Math.max(0, Math.min(100, newPos));
+        slider.style.setProperty('--bap-divider-position', `${position}%`);
+        slider.setAttribute('aria-valuenow', `${Math.round(position)}`);
+
+        if (beforeLayer) {
+          beforeLayer.style.clipPath = isHorizontal
+            ? `inset(0 ${100 - position}% 0 0)`
+            : `inset(0 0 ${100 - position}% 0)`;
+        }
+
+        if (divider) {
+          if (isHorizontal) {
+            divider.style.left = `${position}%`;
+          } else {
+            divider.style.top = `${position}%`;
+          }
+        }
+
+        if (handle) {
+          if (isHorizontal) {
+            handle.style.left = `${position}%`;
+          } else {
+            handle.style.top = `${position}%`;
+          }
+        }
+      }
+
+      function calculatePosition(clientX: number, clientY: number) {
+        const rect = slider.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return position;
+
+        return isHorizontal
+          ? ((clientX - rect.left) / rect.width) * 100
+          : ((clientY - rect.top) / rect.height) * 100;
+      }
+
+      function startDragging(clientX: number, clientY: number) {
+        isDragging = true;
+        slider.classList.add('is-dragging');
+        document.body.style.userSelect = 'none';
+        updateSlider(calculatePosition(clientX, clientY));
+      }
+
+      function moveDragging(clientX: number, clientY: number) {
+        if (!isDragging) return;
+        updateSlider(calculatePosition(clientX, clientY));
+      }
+
+      function stopDragging() {
+        if (!isDragging) return;
+        isDragging = false;
+        slider.classList.remove('is-dragging');
+        document.body.style.userSelect = '';
+      }
+
+      // Pointer events for desktop and pointer-capable devices
+      slider.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        try {
+          slider.setPointerCapture(e.pointerId);
+        } catch (_) {}
+        startDragging(e.clientX, e.clientY);
+      });
+
+      slider.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        moveDragging(e.clientX, e.clientY);
+      });
+
+      const onPointerEnd = (e: PointerEvent) => {
+        try {
+          if (slider.hasPointerCapture(e.pointerId)) {
+            slider.releasePointerCapture(e.pointerId);
+          }
+        } catch (_) {}
+        stopDragging();
+      };
+
+      slider.addEventListener('pointerup', onPointerEnd);
+      slider.addEventListener('pointercancel', onPointerEnd);
+
+      // Touch events for mobile devices
+      slider.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        const touch = e.touches[0];
+        startDragging(touch.clientX, touch.clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging || e.touches.length !== 1) return;
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+        const touch = e.touches[0];
+        moveDragging(touch.clientX, touch.clientY);
+      }, { passive: false });
+
+      window.addEventListener('touchend', stopDragging, { passive: true });
+      window.addEventListener('touchcancel', stopDragging, { passive: true });
+
+      // Keyboard accessibility
+      slider.addEventListener('keydown', (e) => {
+        const step = e.shiftKey ? 10 : 5;
+        if (['ArrowLeft', 'ArrowDown'].includes(e.key)) {
+          e.preventDefault();
+          updateSlider(position - step);
+        } else if (['ArrowRight', 'ArrowUp'].includes(e.key)) {
+          e.preventDefault();
+          updateSlider(position + step);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          updateSlider(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          updateSlider(100);
+        }
+      });
+    });
+  }
+
+  // Run on page load and on Astro view transitions
+  initBeforeAfterSliders();
+  document.addEventListener('astro:page-load', initBeforeAfterSliders);
+</script>

@@ -2,8 +2,8 @@
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/cms";
 import BlurFade from "../../components/ui/BlurFade.astro";
-import BeforeAfterPerformance from "../../components/ui/BeforeAfterPerformance";
-import type { BeforeAfterPerformanceProps } from "../../components/ui/BeforeAfterPerformance";
+import BeforeAfterPerformance from "../../components/ui/BeforeAfterPerformance.astro";
+import type { Props as BeforeAfterPerformanceProps } from "../../components/ui/BeforeAfterPerformance.astro";
 import ShowcasePassGate from "../../components/ui/ShowcasePassGate.astro";
 import { absoluteUrl, pageSchema } from "../../lib/seo";
 import { ExternalLink } from "lucide-react";
@@ -381,7 +381,7 @@ const creativeWorkSchema = {
       <div class="mx-auto max-w-[1280px]">
         <!-- MAIN BODY CONTENT -->
         <div>
-          {performanceComparison && <BeforeAfterPerformance client:load {...performanceComparison} />}
+          {performanceComparison && <BeforeAfterPerformance {...performanceComparison} />}
 
           <!-- EXTRA IMAGES SHOWCASE GALLERY -->
           <section id="showcase" class="py-20 border-b border-border/40 last:border-0 scroll-mt-20">

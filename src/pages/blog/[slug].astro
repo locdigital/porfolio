@@ -590,26 +590,12 @@ const primaryCategory = tags[0] || "Writing";
     /* inline styles are intentional — do not override */
   }
 
-  .article-content-reveal {
-    opacity: 0;
-    transform: translateY(10px) scaleY(1.012);
-    filter: blur(4px);
-    transition:
-      opacity 350ms ease-out,
-      transform 350ms ease-out,
-      filter 350ms ease-out;
-    will-change: opacity, transform, filter;
-  }
-
+  .article-content-reveal,
   .article-content-reveal.in {
     opacity: 1;
-    transform: translateY(0) scaleY(1);
-    filter: blur(0);
-    transition:
-      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
-      transform 700ms cubic-bezier(0.16, 1, 0.3, 1),
-      filter 700ms cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--reveal-delay, 0ms);
+    transform: none;
+    filter: none;
+    transition: none;
   }
 
   .blog-article-content :global(h1) {
@@ -963,20 +949,8 @@ const primaryCategory = tags[0] || "Writing";
       content.querySelectorAll("h2, h3, p, ul, ol, blockquote, img, table, pre")
     );
 
-    revealItems.forEach((item, index) => {
-      item.classList.add("article-content-reveal");
-      (item as HTMLElement).style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 55}ms`);
+    revealItems.forEach((item) => {
+      item.classList.add("article-content-reveal", "in");
     });
-
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle("in", entry.isIntersecting);
-        });
-      },
-      { threshold: 0.08, rootMargin: "20px 0px -40px 0px" }
-    );
-
-    revealItems.forEach((item) => revealObserver.observe(item));
   });
 </script>
