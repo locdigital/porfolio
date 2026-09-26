@@ -1,0 +1,40 @@
+---
+import PhotosView from "../../components/photos/PhotosView.astro";
+import { getPhotoLocations } from "../../lib/cms";
+import { generateSlug } from "../../lib/writing/slug";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const locations = await getPhotoLocations();
+  const paths: { params: { slug: string }; props: { activeSlug: string } }[] = [];
+  const seen = new Set<string>();
+
+  for (const loc of locations) {
+    const primarySlug = loc.slug;
+    const secondarySlug = generateSlug(loc.location || loc.name || loc.slug);
+
+    if (primarySlug && !seen.has(primarySlug)) {
+      seen.add(primarySlug);
+      paths.push({
+        params: { slug: primarySlug },
+        props: { activeSlug: primarySlug },
+      });
+    }
+
+    if (secondarySlug && !seen.has(secondarySlug)) {
+      seen.add(secondarySlug);
+      paths.push({
+        params: { slug: secondarySlug },
+        props: { activeSlug: primarySlug },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { activeSlug } = Astro.props;
+---
+
+<PhotosView activeSlug={activeSlug} />

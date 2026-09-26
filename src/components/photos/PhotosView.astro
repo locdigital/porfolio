@@ -1,14 +1,20 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { getPhotoLocations } from "../lib/cms";
-import { PHOTO_GRID_SIZES, optimizePhoto } from "../lib/photo-assets";
-import { generateSlug } from "../lib/writing/slug";
+import Layout from "../../layouts/Layout.astro";
+import { getPhotoLocations } from "../../lib/cms";
+import { PHOTO_GRID_SIZES, optimizePhoto } from "../../lib/photo-assets";
+import { generateSlug } from "../../lib/writing/slug";
+
+export interface Props {
+  activeSlug?: string;
+}
 
 export const prerender = true;
 
+const { activeSlug } = Astro.props;
 const sourceLocations = await getPhotoLocations();
 const anchorFor = (loc: (typeof sourceLocations)[number]) =>
   generateSlug(loc.location || loc.name || loc.slug) || loc.slug;
+
 const optimizedLocations = await Promise.all(
   sourceLocations.map(async (loc) => ({
     ...loc,
@@ -41,12 +47,20 @@ const optimizedLocations = await Promise.all(
     ),
   })),
 );
+
+const activeLocation =
+  optimizedLocations.find(
+    (l) => l.slug === activeSlug || l.anchorId === activeSlug
+  ) || optimizedLocations[0];
+
+const pageTitle = activeSlug && activeLocation
+  ? `${activeLocation.name} Photos | Phuc Loc Nguyen`
+  : "Photos | Phuc Loc Nguyen";
+
 const photosHeadline = "Places I've <em>wandered.</em>";
 type PhotoLocationView = Omit<Awaited<ReturnType<typeof getPhotoLocations>>[number], "photos"> & {
   photos?: unknown[];
 };
-
-
 
 function personalReflectionFor(loc: PhotoLocationView): string {
   if (loc.overview) {
@@ -61,8 +75,6 @@ function personalReflectionFor(loc: PhotoLocationView): string {
   return loc.description || loc.shortDescription || loc.introduction || "";
 }
 
-
-
 function locationSubtitleFor(loc: PhotoLocationView): string {
   const parts = [
     loc.district,
@@ -73,7 +85,7 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
 }
 ---
 
-<Layout title="Photos | Phuc Loc Nguyen">
+<Layout title={pageTitle}>
 
   <main class="gear-page photos-page">
     <div class="gear-container">
@@ -95,18 +107,21 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
       <div class="container">
         <nav class="photos-nav" aria-label="Locations navigation">
           <div class="photos-nav-list">
-            {optimizedLocations.map((loc, i) => (
-              <button
-                type="button"
-                class={`photos-nav-link ${i === 0 ? 'active' : ''}`}
-                data-target={loc.anchorId}
-                data-slug={loc.slug}
-                aria-current={i === 0 ? "true" : undefined}
-                aria-controls={loc.anchorId}
-              >
-                {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
-              </button>
-            ))}
+            {optimizedLocations.map((loc) => {
+              const isSelected = loc.slug === activeLocation.slug;
+              return (
+                <a
+                  href={`/photos/${loc.slug}`}
+                  class={`photos-nav-link ${isSelected ? 'active' : ''}`}
+                  data-target={loc.anchorId}
+                  data-slug={loc.slug}
+                  aria-current={isSelected ? "true" : undefined}
+                  aria-controls={loc.slug}
+                >
+                  {loc.name} <span class="photos-nav-count">{loc.photos.length}</span>
+                </a>
+              );
+            })}
             <span class="photos-nav-active-line" aria-hidden="true"></span>
           </div>
         </nav>
@@ -114,17 +129,19 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
     </div>
 
     <!-- LOCATION SECTIONS -->
-    {optimizedLocations.map((loc, locIdx) => {
+    {optimizedLocations.map((loc) => {
+      const isSelected = loc.slug === activeLocation.slug;
       const personalNote = personalReflectionFor(loc);
       const subtitle = locationSubtitleFor(loc);
 
       return (
         <section
-          class={`loc-section ${locIdx === 0 ? 'active' : ''}`}
-          id={loc.anchorId}
+          class={`loc-section ${isSelected ? 'active' : ''}`}
+          id={loc.slug}
           data-slug={loc.slug}
+          data-anchor={loc.anchorId}
           aria-label={`Photos from ${loc.name}`}
-          hidden={locIdx !== 0}
+          hidden={!isSelected}
         >
           <div class="container">
             <header class="loc-editorial-header">
@@ -144,7 +161,7 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
 
         <!-- Responsive Image Gallery (Efferd inspired) -->
         <div class="container">
-          <div class="efferd-gallery" data-gallery={`gallery-${loc.anchorId}`} aria-label={`${loc.name} gallery`}>
+          <div class="efferd-gallery" data-gallery={`gallery-${loc.slug}`} aria-label={`${loc.name} gallery`}>
             {loc.photos.map((photo, i) => {
               const isTall = photo.previewHeight > photo.previewWidth;
               const captionText = ("caption" in photo && typeof photo.caption === "string") ? photo.caption : "";
@@ -176,9 +193,9 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
                           width={photo.previewWidth}
                           height={photo.previewHeight}
                           alt={photo.alt || `${loc.name} photo ${i + 1}`}
-                          loading={locIdx === 0 && i < 4 ? "eager" : "lazy"}
+                          loading={isSelected && i < 4 ? "eager" : "lazy"}
                           decoding="async"
-                          fetchpriority={locIdx === 0 && i < 2 ? "high" : "auto"}
+                          fetchpriority={isSelected && i < 2 ? "high" : "auto"}
                           class="efferd-img"
                           onerror="this.style.opacity='0'; this.closest('.efferd-card-inner').style.backgroundColor='#e5e7eb';"
                         />
@@ -189,9 +206,9 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
                         width={photo.previewWidth}
                         height={photo.previewHeight}
                         alt={photo.alt || `${loc.name} photo ${i + 1}`}
-                        loading={locIdx === 0 && i < 4 ? "eager" : "lazy"}
+                        loading={isSelected && i < 4 ? "eager" : "lazy"}
                         decoding="async"
-                        fetchpriority={locIdx === 0 && i < 2 ? "high" : "auto"}
+                        fetchpriority={isSelected && i < 2 ? "high" : "auto"}
                         class="efferd-img"
                         onerror="this.style.opacity='0'; this.closest('.efferd-card-inner').style.backgroundColor='#e5e7eb';"
                       />
@@ -211,8 +228,6 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
       );
     })}
 
-
-
   </main>
 
 </Layout>
@@ -223,23 +238,36 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
     if (!(tablist instanceof HTMLElement) || tablist.dataset.tabsReady) return;
     tablist.dataset.tabsReady = "true";
 
-    const tabs = Array.from(tablist.querySelectorAll(".photos-nav-link[data-target]"));
-    const panels = Array.from(document.querySelectorAll(".loc-section"));
-    const line = tablist.querySelector(".photos-nav-active-line");
+    const tabs = Array.from(tablist.querySelectorAll<HTMLAnchorElement>(".photos-nav-link"));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>(".loc-section"));
+    const line = tablist.querySelector<HTMLElement>(".photos-nav-active-line");
 
-    const moveLine = (tab: Element | null) => {
+    const moveLine = (tab: Element | null, immediate = false) => {
       if (!(line instanceof HTMLElement) || !(tab instanceof HTMLElement)) return;
-      line.style.width = `${tab.offsetWidth}px`;
-      line.style.transform = `translateX(${tab.offsetLeft}px)`;
+      if (immediate) {
+        const prevTransition = line.style.transition;
+        line.style.transition = "none";
+        line.style.width = `${tab.offsetWidth}px`;
+        line.style.transform = `translateX(${tab.offsetLeft}px)`;
+        void line.offsetWidth;
+        line.style.transition = prevTransition;
+      } else {
+        line.style.width = `${tab.offsetWidth}px`;
+        line.style.transform = `translateX(${tab.offsetLeft}px)`;
+      }
     };
 
-    const activate = (id?: string) => {
+    const activate = (identifier?: string, updateUrl = false, smooth = true) => {
       const nextTab = tabs.find((tab) => (
-        tab.getAttribute("data-target") === id ||
-        tab.getAttribute("data-slug") === id
-      )) || tabs[0];
-      const nextId = nextTab?.getAttribute("data-target");
-      if (!nextId) return;
+        tab.getAttribute("data-slug") === identifier ||
+        tab.getAttribute("data-target") === identifier ||
+        tab.href.endsWith(`/photos/${identifier}`)
+      )) || tabs.find((t) => t.classList.contains("active")) || tabs[0];
+
+      const nextSlug = nextTab?.getAttribute("data-slug");
+      const nextTarget = nextTab?.getAttribute("data-target");
+      if (!nextTab || !nextSlug) return;
+
       const scrollX = window.scrollX;
       const scrollY = window.scrollY;
 
@@ -250,11 +278,16 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
       });
 
       panels.forEach((panel) => {
-        const isActive = panel.id === nextId;
+        const isActive =
+          panel.getAttribute("data-slug") === nextSlug ||
+          panel.getAttribute("data-anchor") === nextTarget ||
+          panel.id === nextSlug ||
+          panel.id === nextTarget;
+
         if (isActive) {
           panel.removeAttribute("hidden");
           panel.classList.remove("active");
-          void (panel as HTMLElement).offsetWidth; // Restart stagger reveal animation
+          void panel.offsetWidth; // Restart stagger reveal animation
           panel.classList.add("active");
         } else {
           panel.classList.remove("active");
@@ -262,54 +295,72 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
         }
       });
 
-      if (location.hash.slice(1) !== nextId) {
-        history.replaceState(null, "", `${location.pathname}${location.search}#${nextId}`);
+      if (updateUrl && nextSlug) {
+        const targetPath = `/photos/${nextSlug}`;
+        if (window.location.pathname !== targetPath) {
+          window.history.pushState({ slug: nextSlug }, "", targetPath);
+        }
       }
 
-      moveLine(nextTab);
+      // Update page title dynamically
+      const tabText = nextTab.textContent?.replace(/\s*\d+\s*$/, "").trim();
+      if (tabText) {
+        document.title = `${tabText} Photos | Phuc Loc Nguyen`;
+      }
+
+      moveLine(nextTab, !smooth);
       if (nextTab instanceof HTMLElement) {
         const left = nextTab.offsetLeft - (tablist.clientWidth - nextTab.offsetWidth) / 2;
-        tablist.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+        tablist.scrollTo({ left: Math.max(0, left), behavior: smooth ? "smooth" : "auto" });
       }
       requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
     };
 
     tabs.forEach((tab) => {
-      tab.addEventListener("click", () => activate(tab.getAttribute("data-target") || undefined));
-    });
-
-    /* ── Photos Toggle Logic ── */
-    const photoToggleBtns = document.querySelectorAll('.photo-toggle-btn');
-    photoToggleBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const locSection = btn.closest('.loc-section');
-        if (!locSection) return;
-        const extraPhotos = locSection.querySelectorAll('.photo-extra');
-        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-        const textSpan = btn.querySelector('.btn-text');
-
-        if (isExpanded) {
-          btn.setAttribute('aria-expanded', 'false');
-          btn.classList.remove('expanded');
-          extraPhotos.forEach(photo => photo.classList.add('hidden'));
-          if (textSpan) textSpan.textContent = btn.getAttribute('data-more-text');
-        } else {
-          btn.setAttribute('aria-expanded', 'true');
-          btn.classList.add('expanded');
-          extraPhotos.forEach(photo => {
-            photo.classList.remove('hidden');
-            photo.classList.add('is-visible');
-          });
-          if (textSpan) textSpan.textContent = btn.getAttribute('data-less-text');
-        }
+      tab.addEventListener("click", (e) => {
+        // Allow command/ctrl/middle click to open in new tab naturally
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        e.preventDefault();
+        const slug = tab.getAttribute("data-slug") || tab.getAttribute("data-target");
+        activate(slug || undefined, true, true);
       });
     });
 
-    activate(location.hash.slice(1));
-    window.addEventListener("resize", () => {
-      moveLine(tablist.querySelector(".photos-nav-link.active"));
+    // Handle browser back and forward buttons
+    window.addEventListener("popstate", () => {
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      const slugFromPath = parts[0] === "photos" && parts[1] ? parts[1] : undefined;
+      activate(slugFromPath, false, true);
     });
-    window.addEventListener("hashchange", () => activate(location.hash.slice(1)));
+
+    // Handle legacy hash navigation like /photos#malacca
+    if (window.location.hash) {
+      const hashId = window.location.hash.slice(1);
+      if (hashId) {
+        // Convert /photos#malacca -> /photos/malacca
+        const matchingTab = tabs.find((tab) =>
+          tab.getAttribute("data-slug") === hashId ||
+          tab.getAttribute("data-target") === hashId
+        );
+        const resolvedSlug = matchingTab?.getAttribute("data-slug") || hashId;
+        window.history.replaceState({ slug: resolvedSlug }, "", `/photos/${resolvedSlug}`);
+        activate(resolvedSlug, false, false);
+      }
+    } else {
+      // Align indicator with current active tab on load
+      const currentActive = tablist.querySelector(".photos-nav-link.active");
+      if (currentActive) {
+        moveLine(currentActive, true);
+        if (currentActive instanceof HTMLElement) {
+          const left = currentActive.offsetLeft - (tablist.clientWidth - currentActive.offsetWidth) / 2;
+          tablist.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+        }
+      }
+    }
+
+    window.addEventListener("resize", () => {
+      moveLine(tablist.querySelector(".photos-nav-link.active"), true);
+    });
   }
 
   function initGalleryInView() {
@@ -496,7 +547,6 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
     animation: photos-tab-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-
   @keyframes photos-tab-in {
     0% {
       opacity: 0;
@@ -595,44 +645,6 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
   .efferd-gallery-item.is-visible {
     opacity: 1;
     transform: none;
-  }
-
-  .photo-toggle-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 24px;
-    margin-bottom: 12px;
-  }
-
-  .photo-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: var(--accent-soft, rgba(0, 117, 222, 0.08));
-    border: 1px dashed var(--accent-border, rgba(0, 117, 222, 0.24));
-    border-radius: 999px;
-    font-family: var(--sans);
-    font-size: var(--fs-xs, 13px);
-    font-weight: 600;
-    color: var(--accent, #0075de);
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
-
-  .photo-toggle-btn:hover {
-    background: rgba(0, 117, 222, 0.14);
-    border-style: solid;
-    transform: translateY(-1px);
-  }
-
-  .photo-toggle-btn .chevron-icon {
-    transition: transform 0.25s ease;
-    flex-shrink: 0;
-  }
-
-  .photo-toggle-btn.expanded .chevron-icon {
-    transform: rotate(180deg);
   }
 
   .efferd-card-inner {
