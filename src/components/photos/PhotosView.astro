@@ -74,15 +74,6 @@ function personalReflectionFor(loc: PhotoLocationView): string {
   }
   return loc.description || loc.shortDescription || loc.introduction || "";
 }
-
-function locationSubtitleFor(loc: PhotoLocationView): string {
-  const parts = [
-    loc.district,
-    loc.province && loc.province !== loc.name ? loc.province : "",
-    loc.country && loc.country !== loc.name ? loc.country : (loc.region || ""),
-  ].filter(Boolean);
-  return parts.join(", ");
-}
 ---
 
 <Layout title={pageTitle}>
@@ -132,7 +123,6 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
     {optimizedLocations.map((loc) => {
       const isSelected = loc.slug === activeLocation.slug;
       const personalNote = personalReflectionFor(loc);
-      const subtitle = locationSubtitleFor(loc);
 
       return (
         <section
@@ -149,7 +139,6 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
               <div class="loc-intro">
                 <div class="loc-kicker-row">
                   <span class="loc-kicker-tag">{loc.name}</span>
-                  {subtitle && <span class="loc-kicker-sub">{subtitle}</span>}
                 </div>
                 <h2 class="loc-name">{loc.headline || loc.name}</h2>
                 {personalNote && (
@@ -595,12 +584,6 @@ function locationSubtitleFor(loc: PhotoLocationView): string {
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--accent, #0075de);
-  }
-
-  .loc-kicker-sub {
-    font-family: var(--sans);
-    font-size: 12.5px;
-    color: var(--muted);
   }
 
   .loc-name {
