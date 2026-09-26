@@ -65,9 +65,9 @@
     "Travelers who dislike traffic or moving between areas."
   ],
   "heroImage": {
-    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hydneh7vzz3doqnyxsfinldib12geh8oemltj-bali-",
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hYdnEH7vZz3DOQNyxSFInldiB12geh8oEmLtJ",
-    "alt": "Bali --- photo 1",
+    "id": "bali-01",
+    "src": "/assets/photos/bali/DSC_0001.webp",
+    "alt": "Bali — photo 1",
     "width": 1066,
     "height": 1600,
     "caption": "",
@@ -76,19 +76,19 @@
   },
   "images": [
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hydneh7vzz3doqnyxsfinldib12geh8oemltj-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hYdnEH7vZz3DOQNyxSFInldiB12geh8oEmLtJ",
-      "alt": "Bali --- photo 1",
+      "id": "bali-01",
+      "src": "/assets/photos/bali/DSC_0001.webp",
+      "alt": "Bali — photo 1",
       "width": 1066,
       "height": 1600,
       "caption": "",
       "order": 1,
-      "isCover": false
+      "isCover": true
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hknnfc8vwelqqsknwarcdg0efydvvs3bxgzr5-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKnnfC8vWeLQqSKNwarCDg0EFydvVs3BXGZR5",
-      "alt": "Bali --- photo 2",
+      "id": "bali-02",
+      "src": "/assets/photos/bali/DSC_0002.webp",
+      "alt": "Bali — photo 2",
       "width": 1066,
       "height": 1600,
       "caption": "",
@@ -96,9 +96,9 @@
       "isCover": false
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hn6dtplyf7rf1o6cym3jxphedqvcuxekpsobr-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hN6dtPlYf7Rf1o6cym3JxPheDqvCUXEKpSOBr",
-      "alt": "Bali --- photo 3",
+      "id": "bali-03",
+      "src": "/assets/photos/bali/DSC_0003.webp",
+      "alt": "Bali — photo 3",
       "width": 1066,
       "height": 1600,
       "caption": "",
@@ -106,9 +106,9 @@
       "isCover": false
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hxnmjysstspggq204jczlk86pecran5bviwmd-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hXnmJYsStspGgq204jCZLK86PEcraN5Bviwmd",
-      "alt": "Bali --- photo 4",
+      "id": "bali-04",
+      "src": "/assets/photos/bali/DSC_0004.webp",
+      "alt": "Bali — photo 4",
       "width": 1066,
       "height": 1600,
       "caption": "",
@@ -116,9 +116,9 @@
       "isCover": false
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hvtocrgciw6tuinooxb108sdsmhzayffjrlgk-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hVTOcrgCiW6tUiNOoXB108SdsMHZayFfJrLGk",
-      "alt": "Bali --- photo 5",
+      "id": "bali-05",
+      "src": "/assets/photos/bali/DSC_0005.webp",
+      "alt": "Bali — photo 5",
       "width": 1066,
       "height": 1600,
       "caption": "",
@@ -126,9 +126,9 @@
       "isCover": false
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjjsw8qkgpnlew4qezijraqkphdbcxs3tc1i7-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hJjSW8qKGPnLEw4QeZijRaqKpHdbcxS3TC1I7",
-      "alt": "Bali --- photo 6",
+      "id": "bali-06",
+      "src": "/assets/photos/bali/DSC_0006.webp",
+      "alt": "Bali — photo 6",
       "width": 1066,
       "height": 1600,
       "caption": "",
@@ -136,9 +136,9 @@
       "isCover": false
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hdmgunk4q021dyenszmlnrbpgxcupwoif9d4l-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hDMguNK4Q021dYenszMLNrbPgXCUpWoif9D4l",
-      "alt": "Bali --- photo 7",
+      "id": "bali-07",
+      "src": "/assets/photos/bali/DSC_0007.webp",
+      "alt": "Bali — photo 7",
       "width": 1066,
       "height": 1600,
       "caption": "",
@@ -146,9 +146,9 @@
       "isCover": false
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hymtnhwgxsfhdfjjrmpbwzn7ocmnvgyrak59a-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyMTnhWGxsFHdfJjrMPbwZN7OcmnvgYRak59A",
-      "alt": "Bali --- photo 8",
+      "id": "bali-08",
+      "src": "/assets/photos/bali/DSC_0008.webp",
+      "alt": "Bali — photo 8",
       "width": 1066,
       "height": 1600,
       "caption": "",
@@ -156,13 +156,63 @@
       "isCover": false
     },
     {
-      "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hcpqzk0btheqno0psaegxlfyglidrrmucfdjv-bali-",
-      "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hcpQZK0bThEQNO0PsaegXLFyGlidrRmUCfDJv",
-      "alt": "Bali --- photo 9",
+      "id": "bali-09",
+      "src": "/assets/photos/bali/DSC_0009.webp",
+      "alt": "Bali — photo 9",
       "width": 1066,
       "height": 1600,
       "caption": "",
       "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "bali-10",
+      "src": "/assets/photos/bali/DSC_0010.webp",
+      "alt": "Bali — photo 10",
+      "width": 1600,
+      "height": 1066,
+      "caption": "",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "bali-11",
+      "src": "/assets/photos/bali/DSC_0011.webp",
+      "alt": "Bali — photo 11",
+      "width": 1066,
+      "height": 1600,
+      "caption": "",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "bali-12",
+      "src": "/assets/photos/bali/DSC_0012.webp",
+      "alt": "Bali — photo 12",
+      "width": 1600,
+      "height": 1066,
+      "caption": "",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "bali-13",
+      "src": "/assets/photos/bali/DSC_0013.webp",
+      "alt": "Bali — photo 13",
+      "width": 1600,
+      "height": 1066,
+      "caption": "",
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "bali-14",
+      "src": "/assets/photos/bali/DSC_0014.webp",
+      "alt": "Bali — photo 14",
+      "width": 1066,
+      "height": 1600,
+      "caption": "",
+      "order": 14,
       "isCover": false
     }
   ],
@@ -188,7 +238,7 @@
   "published": false,
   "seoTitle": "Bali Slow Travel Guide | Canggu, Ubud, Uluwatu",
   "seoDescription": "A slow editorial Bali guide for Canggu cafe mornings, Ubud rice fields, Uluwatu cliffs, temple roads, sunsets, and flexible island days.",
-  "seoImage": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hYdnEH7vZz3DOQNyxSFInldiB12geh8oEmLtJ",
+  "seoImage": "/assets/photos/bali/DSC_0001.webp",
   "relatedLocations": [
     {
       "slug": "da-lat",
