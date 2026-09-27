@@ -218,12 +218,12 @@
           "tag": "Camera"
         },
         {
-          "name": "Nikkor Z 24-70mm f/2.8 S",
-          "slug": "nikkor-z-24-70mm-f28-s",
-          "headline": "Professional Zoom Lens",
-          "description": "Highly versatile professional-grade zoom lens delivering exceptional sharpness throughout the range.",
-          "image": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hxoJd56cyLC3SUPv5qH4oeJXkaFp0j8MuOc19",
-          "url": "https://www.nikonusa.com/p/nikkor-z-24-70mm-f28-s/20089",
+          "name": "Nikkor Z 24-70mm f/4 S",
+          "slug": "nikkor-z-24-70mm-f4-s",
+          "headline": "Compact Standard Zoom Lens",
+          "description": "Compact and versatile S-Line standard zoom lens with a constant f/4 maximum aperture, retractable design, and edge-to-edge sharpness.",
+          "image": "/uploads/nikkor_z_24_70_f4_s.webp",
+          "url": "https://www.nikonusa.com/p/nikkor-z-24-70mm-f4-s/20072/overview",
           "tag": "Lens"
         },
         {
