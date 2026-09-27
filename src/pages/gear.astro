@@ -391,6 +391,38 @@ const safeGearHeadline = gearHeadline
     transition: background 0.2s ease;
   }
 
+  /* Right edge: remove border-right on cards touching the right container border */
+  .gear-grid:not(.gear-grid--1col):not(.gear-grid--2col) > .gear-card:nth-child(3n),
+  .gear-grid:not(.gear-grid--1col):not(.gear-grid--2col) > .gear-card:last-child:nth-child(3n + 1) {
+    border-right: 0;
+  }
+
+  .gear-grid--2col > .gear-card:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .gear-grid--1col > .gear-card {
+    border-right: 0;
+  }
+
+  /* Bottom edge: remove border-bottom on cards touching the bottom container border */
+  .gear-grid > .gear-card:last-child:nth-child(3n + 1) {
+    border-bottom: 0;
+  }
+
+  .gear-grid:not(.gear-grid--1col):not(.gear-grid--2col) > .gear-card:nth-child(3n + 1):nth-last-child(3),
+  .gear-grid:not(.gear-grid--1col):not(.gear-grid--2col) > .gear-card:nth-child(3n + 1):nth-last-child(3) ~ .gear-card {
+    border-bottom: 0;
+  }
+
+  .gear-grid--2col > .gear-card:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+
+  .gear-grid--1col > .gear-card:last-child {
+    border-bottom: 0;
+  }
+
   .gear-card:hover {
     background: rgba(255, 255, 255, 0.64);
   }
@@ -500,9 +532,32 @@ const safeGearHeadline = gearHeadline
       grid-template-columns: 1fr;
     }
 
+    /* Reset desktop 3-col border rules */
+    .gear-grid > .gear-card {
+      border-right: 1px solid var(--divider);
+      border-bottom: 1px solid var(--divider);
+    }
+
     /* In 2-column mode, span odd last child full width */
     .gear-grid:not(.gear-grid--1col) > .gear-card:last-child:nth-child(2n + 1) {
       grid-column: 1 / -1;
+      border-right: 0;
+      border-bottom: 0;
+    }
+
+    .gear-grid:not(.gear-grid--1col) > .gear-card:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .gear-grid--1col > .gear-card {
+      border-right: 0;
+      border-bottom: 0;
+    }
+
+    /* For even counts in 2-column mode, last 2 items are on the last row */
+    .gear-grid:not(.gear-grid--1col) > .gear-card:nth-child(2n + 1):nth-last-child(2),
+    .gear-grid:not(.gear-grid--1col) > .gear-card:nth-child(2n + 1):nth-last-child(2) ~ .gear-card {
+      border-bottom: 0;
     }
   }
 
@@ -546,8 +601,14 @@ const safeGearHeadline = gearHeadline
       grid-template-columns: 1fr;
     }
 
+    .gear-grid > .gear-card {
+      border-right: 0;
+      border-bottom: 1px solid var(--divider);
+    }
+
     .gear-grid > .gear-card:last-child {
       grid-column: auto;
+      border-bottom: 0;
     }
 
     .gear-card {
