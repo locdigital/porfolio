@@ -116,6 +116,96 @@
       "caption": "",
       "order": 4,
       "isCover": false
+    },
+    {
+      "id": "quy-nhon-05",
+      "src": "/assets/photos/quy-nhon/quy-nhon-05.webp",
+      "alt": "Urushi maki-e fountain pen resting on a dried starfish in a wooden tray on Quy Nhơn beach sand",
+      "width": 1238,
+      "height": 1600,
+      "caption": "Chiếc bút mài thủ công urushi cùng vỏ sao biển trên bờ cát Quy Nhơn",
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-06",
+      "src": "/assets/photos/quy-nhon/quy-nhon-06.webp",
+      "alt": "Traditional coracle boats resting on golden sand overlooking Quy Nhơn bay with Linh Phong seated Buddha atop the distant mountain",
+      "width": 1600,
+      "height": 1067,
+      "caption": "Thuyền thúng ven bờ biển Quy Nhơn hướng tầm nhìn về tượng Phật chùa Linh Phong trên đỉnh núi",
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-07",
+      "src": "/assets/photos/quy-nhon/quy-nhon-07.webp",
+      "alt": "Fountain pen resting on wet shoreline sand with gentle foam waves washing ashore at Quy Nhơn",
+      "width": 1066,
+      "height": 1600,
+      "caption": "Bọt sóng vỗ bờ cát ẩm bên chiếc bút lưu niệm tại Quy Nhơn",
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-08",
+      "src": "/assets/photos/quy-nhon/quy-nhon-08.webp",
+      "alt": "Swimmers in life jackets and SUP paddlers floating in turquoise waters beside towering coastal sea cliffs in Quy Nhơn",
+      "width": 1066,
+      "height": 1600,
+      "caption": "Chèo SUP và tắm biển trong làn nước xanh ngọc bích dưới vách đá Kỳ Co",
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-09",
+      "src": "/assets/photos/quy-nhon/quy-nhon-09.webp",
+      "alt": "Blue basket boats and colorful paddleboards resting on a floating raft house in Quy Nhơn bay",
+      "width": 1066,
+      "height": 1600,
+      "caption": "Nhà bè nổi với thuyền thúng xanh và ván chèo SUP giữa vịnh biển Quy Nhơn",
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-10",
+      "src": "/assets/photos/quy-nhon/quy-nhon-10.webp",
+      "alt": "Sunrise over Quy Nhơn sea with golden rays breaking through dramatic clouds above distant fishing boats",
+      "width": 1600,
+      "height": 1066,
+      "caption": "Bình minh Quy Nhơn với những vệt nắng chiếu xuyên qua mây rọi xuống mặt biển và tàu cá",
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-11",
+      "src": "/assets/photos/quy-nhon/quy-nhon-11.webp",
+      "alt": "Beachfront resort villas and manicured green lawn facing the ocean surf and rocky headlands of Quy Nhơn",
+      "width": 1600,
+      "height": 1066,
+      "caption": "Khu villa sát biển với thảm cỏ xanh mướt nhìn ra bờ sóng và dãy núi đá Quy Nhơn",
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-12",
+      "src": "/assets/photos/quy-nhon/quy-nhon-12.webp",
+      "alt": "Resort villas flanked by palm trees with the giant Linh Phong Buddha statue watching over the mountain ridge in Quy Nhơn",
+      "width": 1600,
+      "height": 1066,
+      "caption": "Hàng cọ bên khu nghỉ dưỡng hướng về tượng Phật chùa Ông Núi trên triền núi cao",
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "quy-nhon-13",
+      "src": "/assets/photos/quy-nhon/quy-nhon-13.webp",
+      "alt": "Lawn sprinklers casting water droplets in the golden morning light over Quy Nhơn beach and offshore boats",
+      "width": 1600,
+      "height": 1066,
+      "caption": "Tia nước tưới cỏ ban mai lấp lánh trước khung cảnh biển êm và đoàn tàu đánh cá Quy Nhơn",
+      "order": 13,
+      "isCover": false
     }
   ],
   "googleMapsUrl": "",
