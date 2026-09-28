@@ -628,6 +628,7 @@ export default function BeforeAfterPerformance({
           background: ${DIVIDER_COLOR} !important;
           border-radius: 0;
           box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+          display: block !important;
           overflow: visible;
           position: absolute;
           z-index: 75 !important;

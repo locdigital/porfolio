@@ -3649,7 +3649,7 @@ body > :not(.pipo-gradient-bg) {
 /* ============================================================
    REMOVE HORIZONTAL DIVIDERS SITEWIDE
    ============================================================ */
-body :where(hr, [class*="divider"], [class*="Divider"], [class*="separator"], [class*="Separator"]) {
+body :where(hr, [class*="divider"], [class*="Divider"], [class*="separator"], [class*="Separator"]):not(.bap-divider):not([class*="bap-"]) {
   display: none !important;
   border: 0 !important;
   background: transparent !important;
