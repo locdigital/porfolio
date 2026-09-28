@@ -3549,6 +3549,12 @@ html body :is(.plan-title, #site-plan-title-size-override) {
   font-weight: 400 !important;
 }
 
+@media (max-width: 768px) {
+  html body :is(.plan-title, #site-plan-title-size-override) {
+    font-size: 24px !important;
+  }
+}
+
 html body :is(.folder-card .card-desc, #site-copy-size-override) {
   font-size: 12px !important;
 }
