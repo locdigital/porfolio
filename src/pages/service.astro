@@ -475,7 +475,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
         <div class="pricing-grid">
           {pricingPlans.map((plan) => (
             <div class={`pricing-card ${plan.popular ? 'popular' : ''}`}>
-              <div class="p-8 h-full flex flex-col">
+              <div class="h-full flex flex-col">
                 <div class="plan-header">
                   <div class="plan-tag-row">
                     <span class="plan-tag">{plan.tag}</span>
@@ -1707,8 +1707,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   .pricing-card {
     background: color-mix(in srgb, var(--bg) 95%, #ffffff);
     border: 1px solid var(--divider);
-    border-radius: var(--rounded-lg);
-    padding: 36px 30px;
+    border-radius: 20px;
+    padding: 32px 28px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -1986,17 +1986,16 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
     .pricing-grid {
       display: flex;
-      gap: 0;
+      gap: 14px;
       margin-inline: calc(var(--page-gutter) * -1);
       padding-inline: var(--page-gutter);
+      padding-block: 6px;
       overflow-x: auto;
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--page-gutter);
       -webkit-overflow-scrolling: touch;
-      mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
       scrollbar-width: none;
     }
 
@@ -2005,14 +2004,15 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     }
 
     .pricing-card {
-      flex: 0 0 min(84vw, 360px);
-      min-height: 820px;
+      flex: 0 0 min(84vw, 340px);
+      min-height: auto;
+      padding: 24px 20px;
       scroll-snap-align: start;
-      border-radius: var(--rounded-md);
+      border-radius: 16px;
     }
 
     .pricing-card + .pricing-card {
-      margin-left: 14px;
+      margin-left: 0;
     }
 
     .saas-grid {
