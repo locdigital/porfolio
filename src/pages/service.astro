@@ -324,7 +324,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
         <div class="saas-grid">
           {services.map((service, index) => (
             <div class="saas-card" id={`service-card-${service.id}`} data-service-card data-index={index}>
-              <div class="p-6 h-full flex flex-col">
+              <div class="h-full flex flex-col">
                 <div class="card-header">
                   <span class="card-num">{service.num}</span>
                   <span class="card-metric">{service.metric}</span>
@@ -2019,12 +2019,11 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
       margin-inline: calc(var(--page-gutter) * -1);
       padding-inline: var(--page-gutter);
       border-left: 0;
-      mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter), #000 calc(100% - var(--page-gutter)), transparent 100%);
     }
 
     .saas-card {
       flex-basis: min(84vw, 360px);
+      padding: 28px 24px 28px 0;
     }
   }
 
