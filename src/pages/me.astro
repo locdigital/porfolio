@@ -201,13 +201,13 @@ const freeTimeActivities = [
             <h2 class="font-sans font-medium text-2xl text-foreground tracking-tight">Experiences</h2>
           </div>
 
-          <div class="w-full overflow-x-auto">
+          <div class="w-full">
             <table class="w-full border-collapse font-sans text-body">
               <tbody>
                 {experiences.map((item) => (
                   <tr class="border-b border-border first:border-t">
-                    <td class="py-6 w-10 align-middle">
-                      <div class="w-[25px] h-[25px] grid place-items-center overflow-hidden rounded-full bg-secondary/40 border border-border/50 shrink-0">
+                    <td class="py-5 w-12 align-middle">
+                      <div class="w-[28px] h-[28px] grid place-items-center overflow-hidden rounded-full bg-secondary/40 border border-border/50 shrink-0">
                         {item.logo ? (
                           <img
                             src={item.logo}
@@ -223,17 +223,8 @@ const freeTimeActivities = [
                         )}
                       </div>
                     </td>
-                    <td class="py-6 font-medium text-foreground w-48 sm:w-56 align-middle tracking-tight">
+                    <td class="py-5 font-medium text-foreground align-middle tracking-tight text-[15px] sm:text-[16px]">
                       {item.company}
-                    </td>
-                    <td class="py-6 text-muted-foreground align-middle min-w-[280px] max-w-[40rem]">
-                      <div class="experience-role-copy">
-                        <p class="experience-role-title">{item.role}</p>
-                        <p class="experience-role-description">{item.description}</p>
-                      </div>
-                    </td>
-                    <td class="py-6 text-right font-mono text-caption text-muted-foreground whitespace-nowrap w-36 sm:w-40 align-middle tracking-wider">
-                      {item.when}
                     </td>
                   </tr>
                 ))}
