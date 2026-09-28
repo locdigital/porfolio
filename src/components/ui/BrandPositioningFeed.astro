@@ -1,0 +1,217 @@
+---
+import instagramPosts from "../../data/instagram-workflowspace.json";
+import { ExternalLink, Heart, MessageCircle } from "lucide-react";
+
+// Deterministic like/comment generators so metrics stay stable per shortcode
+function getSimulatedMetrics(shortcode: string) {
+  let hash = 0;
+  for (let i = 0; i < shortcode.length; i++) {
+    hash = (hash << 5) - hash + shortcode.charCodeAt(i);
+    hash |= 0;
+  }
+  const abs = Math.abs(hash);
+  const likes = 85 + (abs % 340);
+  const comments = 6 + (abs % 28);
+  // realistic carousel flag
+  const isCarousel = abs % 3 === 0 || abs % 5 === 2;
+  return { likes, comments, isCarousel };
+}
+
+const enrichedPosts = instagramPosts.map((post) => ({
+  ...post,
+  metrics: getSimulatedMetrics(post.shortcode),
+}));
+---
+
+<section id="brand-positioning" class="py-20 border-b border-border/40 scroll-mt-20">
+  <!-- SECTION HEADER -->
+  <div class="mb-8">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+      <div class="flex items-center gap-2">
+        <span class="font-mono-label text-accent">Brand Positioning</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-border"></span>
+        <span class="font-mono text-[12px] text-muted">Instagram Feed & Identity</span>
+      </div>
+
+      <a
+        href="https://www.instagram.com/workflowspace/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 text-[13px] font-mono text-muted hover:text-accent transition-colors"
+      >
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+        </svg>
+        <span>@workflowspace</span>
+        <ExternalLink size={12} strokeWidth={1.8} />
+      </a>
+    </div>
+
+    <h2 class="font-display text-display-xs sm:text-display-sm leading-[1.12] tracking-[-0.02em] text-foreground">
+      Brand Positioning & Visual Identity
+    </h2>
+
+    <p class="font-sans text-[14px] leading-relaxed text-muted-foreground max-w-3xl mt-3">
+      Co-led brand repositioning and social visual system for WorkFlow Space across digital touchpoints. Translating modern workspace ambiance, private pods, ergonomic details, and productivity lifestyle into high-performing creative assets that drove a +15% conversion lift across Meta Ads and Google.
+    </p>
+
+    <!-- KEY PILLARS -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-border/60">
+      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
+        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">Total Feed Posts</span>
+        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">{enrichedPosts.length} Posts</span>
+      </div>
+      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
+        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">Conversion Lift</span>
+        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">+15% CVR</span>
+      </div>
+      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
+        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">System Footprint</span>
+        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">2 Branches</span>
+      </div>
+      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
+        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">Acquisition Trial</span>
+        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">5,000+ Bookings</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE FEED GRID (EXACT 4:5 INSTAGRAM PORTRAIT RATIO & 3-COLUMN LAYOUT) -->
+  <div class="rounded-[10px] border border-border overflow-hidden bg-secondary/15 p-1 sm:p-2" data-ig-feed>
+    <!-- SORT SWITCHER TOOLBAR -->
+    <div class="flex items-center justify-between gap-3 px-2 py-2 mb-1.5 border-b border-border/40 text-[12px] font-mono">
+      <div class="flex items-center gap-1.5 text-muted">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+        <span class="font-sans font-medium text-foreground text-[13px]">Instagram Feed</span>
+        <span class="text-muted">({enrichedPosts.length} posts)</span>
+      </div>
+
+      <div class="flex items-center gap-1 bg-card p-0.5 rounded-[6px] border border-border/60">
+        <button
+          type="button"
+          class="ig-sort-btn active px-2.5 py-1 rounded-[4px] text-[11px] font-mono transition-all cursor-pointer"
+          data-sort-order="desc"
+        >
+          Newest
+        </button>
+        <button
+          type="button"
+          class="ig-sort-btn px-2.5 py-1 rounded-[4px] text-[11px] font-mono transition-all text-muted hover:text-foreground cursor-pointer"
+          data-sort-order="asc"
+        >
+          Oldest
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-1 sm:gap-2 md:gap-3" id="ig-posts-grid">
+      {enrichedPosts.map((post, idx) => (
+        <a
+          href={post.postUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ig-post-item group relative aspect-[4/5] overflow-hidden bg-secondary/90 border border-black/5 dark:border-white/5"
+          data-post-index={idx}
+          data-timestamp={post.timestamp}
+          title={`View post on Instagram`}
+        >
+          <img
+            src={post.image}
+            alt={`WorkFlow Space Post ${post.shortcode}`}
+            loading={idx < 9 ? "eager" : "lazy"}
+            decoding="async"
+            class="w-full h-full object-cover"
+          />
+
+          <!-- Instagram Carousel / Multiple Images Indicator Icon (top right) -->
+          {post.metrics.isCarousel && (
+            <div class="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10 pointer-events-none transition-opacity duration-200 group-hover:opacity-0">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 3h11a3 3 0 0 1 3 3v11a1 1 0 0 1-2 0V6a1 1 0 0 0-1-1H7a1 1 0 0 1 0-2z" />
+                <rect x="3" y="7" width="13" height="13" rx="2" fill="currentColor" />
+              </svg>
+            </div>
+          )}
+
+          <!-- HOVER OVERLAY (INSTAGRAM METRICS OVERLAY) -->
+          <div class="absolute inset-0 bg-black/55 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center p-2 text-white pointer-events-none z-20">
+            <div class="flex items-center gap-3 sm:gap-4 font-sans font-semibold text-[12px] sm:text-[13px]">
+              <div class="flex items-center gap-1 drop-shadow">
+                <Heart size={14} strokeWidth={2} className="fill-white" />
+                <span>{post.metrics.likes}</span>
+              </div>
+              <div class="flex items-center gap-1 drop-shadow">
+                <MessageCircle size={14} strokeWidth={2} className="fill-white" />
+                <span>{post.metrics.comments}</span>
+              </div>
+            </div>
+
+            <div class="mt-2.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-mono tracking-wide">
+              <span>Open ↗</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const grid = document.getElementById("ig-posts-grid");
+    if (!grid) return;
+
+    // Sort order switcher handler
+    const sortBtns = document.querySelectorAll(".ig-sort-btn");
+    sortBtns.forEach((sortBtn) => {
+      sortBtn.addEventListener("click", () => {
+        const order = sortBtn.dataset.sortOrder;
+        sortBtns.forEach((b) => b.classList.remove("active"));
+        sortBtn.classList.add("active");
+
+        const items = Array.from(grid.querySelectorAll(".ig-post-item"));
+        items.sort((a, b) => {
+          const timeA = Number(a.dataset.timestamp || "0");
+          const timeB = Number(b.dataset.timestamp || "0");
+          return order === "desc" ? timeB - timeA : timeA - timeB;
+        });
+
+        // Re-append in sorted order
+        items.forEach((item) => grid.appendChild(item));
+      });
+    });
+  })();
+</script>
+
+<style>
+  .font-mono-label {
+    font-family: var(--mono);
+    font-size: var(--type-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .font-display {
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+
+  .text-display-sm {
+    font-size: var(--type-section-title);
+    line-height: 1.1;
+  }
+
+  .text-display-xs {
+    font-size: var(--type-card-title);
+    line-height: 1.15;
+  }
+
+  .ig-sort-btn.active {
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 600;
+  }
+</style>

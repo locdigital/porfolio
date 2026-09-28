@@ -707,11 +707,14 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     if (serviceStackScroller) {
       const serviceCards = Array.from(serviceStackScroller.querySelectorAll('[data-service-card]'));
       const serviceDots = Array.from(document.querySelectorAll('[data-service-dot]'));
-      const reducedMotion = { matches: false, addEventListener: () => {} };
+      const paginationContainer = document.querySelector('.saas-pagination');
+      const mediaQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
       const autoplayDelay = 4000;
       let activeServiceIndex = 0;
       let autoplayTimer = 0;
+      let scrollEndTimer = 0;
       let isCarouselPaused = false;
+      let isProgrammaticScroll = false;
       let scrollFrame = 0;
 
       const setActiveServiceDot = (activeIndex) => {
@@ -719,14 +722,17 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
         serviceDots.forEach((dot, index) => {
           const isActive = index === activeIndex;
           if (isActive) {
-            if (dot.classList.contains('active')) {
-              dot.classList.remove('active');
-              void dot.offsetWidth;
-            }
+            dot.classList.remove('active');
+            void dot.offsetWidth;
             dot.classList.add('active');
             dot.setAttribute('aria-current', 'true');
+            if (isCarouselPaused) {
+              dot.classList.add('paused');
+            } else {
+              dot.classList.remove('paused');
+            }
           } else {
-            dot.classList.remove('active');
+            dot.classList.remove('active', 'paused');
             dot.removeAttribute('aria-current');
           }
         });
@@ -742,79 +748,146 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
         const targetCard = serviceCards[targetIndex];
         if (!targetCard) return;
 
+        const maxScroll = serviceStackScroller.scrollWidth - serviceStackScroller.clientWidth;
+        let targetScrollLeft;
+
+        if (targetIndex === 0) {
+          targetScrollLeft = 0;
+        } else if (targetIndex >= serviceCards.length - 1) {
+          targetScrollLeft = maxScroll;
+        } else {
+          targetScrollLeft = Math.min(maxScroll, Math.max(0, getServiceCardScrollLeft(targetCard)));
+        }
+
+        isProgrammaticScroll = true;
         serviceStackScroller.scrollTo({
-          left: getServiceCardScrollLeft(targetCard),
-          behavior: reducedMotion.matches ? 'auto' : behavior,
+          left: targetScrollLeft,
+          behavior: (mediaQuery && mediaQuery.matches) ? 'auto' : behavior,
         });
-      };
 
-      const advanceServiceCarousel = () => {
-        if (isCarouselPaused || serviceCards.length < 2) return;
-
-        const nextIndex = (activeServiceIndex + 1) % serviceCards.length;
-        setActiveServiceDot(nextIndex);
-        scrollToServiceCard(nextIndex);
-        scheduleServiceAutoplay();
+        window.clearTimeout(scrollEndTimer);
+        scrollEndTimer = window.setTimeout(() => {
+          isProgrammaticScroll = false;
+        }, 650);
       };
 
       const scheduleServiceAutoplay = () => {
         window.clearTimeout(autoplayTimer);
         if (isCarouselPaused || serviceCards.length < 2) return;
 
-        autoplayTimer = window.setTimeout(advanceServiceCarousel, autoplayDelay + 80);
+        autoplayTimer = window.setTimeout(advanceServiceCarousel, autoplayDelay + 50);
+      };
+
+      const advanceServiceCarousel = () => {
+        if (isCarouselPaused || serviceCards.length < 2) return;
+
+        const maxScroll = serviceStackScroller.scrollWidth - serviceStackScroller.clientWidth;
+        const isAtEnd = maxScroll > 0 && serviceStackScroller.scrollLeft >= maxScroll - 20;
+
+        let nextIndex = activeServiceIndex + 1;
+        if (nextIndex >= serviceCards.length || isAtEnd) {
+          nextIndex = 0;
+        }
+
+        setActiveServiceDot(nextIndex);
+        scrollToServiceCard(nextIndex);
+        scheduleServiceAutoplay();
+      };
+
+      const pauseAutoplay = () => {
+        isCarouselPaused = true;
+        window.clearTimeout(autoplayTimer);
+        serviceDots.forEach((item) => item.classList.add('paused'));
+      };
+
+      const resumeAutoplay = () => {
+        isCarouselPaused = false;
+        serviceDots.forEach((item) => item.classList.remove('paused'));
+        scheduleServiceAutoplay();
       };
 
       const syncServiceDots = () => {
-        const activeIndex = serviceCards.reduce((closestIndex, card, index) => {
-          const closestCard = serviceCards[closestIndex];
-          return Math.abs(getServiceCardScrollLeft(card) - serviceStackScroller.scrollLeft) <
-            Math.abs(getServiceCardScrollLeft(closestCard) - serviceStackScroller.scrollLeft)
-            ? index
-            : closestIndex;
-        }, 0);
+        if (isProgrammaticScroll) return;
+
+        const maxScroll = serviceStackScroller.scrollWidth - serviceStackScroller.clientWidth;
+        if (maxScroll <= 0) return;
+
+        let activeIndex = 0;
+        if (serviceStackScroller.scrollLeft >= maxScroll - 20) {
+          activeIndex = serviceCards.length - 1;
+        } else if (serviceStackScroller.scrollLeft <= 20) {
+          activeIndex = 0;
+        } else {
+          activeIndex = serviceCards.reduce((closestIndex, card, index) => {
+            const closestCard = serviceCards[closestIndex];
+            return Math.abs(getServiceCardScrollLeft(card) - serviceStackScroller.scrollLeft) <
+              Math.abs(getServiceCardScrollLeft(closestCard) - serviceStackScroller.scrollLeft)
+              ? index
+              : closestIndex;
+          }, 0);
+        }
 
         if (activeIndex !== activeServiceIndex) {
           setActiveServiceDot(activeIndex);
+          scheduleServiceAutoplay();
         }
       };
 
       serviceDots.forEach((dot) => {
         dot.addEventListener('click', () => {
           const clickedIndex = Number(dot.dataset.index || 0);
-          const targetIndex = clickedIndex === activeServiceIndex
-            ? (activeServiceIndex + 1) % serviceCards.length
-            : clickedIndex;
-          scrollToServiceCard(targetIndex);
-          setActiveServiceDot(targetIndex);
+          setActiveServiceDot(clickedIndex);
+          scrollToServiceCard(clickedIndex);
           scheduleServiceAutoplay();
         });
+
+        dot.addEventListener('focus', pauseAutoplay);
+        dot.addEventListener('blur', resumeAutoplay);
       });
 
+      // Pause when cursor is over the cards or pagination dots
+      serviceStackScroller.addEventListener('mouseenter', pauseAutoplay);
+      serviceStackScroller.addEventListener('mouseleave', resumeAutoplay);
+      if (paginationContainer) {
+        paginationContainer.addEventListener('mouseenter', pauseAutoplay);
+        paginationContainer.addEventListener('mouseleave', resumeAutoplay);
+      }
+
+      // Touch interactions
+      serviceStackScroller.addEventListener('touchstart', pauseAutoplay, { passive: true });
+      serviceStackScroller.addEventListener('touchend', resumeAutoplay, { passive: true });
+
+      // Pause when user switches browser tab
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          pauseAutoplay();
+        } else {
+          resumeAutoplay();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      // Scroll listener with RAF throttle
       serviceStackScroller.addEventListener('scroll', () => {
         window.cancelAnimationFrame(scrollFrame);
         scrollFrame = window.requestAnimationFrame(syncServiceDots);
       }, { passive: true });
 
-      serviceStackScroller.addEventListener('pointerdown', () => {
-        scheduleServiceAutoplay();
-      }, { passive: true });
+      if (mediaQuery && mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', scheduleServiceAutoplay);
+      }
 
-      serviceDots.forEach((dot) => {
-        dot.addEventListener('focus', () => {
-          isCarouselPaused = true;
-          window.clearTimeout(autoplayTimer);
-          serviceDots.forEach((item) => item.classList.add('paused'));
-        });
+      // Start auto scroll on page load
+      setActiveServiceDot(0);
+      scheduleServiceAutoplay();
 
-        dot.addEventListener('blur', () => {
-          isCarouselPaused = false;
-          serviceDots.forEach((item) => item.classList.remove('paused'));
-          scheduleServiceAutoplay();
-        });
-      });
-
-      reducedMotion.addEventListener('change', scheduleServiceAutoplay);
-      syncServiceDots();
+      // Clean up on Astro page swap
+      document.addEventListener('astro:before-swap', () => {
+        window.clearTimeout(autoplayTimer);
+        window.clearTimeout(scrollEndTimer);
+        window.cancelAnimationFrame(scrollFrame);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      }, { once: true });
       /* ── Service Contact Copy Email Logic ── */
       const copyEmailBtn = document.getElementById('service-copy-email-btn');
       if (copyEmailBtn) {
@@ -1200,7 +1273,12 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     justify-content: center;
     gap: var(--space-3);
     margin-top: var(--space-5);
-    opacity: 0.4;
+    opacity: 0.65;
+    transition: opacity 0.2s var(--ease-out);
+  }
+
+  .saas-pagination:hover {
+    opacity: 1;
   }
 
   .saas-pagination-dot {
@@ -1208,7 +1286,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     width: 8px;
     height: 8px;
     border-radius: var(--rounded-full);
-    background: rgba(28, 28, 28, 0.22);
+    background: color-mix(in srgb, var(--text) 24%, transparent);
     cursor: pointer;
     overflow: hidden;
     transition: width 0.22s var(--ease-out), background 0.22s var(--ease-out), transform 0.22s var(--ease-out);
@@ -1216,7 +1294,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   .saas-pagination-dot:hover,
   .saas-pagination-dot:focus-visible {
-    background: rgba(28, 28, 28, 0.48);
+    background: color-mix(in srgb, var(--text) 50%, transparent);
   }
 
   .saas-pagination-dot:focus-visible {
@@ -1227,7 +1305,7 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   .saas-pagination-dot.active {
     width: 34px;
     color: var(--text);
-    background: rgba(28, 28, 28, 0.16);
+    background: color-mix(in srgb, var(--text) 18%, transparent);
   }
 
   .saas-pagination-dot.active::after {
@@ -1240,7 +1318,6 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
     transform-origin: left;
     animation: service-pagination-progress 4000ms linear forwards;
   }
-
 
   .saas-pagination-dot.active.paused::after {
     animation-play-state: paused;
