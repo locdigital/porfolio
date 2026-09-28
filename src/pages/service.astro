@@ -1777,11 +1777,20 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   .plan-title {
     font-family: var(--serif);
-    font-size: clamp(26px, 2.2vw, 32px) !important;
-    line-height: 1.15 !important;
+    font-size: clamp(18px, 1.6vw, 22px) !important;
+    line-height: 1.25 !important;
     color: var(--text);
     font-weight: 400 !important;
     margin-bottom: 8px;
+  }
+
+  @media (min-width: 993px) {
+    .plan-title {
+      min-height: 2.2rem;
+    }
+    .plan-desc {
+      min-height: 4.2rem;
+    }
   }
 
   .plan-desc {
@@ -1793,8 +1802,8 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
 
   .plan-price {
     display: grid;
-    gap: 10px;
-    margin: 26px 0 28px;
+    gap: 5px;
+    margin: 16px 0 20px;
   }
 
   .price-eyebrow {
@@ -1808,21 +1817,21 @@ const serviceDescription = "Scale conversions, build community trust, and deploy
   .price-row {
     display: flex;
     align-items: baseline;
-    gap: 8px;
+    gap: 6px;
   }
 
   .price-val {
     font-family: var(--serif);
-    font-size: 72px !important;
+    font-size: clamp(30px, 2.8vw, 36px) !important;
     font-weight: 500;
     letter-spacing: 0;
     color: var(--accent-solid);
-    line-height: 0.88;
+    line-height: 1;
   }
 
   .price-period {
     font-family: var(--serif);
-    font-size: 32px !important;
+    font-size: clamp(15px, 1.2vw, 17px) !important;
     font-weight: 400;
     color: var(--muted);
     letter-spacing: 0;
