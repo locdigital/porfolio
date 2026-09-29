@@ -206,8 +206,8 @@ const freeTimeActivities = [
               <tbody>
                 {experiences.map((item) => (
                   <tr class="border-b border-border first:border-t">
-                    <td class="py-5 w-12 align-middle">
-                      <div class="w-[28px] h-[28px] grid place-items-center overflow-hidden rounded-full bg-secondary/40 border border-border/50 shrink-0">
+                    <td class="py-3.5 sm:py-4.5 w-10 sm:w-12 align-middle">
+                      <div class="w-[24px] h-[24px] sm:w-[28px] sm:h-[28px] grid place-items-center overflow-hidden rounded-full bg-secondary/40 border border-border/50 shrink-0">
                         {item.logo ? (
                           <img
                             src={item.logo}
@@ -217,16 +217,16 @@ const freeTimeActivities = [
                             decoding="async"
                           />
                         ) : (
-                          <div class="w-full h-full rounded-full bg-secondary border border-border flex items-center justify-center font-mono text-xs font-medium text-foreground">
+                          <div class="w-full h-full rounded-full bg-secondary border border-border flex items-center justify-center font-mono text-[10px] sm:text-xs font-medium text-foreground">
                             {item.company.slice(0, 2).toUpperCase()}
                           </div>
                         )}
                       </div>
                     </td>
-                    <td class="py-5 font-medium text-foreground align-middle tracking-tight text-[15px] sm:text-[16px]">
+                    <td class="py-3.5 sm:py-4.5 font-medium text-foreground align-middle tracking-tight text-[13.5px] sm:text-[15px]">
                       {item.company}
                     </td>
-                    <td class="py-5 text-right font-mono text-xs sm:text-[13px] text-muted-foreground whitespace-nowrap align-middle">
+                    <td class="py-3.5 sm:py-4.5 text-right font-mono text-[11.5px] sm:text-[13px] text-muted-foreground whitespace-nowrap align-middle">
                       {item.when}
                     </td>
                   </tr>
