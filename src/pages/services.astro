@@ -1,0 +1,325 @@
+---
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import { ArrowUpRightIcon as ArrowUpRight } from "@phosphor-icons/react";
+
+const services = [
+  {
+    id: "01",
+    category: "Performance Marketing",
+    title: "Performance Ads & Attribution",
+    metric: "4.2x Avg ROAS",
+    summary: "Acquisition scaling and CAC reduction across Meta, Google Search/PMax, and TikTok Ads supported by server-side CAPI and attribution modeling.",
+    tags: ["Meta Ads", "Google Ads", "TikTok Ads", "GA4 Server-Side", "Looker Studio"],
+    checklist: [
+      "Custom tracking Pixel & Server-Side Conversions API (CAPI) integration.",
+      "Full-funnel ad structure on Google (Search/PMax), Meta, and TikTok.",
+      "Attribution audit & GA4 measurement event standardization.",
+      "Automated weekly performance reporting dashboards via Looker Studio."
+    ]
+  },
+  {
+    id: "02",
+    category: "Social Seeding",
+    title: "Organic Seeding & Advocacy",
+    metric: "85% Trust Index",
+    summary: "Authentic peer discussion seeding across high-intent communities, sentiment management, and micro-influencer advocacy.",
+    tags: ["Forum Seeding", "Reddit & Facebook", "Sentiment Mgmt", "KOC Booking"],
+    checklist: [
+      "Natural conversation angles across Reddit, Facebook groups, and tech forums.",
+      "Niche community monitoring & proactive brand sentiment control.",
+      "Brand credibility reinforcement through authentic micro-KOCs.",
+      "Crisis response scripts and community moderation guidelines."
+    ]
+  },
+  {
+    id: "03",
+    category: "Brand Marketing",
+    title: "Strategic Brand Positioning",
+    metric: "100% Alignment",
+    summary: "Core brand positioning, tone-of-voice frameworks, and visual identity guidelines to differentiate in crowded digital markets.",
+    tags: ["Market Positioning", "Messaging Maps", "Visual Styleguides", "Tone of Voice"],
+    checklist: [
+      "Brand voice guideline & copy architecture handbook.",
+      "Market positioning audit & Unique Value Proposition (UVP) design.",
+      "Campaign narrative planning & launch messaging roadmaps.",
+      "Harmonized typography, color palettes, and visual systems."
+    ]
+  },
+  {
+    id: "04",
+    category: "E-Commerce Growth",
+    title: "DTC Storefront Optimization",
+    metric: "+28% Conversion",
+    summary: "Storefront UX refinement and retention funnel architecture to maximize Average Order Value (AOV) and customer lifetime value (LTV).",
+    tags: ["Shopify CRO", "Cart Funnel", "Klaviyo CRM", "Catalog Feed"],
+    checklist: [
+      "Sliding Cart Drawer & dynamic checkout optimization (CRO).",
+      "Automated customer lifecycle email nurturing via Klaviyo CRM.",
+      "Optimized product catalog feeds for TikTok Shop & Meta Shopping.",
+      "E-commerce drop-off analysis and checkout funnel diagnostics."
+    ]
+  },
+  {
+    id: "05",
+    category: "Web Development",
+    title: "Headless Web Engineering",
+    metric: "100/100 Speed",
+    summary: "Ultra-fast responsive static websites built on Astro and React, achieving perfect Google Lighthouse scores and strict technical SEO.",
+    tags: ["Astro Framework", "React & TS", "Keystatic CMS", "Core Web Vitals"],
+    checklist: [
+      "Headless static website deployment on modern Astro framework.",
+      "Interactive fluid UI with lightweight micro-animations.",
+      "Complete technical SEO meta tags, automatic sitemaps, and JSON-LD schema.",
+      "Intuitive headless CMS integration for seamless content updates."
+    ]
+  },
+  {
+    id: "06",
+    category: "Growth Automation",
+    title: "AI Funnels & Growth Automation",
+    metric: "95% Automation",
+    summary: "Eliminating manual marketing operations and scaling lead acquisition through CRM workflows, webhook syncs, and AI content engines.",
+    tags: ["Make.com", "Zapier", "AI Scripting", "CRM Flows", "Programmatic SEO"],
+    checklist: [
+      "Automated multi-channel lead routing to CRM with instant alerts.",
+      "AI-driven content optimization & programmatic SEO workflows.",
+      "Database synchronization and automated reporting via webhooks.",
+      "Multi-branch automated email sequence logic."
+    ]
+  }
+];
+
+const pricingPlans = [
+  {
+    title: "Advocacy Seeding Retainer",
+    category: "Awareness & Community",
+    monthlyPrice: "$2,490",
+    projectPrice: "$6,900",
+    popular: false,
+    description: "Ideal for brands wanting authentic peer discussion, forum presence, and community sentiment control.",
+    deliverables: [
+      "Weekly organic seeding threads & discussion moderation",
+      "Reddit, Facebook groups & tech forum monitoring",
+      "Dedicated campaign engineer & sentiment alerts",
+      "Creator & KOC content briefs and angles mapping",
+      "Weekly screenshot & link reporting",
+      "Competitor movement tracking"
+    ]
+  },
+  {
+    title: "Full-Funnel Growth Retainer",
+    category: "Scale & Performance",
+    monthlyPrice: "$4,990",
+    projectPrice: "$12,500",
+    popular: true,
+    description: "Comprehensive end-to-end performance engine connecting paid media, TikTok Shop, landing pages, and attribution.",
+    deliverables: [
+      "End-to-end management of Meta, Google & TikTok Ads",
+      "Server-side CAPI & GA4 measurement setup via GTM Server",
+      "Weekly automated Looker Studio performance dashboard",
+      "Landing page CRO audits and diagnostic fixes",
+      "KOC/Creator briefing & weekly creative testing roadmap",
+      "Strict CAC guardrails & spend discipline",
+      "Monthly executive growth briefing"
+    ]
+  },
+  {
+    title: "Headless Web Engineering",
+    category: "Code & SEO",
+    monthlyPrice: "$3,800",
+    projectPrice: "$7,500",
+    popular: false,
+    description: "Bespoke Astro/React website build engineered for extreme speed, Core Web Vitals, and effortless CMS editing.",
+    deliverables: [
+      "Custom responsive Astro & React website architecture",
+      "Headless CMS integration for effortless client editing",
+      "100/100 Google Lighthouse Core Web Vitals optimization",
+      "Full Technical SEO & JSON-LD schema configuration",
+      "Integrated analytics, pixel, and conversion event tagging",
+      "4 weeks dedicated post-launch support and warranty"
+    ]
+  }
+];
+
+const academicPartners = [
+  { name: "UEH University", role: "Academic Workshop Partner", logo: "/assets/logos/logo-ueh.png" },
+  { name: "Foreign Trade Univ (FTU)", role: "Campus Community Partner", logo: "/assets/logos/logo-ftu.png" },
+  { name: "FPT University", role: "Career Guidance Partner", logo: "/assets/logos/logo-fpt.png" },
+  { name: "RMIT Vietnam", role: "Student Community Partner", logo: "/assets/logos/logo-rmit.png" },
+  { name: "ĐH Bách Khoa (HCMUT)", role: "Tech Community Partner", logo: "/assets/logos/logo-hcmut.png" },
+  { name: "Đại học Văn Lang (VLU)", role: "Education & Workshop Partner", logo: "/assets/logos/logo-vlu.png" },
+  { name: "Đại học Hoa Sen (HSU)", role: "Community Media Partner", logo: "/assets/logos/logo-hsu.png" },
+  { name: "Đại học Tôn Đức Thắng (TDTU)", role: "Academic Outreach Partner", logo: "/assets/logos/logo-tdtu.png" },
+];
+---
+
+<DashboardLayout
+  title="Services & Retainers — Phuc Loc Nguyen"
+  pageTitle="Services"
+  description="Performance ads, TikTok Shop acceleration, DTC CRO, headless web development, and AI marketing automation services."
+  breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "Services" }]}
+  maxWidthVariant="default"
+>
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1 class="page-title">Services & Capabilities</h1>
+    <p class="page-lead">
+      Connecting paid media, organic trust, analytics, technical SEO, and headless web engineering into one measurable growth engine.
+    </p>
+  </header>
+
+  <!-- 6 Modular Capabilities -->
+  <section class="page-section" aria-labelledby="heading-capabilities">
+    <h2 id="heading-capabilities" class="section-title">Modular capabilities (6 offerings)</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+      {services.map((s) => (
+        <article class="dash-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span class="dash-tag">{s.category}</span>
+              <span style="font-size: 0.75rem; color: var(--dash-muted);">{s.id}</span>
+            </div>
+
+            <h3 class="item-title" style="margin-bottom: 8px;">
+              {s.title}
+            </h3>
+
+            <p style="font-size: 0.875rem; line-height: 1.55; color: var(--dash-muted); margin: 0 0 14px;">
+              {s.summary}
+            </p>
+
+            <!-- Scope Checklist -->
+            <div style="margin-bottom: 14px; padding: 10px 12px; background: var(--dash-surface-subtle); border-radius: var(--radius-card); border: 1px solid var(--dash-border);">
+              <div style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+                Scope & deliverables
+              </div>
+              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
+                {s.checklist.map((item) => (
+                  <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.45; color: var(--dash-text);">
+                    <span class="dash-bullet" aria-hidden="true"></span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Tags -->
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px;">
+              {s.tags.map((t) => (
+                <span class="dash-tag">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Bottom Inquire Row -->
+          <div style="border-top: 1px solid var(--dash-border); padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.75rem; color: var(--dash-muted);">Monthly or Project</span>
+            <a 
+              href={`mailto:hi@loc.digital?subject=Inquiry:%20${encodeURIComponent(s.title)}`}
+              class="dash-button dash-button--secondary"
+              style="min-height: 30px; padding: 3px 10px; font-size: 0.75rem;"
+            >
+              <span>Inquire</span>
+              <ArrowUpRight size={11} aria-hidden="true" />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Pricing Plans & Retainer Structures -->
+  <section class="page-section" aria-labelledby="heading-pricing">
+    <h2 id="heading-pricing" class="section-title">Pricing plans & retainers</h2>
+    <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 16px;">
+      Dedicated monthly retainers for ongoing growth acceleration or fixed-scope engineering packages.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+      {pricingPlans.map((plan) => (
+        <div 
+          class="dash-card" 
+          style="display: flex; flex-direction: column; justify-content: space-between;"
+        >
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span class="dash-tag">{plan.category}</span>
+              {plan.popular && (
+                <span class="dash-tag dash-tag--accent" style="font-weight: 600;">RECOMMENDED</span>
+              )}
+            </div>
+
+            <h3 class="item-title" style="margin-bottom: 10px;">
+              {plan.title}
+            </h3>
+
+            <!-- Price -->
+            <div style="padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--dash-border);">
+              <div style="display: flex; align-items: baseline; gap: 4px;">
+                <span style="font-size: 1.75rem; font-weight: 600; color: var(--dash-text); font-variant-numeric: tabular-nums;">
+                  {plan.monthlyPrice}
+                </span>
+                <span style="font-size: 0.8125rem; color: var(--dash-muted);">/ month</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--dash-muted); margin-top: 2px;">
+                or {plan.projectPrice} fixed scope
+              </div>
+            </div>
+
+            <p style="font-size: 0.8125rem; line-height: 1.55; color: var(--dash-muted); margin: 0 0 14px;">
+              {plan.description}
+            </p>
+
+            <!-- Deliverables -->
+            <ul style="list-style: none; padding: 0; margin: 0 0 16px; display: flex; flex-direction: column; gap: 6px;">
+              {plan.deliverables.map((item) => (
+                <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.45; color: var(--dash-text);">
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <a 
+            href={`mailto:hi@loc.digital?subject=Inquiry:%20${encodeURIComponent(plan.title)}`}
+            class={plan.popular ? "dash-button dash-button--primary" : "dash-button dash-button--secondary"}
+            style="width: 100%;"
+          >
+            <span>Book retainer</span>
+            <ArrowUpRight size={13} aria-hidden="true" />
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Academic Partners -->
+  <section class="page-section" aria-labelledby="heading-partners">
+    <h2 id="heading-partners" class="section-title">Academic & community collaboration</h2>
+    <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 16px;">
+      Workshops, career guidance, and student empowerment initiatives hosted in partnership with 8 leading universities across Vietnam.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px;">
+      {academicPartners.map((p) => (
+        <div class="dash-card" style="padding: 12px; display: flex; align-items: center; gap: 10px;">
+          <img 
+            src={p.logo} 
+            alt={p.name} 
+            style="width: 32px; height: 32px; object-fit: contain; flex-shrink: 0;"
+          />
+          <div>
+            <div style="font-size: 0.8125rem; font-weight: 600; color: var(--dash-text);">
+              {p.name}
+            </div>
+            <div style="font-size: 0.75rem; color: var(--dash-muted);">
+              {p.role}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</DashboardLayout>

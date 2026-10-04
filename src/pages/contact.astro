@@ -1,0 +1,212 @@
+---
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import { PaperPlaneTiltIcon as Send, ArrowSquareOutIcon as ExternalLink } from "@phosphor-icons/react";
+
+const inquiryTopics = [
+  {
+    title: "Performance Ads & Attribution",
+    subject: "Inquiry: Performance Ads & Attribution",
+    desc: "Scaling Meta, Google PMax, or TikTok ads with Server-Side CAPI and ROAS guardrails."
+  },
+  {
+    title: "TikTok Shop & Social Commerce",
+    subject: "Inquiry: TikTok Shop & Social Commerce",
+    desc: "KOC booking networks, live GMV scaling, and automated conversational funnels."
+  },
+  {
+    title: "Headless Website & CRO Engineering",
+    subject: "Inquiry: Headless Website & CRO Engineering",
+    desc: "Fast responsive Astro/React storefronts, frictionless checkout, and Core Web Vitals optimization."
+  },
+  {
+    title: "Dedicated Monthly Growth Retainer",
+    subject: "Inquiry: Dedicated Monthly Retainer",
+    desc: "Full-funnel partnership leading digital media, tracking architecture, and weekly creative testing."
+  }
+];
+---
+
+<DashboardLayout
+  title="Contact & Collaboration — Phuc Loc Nguyen"
+  pageTitle="Contact"
+  description="Connect with Nguyen Phuc Loc for performance marketing retainers, TikTok Shop acceleration, and digital growth consulting."
+  breadcrumbs={[{ label: "Connect", href: "/" }, { label: "Contact" }]}
+  maxWidthVariant="default"
+>
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1 class="page-title">Contact & Inquiries</h1>
+    <p class="page-lead">
+      I respond personally to inquiries regarding performance marketing retainers, TikTok Shop acceleration, and digital growth strategy.
+    </p>
+  </header>
+
+  <!-- Direct Contact Channels -->
+  <section class="page-section" aria-labelledby="heading-channels">
+    <h2 id="heading-channels" class="section-title">Direct channels</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <!-- Primary Email -->
+      <div class="dash-card" style="padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+          <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em;">Primary Email</span>
+          <button 
+            id="contact-copy-email-btn" 
+            class="dash-button dash-button--secondary"
+            style="min-height: 28px; padding: 2px 10px; font-size: 0.75rem;"
+            aria-label="Copy email address"
+          >
+            Copy address
+          </button>
+        </div>
+        <a 
+          href="mailto:hi@loc.digital" 
+          class="dash-link"
+          style="font-size: 1.125rem; font-weight: 600; color: var(--dash-text);"
+        >
+          hi@loc.digital
+        </a>
+        <div id="contact-copy-feedback" aria-live="polite" style="position: absolute; left: -9999px;"></div>
+        <p style="font-size: 0.8125rem; color: var(--dash-muted); margin: 6px 0 0;">
+          Best channel for project briefs, RFPs, advisory scopes, and hiring discussions.
+        </p>
+      </div>
+
+      <!-- Phone & Zalo -->
+      <div class="dash-card" style="padding: 16px;">
+        <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em; display: block; margin-bottom: 4px;">
+          Direct Phone & Zalo
+        </span>
+        <a 
+          href="tel:+84888886038" 
+          class="dash-link"
+          style="font-size: 1.125rem; font-weight: 600; color: var(--dash-text);"
+        >
+          +84 888 886 038
+        </a>
+        <p style="font-size: 0.8125rem; color: var(--dash-muted); margin: 6px 0 0;">
+          Available during business hours (09:00 — 18:00 GMT+7).
+        </p>
+      </div>
+
+      <!-- Location & Working Arrangement -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="dash-card" style="padding: 14px;">
+          <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; display: block; margin-bottom: 2px;">Location</span>
+          <div style="font-size: 0.875rem; font-weight: 600; color: var(--dash-text);">Saigon, Vietnam 🇻🇳</div>
+          <div style="font-size: 0.75rem; color: var(--dash-muted); margin-top: 2px;">UTC / GMT +7</div>
+        </div>
+
+        <div class="dash-card" style="padding: 14px;">
+          <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; display: block; margin-bottom: 2px;">Work Arrangement</span>
+          <div style="font-size: 0.875rem; font-weight: 600; color: var(--dash-text);">Remote Worldwide</div>
+          <div style="font-size: 0.75rem; color: var(--dash-muted); margin-top: 2px;">or Hybrid in TP.HCM</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Launch Topics -->
+  <section class="page-section" aria-labelledby="heading-topics">
+    <h2 id="heading-topics" class="section-title">Select an inquiry topic</h2>
+    <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 14px;">
+      Click any topic to draft an email with pre-configured subject lines and context.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      {inquiryTopics.map((topic) => (
+        <a 
+          href={`mailto:hi@loc.digital?subject=${encodeURIComponent(topic.subject)}`}
+          class="dash-card dash-card--interactive"
+          style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; text-decoration: none;"
+        >
+          <div>
+            <h3 class="item-title" style="margin: 0 0 4px; font-size: 0.9375rem;">
+              {topic.title}
+            </h3>
+            <p style="font-size: 0.8125rem; color: var(--dash-muted); margin: 0; line-height: 1.45;">
+              {topic.desc}
+            </p>
+          </div>
+          <span style="color: var(--dash-muted); flex-shrink: 0; margin-left: 12px; display: inline-flex;">
+            <Send size={15} aria-hidden="true" />
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Social Profiles -->
+  <section class="page-section" aria-label="Social profiles" style="border-top: 1px solid var(--dash-border); padding-top: var(--space-6);">
+    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <a 
+        href="https://www.linkedin.com/in/phucloc" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="dash-button dash-button--secondary"
+        style="font-size: 0.8125rem;"
+      >
+        <span>LinkedIn</span>
+        <ExternalLink size={12} aria-hidden="true" />
+      </a>
+      <a 
+        href="https://www.instagram.com/henrygoodkid" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="dash-button dash-button--secondary"
+        style="font-size: 0.8125rem;"
+      >
+        <span>Instagram (@henrygoodkid)</span>
+        <ExternalLink size={12} aria-hidden="true" />
+      </a>
+      <a 
+        href="https://www.pexels.com/@henrygoodkid" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="dash-button dash-button--secondary"
+        style="font-size: 0.8125rem;"
+      >
+        <span>Pexels Photos</span>
+        <ExternalLink size={12} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+</DashboardLayout>
+
+<script is:inline>
+  function setupContactCopy() {
+    const btn = document.getElementById("contact-copy-email-btn");
+    const feedback = document.getElementById("contact-copy-feedback");
+
+    btn?.addEventListener("click", async () => {
+      const email = "hi@loc.digital";
+      try {
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = email;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+        btn.textContent = "Copied!";
+        if (feedback) feedback.textContent = "Email address copied to clipboard";
+        setTimeout(() => {
+          btn.textContent = "Copy address";
+          if (feedback) feedback.textContent = "";
+        }, 2000);
+      } catch (err) {
+        console.error("Copy failed", err);
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupContactCopy);
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    setupContactCopy();
+  }
+</script>

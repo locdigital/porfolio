@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-curl -sL "https://loc.digital/downloads/workflow-extension.zip" -o "extension.zip"
-unzip -q -o "extension.zip" -d "extension"
-rm -f "extension.zip"

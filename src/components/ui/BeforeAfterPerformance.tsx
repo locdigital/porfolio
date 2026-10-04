@@ -426,7 +426,7 @@ export default function BeforeAfterPerformance({
         .bap-slider-wrap {
           align-self: center;
           background: rgba(255, 255, 255, 0.58);
-          border: 1px solid rgba(232, 232, 226, 0.72);
+          border: 1px solid var(--divider);
           border-radius: 16px;
           box-shadow: 0 18px 52px rgba(28, 28, 28, 0.08);
           padding: 14px;
@@ -601,7 +601,7 @@ export default function BeforeAfterPerformance({
 
         .bap-metric {
           background: rgba(255, 255, 255, 0.72);
-          border: 1px solid rgba(232, 232, 226, 0.8);
+          border: 1px solid var(--divider);
           border-radius: 12px;
           padding: 12px;
         }

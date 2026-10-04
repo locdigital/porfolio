@@ -1,4 +1,5 @@
 import { getCollection } from "astro:content";
+import { uploadedAssetUrl } from "./uploadthing-assets";
 
 export type ProjectData = {
   slug: string;
@@ -178,6 +179,8 @@ export async function getProjects() {
   return entries
     .map((entry) => ({
       ...entry.data,
+      coverImage: entry.data.coverImage ? uploadedAssetUrl(entry.data.coverImage) : undefined,
+      images: (entry.data.images ?? []).map((img: string) => uploadedAssetUrl(img)),
       tags: [...entry.data.tools, ...entry.data.skills],
     }))
     .sort((a, b) => a.order - b.order);
@@ -186,7 +189,11 @@ export async function getProjects() {
 export async function getPhotoLocations() {
   const mapPhotoLocation = (data: PhotoLocationData) => {
     const sortedImages = [...(data.images ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    const heroImage = data.heroImage ?? sortedImages.find((image) => image.isCover) ?? sortedImages[0];
+    const rawHero = data.heroImage ?? sortedImages.find((image) => image.isCover) ?? sortedImages[0];
+    const heroImage = rawHero ? {
+      ...rawHero,
+      src: uploadedAssetUrl(rawHero.src),
+    } : undefined;
     const name = data.name || data.location;
     const introduction = data.description ?? data.introduction ?? data.shortDescription ?? "";
 
@@ -203,7 +210,7 @@ export async function getPhotoLocations() {
       longDescription: data.longDescription ?? data.editorialReview ?? data.description ?? "",
       heroImage,
       photos: sortedImages.map((image) => ({
-        src: image.src,
+        src: uploadedAssetUrl(image.src),
         alt: image.alt,
         w: image.width ?? 1600,
         h: image.height ?? 1200,
@@ -222,7 +229,19 @@ export async function getPhotoLocations() {
     });
 }
 
-export async function getGear() {
+export async function getGear(): Promise<GearData | undefined> {
   const entries = await getCollection("gear");
-  return entries[0]?.data;
+  const gear = entries[0]?.data as GearData | undefined;
+  if (!gear) return undefined;
+
+  return {
+    ...gear,
+    sections: (gear.sections ?? []).map((section) => ({
+      ...section,
+      items: (section.items ?? []).map((item) => ({
+        ...item,
+        image: item.image ? uploadedAssetUrl(item.image) : undefined,
+      })),
+    })),
+  };
 }

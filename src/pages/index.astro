@@ -1,70 +1,548 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { absoluteUrl, pageSchema } from "../lib/seo";
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import { getProjects, getPhotoLocations } from "../lib/cms";
+import { 
+  ArrowRightIcon as ArrowRight,
+  CaretRightIcon as ChevronRight, 
+  EnvelopeSimpleIcon as Mail,
+} from "@phosphor-icons/react";
 
-const pageTitle = "Nguyen Phuc Loc | Senior Performance Marketing Executive";
-const pageDescription = "Senior Performance Marketing Executive scaling multi-channel paid media, TikTok Shop GMV, SEO growth, and AI-powered conversion funnels.";
+const allProjects = await getProjects();
+const photoLocations = await getPhotoLocations();
+
+// Featured projects: 3 top projects per Notion spec (PlayAh, WorkFlow Space, POPS Worldwide)
+const featuredProjects = allProjects.slice(0, 3);
+const selectedWorkCopy: Record<string, { title: string; outcome: string }> = {
+  playah: {
+    title: "PlayAh! — TikTok Shop Scaling",
+    outcome: "Scaled TikTok Shop revenue to over VND 1B/month.",
+  },
+  "workflow-space": {
+    title: "WorkFlow Space — Branch Launch",
+    outcome: "Generated 5,000+ trial bookings and recruited 50+ startup teams.",
+  },
+  "pops-worldwide": {
+    title: "POPS Worldwide — Organic Growth",
+    outcome: "Led technical SEO and cross-functional growth initiatives.",
+  },
+};
+
+const selectedWork = featuredProjects.map((project) => ({
+  ...project,
+  displayTitle: selectedWorkCopy[project.slug]?.title || project.title,
+  outcome: selectedWorkCopy[project.slug]?.outcome || project.summary?.split(".")[0] || "",
+}));
+
+// 4 Selected Impact Metrics with verified context
+const notableResults = [
+  {
+    metric: "1B+ VND/mo",
+    label: "TikTok Shop Revenue Scaled",
+    context: "PlayAh! Vietnam · ROAS > 10"
+  },
+  {
+    metric: "5,000+",
+    label: "Bookings & 2k+ Leads",
+    context: "WorkFlow Space · 4M+ impressions"
+  },
+  {
+    metric: "2.5M MAU",
+    label: "Monthly Active Users",
+    context: "POPS Worldwide · 10x organic growth"
+  },
+  {
+    metric: "4,000,000+",
+    label: "Community Members Reached",
+    context: "Đại Học Đừng Học Đại · Zero ad spend"
+  }
+];
+
+// Experience summary items:
+const experienceHighlights = [
+  {
+    company: "WorkFlow Space",
+    role: "Digital Marketing Executive",
+    period: "2024 — Present",
+    focus: "Full-funnel performance marketing & branch launches across Ho Chi Minh City."
+  },
+  {
+    company: "PlayAh!",
+    role: "Performance Senior Executive",
+    period: "2024 — Present",
+    focus: "TikTok Shop GMV acceleration, creator affiliate network, and automated retention."
+  },
+  {
+    company: "Asia Strategic Holdings",
+    role: "Performance Marketing",
+    period: "2025 — 2026",
+    focus: "Growth marketing, customer acquisition modeling, and multi-channel attribution."
+  },
+  {
+    company: "POPS Worldwide",
+    role: "SEO Executive",
+    period: "2022 — 2023",
+    focus: "Technical SEO roadmap scaling organic traffic to 2.5M MAU across regional platforms."
+  }
+];
+
+// Services preview (6 core offerings):
+const servicesPreview = [
+  {
+    title: "Performance Ads & Attribution",
+    summary: "Meta, Google PMax & TikTok Ads backed by Server-Side CAPI and GA4 audit."
+  },
+  {
+    title: "Organic Seeding & Advocacy",
+    summary: "High-trust community discussions, sentiment management, and authentic creator advocacy."
+  },
+  {
+    title: "Strategic Brand Positioning",
+    summary: "Market positioning, messaging architecture, and visual identity guidelines."
+  },
+  {
+    title: "DTC Storefront Optimization",
+    summary: "Conversion rate optimization, catalog feeds, and lifecycle retention funnels."
+  },
+  {
+    title: "Headless Web Engineering",
+    summary: "Ultra-fast Astro & React builds targeting strict Core Web Vitals and technical SEO."
+  },
+  {
+    title: "AI Funnels & Automation",
+    summary: "Make/Zapier CRM integrations, automated lead routing, and programmatic content engines."
+  }
+];
+
+// 4 Featured Destinations for overview
+const featuredPhotos = photoLocations.slice(0, 4);
 ---
-<Layout
-  title={pageTitle}
-  description={pageDescription}
-  schema={[
-    pageSchema({
-      url: absoluteUrl("/"),
-      title: pageTitle,
-      description: pageDescription,
-      type: "ProfilePage",
-    }),
-  ]}
+
+<DashboardLayout 
+  title="Phuc Loc Nguyen — Workspace"
+  description="Senior Performance Marketing Executive workspace: scaling multi-channel paid media, TikTok Shop GMV, SEO, and web engineering."
+  breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "Overview" }]}
+  maxWidthVariant="default"
 >
+  <!-- ============================================================
+       1. IDENTITY & INTRODUCTION (Directly on document surface)
+       ============================================================ -->
+  <header class="page-header">
+    <div style="max-width: 76ch;">
+      <h1 class="page-title" style="margin-bottom: 4px;">Phuc Loc Nguyen</h1>
+      <div style="font-size: 0.9375rem; color: var(--dash-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <span>Senior Performance Marketing Executive</span>
+        <span style="opacity: 0.4;">·</span>
+        <span>Saigon, Vietnam</span>
+        <span style="opacity: 0.4;">·</span>
+        <span>FPT University Honors</span>
+      </div>
+      <p style="font-size: 1rem; line-height: 1.625; color: var(--dash-text); max-width: 68ch; margin: 0 0 16px;">
+        I design and scale full-funnel digital acquisition engines—connecting paid media, TikTok Shop GMV acceleration, attribution modeling, and fast web experiences to turn marketing investments into sustainable revenue.
+      </p>
 
-
-
+      <!-- Primary & Secondary Actions -->
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <a href="/work" class="dash-button dash-button--primary">
+          <span>View selected work</span>
+          <ChevronRight size={15} aria-hidden="true" />
+        </a>
+        <a href="/contact" class="dash-button dash-button--secondary">
+          <span>Contact</span>
+        </a>
+        <a href="/experience" class="dash-button dash-button--ghost">
+          <span>Career history</span>
+        </a>
+      </div>
+    </div>
+  </header>
 
   <!-- ============================================================
-       MAIN
-  ============================================================ -->
-  <main style="display:flex;flex-direction:column;">
+       2. SELECTED IMPACT (Quiet horizontal group)
+       ============================================================ -->
+  <section class="page-section" aria-label="Selected commercial impact">
+    <div class="dash-metric-group">
+      {notableResults.map((item) => (
+        <div class="dash-metric-item">
+          <span class="dash-metric-value">{item.metric}</span>
+          <span class="dash-metric-label">{item.label}</span>
+          <span class="dash-metric-context">{item.context}</span>
+        </div>
+      ))}
+    </div>
+  </section>
 
-    <!-- CAREER ---------------------------------- -->
-    <section class="career-map toki-r" data-d="1" aria-label="Past, current, and future work">
-      <div class="container career-map-container">
-        <div class="career-map-intro career-map-intro--horizontal t-stagger">
-          <div class="career-map-statement">
-            <h1 class="career-map-title career-map-title--typing t-stagger-line t-stagger-line--1" style="line-height: 0.96 !important;">
-              <span class="typing-line" style="--steps: 14; --target: 14ch; --typing-delay: 0ms;">Design Better.</span>
-              <span class="typing-line" style="--steps: 15; --target: 15ch; --typing-delay: 820ms;">Market Smarter.</span>
-              <span class="typing-line" style="--steps: 13; --target: 13ch; --typing-delay: 1640ms;">Scale Faster.</span>
-            </h1>
-            <p class="career-map-description t-stagger-line t-stagger-line--2">
-              Senior Performance Marketing Executive scaling multi-channel paid media, TikTok Shop GMV, and landing page funnels&mdash;connecting creative production with full-funnel analytics to turn ad spend into measurable revenue.
-            </p>
+  <!-- ============================================================
+       3. SELECTED WORK (3 Featured Project Cards)
+       ============================================================ -->
+  <section class="page-section selected-work-section" aria-labelledby="heading-selected-work">
+    <div class="selected-work-head">
+      <h2 id="heading-selected-work" class="selected-work-heading">Selected work</h2>
+      <a href="/work" class="selected-work-all dash-no-underline">
+        <span>View all projects</span>
+        <ArrowRight size={16} weight="regular" aria-hidden="true" />
+      </a>
+    </div>
+
+    <div class="selected-work-grid">
+      {selectedWork.map((p) => (
+        <article class="selected-work-card">
+          {p.coverImage && (
+            <div class="selected-work-thumb">
+              <img src={p.coverImage} alt={p.title} loading="lazy" />
+            </div>
+          )}
+
+          <div class="selected-work-body">
+            <h3 class="selected-work-title">{p.displayTitle}</h3>
+            <dl class="selected-work-meta" aria-label={`${p.displayTitle} metadata`}>
+              <div>
+                <dt>Role</dt>
+                <dd>{p.role}</dd>
+              </div>
+              <div class="selected-work-date">
+                <dt>Date</dt>
+                <dd>{p.year}</dd>
+              </div>
+            </dl>
+            <p class="selected-work-outcome">{p.outcome}</p>
+            <div class="selected-work-footer">
+              <a href={`/work/${p.slug}`} class="selected-work-link dash-no-underline">
+                <span>View project</span>
+                <ArrowRight size={16} weight="regular" aria-hidden="true" />
+              </a>
+            </div>
           </div>
+        </article>
+      ))}
+    </div>
+  </section>
 
-          <div class="career-map-copy">
-            <div class="career-map-copy-item career-map-copy-item--current">
-              <span>Now</span>
-              <p>
-                Exploring what’s next.<br />Open to new opportunities in performance marketing, e-commerce growth, and digital strategy.
-              </p>
+  <!-- ============================================================
+       4. EXPERIENCE (Concise Company / Role / Date Rows)
+       ============================================================ -->
+  <section class="page-section" aria-labelledby="heading-experience">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
+      <h2 id="heading-experience" class="section-title" style="margin: 0;">Experience</h2>
+      <a href="/experience" class="dash-link" style="font-size: 0.8125rem;">
+        Full timeline & credentials →
+      </a>
+    </div>
+
+    <div style="border-top: 1px solid var(--dash-border);">
+      {experienceHighlights.map((exp) => (
+        <div class="dash-row">
+          <div style="flex: 1; min-width: 200px;">
+            <div style="font-weight: 600; font-size: 0.9375rem; color: var(--dash-text);">
+              {exp.company}
             </div>
-            <div class="career-map-copy-item">
-              <span>Systems</span>
-              <p>
-                Connecting the growth engine.<br />Turning media spend into measurable revenue across TikTok Shop, Shopee, Meta, Google, and conversion-focused landing pages.
-              </p>
+            <div style="font-size: 0.8125rem; color: var(--dash-muted); margin-top: 2px;">
+              {exp.role}
             </div>
-            <div class="career-map-copy-item">
-              <span>Focus</span>
-              <p>
-                Growth beyond the click.<br />Scaling GMV, improving acquisition efficiency, and building creative testing systems that drive business outcomes. <a href="mailto:hi@loc.digital?subject=Hi%20Loc">Let’s talk.</a>
-              </p>
+            <div style="font-size: 0.8125rem; color: var(--dash-muted); margin-top: 4px; line-height: 1.5;">
+              {exp.focus}
             </div>
-            <small>SAIGON, VIETNAM / PERFORMANCE MARKETING, TIKTOK SHOP, AI FUNNELS</small>
+          </div>
+          <div style="font-size: 0.8125rem; color: var(--dash-muted); white-space: nowrap;">
+            {exp.period}
           </div>
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
+  </section>
 
-  </main>
-</Layout>
+  <!-- ============================================================
+       5. CAPABILITIES SUMMARY (Linked to Services)
+       ============================================================ -->
+  <section class="page-section" aria-labelledby="heading-capabilities">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
+      <h2 id="heading-capabilities" class="section-title" style="margin: 0;">Services & capabilities</h2>
+      <a href="/services" class="dash-link" style="font-size: 0.8125rem;">
+        Scope & retainers →
+      </a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px;">
+      {servicesPreview.map((svc) => (
+        <div class="dash-card" style="padding: 16px;">
+          <h3 style="font-size: 0.9375rem; font-weight: 600; color: var(--dash-text); margin: 0 0 6px;">
+            {svc.title}
+          </h3>
+          <p style="font-size: 0.8125rem; line-height: 1.55; color: var(--dash-muted); margin: 0;">
+            {svc.summary}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============================================================
+       6. PHOTOGRAPHY SNAPSHOT (4 Destination Previews)
+       ============================================================ -->
+  <section class="page-section" aria-labelledby="heading-photos">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
+      <h2 id="heading-photos" class="section-title" style="margin: 0;">Photography</h2>
+      <a href="/photos" class="dash-link" style="font-size: 0.8125rem;">
+        View 17 travel galleries →
+      </a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px;">
+      {featuredPhotos.map((loc) => {
+        const coverSrc = loc.heroImage?.src || loc.photos?.[0]?.src || "";
+        const count = loc.photos?.length || 0;
+        return (
+          <a href={`/photos/${loc.slug}`} class="dash-card dash-card--interactive" style="padding: 10px;">
+            <div style="aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; background: #EEE; border: 1px solid var(--dash-border); margin-bottom: 8px;">
+              <img 
+                src={coverSrc} 
+                alt={loc.name || loc.location} 
+                style="width: 100%; height: 100%; object-fit: cover;"
+                loading="lazy"
+              />
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+              <span style="font-size: 0.875rem; font-weight: 600; color: var(--dash-text);">
+                {loc.name || loc.location}
+              </span>
+              <span style="font-size: 0.75rem; color: var(--dash-muted);">
+                {count} photos
+              </span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--dash-muted);">
+              {loc.region}
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- ============================================================
+       7. CONTACT CALLOUT (Restrained Closing Section)
+       ============================================================ -->
+  <section class="page-section" aria-label="Contact and collaboration">
+    <div class="dash-callout">
+      <div class="dash-callout-icon">
+        <Mail size={18} aria-hidden="true" />
+      </div>
+      <div class="dash-callout-content">
+        <div style="font-weight: 600; color: var(--dash-text); margin-bottom: 4px;">
+          Open for selective advisory & growth retainers
+        </div>
+        <p style="margin: 0 0 10px; color: var(--dash-muted);">
+          Currently accepting new commercial discussions for performance media, e-commerce GMV acceleration, and full-funnel digital architecture.
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <a href="mailto:hi@loc.digital" class="dash-button dash-button--primary" style="min-height: 32px; padding: 4px 12px; font-size: 0.8125rem;">
+            hi@loc.digital
+          </a>
+          <a href="/contact" class="dash-button dash-button--secondary" style="min-height: 32px; padding: 4px 12px; font-size: 0.8125rem;">
+            Direct contact channels →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</DashboardLayout>
+
+<style>
+  .selected-work-section {
+    --selected-work-border: var(--dash-border);
+    --selected-work-border-hover: var(--dash-border-strong);
+  }
+
+  .selected-work-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .selected-work-heading {
+    margin: 0;
+    color: var(--dash-text);
+    font-size: 24px !important;
+    line-height: 1.25 !important;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .selected-work-all,
+  .selected-work-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--dash-muted);
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 500;
+    text-decoration: none !important;
+    border-bottom: 0;
+    transition: color 170ms ease, border-color 170ms ease;
+  }
+
+  .selected-work-all:hover,
+  .selected-work-link:hover {
+    color: var(--dash-text);
+    text-decoration: none !important;
+  }
+
+  .selected-work-all:focus-visible,
+  .selected-work-link:focus-visible {
+    outline: 2px solid var(--dash-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .selected-work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .selected-work-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--selected-work-border);
+    border-radius: 10px;
+    background: var(--dash-surface);
+    color: inherit;
+    box-shadow: none;
+    transition: border-color 170ms ease;
+  }
+
+  .selected-work-card:hover {
+    border-color: var(--selected-work-border-hover);
+  }
+
+  .selected-work-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--dash-surface-subtle);
+    border: 1px solid var(--dash-border);
+  }
+
+  .selected-work-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .selected-work-body {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 14px;
+  }
+
+  .selected-work-title {
+    margin: 0 0 8px;
+    color: var(--dash-text);
+    font-size: 18px !important;
+    line-height: 1.35 !important;
+    font-weight: 600 !important;
+  }
+
+  .selected-work-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin: 0 0 14px;
+    color: var(--dash-muted);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .selected-work-meta div {
+    min-width: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .selected-work-meta dt {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .selected-work-meta dd {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .selected-work-date dd {
+    white-space: nowrap;
+  }
+
+  .selected-work-date::before {
+    content: "·";
+    opacity: 0.6;
+  }
+
+  .selected-work-outcome {
+    margin: 0;
+    color: var(--dash-text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .selected-work-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 1100px) {
+    .selected-work-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .selected-work-head {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .selected-work-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .selected-work-title {
+      font-size: 18px !important;
+    }
+
+    .selected-work-date {
+      flex-basis: 100%;
+    }
+
+    .selected-work-date::before {
+      content: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .selected-work-card,
+    .selected-work-all,
+    .selected-work-link {
+      transition: none;
+    }
+  }
+</style>

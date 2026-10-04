@@ -1,6 +1,6 @@
 ---
 import { createHash } from "node:crypto";
-import { ArrowRight, CheckCircle2, KeyRound } from "lucide-react";
+import { LockIcon as Lock } from "@phosphor-icons/react";
 
 interface Props {
   id: string;
@@ -20,9 +20,6 @@ const {
   id,
   password,
   storageKey = `${id}:unlocked`,
-  eyebrow = "Private showcase",
-  title = "Protected project details",
-  description = "Enter the access code to view the private campaign visuals and notes.",
   inputLabel = "Access code",
   placeholder = "Enter access code",
   buttonLabel = "Unlock",
@@ -30,49 +27,49 @@ const {
   errorMessage = "Incorrect access code. Please try again.",
 } = Astro.props;
 
+const title = "Private project details";
+const description = "Campaign reports, visuals, and notes shared with authorized viewers.";
 const passList = Array.isArray(password) ? password : [password];
 const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().toLowerCase()).digest("hex"));
 ---
 
-<div class="showcase-pass-gate" id={id} data-showcase-pass-gate>
-  <div class="showcase-pass-gate-panel" data-gate-panel>
+<section class="page-section showcase-pass-gate" id={id} data-showcase-pass-gate aria-labelledby={`${id}-title`}>
+  <div class="showcase-pass-gate-layout" data-gate-panel>
     <div class="showcase-pass-gate-copy">
-      <p class="showcase-pass-gate-eyebrow">{eyebrow}</p>
-      <div class="showcase-pass-gate-title" style="font-size: 24px !important;">{title}</div>
-      <p class="showcase-pass-gate-description">{description}</p>
-
-      <p class="showcase-pass-gate-success" data-gate-success hidden>
-        <CheckCircle2 size={14} strokeWidth={1.8} aria-hidden="true" />
-        <span>{successLabel}</span>
-      </p>
+      <Lock className="showcase-pass-gate-icon" size={20} weight="regular" aria-hidden="true" />
+      <div class="showcase-pass-gate-text">
+        <h3 class="showcase-pass-gate-title" id={`${id}-title`}>{title}</h3>
+        <p class="showcase-pass-gate-description">{description}</p>
+        <p class="showcase-pass-gate-success" data-gate-success hidden>{successLabel}</p>
+      </div>
     </div>
 
     <form class="showcase-pass-gate-form" data-gate-form>
       <label class="showcase-pass-gate-label" for={`${id}-input`}>{inputLabel}</label>
-      <div class="showcase-pass-gate-row t-input-wrap">
-        <div class="showcase-pass-gate-input-wrap t-input" data-gate-input-wrap>
-          <KeyRound size={15} strokeWidth={1.8} aria-hidden="true" />
-          <input
-            id={`${id}-input`}
-            data-gate-input
-            type="password"
-            autocomplete="off"
-            inputmode="text"
-            placeholder={placeholder}
-          />
-        </div>
+      <div class="showcase-pass-gate-row">
+        <input
+          id={`${id}-input`}
+          class="showcase-pass-gate-input"
+          data-gate-input
+          type="password"
+          autocomplete="off"
+          inputmode="text"
+          placeholder={placeholder}
+          aria-invalid="false"
+          aria-describedby={`${id}-error`}
+        />
         <button class="showcase-pass-gate-button" type="submit">
-          <span>{buttonLabel}</span>
-          <ArrowRight size={15} strokeWidth={1.8} aria-hidden="true" />
+          <span data-gate-button-label>{buttonLabel}</span>
         </button>
       </div>
+      <p class="showcase-pass-gate-error" id={`${id}-error`} data-gate-error role="alert" aria-live="polite" hidden></p>
     </form>
   </div>
 
   <div class="showcase-pass-gate-reveal" data-gate-reveal hidden>
     <slot />
   </div>
-</div>
+</section>
 
 <script is:inline define:vars={{ id, passwordHashes, storageKey, errorMessage }}>
   (() => {
@@ -83,14 +80,18 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
 
     const form = root.querySelector("[data-gate-form]");
     const input = root.querySelector("[data-gate-input]");
-    const inputWrap = root.querySelector("[data-gate-input-wrap]");
     const reveal = root.querySelector("[data-gate-reveal]");
     const success = root.querySelector("[data-gate-success]");
+    const error = root.querySelector("[data-gate-error]");
     const button = form?.querySelector("button");
+    const buttonLabel = button?.querySelector("[data-gate-button-label]");
+    const initialButtonLabel = buttonLabel?.textContent || "Unlock";
+    const initialPlaceholder = input?.getAttribute("placeholder") || "Enter access code";
 
     if (!form || !input || !reveal || !button) return;
 
     let isShowingError = false;
+    let isSubmitting = false;
 
     const toHex = (buffer) =>
       Array.from(new Uint8Array(buffer))
@@ -110,28 +111,43 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
       if (success) success.hidden = false;
     };
 
+    const setLoading = (loading) => {
+      isSubmitting = loading;
+      button.disabled = loading;
+      button.setAttribute("aria-busy", loading ? "true" : "false");
+      root.dataset.loading = loading ? "true" : "false";
+      if (buttonLabel) buttonLabel.textContent = loading ? "Checking..." : initialButtonLabel;
+    };
+
     const resetErrorState = () => {
       if (!isShowingError) return;
       isShowingError = false;
-      input.type = "password";
-      input.value = "";
-      inputWrap?.classList.remove("has-error", "is-shaking");
-    };
-
-    const showErrorState = () => {
-      isShowingError = true;
-      input.type = "text";
-      input.value = errorMessage || "Incorrect access code. Please try again.";
-      if (inputWrap) {
-        inputWrap.classList.add("has-error");
-        inputWrap.classList.remove("is-shaking");
-        void inputWrap.offsetWidth;
-        inputWrap.classList.add("is-shaking");
+      input.setAttribute("aria-invalid", "false");
+      input.setAttribute("placeholder", initialPlaceholder);
+      input.classList.remove("has-error", "is-shaking");
+      if (error) {
+        error.textContent = "";
+        error.hidden = true;
       }
     };
 
-    input.addEventListener("focus", resetErrorState);
-    input.addEventListener("click", resetErrorState);
+    const showErrorState = () => {
+      const message = errorMessage || "Incorrect access code. Please try again.";
+      isShowingError = true;
+      input.value = "";
+      input.setAttribute("aria-invalid", "true");
+      input.setAttribute("placeholder", message);
+      if (error) {
+        error.textContent = message;
+        error.hidden = false;
+      }
+      input.classList.add("has-error");
+      input.classList.remove("is-shaking");
+      void input.offsetWidth;
+      input.classList.add("is-shaking");
+    };
+
+    input.addEventListener("input", resetErrorState);
     input.addEventListener("keydown", (e) => {
       if (isShowingError && e.key !== "Enter") {
         resetErrorState();
@@ -147,16 +163,14 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (isShowingError) {
-        showErrorState();
-        return;
-      }
+      if (isSubmitting) return;
 
-      button.disabled = true;
+      resetErrorState();
+      setLoading(true);
       const rawVal = input.value.trim().toLowerCase();
       if (!rawVal) {
         showErrorState();
-        button.disabled = false;
+        setLoading(false);
         return;
       }
 
@@ -171,205 +185,213 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
         unlock();
       } else {
         showErrorState();
+        setLoading(false);
       }
-
-      button.disabled = false;
     });
   })();
 </script>
 
 <style>
   .showcase-pass-gate {
-    margin-top: 2.5rem;
     font-family: var(--sans);
+    container-type: inline-size;
+    padding: 24px;
+    border: 1px solid #E6E6E3;
+    border-width: 1px !important;
+    border-style: solid;
+    border-color: #E6E6E3;
+    border-radius: 8px;
+    background: #FFFFFF;
+    box-shadow: none;
+    overflow: hidden;
   }
 
   .showcase-pass-gate [hidden] {
     display: none !important;
   }
 
-  .showcase-pass-gate-panel {
+  .showcase-pass-gate-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.78fr);
-    gap: clamp(16px, 3vw, 28px);
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 380px);
+    gap: 32px;
     align-items: center;
-    padding: clamp(18px, 3vw, 28px);
-    border: 1px solid var(--divider);
-    border-radius: 10px;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.22)),
-      color-mix(in srgb, var(--bg) 92%, #ffffff);
-  }
-
-  .showcase-pass-gate-copy {
     min-width: 0;
   }
 
-  .showcase-pass-gate-eyebrow {
-    margin-bottom: 0.45rem;
-    font-family: var(--mono);
-    font-size: var(--type-micro) !important;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
+  .showcase-pass-gate-copy {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .showcase-pass-gate-icon {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--dash-muted, #686863);
+  }
+
+  .showcase-pass-gate-text {
+    min-width: 0;
   }
 
   .showcase-pass-gate-title {
     margin: 0;
-    font-family: var(--serif);
-    font-size: 24px !important;
-    font-weight: 400 !important;
-    line-height: 1.14 !important;
-    color: var(--text);
-    text-wrap: balance;
+    font-family: var(--sans);
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 24px !important;
+    color: var(--dash-text, #292927);
+    letter-spacing: 0;
   }
 
   .showcase-pass-gate-description {
-    max-width: 52ch;
-    margin-top: 0.55rem;
+    max-width: 56ch;
+    margin: 2px 0 0;
     font-family: var(--sans);
-    font-size: var(--type-caption) !important;
-    line-height: 1.65;
-    color: color-mix(in srgb, var(--text) 68%, var(--muted));
-    text-wrap: pretty;
+    font-size: 14px !important;
+    font-weight: 400;
+    line-height: 22px;
+    color: var(--dash-muted, #686863);
+  }
+
+  .showcase-pass-gate :is(.showcase-pass-gate-description, #showcase-pass-gate-copy-size-override) {
+    font-size: 14px !important;
   }
 
   .showcase-pass-gate-form {
     display: grid;
-    gap: 0.55rem;
+    gap: 6px;
     width: 100%;
+    max-width: 380px;
+    justify-self: end;
+    min-width: 0;
   }
 
   .showcase-pass-gate-label {
-    font-family: var(--mono);
-    font-size: var(--type-micro);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--text) 66%, var(--muted));
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    color: var(--dash-muted, #686863);
   }
 
   .showcase-pass-gate-row {
     display: flex;
-    gap: 0.5rem;
+    align-items: stretch;
+    gap: 8px;
+    min-width: 0;
   }
 
-  .showcase-pass-gate-input-wrap {
-    display: flex;
+  .showcase-pass-gate-input {
     min-width: 0;
     flex: 1 1 auto;
-    align-items: center;
-    gap: 0.5rem;
-    height: 42px;
-    padding: 0 0.75rem;
-    border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.72);
-    color: color-mix(in srgb, var(--text) 58%, var(--muted));
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #CFCFCB;
+    border-radius: 6px;
+    outline: 0;
+    background: #FFFFFF;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--dash-text, #292927);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
   }
 
-  .showcase-pass-gate-input-wrap:focus-within {
-    border-color: color-mix(in srgb, var(--accent) 70%, var(--text));
-    box-shadow: var(--focus-ring);
-    color: var(--accent);
+  .showcase-pass-gate-input::placeholder {
+    color: var(--dash-placeholder, #73736D);
+    opacity: 1;
   }
 
-  .showcase-pass-gate-input-wrap.has-error {
-    border-color: var(--state-error) !important;
-    background: color-mix(in srgb, var(--state-error) 5%, rgba(255, 255, 255, 0.9)) !important;
-    color: var(--state-error) !important;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--state-error) 22%, transparent) !important;
+  .showcase-pass-gate-input:focus,
+  .showcase-pass-gate-input:focus-visible {
+    outline: 2px solid var(--dash-accent, #245D9F);
+    outline-offset: 2px;
+    border-color: var(--dash-accent, #245D9F);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--dash-accent, #245D9F) 18%, transparent);
   }
 
-  .showcase-pass-gate-input-wrap.has-error input {
-    color: var(--state-error);
+  .showcase-pass-gate-input.has-error {
+    border-color: var(--state-error, #F64932);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--state-error, #F64932) 16%, transparent);
   }
 
-  .showcase-pass-gate-input-wrap.has-error input::placeholder {
-    color: color-mix(in srgb, var(--state-error) 60%, var(--bg));
+  .showcase-pass-gate-input.has-error::placeholder {
+    color: var(--state-error, #F64932);
   }
 
-  .showcase-pass-gate-input-wrap.is-shaking {
-    animation: gateInputShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  .showcase-pass-gate-input.is-shaking {
+    animation: gateInputShake 0.32s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
 
   @keyframes gateInputShake {
     10%, 90% { transform: translate3d(-1px, 0, 0); }
     20%, 80% { transform: translate3d(2px, 0, 0); }
-    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
-  }
-
-  .showcase-pass-gate-input-wrap input {
-    width: 100%;
-    min-width: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    font-family: var(--sans);
-    font-size: var(--type-caption);
-    color: var(--text);
-  }
-
-  .showcase-pass-gate-input-wrap input::placeholder {
-    color: color-mix(in srgb, var(--text) 52%, var(--bg));
-    opacity: 1;
+    30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+    40%, 60% { transform: translate3d(3px, 0, 0); }
   }
 
   .showcase-pass-gate-button {
     display: inline-flex;
     flex: 0 0 auto;
-    height: 42px;
+    height: 40px;
     align-items: center;
     justify-content: center;
-    gap: 0.45rem;
-    padding: 0 0.9rem;
-    border: 1px solid var(--text);
-    border-radius: 8px;
-    background: var(--text);
-    color: var(--bg);
+    padding: 0 16px;
+    border: 1px solid var(--dash-primary, #292927);
+    border-radius: 6px;
+    background: var(--dash-primary, #292927);
+    color: #FFFFFF;
     font-family: var(--sans);
-    font-size: var(--type-micro) !important;
-    font-weight: 700;
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
     cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, opacity 160ms ease;
+  }
+
+  .showcase-pass-gate-button:hover {
+    background: var(--dash-primary-hover, #41413D);
+    border-color: var(--dash-primary-hover, #41413D);
+  }
+
+  .showcase-pass-gate-button:focus-visible {
+    outline: 2px solid var(--dash-accent, #245D9F);
+    outline-offset: 2px;
   }
 
   .showcase-pass-gate-button:disabled {
     cursor: wait;
-    opacity: 0.68;
-    transform: none;
+    opacity: 0.72;
   }
 
   .showcase-pass-gate-success {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin-top: 0.8rem;
-    font-family: var(--mono);
-    font-size: var(--type-micro) !important;
+    margin: 6px 0 0;
+    font-family: var(--sans);
+    font-size: 12px !important;
+    line-height: 16px;
+    font-weight: 500;
     color: var(--state-success);
   }
 
   .showcase-pass-gate-error {
-    font-family: var(--sans);
-    font-size: var(--type-micro) !important;
-    color: var(--state-error);
-    margin-top: 0.15rem;
-    animation: gateErrorFade 0.2s ease-out;
-  }
-
-  @keyframes gateErrorFade {
-    from {
-      opacity: 0;
-      transform: translateY(-2px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .showcase-pass-gate-reveal {
+    grid-column: 1 / -1;
+    margin-top: 24px;
+    min-width: 0;
     animation: showcaseGateReveal 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
@@ -386,35 +408,50 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     }
   }
 
-  @media (max-width: 860px) {
-    .showcase-pass-gate-panel {
+  @container (max-width: 760px) {
+    .showcase-pass-gate-layout {
       grid-template-columns: 1fr;
+      gap: 18px;
     }
 
     .showcase-pass-gate-form {
       grid-column: 1 / -1;
+      max-width: none;
+      justify-self: stretch;
     }
   }
 
   @media (max-width: 640px) {
-    .showcase-pass-gate-input-wrap input,
-    .showcase-pass-gate-input-wrap input::placeholder,
-    input[data-gate-input] {
-      font-size: 12px !important;
+    .showcase-pass-gate {
+      padding: 20px;
+    }
+
+    .showcase-pass-gate-input,
+    .showcase-pass-gate-button {
+      height: 44px;
+    }
+
+    .showcase-pass-gate .showcase-pass-gate-input,
+    .showcase-pass-gate .showcase-pass-gate-input::placeholder {
+      font-size: 16px !important;
     }
   }
 
-  @media (max-width: 560px) {
-    .showcase-pass-gate-panel {
-      grid-template-columns: 1fr;
-    }
-
+  @container (max-width: 440px) {
     .showcase-pass-gate-row {
       flex-direction: column;
     }
 
+    .showcase-pass-gate-input,
     .showcase-pass-gate-button {
       width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .showcase-pass-gate-reveal,
+    .showcase-pass-gate-input.is-shaking {
+      animation: none;
     }
   }
 </style>

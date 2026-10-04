@@ -1,0 +1,199 @@
+---
+import '../styles/global.css';
+import '../styles/dashboard.css';
+import { ViewTransitions } from 'astro:transitions';
+import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
+import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
+import DashboardFooter from '../components/dashboard/DashboardFooter.astro';
+import { ListIcon as Menu, CaretRightIcon as ChevronRight } from '@phosphor-icons/react';
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
+
+interface Props {
+  title?: string;
+  pageTitle?: string;
+  description?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+  currentPath?: string;
+  maxWidthVariant?: 'default' | 'reading' | 'gallery';
+  schema?: any;
+  ogImage?: string;
+}
+
+const {
+  title = "Phuc Loc Nguyen — Workspace",
+  pageTitle,
+  description = DEFAULT_DESCRIPTION,
+  breadcrumbs,
+  currentPath = Astro.url.pathname,
+  maxWidthVariant = 'default',
+  schema = [],
+  ogImage = DEFAULT_OG_IMAGE,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://loc.digital");
+const pageSchemas = Array.isArray(schema) ? schema : [schema];
+const jsonLd = safeJsonLd(graphSchema(pageSchemas));
+
+const contentClass = 
+  maxWidthVariant === 'reading' 
+    ? 'workspace-content workspace-content--reading' 
+    : maxWidthVariant === 'gallery'
+    ? 'workspace-content workspace-content--gallery'
+    : 'workspace-content';
+
+// Determine simple mobile header label
+const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label || "Workspace";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
+  <meta name="description" content={description}>
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Phuc Loc Nguyen — Workspace">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={ogImage}>
+
+  <title>{title}</title>
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="canonical" href={canonicalUrl} />
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <ViewTransitions />
+  <script is:inline type="application/ld+json" set:html={jsonLd}></script>
+</head>
+
+<body>
+  <!-- Outer Canvas: Pure White (#FFFFFF) with generous whitespace -->
+  <div class="workspace-canvas">
+    
+    <!-- Floating macOS-inspired Application Window -->
+    <div class="mac-window-container">
+      
+      <!-- Desktop Window Titlebar (44px, white background, traffic lights) -->
+      <MacTitlebar title="Phuc Loc Nguyen — Workspace" />
+
+      <!-- Mobile Sticky Top Bar (< 1024px) -->
+      <header class="mobile-topbar" aria-label="Mobile Navigation Bar">
+        <div class="mobile-topbar-left">
+          <button 
+            id="mobile-drawer-toggle" 
+            class="mobile-menu-btn" 
+            aria-label="Open navigation menu"
+            aria-controls="dash-sidebar"
+            aria-expanded="false"
+          >
+            <Menu size={20} />
+          </button>
+          <span class="mobile-page-label">{mobileLabel}</span>
+        </div>
+        <a href="/contact" class="dash-button dash-button--secondary" style="min-height:32px;padding:4px 10px;font-size:0.75rem;">
+          Contact
+        </a>
+      </header>
+
+      <!-- Two-column Body: 232px Sidebar + Main Content -->
+      <div class="workspace-body">
+        
+        <!-- Sidebar Navigation -->
+        <DashboardSidebar currentPath={currentPath} />
+
+        <!-- Main Workspace Document Surface -->
+        <main id="main-content" class="workspace-main">
+          
+          <div class={contentClass}>
+            <!-- Optional Breadcrumbs if provided -->
+            {breadcrumbs && breadcrumbs.length > 0 && (
+              <nav class="dash-breadcrumbs" aria-label="Breadcrumbs" style="margin-bottom: 1.25rem;">
+                <ol style="display:flex;align-items:center;gap:0.4rem;list-style:none;margin:0;padding:0;font-size:0.8125rem;color:var(--dash-muted);">
+                  {breadcrumbs.map((crumb, idx) => (
+                    <li style="display:inline-flex;align-items:center;gap:0.4rem;">
+                      {idx > 0 && <span style="opacity:0.5;display:inline-flex;"><ChevronRight size={12} aria-hidden="true" /></span>}
+                      {crumb.href ? (
+                        <a href={crumb.href} style="color:inherit;" class="dash-crumb-link">
+                          {crumb.label}
+                        </a>
+                      ) : (
+                        <span style="color:var(--dash-text);font-weight:500;" aria-current="page">
+                          {crumb.label}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )}
+
+            <!-- Page Content Slot -->
+            <slot />
+          </div>
+
+          <!-- Quiet Workspace Footer -->
+          <div class={contentClass} style="margin-top: auto;">
+            <DashboardFooter />
+          </div>
+        </main>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mobile Drawer Script -->
+  <script is:inline>
+    function setupMobileDrawer() {
+      const toggleBtn = document.getElementById("mobile-drawer-toggle");
+      const sidebar = document.getElementById("dash-sidebar");
+      const backdrop = document.getElementById("dash-drawer-backdrop");
+
+      function openDrawer() {
+        sidebar?.classList.add("is-open");
+        backdrop?.classList.add("is-open");
+        toggleBtn?.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeDrawer() {
+        sidebar?.classList.remove("is-open");
+        backdrop?.classList.remove("is-open");
+        toggleBtn?.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+      }
+
+      toggleBtn?.addEventListener("click", () => {
+        const isOpen = sidebar?.classList.contains("is-open");
+        if (isOpen) closeDrawer();
+        else openDrawer();
+      });
+
+      backdrop?.addEventListener("click", closeDrawer);
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && sidebar?.classList.contains("is-open")) {
+          closeDrawer();
+        }
+      });
+    }
+
+    document.addEventListener("astro:page-load", setupMobileDrawer);
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      setupMobileDrawer();
+    }
+  </script>
+</body>
+</html>

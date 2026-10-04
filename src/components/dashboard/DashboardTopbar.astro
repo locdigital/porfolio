@@ -1,0 +1,105 @@
+---
+import { 
+  ListIcon as List, 
+  CaretRightIcon as CaretRight, 
+  ClockIcon as Clock, 
+  PaperPlaneTiltIcon as PaperPlaneTilt 
+} from "@phosphor-icons/react";
+
+interface Props {
+  title?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+}
+
+const { 
+  title: _title = "Overview", 
+  breadcrumbs = [{ label: "Workspace", href: "/" }, { label: "Overview" }] 
+} = Astro.props;
+---
+
+<header class="dash-topbar" aria-label="Workspace Header">
+  <div class="dash-topbar-left">
+    <!-- Hamburger button for mobile/tablet drawer -->
+    <button 
+      id="dash-hamburger-btn" 
+      class="dash-menu-toggle" 
+      aria-label="Toggle navigation menu"
+      aria-controls="dash-sidebar"
+    >
+      <List size={18} />
+    </button>
+
+    <!-- Breadcrumbs -->
+    <nav class="dash-breadcrumbs" aria-label="Breadcrumb">
+      {breadcrumbs.map((crumb, idx) => (
+        <span style="display:inline-flex;align-items:center;gap:0.5rem;">
+          {idx > 0 && <CaretRight size={12} className="dash-breadcrumb-sep" />}
+          {crumb.href ? (
+            <a href={crumb.href} style="color:inherit;text-decoration:none;">{crumb.label}</a>
+          ) : (
+            <span class="dash-breadcrumb-current">{crumb.label}</span>
+          )}
+        </span>
+      ))}
+    </nav>
+  </div>
+
+  <div class="dash-topbar-right">
+    <!-- Real-time Saigon Clock -->
+    <div class="dash-time-widget" title="Local Time in Ho Chi Minh City (GMT+7)">
+      <Clock size={13} />
+      <span id="dash-saigon-clock">Saigon 02:20 AM</span>
+    </div>
+
+    <!-- Contact CTA -->
+    <a href="/contact" class="dash-cta-btn">
+      <PaperPlaneTilt size={13} />
+      <span>Let’s Talk</span>
+    </a>
+  </div>
+</header>
+
+<script is:inline>
+  function setupDashboardTopbar() {
+    const hamburgerBtn = document.getElementById("dash-hamburger-btn");
+    const sidebar = document.getElementById("dash-sidebar");
+    const backdrop = document.getElementById("dash-drawer-backdrop");
+    const closeBtn = document.getElementById("dash-drawer-close");
+    const clockEl = document.getElementById("dash-saigon-clock");
+
+    hamburgerBtn?.addEventListener("click", () => {
+      sidebar?.classList.add("is-open");
+      backdrop?.classList.add("is-open");
+      if (closeBtn) closeBtn.style.display = "block";
+      document.body.style.overflow = "hidden";
+    });
+
+    // Update real-time Saigon clock (GMT+7)
+    function updateClock() {
+      if (!clockEl) return;
+      const now = new Date();
+      // GMT+7 time
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const saigonDate = new Date(utc + (3600000 * 7));
+      
+      let hours = saigonDate.getHours();
+      const minutes = saigonDate.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // 0 should be 12
+      const strMinutes = minutes < 10 ? '0' + minutes : minutes;
+      const strHours = hours < 10 ? '0' + hours : hours;
+      
+      clockEl.textContent = `Saigon ${strHours}:${strMinutes} ${ampm}`;
+    }
+
+    updateClock();
+    if (window._dashClockInterval) clearInterval(window._dashClockInterval);
+    window._dashClockInterval = setInterval(updateClock, 10000);
+  }
+
+  document.addEventListener("astro:page-load", setupDashboardTopbar);
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    setupDashboardTopbar();
+  }
+</script>

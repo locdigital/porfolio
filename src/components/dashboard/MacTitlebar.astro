@@ -1,0 +1,26 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = "Phuc Loc Nguyen — Workspace" } = Astro.props;
+---
+
+<header class="desktop-titlebar" aria-label="Application Window Title Bar">
+  <!-- Traffic Light Circles (Decorative, non-interactive, hidden from AT) -->
+  <div class="mac-traffic-lights" aria-hidden="true">
+    <span class="mac-dot mac-dot-close"></span>
+    <span class="mac-dot mac-dot-minimize"></span>
+    <span class="mac-dot mac-dot-maximize"></span>
+  </div>
+
+  <!-- Centered Workspace Title -->
+  <div class="desktop-titlebar-title">
+    <span>{title}</span>
+  </div>
+
+  <!-- Right Muted Domain Indicator -->
+  <div class="desktop-titlebar-meta" aria-hidden="true">
+    <span>loc.digital</span>
+  </div>
+</header>

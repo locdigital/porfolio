@@ -266,8 +266,8 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           --muted-foreground: 0 0% 42%;
           --accent: 222 89% 55%;
           --accent-foreground: 0 0% 98%;
-          --border: 0 0% 88%;
-          --input: 0 0% 88%;
+          --border: 60 7% 81%;
+          --input: 60 7% 81%;
           --ring: 222 89% 55%;
           --radius: 0.5rem;
           --type-micro: 0.8rem;

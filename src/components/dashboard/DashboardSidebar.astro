@@ -1,0 +1,400 @@
+---
+import { 
+  SquaresFourIcon as SquaresFour, 
+  FolderSimpleIcon as FolderSimple, 
+  BriefcaseIcon as Briefcase, 
+  StackIcon as Stack, 
+  CameraIcon as Camera, 
+  CpuIcon as Cpu, 
+  CertificateIcon as Certificate, 
+  EnvelopeSimpleIcon as EnvelopeSimple, 
+  CaretRightIcon as CaretRight,
+  XIcon as X
+} from "@phosphor-icons/react";
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = "/" } = Astro.props;
+
+const normalizePath = (path: string) => {
+  if (path === "/" || path === "") return "/";
+  return path.endsWith("/") ? path.slice(0, -1) : path;
+};
+
+const activePath = normalizePath(currentPath);
+
+interface NavItem {
+  label: string;
+  href: string;
+  icon: any;
+  exact?: boolean;
+  children?: {
+    label: string;
+    href: string;
+  }[];
+}
+
+interface NavSection {
+  group: string;
+  items: NavItem[];
+}
+
+const navSections: NavSection[] = [
+  {
+    group: "Workspace",
+    items: [
+      { label: "Overview", href: "/", icon: SquaresFour, exact: true },
+      {
+        label: "Selected work",
+        href: "/work",
+        icon: FolderSimple,
+        children: [
+          { label: "PlayAh!", href: "/work/playah" },
+          { label: "WorkFlow Space", href: "/work/workflow-space" },
+          { label: "POPS Worldwide", href: "/work/pops-worldwide" },
+          { label: "TOMATO", href: "/work/tomato-childrens-home" },
+          { label: "Education Communities", href: "/work/education-communities" },
+        ],
+      },
+      {
+        label: "Experience",
+        href: "/experience",
+        icon: Briefcase,
+        children: [
+          { label: "Career timeline", href: "/experience#career-timeline" },
+          { label: "Skill clusters", href: "/experience#skill-clusters" },
+        ],
+      },
+      {
+        label: "Services",
+        href: "/services",
+        icon: Stack,
+        children: [
+          { label: "Capabilities", href: "/services#heading-capabilities" },
+          { label: "Pricing", href: "/services#heading-pricing" },
+          { label: "Partners", href: "/services#heading-partners" },
+        ],
+      },
+    ]
+  },
+  {
+    group: "Personal",
+    items: [
+      {
+        label: "Photography",
+        href: "/photos",
+        icon: Camera,
+        children: [
+          { label: "Singapore", href: "/photos/singapore" },
+          { label: "Bali", href: "/photos/bali" },
+          { label: "Đà Lạt", href: "/photos/da-lat" },
+        ],
+      },
+      { label: "Gear", href: "/gear", icon: Cpu },
+      {
+        label: "Certificates",
+        href: "/certificates",
+        icon: Certificate,
+        children: [
+          { label: "Google Ads", href: "/certificates#credentials" },
+          { label: "Analytics", href: "/certificates#credentials" },
+          { label: "Project Management", href: "/certificates#credentials" },
+        ],
+      },
+    ]
+  },
+  {
+    group: "Connect",
+    items: [
+      { label: "Contact", href: "/contact", icon: EnvelopeSimple },
+    ]
+  }
+];
+
+const isItemActive = (href: string, exact?: boolean) => {
+  const normHref = normalizePath(href);
+  if (exact || normHref === "/") {
+    return activePath === normHref;
+  }
+  return activePath.startsWith(normHref);
+};
+
+const isChildActive = (href: string) => activePath === normalizePath(href);
+const isCurrentPage = (href: string) => activePath === normalizePath(href);
+---
+
+<!-- Mobile Drawer Backdrop -->
+<div id="dash-drawer-backdrop" class="dash-drawer-backdrop" aria-hidden="true"></div>
+
+<!-- Sidebar Container -->
+<aside id="dash-sidebar" class="workspace-sidebar" aria-label="Workspace Navigation">
+  <div class="workspace-sidebar-inner">
+    
+    <div>
+      <!-- Top Identity Block -->
+      <div class="dash-sidebar-header">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home">
+            <img 
+              src="/apple-touch-icon.png" 
+              alt="Nguyen Phuc Loc" 
+              class="dash-user-avatar"
+              width="28"
+              height="28"
+            />
+            <div>
+              <div class="dash-user-name">Phuc Loc Nguyen</div>
+              <div class="dash-user-meta">Personal workspace</div>
+            </div>
+          </a>
+
+          <!-- Mobile Close Button -->
+          <button 
+            id="dash-drawer-close" 
+            class="mobile-menu-btn" 
+            aria-label="Close navigation menu"
+            style="display:none;"
+          >
+            <X size={18} />
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Sections -->
+      <nav aria-label="Workspace Pages">
+        {navSections.map((section) => (
+          <div class="dash-nav-group">
+            <div class="dash-nav-heading">{section.group}</div>
+            <ul class="dash-nav-list">
+              {section.items.map((item) => {
+                const Icon = item.icon;
+                const active = isItemActive(item.href, item.exact);
+                const current = isCurrentPage(item.href);
+                const children = item.children ?? [];
+                const hasChildren = children.length > 0;
+                const treeId = `dash-nav-tree-${item.href.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")}`;
+                return (
+                  <li>
+                    {hasChildren ? (
+                      <button
+                        type="button"
+                        class={`dash-nav-link dash-nav-disclosure ${active ? "active" : ""}`}
+                        aria-expanded="false"
+                        aria-controls={treeId}
+                        data-nav-disclosure
+                        data-nav-key={item.href}
+                      >
+                        <div class="dash-nav-link-left">
+                          <Icon size={16} strokeWidth={active ? 2 : 1.75} aria-hidden="true" />
+                          <span>{item.label}</span>
+                        </div>
+                        <CaretRight className="dash-nav-disclosure-icon" size={13} aria-hidden="true" />
+                      </button>
+                    ) : (
+                      <a
+                        href={item.href}
+                        class={`dash-nav-link ${active ? "active" : ""}`}
+                        aria-current={current ? "page" : undefined}
+                      >
+                        <div class="dash-nav-link-left">
+                          <Icon size={16} strokeWidth={active ? 2 : 1.75} aria-hidden="true" />
+                          <span>{item.label}</span>
+                        </div>
+                      </a>
+                    )}
+                    {hasChildren && (
+                      <ul id={treeId} class="dash-nav-tree" aria-label={`${item.label} pages`} hidden>
+                        {children.map((child) => {
+                          const childActive = isChildActive(child.href);
+                          return (
+                            <li class="dash-nav-tree-item">
+                              <a
+                                href={child.href}
+                                class={`dash-nav-tree-link ${childActive ? "active" : ""}`}
+                                aria-current={childActive ? "page" : undefined}
+                              >
+                                {child.label}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="dash-sidebar-footer">
+      <!-- Saigon Timezone -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span>Saigon · GMT+7</span>
+        <span id="dash-saigon-time" style="font-variant-numeric:tabular-nums;">--:--</span>
+      </div>
+
+      <!-- Direct Email Copy -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px;">hi@loc.digital</span>
+        <button 
+          id="dash-copy-email-btn" 
+          class="dash-button dash-button--ghost" 
+          style="min-height:26px;padding:2px 8px;font-size:0.75rem;"
+          aria-label="Copy email address"
+        >
+          Copy
+        </button>
+      </div>
+      <div id="dash-copy-feedback" aria-live="polite" style="position:absolute;left:-9999px;"></div>
+
+      <!-- Social Links Row -->
+      <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+        <a 
+          href="https://www.linkedin.com/in/phucloc" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style="color:var(--dash-muted);text-decoration:none;"
+          title="LinkedIn"
+          aria-label="LinkedIn Profile"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+        </a>
+        <a 
+          href="https://www.instagram.com/henrygoodkid" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style="color:var(--dash-muted);text-decoration:none;"
+          title="Instagram"
+          aria-label="Instagram Profile"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+        <a 
+          href="https://www.pexels.com/@henrygoodkid" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          style="color:var(--dash-muted);text-decoration:none;"
+          title="Pexels Photography"
+          aria-label="Pexels Photography"
+        >
+          <Camera size={15} strokeWidth={1.8} />
+        </a>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+<script is:inline>
+  function setupSidebarInteractions() {
+    const copyBtn = document.getElementById("dash-copy-email-btn");
+    const feedback = document.getElementById("dash-copy-feedback");
+    const timeEl = document.getElementById("dash-saigon-time");
+    const closeBtn = document.getElementById("dash-drawer-close");
+    const sidebar = document.getElementById("dash-sidebar");
+    const backdrop = document.getElementById("dash-drawer-backdrop");
+
+    if (window.innerWidth < 1024 && closeBtn) {
+      closeBtn.style.display = "flex";
+    }
+
+    closeBtn?.addEventListener("click", () => {
+      sidebar?.classList.remove("is-open");
+      backdrop?.classList.remove("is-open");
+      document.body.style.overflow = "";
+    });
+
+    const disclosureButtons = document.querySelectorAll("[data-nav-disclosure]");
+
+    disclosureButtons.forEach((button) => {
+      if (button.dataset.navReady === "true") return;
+      button.dataset.navReady = "true";
+
+      const controlsId = button.getAttribute("aria-controls");
+      const tree = controlsId ? document.getElementById(controlsId) : null;
+      const storageKey = `dash-nav-expanded:${button.dataset.navKey || controlsId || ""}`;
+
+      const setExpanded = (expanded) => {
+        button.setAttribute("aria-expanded", expanded ? "true" : "false");
+        if (tree) tree.hidden = !expanded;
+        try {
+          window.sessionStorage.setItem(storageKey, expanded ? "true" : "false");
+        } catch {
+          /* Ignore storage errors; the disclosure still works for this page. */
+        }
+      };
+
+      try {
+        setExpanded(window.sessionStorage.getItem(storageKey) === "true");
+      } catch {
+        setExpanded(false);
+      }
+
+      button.addEventListener("click", () => {
+        setExpanded(button.getAttribute("aria-expanded") !== "true");
+      });
+    });
+
+    // Copy email handler with accessible announcement
+    copyBtn?.addEventListener("click", async () => {
+      const email = "hi@loc.digital";
+      try {
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          const textarea = document.createElement("textarea");
+          textarea.value = email;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+        }
+        copyBtn.textContent = "Copied!";
+        if (feedback) feedback.textContent = "Email address copied to clipboard";
+        setTimeout(() => {
+          copyBtn.textContent = "Copy";
+          if (feedback) feedback.textContent = "";
+        }, 2000);
+      } catch (err) {
+        console.error("Clipboard write failed", err);
+      }
+    });
+
+    // Update Saigon time once per minute
+    function updateSaigonTime() {
+      if (!timeEl) return;
+      const now = new Date();
+      // GMT+7 calculation
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const saigon = new Date(utc + (3600000 * 7));
+      const hours = String(saigon.getHours()).padStart(2, '0');
+      const mins = String(saigon.getMinutes()).padStart(2, '0');
+      timeEl.textContent = `${hours}:${mins}`;
+    }
+
+    updateSaigonTime();
+    if (window._saigonInterval) clearInterval(window._saigonInterval);
+    window._saigonInterval = setInterval(updateSaigonTime, 60000);
+  }
+
+  document.addEventListener("astro:page-load", setupSidebarInteractions);
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    setupSidebarInteractions();
+  }
+</script>
