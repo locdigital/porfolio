@@ -1,7 +1,6 @@
 /**
- * Post-build patch: replaces nodejs18.x -> nodejs20.x in Vercel output configs.
- * @astrojs/vercel@7.x emits Node 18 serverless functions, but this project is
- * pinned to Node 20 for production builds.
+ * Post-build patch: replaces nodejs18.x / nodejs20.x -> nodejs22.x in Vercel output configs.
+ * Vercel has discontinued nodejs18.x and nodejs20.x for serverless function runtimes.
  */
 import { readdir, readFile, writeFile } from "fs/promises";
 import { join } from "path";
@@ -20,8 +19,8 @@ async function patchDir(dir) {
       await patchDir(fullPath);
     } else if (entry.name === ".vc-config.json") {
       const content = await readFile(fullPath, "utf-8");
-      if (content.includes("nodejs18.x")) {
-        const patched = content.replace(/nodejs18\.x/g, "nodejs20.x");
+      if (content.includes("nodejs18.x") || content.includes("nodejs20.x")) {
+        const patched = content.replace(/nodejs(18|20)\.x/g, "nodejs22.x");
         await writeFile(fullPath, patched);
         console.log(`[patch-vercel-runtime] Patched runtime: ${fullPath}`);
       }
@@ -29,6 +28,6 @@ async function patchDir(dir) {
   }
 }
 
-console.log("[patch-vercel-runtime] Patching Vercel output nodejs18.x -> nodejs20.x...");
+console.log("[patch-vercel-runtime] Patching Vercel output nodejs18.x/20.x -> nodejs22.x...");
 await patchDir(".vercel/output");
 console.log("[patch-vercel-runtime] Done.");
