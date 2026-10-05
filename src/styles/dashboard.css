@@ -587,8 +587,9 @@ h3.item-title {
    ============================================================ */
 
 :root {
+  --dash-link-hover: #0969DA;
   --dash-underline: #858580;
-  --dash-underline-hover: #292927;
+  --dash-underline-hover: #0969DA;
 }
 
 /* Explicit dotted underline utility & prose links */
@@ -609,8 +610,8 @@ h3.item-title {
 .dash-crumb-link:hover,
 .dash-dotted-link:hover,
 .dash-underline-dotted:hover {
-  text-decoration-color: var(--dash-underline-hover) !important;
-  color: var(--dash-text);
+  text-decoration-color: var(--dash-link-hover) !important;
+  color: var(--dash-link-hover) !important;
 }
 
 /* Components that must never have an underline */
@@ -629,7 +630,7 @@ h3.item-title {
   text-decoration: none !important;
 }
 
-/* Breadcrumb links: quiet default, dotted underline on hover */
+/* Breadcrumb links: quiet default, blue dotted underline on hover */
 a.dash-crumb-link {
   text-decoration: none !important;
   color: var(--dash-muted) !important;
@@ -637,15 +638,15 @@ a.dash-crumb-link {
 }
 
 a.dash-crumb-link:hover {
-  color: var(--dash-text) !important;
+  color: var(--dash-link-hover) !important;
   text-decoration: underline dotted !important;
   text-decoration-thickness: 1.5px !important;
   text-underline-offset: 3px !important;
-  text-decoration-color: var(--dash-underline) !important;
+  text-decoration-color: var(--dash-link-hover) !important;
 }
 
-/* Global rule for all standard text anchor links outside sidebar and controls */
-a:not(.dash-button):not(.dash-card):not(.dash-nav-link):not(.dash-user-row):not(.dash-filter-chip):not(.dash-tag):not(.dash-traffic-dot):not([role="button"]):not(.dash-no-underline):not(.dash-sidebar a):not(.dash-crumb-link) {
+/* Global rule for all standard text anchor links outside buttons and controls */
+a:not(.dash-button):not(.dash-card):not(.dash-nav-link):not(.dash-user-row):not(.dash-filter-chip):not(.dash-tag):not(.dash-traffic-dot):not([role="button"]):not(.dash-sidebar a):not(.dash-crumb-link) {
   text-decoration: underline dotted;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 4px;
@@ -653,8 +654,31 @@ a:not(.dash-button):not(.dash-card):not(.dash-nav-link):not(.dash-user-row):not(
   transition: text-decoration-color var(--duration-fast) ease, color var(--duration-fast) ease;
 }
 
-a:not(.dash-button):not(.dash-card):not(.dash-nav-link):not(.dash-user-row):not(.dash-filter-chip):not(.dash-tag):not(.dash-traffic-dot):not([role="button"]):not(.dash-no-underline):not(.dash-sidebar a):not(.dash-crumb-link):hover {
-  text-decoration-color: var(--dash-underline-hover);
+a:not(.dash-button):not(.dash-card):not(.dash-nav-link):not(.dash-user-row):not(.dash-filter-chip):not(.dash-tag):not(.dash-traffic-dot):not([role="button"]):not(.dash-sidebar a):not(.dash-crumb-link):hover {
+  text-decoration-color: var(--dash-link-hover);
+  color: var(--dash-link-hover) !important;
+}
+
+/* Hyperlinked titles & headings hover color */
+.item-title a,
+h1 a,
+h2 a,
+h3 a,
+h4 a {
+  transition: color var(--duration-fast) ease;
+}
+
+.item-title a:hover,
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover {
+  color: var(--dash-link-hover) !important;
+}
+
+/* Sidebar social & external links hover */
+.dash-sidebar a:not(.dash-nav-link):not(.dash-button):hover {
+  color: var(--dash-link-hover) !important;
 }
 
 abbr[title],

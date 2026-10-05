@@ -385,8 +385,16 @@ const featuredPhotos = photoLocations.slice(0, 4);
 
   .selected-work-all:hover,
   .selected-work-link:hover {
-    color: var(--dash-text);
+    color: var(--dash-link-hover, #0969DA);
     text-decoration: none !important;
+  }
+
+  .selected-work-card:hover .selected-work-link {
+    color: var(--dash-link-hover, #0969DA);
+  }
+
+  .selected-work-card:hover .item-title a {
+    color: var(--dash-link-hover, #0969DA);
   }
 
   .selected-work-all:focus-visible,
