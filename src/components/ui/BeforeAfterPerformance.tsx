@@ -32,6 +32,7 @@ export interface BeforeAfterPerformanceProps {
   badge?: string;
   heading?: string;
   description?: string;
+  categoryLabel?: string;
   highlights?: PerformanceHighlight[];
   beforeImage?: ComparisonImage;
   afterImage?: ComparisonImage;
@@ -134,6 +135,7 @@ export default function BeforeAfterPerformance({
   badge = "Performance compare",
   heading = "Before / after performance lift",
   description = "Drag the slider to compare Hình A (Before) and Hình B (After).",
+  categoryLabel,
   highlights = [],
   beforeImage,
   afterImage,
@@ -764,7 +766,12 @@ export default function BeforeAfterPerformance({
 
         <div className="bap-slider-wrap">
           <div className="bap-slider-header">
-            <span className="bap-slider-tag">{activePair.category}</span>
+            <span className="bap-slider-tag">{categoryLabel || activePair.category}</span>
+            <div className="bap-slider-legend">
+              <span className="bap-legend-item"><span className="bap-legend-dot bap-legend-dot--before"></span>{beforeLabel}</span>
+              <span className="bap-legend-sep">↔</span>
+              <span className="bap-legend-item"><span className="bap-legend-dot bap-legend-dot--after"></span>{afterLabel}</span>
+            </div>
           </div>
 
           <div

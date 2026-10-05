@@ -27,6 +27,7 @@ export interface Props {
   badge?: string;
   heading?: string;
   description?: string;
+  categoryLabel?: string;
   highlights?: PerformanceHighlight[];
   beforeImage?: ComparisonImage;
   afterImage?: ComparisonImage;
@@ -45,6 +46,7 @@ const {
   badge = "Performance compare",
   heading = "Before / after performance lift",
   description = "Drag the slider to compare before and after states.",
+  categoryLabel,
   highlights = [],
   beforeImage,
   afterImage,
@@ -75,7 +77,7 @@ const defaultPair = {
 
 const effectiveBefore = beforeImage ?? defaultPair.before;
 const effectiveAfter = afterImage ?? defaultPair.after;
-const categoryLabel = defaultPair.category;
+const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 ---
 
 <section class={`before-after-performance ${className}`}>
@@ -99,7 +101,12 @@ const categoryLabel = defaultPair.category;
 
     <div class="bap-slider-wrap">
       <div class="bap-slider-header">
-        <span class="bap-slider-tag">{categoryLabel}</span>
+        <span class="bap-slider-tag">{effectiveCategoryLabel}</span>
+        <div class="bap-slider-legend">
+          <span class="bap-legend-item"><span class="bap-legend-dot bap-legend-dot--before"></span>{beforeLabel}</span>
+          <span class="bap-legend-sep">↔</span>
+          <span class="bap-legend-item"><span class="bap-legend-dot bap-legend-dot--after"></span>{afterLabel}</span>
+        </div>
       </div>
 
       <div
@@ -309,17 +316,18 @@ const categoryLabel = defaultPair.category;
   }
 
   .bap-slider-wrap {
-    --bap-outer-radius: 22px;
-    --bap-pad: 14px;
+    --bap-outer-radius: 20px;
+    --bap-pad: 12px;
     align-self: center;
-    background: rgba(255, 255, 255, 0.58);
-    border: 1px solid var(--divider);
+    background: var(--dash-surface, #ffffff);
+    border: 1px solid var(--dash-border, #e8e6dc);
     border-radius: var(--bap-outer-radius);
-    box-shadow: 0 18px 52px rgba(28, 28, 28, 0.08);
+    box-shadow: var(--dash-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
     padding: var(--bap-pad);
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
   }
 
   .bap-slider-header {
@@ -327,14 +335,52 @@ const categoryLabel = defaultPair.category;
     align-items: center;
     justify-content: space-between;
     padding: 2px 4px;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
   .bap-slider-tag {
-    font-family: var(--mono);
+    font-family: var(--sans);
     font-size: 11px !important;
-    color: var(--muted);
-    letter-spacing: 0.06em;
+    font-weight: 600;
+    color: var(--dash-muted, #6b6a66);
+    letter-spacing: 0.05em;
     text-transform: uppercase;
+  }
+
+  .bap-slider-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--dash-muted, #6b6a66);
+    font-weight: 500;
+  }
+
+  .bap-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .bap-legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    display: inline-block;
+  }
+
+  .bap-legend-dot--before {
+    background-color: var(--dash-muted, #6b6a66);
+  }
+
+  .bap-legend-dot--after {
+    background-color: var(--dash-accent, #0075de);
+  }
+
+  .bap-legend-sep {
+    opacity: 0.4;
+    font-size: 10px;
   }
 
   .bap-slider {
@@ -348,6 +394,7 @@ const categoryLabel = defaultPair.category;
     -webkit-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    background-color: var(--dash-surface-subtle, #f5f4ee);
   }
 
   .bap-slider.is-vertical {
