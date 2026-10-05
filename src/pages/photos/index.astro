@@ -1,7 +1,6 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import { getPhotoLocations } from "../../lib/cms";
-import { StarIcon as Star } from "@phosphor-icons/react";
 
 export const prerender = true;
 
@@ -93,17 +92,6 @@ const enhancedLocations = locations.map((loc) => {
               {loc.photoCount} photos
             </span>
           </a>
-
-          <!-- Region & Rating -->
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-            <span class="dash-tag">{loc.region}</span>
-            {loc.personalRating && (
-              <span style="font-size: 0.75rem; color: var(--dash-warning); font-weight: 500; display: inline-flex; align-items: center; gap: 2px;">
-                <Star size={10} fill="currentColor" aria-hidden="true" />
-                <span>{loc.personalRating}/10</span>
-              </span>
-            )}
-          </div>
 
           <!-- Title -->
           <h2 class="item-title" style="margin: 4px 0 6px;">

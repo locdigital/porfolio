@@ -3,7 +3,6 @@ import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import { getPhotoLocations } from "../../lib/cms";
 import { 
   ArrowLeftIcon as ArrowLeft, 
-  StarIcon as Star, 
   CaretLeftIcon as ChevronLeft, 
   CaretRightIcon as ChevronRight, 
   XIcon as X
@@ -62,14 +61,8 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
 
   <!-- Page Introduction -->
   <header class="page-header">
-    <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 6px;">
+    <div style="margin-bottom: 6px;">
       <h1 class="page-title" style="margin: 0;">{location.name || location.location}</h1>
-      {location.personalRating && (
-        <span style="font-size: 0.875rem; color: var(--dash-warning); font-weight: 500; display: inline-flex; align-items: center; gap: 2px;">
-          <Star size={12} fill="currentColor" aria-hidden="true" />
-          <span>{location.personalRating}/10</span>
-        </span>
-      )}
     </div>
 
     <p class="page-lead" style="margin-bottom: var(--space-4);">{location.headline}</p>
