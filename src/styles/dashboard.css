@@ -374,7 +374,7 @@ h3.item-title {
   gap: 8px;
   min-height: 36px;
   padding: 7px 14px;
-  border: 1px solid transparent;
+  border: 1px solid var(--dash-control-border);
   border-radius: var(--radius-control);
   font-size: 0.875rem;           /* 14px */
   line-height: 1.25rem;          /* 20px */
@@ -383,46 +383,52 @@ h3.item-title {
   cursor: pointer;
   background: transparent;
   color: var(--dash-text);
+  box-sizing: border-box;
   transition: none;
 }
 
 .dash-button--primary {
   background: var(--dash-primary);
+  border: 1px solid var(--dash-primary);
   color: var(--dash-on-primary) !important;
 }
 
 .dash-button--primary:hover {
   background: var(--dash-primary);
+  border: 1px solid var(--dash-primary);
   color: var(--dash-on-primary) !important;
 }
 
 .dash-button--secondary {
   background: var(--dash-surface);
   color: var(--dash-text);
-  border-color: var(--dash-control-border);
+  border: 1px solid var(--dash-control-border);
 }
 
 .dash-button--secondary:hover {
   background: var(--dash-surface);
   color: var(--dash-text);
-  border-color: var(--dash-control-border);
+  border: 1px solid var(--dash-control-border);
 }
 
 .dash-button--ghost {
   background: transparent;
-  color: var(--dash-muted);
+  color: var(--dash-text);
+  border: 1px solid var(--dash-control-border);
 }
 
 .dash-button--ghost:hover {
   background: transparent;
-  color: var(--dash-muted);
+  color: var(--dash-text);
+  border: 1px solid var(--dash-control-border);
 }
 
 .dash-button:disabled {
   background: var(--dash-surface-subtle);
   color: var(--dash-muted);
-  border-color: var(--dash-border);
+  border: 1px solid var(--dash-border-strong);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 /* Cards (Reserved for independently browsable items) */
@@ -499,27 +505,28 @@ h3.item-title {
   font-weight: 500;
   border-radius: var(--radius-control);
   background: var(--dash-surface);
-  border: 1px solid var(--dash-border);
-  color: var(--dash-muted);
+  border: 1px solid var(--dash-control-border);
+  color: var(--dash-text);
   cursor: pointer;
   transition: none;
 }
 
 .dash-filter-chip:hover {
   background: var(--dash-surface);
-  color: var(--dash-muted);
+  color: var(--dash-text);
+  border-color: var(--dash-control-border);
 }
 
 .dash-filter-chip.active:hover {
   background: var(--dash-selected);
   color: var(--dash-text);
-  border-color: var(--dash-border);
+  border-color: var(--dash-primary);
 }
 
 .dash-filter-chip.active {
   background: var(--dash-selected);
   color: var(--dash-text);
-  border-color: var(--dash-border);
+  border-color: var(--dash-primary);
   font-weight: 600;
 }
 
@@ -948,18 +955,20 @@ abbr {
 
   .mobile-menu-btn {
     background: transparent;
-    border: none;
-    padding: 8px;
+    border: 1px solid var(--dash-control-border);
+    padding: 6px;
     color: var(--dash-text);
     cursor: pointer;
     border-radius: var(--radius-control);
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
   }
 
   .mobile-menu-btn:hover {
     background: transparent;
+    border-color: var(--dash-control-border);
   }
 
   .mobile-page-label {
