@@ -1,0 +1,85 @@
+---
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import { 
+  HouseIcon as Home,
+  BriefcaseIcon as Briefcase,
+  EnvelopeSimpleIcon as EnvelopeSimple,
+  ArrowRightIcon as ArrowRight
+} from "@phosphor-icons/react";
+
+export const prerender = true;
+---
+
+<DashboardLayout
+  title="404 · Page Not Found — Phuc Loc Nguyen"
+  pageTitle="404 Not Found"
+  description="The page you are looking for does not exist or has been moved."
+  breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "404 Not Found" }]}
+  maxWidthVariant="default"
+>
+  <div style="padding: var(--space-8) 0; max-width: 620px;">
+    <!-- 404 Badge -->
+    <div style="margin-bottom: var(--space-3);">
+      <span class="dash-tag" style="color: var(--dash-danger); background: var(--dash-danger-soft); font-weight: 600;">
+        404 · Page Not Found
+      </span>
+    </div>
+
+    <!-- Title & Explanation -->
+    <h1 class="page-title" style="margin-bottom: var(--space-3);">
+      Hmm, this page doesn’t exist.
+    </h1>
+    <p class="page-lead" style="margin-bottom: var(--space-6);">
+      The link you followed may be broken, or the document has been relocated in the workspace.
+    </p>
+
+    <!-- Quick Action Buttons -->
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--space-10);">
+      <a href="/" class="dash-button dash-button--primary">
+        <Home size={15} aria-hidden="true" />
+        <span>Return to overview</span>
+      </a>
+      <a href="/work" class="dash-button dash-button--secondary">
+        <Briefcase size={15} aria-hidden="true" />
+        <span>Explore selected work</span>
+      </a>
+      <a href="/contact" class="dash-button dash-button--ghost">
+        <EnvelopeSimple size={15} aria-hidden="true" />
+        <span>Contact me</span>
+      </a>
+    </div>
+
+    <!-- Suggested Workspace Sections -->
+    <div class="dash-card" style="padding: 16px;">
+      <h2 class="item-title" style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--dash-muted); margin-bottom: 12px;">
+        Suggested documents
+      </h2>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+        <li>
+          <a href="/work" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+            <span>Selected Work (5 deep case studies)</span>
+            <ArrowRight size={12} aria-hidden="true" />
+          </a>
+        </li>
+        <li>
+          <a href="/experience" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+            <span>Career Experience & Credentials</span>
+            <ArrowRight size={12} aria-hidden="true" />
+          </a>
+        </li>
+        <li>
+          <a href="/services" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+            <span>Marketing Advisory & Retainer Packages</span>
+            <ArrowRight size={12} aria-hidden="true" />
+          </a>
+        </li>
+        <li>
+          <a href="/photos" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+            <span>Photo Essays & Travel Galleries</span>
+            <ArrowRight size={12} aria-hidden="true" />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</DashboardLayout>
