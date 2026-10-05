@@ -74,13 +74,13 @@ const enhancedLocations = locations.map((loc) => {
       <article 
         class="dash-card photo-card-item" 
         data-region={loc.region}
-        style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between;"
+        style="--card-outer-radius: 16px; --card-padding: 10px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;"
       >
         <div>
-          <!-- 4:3 Cover Preview -->
+          <!-- 4:3 Cover Preview (Concentric nested radius) -->
           <a 
             href={`/photos/${loc.slug}`} 
-            style="display: block; aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; background: #EFEFED; border: 1px solid var(--dash-border); margin-bottom: 10px; position: relative;"
+            style="display: block; aspect-ratio: 4/3; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; background: #EFEFED; border: 1px solid var(--dash-border); margin-bottom: 10px; position: relative;"
           >
             <img 
               src={loc.cover} 

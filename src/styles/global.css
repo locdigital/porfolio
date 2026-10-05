@@ -246,13 +246,14 @@
       --control-height-compact: 2.5rem;
       --table-row-height: 3rem;
 
-      /* Border Radius */
-      --rounded-xs: 8px;
-      --rounded-sm: 8px;
-      --rounded-md: 16px;
-      --rounded-lg: 20px;
-      --rounded-xl: 24px;
-      --rounded-2xl: 8px;
+      /* Border Radius & Concentric Nested Scale
+         Core rule: inner radius = max(0px, outer radius - inset) */
+      --rounded-xs: 4px;
+      --rounded-sm: 6px;
+      --rounded-md: 10px;
+      --rounded-lg: 14px;
+      --rounded-xl: 18px;
+      --rounded-2xl: 24px;
       --rounded-full: 9999px;
       --image-radius: 6px;
 
@@ -263,6 +264,10 @@
       --radius-xl: var(--rounded-xl);
       --radius-2xl: var(--rounded-2xl);
       --radius-round: var(--rounded-full);
+
+      /* Concentric inner radii helpers */
+      --radius-nested-card-thumb: max(0px, calc(var(--rounded-xl) - 12px));
+      --radius-nested-container-media: max(0px, calc(var(--rounded-2xl) - 16px));
 
       --surface: #fff;
       --surface-subtle: var(--bg);

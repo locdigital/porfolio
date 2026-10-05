@@ -174,7 +174,7 @@ const academicPartners = [
 
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
       {services.map((s) => (
-        <article class="dash-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <article class="dash-card" style="--card-outer-radius: 20px; --card-padding: 16px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
               <span class="dash-tag">{s.category}</span>
@@ -189,8 +189,8 @@ const academicPartners = [
               {s.summary}
             </p>
 
-            <!-- Scope Checklist -->
-            <div style="margin-bottom: 14px; padding: 10px 12px; background: var(--dash-surface-subtle); border-radius: var(--radius-card); border: 1px solid var(--dash-border);">
+            <!-- Scope Checklist (Concentric nested surface block) -->
+            <div class="dash-card-nested-block" style="margin-bottom: 14px; padding: 10px 12px; background: var(--dash-surface-subtle); border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); border: 1px solid var(--dash-border);">
               <div style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
                 Scope & deliverables
               </div>

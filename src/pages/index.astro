@@ -291,8 +291,8 @@ const featuredPhotos = photoLocations.slice(0, 4);
         const coverSrc = loc.heroImage?.src || loc.photos?.[0]?.src || "";
         const count = loc.photos?.length || 0;
         return (
-          <a href={`/photos/${loc.slug}`} class="dash-card dash-card--interactive" style="padding: 10px;">
-            <div style="aspect-ratio: 4/3; border-radius: 6px; overflow: hidden; background: #EEE; border: 1px solid var(--dash-border); margin-bottom: 8px;">
+          <a href={`/photos/${loc.slug}`} class="dash-card dash-card--interactive" style="--outer-radius: 16px; --card-padding: 10px; padding: var(--card-padding); border-radius: var(--outer-radius);">
+            <div style="aspect-ratio: 4/3; border-radius: max(0px, calc(var(--outer-radius) - var(--card-padding))); overflow: hidden; background: #EEE; border: 1px solid var(--dash-border); margin-bottom: 8px;">
               <img 
                 src={coverSrc} 
                 alt={loc.name || loc.location} 
@@ -412,12 +412,14 @@ const featuredPhotos = photoLocations.slice(0, 4);
   }
 
   .selected-work-card {
+    --card-outer-radius: 22px;
+    --card-padding: 16px;
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: 16px;
+    padding: var(--card-padding);
     border: 1px solid var(--selected-work-border);
-    border-radius: 10px;
+    border-radius: var(--card-outer-radius);
     background: var(--dash-surface);
     color: inherit;
     box-shadow: none;
@@ -432,7 +434,7 @@ const featuredPhotos = photoLocations.slice(0, 4);
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding)));
     background: var(--dash-surface-subtle);
     border: 1px solid var(--dash-border);
   }

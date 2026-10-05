@@ -424,12 +424,14 @@ export default function BeforeAfterPerformance({
         }
 
         .bap-slider-wrap {
+          --bap-outer-radius: 22px;
+          --bap-pad: 14px;
           align-self: center;
           background: rgba(255, 255, 255, 0.58);
           border: 1px solid var(--divider);
-          border-radius: 16px;
+          border-radius: var(--bap-outer-radius);
           box-shadow: 0 18px 52px rgba(28, 28, 28, 0.08);
-          padding: 14px;
+          padding: var(--bap-pad);
           display: flex;
           flex-direction: column;
           gap: 10px;
@@ -481,7 +483,7 @@ export default function BeforeAfterPerformance({
 
         .bap-slider {
           aspect-ratio: 16 / 10;
-          border-radius: 16px;
+          border-radius: max(0px, calc(var(--bap-outer-radius) - var(--bap-pad)));
           cursor: ew-resize;
           overflow: hidden;
           position: relative;

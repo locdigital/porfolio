@@ -53,11 +53,22 @@
   --space-12: 3rem;     /* 48px */
   --space-16: 4rem;     /* 64px */
 
-  /* Shape & Elevation */
+  /* Shape & Elevation Scale */
   --radius-tag: 4px;
   --radius-control: 6px;
-  --radius-card: 8px;
-  --radius-window: 12px;
+  --radius-card-sm: 12px;
+  --radius-card: 16px;
+  --radius-card-lg: 20px;
+  --radius-card-xl: 24px;
+  --radius-window: 14px;
+
+  /* Concentric Nested Border Radius Tokens:
+     Core rule: inner radius = max(0px, outer radius - inset)
+     where inset = padding + border thickness
+  */
+  --radius-nested-sm: max(0px, calc(var(--radius-card) - 10px));  /* 6px for 10px pad on 16px card */
+  --radius-nested-md: max(0px, calc(var(--radius-card-lg) - 14px)); /* 6px for 14px pad on 20px card */
+  --radius-nested-lg: max(0px, calc(var(--radius-card-xl) - 16px)); /* 8px for 16px pad on 24px card */
 
   --shadow-window: 0 12px 40px rgb(0 0 0 / 0.06), 0 1px 4px rgb(0 0 0 / 0.04);
   --shadow-overlay: 0 8px 24px rgb(0 0 0 / 0.10);
@@ -156,8 +167,8 @@ img {
   justify-content: space-between;
   padding: 0 16px;
   user-select: none;
-  border-top-left-radius: var(--radius-window);
-  border-top-right-radius: var(--radius-window);
+  border-top-left-radius: max(0px, calc(var(--radius-window) - 1px));
+  border-top-right-radius: max(0px, calc(var(--radius-window) - 1px));
   flex-shrink: 0;
 }
 
@@ -214,15 +225,15 @@ img {
   min-height: 0;
   overflow: hidden;
   background: var(--dash-bg);
-  border-bottom-left-radius: var(--radius-window);
-  border-bottom-right-radius: var(--radius-window);
+  border-bottom-left-radius: max(0px, calc(var(--radius-window) - 1px));
+  border-bottom-right-radius: max(0px, calc(var(--radius-window) - 1px));
 }
 
 /* Left Sidebar - Full height background */
 .workspace-sidebar {
   background: var(--dash-sidebar);
   border-right: 1px solid var(--dash-border);
-  border-bottom-left-radius: var(--radius-window);
+  border-bottom-left-radius: max(0px, calc(var(--radius-window) - 1px));
   min-height: 0;
   overflow: hidden;
 }
@@ -433,12 +444,28 @@ h3.item-title {
 
 /* Cards (Reserved for independently browsable items) */
 .dash-card {
-  padding: var(--space-5);        /* 20px */
-  border: 1px solid var(--dash-border);
-  border-radius: var(--radius-card); /* 8px */
+  --outer-radius: var(--radius-card);
+  --card-padding: var(--space-5);        /* 20px */
+  --card-border-w: 1px;
+  --card-inset: calc(var(--card-padding) + var(--card-border-w));
+  --inner-radius: max(0px, calc(var(--outer-radius) - var(--card-padding)));
+
+  padding: var(--card-padding);
+  border: var(--card-border-w) solid var(--dash-border);
+  border-radius: var(--outer-radius);
   background: var(--dash-surface);
   box-shadow: none;              /* No shadow in Notion V2 */
   transition: border-color var(--duration-fast), background-color var(--duration-fast);
+}
+
+/* Concentric nested surfaces inside cards */
+.dash-card-media {
+  border-radius: var(--inner-radius, 6px);
+  overflow: hidden;
+}
+
+.dash-card-nested-block {
+  border-radius: var(--inner-radius, 6px);
 }
 
 .dash-card--interactive {

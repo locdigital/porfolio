@@ -47,10 +47,10 @@ const sections = gear?.sections || [];
         <!-- Items Grid -->
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">
           {section.items?.map((item: any) => (
-            <div class="dash-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 12px;">
+            <div class="dash-card" style="--card-outer-radius: 18px; --card-padding: 12px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;">
               <div>
                 {item.image && (
-                  <div style="aspect-ratio: 16/10; border-radius: 6px; overflow: hidden; background: #EFEFED; border: 1px solid var(--dash-border); margin-bottom: 10px;">
+                  <div style="aspect-ratio: 16/10; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; background: #EFEFED; border: 1px solid var(--dash-border); margin-bottom: 10px;">
                     <img 
                       src={item.image} 
                       alt={item.name} 

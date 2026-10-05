@@ -385,7 +385,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         {/* Sub-grid 1: Profile and Available status */}
         <div className="mobile-split-grid" style={{ fontFamily: 'var(--sans)' }}>
           <div className="bg-card border border-border/60 rounded-xl p-2.5 pb-6 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)] -rotate-[2deg]">
-            <div className="overflow-hidden rounded-[6px] w-full">
+            <div className="overflow-hidden w-full" style={{ borderRadius: 'max(0px, calc(var(--rounded-xl, 24px) - 10px))' }}>
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
             <p className="mt-2.5 text-[var(--type-micro)] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
@@ -416,7 +416,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           {/* Spotify */}
           <div className="bg-[#444444] text-background rounded-xl p-3 shadow-xl rotate-[0.5deg] flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <div className="shrink-0 w-9 h-9 rounded-[6px] overflow-hidden bg-background/10">
+              <div className="shrink-0 w-9 h-9 overflow-hidden bg-background/10" style={{ borderRadius: 'max(0px, calc(var(--rounded-xl, 24px) - 12px))' }}>
                 <img src="https://i.ytimg.com/vi/AqM6KmEYTgU/hqdefault.jpg" alt="Vierd Blues album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0">
@@ -575,7 +575,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
           revealDelay={280}
         >
           <div className="bg-card border border-border/60 rounded-xl p-3 pb-8 shadow-[0_6px_28px_-6px_rgba(0,0,0,0.18)]">
-            <div className="overflow-hidden rounded-[6px] w-[160px]">
+            <div className="overflow-hidden w-[160px]" style={{ borderRadius: 'max(0px, calc(var(--rounded-xl, 24px) - 12px))' }}>
               <img src={portraitSrc} alt="Phuc Loc" className="aspect-square w-full object-cover object-center pointer-events-none" loading="lazy" decoding="async" draggable="false" />
             </div>
             <p className="mt-3 text-[var(--type-caption)] text-muted-foreground tracking-widest text-center" style={{ fontFamily: 'var(--sans)' }}>Phuc Loc · Saigon</p>
@@ -630,7 +630,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         >
           <div className="bg-[#444444] text-background rounded-xl p-4 w-[244px] shadow-xl">
             <div className="flex items-center gap-3 mb-3">
-              <div className="shrink-0 w-10 h-10 rounded-[6px] overflow-hidden bg-background/10">
+              <div className="shrink-0 w-10 h-10 overflow-hidden bg-background/10" style={{ borderRadius: 'max(0px, calc(var(--rounded-xl, 24px) - 16px))' }}>
                 <img src="https://i.ytimg.com/vi/AqM6KmEYTgU/hqdefault.jpg" alt="Vierd Blues album art" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
               </div>
               <div className="flex-1 min-w-0" style={{ fontFamily: 'var(--sans)' }}>
@@ -696,7 +696,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
         >
           <div className="bg-card border border-border/60 rounded-xl p-4 w-[180px] shadow-sm">
             <p className="collage-card-label text-muted-foreground mb-2.5">Currently Watching</p>
-            <div className="w-full rounded-[6px] overflow-hidden mb-3" style={{ aspectRatio: '2 / 3' }}>
+            <div className="w-full overflow-hidden mb-3" style={{ aspectRatio: '2 / 3', borderRadius: 'max(0px, calc(var(--rounded-xl, 24px) - 16px))' }}>
               <img src="https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hKHp72avWeLQqSKNwarCDg0EFydvVs3BXGZR5" alt="The Wolf of Wall Street movie poster" loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none" />
             </div>
             <div className="flex items-center gap-2">

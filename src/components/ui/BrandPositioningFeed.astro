@@ -79,7 +79,7 @@ const enrichedPosts = instagramPosts.map((post) => ({
   </div>
 
   <!-- THE FEED GRID (EXACT 4:5 INSTAGRAM PORTRAIT RATIO & 3-COLUMN LAYOUT) -->
-  <div class="rounded-[10px] border border-border overflow-hidden bg-secondary/15 p-1 sm:p-2" data-ig-feed>
+  <div class="border border-border overflow-hidden bg-secondary/15 p-1 sm:p-2" style="--feed-outer-radius: 14px; border-radius: var(--feed-outer-radius);" data-ig-feed>
     <!-- SORT SWITCHER TOOLBAR -->
     <div class="flex items-center justify-between gap-3 px-2 py-2 mb-1.5 border-b border-border/40 text-[12px] font-mono">
       <div class="flex items-center gap-1.5 text-muted">
@@ -88,17 +88,19 @@ const enrichedPosts = instagramPosts.map((post) => ({
         <span class="text-muted">({enrichedPosts.length} posts)</span>
       </div>
 
-      <div class="flex items-center gap-1 bg-card p-0.5 rounded-[6px] border border-border/60">
+      <div class="flex items-center gap-1 bg-card p-0.5 border border-border/60" style="border-radius: max(0px, calc(var(--feed-outer-radius) - 8px));">
         <button
           type="button"
-          class="ig-sort-btn active px-2.5 py-1 rounded-[4px] text-[11px] font-mono transition-all cursor-pointer"
+          class="ig-sort-btn active px-2.5 py-1 text-[11px] font-mono transition-all cursor-pointer"
+          style="border-radius: max(0px, calc(6px - 2px));"
           data-sort-order="desc"
         >
           Newest
         </button>
         <button
           type="button"
-          class="ig-sort-btn px-2.5 py-1 rounded-[4px] text-[11px] font-mono transition-all text-muted hover:text-foreground cursor-pointer"
+          class="ig-sort-btn px-2.5 py-1 text-[11px] font-mono transition-all text-muted hover:text-foreground cursor-pointer"
+          style="border-radius: max(0px, calc(6px - 2px));"
           data-sort-order="asc"
         >
           Oldest

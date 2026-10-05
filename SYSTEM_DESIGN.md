@@ -134,6 +134,21 @@ All color tokens are declared centrally in `:root` inside [src/styles/dashboard.
   0 14px 28px -4px rgba(0, 0, 0, 0.04);
 ```
 
+### 3.3 Concentric Nested Border-Radius System
+
+To ensure mathematical visual harmony across nested containers (window shells, cards with media, modals, comparison sliders, and surface blocks), the system strictly enforces the **Concentric Border-Radius Formula**:
+
+$$\text{inner radius} = \max(0, \text{outer radius} - \text{inset})$$
+
+where $\text{inset} = \text{padding} + \text{border thickness}$.
+
+#### Core Principles:
+1. **No Shared Radii Across Inset Layers:** Never give both an outer container and an inner surface the same border-radius when there is padding between them.
+2. **Formula Implementation:** Implement via CSS calculation: `border-radius: max(0px, calc(var(--outer-radius) - var(--inset)));`.
+3. **Multi-layer Nesting:** For multiple nested layers, each layer calculates its radius from its immediate parent's radius minus the intermediate inset.
+4. **Flush Elements ($inset = 0$ or border-only):** For child elements flush against the container border (e.g. desktop titlebar and sidebar inside `.mac-window-container`), use `max(0px, calc(var(--radius-window) - 1px))` to match the interior contour without clipping.
+5. **Intentional Exceptions:** Independent buttons, category badges, status chips, circular avatars (`50%`), and pill elements (`9999px`) maintain their dedicated control geometries and do not follow the parent card's concentric curve.
+
 ---
 
 ## 4. TYPOGRAPHY SYSTEM

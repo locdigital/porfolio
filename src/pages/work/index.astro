@@ -77,7 +77,7 @@ const enhancedProjects = projects.map((p) => {
       <article 
         class="dash-card project-item" 
         data-category={p.category}
-        style="display: flex; flex-direction: column; justify-content: space-between;"
+        style="--card-outer-radius: 20px; --card-padding: 14px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;"
       >
         <div>
           <!-- Top metadata row -->
@@ -88,11 +88,11 @@ const enhancedProjects = projects.map((p) => {
             <span style="font-size: 0.75rem; color: var(--dash-muted);">{p.year}</span>
           </div>
 
-          <!-- Cover Image (16:10 ratio) -->
+          <!-- Cover Image (16:10 ratio, concentric nested radius) -->
           {p.coverImage && (
             <a 
               href={`/work/${p.slug}`} 
-              style="display: block; aspect-ratio: 16/10; border-radius: 6px; overflow: hidden; border: 1px solid var(--dash-border); background: #F0EFEA; margin-bottom: 14px;"
+              style="display: block; aspect-ratio: 16/10; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; border: 1px solid var(--dash-border); background: #F0EFEA; margin-bottom: 14px;"
             >
               <img 
                 src={p.coverImage} 
