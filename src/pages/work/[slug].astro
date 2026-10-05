@@ -279,7 +279,7 @@ if (project.slug === "playah") {
   )}
 
   <!-- Strategic Narrative & Execution -->
-  <section class="page-section" aria-labelledby="heading-narrative">
+  <section class="page-section work-narrative-section" aria-labelledby="heading-narrative">
     <h2 id="heading-narrative" class="section-title">Context, strategy & execution</h2>
     
     <div class="dash-prose work-narrative-prose">
@@ -306,7 +306,7 @@ if (project.slug === "playah") {
   )}
 
   <!-- More Case Studies -->
-  <section class="page-section" aria-labelledby="heading-more-work" style="border-top: 1px solid var(--dash-border); padding-top: var(--space-8);">
+  <section class="page-section more-work-section" aria-labelledby="heading-more-work" style="border-top: 1px solid var(--dash-border); padding-top: var(--space-8);">
     <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
       <h2 id="heading-more-work" class="section-title" style="margin: 0;">More case studies</h2>
       <a href="/work" class="dash-link" style="font-size: 0.8125rem;">
@@ -314,7 +314,7 @@ if (project.slug === "playah") {
       </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;">
+    <div class="more-work-grid">
       {otherProjects.map((op) => (
         <a 
           href={`/work/${op.slug}`} 
@@ -339,11 +339,17 @@ if (project.slug === "playah") {
 </DashboardLayout>
 
 <style>
+  .work-narrative-section,
+  .more-work-section {
+    max-width: 500px;
+    width: 100%;
+  }
+
   .work-narrative-prose {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    max-width: none;
+    max-width: 500px;
     width: 100%;
     color: var(--dash-text);
     font-size: 1rem;
@@ -358,9 +364,20 @@ if (project.slug === "playah") {
     hyphens: auto;
   }
 
+  .more-work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
   @media (max-width: 640px) {
+    .work-narrative-section,
+    .more-work-section,
     .work-narrative-prose {
-      max-width: none;
+      max-width: 100%;
+    }
+
+    .work-narrative-prose {
       font-size: 0.9375rem;
       line-height: 1.6;
     }
