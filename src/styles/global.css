@@ -3979,3 +3979,26 @@ body :where(
 }
 
 /* Reduced motion guard removed to allow fluid micro-interactions */
+
+/* ============================================================
+   DISABLE BUTTON HOVER EFFECTS GLOBALLY
+   ============================================================ */
+button,
+[role="button"],
+.dash-button,
+.btn,
+a.dash-button,
+a.btn {
+  transition: none !important;
+}
+
+button:hover,
+[role="button"]:hover,
+.dash-button:hover,
+.btn:hover,
+a.dash-button:hover,
+a.btn:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}

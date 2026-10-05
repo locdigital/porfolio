@@ -383,9 +383,7 @@ h3.item-title {
   cursor: pointer;
   background: transparent;
   color: var(--dash-text);
-  transition: background-color var(--duration-fast),
-              border-color var(--duration-fast),
-              color var(--duration-fast);
+  transition: none;
 }
 
 .dash-button--primary {
@@ -394,7 +392,8 @@ h3.item-title {
 }
 
 .dash-button--primary:hover {
-  background: var(--dash-primary-hover);
+  background: var(--dash-primary);
+  color: var(--dash-on-primary) !important;
 }
 
 .dash-button--secondary {
@@ -404,7 +403,9 @@ h3.item-title {
 }
 
 .dash-button--secondary:hover {
-  background: var(--dash-hover);
+  background: var(--dash-surface);
+  color: var(--dash-text);
+  border-color: var(--dash-control-border);
 }
 
 .dash-button--ghost {
@@ -413,8 +414,8 @@ h3.item-title {
 }
 
 .dash-button--ghost:hover {
-  background: var(--dash-hover);
-  color: var(--dash-text);
+  background: transparent;
+  color: var(--dash-muted);
 }
 
 .dash-button:disabled {
@@ -501,12 +502,18 @@ h3.item-title {
   border: 1px solid var(--dash-border);
   color: var(--dash-muted);
   cursor: pointer;
-  transition: all var(--duration-fast);
+  transition: none;
 }
 
 .dash-filter-chip:hover {
-  background: var(--dash-hover);
+  background: var(--dash-surface);
+  color: var(--dash-muted);
+}
+
+.dash-filter-chip.active:hover {
+  background: var(--dash-selected);
   color: var(--dash-text);
+  border-color: var(--dash-border);
 }
 
 .dash-filter-chip.active {
@@ -952,7 +959,7 @@ abbr {
   }
 
   .mobile-menu-btn:hover {
-    background: var(--dash-hover);
+    background: transparent;
   }
 
   .mobile-page-label {
