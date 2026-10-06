@@ -60,29 +60,29 @@ const enhancedLocations = locations.map((loc) => {
       Shot on whatever was in my pocket—Leica Q3, Nikon Zf, or iPhone. Visual notes and field reflections across {locations.length} destinations.
     </p>
 
-    <!-- Toolbar: View Mode Switcher (Aligned Left) -->
+    <!-- Toolbar: View Mode Switcher (Aligned Right) -->
     <div class="photos-toolbar">
       <div class="photos-toolbar-inner">
-        <!-- View Mode Switcher: Folders Grid vs List -->
-        <div class="photos-view-toggle" role="radiogroup" aria-label="Layout view format">
+        <!-- Compact Segmented Control View Switcher -->
+        <div class="photos-view-toggle" role="group" aria-label="Layout view format">
           <button
             type="button"
             class="photos-view-btn active"
             data-view="grid"
-            role="radio"
-            aria-checked="true"
-            title="Folders grid view"
+            aria-pressed="true"
+            aria-label="Grid view"
+            title="Grid view"
           >
             <LayoutGrid size={14} aria-hidden="true" />
-            <span>Folders</span>
+            <span>Grid</span>
           </button>
           <button
             type="button"
             class="photos-view-btn"
             data-view="list"
-            role="radio"
-            aria-checked="false"
-            title="List table view"
+            aria-pressed="false"
+            aria-label="List view"
+            title="List view"
           >
             <List size={14} aria-hidden="true" />
             <span>List</span>
@@ -191,60 +191,98 @@ const enhancedLocations = locations.map((loc) => {
 </DashboardLayout>
 
 <style>
-  /* Toolbar Layout (Aligned Left) */
+  /* Reduce gap below header/toolbar to album content to ~16-24px (20px) */
+  .page-header {
+    margin-bottom: 20px;
+  }
+
+  /* Toolbar Layout (Aligned Right directly above album content) */
   .photos-toolbar {
     margin-top: 14px;
-    padding-bottom: 2px;
+    width: 100%;
   }
 
   .photos-toolbar-inner {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Align left */
+    justify-content: flex-end; /* Aligned right within existing section toolbar */
     gap: 12px;
-    flex-wrap: wrap;
+    width: 100%;
   }
 
-  /* View Toggle Switcher (Folders vs List) */
+  /* Compact Segmented Control (Subtle neutral background, thin border, 8px radius) */
   .photos-view-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    background: var(--dash-surface-subtle);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    gap: 2px;
+    background: var(--dash-surface-subtle, #f7f7f5);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
     border-radius: 8px;
-    padding: 3px;
+    padding: 2px;
     flex-shrink: 0;
+    user-select: none;
+    box-sizing: border-box;
   }
 
   .photos-view-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    padding: 4px 10px;
-    border-radius: max(0px, calc(8px - 3px)); /* 5px - strictly enforces concentric nested border radius */
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    background: var(--dash-surface);
-    color: var(--dash-muted);
+    padding: 5px 12px;
+    min-height: 28px;
+    /* Concentric nested border-radius rule: inner = max(0px, outer (8px) - inset (2px)) = 6px */
+    border-radius: max(0px, calc(8px - 2px));
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--dash-muted, #787774);
     font-size: 0.8125rem;
     font-weight: 500;
     font-family: var(--sans, var(--font-sans));
     cursor: pointer;
-    transition: background 140ms ease, color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
     line-height: 1.2;
+    transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    box-sizing: border-box;
   }
 
-  .photos-view-btn:hover {
-    background: var(--dash-hover);
+  /* Restrained hover feedback for inactive options */
+  .photos-view-btn:not(.active):hover {
+    background: rgba(0, 0, 0, 0.04);
     color: var(--dash-text);
   }
 
+  /* Selected option: clearly identifiable with white background, dark medium-weight text, and subtle shadow */
   .photos-view-btn.active {
-    background: var(--dash-surface-subtle);
-    color: var(--dash-text);
-    border-color: var(--dash-border);
-    font-weight: 600;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    background: var(--dash-surface, #ffffff);
+    color: var(--dash-text, #111111);
+    font-weight: 500;
+    border-color: rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Visible keyboard focus ring */
+  .photos-view-btn:focus-visible {
+    outline: 2px solid var(--dash-accent, #0065D1);
+    outline-offset: 1px;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .photos-toolbar-inner {
+      justify-content: flex-end;
+    }
+
+    .photos-view-toggle {
+      max-width: 100%;
+    }
+
+    /* On mobile, keep both icons and labels, touch targets at least 44px high */
+    .photos-view-btn {
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 0.8125rem;
+      gap: 7px;
+    }
   }
 
   /* ── 5-COLUMN MANILA FOLDER GRID ── */
@@ -253,7 +291,7 @@ const enhancedLocations = locations.map((loc) => {
     grid-template-columns: repeat(5, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 48px;
-    padding: 36px 0 52px;
+    padding: 0 0 52px;
   }
 
   @media (max-width: 960px) {
@@ -277,7 +315,7 @@ const enhancedLocations = locations.map((loc) => {
       grid-template-columns: repeat(2, 1fr);
       grid-column-gap: 14px;
       grid-row-gap: 36px;
-      padding-top: 28px;
+      padding-top: 0;
     }
   }
 
@@ -436,7 +474,7 @@ const enhancedLocations = locations.map((loc) => {
 
   /* ── LIST VIEW STYLING ── */
   .photos-list-container {
-    padding: 20px 0 48px;
+    padding: 0 0 48px;
   }
 
   .photos-list-wrapper {
@@ -626,7 +664,7 @@ const enhancedLocations = locations.map((loc) => {
       viewButtons.forEach((btn) => {
         const isMatch = btn.getAttribute("data-view") === viewMode;
         btn.classList.toggle("active", isMatch);
-        btn.setAttribute("aria-checked", isMatch ? "true" : "false");
+        btn.setAttribute("aria-pressed", isMatch ? "true" : "false");
       });
 
       try {
