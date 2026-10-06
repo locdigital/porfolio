@@ -9,7 +9,7 @@
       --bg: #FAFAF7;
       --text: #1C1C1C;
       --muted: #6E6E6E;
-      --divider: #D7D7D0;
+      --divider: #00000014;
       --border-strong: #C2C2BB;
       --accent: #0075de;
       --accent-solid: #0075de;
@@ -45,8 +45,8 @@
       --page-gutter: clamp(16px, 4vw, 64px);
       --page-block-start: var(--space-10);
       --page-block-end: var(--space-10);
-      --section-gap: var(--space-10);
-      --section-gap-large: var(--space-11);
+      --section-gap: calc(var(--space-10) * 1.1);
+      --section-gap-large: calc(var(--space-11) * 1.1);
       --grid-gap: var(--space-5);
       --column-gap: var(--grid-gap);
       --px: var(--page-gutter);
@@ -372,8 +372,8 @@
         --page-gutter: 16px;
         --page-block-start: var(--space-8);
         --page-block-end: var(--space-8);
-        --section-gap: var(--space-8);
-        --section-gap-large: var(--space-9);
+        --section-gap: calc(var(--space-8) * 1.1);
+        --section-gap-large: calc(var(--space-9) * 1.1);
         --grid-gap: var(--space-4);
         --card-padding: var(--space-5);
         --panel-padding: var(--space-5);
@@ -771,7 +771,7 @@
     /* Desktop nav */
     .header-menu {
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       padding: 4px;
       border: 1px solid var(--divider);
       border-radius: 16px;
@@ -785,6 +785,10 @@
       display: flex;
       align-items: center;
       gap: var(--space-2);
+    }
+
+    .header-menu li {
+      position: relative;
     }
 
     .header-menu a {
@@ -824,6 +828,177 @@
 
     .header-menu a[href="/question"] {
       color: #0075de;
+    }
+
+    .nav-item--has-tree::after {
+      content: "";
+      position: absolute;
+      left: -10px;
+      right: -10px;
+      top: 100%;
+      height: 16px;
+    }
+
+    .work-tree-dropdown {
+      --dropdown-open-dur: 250ms;
+      --dropdown-close-dur: 150ms;
+      --dropdown-pre-scale: 0.97;
+      --dropdown-closing-scale: 0.99;
+      --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --work-tree-radius: 18px;
+      --work-tree-inset: 6px;
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 12px);
+      width: min(360px, calc(100vw - 32px));
+      transform: translateX(-50%) scale(var(--dropdown-pre-scale));
+      transform-origin: top center;
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform var(--dropdown-open-dur) var(--dropdown-ease),
+        opacity var(--dropdown-open-dur) var(--dropdown-ease);
+      will-change: transform, opacity;
+      z-index: 120;
+    }
+
+    .nav-item--has-tree:is(:hover, :focus-within) .work-tree-dropdown,
+    .nav-item--has-tree.is-work-open .work-tree-dropdown {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .work-tree-panel {
+      position: relative;
+      padding: var(--work-tree-inset);
+      border: 1px solid var(--divider);
+      border-radius: var(--work-tree-radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 250, 247, 0.9));
+      box-shadow: 0 24px 70px rgba(20, 20, 18, 0.12), 0 8px 24px rgba(20, 20, 18, 0.08);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+    }
+
+    .work-tree-panel::before {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-left: 1px solid var(--divider);
+      border-top: 1px solid var(--divider);
+      background: rgba(255, 255, 255, 0.96);
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    .work-tree-overview,
+    .work-tree-list a {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-height: auto;
+      padding: 10px 12px;
+      border-radius: max(0px, calc(var(--work-tree-radius) - var(--work-tree-inset)));
+      color: var(--text);
+      text-decoration: none !important;
+    }
+
+    .work-tree-overview {
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 4px;
+      background: rgba(0, 117, 222, 0.07);
+    }
+
+    .work-tree-eyebrow,
+    .work-tree-number {
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.2;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .work-tree-overview > span:last-child,
+    .work-tree-label {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .work-tree-list {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+    }
+
+    .work-tree-copy {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .work-tree-title {
+      overflow: hidden;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 11px;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .work-tree-list li {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    .nav-item--has-tree:is(:hover, :focus-within) .work-tree-list li,
+    .nav-item--has-tree.is-work-open .work-tree-list li {
+      animation: work-tree-drop 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(120ms + (var(--tree-index) * 55ms));
+    }
+
+    .work-tree-list a:hover,
+    .work-tree-list a.active {
+      color: var(--accent);
+      background: rgba(0, 117, 222, 0.08);
+    }
+
+    .work-tree-list a.active .work-tree-label {
+      color: var(--accent);
+    }
+
+    @keyframes work-tree-drop {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+        filter: blur(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .work-tree-dropdown,
+      .work-tree-list li {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .work-tree-list li {
+        opacity: 1;
+        transform: none;
+      }
     }
 
     @media (max-width: 1100px) {
@@ -3671,39 +3846,6 @@ body :where(hr, [class*="divider"], [class*="Divider"], [class*="separator"], [c
   box-shadow: none !important;
 }
 
-body :where(
-  header,
-  footer,
-  main,
-  section,
-  article,
-  aside,
-  nav,
-  ul,
-  ol,
-  li,
-  [class*="row"],
-  [class*="Row"],
-  [class*="section"],
-  [class*="Section"],
-  [class*="header"],
-  [class*="Header"],
-  [class*="footer"],
-  [class*="Footer"],
-  [class*="meta"],
-  [class*="Meta"],
-  [class*="rail"],
-  [class*="Rail"],
-  [class*="toc"],
-  [class*="Toc"],
-  [class*="list"],
-  [class*="List"],
-  [class*="item"],
-  [class*="Item"]
-) {
-  border-top-width: 0 !important;
-  border-bottom-width: 0 !important;
-}
 
 /* ============================================================
    HOME HERO HEADLINE OVERRIDE
@@ -4002,8 +4144,55 @@ button:hover,
 .dash-button:hover,
 .btn:hover,
 a.dash-button:hover,
-a.btn:hover {
+a.btn:hover,
+.folder-wrapper:hover,
+.folder-item:hover,
+.folder:hover,
+.dash-card:hover,
+.dash-card--interactive:hover,
+.pricing-card:hover,
+.pricing-btn:hover,
+.hero-card:hover,
+.hero-primary:hover,
+.hero-secondary:hover,
+.home-project-card a:hover,
+.about-photo:hover,
+.gallery-item:hover img,
+.efferd-gallery-item:hover .efferd-card-inner,
+.efferd-gallery-item:hover .efferd-img,
+.ig-post-item:hover,
+.ig-post-item:hover .ig-post-img {
   transform: none !important;
   box-shadow: none !important;
-  filter: none !important;
+}
+
+/* ============================================================
+   UNIFORM THIN BUTTON BORDERS SITEWIDE (MATCH WINDOW BORDER)
+   ============================================================ */
+button:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.folder-wrapper):not([data-folder-trigger]):not(.dash-nav-disclosure):not([class*="hero-btn"]),
+[role="button"]:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.folder-wrapper):not([data-folder-trigger]):not([class*="hero-btn"]),
+.dash-button:not(.dash-button--primary):not([class*="hero-btn"]),
+.btn:not(.btn-primary):not([class*="hero-btn"]),
+a.dash-button:not(.dash-button--primary):not([class*="hero-btn"]),
+a.btn:not(.btn-primary):not([class*="hero-btn"]),
+.dash-filter-chip {
+  border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014) !important;
+}
+
+button:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.dash-nav-disclosure):not([class*="hero-btn"]):hover,
+[role="button"]:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not([class*="hero-btn"]):hover,
+.dash-button:not(.dash-button--primary):not([class*="hero-btn"]):hover,
+.btn:not(.btn-primary):not([class*="hero-btn"]):hover,
+a.dash-button:not(.dash-button--primary):not([class*="hero-btn"]):hover,
+a.btn:not(.btn-primary):not([class*="hero-btn"]):hover,
+.dash-filter-chip:hover,
+.dash-filter-chip.active,
+.dash-filter-chip.active:hover {
+  border-color: var(--dash-border, #00000014) !important;
+}
+
+.dash-nav-disclosure,
+.dash-nav-disclosure:hover {
+  border: 0 !important;
+  box-shadow: none !important;
 }

@@ -1,6 +1,7 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import { getPhotoLocations } from "../../lib/cms";
+import { LayoutGrid, List, Folder, ChevronRight } from "../../components/icons/majesticons";
 
 export const prerender = true;
 
@@ -23,14 +24,24 @@ const enhancedLocations = locations.map((loc) => {
     region = "South";
   }
 
-  const cover = loc.heroImage?.src || loc.photos?.[0]?.src || "/og-image.jpg";
   const photoCount = loc.photos?.length || 0;
+  const previewImages = (loc.photos ?? [])
+    .map((photo) => photo.src)
+    .filter(Boolean)
+    .slice(0, 24);
+
+  const heroPhoto = previewImages[0] || "";
+  const leftPhoto = previewImages[1] || heroPhoto;
+  const rightPhoto = previewImages[2] || previewImages[1] || heroPhoto;
 
   return {
     ...loc,
     region,
-    cover,
-    photoCount
+    photoCount,
+    previewImages,
+    heroPhoto,
+    leftPhoto,
+    rightPhoto,
   };
 });
 ---
@@ -49,106 +60,600 @@ const enhancedLocations = locations.map((loc) => {
       Shot on whatever was in my pocket—Leica Q3, Nikon Zf, or iPhone. Visual notes and field reflections across {locations.length} destinations.
     </p>
 
-    <!-- Regional Filter Chips -->
-    <div 
-      class="dash-filter-bar" 
-      role="toolbar" 
-      aria-label="Filter photo galleries by region"
-      style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 4px;"
-    >
-      <button class="dash-filter-chip active" data-region="all" aria-pressed="true">All places ({locations.length})</button>
-      <button class="dash-filter-chip" data-region="International" aria-pressed="false">International</button>
-      <button class="dash-filter-chip" data-region="Central" aria-pressed="false">Central Coast</button>
-      <button class="dash-filter-chip" data-region="Highlands" aria-pressed="false">Highlands & Trails</button>
-      <button class="dash-filter-chip" data-region="North" aria-pressed="false">Northern Peaks</button>
-      <button class="dash-filter-chip" data-region="South" aria-pressed="false">Mekong & Islands</button>
+    <!-- Toolbar: View Mode Switcher (Aligned Left) -->
+    <div class="photos-toolbar">
+      <div class="photos-toolbar-inner">
+        <!-- View Mode Switcher: Folders Grid vs List -->
+        <div class="photos-view-toggle" role="radiogroup" aria-label="Layout view format">
+          <button
+            type="button"
+            class="photos-view-btn active"
+            data-view="grid"
+            role="radio"
+            aria-checked="true"
+            title="Folders grid view"
+          >
+            <LayoutGrid size={14} aria-hidden="true" />
+            <span>Folders</span>
+          </button>
+          <button
+            type="button"
+            class="photos-view-btn"
+            data-view="list"
+            role="radio"
+            aria-checked="false"
+            title="List table view"
+          >
+            <List size={14} aria-hidden="true" />
+            <span>List</span>
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Photo Albums Grid -->
-  <div 
-    id="photos-grid" 
-    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;"
-  >
+  <!-- 1. Manila Folder Grid View (Default) -->
+  <div id="photos-grid" class="folder-grid">
     {enhancedLocations.map((loc) => (
-      <article 
-        class="dash-card photo-card-item" 
-        data-region={loc.region}
-        style="--card-outer-radius: 16px; --card-padding: 10px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;"
-      >
-        <div>
-          <!-- 4:3 Cover Preview (Concentric nested radius) -->
-          <a 
-            href={`/photos/${loc.slug}`} 
-            style="display: block; aspect-ratio: 4/3; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; background: #EFEFED; border: 1px solid var(--dash-border); margin-bottom: 10px; position: relative;"
-          >
-            <img 
-              src={loc.cover} 
-              alt={loc.name || loc.location} 
-              style="width: 100%; height: 100%; object-fit: cover;"
-              loading="lazy"
-            />
-            <span style="position: absolute; bottom: 6px; right: 6px; background: rgba(0, 0, 0, 0.65); color: #fff; font-size: 0.6875rem; padding: 2px 6px; border-radius: 3px; font-variant-numeric: tabular-nums;">
-              {loc.photoCount} photos
-            </span>
-          </a>
+      <div class="folder-item" data-region={loc.region}>
+        <a 
+          href={`/photos/${loc.slug}`} 
+          class="folder-wrapper"
+          data-preview-images={JSON.stringify(loc.previewImages)}
+          aria-label={`Open ${loc.name || loc.location} gallery`}
+        >
+          <!-- 3D MACOS FOLDER COMPONENT -->
+          <div class="folder" data-folder-surface>
+            <!-- 1. BACK FOLDER FLAP (Behind cards) -->
+            <div class="folder-back" aria-hidden="true"></div>
 
-          <!-- Title -->
-          <h2 class="item-title" style="margin: 4px 0 6px;">
-            <a href={`/photos/${loc.slug}`} style="color: var(--dash-text); text-decoration: none;">
-              {loc.name || loc.location}
-            </a>
-          </h2>
+            <!-- 2. FAN OF 3 PHOTO CARDS (Inside folder pocket) -->
+            {loc.heroPhoto && (
+              <div class="folder-cards" aria-hidden="true">
+                <div class="folder-card folder-card--left">
+                  <img
+                    src={loc.leftPhoto}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <div class="folder-card folder-card--right">
+                  <img
+                    src={loc.rightPhoto}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+                <div class="folder-card folder-card--center">
+                  <img
+                    src={loc.heroPhoto}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  />
+                </div>
+              </div>
+            )}
 
-          <!-- Headline -->
-          <p style="font-size: 0.8125rem; line-height: 1.5; color: var(--dash-muted); margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-            {loc.headline}
-          </p>
-        </div>
+            <!-- 3. FRONT FOLDER FLAP (In front of cards) -->
+            <div class="folder-front" aria-hidden="true"></div>
+          </div>
 
-        <div style="border-top: 1px solid var(--dash-border); margin-top: 10px; padding-top: 8px; text-align: left;">
-          <a 
-            href={`/photos/${loc.slug}`} 
-            class="dash-link"
-            style="font-size: 0.75rem; font-weight: 500;"
-          >
-            View gallery →
-          </a>
-        </div>
-      </article>
+          <!-- LOCATION NAME -->
+          <div class="folder-caption">
+            <span class="folder-title">{loc.name || loc.location}</span>
+          </div>
+        </a>
+      </div>
     ))}
+  </div>
+
+  <!-- 2. Clean List View (Option) -->
+  <div id="photos-list" class="photos-list-container" style="display: none;">
+    <div class="photos-list-wrapper">
+      {enhancedLocations.map((loc) => (
+        <a 
+          href={`/photos/${loc.slug}`}
+          class="photo-list-row"
+          data-region={loc.region}
+          aria-label={`Open ${loc.name || loc.location} gallery`}
+        >
+          <div class="photo-list-main">
+            <span class="photo-list-icon" aria-hidden="true">
+              <Folder size={17} aria-hidden="true" />
+            </span>
+            <div class="photo-list-info">
+              <div class="photo-list-title-wrap">
+                <span class="photo-list-title">{loc.name || loc.location}</span>
+                <span class="dash-tag photo-list-tag">{loc.region}</span>
+              </div>
+              {loc.headline && (
+                <span class="photo-list-headline">{loc.headline}</span>
+              )}
+            </div>
+          </div>
+
+          <div class="photo-list-meta">
+            <span class="photo-list-count">{loc.photoCount} photos</span>
+            <span class="photo-list-arrow" aria-hidden="true">
+              <ChevronRight size={14} aria-hidden="true" />
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
   </div>
 </DashboardLayout>
 
-<script is:inline>
-  function setupPhotoFilters() {
-    const filterButtons = document.querySelectorAll(".dash-filter-chip");
-    const photoItems = document.querySelectorAll(".photo-card-item");
+<style>
+  /* Toolbar Layout (Aligned Left) */
+  .photos-toolbar {
+    margin-top: 14px;
+    padding-bottom: 2px;
+  }
 
-    filterButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const region = btn.getAttribute("data-region") || "all";
-        
-        photoItems.forEach((item) => {
-          const itemRegion = item.getAttribute("data-region");
-          if (region === "all" || itemRegion === region) {
-            item.style.display = "flex";
-          } else {
-            item.style.display = "none";
+  .photos-toolbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align left */
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* View Toggle Switcher (Folders vs List) */
+  .photos-view-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--dash-surface-subtle);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 8px;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+
+  .photos-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: max(0px, calc(8px - 3px)); /* 5px - strictly enforces concentric nested border radius */
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    background: var(--dash-surface);
+    color: var(--dash-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    font-family: var(--sans, var(--font-sans));
+    cursor: pointer;
+    transition: background 140ms ease, color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    line-height: 1.2;
+  }
+
+  .photos-view-btn:hover {
+    background: var(--dash-hover);
+    color: var(--dash-text);
+  }
+
+  .photos-view-btn.active {
+    background: var(--dash-surface-subtle);
+    color: var(--dash-text);
+    border-color: var(--dash-border);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  /* ── 5-COLUMN MANILA FOLDER GRID ── */
+  .folder-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 48px;
+    padding: 36px 0 52px;
+  }
+
+  @media (max-width: 960px) {
+    .folder-grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-column-gap: 18px;
+      grid-row-gap: 44px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .folder-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 16px;
+      grid-row-gap: 40px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .folder-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 14px;
+      grid-row-gap: 36px;
+      padding-top: 28px;
+    }
+  }
+
+  @media (max-width: 340px) {
+    .folder-grid {
+      grid-template-columns: 1fr;
+      grid-row-gap: 32px;
+    }
+  }
+
+  /* ── HOVER BRIDGE (Keeps folder open while admiring fanned cards) ── */
+  .folder-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -85px;
+    left: -32px;
+    right: -32px;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .folder-wrapper:hover::before,
+  .folder-wrapper:focus-visible::before {
+    pointer-events: auto;
+  }
+
+  /* ── 3-CARD FAN OUT PHOTO SYSTEM ── */
+  .folder-cards {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .folder-card {
+    --card-radius: 8px;
+    --card-inset: 3px;
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    width: clamp(84px, 22vw, 100px);
+    aspect-ratio: 4 / 3;
+    padding: var(--card-inset);
+    background: #ffffff;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
+    border-radius: var(--card-radius);
+    box-shadow:
+      0 12px 28px -4px rgba(0, 0, 0, 0.16),
+      0 4px 10px rgba(0, 0, 0, 0.08);
+    transform-origin: bottom center;
+    opacity: 0;
+    filter: blur(2px);
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+    transition:
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 180ms ease,
+      filter 180ms ease,
+      box-shadow 240ms ease;
+  }
+
+  .folder-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: max(0px, calc(var(--card-radius) - var(--card-inset)));
+  }
+
+  /* Resting: tucked inside the folder pocket between back and front flaps */
+  .folder-card--left,
+  .folder-card--center,
+  .folder-card--right {
+    transform: translate(-50%, 16px) scale(0.72) rotate(0deg);
+    opacity: 0;
+    filter: blur(2px);
+  }
+
+  /* 1. Center Card: jumps out tallest from inside the folder */
+  .folder-card--center {
+    z-index: 3;
+  }
+
+  .folder-wrapper:hover .folder-card--center,
+  .folder-wrapper:focus-visible .folder-card--center {
+    transform: translate(-50%, -64px) rotate(-1.5deg) scale(1.04);
+    opacity: 1;
+    filter: blur(0px);
+    box-shadow:
+      0 18px 36px -6px rgba(0, 0, 0, 0.22),
+      0 6px 14px rgba(0, 0, 0, 0.1);
+    transition:
+      transform 420ms cubic-bezier(0.34, 1.45, 0.64, 1) 20ms,
+      opacity 280ms cubic-bezier(0.16, 1, 0.3, 1) 10ms,
+      filter 280ms ease 10ms,
+      box-shadow 420ms ease 20ms;
+  }
+
+  /* 2. Left Card: jumps out and fans to the left */
+  .folder-card--left {
+    z-index: 2;
+  }
+
+  .folder-wrapper:hover .folder-card--left,
+  .folder-wrapper:focus-visible .folder-card--left {
+    transform: translate(calc(-50% - 30px), -50px) rotate(-15deg) scale(0.96);
+    opacity: 1;
+    filter: blur(0px);
+    transition:
+      transform 440ms cubic-bezier(0.34, 1.45, 0.64, 1) 50ms,
+      opacity 300ms cubic-bezier(0.16, 1, 0.3, 1) 30ms,
+      filter 300ms ease 30ms;
+  }
+
+  /* 3. Right Card: jumps out and fans to the right */
+  .folder-card--right {
+    z-index: 2;
+  }
+
+  .folder-wrapper:hover .folder-card--right,
+  .folder-wrapper:focus-visible .folder-card--right {
+    transform: translate(calc(-50% + 30px), -46px) rotate(13deg) scale(0.96);
+    opacity: 1;
+    filter: blur(0px);
+    transition:
+      transform 460ms cubic-bezier(0.34, 1.45, 0.64, 1) 80ms,
+      opacity 320ms cubic-bezier(0.16, 1, 0.3, 1) 60ms,
+      filter 320ms ease 60ms;
+  }
+
+  /* Stacking priority when hovered */
+  .folder-item:hover,
+  .folder-wrapper:hover,
+  .folder-wrapper:focus-visible {
+    z-index: 25;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .folder-card {
+      transition: none !important;
+    }
+    .folder-wrapper:hover .folder-card--left,
+    .folder-wrapper:focus-visible .folder-card--left {
+      transform: translate(calc(-50% - 30px), -50px) rotate(-15deg) scale(0.96);
+    }
+    .folder-wrapper:hover .folder-card--right,
+    .folder-wrapper:focus-visible .folder-card--right {
+      transform: translate(calc(-50% + 30px), -46px) rotate(13deg) scale(0.96);
+    }
+    .folder-wrapper:hover .folder-card--center,
+    .folder-wrapper:focus-visible .folder-card--center {
+      transform: translate(-50%, -64px) rotate(-1.5deg) scale(1.04);
+    }
+  }
+
+  /* ── LIST VIEW STYLING ── */
+  .photos-list-container {
+    padding: 20px 0 48px;
+  }
+
+  .photos-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 10px;
+    background: var(--dash-surface);
+    overflow: hidden;
+  }
+
+  .photo-list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    text-decoration: none !important;
+    color: inherit;
+    transition: background 140ms ease;
+  }
+
+  .photo-list-row:last-child {
+    border-bottom: none;
+  }
+
+  .photo-list-row:hover {
+    background: var(--dash-hover);
+  }
+
+  .photo-list-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .photo-list-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dash-accent); /* macOS folder blue tone */
+    flex-shrink: 0;
+  }
+
+  .photo-list-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .photo-list-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .photo-list-title {
+    font-family: var(--font-sans);
+    font-size: 0.875rem; /* 14px compact */
+    font-weight: 600;
+    color: var(--dash-text);
+    line-height: 1.35;
+    transition: color 140ms ease;
+  }
+
+  .photo-list-row:hover .photo-list-title {
+    color: var(--dash-accent);
+  }
+
+  .photo-list-tag {
+    font-size: 0.6875rem; /* 11px */
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  .photo-list-headline {
+    font-size: 0.8125rem; /* 13px */
+    color: var(--dash-muted);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 58ch;
+  }
+
+  .photo-list-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .photo-list-count {
+    font-size: 0.75rem; /* 12px */
+    color: var(--dash-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .photo-list-arrow {
+    display: inline-flex;
+    align-items: center;
+    color: var(--dash-muted);
+    transition: transform 140ms ease, color 140ms ease;
+  }
+
+  .photo-list-row:hover .photo-list-arrow {
+    transform: translateX(2px);
+    color: var(--dash-text);
+  }
+
+  @media (max-width: 768px) {
+    .photo-list-headline {
+      max-width: 32ch;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .photo-list-row {
+      padding: 10px 12px;
+    }
+
+    .photo-list-headline {
+      display: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  function setupPhotoExperience() {
+    const viewButtons = document.querySelectorAll(".photos-view-btn");
+    const gridView = document.getElementById("photos-grid");
+    const listView = document.getElementById("photos-list");
+
+    document.querySelectorAll(".folder-wrapper[data-preview-images]").forEach((wrapper) => {
+      if (wrapper.dataset.previewReady === "true") return;
+      wrapper.dataset.previewReady = "true";
+
+      let images = [];
+      try {
+        images = JSON.parse(wrapper.dataset.previewImages || "[]");
+      } catch (_) {}
+
+      if (images.length < 4) return;
+
+      const centerImg = wrapper.querySelector(".folder-card--center img");
+      const leftImg = wrapper.querySelector(".folder-card--left img");
+      const rightImg = wrapper.querySelector(".folder-card--right img");
+      if (!centerImg || !leftImg || !rightImg) return;
+
+      // On pointerleave, prep the next set of distinct images for the next time the folder opens
+      let currentIndex = 0;
+      wrapper.addEventListener("pointerleave", () => {
+        currentIndex = (currentIndex + 3) % images.length;
+        const nextCenter = images[currentIndex];
+        const nextLeft = images[(currentIndex + 1) % images.length];
+        const nextRight = images[(currentIndex + 2) % images.length];
+
+        // Preload next images silently so there is never an image load flicker
+        [nextCenter, nextLeft, nextRight].forEach((src) => {
+          if (src) {
+            const pre = new Image();
+            pre.src = src;
           }
         });
 
-        filterButtons.forEach((b) => {
-          const isMatch = b === btn;
-          b.classList.toggle("active", isMatch);
-          b.setAttribute("aria-pressed", isMatch ? "true" : "false");
-        });
+        centerImg.src = nextCenter;
+        leftImg.src = nextLeft;
+        rightImg.src = nextRight;
       });
     });
+
+    function applyView(viewMode) {
+      if (!gridView || !listView) return;
+
+      if (viewMode === "list") {
+        gridView.style.display = "none";
+        listView.style.display = "block";
+      } else {
+        gridView.style.display = "grid";
+        listView.style.display = "none";
+      }
+
+      viewButtons.forEach((btn) => {
+        const isMatch = btn.getAttribute("data-view") === viewMode;
+        btn.classList.toggle("active", isMatch);
+        btn.setAttribute("aria-checked", isMatch ? "true" : "false");
+      });
+
+      try {
+        localStorage.setItem("photos_view_preference", viewMode);
+      } catch (_) {}
+    }
+
+    viewButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const viewMode = btn.getAttribute("data-view") || "grid";
+        applyView(viewMode);
+      });
+    });
+
+    // Restore saved view preference
+    try {
+      const savedView = localStorage.getItem("photos_view_preference");
+      if (savedView === "list") {
+        applyView("list");
+      } else {
+        applyView("grid");
+      }
+    } catch (_) {}
   }
 
-  document.addEventListener("astro:page-load", setupPhotoFilters);
+  document.addEventListener("astro:page-load", setupPhotoExperience);
   if (document.readyState === "complete" || document.readyState === "interactive") {
-    setupPhotoFilters();
+    setupPhotoExperience();
   }
 </script>

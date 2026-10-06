@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { GraduationCapIcon as GraduationCap } from "@phosphor-icons/react";
+import { GraduationCap } from "../components/icons/majesticons";
 
 const experiences = [
   {
@@ -140,7 +140,7 @@ const skillClusters = [
   title="Experience — Phuc Loc Nguyen"
   pageTitle="Experience"
   description="Career timeline, employment history, and technical competencies of Nguyen Phuc Loc across 8 companies and platforms."
-  breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "Experience" }]}
+  breadcrumbs={[{ label: "Experience" }]}
   maxWidthVariant="default"
 >
   <!-- Page Header -->
@@ -161,7 +161,7 @@ const skillClusters = [
           <span style="font-size: 0.75rem; color: var(--dash-muted);">2019 — 2023 · Ho Chi Minh City</span>
         </div>
         <div style="font-size: 0.8125rem; font-weight: 500; color: var(--dash-accent); margin: 2px 0 6px;">
-          Bachelor of Digital Marketing · Graduated with Honors (Tốt nghiệp Loại Xuất sắc)
+          Bachelor of Digital Marketing · Graduated with Honors
         </div>
         <p style="margin: 0; font-size: 0.8125rem; color: var(--dash-muted); line-height: 1.55;">
           Cumulative GPA: <strong style="color: var(--dash-text);">9.4 / 10</strong>. Specialization in digital marketing economics, customer acquisition modeling, and media data analytics.
@@ -176,13 +176,13 @@ const skillClusters = [
 
     <div style="display: flex; flex-direction: column; gap: var(--space-8);">
       {experiences.map((exp) => (
-        <article style="border-bottom: 1px solid var(--dash-border); padding-bottom: var(--space-6);">
+        <article style="border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-bottom: var(--space-6);">
           <!-- Top Row: Role, Company, Period -->
           <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
             <div>
-              <span style="font-size: 1.0625rem; font-weight: 600; color: var(--dash-text);">{exp.role}</span>
+              <span style="font-size: 1.0625rem; font-weight: 600; color: var(--dash-accent);">{exp.role}</span>
               <span style="color: var(--dash-muted); margin: 0 4px;">·</span>
-              <span style="font-size: 0.9375rem; font-weight: 500; color: var(--dash-text);">{exp.company}</span>
+              <span style="font-size: 0.9375rem; font-weight: 500; color: var(--dash-accent);">{exp.company}</span>
             </div>
             <span style="font-size: 0.8125rem; color: var(--dash-muted); white-space: nowrap;">{exp.period}</span>
           </div>
@@ -197,7 +197,7 @@ const skillClusters = [
           </p>
 
           <!-- Key Achievements -->
-          <div style="margin-bottom: 12px; padding: 10px 14px; background: var(--dash-surface-subtle); border-radius: var(--radius-control); border: 1px solid var(--dash-border);">
+          <div style="margin-bottom: 12px; padding: 10px 14px; background: var(--dash-surface-subtle); border-radius: var(--radius-control); border: var(--dash-border-width, 0.9px) solid var(--dash-border);">
             <div style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
               Notable contributions
             </div>

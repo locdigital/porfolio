@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Lock, Eye, EyeOff, KeyRound, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { Lock, Eye, EyeOff, KeyRound, ArrowRight, ShieldCheck, Sparkles } from "../icons/majesticons";
 
 interface ProtectedProjectVisualsProps {
   images: string[];
@@ -138,9 +138,8 @@ export default function ProtectedProjectVisuals({
       {!isUnlocked ? (
         <div className="w-full max-w-xl mx-auto my-6">
           <div
-            className={`relative overflow-hidden rounded-3xl border border-border/80 bg-card/75 backdrop-blur-xl p-8 sm:p-11 shadow-2xl transition-all duration-300 ${
-              shake ? "animate-lock-shake border-red-500/50 ring-2 ring-red-500/20" : "hover:border-border"
-            }`}
+            className={`relative overflow-hidden rounded-3xl border border-border/80 bg-card/75 backdrop-blur-xl p-8 sm:p-11 shadow-2xl transition-all duration-300 ${shake ? "animate-lock-shake border-red-500/50 ring-2 ring-red-500/20" : "hover:border-border"
+              }`}
           >
             {/* Multi-layered Ambient Glow */}
             <div className="absolute -top-24 -right-24 w-56 h-56 bg-accent/15 rounded-full blur-3xl pointer-events-none" />
@@ -186,11 +185,10 @@ export default function ProtectedProjectVisuals({
                       }
                     }}
                     placeholder="Enter access code..."
-                    className={`w-full pl-11 pr-12 py-3.5 rounded-xl font-sans text-sm max-sm:text-[12px] placeholder:max-sm:text-[12px] outline-none transition-all shadow-inner ${
-                      isError
+                    className={`w-full pl-11 pr-12 py-3.5 rounded-xl font-sans text-sm max-sm:text-[12px] placeholder:max-sm:text-[12px] outline-none transition-all shadow-inner ${isError
                         ? "border-2 border-red-500 bg-red-500/10 text-red-500 font-medium placeholder:text-red-400/60 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
                         : "bg-secondary/40 border border-border focus:border-accent focus:ring-2 focus:ring-accent/20 text-foreground placeholder:text-muted-foreground/60"
-                    }`}
+                      }`}
                     autoFocus
                   />
 

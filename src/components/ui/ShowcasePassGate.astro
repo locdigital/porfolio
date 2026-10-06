@@ -1,6 +1,6 @@
 ---
 import { createHash } from "node:crypto";
-import { LockIcon as Lock } from "@phosphor-icons/react";
+import { Lock } from "../icons/majesticons";
 
 interface Props {
   id: string;
@@ -196,10 +196,10 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     font-family: var(--sans);
     container-type: inline-size;
     padding: 24px;
-    border: 1px solid #E6E6E3;
-    border-width: 1px !important;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
+    border-width: var(--dash-border-width, 0.9px) !important;
     border-style: solid;
-    border-color: #E6E6E3;
+    border-color: var(--dash-border, #00000014);
     border-radius: 8px;
     background: #FFFFFF;
     box-shadow: none;
@@ -288,7 +288,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     flex: 1 1 auto;
     height: 40px;
     padding: 0 12px;
-    border: 1px solid #CFCFCB;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
     border-radius: 6px;
     outline: 0;
     background: #FFFFFF;
@@ -339,7 +339,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     align-items: center;
     justify-content: center;
     padding: 0 16px;
-    border: 1px solid var(--dash-primary, #292927);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-primary, #292927);
     border-radius: 6px;
     background: var(--dash-primary, #292927);
     color: #FFFFFF;

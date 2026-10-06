@@ -186,15 +186,16 @@ To maintain a refined, high-density Notion/craft document feel rather than an ov
 | **Micro / Tag** | `0.6875rem` (`11px`) | `600` | `1.40` | Status badges, category pills, kickers, code IDs |
 | **Key Metric** | `1.75rem – 2.25rem` | `700` | `1.05` | Large metric figures (`10x`, `1B+`, `ROAS > 10`) |
 
-### 4.4 Iconography: Phosphor Icons System
-All icons across the workspace strictly standardize on **Phosphor Icons** (`@phosphor-icons/react`):
-- **Stroke & Weight:** `regular` weight by default (1.5px per 16px geometry) for high visual harmony with Plus Jakarta Sans and Notion's editorial document feel.
+### 4.4 Iconography: Majesticons System
+All icons across the workspace strictly standardize on **Majesticons** (`majesticons`):
+- **Stroke & Grid:** 24×24 grid geometry with `stroke="currentColor"` and `stroke-width="2"` (or custom `strokeWidth`), inheriting CSS text color.
 - **Sizes:**
   - Sidebar & Topbar nav items: `16px – 18px`
   - Action button icons: `13px – 14px`
   - Breadcrumbs & Carets: `12px`
   - Inline badges, kickers, & status indicators: `12px – 13px`
-- **Imports:** Always import specific icon components from `@phosphor-icons/react` using their modern named exports (e.g. `SquaresFourIcon`, `FolderSimpleIcon`, `BriefcaseIcon`, `StackIcon`, `CameraIcon`, `CertificateIcon`, `EnvelopeSimpleIcon`, `ArrowSquareOutIcon`, `PaperPlaneTiltIcon`, `CaretRightIcon`).
+- **Imports:** Always import specific icon components from `@/components/icons/majesticons` (or relative `../components/icons/majesticons`) using named exports (e.g. `Folder`, `Briefcase`, `Camera`, `Cpu`, `Award`, `Mail`, `ChevronRight`, `ArrowRight`, `Send`, `Open`, `CheckCircle`, `Lock`, `LinkedIn`, `Instagram`).
+- **Astro & React Support:** Components are fully supported in both `.astro` pages/components and `.tsx` islands with zero hydration overhead.
 
 ---
 
@@ -372,7 +373,7 @@ The background outside `.mac-window-container` must always remain `#FFFFFF`. Do 
 Always wrap new modules in the standard card structure:
 ```astro
 ---
-import { FolderSimpleIcon as FolderSimple } from "@phosphor-icons/react";
+import { Folder } from "@/components/icons/majesticons";
 ---
 <section class="dash-card">
   <div style="margin-bottom: 1rem; border-bottom: 1px solid var(--dash-border); padding-bottom: 0.75rem;">

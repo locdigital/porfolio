@@ -422,7 +422,7 @@ function personalReflectionFor(loc: PhotoLocationView): string {
     padding: 12px 0 0;
     margin-bottom: 40px;
     margin-top: -1px;
-    border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.08));
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--divider, #00000014);
   }
 
   /* ------ Nav ------ */
@@ -644,8 +644,8 @@ function personalReflectionFor(loc: PhotoLocationView): string {
 
   .efferd-gallery-item:hover .efferd-card-inner {
     box-shadow:
-      0 12px 32px -4px rgba(0, 0, 0, 0.16),
-      0 0 0 1px color-mix(in srgb, var(--text) 15%, transparent);
+      0 4px 20px -2px rgba(0, 0, 0, 0.08),
+      0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent);
   }
 
   .efferd-picture {
@@ -658,12 +658,12 @@ function personalReflectionFor(loc: PhotoLocationView): string {
     width: 100%;
     height: auto;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+    filter: none;
     backface-visibility: hidden;
   }
 
   .efferd-gallery-item:hover .efferd-img {
-    transform: scale(1.035);
+    transform: none;
   }
 
   .efferd-overlay {

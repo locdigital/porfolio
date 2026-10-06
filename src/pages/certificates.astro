@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { CheckCircleIcon as CheckCircle2 } from "@phosphor-icons/react";
+import { CheckCircle2 } from "../components/icons/majesticons";
 
 export const prerender = true;
 
@@ -92,7 +92,7 @@ const certificates = [
   title="Certificates & Credentials — Phuc Loc Nguyen"
   pageTitle="Certificates"
   description="Accredited Google certifications across Google Ads Search, GA4, Performance Max, Measurement, and Coursera."
-  breadcrumbs={[{ label: "Personal", href: "/" }, { label: "Certificates" }]}
+  breadcrumbs={[{ label: "Certificates" }]}
   maxWidthVariant="default"
 >
   <!-- Page Header -->
@@ -131,7 +131,7 @@ const certificates = [
           </div>
 
           <!-- Bottom ID Row -->
-          <div style="border-top: 1px solid var(--dash-border); padding-top: 10px; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--dash-muted);">
+          <div style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-top: 10px; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--dash-muted);">
             <span>ID: <code style="color: var(--dash-text);">{cert.id}</code></span>
             <span style="color: var(--dash-success); display: inline-flex; align-items: center; gap: 4px; font-weight: 500;">
               <CheckCircle2 size={12} aria-hidden="true" />

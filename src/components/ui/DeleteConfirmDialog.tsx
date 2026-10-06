@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { X } from "../icons/majesticons";
 
 interface DeleteConfirmDialogProps {
   open: boolean;

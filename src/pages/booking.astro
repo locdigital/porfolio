@@ -1,0 +1,904 @@
+---
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import { Calendar, Clock, ShieldCheck, ChevronLeft, ChevronRight } from "../components/icons/majesticons";
+---
+
+<DashboardLayout
+  title="Đặt lịch với Lộc — Phuc Loc Nguyen"
+  pageTitle="Calendar"
+  description="Chọn khung giờ trống trong 2 tháng tới. Lộc sẽ xác nhận sau khi duyệt yêu cầu."
+  breadcrumbs={[{ label: "Calendar" }]}
+  maxWidthVariant="default"
+>
+  <div class="booking-page-shell">
+    <header class="booking-header">
+      <div class="booking-eyebrow">
+        <Calendar size={14} aria-hidden="true" />
+        <span>Calendar / Booking</span>
+      </div>
+      <h1 class="booking-title">Đặt lịch với Lộc</h1>
+      <p class="booking-description">Chọn khung giờ trống trong 2 tháng tới. Lộc sẽ xác nhận sau khi duyệt yêu cầu.</p>
+      <div class="booking-meta-row" aria-label="Thông tin cuộc hẹn">
+        <span id="booking-meta-duration">30 phút</span>
+        <span aria-hidden="true">·</span>
+        <span>Giờ Việt Nam · UTC+7</span>
+        <span aria-hidden="true">·</span>
+        <span>Chờ duyệt</span>
+      </div>
+    </header>
+
+    <section class="booking-workspace" aria-label="Đặt lịch hẹn">
+      <div class="booking-column booking-calendar-column">
+        <div class="booking-section-head">
+          <h2>Chọn ngày</h2>
+          <span id="booking-window-label">2 tháng tới</span>
+        </div>
+
+        <div class="booking-month-nav" aria-label="Chọn tháng">
+          <button id="booking-prev-month" class="booking-icon-btn" type="button" aria-label="Tháng trước">
+            <ChevronLeft size={14} aria-hidden="true" />
+          </button>
+          <div id="booking-month-title" class="booking-month-title" aria-live="polite">—</div>
+          <button id="booking-next-month" class="booking-icon-btn" type="button" aria-label="Tháng sau">
+            <ChevronRight size={14} aria-hidden="true" />
+          </button>
+        </div>
+
+        <div class="booking-weekdays" aria-hidden="true">
+          <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
+        </div>
+        <div id="booking-date-picker" class="booking-calendar-grid" role="grid" aria-label="Lịch ngày có khung giờ trống"></div>
+
+        <div id="booking-calendar-status" class="booking-status" aria-live="polite">Đang tải giờ trống…</div>
+      </div>
+
+      <div class="booking-column booking-slots-column">
+        <div class="booking-section-head">
+          <h2>Giờ trống</h2>
+          <label class="booking-duration-control">
+            <span>Thời lượng</span>
+            <select id="booking-duration" class="booking-control" aria-label="Thời lượng cuộc hẹn">
+              <option value="30">30 phút</option>
+            </select>
+          </label>
+        </div>
+
+        <p id="booking-selected-date-label" class="booking-small-state">Chọn ngày để xem giờ trống.</p>
+        <div id="booking-slots" class="booking-slots" aria-live="polite"></div>
+      </div>
+
+      <div class="booking-column booking-form-column">
+        <div class="booking-section-head">
+          <h2>Thông tin của bạn</h2>
+          <span id="booking-form-state">Chưa chọn giờ</span>
+        </div>
+
+        <div id="booking-empty-state" class="booking-empty-state">
+          <Clock size={18} aria-hidden="true" />
+          <p>Chọn ngày và giờ để gửi yêu cầu.</p>
+          <span>Lịch hẹn chỉ được xác nhận sau khi Lộc duyệt.</span>
+        </div>
+
+        <form id="booking-form" class="booking-form" novalidate hidden>
+          <input type="text" name="company" tabindex="-1" autocomplete="off" class="booking-honeypot" aria-hidden="true" />
+          <input type="hidden" id="booking-date" />
+          <input type="hidden" id="booking-starts-at" name="startsAt" />
+          <input type="hidden" id="booking-ends-at" name="endsAt" />
+
+          <div id="booking-selected" class="booking-summary" aria-live="polite"></div>
+          <button id="booking-change-time" class="booking-change-time" type="button">Đổi giờ</button>
+
+          <div class="booking-fields">
+            <label class="booking-field">
+              <span>Tên của bạn</span>
+              <input class="booking-control" name="name" autocomplete="name" maxlength="80" placeholder="Nguyễn Phúc Lộc" required />
+            </label>
+            <label class="booking-field">
+              <span>Email</span>
+              <input class="booking-control" name="email" type="email" autocomplete="email" maxlength="120" placeholder="you@example.com" required />
+            </label>
+            <label class="booking-field">
+              <span>Chủ đề cuộc hẹn</span>
+              <input class="booking-control" name="subject" maxlength="120" placeholder="Trao đổi về growth / performance" required />
+            </label>
+            <label class="booking-field">
+              <span>Nội dung trao đổi</span>
+              <textarea class="booking-control booking-textarea" name="description" rows="3" maxlength="1000" placeholder="Bạn muốn trao đổi điều gì?"></textarea>
+            </label>
+          </div>
+
+          <button id="booking-submit" class="dash-button dash-button--primary booking-submit" type="submit">
+            Gửi yêu cầu
+          </button>
+          <p class="booking-pending-note">Lịch hẹn chỉ được xác nhận sau khi Lộc duyệt.</p>
+        </form>
+
+        <div id="booking-receipt" class="booking-receipt" hidden>
+          <span class="booking-badge">Chờ duyệt</span>
+          <h3>Yêu cầu đã được gửi</h3>
+          <p id="booking-receipt-time"></p>
+          <p>Lịch hẹn chỉ được xác nhận sau khi Lộc duyệt.</p>
+        </div>
+
+        <p id="booking-feedback" class="booking-feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="booking-privacy-note" aria-label="Booking policy">
+      <ShieldCheck size={16} aria-hidden="true" />
+      <p>Không cần Google account. Hệ thống chỉ kiểm tra bận/rảnh và không hiển thị chi tiết lịch riêng tư cho khách truy cập.</p>
+    </section>
+  </div>
+</DashboardLayout>
+
+<style>
+  .booking-page-shell {
+    width: min(100%, 1120px);
+    margin-inline: auto;
+  }
+
+  .booking-header {
+    margin-bottom: 18px;
+  }
+
+  .booking-eyebrow,
+  .booking-meta-row,
+  .booking-section-head span,
+  .booking-small-state,
+  .booking-status,
+  .booking-feedback,
+  .booking-pending-note,
+  .booking-privacy-note,
+  .booking-empty-state span {
+    color: var(--dash-muted);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .booking-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .booking-title {
+    margin: 0 0 6px;
+    color: var(--dash-text);
+    font-size: clamp(1.875rem, 3vw, 2.25rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.03em;
+    font-weight: 650;
+  }
+
+  .booking-description {
+    max-width: 58ch;
+    margin: 0;
+    color: var(--dash-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .booking-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+    margin-top: 10px;
+  }
+
+  .booking-workspace {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.38fr) minmax(190px, 0.24fr) minmax(300px, 0.38fr);
+    align-items: stretch;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 12px;
+    background: var(--dash-surface);
+    overflow: hidden;
+  }
+
+  .booking-column {
+    min-width: 0;
+    padding: 22px;
+  }
+
+  .booking-column + .booking-column {
+    border-left: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .booking-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .booking-section-head h2 {
+    margin: 0;
+    color: var(--dash-text);
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .booking-duration-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--dash-muted);
+    font-size: 0.75rem;
+  }
+
+  .booking-duration-control .booking-control {
+    width: 96px;
+    min-height: 34px;
+    padding-block: 5px;
+  }
+
+  .booking-month-nav {
+    display: grid;
+    grid-template-columns: 34px 1fr 34px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .booking-icon-btn {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: var(--radius-control);
+    background: var(--dash-surface);
+    color: var(--dash-text);
+    cursor: pointer;
+  }
+
+  .booking-icon-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .booking-icon-btn:not(:disabled):hover,
+  .booking-date-btn:not(:disabled):hover,
+  .booking-slot:not(:disabled):hover {
+    background: var(--dash-hover);
+  }
+
+  .booking-month-title {
+    text-align: center;
+    color: var(--dash-text);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .booking-weekdays,
+  .booking-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .booking-weekdays {
+    margin-bottom: 6px;
+    color: var(--dash-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .booking-date-btn {
+    position: relative;
+    min-height: 38px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--dash-text);
+    cursor: pointer;
+    font-size: 0.8125rem;
+    line-height: 1;
+  }
+
+  .booking-date-btn.is-outside-month {
+    visibility: hidden;
+  }
+
+  .booking-date-btn[disabled] {
+    color: var(--dash-muted);
+    cursor: not-allowed;
+    opacity: 0.42;
+  }
+
+  .booking-date-btn.is-today::before,
+  .booking-date-btn.is-available::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    border-radius: 999px;
+    transform: translateX(-50%);
+  }
+
+  .booking-date-btn.is-today::before {
+    inset: 3px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border-strong);
+    transform: none;
+    left: 3px;
+  }
+
+  .booking-date-btn.is-available::after {
+    bottom: 5px;
+    width: 4px;
+    height: 4px;
+    background: var(--dash-text);
+  }
+
+  .booking-date-btn[aria-pressed="true"] {
+    background: var(--dash-primary);
+    border-color: var(--dash-primary);
+    color: var(--dash-on-primary);
+    font-weight: 600;
+  }
+
+  .booking-date-btn[aria-pressed="true"]::after {
+    background: var(--dash-on-primary);
+  }
+
+  .booking-status {
+    min-height: 20px;
+    margin: 14px 0 0;
+  }
+
+  .booking-skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .booking-skeleton-grid span {
+    height: 38px;
+    border-radius: var(--radius-control);
+    background: var(--dash-surface-subtle);
+  }
+
+  .booking-slots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    max-height: 340px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+
+  .booking-slot {
+    min-height: 38px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: var(--radius-control);
+    background: var(--dash-surface);
+    color: var(--dash-text);
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+
+  .booking-slot[aria-pressed="true"] {
+    background: var(--dash-primary);
+    border-color: var(--dash-primary);
+    color: var(--dash-on-primary);
+    font-weight: 600;
+  }
+
+  .booking-small-state,
+  .booking-empty-state {
+    margin: 0 0 12px;
+  }
+
+  .booking-empty-state {
+    display: grid;
+    gap: 8px;
+    place-items: start;
+    padding: 18px;
+    border: 1px dashed var(--dash-border);
+    border-radius: 8px;
+    background: var(--dash-surface-subtle);
+  }
+
+  .booking-empty-state p {
+    margin: 0;
+    color: var(--dash-text);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .booking-form {
+    display: grid;
+    gap: 12px;
+  }
+
+  .booking-form[hidden],
+  .booking-receipt[hidden],
+  .booking-empty-state[hidden] {
+    display: none;
+  }
+
+  .booking-summary,
+  .booking-receipt {
+    padding: 12px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 8px;
+    background: var(--dash-surface-subtle);
+    color: var(--dash-text);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .booking-change-time {
+    width: fit-content;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--dash-muted);
+    font-size: 0.8125rem;
+    text-decoration: underline dotted;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
+  .booking-fields {
+    display: grid;
+    gap: 10px;
+  }
+
+  .booking-field {
+    display: grid;
+    gap: 5px;
+    color: var(--dash-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .booking-control {
+    width: 100%;
+    min-height: 38px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: var(--radius-control);
+    background: var(--dash-surface);
+    color: var(--dash-text);
+    padding: 7px 10px;
+    font: inherit;
+    font-size: 0.875rem;
+  }
+
+  .booking-control::placeholder {
+    color: var(--dash-placeholder);
+  }
+
+  .booking-textarea {
+    min-height: 82px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .booking-submit {
+    width: 100%;
+    min-height: 40px;
+  }
+
+  .booking-submit[aria-busy="true"] {
+    cursor: wait;
+  }
+
+  .booking-badge {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 8px;
+    padding: 2px 7px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: var(--radius-tag);
+    color: var(--dash-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .booking-receipt h3,
+  .booking-receipt p {
+    margin: 0;
+  }
+
+  .booking-receipt h3 {
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+
+  .booking-pending-note,
+  .booking-feedback {
+    margin: 0;
+  }
+
+  .booking-privacy-note {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-top: 14px;
+  }
+
+  .booking-privacy-note p {
+    margin: 0;
+  }
+
+  .booking-honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  @media (max-width: 1080px) {
+    .booking-workspace {
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.78fr);
+    }
+
+    .booking-form-column {
+      grid-column: 1 / -1;
+      border-left: 0 !important;
+      border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .booking-workspace {
+      grid-template-columns: 1fr;
+    }
+
+    .booking-column + .booking-column {
+      border-left: 0;
+      border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    }
+
+    .booking-column {
+      padding: 18px;
+    }
+
+    .booking-slots {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-height: none;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .booking-slots {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .booking-icon-btn,
+    .booking-date-btn,
+    .booking-slot {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  const state = {
+    ownerTimezone: "Asia/Ho_Chi_Minh",
+    selectedSlot: null,
+    selectedDate: "",
+    windowDates: [],
+    visibleMonth: "",
+    bookingWindow: null,
+    receiptTime: "",
+  };
+
+  const dateEl = document.getElementById("booking-date");
+  const datePickerEl = document.getElementById("booking-date-picker");
+  const durationEl = document.getElementById("booking-duration");
+  const slotsEl = document.getElementById("booking-slots");
+  const statusEl = document.getElementById("booking-calendar-status");
+  const formEl = document.getElementById("booking-form");
+  const submitEl = document.getElementById("booking-submit");
+  const selectedEl = document.getElementById("booking-selected");
+  const startsAtEl = document.getElementById("booking-starts-at");
+  const endsAtEl = document.getElementById("booking-ends-at");
+  const feedbackEl = document.getElementById("booking-feedback");
+  const selectedDateLabelEl = document.getElementById("booking-selected-date-label");
+  const emptyStateEl = document.getElementById("booking-empty-state");
+  const formStateEl = document.getElementById("booking-form-state");
+  const prevMonthEl = document.getElementById("booking-prev-month");
+  const nextMonthEl = document.getElementById("booking-next-month");
+  const monthTitleEl = document.getElementById("booking-month-title");
+  const windowLabelEl = document.getElementById("booking-window-label");
+  const metaDurationEl = document.getElementById("booking-meta-duration");
+  const changeTimeEl = document.getElementById("booking-change-time");
+  const receiptEl = document.getElementById("booking-receipt");
+  const receiptTimeEl = document.getElementById("booking-receipt-time");
+
+  function dateParts(date) {
+    const [year, month, day] = date.split("-").map(Number);
+    return { year, month, day };
+  }
+
+  function dateFromParts(year, month, day) {
+    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  }
+
+  function addMonths(monthKey, delta) {
+    const [year, month] = monthKey.split("-").map(Number);
+    const next = new Date(Date.UTC(year, month - 1 + delta, 1));
+    return `${next.getUTCFullYear()}-${String(next.getUTCMonth() + 1).padStart(2, "0")}`;
+  }
+
+  function monthKey(date) {
+    return date.slice(0, 7);
+  }
+
+  function formatSlot(iso) {
+    return new Intl.DateTimeFormat("vi-VN", {
+      timeZone: state.ownerTimezone,
+      weekday: "short",
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZoneName: "short",
+    }).format(new Date(iso));
+  }
+
+  function formatTime(iso) {
+    return new Intl.DateTimeFormat("vi-VN", {
+      timeZone: state.ownerTimezone,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(new Date(iso));
+  }
+
+  function formatDateLong(date) {
+    const { year, month, day } = dateParts(date);
+    return new Intl.DateTimeFormat("vi-VN", {
+      weekday: "long",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      timeZone: "UTC",
+    }).format(new Date(Date.UTC(year, month - 1, day, 12)));
+  }
+
+  function formatMonthTitle(month) {
+    const [year, monthNumber] = month.split("-").map(Number);
+    return new Intl.DateTimeFormat("vi-VN", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(year, monthNumber - 1, 1)));
+  }
+
+  function todayInVietnam() {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  }
+
+  function setLoadingCalendar() {
+    datePickerEl.innerHTML = `<div class="booking-skeleton-grid" aria-hidden="true">${Array.from({ length: 35 }, () => "<span></span>").join("")}</div>`;
+  }
+
+  function resetSelectedSlot() {
+    state.selectedSlot = null;
+    startsAtEl.value = "";
+    endsAtEl.value = "";
+    submitEl.disabled = false;
+    submitEl.removeAttribute("aria-busy");
+    emptyStateEl.hidden = false;
+    formEl.hidden = true;
+    formStateEl.textContent = "Chưa chọn giờ";
+    selectedEl.textContent = "";
+  }
+
+  function renderCalendar() {
+    if (!state.visibleMonth) return;
+    const [year, month] = state.visibleMonth.split("-").map(Number);
+    const first = new Date(Date.UTC(year, month - 1, 1));
+    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    const mondayOffset = (first.getUTCDay() + 6) % 7;
+    const availability = new Map(state.windowDates.map((item) => [item.date, item]));
+    const today = todayInVietnam();
+    const cells = [];
+
+    for (let i = 0; i < mondayOffset; i += 1) {
+      cells.push(`<button class="booking-date-btn is-outside-month" type="button" disabled tabindex="-1"></button>`);
+    }
+
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      const date = dateFromParts(year, month, day);
+      const item = availability.get(date);
+      const inWindow = state.bookingWindow && date >= state.bookingWindow.startDate && date <= state.bookingWindow.endDate;
+      const available = Boolean(item?.available);
+      const selected = date === state.selectedDate;
+      const classes = ["booking-date-btn", available ? "is-available" : "", date === today ? "is-today" : ""].filter(Boolean).join(" ");
+      const label = `${formatDateLong(date)}${available ? ", có giờ trống" : ", không có giờ trống"}`;
+      cells.push(`<button class="${classes}" type="button" role="gridcell" data-date="${date}" aria-label="${label}" aria-pressed="${selected}" ${inWindow && available ? "" : "disabled"}>${day}</button>`);
+    }
+
+    monthTitleEl.textContent = formatMonthTitle(state.visibleMonth);
+    const minMonth = state.bookingWindow ? monthKey(state.bookingWindow.startDate) : state.visibleMonth;
+    const maxMonth = state.bookingWindow ? monthKey(state.bookingWindow.endDate) : state.visibleMonth;
+    prevMonthEl.disabled = state.visibleMonth <= minMonth;
+    nextMonthEl.disabled = state.visibleMonth >= maxMonth;
+    datePickerEl.innerHTML = cells.join("");
+  }
+
+  async function loadConfig() {
+    const res = await fetch("/api/booking/config");
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error || "Không tải được cấu hình đặt lịch.");
+    state.ownerTimezone = data.settings.ownerTimezone;
+    durationEl.innerHTML = data.settings.allowedDurations.map((duration) => `<option value="${duration}" ${duration === data.settings.defaultDuration ? "selected" : ""}>${duration} phút</option>`).join("");
+    metaDurationEl.textContent = `${durationEl.value} phút`;
+    if (data.settings.bookingWindow) {
+      state.bookingWindow = data.settings.bookingWindow;
+      state.visibleMonth = monthKey(state.bookingWindow.startDate);
+      windowLabelEl.textContent = `${formatDateLong(state.bookingWindow.startDate)} → ${formatDateLong(state.bookingWindow.endDate)}`;
+    }
+  }
+
+  async function loadAvailabilityWindow() {
+    resetSelectedSlot();
+    receiptEl.hidden = true;
+    feedbackEl.textContent = "";
+    slotsEl.innerHTML = "";
+    selectedDateLabelEl.textContent = "Chọn ngày để xem giờ trống.";
+    statusEl.textContent = "Đang tải giờ trống…";
+    setLoadingCalendar();
+    const params = new URLSearchParams({ duration: durationEl.value });
+    const res = await fetch(`/api/booking/availability-window?${params}`);
+    const data = await res.json();
+    if (!data.success) {
+      statusEl.innerHTML = `${data.error || "Chưa thể tải lịch. Vui lòng thử lại sau."} <button class="booking-change-time" type="button" data-retry>Thử lại</button>`;
+      datePickerEl.innerHTML = "";
+      return;
+    }
+
+    state.ownerTimezone = data.ownerTimezone;
+    state.bookingWindow = data.bookingWindow;
+    state.windowDates = data.dates;
+    const firstAvailable = state.windowDates.find((item) => item.available);
+    state.selectedDate = firstAvailable?.date || "";
+    state.visibleMonth = monthKey(state.selectedDate || state.bookingWindow.startDate);
+    dateEl.value = state.selectedDate;
+    windowLabelEl.textContent = `${formatDateLong(state.bookingWindow.startDate)} → ${formatDateLong(state.bookingWindow.endDate)}`;
+    renderCalendar();
+
+    if (!firstAvailable) {
+      statusEl.textContent = "Không có khung giờ trống trong ngày này.";
+      return;
+    }
+
+    await loadSlots(state.selectedDate);
+  }
+
+  async function loadSlots(date) {
+    resetSelectedSlot();
+    receiptEl.hidden = true;
+    feedbackEl.textContent = "";
+    slotsEl.innerHTML = "";
+    state.selectedDate = date;
+    dateEl.value = date;
+    renderCalendar();
+    selectedDateLabelEl.textContent = formatDateLong(date);
+    statusEl.textContent = "Đang tải giờ trống…";
+
+    const params = new URLSearchParams({ date, duration: durationEl.value });
+    const res = await fetch(`/api/booking/availability?${params}`);
+    const data = await res.json();
+    if (!data.success) {
+      statusEl.innerHTML = `${data.error || "Chưa thể tải lịch. Vui lòng thử lại sau."} <button class="booking-change-time" type="button" data-retry>Thử lại</button>`;
+      return;
+    }
+
+    state.ownerTimezone = data.ownerTimezone;
+    statusEl.textContent = "Giờ hiển thị theo Việt Nam · UTC+7.";
+
+    if (!data.slots.length) {
+      slotsEl.innerHTML = `<p class="booking-small-state">Không có giờ trống trong ngày này.</p>`;
+      return;
+    }
+
+    slotsEl.innerHTML = data.slots.map((slot) => `<button class="booking-slot" type="button" data-start="${slot.startsAt}" data-end="${slot.endsAt}" aria-pressed="false">${formatTime(slot.startsAt)}</button>`).join("");
+  }
+
+  datePickerEl.addEventListener("click", (event) => {
+    const button = event.target.closest(".booking-date-btn");
+    if (!button || button.disabled || !button.dataset.date) return;
+    loadSlots(button.dataset.date);
+  });
+
+  statusEl.addEventListener("click", (event) => {
+    if (event.target.closest("[data-retry]")) loadAvailabilityWindow();
+  });
+
+  prevMonthEl.addEventListener("click", () => {
+    if (prevMonthEl.disabled) return;
+    state.visibleMonth = addMonths(state.visibleMonth, -1);
+    renderCalendar();
+  });
+
+  nextMonthEl.addEventListener("click", () => {
+    if (nextMonthEl.disabled) return;
+    state.visibleMonth = addMonths(state.visibleMonth, 1);
+    renderCalendar();
+  });
+
+  slotsEl.addEventListener("click", (event) => {
+    const button = event.target.closest(".booking-slot");
+    if (!button) return;
+    slotsEl.querySelectorAll(".booking-slot").forEach((slot) => slot.setAttribute("aria-pressed", "false"));
+    button.setAttribute("aria-pressed", "true");
+    state.selectedSlot = { startsAt: button.dataset.start, endsAt: button.dataset.end };
+    startsAtEl.value = state.selectedSlot.startsAt;
+    endsAtEl.value = state.selectedSlot.endsAt;
+    const start = formatSlot(state.selectedSlot.startsAt);
+    const end = formatTime(state.selectedSlot.endsAt);
+    selectedEl.innerHTML = `<strong>${start} → ${end}</strong><br>${durationEl.value} phút · Giờ Việt Nam (UTC+7)`;
+    emptyStateEl.hidden = true;
+    formEl.hidden = false;
+    formStateEl.textContent = "Sẵn sàng gửi";
+    feedbackEl.textContent = "";
+  });
+
+  changeTimeEl.addEventListener("click", () => {
+    resetSelectedSlot();
+    slotsEl.querySelectorAll(".booking-slot").forEach((slot) => slot.setAttribute("aria-pressed", "false"));
+    slotsEl.scrollIntoView({ block: "center", behavior: "smooth" });
+  });
+
+  formEl.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!state.selectedSlot) return;
+    submitEl.disabled = true;
+    submitEl.setAttribute("aria-busy", "true");
+    submitEl.textContent = "Đang gửi…";
+    feedbackEl.textContent = "Đang gửi yêu cầu…";
+    const form = new FormData(formEl);
+    const payload = Object.fromEntries(form.entries());
+    payload.duration = Number(durationEl.value);
+    payload.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || state.ownerTimezone;
+    const res = await fetch("/api/booking/request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Idempotency-Key": crypto.randomUUID() },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    submitEl.textContent = "Gửi yêu cầu";
+    submitEl.removeAttribute("aria-busy");
+    if (!data.success) {
+      feedbackEl.textContent = data.error || "Khung giờ này không còn trống. Vui lòng chọn giờ khác.";
+      submitEl.disabled = false;
+      await loadSlots(state.selectedDate);
+      return;
+    }
+    state.receiptTime = `${formatSlot(data.booking.startsAt)} → ${formatTime(data.booking.endsAt)}`;
+    formEl.hidden = true;
+    emptyStateEl.hidden = true;
+    receiptEl.hidden = false;
+    receiptTimeEl.textContent = state.receiptTime;
+    feedbackEl.textContent = "";
+    formStateEl.textContent = "Chờ duyệt";
+    try {
+      await loadAvailabilityWindow();
+    } finally {
+      formEl.hidden = true;
+      emptyStateEl.hidden = true;
+      formStateEl.textContent = "Chờ duyệt";
+      feedbackEl.textContent = "";
+    }
+    receiptEl.hidden = false;
+    receiptTimeEl.textContent = state.receiptTime;
+  });
+
+  durationEl.addEventListener("change", () => {
+    metaDurationEl.textContent = `${durationEl.value} phút`;
+    loadAvailabilityWindow();
+  });
+
+  loadConfig().then(loadAvailabilityWindow).catch((error) => {
+    statusEl.innerHTML = `${error.message || "Chưa thể tải lịch. Vui lòng thử lại sau."} <button class="booking-change-time" type="button" data-retry>Thử lại</button>`;
+  });
+</script>

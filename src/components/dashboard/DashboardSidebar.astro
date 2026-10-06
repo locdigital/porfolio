@@ -1,16 +1,20 @@
 ---
 import { 
-  SquaresFourIcon as SquaresFour, 
-  FolderSimpleIcon as FolderSimple, 
-  BriefcaseIcon as Briefcase, 
-  StackIcon as Stack, 
-  CameraIcon as Camera, 
-  CpuIcon as Cpu, 
-  CertificateIcon as Certificate, 
-  EnvelopeSimpleIcon as EnvelopeSimple, 
-  CaretRightIcon as CaretRight,
-  XIcon as X
-} from "@phosphor-icons/react";
+  SquaresFour, 
+  FolderSimple, 
+  Briefcase, 
+  Stack, 
+  Camera, 
+  GearIcon, 
+  CertificateIcon, 
+  ContactIcon, 
+  Calendar,
+  CaretRight,
+  X,
+  LinkedIn,
+  Instagram,
+  Pexels
+} from "../icons/majesticons";
 
 interface Props {
   currentPath?: string;
@@ -46,6 +50,7 @@ const navSections: NavSection[] = [
     group: "Workspace",
     items: [
       { label: "Overview", href: "/", icon: SquaresFour, exact: true },
+      { label: "Experience", href: "/experience", icon: Briefcase },
       {
         label: "Selected work",
         href: "/work",
@@ -59,23 +64,9 @@ const navSections: NavSection[] = [
         ],
       },
       {
-        label: "Experience",
-        href: "/experience",
-        icon: Briefcase,
-        children: [
-          { label: "Career timeline", href: "/experience#career-timeline" },
-          { label: "Skill clusters", href: "/experience#skill-clusters" },
-        ],
-      },
-      {
         label: "Services",
         href: "/services",
         icon: Stack,
-        children: [
-          { label: "Capabilities", href: "/services#heading-capabilities" },
-          { label: "Pricing", href: "/services#heading-pricing" },
-          { label: "Partners", href: "/services#heading-partners" },
-        ],
       },
     ]
   },
@@ -92,23 +83,15 @@ const navSections: NavSection[] = [
           { label: "Đà Lạt", href: "/photos/da-lat" },
         ],
       },
-      { label: "Gear", href: "/gear", icon: Cpu },
-      {
-        label: "Certificates",
-        href: "/certificates",
-        icon: Certificate,
-        children: [
-          { label: "Google Ads", href: "/certificates#credentials" },
-          { label: "Analytics", href: "/certificates#credentials" },
-          { label: "Project Management", href: "/certificates#credentials" },
-        ],
-      },
+      { label: "Gear", href: "/gear", icon: GearIcon },
+      { label: "Certificates", href: "/certificates", icon: CertificateIcon },
     ]
   },
   {
     group: "Connect",
     items: [
-      { label: "Contact", href: "/contact", icon: EnvelopeSimple },
+      { label: "Calendar", href: "/booking", icon: Calendar },
+      { label: "Contact", href: "/contact", icon: ContactIcon },
     ]
   }
 ];
@@ -178,20 +161,29 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
                 return (
                   <li>
                     {hasChildren ? (
-                      <button
-                        type="button"
-                        class={`dash-nav-link dash-nav-disclosure ${active ? "active" : ""}`}
-                        aria-expanded="false"
-                        aria-controls={treeId}
-                        data-nav-disclosure
-                        data-nav-key={item.href}
-                      >
-                        <div class="dash-nav-link-left">
-                          <Icon size={16} strokeWidth={active ? 2 : 1.75} aria-hidden="true" />
-                          <span>{item.label}</span>
-                        </div>
-                        <CaretRight className="dash-nav-disclosure-icon" size={13} aria-hidden="true" />
-                      </button>
+                      <div class={`dash-nav-link dash-nav-parent ${active ? "active" : ""}`}>
+                        <a
+                          href={item.href}
+                          class="dash-nav-parent-link"
+                          aria-current={current ? "page" : undefined}
+                        >
+                          <div class="dash-nav-link-left">
+                            <Icon size={16} strokeWidth={active ? 2 : 1.75} aria-hidden="true" />
+                            <span>{item.label}</span>
+                          </div>
+                        </a>
+                        <button
+                          type="button"
+                          class="dash-nav-disclosure"
+                          aria-label={`Toggle ${item.label} pages`}
+                          aria-expanded="false"
+                          aria-controls={treeId}
+                          data-nav-disclosure
+                          data-nav-key={item.href}
+                        >
+                          <CaretRight className="dash-nav-disclosure-icon" size={13} aria-hidden="true" />
+                        </button>
+                      </div>
                     ) : (
                       <a
                         href={item.href}
@@ -239,19 +231,15 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
         <span id="dash-saigon-time" style="font-variant-numeric:tabular-nums;">--:--</span>
       </div>
 
-      <!-- Direct Email Copy -->
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px;">hi@loc.digital</span>
-        <button 
-          id="dash-copy-email-btn" 
-          class="dash-button dash-button--ghost" 
-          style="min-height:26px;padding:2px 8px;font-size:0.75rem;"
-          aria-label="Copy email address"
+      <!-- Direct Email Link -->
+      <div>
+        <a 
+          href="mailto:hi@loc.digital" 
+          class="dash-sidebar-email"
         >
-          Copy
-        </button>
+          hi@loc.digital
+        </a>
       </div>
-      <div id="dash-copy-feedback" aria-live="polite" style="position:absolute;left:-9999px;"></div>
 
       <!-- Social Links Row -->
       <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
@@ -263,11 +251,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
           title="LinkedIn"
           aria-label="LinkedIn Profile"
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-            <rect x="2" y="9" width="4" height="12"></rect>
-            <circle cx="4" cy="4" r="2"></circle>
-          </svg>
+          <LinkedIn size={15} strokeWidth={1.8} />
         </a>
         <a 
           href="https://www.instagram.com/henrygoodkid" 
@@ -277,11 +261,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
           title="Instagram"
           aria-label="Instagram Profile"
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-          </svg>
+          <Instagram size={15} strokeWidth={1.8} />
         </a>
         <a 
           href="https://www.pexels.com/@henrygoodkid" 
@@ -291,7 +271,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
           title="Pexels Photography"
           aria-label="Pexels Photography"
         >
-          <Camera size={15} strokeWidth={1.8} />
+          <Pexels size={15} strokeWidth={1.8} />
         </a>
       </div>
     </div>
@@ -301,8 +281,6 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
 
 <script is:inline>
   function setupSidebarInteractions() {
-    const copyBtn = document.getElementById("dash-copy-email-btn");
-    const feedback = document.getElementById("dash-copy-feedback");
     const timeEl = document.getElementById("dash-saigon-time");
     const closeBtn = document.getElementById("dash-drawer-close");
     const sidebar = document.getElementById("dash-sidebar");
@@ -318,63 +296,121 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
       document.body.style.overflow = "";
     });
 
-    const disclosureButtons = document.querySelectorAll("[data-nav-disclosure]");
+    const disclosureButtons = Array.from(document.querySelectorAll("[data-nav-disclosure]"));
 
+    const playDisclosureClick = () => {
+      try {
+        const AudioContext = window.AudioContext;
+        if (!AudioContext) return;
+        const audioContext = window._dashClickAudioContext || new AudioContext();
+        window._dashClickAudioContext = audioContext;
+
+        const now = audioContext.currentTime;
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "triangle";
+        oscillator.frequency.setValueAtTime(1200, now);
+        oscillator.frequency.exponentialRampToValueAtTime(520, now + 0.035);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.04, now + 0.006);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+        oscillator.start(now);
+        oscillator.stop(now + 0.06);
+      } catch {}
+    };
+
+    // Clean up legacy multi-open storage keys if present
+    try {
+      for (let i = window.sessionStorage.length - 1; i >= 0; i--) {
+        const k = window.sessionStorage.key(i);
+        if (k && k.startsWith("dash-nav-expanded:")) {
+          window.sessionStorage.removeItem(k);
+        }
+      }
+    } catch {}
+
+    const setExpanded = (btn, isExpanded) => {
+      btn.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+      const controlsId = btn.getAttribute("aria-controls");
+      const tree = controlsId ? document.getElementById(controlsId) : null;
+      if (tree) {
+        tree.hidden = !isExpanded;
+      }
+    };
+
+    // Find if any folder contains or matches the active page
+    const activePageButton = disclosureButtons.find((btn) => {
+      const controlsId = btn.getAttribute("aria-controls");
+      const tree = controlsId ? document.getElementById(controlsId) : null;
+      return (
+        Boolean(tree?.querySelector(".dash-nav-tree-link.active")) ||
+        Boolean(btn.closest(".dash-nav-parent")?.classList.contains("active"))
+      );
+    });
+
+    let savedFolder = null;
+    try {
+      savedFolder = window.sessionStorage.getItem("dash-nav-active-folder");
+    } catch {}
+
+    let buttonToOpen = null;
+    if (activePageButton) {
+      buttonToOpen = activePageButton;
+    } else if (savedFolder && savedFolder !== "none") {
+      buttonToOpen = disclosureButtons.find(
+        (btn) =>
+          btn.dataset.navKey === savedFolder ||
+          btn.getAttribute("aria-controls") === savedFolder
+      ) || null;
+    }
+
+    if (buttonToOpen) {
+      try {
+        window.sessionStorage.setItem(
+          "dash-nav-active-folder",
+          buttonToOpen.dataset.navKey || buttonToOpen.getAttribute("aria-controls") || ""
+        );
+      } catch {}
+    }
+
+    // Strictly enforce single-open: open only buttonToOpen, close all others
     disclosureButtons.forEach((button) => {
+      setExpanded(button, button === buttonToOpen);
+
       if (button.dataset.navReady === "true") return;
       button.dataset.navReady = "true";
 
-      const controlsId = button.getAttribute("aria-controls");
-      const tree = controlsId ? document.getElementById(controlsId) : null;
-      const storageKey = `dash-nav-expanded:${button.dataset.navKey || controlsId || ""}`;
-
-      const setExpanded = (expanded) => {
-        button.setAttribute("aria-expanded", expanded ? "true" : "false");
-        if (tree) tree.hidden = !expanded;
-        try {
-          window.sessionStorage.setItem(storageKey, expanded ? "true" : "false");
-        } catch {
-          /* Ignore storage errors; the disclosure still works for this page. */
-        }
-      };
-
-      try {
-        setExpanded(window.sessionStorage.getItem(storageKey) === "true");
-      } catch {
-        setExpanded(false);
-      }
-
       button.addEventListener("click", () => {
-        setExpanded(button.getAttribute("aria-expanded") !== "true");
+        playDisclosureClick();
+        const isCurrentlyOpen = button.getAttribute("aria-expanded") === "true";
+        if (isCurrentlyOpen) {
+          setExpanded(button, false);
+          try {
+            window.sessionStorage.setItem("dash-nav-active-folder", "none");
+          } catch {}
+        } else {
+          // Close all other disclosures
+          disclosureButtons.forEach((other) => {
+            if (other !== button) {
+              setExpanded(other, false);
+            }
+          });
+          // Open this disclosure
+          setExpanded(button, true);
+          try {
+            window.sessionStorage.setItem(
+              "dash-nav-active-folder",
+              button.dataset.navKey || button.getAttribute("aria-controls") || ""
+            );
+          } catch {}
+        }
       });
     });
 
-    // Copy email handler with accessible announcement
-    copyBtn?.addEventListener("click", async () => {
-      const email = "hi@loc.digital";
-      try {
-        if (navigator.clipboard) {
-          await navigator.clipboard.writeText(email);
-        } else {
-          const textarea = document.createElement("textarea");
-          textarea.value = email;
-          textarea.style.position = "fixed";
-          textarea.style.opacity = "0";
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textarea);
-        }
-        copyBtn.textContent = "Copied!";
-        if (feedback) feedback.textContent = "Email address copied to clipboard";
-        setTimeout(() => {
-          copyBtn.textContent = "Copy";
-          if (feedback) feedback.textContent = "";
-        }, 2000);
-      } catch (err) {
-        console.error("Clipboard write failed", err);
-      }
-    });
 
     // Update Saigon time once per minute
     function updateSaigonTime() {

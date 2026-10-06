@@ -4,8 +4,7 @@ import '../styles/dashboard.css';
 import { ViewTransitions } from 'astro:transitions';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
-import DashboardFooter from '../components/dashboard/DashboardFooter.astro';
-import { ListIcon as Menu, CaretRightIcon as ChevronRight } from '@phosphor-icons/react';
+import { Menu, ChevronRight } from '../components/icons/majesticons';
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
 
 interface Props {
@@ -141,11 +140,6 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
 
             <!-- Page Content Slot -->
             <slot />
-          </div>
-
-          <!-- Quiet Workspace Footer -->
-          <div class={contentClass} style="margin-top: auto;">
-            <DashboardFooter />
           </div>
         </main>
 

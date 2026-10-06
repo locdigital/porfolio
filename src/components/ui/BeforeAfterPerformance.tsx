@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, GripHorizontal } from "lucide-react";
+import { ChevronLeft, ChevronRight, GripHorizontal } from "../icons/majesticons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 
@@ -257,7 +257,7 @@ export default function BeforeAfterPerformance({
     if (event.button !== 0) return;
     try {
       event.currentTarget.setPointerCapture(event.pointerId);
-    } catch (_) {}
+    } catch (_) { }
     handleStart(event.clientX, event.clientY);
   };
 
@@ -271,7 +271,7 @@ export default function BeforeAfterPerformance({
       if (event.currentTarget.hasPointerCapture(event.pointerId)) {
         event.currentTarget.releasePointerCapture(event.pointerId);
       }
-    } catch (_) {}
+    } catch (_) { }
     setDragState(false);
   };
 
@@ -338,7 +338,7 @@ export default function BeforeAfterPerformance({
           gap: clamp(28px, 5vw, 72px);
           align-items: center;
           padding: clamp(56px, 8vw, 104px) 0;
-          border-bottom: 1px solid var(--divider);
+          border-bottom: var(--dash-border-width, 0.9px) solid var(--divider);
         }
 
         .bap-copy {
@@ -350,7 +350,7 @@ export default function BeforeAfterPerformance({
 
         .bap-badge {
           align-self: flex-start;
-          border: 1px solid var(--divider);
+          border: var(--dash-border-width, 0.9px) solid var(--divider);
           border-radius: 999px;
           color: var(--muted);
           font-family: var(--mono);
@@ -430,7 +430,7 @@ export default function BeforeAfterPerformance({
           --bap-pad: 14px;
           align-self: center;
           background: rgba(255, 255, 255, 0.58);
-          border: 1px solid var(--divider);
+          border: var(--dash-border-width, 0.9px) solid var(--divider);
           border-radius: var(--bap-outer-radius);
           box-shadow: 0 18px 52px rgba(28, 28, 28, 0.08);
           padding: var(--bap-pad);
@@ -459,7 +459,7 @@ export default function BeforeAfterPerformance({
           align-items: center;
           gap: 6px;
           background: rgba(255, 255, 255, 0.9);
-          border: 1px solid var(--divider);
+          border: var(--dash-border-width, 0.9px) solid var(--divider);
           border-radius: 999px;
           padding: 5px 12px;
           font-family: var(--sans);
@@ -605,7 +605,7 @@ export default function BeforeAfterPerformance({
 
         .bap-metric {
           background: rgba(255, 255, 255, 0.72);
-          border: 1px solid var(--divider);
+          border: var(--dash-border-width, 0.9px) solid var(--divider);
           border-radius: 12px;
           padding: 12px;
         }

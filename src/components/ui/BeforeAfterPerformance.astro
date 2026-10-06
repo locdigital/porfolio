@@ -43,7 +43,7 @@ export interface Props {
 }
 
 const {
-  badge = "Performance compare",
+  badge = "",
   heading = "Before / after performance lift",
   description = "Drag the slider to compare before and after states.",
   categoryLabel,
@@ -228,7 +228,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
     gap: clamp(28px, 5vw, 72px);
     align-items: center;
     padding: clamp(56px, 8vw, 104px) 0;
-    border-bottom: 1px solid var(--divider);
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--divider);
   }
 
   .bap-copy {
@@ -240,7 +240,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   .bap-badge {
     align-self: flex-start;
-    border: 1px solid var(--divider);
+    border: var(--dash-border-width, 0.9px) solid var(--divider);
     border-radius: 999px;
     color: var(--muted);
     font-family: var(--mono);
@@ -320,7 +320,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
     --bap-pad: 12px;
     align-self: center;
     background: var(--dash-surface, #ffffff);
-    border: 1px solid var(--dash-border, #e8e6dc);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
     border-radius: var(--bap-outer-radius);
     box-shadow: var(--dash-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
     padding: var(--bap-pad);
@@ -481,7 +481,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   .bap-metric {
     background: rgba(255, 255, 255, 0.72);
-    border: 1px solid var(--divider);
+    border: var(--dash-border-width, 0.9px) solid var(--divider);
     border-radius: 12px;
     padding: 12px;
   }

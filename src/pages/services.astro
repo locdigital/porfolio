@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { ArrowUpRightIcon as ArrowUpRight } from "@phosphor-icons/react";
+import { ArrowUpRight, Check } from "../components/icons/majesticons";
 
 const services = [
   {
@@ -144,9 +144,9 @@ const pricingPlans = [
 const academicPartners = [
   { name: "UEH University", role: "Academic Workshop Partner", logo: "/assets/logos/logo-ueh.png" },
   { name: "Foreign Trade Univ (FTU)", role: "Campus Community Partner", logo: "/assets/logos/logo-ftu.png" },
-  { name: "FPT University", role: "Career Guidance Partner", logo: "/assets/logos/logo-fpt.png" },
-  { name: "RMIT Vietnam", role: "Student Community Partner", logo: "/assets/logos/logo-rmit.png" },
-  { name: "ĐH Bách Khoa (HCMUT)", role: "Tech Community Partner", logo: "/assets/logos/logo-hcmut.png" },
+  { name: "FPT University", role: "Career Guidance Partner", logo: "/assets/logos/logo-fpt.svg" },
+  { name: "RMIT Vietnam", role: "Student Community Partner", logo: "/assets/logos/logo-rmit.svg" },
+  { name: "ĐH Bách Khoa (HCMUT)", role: "Tech Community Partner", logo: "/assets/logos/logo-hcmut.svg" },
   { name: "Đại học Văn Lang (VLU)", role: "Education & Workshop Partner", logo: "/assets/logos/logo-vlu.png" },
   { name: "Đại học Hoa Sen (HSU)", role: "Community Media Partner", logo: "/assets/logos/logo-hsu.png" },
   { name: "Đại học Tôn Đức Thắng (TDTU)", role: "Academic Outreach Partner", logo: "/assets/logos/logo-tdtu.png" },
@@ -172,12 +172,12 @@ const academicPartners = [
   <section class="page-section" aria-labelledby="heading-capabilities">
     <h2 id="heading-capabilities" class="section-title">Modular capabilities (6 offerings)</h2>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+    <div class="services-grid">
       {services.map((s) => (
-        <article class="dash-card" style="--card-outer-radius: 20px; --card-padding: 16px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;">
+        <article class="dash-card service-capability-card" style="--card-outer-radius: 12px; --card-padding: 16px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <span class="dash-tag">{s.category}</span>
+              <span class="dash-tag dash-tag--accent">{s.category}</span>
               <span style="font-size: 0.75rem; color: var(--dash-muted);">{s.id}</span>
             </div>
 
@@ -190,7 +190,7 @@ const academicPartners = [
             </p>
 
             <!-- Scope Checklist (Concentric nested surface block) -->
-            <div class="dash-card-nested-block" style="margin-bottom: 14px; padding: 10px 12px; background: var(--dash-surface-subtle); border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); border: 1px solid var(--dash-border);">
+            <div class="dash-card-nested-block" style="margin-bottom: 14px; padding: 10px 12px; background: var(--dash-surface-subtle); border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); border: var(--dash-border-width, 0.9px) solid var(--dash-border);">
               <div style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
                 Scope & deliverables
               </div>
@@ -211,19 +211,6 @@ const academicPartners = [
               ))}
             </div>
           </div>
-
-          <!-- Bottom Inquire Row -->
-          <div style="border-top: 1px solid var(--dash-border); padding-top: 10px; display: flex; align-items: center; justify-content: space-between;">
-            <span style="font-size: 0.75rem; color: var(--dash-muted);">Monthly or Project</span>
-            <a 
-              href={`mailto:hi@loc.digital?subject=Inquiry:%20${encodeURIComponent(s.title)}`}
-              class="dash-button dash-button--secondary"
-              style="min-height: 30px; padding: 3px 10px; font-size: 0.75rem;"
-            >
-              <span>Inquire</span>
-              <ArrowUpRight size={11} aria-hidden="true" />
-            </a>
-          </div>
         </article>
       ))}
     </div>
@@ -231,66 +218,71 @@ const academicPartners = [
 
   <!-- Pricing Plans & Retainer Structures -->
   <section class="page-section" aria-labelledby="heading-pricing">
-    <h2 id="heading-pricing" class="section-title">Pricing plans & retainers</h2>
-    <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 16px;">
+    <h2 id="heading-pricing" class="pricing-section-title">Pricing plans & retainers</h2>
+    <p class="pricing-section-desc">
       Dedicated monthly retainers for ongoing growth acceleration or fixed-scope engineering packages.
     </p>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+    <div class="pricing-grid">
       {pricingPlans.map((plan) => (
-        <div 
-          class="dash-card" 
-          style="display: flex; flex-direction: column; justify-content: space-between;"
+        <article 
+          class={`pricing-card ${plan.popular ? "pricing-card--recommended" : ""}`}
         >
-          <div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <span class="dash-tag">{plan.category}</span>
-              {plan.popular && (
-                <span class="dash-tag dash-tag--accent" style="font-weight: 600;">RECOMMENDED</span>
-              )}
-            </div>
-
-            <h3 class="item-title" style="margin-bottom: 10px;">
-              {plan.title}
-            </h3>
-
-            <!-- Price -->
-            <div style="padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--dash-border);">
-              <div style="display: flex; align-items: baseline; gap: 4px;">
-                <span style="font-size: 1.75rem; font-weight: 600; color: var(--dash-text); font-variant-numeric: tabular-nums;">
-                  {plan.monthlyPrice}
-                </span>
-                <span style="font-size: 0.8125rem; color: var(--dash-muted);">/ month</span>
-              </div>
-              <div style="font-size: 0.75rem; color: var(--dash-muted); margin-top: 2px;">
-                or {plan.projectPrice} fixed scope
-              </div>
-            </div>
-
-            <p style="font-size: 0.8125rem; line-height: 1.55; color: var(--dash-muted); margin: 0 0 14px;">
-              {plan.description}
-            </p>
-
-            <!-- Deliverables -->
-            <ul style="list-style: none; padding: 0; margin: 0 0 16px; display: flex; flex-direction: column; gap: 6px;">
-              {plan.deliverables.map((item) => (
-                <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.45; color: var(--dash-text);">
-                  <span class="dash-bullet" aria-hidden="true"></span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+          <!-- 1. Category label & optional recommendation label -->
+          <div class="pricing-meta-row">
+            <span class="pricing-category">{plan.category}</span>
+            {plan.popular && (
+              <span class="pricing-recommended-badge">Recommended</span>
+            )}
           </div>
 
-          <a 
-            href={`mailto:hi@loc.digital?subject=Inquiry:%20${encodeURIComponent(plan.title)}`}
-            class={plan.popular ? "dash-button dash-button--primary" : "dash-button dash-button--secondary"}
-            style="width: 100%;"
-          >
-            <span>Book retainer</span>
-            <ArrowUpRight size={13} aria-hidden="true" />
-          </a>
-        </div>
+          <!-- 2. Plan name -->
+          <h3 class="pricing-plan-title">
+            {plan.title}
+          </h3>
+
+          <!-- 3. Monthly price & 4. Fixed-scope alternative -->
+          <div class="pricing-price-block">
+            <div class="pricing-monthly-row">
+              <span class="pricing-amount">{plan.monthlyPrice}</span>
+              <span class="pricing-interval">/ month</span>
+            </div>
+            <div class="pricing-fixed-scope">
+              or {plan.projectPrice} fixed scope
+            </div>
+          </div>
+
+          <!-- 5. Thin divider -->
+          <hr class="pricing-divider" />
+
+          <!-- 6. Short description -->
+          <p class="pricing-description">
+            {plan.description}
+          </p>
+
+          <!-- 7. Feature list -->
+          <ul class="pricing-features">
+            {plan.deliverables.map((item) => (
+              <li class="pricing-feature-item">
+                <span class="pricing-check-icon-wrap" aria-hidden="true">
+                  <Check size={13} strokeWidth={2.2} />
+                </span>
+                <span class="pricing-feature-text">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <!-- 8. Booking button anchored at the bottom -->
+          <div class="pricing-action-wrap">
+            <a 
+              href={`mailto:hi@loc.digital?subject=Inquiry:%20${encodeURIComponent(plan.title)}`}
+              class={`pricing-btn ${plan.popular ? "pricing-btn--primary" : "pricing-btn--secondary"}`}
+            >
+              <span>Book retainer</span>
+              <ArrowUpRight size={13} aria-hidden="true" />
+            </a>
+          </div>
+        </article>
       ))}
     </div>
   </section>
@@ -302,24 +294,525 @@ const academicPartners = [
       Workshops, career guidance, and student empowerment initiatives hosted in partnership with 8 leading universities across Vietnam.
     </p>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px;">
-      {academicPartners.map((p) => (
-        <div class="dash-card" style="padding: 12px; display: flex; align-items: center; gap: 10px;">
-          <img 
-            src={p.logo} 
-            alt={p.name} 
-            style="width: 32px; height: 32px; object-fit: contain; flex-shrink: 0;"
-          />
-          <div>
-            <div style="font-size: 0.8125rem; font-weight: 600; color: var(--dash-text);">
-              {p.name}
-            </div>
-            <div style="font-size: 0.75rem; color: var(--dash-muted);">
-              {p.role}
+    <div class="partners-marquee-container" aria-label="Academic & community partners">
+      <div class="partners-marquee-track">
+        {[...academicPartners, ...academicPartners].map((p, idx) => (
+          <div class="dash-card partner-card" aria-hidden={idx >= academicPartners.length ? "true" : undefined}>
+            <img 
+              src={p.logo} 
+              alt={idx < academicPartners.length ? p.name : ""} 
+              class="partner-logo"
+              loading="lazy"
+            />
+            <div class="partner-meta">
+              <div class="partner-name">
+                {p.name}
+              </div>
+              <div class="partner-role">
+                {p.role}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </section>
 </DashboardLayout>
+
+<style>
+  /* ============================================================
+     MODULAR CAPABILITIES SECTION (Grid on Desktop, Swipe on Mobile)
+     ============================================================ */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .services-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 20px;
+      -webkit-overflow-scrolling: touch;
+      gap: 14px;
+      margin-inline: -20px;
+      padding-inline: 20px;
+      padding-top: 4px;
+      padding-bottom: 14px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .services-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .service-capability-card {
+      flex: 0 0 clamp(280px, 82vw, 340px);
+      width: clamp(280px, 82vw, 340px);
+      scroll-snap-align: start;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .services-grid {
+      margin-inline: -16px;
+      padding-inline: 16px;
+      scroll-padding-inline: 16px;
+    }
+
+    .service-capability-card {
+      flex: 0 0 270px;
+      width: 270px;
+    }
+  }
+
+  /* ============================================================
+     NOTION-INSPIRED PRICING SECTION
+     ============================================================ */
+  
+  .pricing-section-title {
+    font-size: 1.875rem; /* 30px */
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--dash-text);
+    margin: 0 0 8px;
+    text-align: left;
+  }
+
+  @media (max-width: 640px) {
+    .pricing-section-title {
+      font-size: 1.625rem; /* 26px */
+    }
+  }
+
+  .pricing-section-desc {
+    font-size: 0.9375rem; /* 15px */
+    line-height: 1.6;
+    color: var(--dash-muted);
+    margin: 0 0 28px;
+    max-width: 64ch;
+    text-align: left;
+  }
+
+  /* Grid Layout: Desktop shared-row alignment */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto auto auto auto auto 1fr auto;
+    column-gap: 20px;
+    row-gap: 0;
+    align-items: stretch;
+  }
+
+  /* Pricing Card */
+  .pricing-card {
+    grid-row: 1 / 8;
+    display: grid;
+    grid-template-rows: subgrid;
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 8px;
+    padding: 24px;
+    box-sizing: border-box;
+    box-shadow: none;
+    transition: border-color 140ms ease;
+  }
+
+  .pricing-card:nth-child(1) {
+    grid-column: 1;
+  }
+
+  .pricing-card:nth-child(2) {
+    grid-column: 2;
+  }
+
+  .pricing-card:nth-child(3) {
+    grid-column: 3;
+  }
+
+  /* Recommended Plan subtle emphasis */
+  .pricing-card--recommended {
+    border-color: var(--dash-border-strong);
+  }
+
+  /* Row 1: Header / Category & Badge */
+  .pricing-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 24px;
+    margin: 0 0 12px;
+  }
+
+  .pricing-category {
+    font-size: 0.75rem; /* 12px */
+    font-weight: 500;
+    color: var(--dash-muted);
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+  }
+
+  .pricing-recommended-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.6875rem; /* 11px */
+    font-weight: 500;
+    color: var(--dash-text);
+    background: var(--dash-surface-subtle);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 4px;
+    padding: 1px 7px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  /* Row 2: Plan Title */
+  .pricing-plan-title {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--dash-text);
+    margin: 0 0 14px;
+  }
+
+  /* Row 3: Price Block */
+  .pricing-price-block {
+    margin: 0 0 16px;
+  }
+
+  .pricing-monthly-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .pricing-amount {
+    font-size: 1.875rem; /* 30px */
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--dash-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pricing-interval {
+    font-size: 0.8125rem; /* 13px */
+    color: var(--dash-muted);
+    font-weight: 400;
+  }
+
+  .pricing-fixed-scope {
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.4;
+    color: var(--dash-muted);
+    margin-top: 4px;
+  }
+
+  /* Row 4: Thin Divider */
+  .pricing-divider {
+    border: none;
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    margin: 0 0 16px;
+    width: 100%;
+  }
+
+  /* Row 5: Description */
+  .pricing-description {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.55;
+    color: var(--dash-muted);
+    margin: 0 0 18px;
+  }
+
+  /* Row 6: Feature List */
+  .pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .pricing-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pricing-check-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 21px; /* Center-aligned with 14px/1.5 first line of text */
+    flex-shrink: 0;
+    color: var(--dash-muted);
+  }
+
+  .pricing-feature-text {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.5;
+    color: var(--dash-text);
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Row 7: Action Button */
+  .pricing-action-wrap {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  .pricing-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 42px;
+    min-height: 42px;
+    border-radius: 6px;
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500;
+    text-decoration: none !important;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+
+  .pricing-btn span {
+    text-decoration: none;
+  }
+
+  .pricing-btn:hover {
+    text-decoration: none !important;
+  }
+
+  .pricing-btn:hover span,
+  .pricing-btn:focus-visible span {
+    text-decoration: underline !important;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1.5px;
+  }
+
+  .pricing-btn:focus-visible {
+    outline: 2px solid var(--dash-primary);
+    outline-offset: 2px;
+  }
+
+  .pricing-btn--secondary {
+    background: var(--dash-surface);
+    color: var(--dash-text);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .pricing-btn--secondary:hover {
+    background: var(--dash-hover);
+    border-color: var(--dash-border-strong);
+    color: var(--dash-text);
+  }
+
+  .pricing-btn--primary {
+    background: #0071e3;
+    color: #ffffff !important;
+    border: var(--dash-border-width, 0.9px) solid #0071e3;
+    box-shadow: none;
+  }
+
+  .pricing-btn--primary:hover {
+    background: #0062c4;
+    border-color: #0062c4;
+    color: #ffffff !important;
+    box-shadow: none;
+  }
+
+  /* Responsive: Switch to horizontal swipe on mobile & tablet */
+  @media (max-width: 880px) {
+    .pricing-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 20px;
+      -webkit-overflow-scrolling: touch;
+      gap: 16px;
+      margin-inline: -20px;
+      padding-inline: 20px;
+      padding-top: 4px;
+      padding-bottom: 14px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .pricing-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pricing-card {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 clamp(285px, 82vw, 340px);
+      width: clamp(285px, 82vw, 340px);
+      scroll-snap-align: start;
+      padding: 22px 20px;
+    }
+
+    .pricing-features {
+      margin-bottom: 20px;
+      flex: 1 1 auto;
+    }
+
+    .pricing-action-wrap {
+      margin-top: auto;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .pricing-grid {
+      margin-inline: -16px;
+      padding-inline: 16px;
+      scroll-padding-inline: 16px;
+    }
+
+    .pricing-card {
+      flex: 0 0 270px;
+      width: 270px;
+      padding: 18px 16px;
+    }
+  }
+
+  /* Graceful fallback for non-subgrid environments */
+  @supports not (grid-template-rows: subgrid) {
+    @media (min-width: 881px) {
+      .pricing-card {
+        display: flex;
+        flex-direction: column;
+        grid-row: auto;
+      }
+
+      .pricing-features {
+        flex: 1 1 auto;
+      }
+
+      .pricing-action-wrap {
+        margin-top: auto;
+      }
+    }
+  }
+
+  /* ============================================================
+     ACADEMIC PARTNERS (Auto-scrolling infinite horizontal marquee)
+     ============================================================ */
+  .partners-marquee-container {
+    position: relative;
+    width: calc(100% + 40px);
+    margin-inline: -20px;
+    padding-inline: 20px;
+    padding-block: 4px;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
+  }
+
+  @media (max-width: 359px) {
+    .partners-marquee-container {
+      width: calc(100% + 32px);
+      margin-inline: -16px;
+      padding-inline: 16px;
+      mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
+    }
+  }
+
+  .partners-marquee-track {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    gap: 12px;
+    animation: partners-scroll 32s linear infinite;
+    will-change: transform;
+  }
+
+  .partners-marquee-container:hover .partners-marquee-track,
+  .partners-marquee-container:active .partners-marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes partners-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-50% - 6px));
+    }
+  }
+
+  .partner-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    flex-shrink: 0;
+    min-width: 220px;
+    user-select: none;
+  }
+
+  .partner-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .partner-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .partner-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--dash-text);
+    white-space: nowrap;
+    line-height: 1.35;
+  }
+
+  .partner-role {
+    font-size: 0.75rem;
+    color: var(--dash-muted);
+    white-space: nowrap;
+    line-height: 1.35;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .partners-marquee-track {
+      animation: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+    }
+
+    .partner-card {
+      scroll-snap-align: start;
+    }
+  }
+</style>

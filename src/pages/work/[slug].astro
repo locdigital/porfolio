@@ -5,10 +5,9 @@ import BeforeAfterPerformance from "../../components/ui/BeforeAfterPerformance.a
 import ShowcasePassGate from "../../components/ui/ShowcasePassGate.astro";
 import BrandPositioningFeed from "../../components/ui/BrandPositioningFeed.astro";
 import { 
-  ArrowLeftIcon as ArrowLeft, 
-  ArrowSquareOutIcon as ExternalLink, 
-  CaretRightIcon as ChevronRight
-} from "@phosphor-icons/react";
+  ArrowLeft, 
+  ExternalLink
+} from "../../components/icons/majesticons";
 
 export const prerender = true;
 
@@ -42,7 +41,7 @@ let comparisonData: any = null;
 
 if (project.slug === "playah") {
   comparisonData = {
-    badge: "PlayAh! Growth",
+    badge: "",
     heading: "From Static Brand Awareness to +10x TikTok Shop GMV",
     description: "Multi-layered comparison: scaling from tens of millions to >1B VND monthly revenue while maintaining ROAS > 10.",
     categoryLabel: "TikTok Shop Acceleration",
@@ -79,130 +78,6 @@ if (project.slug === "playah") {
     highlights: [
       { title: "Direct Affiliate Seeding", description: "Hundreds of creator samples routed automatically based on category GMV potential." },
       { title: "Server-Side Tracking", description: "Meta CAPI + TikTok Events API deduplication for near 100% purchase attribution." }
-    ]
-  };
-} else if (project.slug === "workflow-space") {
-  comparisonData = {
-    badge: "WorkFlow Space Launch",
-    heading: "Branch Launch Positioning & 5,000+ Verified Bookings",
-    description: "Connecting local targeted ads with high-converting booking funnels for new workspace locations.",
-    categoryLabel: "Location Marketing",
-    beforeLabel: "Pre-Launch",
-    afterLabel: "Post-Launch",
-    beforeImage: {
-      src: "/images/workflow/workflow-before.jpg",
-      alt: "WorkFlow Space Mobile Booking Funnel Pre-Launch (Before)",
-    },
-    afterImage: {
-      src: "/images/workflow/workflow-after.png",
-      alt: "WorkFlow Space 5,000+ Bookings Ad Campaign Performance (After)",
-    },
-    beforePanel: {
-      eyebrow: "Cold Launch",
-      title: "Zero Brand Search",
-      description: "Empty foot traffic, unranked Google Maps presence, zero automated tour booking engine.",
-      metrics: [
-        { label: "Bookings", value: "0" },
-        { label: "Leads/mo", value: "< 20" },
-        { label: "Search Share", value: "0%" }
-      ]
-    },
-    afterPanel: {
-      eyebrow: "Active Branches",
-      title: "5,000+ Bookings",
-      description: "Saturated workspace occupancy, 2,000+ hot leads, and top-3 local SEO pack rank for all branches.",
-      metrics: [
-        { label: "Bookings", value: "5,000+" },
-        { label: "Qualified Leads", value: "2,000+" },
-        { label: "Impressions", value: "4M+" }
-      ]
-    },
-    highlights: [
-      { title: "Localized Geo-Fencing", description: "Targeting tech & creative workers within 3km radius of workspace branches." },
-      { title: "Automated Tour Scheduling", description: "Zero-friction booking system converting ad clicks at 35–40% CVR." }
-    ]
-  };
-} else if (project.slug === "pops-worldwide") {
-  comparisonData = {
-    badge: "POPS Worldwide",
-    heading: "Technical SEO Scaling to 2.5M Monthly Active Users",
-    description: "Re-architecting content taxonomy and regional entertainment indexability.",
-    categoryLabel: "Technical SEO",
-    beforeLabel: "Legacy CMS",
-    afterLabel: "SEO Architecture",
-    beforeImage: {
-      src: "/images/pops/pops-before.png",
-      alt: "POPS Worldwide Legacy Index (Before)",
-    },
-    afterImage: {
-      src: "/images/pops/pops-after.png",
-      alt: "POPS Worldwide Scaled Architecture (After)",
-    },
-    beforePanel: {
-      eyebrow: "Legacy Index",
-      title: "Indexation Bottlenecks",
-      description: "Orphaned video categories, slow SSR rendering, missing schema markup across Southeast Asia.",
-      metrics: [
-        { label: "MAU", value: "250k" },
-        { label: "Organic Keywords", value: "1.2k" },
-        { label: "Crawl Efficiency", value: "32%" }
-      ]
-    },
-    afterPanel: {
-      eyebrow: "Enterprise Structure",
-      title: "2.5M MAU (10x YoY)",
-      description: "Clean faceted search, automated VideoObject schema, and 400,000 organic installs for POPS Kids.",
-      metrics: [
-        { label: "MAU", value: "2,500,000" },
-        { label: "POPS Kids Users", value: "400,000" },
-        { label: "YoY Growth", value: "10x" }
-      ]
-    },
-    highlights: [
-      { title: "Programmatic Internal Linking", description: "Connecting related anime & entertainment episodes to pass authority." },
-      { title: "Core Web Vitals Optimization", description: "Sub-second LCP and zero CLS across video streaming landing pages." }
-    ]
-  };
-} else if (project.slug === "tomato-childrens-home") {
-  comparisonData = {
-    badge: "Enrollment Performance",
-    heading: "From Expensive Leads to Scaled Enrollment Growth",
-    description: "Compare the enrollment funnel before and after paid media, landing-page, and lifecycle optimization.",
-    categoryLabel: "Marketing 360",
-    beforeLabel: "High CPL Baseline",
-    afterLabel: "Growth Loop",
-    beforeImage: {
-      src: "/images/tomato/tomato-before.png",
-      alt: "TOMATO Children's Home Enrollment Baseline (Before)",
-    },
-    afterImage: {
-      src: "/images/tomato/tomato-after.png",
-      alt: "TOMATO Children's Home High Conversion Funnel (After)",
-    },
-    beforePanel: {
-      eyebrow: "Before",
-      title: "High-friction funnel",
-      description: "Lead generation needed stronger channel decisions, clearer landing pages, and more consistent lifecycle follow-up.",
-      metrics: [
-        { label: "Cost per lead", value: "High" },
-        { label: "Campaign flow", value: "Split" },
-        { label: "Lifecycle ops", value: "Manual" }
-      ]
-    },
-    afterPanel: {
-      eyebrow: "After",
-      title: "Enrollment growth loop",
-      description: "Integrated marketing connected social, landing pages, paid media, OOH, CRM, and email automation around student enrollment.",
-      metrics: [
-        { label: "Monthly enrollment", value: "3x" },
-        { label: "Cost per lead", value: "-60%" },
-        { label: "CTR increase", value: "+85%" }
-      ]
-    },
-    highlights: [
-      { title: "Lower acquisition cost", description: "Budget decisions and funnel fixes reduced CPL while enrollment grew." },
-      { title: "Sharper creative", description: "Campaign and landing-page messaging improved click intent." },
-      { title: "Automated nurture", description: "Email automation supported follow-up across 40,000+ contacts." }
     ]
   };
 }
@@ -250,7 +125,7 @@ if (project.slug === "playah") {
     <p class="page-lead">{project.summary}</p>
 
     <!-- Properties List -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 16px 0; border-top: 1px solid var(--dash-border); border-bottom: 1px solid var(--dash-border); font-size: 0.8125rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 16px 0; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); font-size: 0.8125rem;">
       <div>
         <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Role</span>
         <span style="font-weight: 600; color: var(--dash-text);">{project.role}</span>
@@ -291,11 +166,7 @@ if (project.slug === "playah") {
 
   <!-- Special Feed for WorkFlow Space -->
   {project.slug === "workflow-space" && (
-    <section class="page-section" aria-label="Visual identity feed">
-      <h2 class="section-title">Brand visual architecture (@workflowspace)</h2>
-      <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 16px;">
-        Harmonized 4:5 lifestyle feeds, ergonomic product storytelling, and branch interior atmosphere.
-      </p>
+    <section class="page-section" aria-label="Brand positioning and visual identity">
       <BrandPositioningFeed />
     </section>
   )}
@@ -306,7 +177,7 @@ if (project.slug === "playah") {
   )}
 
   <!-- More Case Studies -->
-  <section class="page-section more-work-section" aria-labelledby="heading-more-work" style="border-top: 1px solid var(--dash-border); padding-top: var(--space-8);">
+  <section class="page-section more-work-section" aria-labelledby="heading-more-work" style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-top: calc(var(--space-8) * 1.1);">
     <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
       <h2 id="heading-more-work" class="section-title" style="margin: 0;">More case studies</h2>
       <a href="/work" class="dash-link" style="font-size: 0.8125rem;">
@@ -316,22 +187,35 @@ if (project.slug === "playah") {
 
     <div class="more-work-grid">
       {otherProjects.map((op) => (
-        <a 
-          href={`/work/${op.slug}`} 
-          class="dash-card dash-card--interactive"
-          style="padding: 14px; text-decoration: none;"
-        >
-          <div style="font-size: 0.75rem; color: var(--dash-muted); margin-bottom: 4px;">
-            {op.client}
-          </div>
-          <h3 style="font-size: 0.9375rem; font-weight: 600; color: var(--dash-text); margin: 0 0 8px;">
-            {op.title}
-          </h3>
-          <span style="font-size: 0.75rem; color: var(--dash-accent); display: inline-flex; align-items: center; gap: 2px;">
-            <span>Read case study</span>
-            <ChevronRight size={11} aria-hidden="true" />
-          </span>
-        </a>
+        <div class="folder-item">
+          <a 
+            href={`/work/${op.slug}`} 
+            class="folder-wrapper"
+            aria-label={`Open case study folder: ${op.title}`}
+          >
+            <!-- 3D MANILA FOLDER -->
+            <div class="folder" data-folder-surface>
+              <!-- 1. BACK FOLDER FLAP -->
+              <div class="folder-back">
+                <div class="folder-back-tab"></div>
+              </div>
+
+              <!-- 2. FRONT FOLDER FLAP -->
+              <div class="folder-front">
+                <div class="folder-front-tab"></div>
+                <div class="folder-front-shine"></div>
+              </div>
+
+              <!-- 3. AMBIENT FLOOR SHADOW -->
+              <div class="folder-floor-shadow"></div>
+            </div>
+
+            <!-- FOLDER CAPTION -->
+            <div class="folder-caption">
+              <span class="folder-title">{op.title}</span>
+            </div>
+          </a>
+        </div>
       ))}
     </div>
   </section>
@@ -339,9 +223,11 @@ if (project.slug === "playah") {
 </DashboardLayout>
 
 <style>
-  .work-narrative-section,
+  .work-narrative-section {
+    width: 100%;
+  }
+
   .more-work-section {
-    max-width: 500px;
     width: 100%;
   }
 
@@ -349,30 +235,42 @@ if (project.slug === "playah") {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    max-width: 500px;
     width: 100%;
     color: var(--dash-text);
-    font-size: 1rem;
+    font-size: 0.9375rem;
     line-height: 1.68;
   }
 
   .work-narrative-prose p {
+    max-width: none;
+    width: 100%;
     margin: 0;
-    text-align: justify;
-    text-align-last: left;
+    text-align: left;
     text-wrap: pretty;
-    hyphens: auto;
   }
 
   .more-work-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 184px));
+    column-gap: 28px;
+    row-gap: 32px;
+    padding: 16px 0 24px;
+  }
+
+  .more-work-grid .folder-item {
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 680px) {
+    .more-work-grid {
+      grid-template-columns: repeat(2, minmax(0, 184px));
+      column-gap: 20px;
+      row-gap: 28px;
+    }
   }
 
   @media (max-width: 640px) {
     .work-narrative-section,
-    .more-work-section,
     .work-narrative-prose {
       max-width: 100%;
     }
@@ -384,6 +282,13 @@ if (project.slug === "playah") {
 
     .work-narrative-prose p {
       text-align: left;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .more-work-grid {
+      grid-template-columns: 1fr;
+      row-gap: 24px;
     }
   }
 </style>

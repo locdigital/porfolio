@@ -2,11 +2,11 @@
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import { getPhotoLocations } from "../../lib/cms";
 import { 
-  ArrowLeftIcon as ArrowLeft, 
-  CaretLeftIcon as ChevronLeft, 
-  CaretRightIcon as ChevronRight, 
-  XIcon as X
-} from "@phosphor-icons/react";
+  ArrowLeft, 
+  ChevronLeft, 
+  ChevronRight, 
+  X
+} from "../../components/icons/majesticons";
 
 export const prerender = true;
 
@@ -74,7 +74,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
     )}
 
     <!-- Properties Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; padding: 14px 0; border-top: 1px solid var(--dash-border); border-bottom: 1px solid var(--dash-border); font-size: 0.8125rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; padding: 14px 0; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); font-size: 0.8125rem;">
       {location.bestMonths && (
         <div>
           <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Best Season</span>
@@ -109,7 +109,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
       {photos.map((p, index) => (
         <figure 
           class="gallery-figure" 
-          style="break-inside: avoid; margin-bottom: 16px; border-radius: var(--radius-card); overflow: hidden; background: #EFEFED; border: 1px solid var(--dash-border); cursor: pointer;"
+          style="break-inside: avoid; margin-bottom: 16px; border-radius: var(--radius-card); overflow: hidden; background: #EFEFED; border: var(--dash-border-width, 0.9px) solid var(--dash-border); cursor: pointer;"
           data-index={index}
           data-src={p.src}
         >
@@ -129,7 +129,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
 
   <!-- Field Notes & Editorial Review -->
   {(location.editorialReview || location.favoriteThings || (location.travelTips && location.travelTips.length > 0)) && (
-    <section class="page-section" aria-labelledby="heading-notes" style="border-top: 1px solid var(--dash-border); padding-top: var(--space-8); max-width: 760px;">
+    <section class="page-section" aria-labelledby="heading-notes" style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-top: calc(var(--space-8) * 1.1); max-width: 760px;">
       <h2 id="heading-notes" class="section-title">Field notes & recommendations</h2>
 
       <div style="display: flex; flex-direction: column; gap: var(--space-6);">

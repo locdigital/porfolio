@@ -1,0 +1,42 @@
+---
+import { getIconSvg, type MajesticonName } from './majesticons/registry';
+
+interface Props {
+  name: MajesticonName;
+  size?: number | string;
+  strokeWidth?: number | string;
+  type?: 'line' | 'solid';
+  class?: string;
+  className?: string;
+  [key: string]: any;
+}
+
+const {
+  name,
+  size = 24,
+  strokeWidth = 2,
+  type = 'line',
+  class: classNameProp,
+  className,
+  ...rest
+} = Astro.props;
+
+const svgContent = getIconSvg(name, type);
+const isSolid = type === 'solid';
+const classes = [classNameProp, className].filter(Boolean).join(' ');
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width={size}
+  height={size}
+  fill={isSolid ? "currentColor" : "none"}
+  stroke={isSolid ? "none" : "currentColor"}
+  stroke-width={isSolid ? undefined : strokeWidth}
+  stroke-linecap={isSolid ? undefined : "round"}
+  stroke-linejoin={isSolid ? undefined : "round"}
+  class={classes || undefined}
+  set:html={svgContent}
+  {...rest}
+/>

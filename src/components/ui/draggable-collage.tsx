@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useVelocity, useTransform } from 'framer-motion';
 import { cn } from '../../lib/utils';
-import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from 'lucide-react';
+import { BookOpen, Dumbbell, FolderOpen, Globe2, Laptop, Languages, MapPin, Music, Play, Sparkles, SkipBack, SkipForward, Trees, Utensils } from '../icons/majesticons';
 
 interface DraggableCollageProps {
   portraitSrc?: string;

@@ -1,7 +1,8 @@
 ---
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
-import { ArrowUp, BarChart3, Bookmark, Folder } from "lucide-react";
+import { ArrowUp, BarChart3, Bookmark, Folder } from "../components/icons/majesticons";
+import { getProjects } from "../lib/cms";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, graphSchema, safeJsonLd } from "../lib/seo";
 const { 
   title = "Phuc Loc Nguyen | Senior Performance Marketing Executive",
@@ -19,6 +20,13 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const socialThumbnail = ogImage || DEFAULT_OG_IMAGE;
 const pageSchemas = Array.isArray(schema) ? schema : [schema];
 const jsonLd = safeJsonLd(graphSchema(pageSchemas));
+const workNavChildren = (await getProjects()).map((project) => ({
+  href: `/work/${project.slug}`,
+  number: project.number,
+  label: project.client,
+  title: project.title,
+  active: pathname.startsWith(`/work/${project.slug}`),
+}));
 const desktopNavItems = [
   {
     label: "Work",
@@ -247,12 +255,41 @@ const footerLinks = [
               <ul>
                 {desktopNavItems.map((item) => {
                   const Icon = item.Icon;
+                  const hasWorkTree = item.href === "/work";
                   return (
-                    <li>
-                      <a href={item.href} class={item.active ? "active" : ""} aria-current={item.active ? "page" : undefined}>
+                    <li class={`nav-item ${hasWorkTree ? "nav-item--has-tree" : ""} ${hasWorkTree && item.active ? "is-work-open" : ""}`}>
+                      <a
+                        href={item.href}
+                        class={item.active ? "active" : ""}
+                        aria-current={item.active ? "page" : undefined}
+                        aria-haspopup={hasWorkTree ? "true" : undefined}
+                      >
                         <Icon className="nav-icon" size={16} strokeWidth={1.8} aria-hidden="true" />
                         <span>{item.label}</span>
                       </a>
+                      {hasWorkTree && (
+                        <div class="work-tree-dropdown t-dropdown" data-origin="top-center" aria-label="Work child pages">
+                          <div class="work-tree-panel">
+                            <a class="work-tree-overview" href="/work">
+                              <span class="work-tree-eyebrow">Overview</span>
+                              <span>All selected work</span>
+                            </a>
+                            <ul class="work-tree-list">
+                              {workNavChildren.map((child, index) => (
+                                <li style={`--tree-index: ${index}`}>
+                                  <a href={child.href} class={child.active ? "active" : ""} aria-current={child.active ? "page" : undefined}>
+                                    <span class="work-tree-number">{child.number}</span>
+                                    <span class="work-tree-copy">
+                                      <span class="work-tree-label">{child.label}</span>
+                                      <span class="work-tree-title">{child.title}</span>
+                                    </span>
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
                     </li>
                   );
                 })}

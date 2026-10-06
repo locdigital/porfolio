@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { PaperPlaneTiltIcon as Send, ArrowSquareOutIcon as ExternalLink } from "@phosphor-icons/react";
+import { Send, ExternalLink } from "../components/icons/majesticons";
 
 const inquiryTopics = [
   {
@@ -30,7 +30,7 @@ const inquiryTopics = [
   title="Contact & Collaboration — Phuc Loc Nguyen"
   pageTitle="Contact"
   description="Connect with Nguyen Phuc Loc for performance marketing retainers, TikTok Shop acceleration, and digital growth consulting."
-  breadcrumbs={[{ label: "Connect", href: "/" }, { label: "Contact" }]}
+  breadcrumbs={[{ label: "Contact" }]}
   maxWidthVariant="default"
 >
   <!-- Page Header -->
@@ -69,6 +69,19 @@ const inquiryTopics = [
         <div id="contact-copy-feedback" aria-live="polite" style="position: absolute; left: -9999px;"></div>
         <p style="font-size: 0.8125rem; color: var(--dash-muted); margin: 6px 0 0;">
           Best channel for project briefs, RFPs, advisory scopes, and hiring discussions.
+        </p>
+      </div>
+
+      <!-- Booking -->
+      <div class="dash-card" style="padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
+          <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em;">Calendar</span>
+          <a href="/booking" class="dash-button dash-button--primary" style="min-height: 28px; padding: 2px 10px; font-size: 0.75rem;">
+            Book a meeting
+          </a>
+        </div>
+        <p style="font-size: 0.8125rem; color: var(--dash-muted); margin: 6px 0 0;">
+          Gửi yêu cầu lịch hẹn. Calendar invite chỉ được tạo sau khi Lộc duyệt.
         </p>
       </div>
 
@@ -137,7 +150,7 @@ const inquiryTopics = [
   </section>
 
   <!-- Social Profiles -->
-  <section class="page-section" aria-label="Social profiles" style="border-top: 1px solid var(--dash-border); padding-top: var(--space-6);">
+  <section class="page-section" aria-label="Social profiles" style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-top: calc(var(--space-6) * 1.1);">
     <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
       <a 
         href="https://www.linkedin.com/in/phucloc" 

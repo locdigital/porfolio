@@ -1,0 +1,200 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import { Calendar, Key, Clock } from "../../components/icons/majesticons";
+---
+
+<DashboardLayout
+  title="Booking Admin — Phuc Loc Nguyen"
+  pageTitle="Booking Admin"
+  description="Owner-only approval dashboard for appointment booking requests."
+  breadcrumbs={[{ label: "Calendar", href: "/booking" }, { label: "Admin" }]}
+  maxWidthVariant="default"
+>
+  <header class="page-header">
+    <div class="booking-admin-kicker"><Key size={16} aria-hidden="true" /> Owner only</div>
+    <h1 class="page-title">Booking approval dashboard</h1>
+    <p class="page-lead">Duyệt, từ chối và cấu hình lịch hẹn. Trang này dùng owner token qua server-side API.</p>
+  </header>
+
+  <section class="page-section dash-card booking-admin-login" id="booking-admin-login">
+    <label class="booking-admin-field">
+      <span>Owner token</span>
+      <input id="admin-token" class="booking-admin-input" type="password" autocomplete="current-password" placeholder="BOOKING_ADMIN_TOKEN" />
+    </label>
+    <button id="save-token" class="dash-button dash-button--primary" type="button">Mở dashboard</button>
+    <p class="booking-admin-muted">Token được lưu trong localStorage của trình duyệt này. Không chia sẻ token công khai.</p>
+  </section>
+
+  <section class="page-section booking-admin-shell" id="booking-admin-shell" hidden>
+    <div class="booking-admin-toolbar">
+      <div class="booking-admin-tabs" role="tablist" aria-label="Booking statuses">
+        {['pending', 'confirmed', 'rejected', 'expired', 'cancelled', 'all'].map((status) => (
+          <button class="dash-filter-chip" type="button" data-status={status}>{status}</button>
+        ))}
+      </div>
+      <button id="refresh-admin" class="dash-button dash-button--secondary" type="button">Refresh</button>
+    </div>
+
+    <div class="booking-admin-grid">
+      <div class="dash-card booking-admin-panel">
+        <div class="booking-admin-heading"><Calendar size={16} aria-hidden="true" /><h2 class="section-title">Requests</h2></div>
+        <div id="request-list" class="request-list" aria-live="polite"></div>
+      </div>
+
+      <aside class="dash-card booking-admin-panel">
+        <div class="booking-admin-heading"><Clock size={16} aria-hidden="true" /><h2 class="section-title">Settings</h2></div>
+        <div id="google-status" class="booking-admin-muted">Checking Google Calendar...</div>
+        <button id="connect-google" class="dash-button dash-button--secondary" type="button">Kết nối / reconnect Google</button>
+
+        <form id="settings-form" class="settings-form">
+          <label class="booking-admin-field"><span>Timezone</span><input class="booking-admin-input" name="owner_timezone" /></label>
+          <label class="booking-admin-field"><span>Working days (0-6)</span><input class="booking-admin-input" name="working_days" placeholder="1,2,3,4,5" /></label>
+          <div class="settings-two">
+            <label class="booking-admin-field"><span>Start</span><input class="booking-admin-input" name="work_start_time" type="time" /></label>
+            <label class="booking-admin-field"><span>End</span><input class="booking-admin-input" name="work_end_time" type="time" /></label>
+          </div>
+          <div class="settings-two">
+            <label class="booking-admin-field"><span>Duration</span><input class="booking-admin-input" name="default_duration_minutes" type="number" min="15" /></label>
+            <label class="booking-admin-field"><span>Buffer</span><input class="booking-admin-input" name="buffer_minutes" type="number" min="0" /></label>
+          </div>
+          <div class="settings-two">
+            <label class="booking-admin-field"><span>Notice hours</span><input class="booking-admin-input" name="minimum_notice_hours" type="number" min="0" /></label>
+            <label class="booking-admin-field"><span>Pending expiry hours</span><input class="booking-admin-input" name="pending_expiry_hours" type="number" min="1" /></label>
+          </div>
+          <label class="booking-admin-field"><span>Checked calendars</span><input class="booking-admin-input" name="calendar_ids" placeholder="primary, team@example.com" /></label>
+          <label class="booking-admin-field"><span>Target calendar</span><input class="booking-admin-input" name="target_calendar_id" placeholder="primary" /></label>
+          <button class="dash-button dash-button--primary" type="submit">Lưu settings</button>
+          <p id="settings-feedback" class="booking-admin-muted" aria-live="polite"></p>
+        </form>
+      </aside>
+    </div>
+  </section>
+</DashboardLayout>
+
+<style>
+  .booking-admin-kicker,
+  .booking-admin-heading { display: flex; align-items: center; gap: 8px; }
+  .booking-admin-kicker { margin-bottom: 10px; color: var(--dash-muted); font-size: 0.8125rem; font-weight: 600; }
+  .booking-admin-heading { margin-bottom: 14px; }
+  .booking-admin-heading .section-title { margin: 0; }
+  .booking-admin-login, .booking-admin-panel { padding: 16px; }
+  .booking-admin-login { display: grid; grid-template-columns: minmax(260px, 1fr) auto; gap: 12px; align-items: end; }
+  .booking-admin-shell { display: grid; gap: 16px; }
+  .booking-admin-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .booking-admin-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .booking-admin-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 380px); gap: 16px; align-items: start; }
+  .booking-admin-field, .settings-form { display: grid; gap: 6px; }
+  .booking-admin-field { color: var(--dash-muted); font-size: 0.8125rem; font-weight: 500; }
+  .booking-admin-input { width: 100%; min-height: 36px; border: var(--dash-border-width, 0.9px) solid var(--dash-border); border-radius: var(--radius-control); padding: 7px 10px; background: var(--dash-surface); color: var(--dash-text); font: inherit; font-size: 0.875rem; }
+  .booking-admin-muted { color: var(--dash-muted); font-size: 0.8125rem; line-height: 1.5; }
+  .request-list, .settings-form { display: grid; gap: 10px; }
+  .request-card { border: var(--dash-border-width, 0.9px) solid var(--dash-border); border-radius: 10px; padding: 12px; display: grid; gap: 8px; }
+  .request-card-header { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+  .request-title { margin: 0; font-size: 0.9375rem; line-height: 1.4; color: var(--dash-text); }
+  .request-meta { color: var(--dash-muted); font-size: 0.8125rem; line-height: 1.5; }
+  .request-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .settings-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 900px) { .booking-admin-login, .booking-admin-grid, .settings-two { grid-template-columns: 1fr; } }
+</style>
+
+<script is:inline>
+  const tokenInput = document.getElementById("admin-token");
+  const saveToken = document.getElementById("save-token");
+  const shell = document.getElementById("booking-admin-shell");
+  const login = document.getElementById("booking-admin-login");
+  const list = document.getElementById("request-list");
+  const refresh = document.getElementById("refresh-admin");
+  const tabs = document.querySelectorAll("[data-status]");
+  const googleStatus = document.getElementById("google-status");
+  const connectGoogle = document.getElementById("connect-google");
+  const settingsForm = document.getElementById("settings-form");
+  const settingsFeedback = document.getElementById("settings-feedback");
+  let activeStatus = "pending";
+
+  function token() { return localStorage.getItem("bookingAdminToken") || ""; }
+  function authHeaders() { return { Authorization: `Bearer ${token()}` }; }
+  function fmt(iso, tz = "Asia/Ho_Chi_Minh") {
+    return new Intl.DateTimeFormat("vi-VN", { timeZone: tz, weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false, timeZoneName: "short" }).format(new Date(iso));
+  }
+  async function api(path, options = {}) {
+    const res = await fetch(path, { ...options, headers: { ...authHeaders(), ...(options.headers || {}) } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.success === false) throw new Error(data.error || "Request failed");
+    return data;
+  }
+  function escapeText(value) {
+    return String(value || "").replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char]));
+  }
+  function showDashboard() { login.hidden = true; shell.hidden = false; loadAll(); }
+
+  async function loadRequests() {
+    list.innerHTML = "Đang tải...";
+    const data = await api(`/api/booking/admin/requests?status=${activeStatus}`);
+    if (!data.requests.length) {
+      list.innerHTML = `<p class="booking-admin-muted">Không có request trong trạng thái này.</p>`;
+      return;
+    }
+    list.innerHTML = data.requests.map((request) => `
+      <article class="request-card" data-id="${request.id}">
+        <div class="request-card-header">
+          <div><h3 class="request-title">${escapeText(request.subject)}</h3><div class="request-meta">${escapeText(request.visitor_name)} · ${escapeText(request.visitor_email)}</div></div>
+          <span class="dash-tag">${request.status}</span>
+        </div>
+        <div class="request-meta">
+          <div><strong>Time:</strong> ${fmt(request.starts_at, request.owner_timezone)} · ${request.duration_minutes} phút</div>
+          <div><strong>Hold expires:</strong> ${fmt(request.hold_expires_at, request.owner_timezone)}</div>
+          <div><strong>Description:</strong> ${escapeText(request.description || "—")}</div>
+          ${request.last_error ? `<div><strong>Error:</strong> ${escapeText(request.last_error)}</div>` : ""}
+        </div>
+        ${request.status === "pending" ? `<div class="request-actions"><button class="dash-button dash-button--primary" type="button" data-action="approve">Duyệt</button><button class="dash-button dash-button--secondary" type="button" data-action="reject">Từ chối</button></div>` : ""}
+      </article>`).join("");
+  }
+
+  async function loadSettings() {
+    const [{ google }, { settings }] = await Promise.all([api("/api/booking/admin/google/status"), api("/api/booking/admin/settings")]);
+    googleStatus.textContent = google.connected ? `Google Calendar đã kết nối (${google.connectedAt || "connected"}).` : google.configured ? "Google Calendar chưa kết nối." : "Chưa cấu hình Google OAuth env vars.";
+    for (const [key, value] of Object.entries(settings)) {
+      const field = settingsForm.elements.namedItem(key);
+      if (!field) continue;
+      field.value = Array.isArray(value) ? value.join(",") : String(value ?? "");
+    }
+    settingsForm.elements.namedItem("work_start_time").value = settings.work_start_time.slice(0, 5);
+    settingsForm.elements.namedItem("work_end_time").value = settings.work_end_time.slice(0, 5);
+  }
+
+  async function loadAll() {
+    tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.status === activeStatus));
+    try { await Promise.all([loadRequests(), loadSettings()]); } catch (error) { list.innerHTML = `<p class="booking-admin-muted">${escapeText(error.message)}</p>`; }
+  }
+
+  saveToken.addEventListener("click", () => { localStorage.setItem("bookingAdminToken", tokenInput.value.trim()); showDashboard(); });
+  refresh.addEventListener("click", loadAll);
+  tabs.forEach((tab) => tab.addEventListener("click", () => { activeStatus = tab.dataset.status; loadRequests(); tabs.forEach((t) => t.classList.toggle("active", t === tab)); }));
+  list.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-action]");
+    if (!button) return;
+    const card = button.closest(".request-card");
+    const reason = button.dataset.action === "reject" ? prompt("Lý do từ chối (optional):") || "" : "";
+    button.disabled = true;
+    try {
+      await api(`/api/booking/admin/requests/${card.dataset.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: button.dataset.action, reason }) });
+      await loadRequests();
+    } catch (error) { alert(error.message); button.disabled = false; }
+  });
+  connectGoogle.addEventListener("click", async () => { const data = await api("/api/booking/admin/google/start", { method: "POST" }); window.location.href = data.url; });
+  settingsForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    settingsFeedback.textContent = "Đang lưu...";
+    const form = new FormData(settingsForm);
+    const payload = Object.fromEntries(form.entries());
+    payload.working_days = String(payload.working_days || "1,2,3,4,5").split(",").map((x) => Number(x.trim())).filter((x) => !Number.isNaN(x));
+    payload.calendar_ids = String(payload.calendar_ids || "primary").split(",").map((x) => x.trim()).filter(Boolean);
+    payload.allowed_durations = [Number(payload.default_duration_minutes || 30)];
+    try {
+      await api("/api/booking/admin/settings", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      settingsFeedback.textContent = "Đã lưu settings.";
+    } catch (error) { settingsFeedback.textContent = error.message; }
+  });
+  tokenInput.value = token();
+  if (token()) showDashboard();
+</script>

@@ -11,19 +11,23 @@ export function getSupabaseUrl() {
   );
 }
 
+export function getSupabaseServerKey() {
+  return process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+}
+
 export function isSupabaseServerConfigured() {
-  return Boolean(getSupabaseUrl() && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return Boolean(getSupabaseUrl() && getSupabaseServerKey());
 }
 
 export function getSupabaseServerClient() {
   const url = getSupabaseUrl();
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const serverKey = getSupabaseServerKey();
 
-  if (!url || !serviceRoleKey) {
-    throw new Error("Supabase is not configured. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
+  if (!url || !serverKey) {
+    throw new Error("Supabase is not configured. Add SUPABASE_URL and SUPABASE_SECRET_KEY.");
   }
 
-  cachedClient ??= createClient(url, serviceRoleKey, {
+  cachedClient ??= createClient(url, serverKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,

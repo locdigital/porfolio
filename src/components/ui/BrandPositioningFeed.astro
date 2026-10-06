@@ -1,6 +1,6 @@
 ---
 import instagramPosts from "../../data/instagram-workflowspace.json";
-import { ExternalLink, Heart, MessageCircle } from "lucide-react";
+import { ExternalLink, Heart, MessageCircle, Instagram } from "../icons/majesticons";
 
 // Deterministic like/comment generators so metrics stay stable per shortcode
 function getSimulatedMetrics(shortcode: string) {
@@ -23,84 +23,78 @@ const enrichedPosts = instagramPosts.map((post) => ({
 }));
 ---
 
-<section id="brand-positioning" class="py-20 border-b border-border/40 scroll-mt-20">
+<div class="brand-positioning-block">
   <!-- SECTION HEADER -->
-  <div class="mb-8">
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
-      <div class="flex items-center gap-2">
-        <span class="font-mono-label text-accent">Brand Positioning</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-border"></span>
-        <span class="font-mono text-[12px] text-muted">Instagram Feed & Identity</span>
+  <div class="brand-feed-header">
+    <div class="brand-feed-meta-row">
+      <div class="brand-feed-tags">
+        <span class="dash-tag dash-tag--accent">Brand Positioning</span>
+        <span class="brand-feed-dot" aria-hidden="true"></span>
+        <span class="brand-feed-subtitle">Instagram Feed & Identity</span>
       </div>
 
       <a
         href="https://www.instagram.com/workflowspace/"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 text-[13px] font-mono text-muted hover:text-accent transition-colors"
+        class="brand-feed-ig-link"
       >
-        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-        </svg>
+        <Instagram size={14} aria-hidden="true" />
         <span>@workflowspace</span>
-        <ExternalLink size={12} strokeWidth={1.8} />
+        <ExternalLink size={12} aria-hidden="true" />
       </a>
     </div>
 
-    <h2 class="font-display text-display-xs sm:text-display-sm leading-[1.12] tracking-[-0.02em] text-foreground">
+    <h2 class="brand-feed-heading">
       Brand Positioning & Visual Identity
     </h2>
 
-    <p class="font-sans text-[14px] leading-relaxed text-muted-foreground max-w-3xl mt-3">
+    <p class="brand-feed-lead">
       Co-led brand repositioning and social visual system for WorkFlow Space across digital touchpoints. Translating modern workspace ambiance, private pods, ergonomic details, and productivity lifestyle into high-performing creative assets that drove a +15% conversion lift across Meta Ads and Google.
     </p>
 
     <!-- KEY PILLARS -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-border/60">
-      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
-        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">Total Feed Posts</span>
-        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">{enrichedPosts.length} Posts</span>
+    <div class="brand-feed-metrics">
+      <div class="brand-metric-card">
+        <span class="brand-metric-label">Total Feed Posts</span>
+        <span class="brand-metric-val">{enrichedPosts.length} Posts</span>
       </div>
-      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
-        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">Conversion Lift</span>
-        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">+15% CVR</span>
+      <div class="brand-metric-card">
+        <span class="brand-metric-label">Conversion Lift</span>
+        <span class="brand-metric-val">+15% CVR</span>
       </div>
-      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
-        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">System Footprint</span>
-        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">2 Branches</span>
+      <div class="brand-metric-card">
+        <span class="brand-metric-label">System Footprint</span>
+        <span class="brand-metric-val">2 Branches</span>
       </div>
-      <div class="bg-secondary/40 border border-border/60 rounded-[8px] p-3.5">
-        <span class="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1">Acquisition Trial</span>
-        <span class="font-sans font-semibold text-[18px] sm:text-[20px] tracking-tight text-foreground leading-none">5,000+ Bookings</span>
+      <div class="brand-metric-card">
+        <span class="brand-metric-label">Acquisition Trial</span>
+        <span class="brand-metric-val">5,000+ Bookings</span>
       </div>
     </div>
   </div>
 
-  <!-- THE FEED GRID (EXACT 4:5 INSTAGRAM PORTRAIT RATIO & 3-COLUMN LAYOUT) -->
-  <div class="border border-border overflow-hidden bg-secondary/15 p-1 sm:p-2" style="--feed-outer-radius: 14px; border-radius: var(--feed-outer-radius);" data-ig-feed>
+  <!-- THE FEED GRID -->
+  <div class="brand-feed-container" data-ig-feed>
     <!-- SORT SWITCHER TOOLBAR -->
-    <div class="flex items-center justify-between gap-3 px-2 py-2 mb-1.5 border-b border-border/40 text-[12px] font-mono">
-      <div class="flex items-center gap-1.5 text-muted">
-        <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-        <span class="font-sans font-medium text-foreground text-[13px]">Instagram Feed</span>
-        <span class="text-muted">({enrichedPosts.length} posts)</span>
+    <div class="brand-feed-toolbar">
+      <div class="brand-feed-toolbar-title">
+        <span class="brand-feed-status-dot" aria-hidden="true"></span>
+        <span class="brand-feed-toolbar-name">Instagram Feed</span>
+        <span class="brand-feed-toolbar-count">({enrichedPosts.length} posts)</span>
       </div>
 
-      <div class="flex items-center gap-1 bg-card p-0.5 border border-border/60" style="border-radius: max(0px, calc(var(--feed-outer-radius) - 8px));">
+      <div class="brand-feed-sort-group">
         <button
           type="button"
-          class="ig-sort-btn active px-2.5 py-1 text-[11px] font-mono transition-all cursor-pointer"
-          style="border-radius: max(0px, calc(6px - 2px));"
+          class="ig-sort-btn active"
           data-sort-order="desc"
         >
           Newest
         </button>
         <button
           type="button"
-          class="ig-sort-btn px-2.5 py-1 text-[11px] font-mono transition-all text-muted hover:text-foreground cursor-pointer"
-          style="border-radius: max(0px, calc(6px - 2px));"
+          class="ig-sort-btn"
           data-sort-order="asc"
         >
           Oldest
@@ -108,30 +102,30 @@ const enrichedPosts = instagramPosts.map((post) => ({
       </div>
     </div>
 
-    <!-- THE FEED GRID (EXACT 4:5 INSTAGRAM PORTRAIT RATIO: 3 COLS ON MOBILE, 5 COLS ON DESKTOP) -->
-    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1 sm:gap-2 md:gap-3" id="ig-posts-grid">
+    <!-- THE FEED GRID -->
+    <div class="brand-posts-grid" id="ig-posts-grid">
       {enrichedPosts.map((post, idx) => (
         <a
           href={post.postUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="ig-post-item group relative aspect-[4/5] overflow-hidden bg-secondary/90 border border-black/5 dark:border-white/5"
+          class="ig-post-item"
           data-post-index={idx}
           data-timestamp={post.timestamp}
-          title={`View post on Instagram`}
+          title="View post on Instagram"
         >
           <img
             src={post.image}
             alt={`WorkFlow Space Post ${post.shortcode}`}
             loading={idx < 10 ? "eager" : "lazy"}
             decoding="async"
-            class="w-full h-full object-cover"
+            class="ig-post-img"
           />
 
-          <!-- Instagram Carousel / Multiple Images Indicator Icon (top right) -->
+          <!-- Instagram Carousel Indicator Icon (top right) -->
           {post.metrics.isCarousel && (
-            <div class="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10 pointer-events-none transition-opacity duration-200 group-hover:opacity-0">
-              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]" viewBox="0 0 24 24" fill="currentColor">
+            <div class="ig-carousel-badge" aria-hidden="true">
+              <svg class="ig-carousel-svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M7 3h11a3 3 0 0 1 3 3v11a1 1 0 0 1-2 0V6a1 1 0 0 0-1-1H7a1 1 0 0 1 0-2z" />
                 <rect x="3" y="7" width="13" height="13" rx="2" fill="currentColor" />
               </svg>
@@ -139,19 +133,19 @@ const enrichedPosts = instagramPosts.map((post) => ({
           )}
 
           <!-- HOVER OVERLAY (INSTAGRAM METRICS OVERLAY) -->
-          <div class="absolute inset-0 bg-black/55 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center p-2 text-white pointer-events-none z-20">
-            <div class="flex items-center gap-3 sm:gap-4 font-sans font-semibold text-[12px] sm:text-[13px]">
-              <div class="flex items-center gap-1 drop-shadow">
+          <div class="ig-post-overlay">
+            <div class="ig-post-stats">
+              <div class="ig-post-stat">
                 <Heart size={14} strokeWidth={2} className="fill-white" />
                 <span>{post.metrics.likes}</span>
               </div>
-              <div class="flex items-center gap-1 drop-shadow">
+              <div class="ig-post-stat">
                 <MessageCircle size={14} strokeWidth={2} className="fill-white" />
                 <span>{post.metrics.comments}</span>
               </div>
             </div>
 
-            <div class="mt-2.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-mono tracking-wide">
+            <div class="ig-open-pill">
               <span>Open ↗</span>
             </div>
           </div>
@@ -159,14 +153,13 @@ const enrichedPosts = instagramPosts.map((post) => ({
       ))}
     </div>
   </div>
-</section>
+</div>
 
 <script is:inline>
   (() => {
     const grid = document.getElementById("ig-posts-grid");
     if (!grid) return;
 
-    // Sort order switcher handler
     const sortBtns = document.querySelectorAll(".ig-sort-btn");
     sortBtns.forEach((sortBtn) => {
       sortBtn.addEventListener("click", () => {
@@ -181,7 +174,6 @@ const enrichedPosts = instagramPosts.map((post) => ({
           return order === "desc" ? timeB - timeA : timeA - timeB;
         });
 
-        // Re-append in sorted order
         items.forEach((item) => grid.appendChild(item));
       });
     });
@@ -189,32 +181,320 @@ const enrichedPosts = instagramPosts.map((post) => ({
 </script>
 
 <style>
-  .font-mono-label {
-    font-family: var(--mono);
-    font-size: var(--type-micro);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
+  .brand-positioning-block {
+    width: 100%;
+    font-family: var(--font-sans);
   }
 
-  .font-display {
-    font-family: var(--serif);
+  .brand-feed-header {
+    margin-bottom: 24px;
+  }
+
+  .brand-feed-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .brand-feed-tags {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand-feed-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--dash-border-strong);
+    display: inline-block;
+  }
+
+  .brand-feed-subtitle {
+    font-size: 0.8125rem; /* 13px */
+    color: var(--dash-muted);
     font-weight: 400;
   }
 
-  .text-display-sm {
-    font-size: var(--type-section-title);
-    line-height: 1.1;
+  .brand-feed-ig-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--dash-muted);
+    text-decoration: none;
+    transition: color 140ms ease;
   }
 
-  .text-display-xs {
-    font-size: var(--type-card-title);
-    line-height: 1.15;
+  .brand-feed-ig-link:hover {
+    color: var(--dash-link-hover, var(--dash-text));
+  }
+
+  .brand-feed-heading {
+    margin: 0 0 10px;
+    font-size: 1.375rem; /* 22px, matching section-title */
+    line-height: 1.364;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--dash-text);
+  }
+
+  .brand-feed-lead {
+    font-size: 0.875rem; /* 14px compact */
+    line-height: 1.6;
+    color: var(--dash-muted);
+    width: 100%;
+    margin: 0 0 20px;
+  }
+
+  /* Key Metrics Cards */
+  .brand-feed-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .brand-metric-card {
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: var(--radius-control); /* 6px */
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .brand-metric-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem; /* 12px */
+    font-weight: 500;
+    color: var(--dash-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .brand-metric-val {
+    font-family: var(--font-sans);
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+    color: var(--dash-text);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Feed Container */
+  .brand-feed-container {
+    --feed-container-pad: 8px;
+    --feed-container-radius: 16px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: var(--feed-container-radius);
+    background: var(--dash-surface-subtle);
+    padding: var(--feed-container-pad);
+  }
+
+  .brand-feed-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 2px 4px 10px;
+    margin-bottom: 8px;
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .brand-feed-toolbar-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .brand-feed-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dash-accent);
+  }
+
+  .brand-feed-toolbar-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--dash-text);
+  }
+
+  .brand-feed-toolbar-count {
+    font-size: 0.75rem;
+    color: var(--dash-muted);
+  }
+
+  .brand-feed-sort-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 6px;
+    padding: 2px;
+  }
+
+  .ig-sort-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: var(--dash-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 120ms ease, color 120ms ease;
+  }
+
+  .ig-sort-btn:hover {
+    color: var(--dash-text);
   }
 
   .ig-sort-btn.active {
-    background: var(--text);
-    color: var(--bg);
+    background: var(--dash-primary);
+    color: var(--dash-on-primary);
+    font-weight: 500;
+  }
+
+  /* Posts Grid */
+  .brand-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .ig-post-item {
+    --post-radius: 8px;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--post-radius);
+    overflow: hidden;
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    display: block;
+    text-decoration: none;
+    isolation: isolate;
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .ig-post-item:hover {
+    border-color: var(--dash-border-strong);
+    box-shadow: none;
+  }
+
+  .ig-post-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: calc(var(--post-radius, 8px) - 1px);
+  }
+
+  .ig-post-item:hover .ig-post-img {
+    transform: none;
+  }
+
+  .ig-carousel-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 10;
+    pointer-events: none;
+    transition: opacity 160ms ease;
+  }
+
+  .ig-carousel-svg {
+    width: 14px;
+    height: 14px;
+    color: #ffffff;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  }
+
+  .ig-post-item:hover .ig-carousel-badge {
+    opacity: 0;
+  }
+
+  .ig-post-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: calc(var(--post-radius, 8px) - 1px);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.58);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    opacity: 0;
+    transition: opacity 160ms ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #ffffff;
+    pointer-events: none;
+    z-index: 20;
+    padding: 8px;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+
+  .ig-post-item:hover .ig-post-overlay {
+    opacity: 1;
+  }
+
+  .ig-post-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.8125rem;
     font-weight: 600;
+  }
+
+  .ig-post-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .ig-open-pill {
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.2);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 900px) {
+    .brand-feed-metrics {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .brand-posts-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .brand-posts-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .brand-feed-heading {
+      font-size: 1.25rem;
+    }
   }
 </style>
