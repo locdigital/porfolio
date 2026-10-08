@@ -369,14 +369,14 @@
     @media (max-width: 767px) {
       :root {
         --hdr-h: 68px;
-        --page-gutter: 16px;
-        --page-block-start: var(--space-8);
-        --page-block-end: var(--space-8);
-        --section-gap: calc(var(--space-8) * 1.1);
-        --section-gap-large: calc(var(--space-9) * 1.1);
-        --grid-gap: var(--space-4);
-        --card-padding: var(--space-5);
-        --panel-padding: var(--space-5);
+        --page-gutter: 18px;
+        --page-block-start: calc(var(--space-8) * 1.1);
+        --page-block-end: calc(var(--space-8) * 1.1);
+        --section-gap: calc(var(--space-8) * 1.21);
+        --section-gap-large: calc(var(--space-9) * 1.21);
+        --grid-gap: calc(var(--space-4) * 1.1);
+        --card-padding: calc(var(--space-5) * 1.1);
+        --panel-padding: calc(var(--space-5) * 1.1);
       }
     }
 
@@ -1146,7 +1146,7 @@
     }
 
     /* ============================================================
-       SCROLL REVEAL (Disabled: instant render for optimal UX)
+       SCROLL REVEAL (Disabled: instant render for stable page swaps)
     ============================================================ */
     .r,
     .toki-r,
@@ -1160,22 +1160,71 @@
       transition: none !important;
     }
 
-    .js .animated-card,
-    .js .animated-card.card-in {
-      opacity: 1 !important;
-      transform: none !important;
-      filter: none !important;
+    .is-page-swapping .r,
+    .is-page-swapping .toki-r,
+    .is-page-swapping .reveal,
+    .is-page-swapping .animated-card,
+    .is-page-swapping .dash-reveal {
       transition: none !important;
     }
 
-    /* About-style hero reveal: rendered immediately */
+    .js .animated-card {
+      opacity: 0;
+      transform: translateY(18px);
+      filter: blur(10px);
+      transition: opacity 0.72s var(--ease-out),
+                  transform 0.72s var(--ease-out),
+                  filter 0.72s var(--ease-out);
+      transition-delay: var(--card-delay, 0ms);
+      will-change: transform, opacity, filter;
+    }
+
+    .js .animated-card.card-in {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* Staggered transition delays for lists/grids */
+    .r[data-d="1"], .toki-r[data-d="1"], .reveal[data-d="1"] { transition-delay: 50ms; }
+    .r[data-d="2"], .toki-r[data-d="2"], .reveal[data-d="2"] { transition-delay: 110ms; }
+    .r[data-d="3"], .toki-r[data-d="3"], .reveal[data-d="3"] { transition-delay: 170ms; }
+    .r[data-d="4"], .toki-r[data-d="4"], .reveal[data-d="4"] { transition-delay: 230ms; }
+    .r[data-d="5"], .toki-r[data-d="5"], .reveal[data-d="5"] { transition-delay: 290ms; }
+    .r[data-d="6"], .toki-r[data-d="6"], .reveal[data-d="6"] { transition-delay: 350ms; }
+    .r[data-d="7"], .toki-r[data-d="7"], .reveal[data-d="7"] { transition-delay: 410ms; }
+
+    /* About-style hero reveal */
     .about-reveal-hero > .gear-kicker,
     .about-reveal-hero > .page-kicker-wrapper,
     .about-reveal-hero > h1,
     .about-reveal-hero > .gear-intro,
     .about-reveal-hero > .hero-ctas,
     .about-reveal-hero > .qp-avatar,
-    .about-reveal-hero > .qp-headline,
+    .about-reveal-hero > .qp-headline {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+      will-change: auto;
+    }
+
+    .js .about-reveal-hero.is-animated:not(.in) > .gear-kicker,
+    .js .about-reveal-hero.is-animated:not(.in) > .page-kicker-wrapper,
+    .js .about-reveal-hero.is-animated:not(.in) > h1,
+    .js .about-reveal-hero.is-animated:not(.in) > .gear-intro,
+    .js .about-reveal-hero.is-animated:not(.in) > .hero-ctas,
+    .js .about-reveal-hero.is-animated:not(.in) > .qp-avatar,
+    .js .about-reveal-hero.is-animated:not(.in) > .qp-headline {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(6px);
+      transition: opacity 0.7s var(--ease-out),
+                  transform 0.7s var(--ease-out),
+                  filter 0.7s var(--ease-out);
+      will-change: transform, opacity, filter;
+    }
+
     .about-reveal-hero.in > .gear-kicker,
     .about-reveal-hero.in > .page-kicker-wrapper,
     .about-reveal-hero.in > h1,
@@ -1183,18 +1232,42 @@
     .about-reveal-hero.in > .hero-ctas,
     .about-reveal-hero.in > .qp-avatar,
     .about-reveal-hero.in > .qp-headline {
-      opacity: 1 !important;
-      transform: none !important;
-      filter: none !important;
-      transition: none !important;
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
     }
 
-    .about-reveal-hero > h1 em,
-    .about-reveal-hero.in > h1 em {
-      opacity: 1 !important;
-      filter: none !important;
-      transition: none !important;
+    .about-reveal-hero > h1 em {
+      display: inline-block;
+      opacity: 1;
+      filter: none;
+      transition: none;
+      will-change: auto;
     }
+
+    .js .about-reveal-hero.is-animated:not(.in) > h1 em {
+      opacity: 0;
+      filter: blur(6px);
+      transition: opacity 0.6s var(--ease-out),
+                  filter 0.6s var(--ease-out);
+      will-change: opacity, filter;
+    }
+
+    .about-reveal-hero.in > h1 em {
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    .about-reveal-hero.in > .gear-kicker,
+    .about-reveal-hero.in > .page-kicker-wrapper,
+    .about-reveal-hero.in > .qp-avatar { transition-delay: 0ms; }
+    .about-reveal-hero.in > h1,
+    .about-reveal-hero.in > .qp-headline { transition-delay: 150ms; }
+    .about-reveal-hero.in > h1 em:nth-of-type(1) { transition-delay: 280ms; }
+    .about-reveal-hero.in > h1 em:nth-of-type(2) { transition-delay: 400ms; }
+    .about-reveal-hero.in > h1 em:nth-of-type(3) { transition-delay: 520ms; }
+    .about-reveal-hero.in > .gear-intro { transition-delay: 580ms; }
+    .about-reveal-hero.in > .hero-ctas { transition-delay: 680ms; }
 
     /* Reduced motion override removed to ensure all animations play */
 
@@ -1447,7 +1520,7 @@
 
     .hero-primary:hover,
     .hero-secondary:hover {
-      transform: translateY(-1px);
+      transform: none;
     }
 
     .hero-primary:active,
@@ -1526,7 +1599,7 @@
     }
 
     .hero-card:hover {
-      transform: rotate(var(--rot, 0deg)) translateY(-3px);
+      transform: rotate(var(--rot, 0deg));
     }
 
     .hero-card span {
@@ -2090,7 +2163,7 @@
     .see-all:hover {
       color: var(--accent);
       background: rgba(0, 117, 222, 0.12);
-      transform: translateY(-1px);
+      transform: none;
     }
 
     .see-all:active {
@@ -2284,7 +2357,7 @@
     @media (max-width: 768px) {
       body {
         cursor: auto;
-        padding-bottom: 80px;
+        padding-bottom: 88px;
         transform: none !important;
         will-change: auto !important;
         filter: none !important;
@@ -2591,7 +2664,7 @@
       }
 
       .hero-card:hover {
-        transform: translateY(-2px);
+        transform: none;
       }
 
       .hero-card--photo {
@@ -2867,7 +2940,7 @@
 :root {
   --site-h1-size: 32px;
   --site-heading-size: 22px;
-  --site-copy-size: 14px;
+      --site-copy-size: 12px;
 }
 
 @media (max-width: 1024px) {
@@ -3016,15 +3089,33 @@
 
 .js .career-map-copy-item > span,
 .js .career-map-copy-item > p,
-.js .career-map-copy small,
+.js .career-map-copy small {
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(8px);
+  transition:
+    opacity 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 720ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--career-copy-delay, 300ms);
+  will-change: opacity, transform, filter;
+}
+
 .js .career-map.in .career-map-copy-item > span,
 .js .career-map.in .career-map-copy-item > p,
 .js .career-map.in .career-map-copy small {
   opacity: 1;
-  transform: none;
-  filter: none;
-  transition: none;
+  transform: translateY(0);
+  filter: blur(0);
 }
+
+.js .career-map-copy-item:nth-child(1) > span { --career-copy-delay: 240ms; }
+.js .career-map-copy-item:nth-child(1) > p { --career-copy-delay: 300ms; }
+.js .career-map-copy-item:nth-child(2) > span { --career-copy-delay: 360ms; }
+.js .career-map-copy-item:nth-child(2) > p { --career-copy-delay: 420ms; }
+.js .career-map-copy-item:nth-child(3) > span { --career-copy-delay: 480ms; }
+.js .career-map-copy-item:nth-child(3) > p { --career-copy-delay: 540ms; }
+.js .career-map-copy small { --career-copy-delay: 600ms; }
 
 .career-map-copy-item {
   display: grid;
@@ -3333,8 +3424,8 @@
 }
 
 .home-project-card a:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  transform: none;
+  box-shadow: none;
   color: var(--text);
 }
 
@@ -3895,19 +3986,37 @@ body :where(hr, [class*="divider"], [class*="Divider"], [class*="separator"], [c
   opacity: var(--tilt-glare-opacity);
 }
 
-/* 2. Texts Reveal (Staggered Blur Rise - disabled for instant display) */
-.t-stagger-line,
-.t-stagger.is-shown .t-stagger-line {
+/* 2. Texts Reveal (Staggered Blur Rise) */
+.t-stagger-line {
   display: block;
+  opacity: 0;
+  transform: translateY(var(--stagger-distance, 12px));
+  filter: blur(var(--stagger-blur, 3px));
+  transition:
+    opacity   var(--stagger-dur, 500ms) var(--stagger-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform var(--stagger-dur, 500ms) var(--stagger-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    filter    var(--stagger-dur, 500ms) var(--stagger-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: transform, opacity, filter;
+}
+.t-stagger-line--1 { transition-delay: 0ms; }
+.t-stagger-line--2 { transition-delay: var(--stagger-stagger, 40ms); }
+.t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger, 40ms) * 2); }
+.t-stagger-line--4 { transition-delay: calc(var(--stagger-stagger, 40ms) * 3); }
+
+.t-stagger.is-shown .t-stagger-line {
   opacity: 1;
-  transform: none;
-  filter: none;
-  transition: none;
+  transform: translateY(0);
+  filter: blur(0);
 }
 .t-stagger.is-hiding .t-stagger-line {
-  opacity: 1;
-  transform: none;
-  filter: none;
+  opacity: 0;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 200ms ease,
+    transform 0s linear,
+    filter 0s linear;
+  transition-delay: 0s;
 }
 
 /* 3. Learn More Hover Arrow */
@@ -4128,7 +4237,7 @@ body :where(hr, [class*="divider"], [class*="Divider"], [class*="separator"], [c
 /* Reduced motion guard removed to allow fluid micro-interactions */
 
 /* ============================================================
-   DISABLE BUTTON HOVER EFFECTS GLOBALLY
+   FLUID MICRO-INTERACTIONS & HOVER POLISH
    ============================================================ */
 button,
 [role="button"],
@@ -4136,34 +4245,44 @@ button,
 .btn,
 a.dash-button,
 a.btn {
-  transition: none !important;
+  transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              border-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              transform var(--duration-quick, 150ms) var(--ease-smooth-out),
+              box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out);
 }
 
-button:hover,
-[role="button"]:hover,
-.dash-button:hover,
-.btn:hover,
-a.dash-button:hover,
-a.btn:hover,
-.folder-wrapper:hover,
-.folder-item:hover,
-.folder:hover,
-.dash-card:hover,
-.dash-card--interactive:hover,
-.pricing-card:hover,
-.pricing-btn:hover,
-.hero-card:hover,
-.hero-primary:hover,
-.hero-secondary:hover,
-.home-project-card a:hover,
-.about-photo:hover,
+button:active,
+[role="button"]:active,
+.dash-button:active,
+.btn:active,
+a.dash-button:active,
+a.btn:active {
+  transform: scale(0.985);
+}
+
+.dash-card,
+.dash-card--interactive,
+.pricing-card,
+.project-item {
+  transition: transform var(--duration-fast, 250ms) var(--ease-smooth-out),
+              box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out),
+              border-color var(--duration-fast, 250ms) var(--ease-smooth-out);
+}
+
+.gallery-item img,
+.efferd-gallery-item .efferd-img,
+.project-card-media .project-card-img,
+.gallery-figure img {
+  transition: transform 400ms var(--ease-smooth-out),
+              filter 400ms ease;
+}
+
 .gallery-item:hover img,
-.efferd-gallery-item:hover .efferd-card-inner,
 .efferd-gallery-item:hover .efferd-img,
-.ig-post-item:hover,
-.ig-post-item:hover .ig-post-img {
-  transform: none !important;
-  box-shadow: none !important;
+.dash-card:hover .project-card-img,
+.gallery-figure:hover img {
+  transform: scale(1.025);
 }
 
 /* ============================================================
@@ -4195,4 +4314,30 @@ a.btn:not(.btn-primary):not([class*="hero-btn"]):hover,
 .dash-nav-disclosure:hover {
   border: 0 !important;
   box-shadow: none !important;
+}
+
+/* ============================================================
+   GLOBAL HOVER RESET: NO HOVER JUMP & NO HOVER SHADOW ON BUTTONS
+   ============================================================ */
+button:hover,
+[role="button"]:hover,
+.dash-button:hover,
+.btn:hover,
+a.dash-button:hover,
+a.btn:hover,
+.dash-filter-chip:hover,
+.pricing-btn:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+button:active,
+[role="button"]:active,
+.dash-button:active,
+.btn:active,
+a.dash-button:active,
+a.btn:active,
+.dash-filter-chip:active,
+.pricing-btn:active {
+  transform: none !important;
 }

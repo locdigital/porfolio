@@ -1,7 +1,7 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import { getPhotoLocations } from "../../lib/cms";
-import { LayoutGrid, List, Folder, ChevronRight } from "../../components/icons/majesticons";
+import { LayoutGrid, List, Folder } from "../../components/icons/majesticons";
 
 export const prerender = true;
 
@@ -64,12 +64,12 @@ const enhancedLocations = locations.map((loc) => {
     <div class="photos-toolbar">
       <div class="photos-toolbar-inner">
         <!-- Compact Segmented Control View Switcher -->
-        <div class="photos-view-toggle" role="group" aria-label="Layout view format">
+        <div class="photos-view-toggle" id="photos-view-toggle" role="group" aria-label="Layout view format">
           <button
             type="button"
-            class="photos-view-btn active"
+            class="photos-view-btn"
             data-view="grid"
-            aria-pressed="true"
+            aria-pressed="false"
             aria-label="Grid view"
             title="Grid view"
           >
@@ -92,100 +92,100 @@ const enhancedLocations = locations.map((loc) => {
     </div>
   </header>
 
-  <!-- 1. Manila Folder Grid View (Default) -->
-  <div id="photos-grid" class="folder-grid">
-    {enhancedLocations.map((loc) => (
-      <div class="folder-item" data-region={loc.region}>
-        <a 
-          href={`/photos/${loc.slug}`} 
-          class="folder-wrapper"
-          data-preview-images={JSON.stringify(loc.previewImages)}
-          aria-label={`Open ${loc.name || loc.location} gallery`}
-        >
-          <!-- 3D MACOS FOLDER COMPONENT -->
-          <div class="folder" data-folder-surface>
-            <!-- 1. BACK FOLDER FLAP (Behind cards) -->
-            <div class="folder-back" aria-hidden="true"></div>
-
-            <!-- 2. FAN OF 3 PHOTO CARDS (Inside folder pocket) -->
-            {loc.heroPhoto && (
-              <div class="folder-cards" aria-hidden="true">
-                <div class="folder-card folder-card--left">
-                  <img
-                    src={loc.leftPhoto}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    draggable="false"
-                  />
-                </div>
-                <div class="folder-card folder-card--right">
-                  <img
-                    src={loc.rightPhoto}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    draggable="false"
-                  />
-                </div>
-                <div class="folder-card folder-card--center">
-                  <img
-                    src={loc.heroPhoto}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    draggable="false"
-                  />
-                </div>
-              </div>
-            )}
-
-            <!-- 3. FRONT FOLDER FLAP (In front of cards) -->
-            <div class="folder-front" aria-hidden="true"></div>
-          </div>
-
-          <!-- LOCATION NAME -->
-          <div class="folder-caption">
-            <span class="folder-title">{loc.name || loc.location}</span>
-          </div>
-        </a>
-      </div>
-    ))}
-  </div>
-
-  <!-- 2. Clean List View (Option) -->
-  <div id="photos-list" class="photos-list-container" style="display: none;">
-    <div class="photos-list-wrapper">
+  <!-- Photos Views Container (Desktop: Grid, Mobile: List) -->
+  <div id="photos-views-wrapper" class="photos-views-wrapper">
+    <!-- 1. Manila Folder Grid View -->
+    <div id="photos-grid" class="folder-grid">
       {enhancedLocations.map((loc) => (
-        <a 
-          href={`/photos/${loc.slug}`}
-          class="photo-list-row"
-          data-region={loc.region}
-          aria-label={`Open ${loc.name || loc.location} gallery`}
-        >
-          <div class="photo-list-main">
-            <span class="photo-list-icon" aria-hidden="true">
-              <Folder size={17} aria-hidden="true" />
-            </span>
-            <div class="photo-list-info">
-              <div class="photo-list-title-wrap">
-                <span class="photo-list-title">{loc.name || loc.location}</span>
-                <span class="dash-tag photo-list-tag">{loc.region}</span>
-              </div>
-              {loc.headline && (
-                <span class="photo-list-headline">{loc.headline}</span>
-              )}
-            </div>
-          </div>
+        <div class="folder-item" data-region={loc.region}>
+          <a
+            href={`/photos/${loc.slug}`}
+            class="folder-wrapper"
+            data-preview-images={JSON.stringify(loc.previewImages)}
+            aria-label={`Open ${loc.name || loc.location} gallery`}
+          >
+            <!-- 3D MACOS FOLDER COMPONENT -->
+            <div class="folder" data-folder-surface>
+              <!-- 1. BACK FOLDER FLAP (Behind cards) -->
+              <div class="folder-back" aria-hidden="true"></div>
 
-          <div class="photo-list-meta">
-            <span class="photo-list-count">{loc.photoCount} photos</span>
-            <span class="photo-list-arrow" aria-hidden="true">
-              <ChevronRight size={14} aria-hidden="true" />
-            </span>
-          </div>
-        </a>
+              <!-- 2. FAN OF 3 PHOTO CARDS (Inside folder pocket) -->
+              {loc.heroPhoto && (
+                <div class="folder-cards" aria-hidden="true">
+                  <div class="folder-card folder-card--left">
+                    <img
+                      src={loc.leftPhoto}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </div>
+                  <div class="folder-card folder-card--right">
+                    <img
+                      src={loc.rightPhoto}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </div>
+                  <div class="folder-card folder-card--center">
+                    <img
+                      src={loc.heroPhoto}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <!-- 3. FRONT FOLDER FLAP (In front of cards) -->
+              <div class="folder-front" aria-hidden="true"></div>
+            </div>
+
+            <!-- LOCATION NAME -->
+            <div class="folder-caption">
+              <span class="folder-title">{loc.name || loc.location}</span>
+            </div>
+          </a>
+        </div>
       ))}
+    </div>
+
+    <!-- 2. Clean List View -->
+    <div id="photos-list" class="photos-list-container">
+      <div class="photos-list-wrapper">
+        {enhancedLocations.map((loc) => (
+          <a
+            href={`/photos/${loc.slug}`}
+            class="photo-list-row"
+            data-region={loc.region}
+            aria-label={`Open ${loc.name || loc.location} gallery`}
+          >
+            <div class="photo-list-main">
+              <span class="photo-list-icon" aria-hidden="true">
+                <Folder size={17} aria-hidden="true" />
+              </span>
+              <div class="photo-list-info">
+                <div class="photo-list-title-wrap">
+                  <span class="photo-list-title">{loc.name || loc.location}</span>
+                  <span class="dash-tag photo-list-tag">{loc.region}</span>
+                </div>
+                {loc.headline && (
+                  <span class="photo-list-headline">{loc.headline}</span>
+                )}
+              </div>
+            </div>
+
+            <div class="photo-list-meta">
+              <span class="photo-list-count">{loc.photoCount} photos</span>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </DashboardLayout>
@@ -208,6 +208,10 @@ const enhancedLocations = locations.map((loc) => {
     justify-content: flex-end; /* Aligned right within existing section toolbar */
     gap: 12px;
     width: 100%;
+  }
+
+  .folder-wrapper {
+    cursor: pointer;
   }
 
   /* Compact Segmented Control (Subtle neutral background, thin border, 8px radius) */
@@ -251,8 +255,35 @@ const enhancedLocations = locations.map((loc) => {
     color: var(--dash-text);
   }
 
-  /* Selected option: clearly identifiable with white background, dark medium-weight text, and subtle shadow */
-  .photos-view-btn.active {
+  /* Default Desktop (> 768px): Grid button is active */
+  .photos-view-toggle:not([data-user-selected="true"]) .photos-view-btn[data-view="grid"] {
+    background: var(--dash-surface, #ffffff);
+    color: var(--dash-text, #111111);
+    font-weight: 500;
+    border-color: rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Default Mobile (<= 768px): List button is active */
+  @media (max-width: 768px) {
+    .photos-view-toggle:not([data-user-selected="true"]) .photos-view-btn[data-view="grid"] {
+      background: transparent;
+      color: var(--dash-muted, #787774);
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    .photos-view-toggle:not([data-user-selected="true"]) .photos-view-btn[data-view="list"] {
+      background: var(--dash-surface, #ffffff);
+      color: var(--dash-text, #111111);
+      font-weight: 500;
+      border-color: rgba(0, 0, 0, 0.04);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  /* Manual user override: highlighted via .active class */
+  .photos-view-toggle[data-user-selected="true"] .photos-view-btn.active {
     background: var(--dash-surface, #ffffff);
     color: var(--dash-text, #111111);
     font-weight: 500;
@@ -285,13 +316,39 @@ const enhancedLocations = locations.map((loc) => {
     }
   }
 
-  /* ── 5-COLUMN MANILA FOLDER GRID ── */
+  /* ── 5-COLUMN MANILA FOLDER GRID (Default on Desktop) ── */
   .folder-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 48px;
     padding: 0 0 52px;
+  }
+
+  /* Default on Mobile (<= 768px): Hide Grid, Show List */
+  @media (max-width: 768px) {
+    .folder-grid {
+      display: none;
+    }
+
+    .photos-list-container {
+      display: block;
+    }
+  }
+
+  /* Manual user toggle overrides */
+  #photos-views-wrapper[data-override-view="grid"] .folder-grid {
+    display: grid !important;
+  }
+  #photos-views-wrapper[data-override-view="grid"] .photos-list-container {
+    display: none !important;
+  }
+
+  #photos-views-wrapper[data-override-view="list"] .folder-grid {
+    display: none !important;
+  }
+  #photos-views-wrapper[data-override-view="list"] .photos-list-container {
+    display: block !important;
   }
 
   @media (max-width: 960px) {
@@ -372,10 +429,10 @@ const enhancedLocations = locations.map((loc) => {
     pointer-events: none;
     will-change: transform, opacity, filter;
     transition:
-      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 180ms ease,
-      filter 180ms ease,
-      box-shadow 240ms ease;
+      transform 320ms var(--ease-smooth-out),
+      opacity 220ms var(--ease-smooth-out),
+      filter 220ms var(--ease-smooth-out),
+      box-shadow 320ms var(--ease-smooth-out);
   }
 
   .folder-card img {
@@ -409,10 +466,10 @@ const enhancedLocations = locations.map((loc) => {
       0 18px 36px -6px rgba(0, 0, 0, 0.22),
       0 6px 14px rgba(0, 0, 0, 0.1);
     transition:
-      transform 420ms cubic-bezier(0.34, 1.45, 0.64, 1) 20ms,
-      opacity 280ms cubic-bezier(0.16, 1, 0.3, 1) 10ms,
-      filter 280ms ease 10ms,
-      box-shadow 420ms ease 20ms;
+      transform 520ms var(--ease-smooth-out) 20ms,
+      opacity 260ms var(--ease-smooth-out) 20ms,
+      filter 260ms var(--ease-smooth-out) 20ms,
+      box-shadow 520ms var(--ease-smooth-out) 20ms;
   }
 
   /* 2. Left Card: jumps out and fans to the left */
@@ -426,9 +483,9 @@ const enhancedLocations = locations.map((loc) => {
     opacity: 1;
     filter: blur(0px);
     transition:
-      transform 440ms cubic-bezier(0.34, 1.45, 0.64, 1) 50ms,
-      opacity 300ms cubic-bezier(0.16, 1, 0.3, 1) 30ms,
-      filter 300ms ease 30ms;
+      transform 540ms var(--ease-smooth-out) 60ms,
+      opacity 260ms var(--ease-smooth-out) 60ms,
+      filter 260ms var(--ease-smooth-out) 60ms;
   }
 
   /* 3. Right Card: jumps out and fans to the right */
@@ -442,9 +499,9 @@ const enhancedLocations = locations.map((loc) => {
     opacity: 1;
     filter: blur(0px);
     transition:
-      transform 460ms cubic-bezier(0.34, 1.45, 0.64, 1) 80ms,
-      opacity 320ms cubic-bezier(0.16, 1, 0.3, 1) 60ms,
-      filter 320ms ease 60ms;
+      transform 560ms var(--ease-smooth-out) 100ms,
+      opacity 260ms var(--ease-smooth-out) 100ms,
+      filter 260ms var(--ease-smooth-out) 100ms;
   }
 
   /* Stacking priority when hovered */
@@ -472,8 +529,9 @@ const enhancedLocations = locations.map((loc) => {
     }
   }
 
-  /* ── LIST VIEW STYLING ── */
+  /* ── LIST VIEW STYLING (Default on Mobile, Hidden on Desktop) ── */
   .photos-list-container {
+    display: none;
     padding: 0 0 48px;
   }
 
@@ -495,6 +553,7 @@ const enhancedLocations = locations.map((loc) => {
     border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
     text-decoration: none !important;
     color: inherit;
+    cursor: pointer;
     transition: background 140ms ease;
   }
 
@@ -577,18 +636,6 @@ const enhancedLocations = locations.map((loc) => {
     font-variant-numeric: tabular-nums;
   }
 
-  .photo-list-arrow {
-    display: inline-flex;
-    align-items: center;
-    color: var(--dash-muted);
-    transition: transform 140ms ease, color 140ms ease;
-  }
-
-  .photo-list-row:hover .photo-list-arrow {
-    transform: translateX(2px);
-    color: var(--dash-text);
-  }
-
   @media (max-width: 768px) {
     .photo-list-headline {
       max-width: 32ch;
@@ -597,7 +644,7 @@ const enhancedLocations = locations.map((loc) => {
 
   @media (max-width: 540px) {
     .photo-list-row {
-      padding: 10px 12px;
+      padding: 11px 14px;
     }
 
     .photo-list-headline {
@@ -608,10 +655,7 @@ const enhancedLocations = locations.map((loc) => {
 
 <script is:inline>
   function setupPhotoExperience() {
-    const viewButtons = document.querySelectorAll(".photos-view-btn");
-    const gridView = document.getElementById("photos-grid");
-    const listView = document.getElementById("photos-list");
-
+    // 1. Folder Hover Preview Cycling
     document.querySelectorAll(".folder-wrapper[data-preview-images]").forEach((wrapper) => {
       if (wrapper.dataset.previewReady === "true") return;
       wrapper.dataset.previewReady = "true";
@@ -628,6 +672,23 @@ const enhancedLocations = locations.map((loc) => {
       const rightImg = wrapper.querySelector(".folder-card--right img");
       if (!centerImg || !leftImg || !rightImg) return;
 
+      const preloadImage = (src) => {
+        if (!src) return Promise.resolve();
+        const img = new Image();
+        img.src = src;
+        if (img.decode) {
+          return img.decode().catch(() => {});
+        }
+        return new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      };
+
+      images.slice(0, 6).forEach((src) => {
+        preloadImage(src);
+      });
+
       // On pointerleave, prep the next set of distinct images for the next time the folder opens
       let currentIndex = 0;
       wrapper.addEventListener("pointerleave", () => {
@@ -636,58 +697,84 @@ const enhancedLocations = locations.map((loc) => {
         const nextLeft = images[(currentIndex + 1) % images.length];
         const nextRight = images[(currentIndex + 2) % images.length];
 
-        // Preload next images silently so there is never an image load flicker
-        [nextCenter, nextLeft, nextRight].forEach((src) => {
-          if (src) {
-            const pre = new Image();
-            pre.src = src;
-          }
+        Promise.all([
+          preloadImage(nextCenter),
+          preloadImage(nextLeft),
+          preloadImage(nextRight),
+        ]).then(() => {
+          centerImg.src = nextCenter;
+          leftImg.src = nextLeft;
+          rightImg.src = nextRight;
         });
-
-        centerImg.src = nextCenter;
-        leftImg.src = nextLeft;
-        rightImg.src = nextRight;
       });
     });
 
-    function applyView(viewMode) {
-      if (!gridView || !listView) return;
+    // 2. Responsive Grid/List View Logic
+    const viewToggle = document.getElementById("photos-view-toggle");
+    const viewButtons = document.querySelectorAll(".photos-view-btn");
+    const wrapper = document.getElementById("photos-views-wrapper");
 
-      if (viewMode === "list") {
-        gridView.style.display = "none";
-        listView.style.display = "block";
+    // Remove legacy persistent view that could pin mobile to grid or desktop to list
+    try {
+      localStorage.removeItem("photos_view_preference");
+    } catch (_) {}
+
+    function getScreenDefault() {
+      return window.matchMedia("(max-width: 768px)").matches ? "list" : "grid";
+    }
+
+    function applyView(viewMode, isUserAction = false) {
+      if (!wrapper) return;
+
+      if (isUserAction) {
+        wrapper.setAttribute("data-override-view", viewMode);
+        if (viewToggle) viewToggle.setAttribute("data-user-selected", "true");
+        viewButtons.forEach((btn) => {
+          const isMatch = btn.getAttribute("data-view") === viewMode;
+          btn.classList.toggle("active", isMatch);
+          btn.setAttribute("aria-pressed", isMatch ? "true" : "false");
+        });
+        try {
+          sessionStorage.setItem("photos_view_override", viewMode);
+        } catch (_) {}
       } else {
-        gridView.style.display = "grid";
-        listView.style.display = "none";
+        const sessionOverride = sessionStorage.getItem("photos_view_override");
+        if (sessionOverride === "grid" || sessionOverride === "list") {
+          applyView(sessionOverride, true);
+          return;
+        }
+        wrapper.removeAttribute("data-override-view");
+        if (viewToggle) viewToggle.removeAttribute("data-user-selected");
+        const defaultView = getScreenDefault();
+        viewButtons.forEach((btn) => {
+          const isMatch = btn.getAttribute("data-view") === defaultView;
+          btn.classList.toggle("active", isMatch);
+          btn.setAttribute("aria-pressed", isMatch ? "true" : "false");
+        });
       }
-
-      viewButtons.forEach((btn) => {
-        const isMatch = btn.getAttribute("data-view") === viewMode;
-        btn.classList.toggle("active", isMatch);
-        btn.setAttribute("aria-pressed", isMatch ? "true" : "false");
-      });
-
-      try {
-        localStorage.setItem("photos_view_preference", viewMode);
-      } catch (_) {}
     }
 
     viewButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const viewMode = btn.getAttribute("data-view") || "grid";
-        applyView(viewMode);
+        applyView(viewMode, true);
       });
     });
 
-    // Restore saved view preference
-    try {
-      const savedView = localStorage.getItem("photos_view_preference");
-      if (savedView === "list") {
-        applyView("list");
-      } else {
-        applyView("grid");
+    const mql = window.matchMedia("(max-width: 768px)");
+    const onResize = () => {
+      const sessionOverride = sessionStorage.getItem("photos_view_override");
+      if (!sessionOverride) {
+        applyView(getScreenDefault(), false);
       }
-    } catch (_) {}
+    };
+    if (mql.addEventListener) {
+      mql.addEventListener("change", onResize);
+    } else {
+      mql.addListener(onResize);
+    }
+
+    applyView(getScreenDefault(), false);
   }
 
   document.addEventListener("astro:page-load", setupPhotoExperience);

@@ -103,8 +103,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
   <!-- Photo Stream (Masonry gallery) -->
   <section class="page-section" aria-label="Photo stream">
     <div 
-      class="dash-gallery" 
-      style="columns: 2; column-gap: 16px;"
+      class="dash-gallery photo-stream-gallery" 
     >
       {photos.map((p, index) => (
         <figure 
@@ -298,3 +297,38 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
     setupLightbox();
   }
 </script>
+
+<style>
+  .photo-stream-gallery {
+    columns: 2;
+    column-gap: 16px;
+  }
+
+  .gallery-figure {
+    transition: transform var(--duration-fast, 250ms) var(--ease-smooth-out),
+                box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out),
+                border-color var(--duration-fast, 250ms) var(--ease-smooth-out);
+    overflow: hidden;
+  }
+
+  .gallery-figure:hover {
+    border-color: var(--dash-border-strong);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .gallery-figure img {
+    transition: none;
+  }
+
+  .gallery-figure:hover img {
+    transform: none;
+  }
+
+  @media (max-width: 640px) {
+    .photo-stream-gallery {
+      columns: 1;
+      column-gap: 0;
+    }
+  }
+</style>

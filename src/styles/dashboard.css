@@ -79,7 +79,7 @@
   --sidebar-w: 232px;
   --workspace-window-zoom: 0.864;
   --dash-section-gap: calc(var(--space-12) * 1.1);        /* 52.8px (increased 10% from 48px) */
-  --dash-section-gap-mobile: calc(var(--space-8) * 1.1);  /* 35.2px (increased 10% from 32px) */
+  --dash-section-gap-mobile: calc(var(--space-8) * 1.21);  /* 38.7px (increased 10% from 35.2px) */
 }
 
 /* Universal box sizing */
@@ -92,6 +92,8 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
   background: var(--dash-outer);
   color: var(--dash-text);
   font-family: var(--font-sans);
@@ -248,6 +250,8 @@ img {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
   scrollbar-width: auto;
 }
 
@@ -386,7 +390,15 @@ h3.item-title {
   background: transparent;
   color: var(--dash-text);
   box-sizing: border-box;
-  transition: none;
+  transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              border-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              transform var(--duration-quick, 150ms) var(--ease-smooth-out),
+              box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out);
+}
+
+.dash-button:active {
+  transform: scale(0.985);
 }
 
 .dash-button--primary {
@@ -396,9 +408,11 @@ h3.item-title {
 }
 
 .dash-button--primary:hover {
-  background: var(--dash-primary);
-  border: var(--dash-border-width, 0.9px) solid var(--dash-primary);
+  background: var(--dash-primary-hover);
+  border-color: var(--dash-primary-hover);
   color: var(--dash-on-primary) !important;
+  transform: none;
+  box-shadow: none;
 }
 
 .dash-button--secondary {
@@ -408,9 +422,11 @@ h3.item-title {
 }
 
 .dash-button--secondary:hover {
-  background: var(--dash-surface);
+  background: var(--dash-hover);
   color: var(--dash-text);
-  border-color: var(--dash-border);
+  border-color: var(--dash-border-strong);
+  transform: none;
+  box-shadow: none;
 }
 
 .dash-button--ghost {
@@ -420,9 +436,11 @@ h3.item-title {
 }
 
 .dash-button--ghost:hover {
-  background: transparent;
+  background: var(--dash-hover);
   color: var(--dash-text);
-  border-color: var(--dash-border);
+  border-color: var(--dash-border-strong);
+  transform: none;
+  box-shadow: none;
 }
 
 .dash-button:disabled {
@@ -445,8 +463,18 @@ h3.item-title {
   border: var(--card-border-w) solid var(--dash-border);
   border-radius: var(--outer-radius);
   background: var(--dash-surface);
-  box-shadow: none;              /* No shadow in Notion V2 */
-  transition: border-color var(--duration-fast), background-color var(--duration-fast);
+  box-shadow: none;
+  transition: border-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              transform var(--duration-fast, 250ms) var(--ease-smooth-out),
+              box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out);
+}
+
+.dash-card:hover,
+.dash-card--interactive:hover {
+  border-color: var(--dash-border-strong);
+  transform: none;
+  box-shadow: none;
 }
 
 /* Concentric nested surfaces inside cards */
@@ -464,10 +492,6 @@ h3.item-title {
   text-decoration: none;
   color: inherit;
   display: block;
-}
-
-.dash-card--interactive:hover {
-  border-color: var(--dash-border-strong);
 }
 
 /* Callout Box */
@@ -526,26 +550,34 @@ h3.item-title {
   border: var(--dash-border-width, 0.9px) solid var(--dash-border);
   color: var(--dash-text);
   cursor: pointer;
-  transition: none;
+  transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              border-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              color var(--duration-fast, 250ms) var(--ease-smooth-out),
+              transform var(--duration-quick, 150ms) var(--ease-smooth-out);
 }
 
 .dash-filter-chip:hover {
-  background: var(--dash-surface);
+  background: var(--dash-hover);
   color: var(--dash-text);
-  border-color: var(--dash-border);
+  border-color: var(--dash-border-strong);
+  transform: none;
 }
 
-.dash-filter-chip.active:hover {
-  background: var(--dash-selected);
-  color: var(--dash-text);
-  border-color: var(--dash-border);
+.dash-filter-chip:active {
+  transform: scale(0.98);
 }
 
 .dash-filter-chip.active {
   background: var(--dash-selected);
   color: var(--dash-text);
-  border-color: var(--dash-border);
+  border-color: var(--dash-border-strong);
   font-weight: 600;
+}
+
+.dash-filter-chip.active:hover {
+  background: var(--dash-selected);
+  color: var(--dash-text);
+  border-color: var(--dash-border-strong);
 }
 
 /* Metric Display */
@@ -743,7 +775,8 @@ abbr {
   height: 28px;
   border-radius: 50%;
   object-fit: cover;
-  background: #E5E5E2;
+  background: transparent;
+  border: 0;
 }
 
 .dash-user-name {
@@ -1017,7 +1050,7 @@ abbr {
     top: 0;
     z-index: 30;
     height: 52px;
-    padding: 0 16px;
+    padding: 0 18px;
     background: var(--dash-surface);
     border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
   }
@@ -1030,7 +1063,8 @@ abbr {
 
   .mobile-menu-btn {
     background: transparent;
-    border: none;
+    border: 0 !important;
+    box-shadow: none !important;
     padding: 6px;
     color: var(--dash-text);
     cursor: pointer;
@@ -1044,6 +1078,8 @@ abbr {
 
   .mobile-menu-btn:hover {
     background: var(--dash-hover);
+    border: 0 !important;
+    box-shadow: none !important;
     color: var(--dash-text);
   }
 
@@ -1078,11 +1114,11 @@ abbr {
   .workspace-sidebar-inner {
     position: static;
     max-height: 100vh;
-    padding: 20px 16px;
+    padding: 22px 18px;
   }
 
   .workspace-main {
-    padding: 24px 20px;
+    padding: 26px 22px;
     min-height: auto;
     overflow-y: visible;
   }
@@ -1109,14 +1145,18 @@ abbr {
     line-height: 1.381;
   }
 
+  .page-header {
+    margin-bottom: calc(var(--space-8) * 1.21);
+  }
+
   .page-section + .page-section {
-    margin-top: var(--dash-section-gap-mobile, calc(var(--space-8) * 1.1));
+    margin-top: var(--dash-section-gap-mobile, calc(var(--space-8) * 1.21));
   }
 }
 
 @media (max-width: 359px) {
   .workspace-main {
-    padding-inline: 16px;
+    padding-inline: 18px;
   }
 }
 
@@ -1151,6 +1191,7 @@ abbr {
   text-decoration: none !important;
   color: inherit;
   cursor: pointer;
+  transition: transform 300ms var(--ease-smooth-out);
 }
 
 .folder-wrapper,
@@ -1180,6 +1221,7 @@ abbr {
   width: 100%;
   max-width: 160px;
   aspect-ratio: 480 / 379;
+  transition: transform 300ms var(--ease-smooth-out);
 }
 
 .folder-back {
@@ -1196,12 +1238,12 @@ abbr {
   filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.08));
   z-index: 1;
   pointer-events: none;
-  transition: filter 200ms ease;
+  transition: filter 240ms ease;
 }
 
 .folder-wrapper:hover .folder-back,
 .folder-wrapper:focus-visible .folder-back {
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1)) brightness(1.02);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.12)) brightness(1.02);
 }
 
 .folder-front {
@@ -1218,13 +1260,141 @@ abbr {
   transform-origin: bottom center;
   z-index: 4;
   pointer-events: none;
-  transition: transform 380ms cubic-bezier(0.34, 1.45, 0.64, 1), filter 200ms ease;
+  transition: transform 420ms cubic-bezier(0.34, 1.45, 0.64, 1), filter 240ms ease;
 }
 
 .folder-wrapper:hover .folder-front,
 .folder-wrapper:focus-visible .folder-front {
-  transform: perspective(600px) rotateX(-8deg);
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
+  transform: perspective(600px) rotateX(-14deg);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.14));
+}
+
+/* ── HOVER BRIDGE (Keeps folder open while admiring fanned cards) ── */
+.folder-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -85px;
+  left: -32px;
+  right: -32px;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.folder-wrapper:hover::before,
+.folder-wrapper:focus-visible::before {
+  pointer-events: auto;
+}
+
+/* ── 3-CARD FAN OUT PHOTO SYSTEM ── */
+.folder-cards {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.folder-card {
+  --card-radius: 8px;
+  --card-inset: 3px;
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  width: clamp(84px, 22vw, 100px);
+  aspect-ratio: 4 / 3;
+  padding: var(--card-inset);
+  background: #ffffff;
+  border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
+  border-radius: var(--card-radius);
+  box-shadow:
+    0 12px 28px -4px rgba(0, 0, 0, 0.16),
+    0 4px 10px rgba(0, 0, 0, 0.08);
+  transform-origin: bottom center;
+  opacity: 0;
+  filter: blur(2px);
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+  transition:
+    transform 320ms var(--ease-smooth-out),
+    opacity 220ms var(--ease-smooth-out),
+    filter 220ms var(--ease-smooth-out),
+    box-shadow 320ms var(--ease-smooth-out);
+}
+
+.folder-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: max(0px, calc(var(--card-radius) - var(--card-inset)));
+}
+
+/* Resting: tucked inside the folder pocket between back and front flaps */
+.folder-card--left,
+.folder-card--center,
+.folder-card--right {
+  transform: translate(-50%, 16px) scale(0.72) rotate(0deg);
+  opacity: 0;
+  filter: blur(2px);
+}
+
+/* 1. Center Card: jumps out tallest from inside the folder */
+.folder-card--center {
+  z-index: 3;
+}
+
+.folder-wrapper:hover .folder-card--center,
+.folder-wrapper:focus-visible .folder-card--center {
+  transform: translate(-50%, -64px) rotate(-1.5deg) scale(1.04);
+  opacity: 1;
+  filter: blur(0px);
+  box-shadow:
+    0 18px 36px -6px rgba(0, 0, 0, 0.22),
+    0 6px 14px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 520ms var(--ease-smooth-out) 20ms,
+    opacity 260ms var(--ease-smooth-out) 20ms,
+    filter 260ms var(--ease-smooth-out) 20ms,
+    box-shadow 520ms var(--ease-smooth-out) 20ms;
+}
+
+/* 2. Left Card: jumps out and fans to the left */
+.folder-card--left {
+  z-index: 2;
+}
+
+.folder-wrapper:hover .folder-card--left,
+.folder-wrapper:focus-visible .folder-card--left {
+  transform: translate(calc(-50% - 30px), -50px) rotate(-15deg) scale(0.96);
+  opacity: 1;
+  filter: blur(0px);
+  transition:
+    transform 540ms var(--ease-smooth-out) 60ms,
+    opacity 260ms var(--ease-smooth-out) 60ms,
+    filter 260ms var(--ease-smooth-out) 60ms;
+}
+
+/* 3. Right Card: jumps out and fans to the right */
+.folder-card--right {
+  z-index: 2;
+}
+
+.folder-wrapper:hover .folder-card--right,
+.folder-wrapper:focus-visible .folder-card--right {
+  transform: translate(calc(-50% + 30px), -46px) rotate(13deg) scale(0.96);
+  opacity: 1;
+  filter: blur(0px);
+  transition:
+    transform 560ms var(--ease-smooth-out) 100ms,
+    opacity 260ms var(--ease-smooth-out) 100ms,
+    filter 260ms var(--ease-smooth-out) 100ms;
+}
+
+/* Stacking priority when hovered */
+.folder-item:hover,
+.folder-wrapper:hover,
+.folder-wrapper:focus-visible {
+  z-index: 25;
 }
 
 /* Hide legacy inner markup if present */
@@ -1245,27 +1415,35 @@ abbr {
   font-weight: 500;
   color: var(--dash-text);
   line-height: 1.35;
-  transition: color var(--duration-fast);
+  transition: color var(--duration-fast, 180ms) ease;
 }
 
 .folder-wrapper:hover .folder-title {
   color: var(--dash-accent);
 }
 
-/* ============================================================
-   GLOBAL RESTRICTION: DISABLE ALL HOVER JUMPS AND HOVER SHADOWS
-   ============================================================ */
-.dash-card:hover,
-.dash-card--interactive:hover,
-.dash-button:hover,
-.folder-wrapper:hover,
-.folder-item:hover,
-.folder:hover,
-.pricing-card:hover,
-.pricing-btn:hover,
-.project-item:hover,
-a.dash-card:hover,
-a.folder-wrapper:hover {
+/* Interactive Timeline & List Rows */
+.dash-row {
+  transition: background-color 160ms ease, padding-left 200ms var(--ease-smooth-out), padding-right 200ms var(--ease-smooth-out);
+  border-radius: var(--radius-control);
+}
+
+.dash-row:hover {
+  background: var(--dash-hover);
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* Metric Items */
+.dash-metric-item {
+  transition: border-color var(--duration-fast, 250ms) var(--ease-smooth-out);
+}
+
+.dash-metric-item:hover {
+  transform: none;
+}
+
+/* Click stability: controls should not move the window or shift layout on press. */
+.workspace-canvas :where(button, [role="button"], .dash-button, .dash-filter-chip, .pricing-btn):active {
   transform: none !important;
-  box-shadow: none !important;
 }

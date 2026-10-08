@@ -52,15 +52,7 @@
 │   ├── pages/
 │   │   └── index.astro          # TRANG CHỦ MẪU: Đã nạp sẵn dữ liệu, sẵn sàng để bạn dựng layout mới!
 │   │
-│   └── reference_pages/         # TOÀN BỘ CÁC TRANG CŨ (Dùng để tham khảo JSX, copy code nếu cần)
-│       ├── work/                # Trang danh sách & chi tiết case study cũ
-│       ├── service.astro        # Trang dịch vụ cũ (đầy đủ 6 gói dịch vụ, pricing, đối tác)
-│       ├── about.astro          # Trang giới thiệu cũ (timeline kinh nghiệm, sở thích)
-│       ├── certificates.astro   # Trang chứng chỉ cũ (10 chứng chỉ Google dạng folder 3D)
-│       ├── gear.astro           # Trang thiết bị cũ
-│       ├── photos/              # Trang thư viện ảnh cũ
-│       ├── resume-v2.astro      # Trang CV Harvard web format
-│       └── question.astro       # Giao diện Chatbot AI cũ
+
 ```
 
 ---

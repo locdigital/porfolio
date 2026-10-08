@@ -475,8 +475,8 @@ export default function BeforeAfterPerformance({
           background: #ffffff;
           border-color: var(--accent);
           color: var(--accent);
-          transform: translateY(-1px);
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+          transform: none;
+          box-shadow: none;
         }
 
         .bap-random-btn:active {

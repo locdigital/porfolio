@@ -226,7 +226,7 @@ const skillClusters = [
   <section id="skill-clusters" class="page-section" aria-label="Core Competencies">
     <h2 class="section-title">Specialized skill clusters</h2>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+    <div class="skill-cluster-grid">
       {skillClusters.map((cluster) => (
         <div class="dash-card" style="padding: 16px;">
           <h3 style="font-size: 0.9375rem; font-weight: 600; color: var(--dash-text); margin: 0 0 10px;">
@@ -245,3 +245,23 @@ const skillClusters = [
     </div>
   </section>
 </DashboardLayout>
+
+<style>
+  .skill-cluster-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  @media (max-width: 1100px) {
+    .skill-cluster-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .skill-cluster-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

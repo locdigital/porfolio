@@ -200,7 +200,15 @@ const enhancedProjects = projects.map((p) => {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    transition: border-color var(--duration-fast, 150ms) ease;
+    transition: transform var(--duration-fast, 250ms) var(--ease-smooth-out),
+                box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out),
+                border-color var(--duration-fast, 250ms) var(--ease-smooth-out);
+  }
+
+  .project-item:hover {
+    border-color: var(--dash-border-strong);
+    transform: none;
+    box-shadow: none;
   }
 
   .project-card-meta {
@@ -234,6 +242,11 @@ const enhancedProjects = projects.map((p) => {
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 420ms var(--ease-smooth-out);
+  }
+
+  .project-item:hover .project-card-img {
+    transform: scale(1.025);
   }
 
   .project-card-title {
@@ -326,8 +339,8 @@ const enhancedProjects = projects.map((p) => {
       overscroll-behavior-x: contain;
       -webkit-overflow-scrolling: touch;
       gap: 8px;
-      margin-inline: -20px;
-      padding-inline: 20px;
+      margin-inline: -22px;
+      padding-inline: 22px;
       padding-bottom: 6px;
       scrollbar-width: none;
       -ms-overflow-style: none;
@@ -349,17 +362,24 @@ const enhancedProjects = projects.map((p) => {
       overflow-x: auto !important;
       overflow-y: hidden !important;
       overscroll-behavior-x: contain;
-      touch-action: pan-y;
+      touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 20px;
+      scroll-padding-inline: 22px;
       -webkit-overflow-scrolling: touch;
-      gap: 12px;
-      margin-inline: -20px;
-      padding-inline: 20px;
+      gap: 14px;
+      margin-inline: -22px;
+      padding-inline: 22px;
       padding-top: 2px;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      cursor: grab;
+    }
+
+    .projects-grid.is-dragging {
+      cursor: grabbing;
+      scroll-snap-type: none !important;
+      user-select: none;
     }
 
     .projects-grid::-webkit-scrollbar {
@@ -368,11 +388,22 @@ const enhancedProjects = projects.map((p) => {
 
     .project-item {
       --card-padding: 14px;
-      flex: 0 0 calc(100vw - 60px) !important;
-      width: calc(100vw - 60px) !important;
-      max-width: calc(100vw - 60px) !important;
+      flex: 0 0 clamp(280px, 82vw, 340px) !important;
+      width: clamp(280px, 82vw, 340px) !important;
+      max-width: clamp(280px, 82vw, 340px) !important;
       scroll-snap-align: start;
       scroll-snap-stop: normal;
+    }
+
+    .project-card-media {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    .project-card-img {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     /* Carousel Controls */
@@ -433,20 +464,21 @@ const enhancedProjects = projects.map((p) => {
 
   @media (max-width: 359px) {
     .dash-filter-bar {
-      margin-inline: -16px;
-      padding-inline: 16px;
+      margin-inline: -18px;
+      padding-inline: 18px;
     }
 
     .projects-grid {
-      margin-inline: -16px;
-      padding-inline: 16px;
-      scroll-padding-inline: 16px;
+      margin-inline: -18px;
+      padding-inline: 18px;
+      scroll-padding-inline: 18px;
+      gap: 12px;
     }
 
     .project-item {
-      flex: 0 0 calc(100vw - 56px) !important;
-      width: calc(100vw - 56px) !important;
-      max-width: calc(100vw - 56px) !important;
+      flex: 0 0 clamp(260px, 84vw, 300px) !important;
+      width: clamp(260px, 84vw, 300px) !important;
+      max-width: clamp(260px, 84vw, 300px) !important;
     }
   }
 </style>
@@ -581,13 +613,58 @@ const enhancedProjects = projects.map((p) => {
     grid.addEventListener("scroll", handleScroll, { passive: true });
     grid.addEventListener("scrollend", calculateActiveIndexFromScroll, { passive: true });
 
+    // Mouse Drag-to-Scroll support for desktop emulation / previewing
+    let isDown = false;
+    let startX = 0;
+    let scrollStart = 0;
+    let hasDragged = false;
+
+    grid.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      isDown = true;
+      hasDragged = false;
+      startX = e.pageX;
+      scrollStart = grid.scrollLeft;
+      grid.classList.add("is-dragging");
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      const walk = e.pageX - startX;
+      if (Math.abs(walk) > 4) {
+        hasDragged = true;
+      }
+      grid.scrollLeft = scrollStart - walk;
+    });
+
+    const onMouseUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      grid.classList.remove("is-dragging");
+      calculateActiveIndexFromScroll();
+    };
+
+    window.addEventListener("mouseup", onMouseUp);
+
+    grid.addEventListener(
+      "click",
+      (e) => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          hasDragged = false;
+        }
+      },
+      true
+    );
+
     function applyFilter(category) {
       let visibleCount = 0;
 
       projectItems.forEach((item) => {
         const itemCategory = item.getAttribute("data-category");
         if (category === "all" || itemCategory === category) {
-          item.style.display = "flex";
+          item.style.display = "";
           visibleCount++;
         } else {
           item.style.display = "none";

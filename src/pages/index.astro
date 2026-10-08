@@ -88,8 +88,19 @@ const servicesPreview = [
   }
 ];
 
-// 4 Featured Destinations for overview
-const featuredPhotos = photoLocations.slice(0, 4);
+// 5 Featured Destinations for overview with enhanced fanned photo cards
+const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
+  const images = loc.images || [];
+  const heroPhoto = loc.heroImage?.src || images[0]?.src || "";
+  const leftPhoto = images[1]?.src || heroPhoto;
+  const rightPhoto = images[2]?.src || images[0]?.src || heroPhoto;
+  return {
+    ...loc,
+    heroPhoto,
+    leftPhoto,
+    rightPhoto,
+  };
+});
 ---
 
 <DashboardLayout 
@@ -108,8 +119,6 @@ const featuredPhotos = photoLocations.slice(0, 4);
         <span>Senior Performance Marketing Executive</span>
         <span style="opacity: 0.4;">·</span>
         <span>Saigon, Vietnam</span>
-        <span style="opacity: 0.4;">·</span>
-        <span>FPT University Honors</span>
       </div>
       <p style="font-size: 1rem; line-height: 1.625; color: var(--dash-text); max-width: 68ch; margin: 0 0 16px;">
         I design and scale full-funnel digital acquisition engines—connecting paid media, TikTok Shop GMV acceleration, attribution modeling, and fast web experiences to turn marketing investments into sustainable revenue.
@@ -117,11 +126,11 @@ const featuredPhotos = photoLocations.slice(0, 4);
 
       <!-- Primary & Secondary Actions -->
       <div class="hero-actions">
-        <a href="/work" class="dash-button hero-btn-primary" style="border: none !important; box-shadow: none !important;">
+        <a href="/work" class="dash-button hero-btn-primary">
           <span>View selected work</span>
           <ChevronRight size={15} aria-hidden="true" />
         </a>
-        <a href="/contact" class="dash-button hero-btn-secondary" style="border: none !important; box-shadow: none !important;">
+        <a href="/contact" class="dash-button hero-btn-secondary">
           <span>Contact</span>
         </a>
       </div>
@@ -148,7 +157,7 @@ const featuredPhotos = photoLocations.slice(0, 4);
   <!-- ============================================================
        4. EXPERIENCE (Concise Company / Role / Date Rows)
        ============================================================ -->
-  <section class="page-section" aria-labelledby="heading-experience">
+  <section class="page-section home-experience-section" aria-labelledby="heading-experience">
     <div class="section-header-row">
       <h2 id="heading-experience" class="section-title" style="margin: 0;">Experience</h2>
       <a href="/experience" class="dash-link section-header-link">
@@ -156,7 +165,7 @@ const featuredPhotos = photoLocations.slice(0, 4);
       </a>
     </div>
 
-    <div style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);">
+    <div class="home-experience-list" style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);">
       {experienceHighlights.map((exp) => (
         <div class="dash-row">
           <div style="flex: 1; min-width: 200px;">
@@ -224,21 +233,44 @@ const featuredPhotos = photoLocations.slice(0, 4);
           >
             <!-- 3D MANILA FOLDER -->
             <div class="folder" data-folder-surface>
-              
-              <!-- 1. BACK FOLDER FLAP -->
-              <div class="folder-back">
-                <div class="folder-back-tab"></div>
-              </div>
+              <!-- 1. BACK FOLDER FLAP (Behind cards) -->
+              <div class="folder-back" aria-hidden="true"></div>
 
-              <!-- 2. FRONT FOLDER FLAP -->
-              <div class="folder-front">
-                <div class="folder-front-tab"></div>
-                <div class="folder-front-shine"></div>
-              </div>
+              <!-- 2. FAN OF 3 PHOTO CARDS (Inside folder pocket) -->
+              {loc.heroPhoto && (
+                <div class="folder-cards" aria-hidden="true">
+                  <div class="folder-card folder-card--left">
+                    <img
+                      src={loc.leftPhoto}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </div>
+                  <div class="folder-card folder-card--right">
+                    <img
+                      src={loc.rightPhoto}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </div>
+                  <div class="folder-card folder-card--center">
+                    <img
+                      src={loc.heroPhoto}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+              )}
 
-              <!-- 3. AMBIENT FLOOR SHADOW -->
-              <div class="folder-floor-shadow"></div>
-
+              <!-- 3. FRONT FOLDER FLAP (In front of cards) -->
+              <div class="folder-front" aria-hidden="true"></div>
             </div>
 
             <!-- LOCATION NAME -->
@@ -302,11 +334,22 @@ const featuredPhotos = photoLocations.slice(0, 4);
     line-height: 1;
   }
 
+  .home-experience-list .dash-row {
+    border-radius: 0;
+    transition: none;
+  }
+
+  .home-experience-list .dash-row:hover {
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   /* Photography Folder Grid */
   .home-photo-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-column-gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 16px;
     grid-row-gap: 32px;
     padding: 16px 0 24px;
   }
@@ -331,11 +374,11 @@ const featuredPhotos = photoLocations.slice(0, 4);
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 20px;
+      scroll-padding-inline: 22px;
       -webkit-overflow-scrolling: touch;
       gap: 16px;
-      margin-inline: -20px;
-      padding-inline: 20px;
+      margin-inline: -22px;
+      padding-inline: 22px;
       padding-top: 10px;
       padding-bottom: 20px;
       scrollbar-width: none;
@@ -355,9 +398,9 @@ const featuredPhotos = photoLocations.slice(0, 4);
 
   @media (max-width: 359px) {
     .home-photo-grid {
-      margin-inline: -16px;
-      padding-inline: 16px;
-      scroll-padding-inline: 16px;
+      margin-inline: -18px;
+      padding-inline: 18px;
+      scroll-padding-inline: 18px;
     }
 
     .home-photo-grid .folder-item {
@@ -401,11 +444,11 @@ const featuredPhotos = photoLocations.slice(0, 4);
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 20px;
+      scroll-padding-inline: 22px;
       -webkit-overflow-scrolling: touch;
       gap: 12px;
-      margin-inline: -20px;
-      padding-inline: 20px;
+      margin-inline: -22px;
+      padding-inline: 22px;
       padding-top: 2px;
       padding-bottom: 8px;
       scrollbar-width: none;
@@ -425,9 +468,9 @@ const featuredPhotos = photoLocations.slice(0, 4);
 
   @media (max-width: 359px) {
     .capabilities-grid {
-      margin-inline: -16px;
-      padding-inline: 16px;
-      scroll-padding-inline: 16px;
+      margin-inline: -18px;
+      padding-inline: 18px;
+      scroll-padding-inline: 18px;
     }
 
     .capability-card {
@@ -452,7 +495,8 @@ const featuredPhotos = photoLocations.slice(0, 4);
     color: #FFFFFF !important;
     font-weight: 500;
     box-shadow: none !important;
-    transition: background-color var(--duration-fast, 140ms) ease;
+    transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+                color var(--duration-fast, 250ms) var(--ease-smooth-out);
   }
 
   .hero-actions .hero-btn-primary:hover,
@@ -462,7 +506,13 @@ const featuredPhotos = photoLocations.slice(0, 4);
     border: none !important;
     color: #FFFFFF !important;
     text-decoration: none !important;
+    transform: none !important;
     box-shadow: none !important;
+  }
+
+  .hero-actions .hero-btn-primary:active,
+  .hero-btn-primary:active {
+    transform: scale(0.985);
   }
 
   .hero-actions .hero-btn-primary:focus-visible,
@@ -479,7 +529,8 @@ const featuredPhotos = photoLocations.slice(0, 4);
     color: #0065D1 !important;
     font-weight: 500;
     box-shadow: none !important;
-    transition: background-color var(--duration-fast, 140ms) ease, color var(--duration-fast, 140ms) ease;
+    transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
+                color var(--duration-fast, 250ms) var(--ease-smooth-out);
   }
 
   .hero-actions .hero-btn-secondary:hover,
@@ -489,7 +540,13 @@ const featuredPhotos = photoLocations.slice(0, 4);
     border: none !important;
     color: #0054B2 !important;
     text-decoration: none !important;
+    transform: none !important;
     box-shadow: none !important;
+  }
+
+  .hero-actions .hero-btn-secondary:active,
+  .hero-btn-secondary:active {
+    transform: scale(0.985);
   }
 
   .hero-actions .hero-btn-secondary:focus-visible,

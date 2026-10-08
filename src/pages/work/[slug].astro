@@ -125,18 +125,18 @@ if (project.slug === "playah") {
     <p class="page-lead">{project.summary}</p>
 
     <!-- Properties List -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 16px 0; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); font-size: 0.8125rem;">
-      <div>
-        <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Role</span>
-        <span style="font-weight: 600; color: var(--dash-text);">{project.role}</span>
+    <div class="project-properties" role="list" aria-label="Project properties">
+      <div class="project-property" role="listitem">
+        <span class="project-property-label">Role</span>
+        <span class="project-property-value project-property-value--strong">{project.role}</span>
       </div>
-      <div>
-        <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Timeline</span>
-        <span style="color: var(--dash-text);">{project.year}</span>
+      <div class="project-property" role="listitem">
+        <span class="project-property-label">Timeline</span>
+        <span class="project-property-value">{project.year}</span>
       </div>
-      <div>
-        <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Client / Platform</span>
-        <span style="color: var(--dash-text);">{project.client}</span>
+      <div class="project-property" role="listitem">
+        <span class="project-property-label">Client / Platform</span>
+        <span class="project-property-value">{project.client}</span>
       </div>
     </div>
   </header>
@@ -227,6 +227,48 @@ if (project.slug === "playah") {
     width: 100%;
   }
 
+  .project-properties {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+    margin: 0;
+    padding: 16px 0;
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    justify-items: stretch;
+    align-items: start;
+    text-align: left;
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+  }
+
+  .project-property {
+    min-width: 0;
+    justify-self: stretch;
+    text-align: left;
+  }
+
+  .project-property-label,
+  .project-property-value {
+    display: block;
+    text-align: left;
+  }
+
+  .project-property-label {
+    margin-bottom: 2px;
+    color: var(--dash-muted);
+  }
+
+  .project-property-value {
+    color: var(--dash-text);
+    overflow-wrap: anywhere;
+  }
+
+  .project-property-value--strong {
+    font-weight: 600;
+  }
+
   .more-work-section {
     width: 100%;
   }
@@ -270,6 +312,12 @@ if (project.slug === "playah") {
   }
 
   @media (max-width: 640px) {
+    .project-properties {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding-block: 14px;
+    }
+
     .work-narrative-section,
     .work-narrative-prose {
       max-width: 100%;
@@ -283,12 +331,44 @@ if (project.slug === "playah") {
     .work-narrative-prose p {
       text-align: left;
     }
+
+    .more-work-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 22px;
+      -webkit-overflow-scrolling: touch;
+      gap: 18px;
+      margin-inline: -22px;
+      padding-inline: 22px;
+      padding-top: 16px;
+      padding-bottom: 24px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .more-work-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .more-work-grid .folder-item {
+      flex: 0 0 158px;
+      width: 158px;
+      scroll-snap-align: start;
+    }
   }
 
   @media (max-width: 440px) {
     .more-work-grid {
-      grid-template-columns: 1fr;
-      row-gap: 24px;
+      gap: 16px;
+    }
+
+    .more-work-grid .folder-item {
+      flex-basis: 150px;
+      width: 150px;
     }
   }
 </style>

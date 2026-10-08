@@ -8,7 +8,6 @@ import {
   GearIcon, 
   CertificateIcon, 
   ContactIcon, 
-  Calendar,
   CaretRight,
   X,
   LinkedIn,
@@ -80,12 +79,6 @@ const navSections: NavSection[] = [
       },
       { label: "Gear", href: "/gear", icon: GearIcon },
       { label: "Certificates", href: "/certificates", icon: CertificateIcon },
-    ]
-  },
-  {
-    group: "Connect",
-    items: [
-      { label: "Calendar", href: "/booking", icon: Calendar },
       { label: "Contact", href: "/contact", icon: ContactIcon },
     ]
   }
@@ -116,7 +109,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home">
             <img 
-              src="/apple-touch-icon.png" 
+              src="/favicon.svg" 
               alt="Nguyen Phuc Loc" 
               class="dash-user-avatar"
               width="28"
@@ -171,7 +164,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
                           type="button"
                           class="dash-nav-disclosure"
                           aria-label={`Toggle ${item.label} pages`}
-                          aria-expanded="false"
+                          aria-expanded={active ? "true" : "false"}
                           aria-controls={treeId}
                           data-nav-disclosure
                           data-nav-key={item.href}
@@ -192,7 +185,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
                       </a>
                     )}
                     {hasChildren && (
-                      <ul id={treeId} class="dash-nav-tree" aria-label={`${item.label} pages`} hidden>
+                      <ul id={treeId} class="dash-nav-tree" aria-label={`${item.label} pages`} hidden={!active}>
                         {children.map((child) => {
                           const childActive = isChildActive(child.href);
                           return (
@@ -347,32 +340,15 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
       );
     });
 
-    let savedFolder = null;
+    // Tree sub-menu ONLY opens when the active page is inside that tree (e.g. /work or /work/*).
+    // When clicking into any other page, the tree sub-menu automatically collapses.
+    const buttonToOpen = activePageButton || null;
+
     try {
-      savedFolder = window.sessionStorage.getItem("dash-nav-active-folder");
+      window.sessionStorage.removeItem("dash-nav-active-folder");
     } catch {}
 
-    let buttonToOpen = null;
-    if (activePageButton) {
-      buttonToOpen = activePageButton;
-    } else if (savedFolder && savedFolder !== "none") {
-      buttonToOpen = disclosureButtons.find(
-        (btn) =>
-          btn.dataset.navKey === savedFolder ||
-          btn.getAttribute("aria-controls") === savedFolder
-      ) || null;
-    }
-
-    if (buttonToOpen) {
-      try {
-        window.sessionStorage.setItem(
-          "dash-nav-active-folder",
-          buttonToOpen.dataset.navKey || buttonToOpen.getAttribute("aria-controls") || ""
-        );
-      } catch {}
-    }
-
-    // Strictly enforce single-open: open only buttonToOpen, close all others
+    // Enforce: open only buttonToOpen (if on the tree's page), close all others
     disclosureButtons.forEach((button) => {
       setExpanded(button, button === buttonToOpen);
 
@@ -384,9 +360,6 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
         const isCurrentlyOpen = button.getAttribute("aria-expanded") === "true";
         if (isCurrentlyOpen) {
           setExpanded(button, false);
-          try {
-            window.sessionStorage.setItem("dash-nav-active-folder", "none");
-          } catch {}
         } else {
           // Close all other disclosures
           disclosureButtons.forEach((other) => {
@@ -396,12 +369,23 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
           });
           // Open this disclosure
           setExpanded(button, true);
-          try {
-            window.sessionStorage.setItem(
-              "dash-nav-active-folder",
-              button.dataset.navKey || button.getAttribute("aria-controls") || ""
-            );
-          } catch {}
+        }
+      });
+    });
+
+    // When clicking any link that navigates to another page, immediately collapse tree
+    const allNavLinks = Array.from(document.querySelectorAll(".dash-nav-list a"));
+    allNavLinks.forEach((link) => {
+      if (link.dataset.collapseBound === "true") return;
+      link.dataset.collapseBound = "true";
+
+      link.addEventListener("click", () => {
+        const isTreeChild = Boolean(link.closest(".dash-nav-tree"));
+        const isTreeParent = Boolean(link.closest(".dash-nav-parent"));
+
+        // If clicking a link to any other page (not within the tree or its parent), close all trees immediately
+        if (!isTreeChild && !isTreeParent) {
+          disclosureButtons.forEach((button) => setExpanded(button, false));
         }
       });
     });
