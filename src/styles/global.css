@@ -547,6 +547,10 @@
       display: block;
       max-width: 100%;
       border-radius: var(--image-radius, 6px);
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     /* Global photo styling */

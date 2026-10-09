@@ -114,6 +114,10 @@ code, pre, kbd, samp {
 img {
   max-width: 100%;
   height: auto;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Focus Indicator */

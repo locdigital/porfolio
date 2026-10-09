@@ -10,6 +10,12 @@ const services = [
     metric: "4.2x Avg ROAS",
     summary: "Acquisition scaling and CAC reduction across Meta, Google Search/PMax, and TikTok Ads supported by server-side CAPI and attribution modeling.",
     tags: ["Meta Ads", "Google Ads", "TikTok Ads", "GA4 Server-Side", "Looker Studio"],
+    color: {
+      accent: "#2EAADC",
+      text: "#0B6E99",
+      soft: "#EAF7FD",
+      border: "#BCE6F6",
+    },
     checklist: [
       "Custom tracking Pixel & Server-Side Conversions API (CAPI) integration.",
       "Full-funnel ad structure on Google (Search/PMax), Meta, and TikTok.",
@@ -24,6 +30,12 @@ const services = [
     metric: "85% Trust Index",
     summary: "Authentic peer discussion seeding across high-intent communities, sentiment management, and micro-influencer advocacy.",
     tags: ["Forum Seeding", "Reddit & Facebook", "Sentiment Mgmt", "KOC Booking"],
+    color: {
+      accent: "#9B6BFF",
+      text: "#6D3FD1",
+      soft: "#F3EDFF",
+      border: "#D7C4FF",
+    },
     checklist: [
       "Natural conversation angles across Reddit, Facebook groups, and tech forums.",
       "Niche community monitoring & proactive brand sentiment control.",
@@ -38,6 +50,12 @@ const services = [
     metric: "100% Alignment",
     summary: "Core brand positioning, tone-of-voice frameworks, and visual identity guidelines to differentiate in crowded digital markets.",
     tags: ["Market Positioning", "Messaging Maps", "Visual Styleguides", "Tone of Voice"],
+    color: {
+      accent: "#4ED18B",
+      text: "#208557",
+      soft: "#EAF9F1",
+      border: "#BCEBCF",
+    },
     checklist: [
       "Brand voice guideline & copy architecture handbook.",
       "Market positioning audit & Unique Value Proposition (UVP) design.",
@@ -52,6 +70,12 @@ const services = [
     metric: "+28% Conversion",
     summary: "Storefront UX refinement and retention funnel architecture to maximize Average Order Value (AOV) and customer lifetime value (LTV).",
     tags: ["Shopify CRO", "Cart Funnel", "Klaviyo CRM", "Catalog Feed"],
+    color: {
+      accent: "#F5BA38",
+      text: "#8A6200",
+      soft: "#FFF6DF",
+      border: "#F7D889",
+    },
     checklist: [
       "Sliding Cart Drawer & dynamic checkout optimization (CRO).",
       "Automated customer lifecycle email nurturing via Klaviyo CRM.",
@@ -66,6 +90,12 @@ const services = [
     metric: "100/100 Speed",
     summary: "Ultra-fast responsive static websites built on Astro and React, achieving perfect Google Lighthouse scores and strict technical SEO.",
     tags: ["Astro Framework", "React & TS", "Keystatic CMS", "Core Web Vitals"],
+    color: {
+      accent: "#FF7847",
+      text: "#B9471E",
+      soft: "#FFF0EA",
+      border: "#FFC8B3",
+    },
     checklist: [
       "Headless static website deployment on modern Astro framework.",
       "Interactive fluid UI with lightweight micro-animations.",
@@ -80,6 +110,12 @@ const services = [
     metric: "95% Automation",
     summary: "Eliminating manual marketing operations and scaling lead acquisition through CRM workflows, webhook syncs, and AI content engines.",
     tags: ["Make.com", "Zapier", "AI Scripting", "CRM Flows", "Programmatic SEO"],
+    color: {
+      accent: "#B8B8B8",
+      text: "#5F6368",
+      soft: "#F5F5F3",
+      border: "#D7D7D2",
+    },
     checklist: [
       "Automated multi-channel lead routing to CRM with instant alerts.",
       "AI-driven content optimization & programmatic SEO workflows.",
@@ -174,10 +210,13 @@ const academicPartners = [
 
     <div class="services-grid">
       {services.map((s) => (
-        <article class="dash-card service-capability-card" style="--card-outer-radius: 12px; --card-padding: 16px; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;">
+        <article
+          class="dash-card service-capability-card"
+          style={`--card-outer-radius: 12px; --card-padding: 16px; --service-accent: ${s.color.accent}; --service-text: ${s.color.text}; --service-soft: ${s.color.soft}; --service-border: ${s.color.border}; border-radius: var(--card-outer-radius); padding: var(--card-padding); display: flex; flex-direction: column; justify-content: space-between;`}
+        >
           <div>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <span class="dash-tag dash-tag--accent">{s.category}</span>
+              <span class="dash-tag dash-tag--accent service-category-tag">{s.category}</span>
               <span style="font-size: 0.75rem; color: var(--dash-muted);">{s.id}</span>
             </div>
 
@@ -190,14 +229,14 @@ const academicPartners = [
             </p>
 
             <!-- Scope Checklist (Concentric nested surface block) -->
-            <div class="dash-card-nested-block" style="margin-bottom: 14px; padding: 10px 12px; background: var(--dash-surface-subtle); border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); border: var(--dash-border-width, 0.9px) solid var(--dash-border);">
-              <div style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+            <div class="dash-card-nested-block service-scope-block" style="margin-bottom: 14px; padding: 10px 12px; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding)));">
+              <div class="service-scope-heading" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
                 Scope & deliverables
               </div>
               <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
                 {s.checklist.map((item) => (
                   <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.45; color: var(--dash-text);">
-                    <span class="dash-bullet" aria-hidden="true"></span>
+                    <span class="dash-bullet service-bullet" aria-hidden="true"></span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -207,7 +246,7 @@ const academicPartners = [
             <!-- Tags -->
             <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px;">
               {s.tags.map((t) => (
-                <span class="dash-tag">{t}</span>
+                <span class="dash-tag service-tool-tag">{t}</span>
               ))}
             </div>
           </div>
@@ -327,6 +366,33 @@ const academicPartners = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 16px;
+  }
+
+  .service-capability-card {
+    --service-accent: #2eaadc;
+    --service-text: #0b6e99;
+    --service-soft: #eaf7fd;
+    --service-border: #bce6f6;
+  }
+
+  .service-category-tag,
+  .service-tool-tag {
+    background: var(--service-soft) !important;
+    border-color: var(--service-border) !important;
+    color: var(--service-text) !important;
+  }
+
+  .service-scope-block {
+    background: color-mix(in srgb, var(--service-soft) 62%, var(--dash-surface-subtle)) !important;
+    border: var(--dash-border-width, 0.9px) solid color-mix(in srgb, var(--service-border) 70%, var(--dash-border)) !important;
+  }
+
+  .service-scope-heading {
+    color: var(--service-text) !important;
+  }
+
+  .service-bullet {
+    background: var(--service-accent) !important;
   }
 
   @media (max-width: 768px) {
