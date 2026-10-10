@@ -1,0 +1,330 @@
+---
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+
+const aboutParagraphs = [
+  "I started exploring social media in ninth grade and was buying and selling Facebook pages by the time I finished high school. Back then, I didn’t know I was learning marketing. I was figuring things out and finding ways to make money. Studying Graphic Design at Arena and Digital Marketing at FPT University eventually gave a name—and some structure—to the skills I’d been teaching myself.",
+  "Since then, I’ve worked across entertainment, education, coworking, and FMCG. My work usually starts with a practical question: what’s holding growth back? From there, I look at the creative, the campaigns, and what happens after someone clicks. I’ve helped build and grow TikTok Shop businesses and managed campaigns across Google, Meta, and TikTok, working closely with creative and affiliate teams to turn ideas into measurable results.",
+  "I believe good content gives performance marketing something worth scaling. I enjoy connecting the two: testing ideas, understanding the results, and making the next round better. Sometimes that means a new creative direction. Other times, it means improving the customer journey beyond the ad. Lately, my curiosity has also taken me into AI tools and building websites through vibe coding.",
+  "Outside work, you’ll usually find me taking photos, cycling, planning a trek, or having coffee with friends. I also enjoy a good desk setup, mechanical keyboards, and probably more gear than I need.",
+  "Photography has been with me since childhood. Before I owned a camera, I used to make a rectangle with my fingers to frame whatever caught my eye. That little habit became a big reason to save up for my first camera.",
+  "These days, photography and trekking fit naturally together. They give me a reason to explore, slow down, and notice things I might otherwise miss. My laptop still comes along on most trips, though. Apparently, travelling light has its limits.",
+  "I like things that look simple at first, then reward a closer look. A thoughtful detail, a useful idea, a photograph that makes you pause. That’s the kind of care I try to bring to my work, too."
+];
+
+const lifestylePursuits = [
+  {
+    title: "Landscape & Street",
+    category: "Photography",
+    image: "/images/about-lifestyle/01-landscape-photography.webp",
+    href: "/photos",
+    linkText: "View photos"
+  },
+  {
+    title: "Highland Trails",
+    category: "Trekking & Cycling",
+    image: "/images/about-lifestyle/03-highland-trails.webp",
+    href: "/photos",
+    linkText: "See gallery"
+  },
+  {
+    title: "Slow Coffee",
+    category: "Mindfulness",
+    image: "/images/about-lifestyle/04-specialty-coffee.webp",
+    href: "/contact",
+    linkText: "Connect"
+  },
+  {
+    title: "Gear & Vibe Coding",
+    category: "Tools & AI",
+    image: "/images/about-lifestyle/05-ai-automation.webp",
+    href: "/gear",
+    linkText: "Explore gear"
+  }
+];
+---
+
+<DashboardLayout
+  title="About — Phuc Loc Nguyen"
+  pageTitle="About"
+  description="About Loc, also known as Henry: digital media, performance marketing, creative strategy, photography, trekking, and the work behind the portfolio."
+  breadcrumbs={[{ label: "About" }]}
+  maxWidthVariant="default"
+>
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1 class="page-title">Growth Marketer and part-time Photographer.</h1>
+    <p class="page-lead">
+      I’m Loc, also known as Henry. Born in My Tho and now based in Sai Gon, I work in digital media, bringing together creative thinking, performance marketing, and data.
+    </p>
+  </header>
+
+  <!-- Story Prose Section -->
+  <section class="page-section about-story-section" aria-labelledby="heading-about-story">
+    <h2 id="heading-about-story" class="section-title">A closer look</h2>
+    
+    <div class="about-story-container">
+      <div class="about-story-prose">
+        {aboutParagraphs.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Lifestyle & Pursuits (4-column grid matching Resume Working Areas) -->
+  <section class="page-section" aria-labelledby="heading-lifestyle">
+    <div class="section-title-row">
+      <h2 id="heading-lifestyle" class="section-title" style="margin-bottom: 0;">In my free time</h2>
+      <span class="section-count">4 pursuits</span>
+    </div>
+
+    <div class="lifestyle-grid">
+      {lifestylePursuits.map((item) => (
+        <a href={item.href} class="lifestyle-card" aria-label={`${item.title}: ${item.linkText}`}>
+          <img src={item.image} alt={item.title} loading="lazy" decoding="async" class="lifestyle-img" />
+          <span class="lifestyle-caption">
+            <span class="lifestyle-category">{item.category}</span>
+            <span class="lifestyle-title">{item.title}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Quick Explore Strip -->
+  <section class="page-section" aria-label="Portfolio and resume quick links">
+    <div class="about-cta-strip">
+      <div class="about-cta-text">
+        <div style="font-weight: 600; color: var(--dash-text); font-size: 0.9375rem; margin-bottom: 2px;">
+          Want to explore the work and detailed background?
+        </div>
+        <div style="font-size: 0.8125rem; color: var(--dash-muted);">
+          Review verified campaign metrics, agency retainers, and chronological experience.
+        </div>
+      </div>
+      <div class="about-cta-actions">
+        <a href="/work" class="dash-button dash-button--primary">
+          View Selected Work
+        </a>
+        <a href="/resume" class="dash-button dash-button--secondary">
+          View Resume
+        </a>
+      </div>
+    </div>
+  </section>
+
+</DashboardLayout>
+
+<style>
+  /* Story section */
+  .about-story-section {
+    max-width: none;
+    width: 100%;
+  }
+
+  .about-story-container {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .about-story-prose {
+    max-width: none;
+    width: 100%;
+  }
+
+  .about-story-prose p {
+    max-width: none;
+    width: 100%;
+    margin: 0 0 16px;
+    color: var(--dash-text);
+    font-size: 0.875rem;
+    line-height: 1.72;
+  }
+
+  .about-story-prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Section Title Row */
+  .section-title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+  }
+
+  .section-count {
+    font-size: 0.75rem;
+    color: var(--dash-muted);
+    font-weight: 500;
+  }
+
+  .lifestyle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(8px, 1.1vw, 14px);
+    width: 100%;
+    align-items: center;
+    padding: 10px 6px 16px;
+  }
+
+  .lifestyle-card {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding: 0;
+    aspect-ratio: 4 / 5;
+    border-radius: 20px;
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border-subtle, rgba(0, 0, 0, 0.08));
+    box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.45);
+    text-decoration: none;
+    transform: rotate(var(--lifestyle-tilt, 0deg));
+    transition: none;
+  }
+
+  .lifestyle-card:nth-child(1) {
+    --lifestyle-tilt: -1.6deg;
+  }
+
+  .lifestyle-card:nth-child(2) {
+    --lifestyle-tilt: 1.9deg;
+  }
+
+  .lifestyle-card:nth-child(3) {
+    --lifestyle-tilt: -1.2deg;
+  }
+
+  .lifestyle-card:nth-child(4) {
+    --lifestyle-tilt: 1.4deg;
+  }
+
+  .lifestyle-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: none;
+  }
+
+  .lifestyle-card::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 42%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0));
+    pointer-events: none;
+  }
+
+  .lifestyle-caption {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #FFFFFF;
+    z-index: 1;
+  }
+
+  .lifestyle-category {
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.46);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .lifestyle-category::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--dash-accent, #0075DE);
+  }
+
+  .lifestyle-title {
+    color: #FFFFFF;
+    font-size: clamp(1rem, 1.45vw, 1.35rem);
+    line-height: 1.1;
+    font-weight: var(--heading-weight);
+    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.4);
+  }
+
+  .lifestyle-card:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--dash-accent) 50%, transparent);
+    outline-offset: 4px;
+  }
+
+  /* Quick action strip */
+  .about-cta-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: var(--radius-window, 10px);
+  }
+
+  .about-cta-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 1100px) {
+    .lifestyle-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 760px;
+      margin-inline: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .lifestyle-grid {
+      grid-template-columns: 1fr;
+      max-width: 340px;
+      gap: 12px;
+      padding-inline: 2px;
+    }
+
+    .lifestyle-card {
+      aspect-ratio: 5 / 4;
+      transform: rotate(0deg);
+    }
+
+    .about-story-container {
+      padding: 0;
+    }
+
+    .about-cta-strip {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .about-cta-actions {
+      width: 100%;
+    }
+
+    .about-cta-actions .dash-button {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+</style>

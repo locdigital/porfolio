@@ -193,17 +193,6 @@ const enhancedLocations = locations.map((loc) => {
     padding: 0 0 52px;
   }
 
-  /* Default on Mobile (<= 768px): Hide Grid, Show List */
-  @media (max-width: 768px) {
-    .folder-grid {
-      display: none;
-    }
-
-    .photos-list-container {
-      display: block;
-    }
-  }
-
   @media (max-width: 960px) {
     .folder-grid {
       grid-template-columns: repeat(4, 1fr);
@@ -312,7 +301,7 @@ const enhancedLocations = locations.map((loc) => {
 
   .folder-wrapper:hover .folder-card--center,
   .folder-wrapper:focus-visible .folder-card--center {
-    transform: translate(-50%, -64px) rotate(-1.5deg) scale(1.04);
+    transform: translate(-50%, -64px) rotate(-1.5deg);
     opacity: 1;
     filter: blur(0px);
     box-shadow:
@@ -378,7 +367,7 @@ const enhancedLocations = locations.map((loc) => {
     }
     .folder-wrapper:hover .folder-card--center,
     .folder-wrapper:focus-visible .folder-card--center {
-      transform: translate(-50%, -64px) rotate(-1.5deg) scale(1.04);
+      transform: translate(-50%, -64px) rotate(-1.5deg);
     }
   }
 
@@ -386,6 +375,17 @@ const enhancedLocations = locations.map((loc) => {
   .photos-list-container {
     display: none;
     padding: 0 0 48px;
+  }
+
+  /* Mobile default: show list view instead of folder grid. */
+  @media (max-width: 768px) {
+    .folder-grid {
+      display: none;
+    }
+
+    .photos-list-container {
+      display: block;
+    }
   }
 
   .photos-list-wrapper {
@@ -612,6 +612,11 @@ const enhancedLocations = locations.map((loc) => {
       });
     });
 
+    // Remove legacy persistent view state now that the layout switcher is gone.
+    try {
+      localStorage.removeItem("photos_view_preference");
+      sessionStorage.removeItem("photos_view_override");
+    } catch (_) {}
   }
 
   document.addEventListener("astro:page-load", setupPhotoExperience);

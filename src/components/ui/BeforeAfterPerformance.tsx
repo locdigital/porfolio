@@ -691,7 +691,7 @@ export default function BeforeAfterPerformance({
         }
 
         .bap-slider:hover .bap-handle {
-          transform: translate(-50%, -50%) scale(1.08) !important;
+          transform: translate(-50%, -50%) !important;
           box-shadow: 0 8px 24px rgba(28, 28, 28, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.96);
         }
 

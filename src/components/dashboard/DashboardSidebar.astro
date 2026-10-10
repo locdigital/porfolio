@@ -8,6 +8,7 @@ import {
   GearIcon, 
   CertificateIcon, 
   ContactIcon, 
+  FileText,
   CaretRight,
   X,
   LinkedIn,
@@ -49,13 +50,13 @@ const navSections: NavSection[] = [
     group: "Workspace",
     items: [
       { label: "Overview", href: "/", icon: SquaresFour, exact: true },
-      { label: "Experience", href: "/experience", icon: Briefcase },
+      { label: "About", href: "/about", icon: Briefcase },
       {
         label: "Work",
         href: "/work",
         icon: FolderSimple,
         children: [
-          { label: "Sony", href: "/work/sony" },
+          { label: "SONY", href: "/work/sony" },
           { label: "PlayAh!", href: "/work/playah" },
           { label: "WorkFlow Space", href: "/work/workflow-space" },
           { label: "POPS Worldwide", href: "/work/pops-worldwide" },
@@ -80,6 +81,7 @@ const navSections: NavSection[] = [
       { label: "Gear", href: "/gear", icon: GearIcon },
       { label: "Certificates", href: "/certificates", icon: CertificateIcon },
       { label: "Contact", href: "/contact", icon: ContactIcon },
+      { label: "Resume", href: "/resume", icon: FileText },
     ]
   }
 ];
@@ -405,7 +407,9 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
 
     updateSaigonTime();
     if (window._saigonInterval) clearInterval(window._saigonInterval);
-    window._saigonInterval = setInterval(updateSaigonTime, 60000);
+    if (!window.matchMedia("(max-width: 768px)").matches) {
+      window._saigonInterval = setInterval(updateSaigonTime, 60000);
+    }
   }
 
   document.addEventListener("astro:page-load", setupSidebarInteractions);

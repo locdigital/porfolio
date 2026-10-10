@@ -10,6 +10,7 @@
   /* System Typography Stack */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --heading-weight: 600;
 
   /* Color Tokens */
   --dash-outer: #FFFFFF;
@@ -78,6 +79,7 @@
   /* Layout dimensions & Section Spacing */
   --sidebar-w: 232px;
   --workspace-window-zoom: 0.864;
+  --mobile-page-edge: 8px;
   --dash-section-gap: calc(var(--space-12) * 1.1);        /* 52.8px (increased 10% from 48px) */
   --dash-section-gap-mobile: calc(var(--space-8) * 1.21);  /* 38.7px (increased 10% from 35.2px) */
 }
@@ -327,7 +329,7 @@ h1 {
   margin: 0 0 var(--space-2);
   font-size: 2rem !important;               /* 32px */
   line-height: 1.25 !important;             /* 40px */
-  font-weight: 650;
+  font-weight: var(--heading-weight);
   letter-spacing: -0.025em;
   color: var(--dash-text);
   overflow-wrap: anywhere;
@@ -1026,6 +1028,9 @@ abbr {
   }
 
   .mac-window-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
     height: auto;
     max-height: none;
     border: none;
@@ -1054,9 +1059,19 @@ abbr {
     top: 0;
     z-index: 30;
     height: 52px;
-    padding: 0 18px;
+    padding: 0 var(--mobile-page-edge);
     background: var(--dash-surface);
+    border-bottom: 0;
+  }
+
+  .mobile-topbar::after {
+    content: "";
+    position: absolute;
+    left: var(--mobile-page-edge);
+    right: var(--mobile-page-edge);
+    bottom: 0;
     border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    pointer-events: none;
   }
 
   .mobile-topbar-left {
@@ -1080,8 +1095,18 @@ abbr {
     transition: background 140ms ease, color 140ms ease;
   }
 
+  button.mobile-menu-btn,
+  button.mobile-menu-btn:hover,
+  button.mobile-menu-btn:focus,
+  button.mobile-menu-btn:active {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline-offset: 2px;
+  }
+
   .mobile-menu-btn:hover {
-    background: var(--dash-hover);
+    background: transparent;
     border: 0 !important;
     box-shadow: none !important;
     color: var(--dash-text);
@@ -1122,7 +1147,7 @@ abbr {
   }
 
   .workspace-main {
-    padding: 26px 22px;
+    padding: 26px 10px;
     min-height: auto;
     overflow-y: visible;
   }
@@ -1160,7 +1185,7 @@ abbr {
 
 @media (max-width: 359px) {
   .workspace-main {
-    padding-inline: 18px;
+    padding-inline: 8px;
   }
 }
 
@@ -1349,7 +1374,7 @@ abbr {
 
 .folder-wrapper:hover .folder-card--center,
 .folder-wrapper:focus-visible .folder-card--center {
-  transform: translate(-50%, -64px) rotate(-1.5deg) scale(1.04);
+  transform: translate(-50%, -64px) rotate(-1.5deg);
   opacity: 1;
   filter: blur(0px);
   box-shadow:
@@ -1450,4 +1475,84 @@ abbr {
 /* Click stability: controls should not move the window or shift layout on press. */
 .workspace-canvas :where(button, [role="button"], .dash-button, .dash-filter-chip, .pricing-btn):active {
   transform: none !important;
+}
+
+/* Mobile performance mode: keep UI instant and avoid animation work on small screens. */
+@media (max-width: 768px) {
+  .mobile-topbar {
+    padding-inline: var(--mobile-page-edge) !important;
+    border-bottom: 0 !important;
+  }
+
+  .workspace-main {
+    padding-inline: var(--mobile-page-edge) !important;
+    scrollbar-gutter: auto !important;
+  }
+
+  .workspace-content {
+    width: calc(100% + (var(--mobile-page-edge) * 2)) !important;
+    max-width: none !important;
+    margin-inline: calc(var(--mobile-page-edge) * -1) !important;
+  }
+
+  html,
+  html:focus-within,
+  .workspace-main {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-image-pair(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .r,
+  .toki-r,
+  .reveal,
+  .dash-reveal,
+  .js .animated-card,
+  .r.in,
+  .toki-r.in,
+  .reveal.in,
+  .dash-reveal.in,
+  .dash-reveal.is-in,
+  .js .animated-card.card-in {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+  }
+
+  .page-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 720px;
+  }
+
+  .mobile-topbar,
+  .dash-sidebar,
+  .cert-modal-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .folder-front,
+  .folder-back,
+  .folder-card,
+  .folder-cert-card,
+  .folder-cert-secondary,
+  .project-card-img,
+  .gallery-item img {
+    will-change: auto !important;
+  }
 }

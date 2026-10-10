@@ -153,7 +153,7 @@ export default function ProtectedProjectVisuals({
               </div>
 
               {/* Lock Badge Icon Box */}
-              <div className="w-16 h-16 rounded-[8px] bg-gradient-to-b from-secondary to-secondary/60 border border-border/90 flex items-center justify-center text-accent shadow-inner mb-5 group hover:scale-105 transition-transform duration-300">
+              <div className="w-16 h-16 rounded-[8px] bg-gradient-to-b from-secondary to-secondary/60 border border-border/90 flex items-center justify-center text-accent shadow-inner mb-5 group transition-transform duration-300">
                 <Lock size={28} strokeWidth={1.8} className="drop-shadow-sm" />
               </div>
 
@@ -235,7 +235,7 @@ export default function ProtectedProjectVisuals({
                 alt={`${title} visual ${idx + 1}`}
                 loading="lazy"
                 decoding="async"
-                className="block w-full h-auto object-contain group-hover:scale-[1.01] transition-transform duration-500"
+                className="block w-full h-auto object-contain transition-transform duration-500"
                 style={{ borderRadius: 'max(0px, calc(20px - 16px))' }}
               />
             </div>

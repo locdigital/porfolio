@@ -94,6 +94,9 @@ const footerLinks = [
   <title>{title}</title>
   <script is:inline>
     document.documentElement.classList.add("js");
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      document.documentElement.classList.add("mobile-lite");
+    }
   </script>
   <meta name="theme-color" content="#FAFAF7">
   <link rel="canonical" href={canonicalUrl} />
@@ -388,8 +391,8 @@ const footerLinks = [
 
 
     document.addEventListener('astro:page-load', () => {
-      // Force animations enabled for full experience
-      const reduced = false;
+      const mobileLite = window.matchMedia("(max-width: 768px)").matches;
+      const reduced = mobileLite || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       /* ── Image Loading Shimmer & Fade-in Loader ── */
       function setupImageLoaders() {
         const fallbackImageSrc = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
@@ -490,7 +493,7 @@ const footerLinks = [
       if (window.imageLoaderObserver) {
         window.imageLoaderObserver.disconnect();
       }
-      window.imageLoaderObserver = setupImageLoaders();
+      window.imageLoaderObserver = mobileLite ? null : setupImageLoaders();
 
       /* ── Page load ── */
       document.body.classList.add('ready');
@@ -509,27 +512,37 @@ const footerLinks = [
         });
       }
 
-      queueOrderedCardAnimations();
-      window.addEventListener('load', queueOrderedCardAnimations, { once: true });
+      if (mobileLite) {
+        setupOrderedCardAnimations();
+      } else {
+        queueOrderedCardAnimations();
+        window.addEventListener('load', queueOrderedCardAnimations, { once: true });
+      }
       if (window._orderedCardObserver) {
         window._orderedCardObserver.disconnect();
       }
-      window._orderedCardObserver = new MutationObserver((mutations) => {
-        const hasAnimatedCardChange = mutations.some((mutation) =>
-          Array.from(mutation.addedNodes).some((node) =>
-            node.nodeType === Node.ELEMENT_NODE &&
-            (node.classList?.contains('animated-card') || node.querySelector?.('.animated-card'))
-          )
-        );
+      if (!mobileLite) {
+        window._orderedCardObserver = new MutationObserver((mutations) => {
+          const hasAnimatedCardChange = mutations.some((mutation) =>
+            Array.from(mutation.addedNodes).some((node) =>
+              node.nodeType === Node.ELEMENT_NODE &&
+              (node.classList?.contains('animated-card') || node.querySelector?.('.animated-card'))
+            )
+          );
 
-        if (hasAnimatedCardChange) {
-          queueOrderedCardAnimations();
-        }
-      });
-      window._orderedCardObserver.observe(document.body, { childList: true, subtree: true });
+          if (hasAnimatedCardChange) {
+            queueOrderedCardAnimations();
+          }
+        });
+        window._orderedCardObserver.observe(document.body, { childList: true, subtree: true });
+      }
 
       // Nav: drop from above (spring CSS handles overshoot)
-      setTimeout(() => document.getElementById('site-header')?.classList.add('in'), 80);
+      if (mobileLite) {
+        document.getElementById('site-header')?.classList.add('in');
+      } else {
+        setTimeout(() => document.getElementById('site-header')?.classList.add('in'), 80);
+      }
 
       // Prepare typing effect for hero lines
       const heroLines = document.querySelectorAll('.hero-line');
@@ -537,14 +550,22 @@ const footerLinks = [
       // Hero lines fade-in sequentially
       if (heroLines.length > 0) {
         heroLines.forEach((line, i) => {
-          setTimeout(() => {
+          if (mobileLite) {
             line.classList.add('in');
-          }, reduced ? (280 + i * 130) : (280 + i * 150));
+          } else {
+            setTimeout(() => {
+              line.classList.add('in');
+            }, reduced ? (280 + i * 130) : (280 + i * 150));
+          }
         });
       }
 
       // Hero aside
-      setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
+      if (mobileLite) {
+        document.querySelector('.hero-aside')?.classList.add('in');
+      } else {
+        setTimeout(() => document.querySelector('.hero-aside')?.classList.add('in'), 1200);
+      }
 
       /* ── Instant Reveal: all content elements visible on load for optimal UX ── */
       document.querySelectorAll('.r, .toki-r, .reveal').forEach(el => el.classList.add('in'));
@@ -566,20 +587,24 @@ const footerLinks = [
       headerSentinel.className = 'viewport-sentinel viewport-sentinel--header';
       document.body.prepend(headerSentinel);
 
-      window._layoutHeaderObserver = new IntersectionObserver(([entry]) => {
-        header?.classList.toggle('is-scrolled', !entry.isIntersecting);
-      }, { threshold: 0 });
-      window._layoutHeaderObserver.observe(headerSentinel);
+      if (!mobileLite) {
+        window._layoutHeaderObserver = new IntersectionObserver(([entry]) => {
+          header?.classList.toggle('is-scrolled', !entry.isIntersecting);
+        }, { threshold: 0 });
+        window._layoutHeaderObserver.observe(headerSentinel);
+      }
 
       const topSentinel = document.createElement('span');
       topSentinel.setAttribute('aria-hidden', 'true');
       topSentinel.className = 'viewport-sentinel viewport-sentinel--top';
       document.body.prepend(topSentinel);
 
-      window._layoutBackToTopObserver = new IntersectionObserver(([entry]) => {
-        backToTop?.classList.toggle('is-visible', !entry.isIntersecting);
-      }, { threshold: 0, rootMargin: '-300px 0px 0px 0px' });
-      window._layoutBackToTopObserver.observe(topSentinel);
+      if (!mobileLite) {
+        window._layoutBackToTopObserver = new IntersectionObserver(([entry]) => {
+          backToTop?.classList.toggle('is-visible', !entry.isIntersecting);
+        }, { threshold: 0, rootMargin: '-300px 0px 0px 0px' });
+        window._layoutBackToTopObserver.observe(topSentinel);
+      }
 
       /* ── Back to top ── */
       if (window._layoutBackToTopClick) {
@@ -652,7 +677,7 @@ const footerLinks = [
       const arrowL = document.querySelector('.gallery-arrow--left');
       const arrowR = document.querySelector('.gallery-arrow--right');
 
-      if (stripOuter && arrowL && arrowR) {
+      if (stripOuter && arrowL && arrowR && !mobileLite) {
         // Prevent native drag behaviors on child elements
         stripOuter.querySelectorAll('a, img').forEach(el => {
           el.setAttribute('draggable', 'false');
@@ -882,6 +907,7 @@ const footerLinks = [
         }
 
         applyPipoGradient(element, 0);
+        if (window.matchMedia("(max-width: 768px)").matches) return;
 
         const start = performance.now();
         const tick = (now) => {
@@ -901,6 +927,24 @@ const footerLinks = [
   <script is:inline>
     (function initTransitionsDev() {
       function setupTransitions() {
+        const mobileLite = window.matchMedia("(max-width: 768px)").matches;
+
+        if (mobileLite) {
+          document.querySelectorAll(".t-stagger").forEach((block) => block.classList.add("is-shown"));
+          document.querySelectorAll(".t-acc").forEach((acc) => {
+            if (acc.__t_acc_bound) return;
+            acc.__t_acc_bound = true;
+            const head = acc.querySelector(".t-acc-head");
+            if (!head) return;
+            head.addEventListener("click", () => {
+              const open = acc.getAttribute("data-open") === "true";
+              acc.setAttribute("data-open", String(!open));
+              head.setAttribute("aria-expanded", String(!open));
+            });
+          });
+          return;
+        }
+
         // 1. Card Hover Tilt 3D (.t-tilt & .t-tilt-card)
         const tiltElems = document.querySelectorAll(".t-tilt");
         tiltElems.forEach((tilt) => {

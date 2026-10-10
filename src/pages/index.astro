@@ -2,7 +2,6 @@
 import DashboardLayout from "../layouts/DashboardLayout.astro";
 import { getPhotoLocations } from "../lib/cms";
 import { 
-  ChevronRight, 
   Mail,
 } from "../components/icons/majesticons";
 
@@ -124,16 +123,6 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
         I design and scale full-funnel digital acquisition engines—connecting paid media, TikTok Shop GMV acceleration, attribution modeling, and fast web experiences to turn marketing investments into sustainable revenue.
       </p>
 
-      <!-- Primary & Secondary Actions -->
-      <div class="hero-actions">
-        <a href="/work" class="dash-button hero-btn-primary">
-          <span>View work</span>
-          <ChevronRight size={15} aria-hidden="true" />
-        </a>
-        <a href="/contact" class="dash-button hero-btn-secondary">
-          <span>Contact</span>
-        </a>
-      </div>
     </div>
   </header>
 
@@ -155,13 +144,13 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
 
 
   <!-- ============================================================
-       4. EXPERIENCE (Concise Company / Role / Date Rows)
+       4. ABOUT (Concise Company / Role / Date Rows)
        ============================================================ -->
   <section class="page-section home-experience-section" aria-labelledby="heading-experience">
     <div class="section-header-row">
-      <h2 id="heading-experience" class="section-title" style="margin: 0;">Experience</h2>
-      <a href="/experience" class="dash-link section-header-link">
-        Full timeline & credentials →
+      <h2 id="heading-experience" class="section-title" style="margin: 0;">About</h2>
+      <a href="/about" class="dash-link section-header-link">
+        About & timeline →
       </a>
     </div>
 
@@ -374,11 +363,11 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 22px;
+      scroll-padding-inline: 8px;
       -webkit-overflow-scrolling: touch;
       gap: 16px;
-      margin-inline: -22px;
-      padding-inline: 22px;
+      margin-inline: -8px;
+      padding-inline: 8px;
       padding-top: 10px;
       padding-bottom: 20px;
       scrollbar-width: none;
@@ -398,9 +387,9 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
 
   @media (max-width: 359px) {
     .home-photo-grid {
-      margin-inline: -18px;
-      padding-inline: 18px;
-      scroll-padding-inline: 18px;
+      margin-inline: -8px;
+      padding-inline: 8px;
+      scroll-padding-inline: 8px;
     }
 
     .home-photo-grid .folder-item {
@@ -444,11 +433,11 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 22px;
+      scroll-padding-inline: 8px;
       -webkit-overflow-scrolling: touch;
       gap: 12px;
-      margin-inline: -22px;
-      padding-inline: 22px;
+      margin-inline: -8px;
+      padding-inline: 8px;
       padding-top: 2px;
       padding-bottom: 8px;
       scrollbar-width: none;
@@ -460,17 +449,17 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
     }
 
     .capability-card {
-      flex: 0 0 clamp(250px, 76vw, 290px);
-      width: clamp(250px, 76vw, 290px);
+      flex: 0 0 min(340px, calc(100vw - 16px));
+      width: min(340px, calc(100vw - 16px));
       scroll-snap-align: start;
     }
   }
 
   @media (max-width: 359px) {
     .capabilities-grid {
-      margin-inline: -18px;
-      padding-inline: 18px;
-      scroll-padding-inline: 18px;
+      margin-inline: -8px;
+      padding-inline: 8px;
+      scroll-padding-inline: 8px;
     }
 
     .capability-card {
@@ -479,79 +468,4 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
     }
   }
 
-  /* Hero Action Buttons - Notion Blue Vibe (No Borders) */
-  .hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .hero-actions .hero-btn-primary,
-  .hero-actions a.dash-button.hero-btn-primary,
-  .hero-btn-primary {
-    background: #0065D1 !important;
-    border: none !important;
-    color: #FFFFFF !important;
-    font-weight: 500;
-    box-shadow: none !important;
-    transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
-                color var(--duration-fast, 250ms) var(--ease-smooth-out);
-  }
-
-  .hero-actions .hero-btn-primary:hover,
-  .hero-actions a.dash-button.hero-btn-primary:hover,
-  .hero-btn-primary:hover {
-    background: #0054B2 !important;
-    border: none !important;
-    color: #FFFFFF !important;
-    text-decoration: none !important;
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  .hero-actions .hero-btn-primary:active,
-  .hero-btn-primary:active {
-    transform: scale(0.985);
-  }
-
-  .hero-actions .hero-btn-primary:focus-visible,
-  .hero-btn-primary:focus-visible {
-    outline: 2px solid #0065D1;
-    outline-offset: 2px;
-  }
-
-  .hero-actions .hero-btn-secondary,
-  .hero-actions a.dash-button.hero-btn-secondary,
-  .hero-btn-secondary {
-    background: #EBF5FF !important;
-    border: none !important;
-    color: #0065D1 !important;
-    font-weight: 500;
-    box-shadow: none !important;
-    transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
-                color var(--duration-fast, 250ms) var(--ease-smooth-out);
-  }
-
-  .hero-actions .hero-btn-secondary:hover,
-  .hero-actions a.dash-button.hero-btn-secondary:hover,
-  .hero-btn-secondary:hover {
-    background: #DEEFFF !important;
-    border: none !important;
-    color: #0054B2 !important;
-    text-decoration: none !important;
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  .hero-actions .hero-btn-secondary:active,
-  .hero-btn-secondary:active {
-    transform: scale(0.985);
-  }
-
-  .hero-actions .hero-btn-secondary:focus-visible,
-  .hero-btn-secondary:focus-visible {
-    outline: 2px solid #0065D1;
-    outline-offset: 2px;
-  }
 </style>

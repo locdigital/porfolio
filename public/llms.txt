@@ -13,7 +13,8 @@
 
 ## Navigation & Core Pages
 - **Home (`/`):** Summary of experience, selected work history, photography archive, and recent blog posts.
-- **About (`/about`):** Loc's biography, selected client work, tools, and formal credentials.
+- **About (`/about`):** Loc's biography, background, creative interests, photography, and personal working philosophy.
+- **Resume (`/resume`):** Education, selected experience, notable contributions, tools, and specialized skill clusters.
 - **Services (`/service`):** Detailed breakdown of marketing offerings, billing plans, and retainer options.
 - **Work (`/work`):** Case studies and selected client growth projects.
 - **Blog (`/blog`):** Reflections and tutorials on performance marketing, technical SEO, and development.
@@ -40,11 +41,11 @@
 
 ## Key Projects & Case Studies
 
-### 1. PlayAh! Revenue & TikTok Shop Scaling (2024-Present)
+### 1. PlayAh! Revenue & TikTok Shop Scaling (2024-2026)
 - **Role:** Performance Senior Executive
 - **Outcomes:** Scaled website revenue 10x in 2 months. Grew Meta Ads 2x MoM with ROAS > 5. Built TikTok Shop from scratch to 30x+ GMV growth within 2 months (ROAS > 10, ranked #1 in category).
 
-### 2. WorkFlow Space: Branch Launch Performance (2024-Present)
+### 2. WorkFlow Space: Branch Launch Performance (2024-2026)
 - **Role:** Digital Marketing Executive
 - **Outcomes:** Managed VND 300M paid budget, generating 2,000+ leads and 4M+ impressions. Rebranded visual identity and built custom landing pages with 400+ leads/month at a 35-40% conversion rate.
 

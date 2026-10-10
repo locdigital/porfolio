@@ -68,6 +68,9 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
   <title>{title}</title>
   <script is:inline>
     document.documentElement.classList.add("js");
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      document.documentElement.classList.add("mobile-lite");
+    }
   </script>
   <meta name="theme-color" content="#FFFFFF">
   <link rel="canonical" href={canonicalUrl} />
@@ -219,6 +222,13 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
         if (!elements.length) return;
 
         const reveal = (element) => element.classList.add('in', 'is-in');
+        const mobileLite = window.matchMedia("(max-width: 768px)").matches;
+
+        if (mobileLite) {
+          elements.forEach(reveal);
+          return;
+        }
+
         const isInInitialViewport = (element) => {
           const rect = element.getBoundingClientRect();
           return rect.top < window.innerHeight + 72 && rect.bottom > -72;
@@ -271,12 +281,20 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
 
         document.addEventListener("astro:after-swap", () => {
           state.initPageEffects?.();
-          requestAnimationFrame(() => root.classList.remove("is-page-swapping"));
+          if (window.matchMedia("(max-width: 768px)").matches) {
+            root.classList.remove("is-page-swapping");
+          } else {
+            requestAnimationFrame(() => root.classList.remove("is-page-swapping"));
+          }
         });
 
         document.addEventListener("astro:page-load", () => {
           state.initPageEffects?.();
-          requestAnimationFrame(() => root.classList.remove("is-page-swapping"));
+          if (window.matchMedia("(max-width: 768px)").matches) {
+            root.classList.remove("is-page-swapping");
+          } else {
+            requestAnimationFrame(() => root.classList.remove("is-page-swapping"));
+          }
         });
 
         window.addEventListener("pageshow", () => state.initPageEffects?.());

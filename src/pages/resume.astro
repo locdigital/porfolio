@@ -1,0 +1,261 @@
+---
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import { GraduationCap } from "../components/icons/majesticons";
+
+const experiences = [
+  {
+    company: "WorkFlow Space",
+    role: "Digital Marketing Executive",
+    period: "2024 — 2026",
+    type: "Co-working & Private Pods",
+    location: "Saigon",
+    description: "Owned full-funnel performance marketing for new branch launches, connecting paid media, landing pages, creative testing, and booking UX into a repeatable lead engine.",
+    achievements: [
+      "Generated 5,000+ experience bookings and 2,000+ qualified leads.",
+      "Achieved 35–40% landing page booking conversion rate.",
+      "Launched and scaled Next Wave Startup program with 50+ founding teams."
+    ],
+    tools: ["Meta Ads", "Google Ads", "Looker Studio", "Landing Pages"]
+  },
+  {
+    company: "Đi Làm Đừng Đi Lầm",
+    role: "Co-Founder & Community Lead",
+    period: "2023 — Present",
+    type: "Career Guidance Community",
+    location: "Vietnam",
+    description: "Co-led a career community for early professionals, shaping content, audience growth, and practical guidance around first jobs and workplace decisions.",
+    achievements: [
+      "Scaled community to 1,000,000+ members within 12 months.",
+      "Organized career orientation series and resume review sessions.",
+      "Established community collaboration loops without paid media spend."
+    ],
+    tools: ["Community Strategy", "Social Media", "Content Production"]
+  },
+  {
+    company: "Đại Học Đừng Học Đại",
+    role: "Co-Founder & Community Lead",
+    period: "2021 — Present",
+    type: "Youth Education Network",
+    location: "Vietnam",
+    description: "Co-founded an education community helping students choose schools, majors, and long-term career directions through positioning, content strategy, and peer-led discussion.",
+    achievements: [
+      "Grew to 3,000,000+ active members across Vietnam.",
+      "Partnered with 8+ leading universities (UEH, FTU, FPT, RMIT, HCMUT, etc.).",
+      "Created viral educational content formats reaching tens of millions of views."
+    ],
+    tools: ["Audience Growth", "Brand Architecture", "Partnerships"]
+  },
+  {
+    company: "PlayAh!",
+    role: "Performance Senior Executive",
+    period: "2024 — 2026",
+    type: "E-Commerce Retainer",
+    location: "Saigon",
+    description: "Scaled e-commerce acquisition across TikTok Shop, website, and Facebook by connecting KOC booking, paid media, creative testing, and AI-assisted conversion flows.",
+    achievements: [
+      "Scaled TikTok Shop revenue to over 1B+ VND monthly.",
+      "Increased website revenue by 10x in 2 months with ROAS > 10.",
+      "Automated Facebook Messenger AI funnels boosting sales by 300%."
+    ],
+    tools: ["TikTok Ads", "TikTok Shop", "Meta Ads", "AI Funnels"]
+  },
+  {
+    company: "Asia Strategic Holdings",
+    role: "Performance Marketing",
+    period: "2025 — 2026",
+    type: "Growth Media",
+    location: "Saigon",
+    description: "Supported performance marketing initiatives across growth briefs, balancing campaign setup, reporting, audience testing, and stakeholder coordination.",
+    achievements: [
+      "Executed targeted paid acquisition across multi-channel portfolios.",
+      "Standardized weekly performance attribution reporting dashboards.",
+      "Coordinated cross-team deliverables between creative and media buyers."
+    ],
+    tools: ["Google Ads", "Meta Ads", "Attribution Auditing"]
+  },
+  {
+    company: "Vinh Cara",
+    role: "Digital Marketing Specialist",
+    period: "2024 — 2025",
+    type: "Luxury Retail",
+    location: "Saigon",
+    description: "Handled digital marketing execution across campaign operations, creative coordination, acquisition tracking, and day-to-day performance improvements.",
+    achievements: [
+      "Orchestrated product launch promotions and high-intent local campaigns.",
+      "Optimized retail lead generation funnels and showroom foot-traffic ads."
+    ],
+    tools: ["Performance Media", "Creative Tracking", "Google Search"]
+  },
+  {
+    company: "TOMATO Children's Home",
+    role: "Digital Marketing Executive",
+    period: "2023 — 2024",
+    type: "Early Childhood Education",
+    location: "Saigon",
+    description: "Ran integrated marketing across paid media, social, landing pages, OOH, CRM, and email automation to improve enrollment efficiency.",
+    achievements: [
+      "Tripled monthly student enrollments while cutting CPL by 60%.",
+      "Automated lifecycle email nurturing system with 40,000+ contacts (>60% open rate).",
+      "Achieved +85% CTR improvement across landing pages and social campaigns."
+    ],
+    tools: ["Meta Ads", "Email Automation", "CRM", "Landing Pages"]
+  },
+  {
+    company: "POPS Worldwide",
+    role: "Search Engine Optimization Executive",
+    period: "2022 — 2023",
+    type: "Digital Entertainment",
+    location: "Southeast Asia (Saigon HQ)",
+    description: "Built SEO strategy across entertainment and education products, partnering with data, product, and technology teams on technical roadmaps and organic growth.",
+    achievements: [
+      "Scaled monthly active users (MAU) of POPS.VN by 10x YoY, reaching 2.5 million.",
+      "Successfully launched POPS Kids gaining 400,000 users in first 6 months.",
+      "Built unified Business Intelligence dashboards for real-time organic KPI tracking."
+    ],
+    tools: ["Technical SEO", "Ahrefs", "Google Analytics 4", "Looker Studio"]
+  }
+];
+
+const skillClusters = [
+  {
+    title: "Performance & Paid Acquisition",
+    items: ["Meta Ads & CAPI", "Google Search & PMax", "TikTok Ads & Spark Ads", "ROAS Scaling & CAC Guardrails", "Budget Allocation Modeling"]
+  },
+  {
+    title: "Analytics & Tracking Architecture",
+    items: ["GA4 Server-Side GTM", "Custom Event Schema", "Looker Studio Dashboards", "Attribution Modeling", "Funnel Drop-off Auditing"]
+  },
+  {
+    title: "Conversion Rate Optimization (CRO)",
+    items: ["Astro/React Headless Landing Pages", "Cart Drawer Optimization", "A/B Testing Loops", "Creative Angle Testing", "Checkout Friction Elimination"]
+  },
+  {
+    title: "Community & Creator Strategy",
+    items: ["KOC/Creator Booking Briefs", "Viral Organic Loops", "Advocacy & Forum Seeding", "Sentiment Management", "Campus Partnership Outreach"]
+  }
+];
+---
+
+<DashboardLayout
+  title="Resume — Phuc Loc Nguyen"
+  pageTitle="Resume"
+  description="Resume of Nguyen Phuc Loc, including education, selected experience, notable contributions, tools, and specialized skill clusters."
+  breadcrumbs={[{ label: "Resume" }]}
+  maxWidthVariant="default"
+>
+  <header class="page-header">
+    <h1 class="page-title">Resume</h1>
+    <p class="page-lead">
+      Education, selected experience, notable contributions, and working areas across performance marketing, community growth, SEO, analytics, and conversion strategy.
+    </p>
+  </header>
+
+  <section class="page-section" aria-label="Education">
+    <div class="dash-callout">
+      <div class="dash-callout-icon">
+        <GraduationCap size={18} aria-hidden="true" />
+      </div>
+      <div class="dash-callout-content">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <div style="font-weight: 600; color: var(--dash-text);">FPT University</div>
+          <span style="font-size: 0.75rem; color: var(--dash-muted);">2019 — 2023 · Ho Chi Minh City</span>
+        </div>
+        <div style="font-size: 0.8125rem; font-weight: 500; color: var(--dash-accent); margin: 2px 0 6px;">
+          Bachelor of Digital Marketing · Graduated with Honors
+        </div>
+        <p style="margin: 0; font-size: 0.8125rem; color: var(--dash-muted); line-height: 1.55;">
+          Cumulative GPA: <strong style="color: var(--dash-text);">9.4 / 10</strong>. Specialization in digital marketing economics, customer acquisition modeling, and media data analytics.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="career-timeline" class="page-section" aria-label="Chronological Employment History">
+    <h2 class="section-title">Selected experience</h2>
+
+    <div style="display: flex; flex-direction: column; gap: var(--space-8);">
+      {experiences.map((exp) => (
+        <article style="border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-bottom: var(--space-6);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
+            <div>
+              <span style="font-size: 1.0625rem; font-weight: 600; color: var(--dash-accent);">{exp.role}</span>
+              <span style="color: var(--dash-muted); margin: 0 4px;">·</span>
+              <span style="font-size: 0.9375rem; font-weight: 500; color: var(--dash-accent);">{exp.company}</span>
+            </div>
+            <span style="font-size: 0.8125rem; color: var(--dash-muted); white-space: nowrap;">{exp.period}</span>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--dash-muted); margin-bottom: 10px;">
+            {exp.type} · {exp.location}
+          </div>
+
+          <p style="font-size: 0.875rem; line-height: 1.6; color: var(--dash-text); margin: 0 0 12px;">
+            {exp.description}
+          </p>
+
+          <div style="margin-bottom: 12px; padding: 10px 14px; background: var(--dash-surface-subtle); border-radius: var(--radius-control); border: var(--dash-border-width, 0.9px) solid var(--dash-border);">
+            <div style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+              Notable contributions
+            </div>
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
+              {exp.achievements.map((ach) => (
+                <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.5; color: var(--dash-text);">
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span>{ach}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+            {exp.tools.map((t) => (
+              <span class="dash-tag">{t}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="skill-clusters" class="page-section" aria-label="Core Competencies">
+    <h2 class="section-title">Working areas</h2>
+
+    <div class="skill-cluster-grid">
+      {skillClusters.map((cluster) => (
+        <div class="dash-card" style="padding: 16px;">
+          <h3 style="font-size: 0.9375rem; font-weight: 600; color: var(--dash-text); margin: 0 0 10px;">
+            {cluster.title}
+          </h3>
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
+            {cluster.items.map((item) => (
+              <li style="display: flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--dash-muted);">
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--dash-control-border);"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</DashboardLayout>
+
+<style>
+  .skill-cluster-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  @media (max-width: 1100px) {
+    .skill-cluster-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .skill-cluster-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

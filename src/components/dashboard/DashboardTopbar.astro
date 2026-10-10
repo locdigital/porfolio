@@ -95,7 +95,9 @@ const {
 
     updateClock();
     if (window._dashClockInterval) clearInterval(window._dashClockInterval);
-    window._dashClockInterval = setInterval(updateClock, 10000);
+    if (!window.matchMedia("(max-width: 768px)").matches) {
+      window._dashClockInterval = setInterval(updateClock, 10000);
+    }
   }
 
   document.addEventListener("astro:page-load", setupDashboardTopbar);

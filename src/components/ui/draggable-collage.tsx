@@ -669,7 +669,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Play on YouTube"
-                className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-foreground text-[var(--type-caption)] hover:scale-105 transition-transform"
+                className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-foreground text-[var(--type-caption)] transition-transform"
               >
                 <Play size={14} strokeWidth={2} fill="currentColor" aria-hidden="true" />
               </a>
@@ -896,7 +896,7 @@ export default function DraggableCollage({ portraitSrc = "https://65wv0vnolo.ufs
             </div>
             
             {/* Sheet 2 */}
-            <div className="work-2 absolute inset-1 bg-white rounded-[8px] border border-zinc-200 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(-4px,-65px)_rotate(-3deg)_scale(1.02)] flex flex-col gap-2 p-4">
+            <div className="work-2 absolute inset-1 bg-white rounded-[8px] border border-zinc-200 transition-all duration-[700ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom group-hover:[transform:translate(-4px,-65px)_rotate(-3deg)] flex flex-col gap-2 p-4">
               <div className="h-1.5 w-12 rounded-full bg-zinc-300" aria-hidden="true"></div>
               <div className="h-2.5 w-4/5 rounded-full bg-zinc-400/80 mt-1" aria-hidden="true"></div>
               <div className="h-1.5 w-full rounded-full bg-zinc-200 mt-auto" aria-hidden="true"></div>

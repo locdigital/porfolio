@@ -7,7 +7,7 @@ export const prerender = true;
 
 const projects = await getProjects();
 const brandNames: Record<string, string> = {
-  sony: "Sony",
+  sony: "SONY",
   playah: "PlayAh!",
   "workflow-space": "WorkFlow Space",
   "pops-worldwide": "POPS Worldwide",
@@ -40,12 +40,13 @@ const enhancedProjects = projects.map((p) => {
     tags,
   };
 });
+const projectCount = enhancedProjects.length;
 ---
 
 <DashboardLayout
   title="Work — Phuc Loc Nguyen"
   pageTitle="Work"
-  description="Performance marketing case studies: Sony D2C operations, PlayAh! TikTok Shop scaling, WorkFlow Space branch launches, POPS Worldwide SEO 10x growth, and TOMATO Children's Home."
+  description="Performance marketing case studies across SONY D2C marketing, PlayAh!, WorkFlow Space, POPS Worldwide, TOMATO Children's Home, and community-led education projects."
   breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "Work" }]}
   maxWidthVariant="default"
 >
@@ -56,19 +57,6 @@ const enhancedProjects = projects.map((p) => {
       Deep dives into D2C e-commerce, multi-channel paid acquisition, TikTok Shop GMV acceleration, technical SEO roadmaps, and community-led organic growth.
     </p>
 
-    <!-- Quiet Filter Toolbar -->
-    <div 
-      class="dash-filter-bar" 
-      role="toolbar" 
-      aria-label="Filter case studies by category"
-    >
-      <button type="button" class="dash-filter-chip active" data-filter="all" aria-pressed="true">All (6)</button>
-      <button type="button" class="dash-filter-chip" data-filter="E-Commerce" aria-pressed="false">E-Commerce</button>
-      <button type="button" class="dash-filter-chip" data-filter="Paid Media" aria-pressed="false">Paid Media</button>
-      <button type="button" class="dash-filter-chip" data-filter="SEO" aria-pressed="false">Technical SEO</button>
-      <button type="button" class="dash-filter-chip" data-filter="Marketing 360" aria-pressed="false">Marketing 360</button>
-      <button type="button" class="dash-filter-chip" data-filter="Community" aria-pressed="false">Community</button>
-    </div>
   </header>
 
   <!-- Projects Grid / Mobile Carousel -->
@@ -145,7 +133,7 @@ const enhancedProjects = projects.map((p) => {
     class="carousel-controls" 
     aria-label="Project carousel controls"
   >
-    <span id="carousel-counter" class="carousel-counter" aria-live="polite">1 / 6</span>
+    <span id="carousel-counter" class="carousel-counter" aria-live="polite">1 / {projectCount}</span>
     <div id="carousel-nav" class="carousel-nav-group">
       <button 
         type="button"
@@ -166,12 +154,6 @@ const enhancedProjects = projects.map((p) => {
       </button>
     </div>
   </div>
-
-  <!-- Empty state (hidden by default) -->
-  <div id="projects-empty" class="projects-empty" style="display: none;">
-    <p style="margin-bottom: 12px;">No case studies found in this category.</p>
-    <button type="button" id="reset-filter-btn" class="dash-button dash-button--secondary">Reset filters</button>
-  </div>
 </DashboardLayout>
 
 <style>
@@ -183,12 +165,6 @@ const enhancedProjects = projects.map((p) => {
 
   .carousel-controls {
     display: none;
-  }
-
-  .projects-empty {
-    padding: var(--space-8) 0;
-    text-align: center;
-    color: var(--dash-muted);
   }
 
   .project-item {
@@ -232,7 +208,6 @@ const enhancedProjects = projects.map((p) => {
     aspect-ratio: 16 / 9;
     border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding)));
     overflow: hidden;
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
     background: var(--dash-surface-subtle);
     margin-bottom: 14px;
     position: relative;
@@ -247,7 +222,7 @@ const enhancedProjects = projects.map((p) => {
   }
 
   .project-item:hover .project-card-img {
-    transform: scale(1.025);
+    transform: none;
   }
 
   .project-card-title {
@@ -331,31 +306,6 @@ const enhancedProjects = projects.map((p) => {
   }
 
   @media (max-width: 768px) {
-    /* Category filters horizontally scrollable without wrapping */
-    .dash-filter-bar {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      overscroll-behavior-x: contain;
-      -webkit-overflow-scrolling: touch;
-      gap: 8px;
-      margin-inline: -22px;
-      padding-inline: 22px;
-      padding-bottom: 6px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    .dash-filter-bar::-webkit-scrollbar {
-      display: none;
-    }
-
-    .dash-filter-chip {
-      flex: 0 0 auto;
-      white-space: nowrap;
-    }
-
     /* Projects horizontal carousel */
     .projects-grid {
       display: flex !important;
@@ -365,11 +315,11 @@ const enhancedProjects = projects.map((p) => {
       overscroll-behavior-x: contain;
       touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 22px;
+      scroll-padding-inline: 8px;
       -webkit-overflow-scrolling: touch;
       gap: 14px;
-      margin-inline: -22px;
-      padding-inline: 22px;
+      margin-inline: -8px;
+      padding-inline: 8px;
       padding-top: 2px;
       padding-bottom: 12px;
       scrollbar-width: none;
@@ -389,9 +339,9 @@ const enhancedProjects = projects.map((p) => {
 
     .project-item {
       --card-padding: 14px;
-      flex: 0 0 clamp(280px, 82vw, 340px) !important;
-      width: clamp(280px, 82vw, 340px) !important;
-      max-width: clamp(280px, 82vw, 340px) !important;
+      flex: 0 0 min(390px, calc(100vw - 16px)) !important;
+      width: min(390px, calc(100vw - 16px)) !important;
+      max-width: min(390px, calc(100vw - 16px)) !important;
       scroll-snap-align: start;
       scroll-snap-stop: normal;
     }
@@ -464,35 +414,27 @@ const enhancedProjects = projects.map((p) => {
   }
 
   @media (max-width: 359px) {
-    .dash-filter-bar {
-      margin-inline: -18px;
-      padding-inline: 18px;
-    }
-
     .projects-grid {
-      margin-inline: -18px;
-      padding-inline: 18px;
-      scroll-padding-inline: 18px;
+      margin-inline: -8px;
+      padding-inline: 8px;
+      scroll-padding-inline: 8px;
       gap: 12px;
     }
 
     .project-item {
-      flex: 0 0 clamp(260px, 84vw, 300px) !important;
-      width: clamp(260px, 84vw, 300px) !important;
-      max-width: clamp(260px, 84vw, 300px) !important;
+      flex: 0 0 calc(100vw - 16px) !important;
+      width: calc(100vw - 16px) !important;
+      max-width: calc(100vw - 16px) !important;
     }
   }
 </style>
 
 <script is:inline>
-  function setupProjectCarouselAndFilters() {
+  function setupProjectCarousel() {
     const grid = document.getElementById("projects-grid");
     if (!grid) return;
 
-    const filterButtons = document.querySelectorAll(".dash-filter-chip");
     const projectItems = Array.from(grid.querySelectorAll(".project-item"));
-    const emptyState = document.getElementById("projects-empty");
-    const resetBtn = document.getElementById("reset-filter-btn");
 
     const controls = document.getElementById("carousel-controls");
     const counter = document.getElementById("carousel-counter");
@@ -503,7 +445,7 @@ const enhancedProjects = projects.map((p) => {
     let activeVisibleIndex = 0;
 
     function getVisibleItems() {
-      return projectItems.filter((item) => item.style.display !== "none");
+      return projectItems;
     }
 
     function updateControls() {
@@ -659,44 +601,6 @@ const enhancedProjects = projects.map((p) => {
       true
     );
 
-    function applyFilter(category) {
-      let visibleCount = 0;
-
-      projectItems.forEach((item) => {
-        const itemCategory = item.getAttribute("data-category");
-        if (category === "all" || itemCategory === category) {
-          item.style.display = "";
-          visibleCount++;
-        } else {
-          item.style.display = "none";
-        }
-      });
-
-      if (emptyState) {
-        emptyState.style.display = visibleCount === 0 ? "block" : "none";
-      }
-
-      filterButtons.forEach((btn) => {
-        const isMatch = btn.getAttribute("data-filter") === category;
-        btn.classList.toggle("active", isMatch);
-        btn.setAttribute("aria-pressed", isMatch ? "true" : "false");
-      });
-
-      // Reset to first matching project
-      activeVisibleIndex = 0;
-      grid.scrollTo({ left: 0, behavior: "auto" });
-      updateControls();
-    }
-
-    filterButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const category = btn.getAttribute("data-filter") || "all";
-        applyFilter(category);
-      });
-    });
-
-    resetBtn?.addEventListener("click", () => applyFilter("all"));
-
     prevBtn?.addEventListener("click", () => {
       if (activeVisibleIndex > 0) {
         scrollToItem(activeVisibleIndex - 1, true);
@@ -714,12 +618,11 @@ const enhancedProjects = projects.map((p) => {
       calculateActiveIndexFromScroll();
     });
 
-    // Initial setup
-    applyFilter("all");
+    updateControls();
   }
 
-  document.addEventListener("astro:page-load", setupProjectCarouselAndFilters);
+  document.addEventListener("astro:page-load", setupProjectCarousel);
   if (document.readyState === "complete" || document.readyState === "interactive") {
-    setupProjectCarouselAndFilters();
+    setupProjectCarousel();
   }
 </script>

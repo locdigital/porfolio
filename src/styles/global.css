@@ -32,6 +32,7 @@
       --serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --heading-weight: 600;
 
       /* Layout tokens */
       --container-reading: 52.5rem;
@@ -297,7 +298,7 @@
       .showcase-pass-gate-input-wrap input::placeholder,
       input[placeholder*="access code" i],
       input[placeholder*="access code" i]::placeholder {
-        font-size: 12px !important;
+        font-size: var(--site-copy-size) !important;
       }
     }
 
@@ -369,7 +370,7 @@
     @media (max-width: 767px) {
       :root {
         --hdr-h: 68px;
-        --page-gutter: 18px;
+        --page-gutter: 8px;
         --page-block-start: calc(var(--space-8) * 1.1);
         --page-block-end: calc(var(--space-8) * 1.1);
         --section-gap: calc(var(--space-8) * 1.21);
@@ -1504,7 +1505,7 @@
       border-radius: var(--rounded-full);
       padding: 10px 18px;
       font-size: var(--type-ui);
-      font-weight: 650;
+      font-weight: var(--heading-weight);
       line-height: 1;
       white-space: nowrap;
       transition: transform .2s var(--ease-out), border-color .2s ease, background .2s ease, color .2s ease;
@@ -1618,7 +1619,7 @@
 
     .hero-card strong {
       display: block;
-      font-weight: 650;
+      font-weight: var(--heading-weight);
       color: currentColor;
     }
 
@@ -1934,7 +1935,7 @@
     }
 
     .about-photo:hover {
-      transform: scale(1.03);
+      transform: none;
     }
 
     .about-prose p {
@@ -2066,7 +2067,7 @@
 
     @media (hover: hover) {
       .gallery-item:hover img {
-        transform: scale(1.04);
+        transform: none;
       }
     }
 
@@ -2100,7 +2101,7 @@
 
     .gallery-arrow:hover:not(:disabled) {
       background: rgba(0, 0, 0, 0.85);
-      transform: translateY(-50%) scale(1.08);
+      transform: translateY(-50%);
     }
 
     .gallery-arrow:disabled {
@@ -2158,7 +2159,7 @@
       border: 1px solid var(--accent-border);
       border-radius: var(--rounded-full);
       font-size: var(--fs-sm);
-      font-weight: 650;
+      font-weight: var(--heading-weight);
       color: var(--accent);
       background: var(--accent-soft);
       transition: color .25s ease, background .25s ease, transform .2s var(--ease-out);
@@ -3549,7 +3550,7 @@
   }
 
   .home-project-card {
-    flex-basis: min(82vw, 390px);
+    flex-basis: min(calc(100vw - 16px), 390px);
   }
 }
 
@@ -3583,7 +3584,7 @@
   }
 
   .home-project-card {
-    flex-basis: min(84vw, 340px);
+    flex-basis: min(calc(100vw - 16px), 340px);
   }
 
   .home-project-card a {
@@ -4286,14 +4287,14 @@ a.btn:active {
 .efferd-gallery-item:hover .efferd-img,
 .dash-card:hover .project-card-img,
 .gallery-figure:hover img {
-  transform: scale(1.025);
+  transform: none;
 }
 
 /* ============================================================
    UNIFORM THIN BUTTON BORDERS SITEWIDE (MATCH WINDOW BORDER)
    ============================================================ */
-button:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.folder-wrapper):not([data-folder-trigger]):not(.dash-nav-disclosure):not([class*="hero-btn"]),
-[role="button"]:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.folder-wrapper):not([data-folder-trigger]):not([class*="hero-btn"]),
+button:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.folder-wrapper):not([data-folder-trigger]):not(.dash-nav-disclosure):not(.mobile-menu-btn):not([class*="hero-btn"]),
+[role="button"]:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.folder-wrapper):not([data-folder-trigger]):not(.mobile-menu-btn):not([class*="hero-btn"]),
 .dash-button:not(.dash-button--primary):not([class*="hero-btn"]),
 .btn:not(.btn-primary):not([class*="hero-btn"]),
 a.dash-button:not(.dash-button--primary):not([class*="hero-btn"]),
@@ -4302,8 +4303,8 @@ a.btn:not(.btn-primary):not([class*="hero-btn"]),
   border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014) !important;
 }
 
-button:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.dash-nav-disclosure):not([class*="hero-btn"]):hover,
-[role="button"]:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not([class*="hero-btn"]):hover,
+button:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.dash-nav-disclosure):not(.mobile-menu-btn):not([class*="hero-btn"]):hover,
+[role="button"]:not(.dash-button--primary):not(.btn-primary):not([class*="primary"]):not(.mobile-menu-btn):not([class*="hero-btn"]):hover,
 .dash-button:not(.dash-button--primary):not([class*="hero-btn"]):hover,
 .btn:not(.btn-primary):not([class*="hero-btn"]):hover,
 a.dash-button:not(.dash-button--primary):not([class*="hero-btn"]):hover,
@@ -4344,4 +4345,72 @@ a.btn:active,
 .dash-filter-chip:active,
 .pricing-btn:active {
   transform: none !important;
+}
+
+/* Mobile performance mode: no animation, no smooth scroll, less paint work. */
+@media (max-width: 768px) {
+  html,
+  html:focus-within {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-image-pair(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .r,
+  .toki-r,
+  .reveal,
+  .dash-reveal,
+  .js .animated-card,
+  .hero-line,
+  .hero-aside,
+  .about-reveal-hero > *,
+  .r.in,
+  .toki-r.in,
+  .reveal.in,
+  .dash-reveal.in,
+  .dash-reveal.is-in,
+  .js .animated-card.card-in {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+  }
+
+  :where(section, article, .page-section, .content-section) {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 720px;
+  }
+
+  :where(.site-header, .mobile-menu, .mobile-backdrop, .glass, [class*="backdrop"]) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  :where(.t-tilt-card, .t-tilt-glare, .project-card-img, .gallery-item img, .hero-card, .animated-card) {
+    will-change: auto !important;
+  }
+}
+
+#mobile-drawer-toggle.mobile-menu-btn,
+#mobile-drawer-toggle.mobile-menu-btn:hover,
+#mobile-drawer-toggle.mobile-menu-btn:focus,
+#mobile-drawer-toggle.mobile-menu-btn:active {
+  appearance: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }

@@ -249,14 +249,14 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     max-width: 56ch;
     margin: 2px 0 0;
     font-family: var(--sans);
-    font-size: 14px !important;
+    font-size: var(--site-copy-size) !important;
     font-weight: 400;
     line-height: 22px;
     color: var(--dash-muted, #686863);
   }
 
   .showcase-pass-gate :is(.showcase-pass-gate-description, #showcase-pass-gate-copy-size-override) {
-    font-size: 14px !important;
+    font-size: var(--site-copy-size) !important;
   }
 
   .showcase-pass-gate-form {
@@ -293,7 +293,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     outline: 0;
     background: #FFFFFF;
     font-family: var(--sans);
-    font-size: 14px;
+    font-size: var(--site-copy-size);
     line-height: 20px;
     color: var(--dash-text, #292927);
     transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -344,7 +344,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     background: var(--dash-primary, #292927);
     color: #FFFFFF;
     font-family: var(--sans);
-    font-size: 14px !important;
+    font-size: var(--site-copy-size) !important;
     font-weight: 600;
     line-height: 20px;
     white-space: nowrap;
@@ -433,7 +433,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
 
     .showcase-pass-gate .showcase-pass-gate-input,
     .showcase-pass-gate .showcase-pass-gate-input::placeholder {
-      font-size: 16px !important;
+      font-size: var(--site-copy-size) !important;
     }
   }
 
