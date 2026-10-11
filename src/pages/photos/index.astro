@@ -62,9 +62,8 @@ const enhancedLocations = locations.map((loc) => {
     </p>
   </header>
 
-  <!-- Photos Views Container (Desktop: Grid, Mobile: List) -->
+  <!-- Photos Grid Container -->
   <div id="photos-views-wrapper" class="photos-views-wrapper">
-    <!-- 1. Manila Folder Grid View -->
     <div id="photos-grid" class="folder-grid">
       {enhancedLocations.map((loc) => (
         <div class="folder-item" data-region={loc.region}>
@@ -128,7 +127,7 @@ const enhancedLocations = locations.map((loc) => {
       ))}
     </div>
 
-    <!-- 2. Clean List View -->
+    <!-- 2. Clean List View (Mobile) -->
     <div id="photos-list" class="photos-list-container">
       <div class="photos-list-wrapper">
         {enhancedLocations.map((loc) => (
@@ -154,7 +153,7 @@ const enhancedLocations = locations.map((loc) => {
                 </span>
               ) : (
                 <span class="photo-list-icon" aria-hidden="true">
-                  <Folder size={17} aria-hidden="true" />
+                  <Folder size={18} aria-hidden="true" />
                 </span>
               )}
               <div class="photo-list-info">
@@ -378,17 +377,16 @@ const enhancedLocations = locations.map((loc) => {
   /* ── LIST VIEW STYLING (Default on Mobile, Hidden on Desktop) ── */
   .photos-list-container {
     display: none;
-    padding: 0 0 48px;
+    padding: 0 0 32px;
   }
 
-  /* Mobile default: show list view instead of folder grid. */
   @media (max-width: 768px) {
     .folder-grid {
-      display: none;
+      display: none !important;
     }
 
     .photos-list-container {
-      display: block;
+      display: block !important;
     }
   }
 
@@ -396,7 +394,7 @@ const enhancedLocations = locations.map((loc) => {
     display: flex;
     flex-direction: column;
     border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    border-radius: 10px;
+    border-radius: var(--radius-card, 10px);
     background: var(--dash-surface);
     overflow: hidden;
   }
@@ -405,8 +403,8 @@ const enhancedLocations = locations.map((loc) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 12px 16px;
+    gap: 12px;
+    padding: 11px 14px;
     border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
     text-decoration: none !important;
     color: inherit;
@@ -418,7 +416,8 @@ const enhancedLocations = locations.map((loc) => {
     border-bottom: none;
   }
 
-  .photo-list-row:hover {
+  .photo-list-row:hover,
+  .photo-list-row:active {
     background: var(--dash-hover);
   }
 
@@ -434,17 +433,17 @@ const enhancedLocations = locations.map((loc) => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--dash-accent); /* macOS folder blue tone */
+    color: var(--dash-accent);
     flex-shrink: 0;
   }
 
   .photo-list-thumb {
     display: block;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 8px;
     overflow: hidden;
-    flex: 0 0 48px;
+    flex: 0 0 44px;
     background: var(--dash-surface-subtle);
     border: var(--dash-border-width, 0.9px) solid var(--dash-border);
   }
@@ -466,121 +465,58 @@ const enhancedLocations = locations.map((loc) => {
   .photo-list-title-wrap {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
   }
 
   .photo-list-title {
     font-family: var(--font-sans);
-    font-size: 0.875rem; /* 14px compact */
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--dash-text);
     line-height: 1.35;
-    transition: color 140ms ease;
-  }
-
-  .photo-list-row:hover .photo-list-title {
-    color: var(--dash-accent);
   }
 
   .photo-list-tag {
-    font-size: 0.6875rem; /* 11px */
+    font-size: 0.6875rem;
     padding: 1px 6px;
     border-radius: 4px;
   }
 
   .photo-list-headline {
-    font-size: 0.8125rem; /* 13px */
+    font-size: 0.75rem;
     color: var(--dash-muted);
-    line-height: 1.4;
+    line-height: 1.35;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 58ch;
+    max-width: 38ch;
   }
 
   .photo-list-meta {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
   }
 
   .photo-list-count {
-    font-size: 0.75rem; /* 12px */
+    font-size: 0.75rem;
     color: var(--dash-muted);
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
-  @media (max-width: 768px) {
-    .photo-list-headline {
-      max-width: 32ch;
-    }
-  }
-
-  @media (max-width: 540px) {
-    .photos-list-wrapper {
-      border-radius: 8px;
-    }
-
-    .photo-list-row {
-      align-items: flex-start;
-      padding: 10px;
-      gap: 8px;
-    }
-
-    .photo-list-main {
-      align-items: flex-start;
-      gap: 9px;
-      min-width: 0;
-    }
-
-    .photo-list-info {
-      min-width: 0;
-      gap: 3px;
-    }
-
-    .photo-list-title-wrap {
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: 4px 6px;
-      min-width: 0;
-    }
-
-    .photo-list-title {
-      font-size: 0.8125rem;
-      line-height: 1.35;
-      overflow-wrap: anywhere;
-    }
-
+  @media (max-width: 480px) {
     .photo-list-headline {
       display: none;
-    }
-
-    .photo-list-thumb {
-      width: 44px;
-      height: 44px;
-      flex-basis: 44px;
-      border-radius: 7px;
-    }
-
-    .photo-list-meta {
-      align-self: flex-start;
-      gap: 0;
-      padding-top: 2px;
-    }
-
-    .photo-list-count {
-      white-space: nowrap;
-      font-size: 0.6875rem;
-      line-height: 1.3;
     }
   }
 </style>
 
 <script is:inline>
   function setupPhotoExperience() {
-    // Clear older persisted manual view state. Layout is CSS-only:
-    // desktop grid, mobile list.
+    // Clear older persisted manual view state. Layout is CSS-only folder grid.
     try {
       localStorage.removeItem("photos_view_preference");
       sessionStorage.removeItem("photos_view_override");

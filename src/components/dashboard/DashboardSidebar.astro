@@ -130,7 +130,6 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
             id="dash-drawer-close" 
             class="mobile-menu-btn" 
             aria-label="Close navigation menu"
-            style="display:none;"
           >
             <X size={18} />
           </button>
@@ -279,7 +278,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
     const backdrop = document.getElementById("dash-drawer-backdrop");
 
     if (window.innerWidth < 1024 && closeBtn) {
-      closeBtn.style.display = "flex";
+      // Close button visibility is CSS-controlled
     }
 
     closeBtn?.addEventListener("click", () => {

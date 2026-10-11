@@ -62,7 +62,7 @@ const imageScaleBySlug: Record<string, number> = {
                     loading="lazy"
                     decoding="async"
                     fetchpriority="low"
-                    sizes="(max-width: 768px) calc(100vw - 24px), (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}
@@ -106,30 +106,32 @@ const imageScaleBySlug: Record<string, number> = {
     }
 
     .gear-items-grid {
-      grid-template-columns: 1fr !important;
-      gap: 10px !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 12px 10px !important;
     }
 
     .gear-item-card {
-      --card-outer-radius: 14px !important;
-      --card-padding: 12px !important;
+      --card-outer-radius: 12px !important;
+      --card-padding: 10px !important;
       min-width: 0;
-      padding: 12px !important;
+      padding: 10px !important;
     }
 
     .gear-item-media {
       aspect-ratio: 16 / 10 !important;
-      margin-bottom: 10px !important;
+      margin-bottom: 8px !important;
+      border-radius: 8px !important;
     }
 
     .gear-item-title {
-      font-size: 0.9375rem !important;
-      line-height: 1.35 !important;
+      font-size: 0.84375rem !important;
+      line-height: 1.3 !important;
+      margin-bottom: 4px !important;
     }
 
     .gear-item-desc {
-      font-size: 0.8125rem !important;
-      line-height: 1.5 !important;
+      font-size: 0.75rem !important;
+      line-height: 1.42 !important;
     }
   }
 </style>
