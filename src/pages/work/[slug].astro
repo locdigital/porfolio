@@ -333,21 +333,13 @@ if (project.slug === "playah") {
     }
 
     .more-work-grid {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--mobile-page-edge, 5px);
-      -webkit-overflow-scrolling: touch;
-      gap: 18px;
-      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
-      padding-inline: var(--mobile-page-edge, 5px);
-      padding-top: 16px;
-      padding-bottom: 24px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 12px;
+      overflow: visible;
+      margin-inline: 0;
+      padding: 14px 0 18px;
+      scroll-snap-type: none;
     }
 
     .more-work-grid::-webkit-scrollbar {
@@ -355,20 +347,25 @@ if (project.slug === "playah") {
     }
 
     .more-work-grid .folder-item {
-      flex: 0 0 158px;
-      width: 158px;
-      scroll-snap-align: start;
+      width: auto;
+      flex: none;
+      justify-content: center;
+      scroll-snap-align: none;
+    }
+
+    .more-work-grid .folder-wrapper {
+      max-width: 150px;
+      margin-inline: auto;
     }
   }
 
   @media (max-width: 440px) {
     .more-work-grid {
-      gap: 16px;
+      gap: 16px 10px;
     }
 
-    .more-work-grid .folder-item {
-      flex-basis: 150px;
-      width: 150px;
+    .more-work-grid .folder-wrapper {
+      max-width: 142px;
     }
   }
 </style>

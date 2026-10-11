@@ -632,24 +632,14 @@ const certificates = [
   }
 
   @media (max-width: 768px) {
-    /* Mobile Horizontal Carousel: Smooth snap scrolling */
     .folder-grid {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: visible;
-      overscroll-behavior-x: contain;
-      touch-action: pan-x pan-y;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--mobile-page-edge, 5px);
-      -webkit-overflow-scrolling: touch;
-      gap: 18px;
-      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
-      padding-inline: var(--mobile-page-edge, 5px);
-      padding-top: 52px;
-      padding-bottom: 24px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 12px;
+      overflow: visible;
+      margin-inline: 0;
+      padding: 20px 0 24px;
+      scroll-snap-type: none;
     }
 
     .folder-grid::-webkit-scrollbar {
@@ -657,23 +647,25 @@ const certificates = [
     }
 
     .folder-item {
-      flex: 0 0 148px;
-      width: 148px;
-      scroll-snap-align: start;
+      width: auto;
+      flex: none;
+      justify-content: center;
+      scroll-snap-align: none;
+    }
+
+    .folder-wrapper {
+      max-width: 148px;
+      margin-inline: auto;
     }
   }
 
   @media (max-width: 359px) {
     .folder-grid {
-      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
-      padding-inline: var(--mobile-page-edge, 5px);
-      scroll-padding-inline: var(--mobile-page-edge, 5px);
-      gap: 14px;
+      gap: 28px 10px;
     }
 
-    .folder-item {
-      flex: 0 0 138px;
-      width: 138px;
+    .folder-wrapper {
+      max-width: 138px;
     }
   }
 

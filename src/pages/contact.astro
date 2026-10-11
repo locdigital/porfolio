@@ -47,9 +47,9 @@ const inquiryTopics = [
 
     <div style="display: flex; flex-direction: column; gap: 14px;">
       <!-- Primary Email -->
-      <div class="dash-card" style="padding: 16px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-          <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em;">Primary Email</span>
+      <div class="dash-card contact-card" style="padding: 16px;">
+        <div class="contact-card-head" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+          <span class="contact-card-label" style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em;">Primary Email</span>
           <button 
             id="contact-copy-email-btn" 
             class="dash-button dash-button--secondary"
@@ -61,7 +61,7 @@ const inquiryTopics = [
         </div>
         <a 
           href="mailto:hi@loc.digital" 
-          class="dash-link"
+          class="dash-link contact-primary-link"
           style="font-size: 1.125rem; font-weight: 600;"
         >
           hi@loc.digital
@@ -74,9 +74,9 @@ const inquiryTopics = [
 
 
       <!-- Phone & Zalo -->
-      <div class="dash-card" style="padding: 16px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-          <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em;">Direct Phone & Zalo</span>
+      <div class="dash-card contact-card" style="padding: 16px;">
+        <div class="contact-card-head" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+          <span class="contact-card-label" style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em;">Direct Phone & Zalo</span>
           <a 
             href="https://zalo.me/0888886038"
             target="_blank"
@@ -92,7 +92,7 @@ const inquiryTopics = [
           href="https://zalo.me/0888886038" 
           target="_blank"
           rel="noopener noreferrer"
-          class="dash-link"
+          class="dash-link contact-primary-link"
           style="font-size: 1.125rem; font-weight: 600;"
         >
           +84 888 886 038
@@ -103,14 +103,14 @@ const inquiryTopics = [
       </div>
 
       <!-- Location & Working Arrangement -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <div class="dash-card" style="padding: 14px;">
+      <div class="contact-split-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="dash-card contact-mini-card" style="padding: 14px;">
           <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; display: block; margin-bottom: 2px;">Location</span>
           <div style="font-size: 0.875rem; font-weight: 600; color: var(--dash-text);">Saigon, Vietnam 🇻🇳</div>
           <div style="font-size: 0.75rem; color: var(--dash-muted); margin-top: 2px;">UTC / GMT +7</div>
         </div>
 
-        <div class="dash-card" style="padding: 14px;">
+        <div class="dash-card contact-mini-card" style="padding: 14px;">
           <span style="font-size: 0.75rem; color: var(--dash-muted); text-transform: uppercase; font-weight: 500; display: block; margin-bottom: 2px;">Work Arrangement</span>
           <div style="font-size: 0.875rem; font-weight: 600; color: var(--dash-text);">Remote Worldwide</div>
           <div style="font-size: 0.75rem; color: var(--dash-muted); margin-top: 2px;">or Hybrid in TP.HCM</div>
@@ -126,13 +126,13 @@ const inquiryTopics = [
       Click any topic to connect and chat directly via Zalo.
     </p>
 
-    <div style="display: flex; flex-direction: column; gap: 10px;">
+    <div class="contact-topic-list" style="display: flex; flex-direction: column; gap: 10px;">
       {inquiryTopics.map((topic) => (
         <a 
           href="https://zalo.me/0888886038"
           target="_blank"
           rel="noopener noreferrer"
-          class="dash-card dash-card--interactive"
+          class="dash-card dash-card--interactive contact-topic-card"
           style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; text-decoration: none;"
           aria-label={`${topic.title} via Zalo`}
         >
@@ -154,7 +154,7 @@ const inquiryTopics = [
 
   <!-- Social Profiles -->
   <section class="page-section" aria-label="Social profiles" style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-top: calc(var(--space-6) * 1.1);">
-    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+    <div class="contact-social-row" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
       <a 
         href="https://zalo.me/0888886038" 
         target="_blank" 
@@ -198,6 +198,85 @@ const inquiryTopics = [
     </div>
   </section>
 </DashboardLayout>
+
+<style>
+  @media (max-width: 640px) {
+    .contact-card {
+      padding: 12px !important;
+      border-radius: 12px;
+    }
+
+    .contact-card-head {
+      align-items: flex-start !important;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px !important;
+    }
+
+    .contact-card-label {
+      font-size: 0.6875rem !important;
+      line-height: 1.35 !important;
+    }
+
+    .contact-primary-link {
+      display: inline-block;
+      max-width: 100%;
+      font-size: 1rem !important;
+      line-height: 1.35 !important;
+      overflow-wrap: anywhere;
+    }
+
+    .contact-card .dash-button {
+      width: 100%;
+      min-height: 36px !important;
+    }
+
+    .contact-split-grid {
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+    }
+
+    .contact-mini-card {
+      padding: 12px !important;
+      border-radius: 12px;
+    }
+
+    .contact-topic-list {
+      gap: 10px !important;
+    }
+
+    .contact-topic-card {
+      align-items: flex-start !important;
+      gap: 10px;
+      padding: 12px !important;
+      border-radius: 12px;
+    }
+
+    .contact-topic-card > div {
+      min-width: 0;
+    }
+
+    .contact-topic-card h3 {
+      font-size: 0.9375rem !important;
+      line-height: 1.35 !important;
+    }
+
+    .contact-topic-card p {
+      font-size: 0.8125rem !important;
+      line-height: 1.5 !important;
+    }
+
+    .contact-social-row {
+      gap: 8px !important;
+    }
+
+    .contact-social-row .dash-button {
+      width: 100%;
+      justify-content: space-between;
+      min-height: 38px;
+    }
+  }
+</style>
 
 <script is:inline>
   function setupContactCopy() {

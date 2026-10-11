@@ -978,4 +978,51 @@ const collaborationLogos = [
       scroll-snap-align: start;
     }
   }
+
+  @media (max-width: 880px) {
+    .pricing-grid {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+      overflow: visible !important;
+      margin-inline: 0 !important;
+      padding: 0 !important;
+      scroll-snap-type: none !important;
+    }
+
+    .pricing-card {
+      width: auto !important;
+      max-width: 100% !important;
+      flex: none !important;
+      padding: 16px !important;
+      scroll-snap-align: none !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .services-grid {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+      overflow: visible !important;
+      margin-inline: 0 !important;
+      padding: 0 !important;
+      scroll-snap-type: none !important;
+    }
+
+    .service-capability-card {
+      width: auto !important;
+      max-width: 100% !important;
+      flex: none !important;
+      scroll-snap-align: none !important;
+    }
+
+    .partners-marquee-container {
+      width: 100%;
+      margin-inline: 0;
+      padding-inline: 0;
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
+  }
 </style>

@@ -461,15 +461,13 @@
       background-blend-mode: overlay, normal, normal, normal;
     }
 
-    body div,
-    body p {
+    body :is(div, p):not(.workspace-canvas *) {
       font-family: var(--sans);
       font-size: 14px !important;
     }
 
     @media (max-width: 768px) {
-      body div,
-      body p {
+      body :is(div, p):not(.workspace-canvas *) {
         font-size: 12px !important;
       }
     }
@@ -3788,7 +3786,7 @@ html body :is(h2, h4, h5, h6, #site-heading-size-override) {
   font-size: var(--site-heading-size) !important;
 }
 
-html body h3 {
+html body h3:not(.workspace-canvas *) {
   font-family: var(--serif) !important;
   font-size: 18px !important;
   font-weight: 400 !important;
@@ -3847,12 +3845,12 @@ html body h3 {
 }
 
 @media (max-width: 620px) {
-  html body h3 {
+  html body h3:not(.workspace-canvas *) {
     font-size: 18px !important;
   }
 }
 
-html body :is(p, div, span, #site-copy-size-override) {
+html body :is(p, div, span, #site-copy-size-override):not(.workspace-canvas *) {
   font-size: var(--site-copy-size) !important;
 }
 

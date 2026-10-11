@@ -29,48 +29,49 @@ const imageScaleBySlug: Record<string, number> = {
   </header>
 
   <!-- Gear Sections -->
-  <div style="display: flex; flex-direction: column; gap: var(--space-12);">
+  <div class="gear-sections-stack" style="display: flex; flex-direction: column; gap: var(--space-12);">
     {sections.map((section: any) => (
       <section class="page-section" aria-labelledby={`heading-${section.title?.toLowerCase().replace(/\s+/g, '-')}`}>
-        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
+        <div class="gear-section-head" style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
           <div>
             <h2 id={`heading-${section.title?.toLowerCase().replace(/\s+/g, '-')}`} class="section-title" style="margin: 0 0 4px;">
               {section.title}
             </h2>
             {section.description && (
-              <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0;">
+              <p class="gear-section-desc" style="font-size: 0.875rem; color: var(--dash-muted); margin: 0;">
                 {section.description}
               </p>
             )}
           </div>
-          <span style="font-size: 0.75rem; color: var(--dash-muted); white-space: nowrap;">
+          <span class="gear-section-count" style="font-size: 0.75rem; color: var(--dash-muted); white-space: nowrap;">
             {section.items?.length || 0} items
           </span>
         </div>
 
         <!-- Items Grid -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">
+        <div class="gear-items-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">
           {section.items?.map((item: any) => (
-            <div class="dash-card" style="--card-outer-radius: 18px; --card-padding: 12px; border-radius: var(--card-outer-radius); padding: var(--card-padding);">
+            <div class="dash-card gear-item-card" style="--card-outer-radius: 18px; --card-padding: 12px; border-radius: var(--card-outer-radius); padding: var(--card-padding);">
               {item.image && (
-                <div style="aspect-ratio: 16/10; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; background: #EFEFED; border: var(--dash-border-width, 0.9px) solid var(--dash-border); margin-bottom: 10px;">
+                <div class="gear-item-media" style="aspect-ratio: 16/10; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; background: #EFEFED; border: var(--dash-border-width, 0.9px) solid var(--dash-border); margin-bottom: 10px;">
                   <img 
                     src={item.image} 
                     alt={item.name} 
+                    class="gear-item-img"
                     style={`width: 100%; height: 100%; object-fit: cover;${imageScaleBySlug[item.slug] ? ` transform: scale(${imageScaleBySlug[item.slug]});` : ""}`}
                     loading="lazy"
                     decoding="async"
                     fetchpriority="low"
-                    sizes="(max-width: 768px) calc(100vw - 10px), (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) calc(100vw - 24px), (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}
 
-              <h3 class="item-title" style="margin: 0 0 6px; font-size: 0.9375rem;">
+              <h3 class="item-title gear-item-title" style="margin: 0 0 6px; font-size: 0.9375rem;">
                 {item.name}
               </h3>
 
-              <p style="font-size: 0.8125rem; line-height: 1.5; color: var(--dash-muted); margin: 0;">
+              <p class="gear-item-desc" style="font-size: 0.8125rem; line-height: 1.5; color: var(--dash-muted); margin: 0;">
                 {item.description}
               </p>
             </div>
@@ -80,3 +81,55 @@ const imageScaleBySlug: Record<string, number> = {
     ))}
   </div>
 </DashboardLayout>
+
+<style>
+  @media (max-width: 768px) {
+    .gear-sections-stack {
+      gap: 34px !important;
+    }
+
+    .gear-section-head {
+      align-items: flex-start !important;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px !important;
+    }
+
+    .gear-section-desc {
+      font-size: 0.8125rem !important;
+      line-height: 1.5 !important;
+    }
+
+    .gear-section-count {
+      white-space: normal !important;
+      font-size: 0.6875rem !important;
+    }
+
+    .gear-items-grid {
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+    }
+
+    .gear-item-card {
+      --card-outer-radius: 14px !important;
+      --card-padding: 12px !important;
+      min-width: 0;
+      padding: 12px !important;
+    }
+
+    .gear-item-media {
+      aspect-ratio: 16 / 10 !important;
+      margin-bottom: 10px !important;
+    }
+
+    .gear-item-title {
+      font-size: 0.9375rem !important;
+      line-height: 1.35 !important;
+    }
+
+    .gear-item-desc {
+      font-size: 0.8125rem !important;
+      line-height: 1.5 !important;
+    }
+  }
+</style>

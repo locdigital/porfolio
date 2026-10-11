@@ -480,4 +480,110 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
     }
   }
 
+  @media (max-width: 768px) {
+    .section-header-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .section-header-link {
+      white-space: normal;
+      line-height: 1.35;
+    }
+
+    .home-experience-list .dash-row {
+      gap: 4px !important;
+      padding-block: 12px !important;
+    }
+
+    .home-experience-list .dash-row > div:first-child {
+      width: 100%;
+      min-width: 0 !important;
+    }
+
+    .home-experience-list .dash-row > div:last-child {
+      order: -1;
+      white-space: normal !important;
+      font-size: 0.75rem !important;
+      line-height: 1.35 !important;
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      overflow: visible;
+      margin-inline: 0;
+      padding: 0;
+      scroll-snap-type: none;
+    }
+
+    .capability-card {
+      width: auto;
+      max-width: 100%;
+      flex: none;
+      padding: 12px;
+      scroll-snap-align: none;
+    }
+
+    .capability-title {
+      font-size: 0.9375rem;
+      line-height: 1.35;
+      margin-bottom: 5px;
+    }
+
+    .capability-desc {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+
+    .home-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 12px;
+      overflow: visible;
+      margin-inline: 0;
+      padding: 10px 0 12px;
+      scroll-snap-type: none;
+    }
+
+    .home-photo-grid .folder-item {
+      width: auto;
+      flex: none;
+      justify-content: center;
+      scroll-snap-align: none;
+    }
+
+    .home-photo-grid .folder-wrapper {
+      max-width: 150px;
+      margin-inline: auto;
+    }
+
+    .dash-callout {
+      flex-direction: column;
+    }
+
+    .dash-callout-content > div:last-child {
+      width: 100%;
+      gap: 8px !important;
+    }
+
+    .dash-callout-content .dash-button {
+      width: 100%;
+      min-height: 36px !important;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .home-photo-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .home-photo-grid .folder-wrapper {
+      max-width: 156px;
+    }
+  }
+
 </style>
