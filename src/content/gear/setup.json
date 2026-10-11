@@ -279,6 +279,24 @@
           "image": "/uploads/viltrox_af_85_f2_evo.webp",
           "url": "https://viltroxstore.com/",
           "tag": "Lens"
+        },
+        {
+          "name": "NiSi 15mm f/4 Sunstar ASPH",
+          "slug": "nisi-15mm-f4-sunstar",
+          "headline": "Ultra-Wide Prime Lens",
+          "description": "Compact manual focus ultra-wide lens with 112° angle of view, low distortion, and defined 10-point sunstars from f/4 to f/22.",
+          "image": "/uploads/nisi_15_f4.webp",
+          "url": "https://en.nisioptics.com/nisi-15mm-f4-sunstar-aspherical-lens",
+          "tag": "Lens"
+        },
+        {
+          "name": "TTArtisan 500mm f/6.3 Telephoto",
+          "slug": "ttartisan-500mm-f63",
+          "headline": "Super-Telephoto Prime Lens",
+          "description": "Full-frame super-telephoto manual focus lens with ED glass elements for distant landscapes, deep perspective compression, and astrophotography.",
+          "image": "/uploads/ttartisan_500_f63.webp",
+          "url": "https://www.ttartisan.com/?products_1/46.html",
+          "tag": "Lens"
         }
       ]
     },
