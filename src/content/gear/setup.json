@@ -297,6 +297,15 @@
           "image": "/uploads/ttartisan_500_f63.webp",
           "url": "https://www.ttartisan.com/?products_1/46.html",
           "tag": "Lens"
+        },
+        {
+          "name": "Leofoto Urban LX-254CT + XB-32",
+          "slug": "leofoto-urban-lx-254ct",
+          "headline": "Carbon Fiber Travel Tripod",
+          "description": "Compact 4-section carbon fiber travel tripod with reverse-folding legs, removable center column, and low-profile XB-32 ball head.",
+          "image": "/uploads/leofoto_lx_254ct.webp",
+          "url": "https://leofoto.com/",
+          "tag": "Tripod"
         }
       ]
     },
