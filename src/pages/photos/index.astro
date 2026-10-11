@@ -144,8 +144,12 @@ const enhancedLocations = locations.map((loc) => {
                   <img
                     src={loc.heroPhoto}
                     alt=""
+                    width="88"
+                    height="88"
                     loading="lazy"
                     decoding="async"
+                    fetchpriority="low"
+                    sizes="44px"
                   />
                 </span>
               ) : (

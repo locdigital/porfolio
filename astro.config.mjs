@@ -17,10 +17,7 @@ export default defineConfig({
     },
   }),
   integrations: [tailwind(), sitemap(), react()],
-  prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'viewport',
-  },
+  prefetch: false,
   image: {
     // Sharp: use AVIF as primary format (≈30% smaller than WebP)
     // Falls back to original format for unsupported browsers

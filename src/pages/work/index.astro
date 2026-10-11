@@ -88,6 +88,9 @@ const projectCount = enhancedProjects.length;
               alt={p.title} 
               class="project-card-img"
               loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+              sizes="(max-width: 768px) calc(100vw - 10px), (max-width: 1200px) 50vw, 33vw"
             />
           </a>
         )}
@@ -315,11 +318,11 @@ const projectCount = enhancedProjects.length;
       overscroll-behavior-x: contain;
       touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
       -webkit-overflow-scrolling: touch;
       gap: 14px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
       padding-top: 2px;
       padding-bottom: 12px;
       scrollbar-width: none;
@@ -339,9 +342,9 @@ const projectCount = enhancedProjects.length;
 
     .project-item {
       --card-padding: 14px;
-      flex: 0 0 min(390px, calc(100vw - 16px)) !important;
-      width: min(390px, calc(100vw - 16px)) !important;
-      max-width: min(390px, calc(100vw - 16px)) !important;
+      flex: 0 0 min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2))) !important;
+      width: min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2))) !important;
+      max-width: min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2))) !important;
       scroll-snap-align: start;
       scroll-snap-stop: normal;
     }
@@ -415,16 +418,16 @@ const projectCount = enhancedProjects.length;
 
   @media (max-width: 359px) {
     .projects-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
       gap: 12px;
     }
 
     .project-item {
-      flex: 0 0 calc(100vw - 16px) !important;
-      width: calc(100vw - 16px) !important;
-      max-width: calc(100vw - 16px) !important;
+      flex: 0 0 calc(100vw - (var(--mobile-page-edge, 5px) * 2)) !important;
+      width: calc(100vw - (var(--mobile-page-edge, 5px) * 2)) !important;
+      max-width: calc(100vw - (var(--mobile-page-edge, 5px) * 2)) !important;
     }
   }
 </style>

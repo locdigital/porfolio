@@ -341,8 +341,11 @@ const collaborationLogos = [
                     src={p.logo}
                     alt={groupIndex === 0 ? p.name : ""}
                     class="partner-logo"
+                    width="28"
+                    height="28"
                     loading="lazy"
                     decoding="async"
+                    fetchpriority="low"
                   />
                 ) : (
                   <span class="partner-wordmark" aria-hidden="true">
@@ -447,11 +450,11 @@ const collaborationLogos = [
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
       -webkit-overflow-scrolling: touch;
       gap: 14px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
       padding-top: 4px;
       padding-bottom: 14px;
       scrollbar-width: none;
@@ -463,22 +466,22 @@ const collaborationLogos = [
     }
 
     .service-capability-card {
-      flex: 0 0 min(390px, calc(100vw - 16px));
-      width: min(390px, calc(100vw - 16px));
+      flex: 0 0 min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
+      width: min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
       scroll-snap-align: start;
     }
   }
 
   @media (max-width: 359px) {
     .services-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
     }
 
     .service-capability-card {
-      flex: 0 0 calc(100vw - 16px);
-      width: calc(100vw - 16px);
+      flex: 0 0 calc(100vw - (var(--mobile-page-edge, 5px) * 2));
+      width: calc(100vw - (var(--mobile-page-edge, 5px) * 2));
     }
   }
 
@@ -775,11 +778,11 @@ const collaborationLogos = [
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
       -webkit-overflow-scrolling: touch;
       gap: 16px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
       padding-top: 4px;
       padding-bottom: 14px;
       scrollbar-width: none;
@@ -795,8 +798,8 @@ const collaborationLogos = [
       grid-row: auto !important;
       display: flex;
       flex-direction: column;
-      flex: 0 0 min(390px, calc(100vw - 16px));
-      width: min(390px, calc(100vw - 16px));
+      flex: 0 0 min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
+      width: min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
       scroll-snap-align: start;
       padding: 22px 20px;
     }
@@ -813,14 +816,14 @@ const collaborationLogos = [
 
   @media (max-width: 359px) {
     .pricing-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
     }
 
     .pricing-card {
-      flex: 0 0 calc(100vw - 16px);
-      width: calc(100vw - 16px);
+      flex: 0 0 calc(100vw - (var(--mobile-page-edge, 5px) * 2));
+      width: calc(100vw - (var(--mobile-page-edge, 5px) * 2));
       padding: 18px 16px;
     }
   }
@@ -849,9 +852,9 @@ const collaborationLogos = [
      ============================================================ */
   .partners-marquee-container {
     position: relative;
-    width: calc(100% + 16px);
-    margin-inline: -8px;
-    padding-inline: 8px;
+    width: calc(100% + (var(--mobile-page-edge, 5px) * 2));
+    margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+    padding-inline: var(--mobile-page-edge, 5px);
     padding-block: 4px;
     overflow: hidden;
     mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
@@ -860,9 +863,9 @@ const collaborationLogos = [
 
   @media (max-width: 359px) {
     .partners-marquee-container {
-      width: calc(100% + 16px);
-      margin-inline: -8px;
-      padding-inline: 8px;
+      width: calc(100% + (var(--mobile-page-edge, 5px) * 2));
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
       mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
     }
@@ -894,7 +897,14 @@ const collaborationLogos = [
 
   @media (max-width: 768px) {
     .partners-marquee-track {
-      animation: partners-scroll 46s linear infinite !important;
+      animation: none !important;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      will-change: auto;
+    }
+
+    .partner-card {
+      scroll-snap-align: start;
     }
   }
 

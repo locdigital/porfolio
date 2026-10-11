@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import '../styles/dashboard.css';
-import { ViewTransitions } from 'astro:transitions';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
 import { Menu, ChevronRight } from '../components/icons/majesticons';
@@ -75,11 +74,12 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
   <meta name="theme-color" content="#FFFFFF">
   <link rel="canonical" href={canonicalUrl} />
   
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
 
-  <ViewTransitions />
   <script is:inline type="application/ld+json" set:html={jsonLd}></script>
 
   <style is:global>
@@ -218,16 +218,13 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
       function setupScrollReveals() {
         state.revealObserver?.disconnect();
 
+        const mobileLite = window.matchMedia("(max-width: 768px)").matches;
+        if (mobileLite) return;
+
         const elements = Array.from(document.querySelectorAll('.r, .toki-r, .reveal, .dash-reveal'));
         if (!elements.length) return;
 
         const reveal = (element) => element.classList.add('in', 'is-in');
-        const mobileLite = window.matchMedia("(max-width: 768px)").matches;
-
-        if (mobileLite) {
-          elements.forEach(reveal);
-          return;
-        }
 
         const isInInitialViewport = (element) => {
           const rect = element.getBoundingClientRect();
@@ -264,9 +261,20 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
         state.revealObserver = observer;
       }
 
+      function resetMobileScroll() {
+        if (!window.matchMedia("(max-width: 768px)").matches || window.location.hash) return;
+        const main = document.getElementById("main-content");
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        if (main) {
+          main.scrollTop = 0;
+          main.scrollLeft = 0;
+        }
+      }
+
       state.initPageEffects = () => {
         setupMobileDrawer();
         setupScrollReveals();
+        resetMobileScroll();
       };
 
       if (!state.bound) {

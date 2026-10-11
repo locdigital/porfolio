@@ -111,11 +111,13 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home">
             <img 
-              src="/favicon.svg" 
+              src="/favicon-32x32.png"
               alt="Nguyen Phuc Loc" 
               class="dash-user-avatar"
               width="28"
               height="28"
+              loading="eager"
+              decoding="async"
             />
             <div>
               <div class="dash-user-name">Phuc Loc Nguyen</div>

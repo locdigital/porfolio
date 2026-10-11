@@ -30,8 +30,8 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
   const src = typeof p === "string" ? p : p.src;
   const alt = typeof p === "string" ? `${location.name} frame ${idx + 1}` : (p.alt || p.caption || `${location.name} photo`);
   const caption = typeof p === "string" ? "" : (p.caption || "");
-  const w = p.width || 1200;
-  const h = p.height || 900;
+  const w = p.w || p.width || 1200;
+  const h = p.h || p.height || 900;
   return { src, alt, caption, w, h };
 });
 ---
@@ -117,8 +117,10 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
             alt={p.alt || location.name} 
             width={p.w}
             height={p.h}
-            loading={index < 4 ? "eager" : "lazy"}
+            loading={index === 0 ? "eager" : "lazy"}
             decoding="async"
+            fetchpriority={index === 0 ? "high" : "low"}
+            sizes="(max-width: 640px) calc(100vw - 10px), (max-width: 1024px) 50vw, 38vw"
             style="width: 100%; height: auto; display: block;"
           />
         </figure>

@@ -79,7 +79,7 @@
   /* Layout dimensions & Section Spacing */
   --sidebar-w: 232px;
   --workspace-window-zoom: 0.864;
-  --mobile-page-edge: 8px;
+  --mobile-page-edge: 5px;
   --dash-section-gap: calc(var(--space-12) * 1.1);        /* 52.8px (increased 10% from 48px) */
   --dash-section-gap-mobile: calc(var(--space-8) * 1.21);  /* 38.7px (increased 10% from 35.2px) */
 }
@@ -1116,6 +1116,10 @@ abbr {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--dash-text);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* Slide-out Navigation Drawer */
@@ -1165,13 +1169,23 @@ abbr {
   h1.page-title,
   h1 {
     font-size: 1.625rem !important;
-    line-height: 1.25 !important;
+    line-height: 1.18 !important;
+    max-width: 100%;
+    overflow: visible !important;
+    overflow-wrap: anywhere;
+    text-overflow: clip !important;
+    white-space: normal !important;
   }
 
   .section-title,
   h2.section-title {
     font-size: 1.3125rem;
     line-height: 1.381;
+    max-width: 100%;
+    overflow: visible !important;
+    overflow-wrap: anywhere;
+    text-overflow: clip !important;
+    white-space: normal !important;
   }
 
   .page-header {
@@ -1185,7 +1199,7 @@ abbr {
 
 @media (max-width: 359px) {
   .workspace-main {
-    padding-inline: 8px;
+    padding-inline: var(--mobile-page-edge);
   }
 }
 
@@ -1487,12 +1501,29 @@ abbr {
   .workspace-main {
     padding-inline: var(--mobile-page-edge) !important;
     scrollbar-gutter: auto !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: clip !important;
   }
 
   .workspace-content {
-    width: calc(100% + (var(--mobile-page-edge) * 2)) !important;
+    width: 100% !important;
     max-width: none !important;
-    margin-inline: calc(var(--mobile-page-edge) * -1) !important;
+    margin-inline: 0 !important;
+    overflow-x: clip !important;
+  }
+
+  .workspace-canvas,
+  .mac-window-container,
+  .workspace-body,
+  .workspace-content,
+  .page-header,
+  .page-section {
+    max-width: 100vw !important;
+  }
+
+  .workspace-content > * {
+    max-width: 100% !important;
   }
 
   html,
@@ -1535,8 +1566,27 @@ abbr {
   }
 
   .page-section {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 720px;
+    content-visibility: visible !important;
+    contain-intrinsic-size: auto !important;
+  }
+
+  .workspace-main :where(h1, h2, h3, h4, h5, h6, p, li, a, span, strong, small) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .workspace-main :where(.dash-nav-tree-link, .dash-sidebar-email) {
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+  }
+
+  .workspace-main :where(.r, .toki-r, .reveal, .dash-reveal, .animated-card, .t-stagger-line, .skeleton-loading-img) {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
   }
 
   .mobile-topbar,

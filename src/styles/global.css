@@ -2945,14 +2945,14 @@
 :root {
   --site-h1-size: 32px;
   --site-heading-size: 22px;
-      --site-copy-size: 12px;
+  --site-copy-size: 14px;
 }
 
 @media (max-width: 1024px) {
   :root {
     --site-h1-size: 26px;
     --site-heading-size: 20px;
-    --site-copy-size: 12px;
+    --site-copy-size: 14px;
   }
 }
 
@@ -3635,8 +3635,9 @@
 }
 
 @media (max-width: 620px) {
-  main :where(p, div, strong, span) {
-    font-size: var(--type-micro) !important;
+  main :where(p, li, dd, dt, figcaption, small) {
+    overflow-wrap: anywhere;
+    word-break: normal;
   }
 
   main :where(
@@ -3792,6 +3793,57 @@ html body h3 {
   font-size: 18px !important;
   font-weight: 400 !important;
   line-height: 1.25 !important;
+}
+
+/* Mobile hardening: keep motion off and text visible on small screens. */
+@media (max-width: 768px) {
+  html,
+  html:focus-within {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  [class*="animate-"],
+  [class*="sound-animate"],
+  [class*="motion-"],
+  [class*="transition-"],
+  [class*="duration-"] {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-image-pair(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  main :where(h1, h2, h3, h4, h5, h6, p, li, a, span, strong, small) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  main :where(h1, h2, h3, h4, h5, h6) {
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+    line-height: 1.18 !important;
+  }
+
+  main :where(.t-stagger-line, .r, .toki-r, .reveal, .dash-reveal, .animated-card, .skeleton-loading-img) {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
 }
 
 @media (max-width: 620px) {

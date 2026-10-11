@@ -232,8 +232,12 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
                     <img
                       src={loc.leftPhoto}
                       alt=""
+                      width="120"
+                      height="90"
                       loading="lazy"
                       decoding="async"
+                      fetchpriority="low"
+                      sizes="100px"
                       draggable="false"
                     />
                   </div>
@@ -241,8 +245,12 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
                     <img
                       src={loc.rightPhoto}
                       alt=""
+                      width="120"
+                      height="90"
                       loading="lazy"
                       decoding="async"
+                      fetchpriority="low"
+                      sizes="100px"
                       draggable="false"
                     />
                   </div>
@@ -250,8 +258,12 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
                     <img
                       src={loc.heroPhoto}
                       alt=""
+                      width="120"
+                      height="90"
                       loading="lazy"
                       decoding="async"
+                      fetchpriority="low"
+                      sizes="100px"
                       draggable="false"
                     />
                   </div>
@@ -363,11 +375,11 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
       -webkit-overflow-scrolling: touch;
       gap: 16px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
       padding-top: 10px;
       padding-bottom: 20px;
       scrollbar-width: none;
@@ -387,9 +399,9 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
 
   @media (max-width: 359px) {
     .home-photo-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
     }
 
     .home-photo-grid .folder-item {
@@ -433,11 +445,11 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
       -webkit-overflow-scrolling: touch;
       gap: 12px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
       padding-top: 2px;
       padding-bottom: 8px;
       scrollbar-width: none;
@@ -449,17 +461,17 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
     }
 
     .capability-card {
-      flex: 0 0 min(340px, calc(100vw - 16px));
-      width: min(340px, calc(100vw - 16px));
+      flex: 0 0 min(340px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
+      width: min(340px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
       scroll-snap-align: start;
     }
   }
 
   @media (max-width: 359px) {
     .capabilities-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
     }
 
     .capability-card {

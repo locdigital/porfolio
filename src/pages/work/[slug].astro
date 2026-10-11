@@ -48,11 +48,11 @@ if (project.slug === "playah") {
     beforeLabel: "Baseline (Th07/2025)",
     afterLabel: "Scaled Engine (Th08/2025)",
     beforeImage: {
-      src: "/images/playah/playah-before.png",
+      src: "/images/playah/playah-before.webp",
       alt: "PlayAh! Doanh thu & GMV TikTok Shop trước tối ưu (Tháng 7/2025 — 125 triệu)",
     },
     afterImage: {
-      src: "/images/playah/playah-after.png",
+      src: "/images/playah/playah-after.webp",
       alt: "PlayAh! Doanh thu & GMV TikTok Shop sau tối ưu (Tháng 8/2025 — 1.46 tỷ)",
     },
     beforePanel: {
@@ -339,11 +339,11 @@ if (project.slug === "playah") {
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 5px);
       -webkit-overflow-scrolling: touch;
       gap: 18px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
+      padding-inline: var(--mobile-page-edge, 5px);
       padding-top: 16px;
       padding-bottom: 24px;
       scrollbar-width: none;
