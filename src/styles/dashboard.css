@@ -12,6 +12,10 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --heading-weight: 600;
 
+  /* Typography Scale Tokens */
+  --font-size-base: 14px;
+  --base-font-size: var(--font-size-base);
+
   /* Color Tokens */
   --dash-outer: #FFFFFF;
   --dash-bg: #FFFFFF;
@@ -100,10 +104,19 @@ html, body {
   background: var(--dash-outer);
   color: var(--dash-text);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: var(--font-size-base);
   line-height: 1.625;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Universal Paragraph & Heading Typography */
+p {
+  font-size: var(--font-size-base) !important;
+}
+
+h3 {
+  font-size: 1rem !important;
 }
 
 button, input, textarea, select {
@@ -349,16 +362,16 @@ h2.section-title {
 .item-title,
 h3.item-title {
   margin: 0 0 var(--space-2);
-  font-size: 1.0625rem;          /* 17px */
+  font-size: 1rem;          /* 16px */
   line-height: 1.4117;           /* 24px */
   font-weight: 600;
   color: var(--dash-text);
 }
 
 .page-lead {
-  font-size: 1.0625rem;          /* 17px */
-  line-height: 1.65;             /* 28px */
-  color: var(--dash-muted);
+  font-size: var(--font-size-base, 14px);
+  line-height: 1.72;
+  color: var(--dash-text);
   max-width: 68ch;
   margin: 0 0 var(--space-4);
 }
@@ -1540,6 +1553,14 @@ abbr {
 
 /* Mobile performance mode: keep UI instant and avoid animation work on small screens. */
 @media (max-width: 768px) {
+  :root {
+    --font-size-base: 10px;
+  }
+
+  p {
+    font-size: var(--font-size-base) !important;
+  }
+
   .mobile-topbar {
     padding-inline: var(--mobile-page-edge) !important;
   }
@@ -1599,8 +1620,8 @@ abbr {
   }
 
   .page-lead {
-    font-size: 0.9375rem !important;
-    line-height: 1.58 !important;
+    font-size: var(--font-size-base, 10px) !important;
+    line-height: 1.65 !important;
     max-width: 100% !important;
   }
 
@@ -1737,5 +1758,78 @@ abbr {
   .project-card-img,
   .gallery-item img {
     will-change: auto !important;
+  }
+
+  /* Disable folder photo fan-out and certificate cards pop-out on mobile across all pages */
+  .folder-cards,
+  .folder-card,
+  .folder-cert-cards,
+  .folder-cert-card,
+  .folder-cert-secondary {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .folder-wrapper:hover .folder-card--left,
+  .folder-wrapper:hover .folder-card--center,
+  .folder-wrapper:hover .folder-card--right,
+  .folder-wrapper:focus-visible .folder-card--left,
+  .folder-wrapper:focus-visible .folder-card--center,
+  .folder-wrapper:focus-visible .folder-card--right,
+  .folder-wrapper:active .folder-card--left,
+  .folder-wrapper:active .folder-card--center,
+  .folder-wrapper:active .folder-card--right,
+  .folder-wrapper:hover .folder-cert-card,
+  .folder-wrapper:hover .folder-cert-secondary,
+  .folder-wrapper:focus-visible .folder-cert-card,
+  .folder-wrapper:focus-visible .folder-cert-secondary,
+  .folder-wrapper:active .folder-cert-card,
+  .folder-wrapper:active .folder-cert-secondary {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (hover: none) {
+  .folder-cards,
+  .folder-card,
+  .folder-cert-cards,
+  .folder-cert-card,
+  .folder-cert-secondary {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .folder-wrapper:hover .folder-card--left,
+  .folder-wrapper:hover .folder-card--center,
+  .folder-wrapper:hover .folder-card--right,
+  .folder-wrapper:focus-visible .folder-card--left,
+  .folder-wrapper:focus-visible .folder-card--center,
+  .folder-wrapper:focus-visible .folder-card--right,
+  .folder-wrapper:active .folder-card--left,
+  .folder-wrapper:active .folder-card--center,
+  .folder-wrapper:active .folder-card--right,
+  .folder-wrapper:hover .folder-cert-card,
+  .folder-wrapper:hover .folder-cert-secondary,
+  .folder-wrapper:focus-visible .folder-cert-card,
+  .folder-wrapper:focus-visible .folder-cert-secondary,
+  .folder-wrapper:active .folder-cert-card,
+  .folder-wrapper:active .folder-cert-secondary {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

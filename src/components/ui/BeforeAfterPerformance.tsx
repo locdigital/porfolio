@@ -374,7 +374,7 @@ export default function BeforeAfterPerformance({
         .bap-description {
           color: var(--muted);
           font-family: var(--sans);
-          font-size: 14px !important;
+          font-size: var(--font-size-base) !important;
           line-height: 1.65;
           margin: 0;
           max-width: 48ch;
@@ -411,7 +411,7 @@ export default function BeforeAfterPerformance({
         .bap-highlight-title {
           color: var(--text);
           font-family: var(--sans);
-          font-size: 14px !important;
+          font-size: var(--font-size-base) !important;
           font-weight: 600;
           line-height: 1.3;
           margin: 0;
@@ -420,7 +420,7 @@ export default function BeforeAfterPerformance({
         .bap-highlight-desc {
           color: var(--muted);
           font-family: var(--sans);
-          font-size: 13px !important;
+          font-size: var(--font-size-base) !important;
           line-height: 1.5;
           margin: 3px 0 0;
         }
@@ -591,7 +591,7 @@ export default function BeforeAfterPerformance({
         .bap-state-desc {
           color: var(--muted);
           font-family: var(--sans);
-          font-size: 14px !important;
+          font-size: var(--font-size-base) !important;
           line-height: 1.55;
           margin: 16px 0 0;
           max-width: 42ch;
@@ -621,7 +621,7 @@ export default function BeforeAfterPerformance({
         .bap-metric p {
           color: var(--muted);
           font-family: var(--mono);
-          font-size: 10px !important;
+          font-size: var(--font-size-base) !important;
           letter-spacing: 0.04em;
           line-height: 1.25;
           margin: 8px 0 0;

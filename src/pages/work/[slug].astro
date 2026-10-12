@@ -145,7 +145,7 @@ if (project.slug === "playah") {
   {comparisonData && (
     <section class="page-section" aria-label="Performance comparison">
       <h2 class="section-title">Performance breakdown</h2>
-      <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 16px;">
+      <p style="font-size: var(--font-size-base); color: var(--dash-muted); margin: 0 0 16px;">
         {comparisonData.description}
       </p>
 
@@ -279,11 +279,12 @@ if (project.slug === "playah") {
     gap: 14px;
     width: 100%;
     color: var(--dash-text);
-    font-size: 0.9375rem;
+    font-size: var(--font-size-base);
     line-height: 1.68;
   }
 
   .work-narrative-prose p {
+    font-size: var(--font-size-base);
     max-width: none;
     width: 100%;
     margin: 0;
@@ -324,11 +325,12 @@ if (project.slug === "playah") {
     }
 
     .work-narrative-prose {
-      font-size: 0.9375rem;
+      font-size: var(--font-size-base);
       line-height: 1.6;
     }
 
     .work-narrative-prose p {
+      font-size: var(--font-size-base);
       text-align: left;
     }
 

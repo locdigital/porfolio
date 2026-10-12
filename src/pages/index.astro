@@ -119,7 +119,7 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
         <span style="opacity: 0.4;">·</span>
         <span>Saigon, Vietnam</span>
       </div>
-      <p style="font-size: 1rem; line-height: 1.625; color: var(--dash-text); max-width: 68ch; margin: 0 0 16px;">
+      <p style="font-size: var(--font-size-base); line-height: 1.625; color: var(--dash-text); max-width: 68ch; margin: 0 0 16px;">
         I design and scale full-funnel digital acquisition engines—connecting paid media, TikTok Shop GMV acceleration, attribution modeling, and fast web experiences to turn marketing investments into sustainable revenue.
       </p>
 
@@ -297,7 +297,7 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
         <div style="font-weight: 600; color: var(--dash-text); margin-bottom: 4px;">
           Open for selective advisory & growth retainers
         </div>
-        <p style="margin: 0 0 10px; color: var(--dash-muted);">
+        <p style="margin: 0 0 10px; font-size: var(--font-size-base); color: var(--dash-muted);">
           Currently accepting new commercial discussions for performance media, e-commerce GMV acceleration, and full-funnel digital architecture.
         </p>
         <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
@@ -381,14 +381,14 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
   }
 
   .capability-title {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--dash-text);
     margin: 0 0 6px;
   }
 
   .capability-desc {
-    font-size: 0.8125rem;
+    font-size: var(--font-size-base);
     line-height: 1.55;
     color: var(--dash-muted);
     margin: 0;
@@ -457,13 +457,13 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
     }
 
     .capability-title {
-      font-size: 0.9375rem;
+      font-size: 1rem;
       line-height: 1.35;
       margin-bottom: 4px;
     }
 
     .capability-desc {
-      font-size: 0.8125rem;
+      font-size: var(--font-size-base);
       line-height: 1.5;
     }
 
@@ -502,6 +502,32 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
       width: 100%;
       max-width: 140px;
       margin-inline: auto;
+    }
+
+    .folder-cards,
+    .folder-card {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    .folder-wrapper:hover .folder-card--left,
+    .folder-wrapper:hover .folder-card--center,
+    .folder-wrapper:hover .folder-card--right,
+    .folder-wrapper:focus-visible .folder-card--left,
+    .folder-wrapper:focus-visible .folder-card--center,
+    .folder-wrapper:focus-visible .folder-card--right,
+    .folder-wrapper:active .folder-card--left,
+    .folder-wrapper:active .folder-card--center,
+    .folder-wrapper:active .folder-card--right {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transform: none !important;
+      transition: none !important;
     }
 
     /* Contact callout: stacked layout */

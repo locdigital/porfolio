@@ -6,7 +6,6 @@ import { Folder } from "../../components/icons/majesticons";
 export const prerender = true;
 
 const locations = await getPhotoLocations();
-const emptyPreviewImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E";
 
 // Group destinations by region:
 const enhancedLocations = locations.map((loc) => {
@@ -83,9 +82,10 @@ const enhancedLocations = locations.map((loc) => {
                 <div class="folder-cards" aria-hidden="true">
                   <div class="folder-card folder-card--left">
                     <img
-                      src={emptyPreviewImage}
-                      data-src={loc.leftPhoto}
+                      src={loc.leftPhoto}
                       alt=""
+                      width="120"
+                      height="90"
                       loading="lazy"
                       decoding="async"
                       draggable="false"
@@ -93,9 +93,10 @@ const enhancedLocations = locations.map((loc) => {
                   </div>
                   <div class="folder-card folder-card--right">
                     <img
-                      src={emptyPreviewImage}
-                      data-src={loc.rightPhoto}
+                      src={loc.rightPhoto}
                       alt=""
+                      width="120"
+                      height="90"
                       loading="lazy"
                       decoding="async"
                       draggable="false"
@@ -103,9 +104,10 @@ const enhancedLocations = locations.map((loc) => {
                   </div>
                   <div class="folder-card folder-card--center">
                     <img
-                      src={emptyPreviewImage}
-                      data-src={loc.heroPhoto}
+                      src={loc.heroPhoto}
                       alt=""
+                      width="120"
+                      height="90"
                       loading="lazy"
                       decoding="async"
                       draggable="false"
@@ -380,13 +382,39 @@ const enhancedLocations = locations.map((loc) => {
     padding: 0 0 32px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 768px), (hover: none), (pointer: coarse) {
     .folder-grid {
       display: none !important;
     }
 
     .photos-list-container {
       display: block !important;
+    }
+
+    .folder-cards,
+    .folder-card {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    .folder-wrapper:hover .folder-card--left,
+    .folder-wrapper:hover .folder-card--center,
+    .folder-wrapper:hover .folder-card--right,
+    .folder-wrapper:focus-visible .folder-card--left,
+    .folder-wrapper:focus-visible .folder-card--center,
+    .folder-wrapper:focus-visible .folder-card--right,
+    .folder-wrapper:active .folder-card--left,
+    .folder-wrapper:active .folder-card--center,
+    .folder-wrapper:active .folder-card--right {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transform: none !important;
+      transition: none !important;
     }
   }
 
@@ -540,17 +568,6 @@ const enhancedLocations = locations.map((loc) => {
       const leftImg = wrapper.querySelector(".folder-card--left img");
       const rightImg = wrapper.querySelector(".folder-card--right img");
       if (!centerImg || !leftImg || !rightImg) return;
-
-      const hydratePreviewImage = (img) => {
-        const previewSrc = img.dataset.src;
-        if (previewSrc && img.getAttribute("src") !== previewSrc) {
-          img.src = previewSrc;
-        }
-      };
-
-      hydratePreviewImage(centerImg);
-      hydratePreviewImage(leftImg);
-      hydratePreviewImage(rightImg);
 
       const preloadImage = (src) => {
         if (!src) return Promise.resolve();

@@ -211,7 +211,7 @@ const collaborationLogos = [
           class="dash-card service-capability-card"
           style={`--service-color: ${s.color}; --service-soft: ${s.soft}; --service-border: ${s.border}; --service-ink: ${s.ink}; --card-outer-radius: 12px; --card-padding: 16px;`}
         >
-          <div>
+          <div class="service-card-body">
             <div class="service-card-header">
               <span class="dash-tag service-category-pill">{s.category}</span>
               <span class="service-card-id">{s.id}</span>
@@ -221,18 +221,18 @@ const collaborationLogos = [
               {s.title}
             </h3>
 
-            <p style="font-size: 0.875rem; line-height: 1.55; color: var(--dash-muted); margin: 0 0 14px;">
+            <p class="service-card-desc">
               {s.summary}
             </p>
 
             <!-- Scope Checklist (Concentric nested surface block) -->
             <div class="dash-card-nested-block service-scope-block">
-              <div style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+              <div class="service-scope-label">
                 Scope & deliverables
               </div>
-              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
+              <ul class="service-checklist">
                 {s.checklist.map((item) => (
-                  <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.45; color: var(--dash-text);">
+                  <li class="service-checklist-item">
                     <span class="dash-bullet service-bullet" aria-hidden="true"></span>
                     <span>{item}</span>
                   </li>
@@ -241,7 +241,7 @@ const collaborationLogos = [
             </div>
 
             <!-- Tags -->
-            <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px;">
+            <div class="service-tags-wrap">
               {s.tags.map((t) => (
                 <span class="dash-tag service-tech-tag">{t}</span>
               ))}
@@ -326,7 +326,7 @@ const collaborationLogos = [
   <!-- Creative Collaboration Tools -->
   <section class="page-section" aria-labelledby="heading-partners">
     <h2 id="heading-partners" class="section-title">Creative tooling collaboration</h2>
-    <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 16px;">
+    <p style="font-size: var(--font-size-base); color: var(--dash-muted); margin: 0 0 16px;">
       Brand, web, AI creative, motion, and interface systems built with a modern toolkit across strategy, production, and launch.
     </p>
 
@@ -377,17 +377,31 @@ const collaborationLogos = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 16px;
+    align-items: stretch;
   }
 
   .service-capability-card {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     overflow: hidden;
     border-radius: var(--card-outer-radius);
     border-color: color-mix(in srgb, var(--service-border) 72%, var(--dash-border));
     padding: var(--card-padding);
+    height: auto;
+  }
+
+  .service-card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .service-card-desc {
+    font-size: var(--font-size-base);
+    line-height: 1.55;
+    color: var(--dash-muted);
+    margin: 0 0 14px;
   }
 
   .service-capability-card::before {
@@ -432,8 +446,44 @@ const collaborationLogos = [
     border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding)));
   }
 
+  .service-scope-label {
+    font-size: 0.6875rem; /* 11px */
+    font-weight: 600;
+    color: var(--dash-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .service-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .service-checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.45;
+    color: var(--dash-text);
+  }
+
   .service-capability-card .dash-bullet {
     background-color: var(--service-color);
+    margin-top: 4px;
+  }
+
+  .service-tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: auto;
+    padding-top: 4px;
   }
 
   .service-tech-tag {
@@ -452,6 +502,7 @@ const collaborationLogos = [
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
+      align-items: flex-start;
       gap: 12px;
       margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
       padding-inline: var(--mobile-page-edge, 16px);
@@ -470,6 +521,17 @@ const collaborationLogos = [
       width: clamp(290px, 84vw, 340px);
       max-width: 84vw;
       scroll-snap-align: start;
+    }
+
+    .service-checklist-item {
+      font-size: 0.75rem; /* 12px on mobile */
+      line-height: 1.4;
+      gap: 6px;
+    }
+
+    .service-scope-block {
+      margin-bottom: 12px;
+      padding: 8px 10px;
     }
   }
 
@@ -509,7 +571,7 @@ const collaborationLogos = [
   }
 
   .pricing-section-desc {
-    font-size: 0.9375rem; /* 15px */
+    font-size: var(--font-size-base);
     line-height: 1.6;
     color: var(--dash-muted);
     margin: 0 0 28px;
@@ -601,7 +663,7 @@ const collaborationLogos = [
 
   /* Row 2: Plan Title */
   .pricing-plan-title {
-    font-size: 1.25rem; /* 20px */
+    font-size: 1rem;
     line-height: 1.35;
     font-weight: 600;
     letter-spacing: -0.015em;
@@ -652,7 +714,7 @@ const collaborationLogos = [
 
   /* Row 5: Description */
   .pricing-description {
-    font-size: 0.875rem; /* 14px */
+    font-size: var(--font-size-base);
     line-height: 1.55;
     color: var(--dash-muted);
     margin: 0 0 18px;
@@ -685,7 +747,7 @@ const collaborationLogos = [
   }
 
   .pricing-feature-text {
-    font-size: 0.875rem; /* 14px */
+    font-size: var(--font-size-base);
     line-height: 1.5;
     color: var(--dash-text);
     flex: 1;
@@ -781,11 +843,11 @@ const collaborationLogos = [
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--mobile-page-edge, 5px);
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
-      gap: 16px;
-      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
-      padding-inline: var(--mobile-page-edge, 5px);
+      gap: 14px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 4px;
       padding-bottom: 14px;
       scrollbar-width: none;
@@ -799,12 +861,20 @@ const collaborationLogos = [
     .pricing-card {
       grid-column: auto !important;
       grid-row: auto !important;
-      display: flex;
-      flex-direction: column;
-      flex: 0 0 min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
-      width: min(390px, calc(100vw - (var(--mobile-page-edge, 5px) * 2)));
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 0 0 clamp(290px, 84vw, 360px);
+      width: clamp(290px, 84vw, 360px);
+      max-width: 84vw;
       scroll-snap-align: start;
       padding: 22px 20px;
+    }
+
+    .pricing-card:nth-child(1),
+    .pricing-card:nth-child(2),
+    .pricing-card:nth-child(3) {
+      grid-column: auto !important;
+      grid-row: auto !important;
     }
 
     .pricing-features {
@@ -982,25 +1052,6 @@ const collaborationLogos = [
     }
   }
 
-  @media (max-width: 880px) {
-    .pricing-grid {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-      gap: 12px !important;
-      overflow: visible !important;
-      margin-inline: 0 !important;
-      padding: 0 !important;
-      scroll-snap-type: none !important;
-    }
-
-    .pricing-card {
-      width: auto !important;
-      max-width: 100% !important;
-      flex: none !important;
-      padding: 16px !important;
-      scroll-snap-align: none !important;
-    }
-  }
 
   @media (max-width: 768px) {
     .partners-marquee-container {

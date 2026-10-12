@@ -68,7 +68,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
     <p class="page-lead" style="margin-bottom: var(--space-4);">{location.headline}</p>
 
     {location.introduction && (
-      <p style="font-size: 0.9375rem; line-height: 1.65; color: var(--dash-muted); max-width: 72ch; margin: 0 0 16px;">
+      <p style="font-size: var(--font-size-base); line-height: 1.65; color: var(--dash-muted); max-width: 72ch; margin: 0 0 16px;">
         {location.introduction}
       </p>
     )}
@@ -137,7 +137,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
         {location.editorialReview && (
           <div>
             <h3 class="item-title" style="margin-bottom: 6px;">Personal travel review</h3>
-            <p style="font-size: 0.875rem; line-height: 1.65; color: var(--dash-text); margin: 0;">
+            <p style="font-size: var(--font-size-base); line-height: 1.65; color: var(--dash-text); margin: 0;">
               {location.editorialReview}
             </p>
           </div>
@@ -146,7 +146,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
         {location.favoriteThings && (
           <div>
             <h3 class="item-title" style="margin-bottom: 6px;">Standout highlights</h3>
-            <p style="font-size: 0.875rem; line-height: 1.65; color: var(--dash-text); margin: 0;">
+            <p style="font-size: var(--font-size-base); line-height: 1.65; color: var(--dash-text); margin: 0;">
               {location.favoriteThings}
             </p>
           </div>
@@ -157,7 +157,7 @@ const photos = (location.photos || []).map((p: any, idx: number) => {
             <h3 class="item-title" style="margin-bottom: 8px;">Helpful travel tips</h3>
             <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
               {location.travelTips.map((tip: string) => (
-                <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.5; color: var(--dash-text);">
+                <li style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--font-size-base); line-height: 1.5; color: var(--dash-text);">
                   <span class="dash-bullet" aria-hidden="true"></span>
                   <span>{tip}</span>
                 </li>
