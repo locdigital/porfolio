@@ -635,10 +635,10 @@ const certificates = [
     .folder-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 32px 12px;
+      gap: 32px 14px;
       overflow: visible;
       margin-inline: 0;
-      padding: 20px 0 24px;
+      padding: 16px 0 24px;
       scroll-snap-type: none;
     }
 
@@ -647,15 +647,21 @@ const certificates = [
     }
 
     .folder-item {
-      width: auto;
+      width: 100%;
       flex: none;
-      justify-content: center;
+      justify-content: flex-start;
       scroll-snap-align: none;
     }
 
     .folder-wrapper {
-      max-width: 148px;
-      margin-inline: auto;
+      width: 100%;
+      max-width: 100%;
+      margin-inline: 0;
+    }
+
+    .folder {
+      width: 100%;
+      max-width: 100%;
     }
   }
 
