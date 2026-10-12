@@ -1059,6 +1059,11 @@ abbr {
     display: none;
   }
 
+  /* Breadcrumbs duplicate the sticky mobile topbar title on mobile screens */
+  .dash-breadcrumbs {
+    display: none !important;
+  }
+
   .workspace-body {
     display: block;
     border-radius: 0;
@@ -1571,7 +1576,7 @@ abbr {
   }
 
   .dash-breadcrumbs {
-    margin-bottom: 0.9rem !important;
+    display: none !important;
   }
 
   .page-header {
