@@ -1,0 +1,65 @@
+:root {
+  /* Keep shared chrome live and clickable; capture only explicitly named elements. */
+  view-transition-name: none;
+  --page-exit-duration: 120ms;
+  --page-enter-duration: 280ms;
+  --page-enter-offset: 8px;
+  --page-transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Astro manages navigation; only the document surface gets a new snapshot. */
+html,
+.workspace-main {
+  scroll-behavior: auto;
+}
+
+/* Focus the new document without drawing a frame around the entire workspace. */
+.workspace-main:focus {
+  outline: none;
+}
+
+/* Navigation stays clickable while a previous snapshot is fading away. */
+::view-transition,
+::view-transition-group(*),
+::view-transition-image-pair(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  pointer-events: none;
+}
+
+::view-transition-group(workspace-document) {
+  animation: none;
+  overflow: clip;
+}
+
+::view-transition-old(workspace-document) {
+  animation: workspace-page-exit var(--page-exit-duration) var(--page-transition-ease) both;
+  transform: translateY(var(--page-exit-offset, 0px));
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(workspace-document) {
+  animation: workspace-page-enter var(--page-enter-duration) var(--page-transition-ease) both;
+  mix-blend-mode: normal;
+}
+
+@keyframes workspace-page-exit {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes workspace-page-enter {
+  from { opacity: 0; transform: translateY(var(--page-enter-offset)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(workspace-document),
+  ::view-transition-new(workspace-document) {
+    animation: none !important;
+  }
+
+  ::view-transition-old(workspace-document) {
+    opacity: 0;
+  }
+}

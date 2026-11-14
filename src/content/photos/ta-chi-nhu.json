@@ -1,0 +1,141 @@
+{
+  "slug": "ta-chi-nhu",
+  "order": 22,
+  "type": "check-in",
+  "location": "Tà Chì Nhù",
+  "name": "Tà Chì Nhù",
+  "country": "Vietnam",
+  "region": "Northern Vietnam",
+  "headline": "Above the clouds, beneath the night sky.",
+  "description": "Photographs from Tà Chì Nhù.",
+  "images": [
+    {
+      "id": "ta-chi-nhu-dsc_4633",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4633.webp",
+      "alt": "Tà Chì Nhù — DSC_4633",
+      "width": 2400,
+      "height": 1600,
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4558",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4558.webp",
+      "alt": "Tà Chì Nhù — DSC_4558",
+      "width": 2400,
+      "height": 1600,
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4593",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4593.webp",
+      "alt": "Tà Chì Nhù — DSC_4593",
+      "width": 2400,
+      "height": 1600,
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4608",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4608.webp",
+      "alt": "Tà Chì Nhù — DSC_4608",
+      "width": 2400,
+      "height": 1600,
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4609",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4609.webp",
+      "alt": "Tà Chì Nhù — DSC_4609",
+      "width": 2400,
+      "height": 1600,
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4619",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4619.webp",
+      "alt": "Tà Chì Nhù — DSC_4619",
+      "width": 2400,
+      "height": 1600,
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4622",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4622.webp",
+      "alt": "Tà Chì Nhù — DSC_4622",
+      "width": 2400,
+      "height": 1600,
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4659",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4659.webp",
+      "alt": "Tà Chì Nhù — DSC_4659",
+      "width": 2400,
+      "height": 1600,
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4661",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4661.webp",
+      "alt": "Tà Chì Nhù — DSC_4661",
+      "width": 2400,
+      "height": 1600,
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4663",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4663.webp",
+      "alt": "Tà Chì Nhù — DSC_4663",
+      "width": 2400,
+      "height": 1600,
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4747",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4747.webp",
+      "alt": "Tà Chì Nhù — DSC_4747",
+      "width": 1600,
+      "height": 2400,
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4795",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4795.webp",
+      "alt": "Tà Chì Nhù — DSC_4795",
+      "width": 2400,
+      "height": 1600,
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "ta-chi-nhu-dsc_4850",
+      "src": "/assets/photos/ta-chi-nhu/DSC_4850.webp",
+      "alt": "Tà Chì Nhù — DSC_4850",
+      "width": 1600,
+      "height": 2400,
+      "order": 13,
+      "isCover": false
+    }
+  ],
+  "published": true,
+  "heroImage": {
+    "id": "ta-chi-nhu-dsc_4633",
+    "src": "/assets/photos/ta-chi-nhu/DSC_4633.webp",
+    "alt": "Tà Chì Nhù — DSC_4633",
+    "width": 2400,
+    "height": 1600,
+    "order": 1,
+    "isCover": true
+  },
+  "seoImage": "/assets/photos/ta-chi-nhu/DSC_4633.webp"
+}

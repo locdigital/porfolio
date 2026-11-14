@@ -1,3 +1,5 @@
+@import "./dropdown.css";
+
 /* ============================================================
    DESIGN SYSTEM V2: NOTION-INSPIRED WORKSPACE
    Phuc Loc Nguyen · loc.digital
@@ -7,10 +9,54 @@
 :root {
   color-scheme: light;
   
-  /* System Typography Stack */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --heading-weight: 600;
+  /* ============================================================
+     GLOBAL TYPOGRAPHY SYSTEM
+     Swiss Minimalism × Editorial Typography × Notion Workspace
+     ============================================================ */
+  --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-family-headline: var(--font-family-base);
+  --font-sans: var(--font-family-base);
+  --font-mono: var(--font-family-mono);
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --heading-weight: var(--font-weight-semibold);
+
+  /* Line Heights */
+  --leading-display: 1.05;
+  --leading-heading: 1.2;
+  --leading-snug: 1.35;
+  --leading-compact: 1.5;
+  --leading-body: 1.65;
+  --leading-loose: 1.75;
+  --leading-none: 1;
+
+  /* Letter Spacing */
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.025em;
+  --tracking-subheading: -0.015em;
+  --tracking-body: 0;
+  --tracking-label: 0.01em;
+  --tracking-caps: 0.04em;
+
+  /* Responsive Fluid Type Scale (Desktop >= 1280px, Tablet 768px-1279px, Mobile < 768px) */
+  --text-display-xl: clamp(2.5rem, 5vw, 4.5rem);      /* 40px (mobile) -> 58px (tablet) -> 72px (desktop) */
+  --text-display: clamp(2.25rem, 4.1vw, 3.625rem);    /* 36px (mobile) -> 47px (tablet) -> 58px (desktop) */
+  --text-h1: clamp(1.8125rem, 3.1vw, 2.6875rem);      /* 29px (mobile) -> 36px (tablet) -> 43px (desktop) */
+  --text-h2: clamp(1.4375rem, 2.15vw, 1.8125rem);    /* 23px (mobile) -> 25px (tablet) -> 29px (desktop) */
+  --text-h3: clamp(1.1875rem, 1.45vw, 1.375rem);     /* 19px (mobile) -> 20px (tablet) -> 22px (desktop) */
+  --text-h4: clamp(1rem, 1.15vw, 1.125rem);           /* 16px (mobile) -> 16px (tablet) -> 18px (desktop) */
+
+  /* Controlled Body / Metadata Scale */
+  --text-body-lg: clamp(0.9375rem, 1.05vw, 1rem);     /* 15px (mobile/tablet) -> 16px (desktop) */
+  --text-body: 0.875rem;     /* 14px (standard body across all viewports) */
+  --text-body-sm: 0.8125rem; /* 13px */
+  --text-caption: 0.75rem;   /* 12px */
+  --text-micro: 0.6875rem;   /* 11px */
 
   /* Color Tokens */
   --dash-outer: #FFFFFF;
@@ -43,7 +89,7 @@
   --dash-danger: #A33131;
   --dash-danger-soft: #FAEEEE;
 
-  /* Spacing Scale */
+  /* 4px-Based Spacing Scale */
   --space-1: 0.25rem;   /* 4px */
   --space-2: 0.5rem;    /* 8px */
   --space-3: 0.75rem;   /* 12px */
@@ -54,6 +100,15 @@
   --space-10: 2.5rem;   /* 40px */
   --space-12: 3rem;     /* 48px */
   --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+
+  /* Semantic Spacing Relationships */
+  --space-heading-to-desc: var(--space-2);
+  --space-heading-to-body: var(--space-4);
+  --space-para-to-para: var(--space-4);
+  --space-section-gap: var(--space-12);
+  --space-label-to-value: var(--space-1);
+  --space-meta-group-gap: var(--space-4);
 
   /* Shape & Elevation Scale */
   --radius-tag: 4px;
@@ -99,8 +154,8 @@ html, body {
   background: var(--dash-outer);
   color: var(--dash-text);
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.625;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -203,16 +258,19 @@ img {
 .mac-dot-maximize { background: #27C93F; border: 1px solid rgba(0, 0, 0, 0.12); }
 
 .desktop-titlebar-title {
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-medium);
   color: var(--dash-muted);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-heading);
 }
 
 .desktop-titlebar-meta {
-  width: 100px;
-  text-align: right;
-  font-size: 0.75rem;
+  min-width: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: var(--text-micro);
   color: var(--dash-muted);
 }
 
@@ -320,43 +378,98 @@ img {
 }
 
 /* ============================================================
-   TYPOGRAPHY SPECIFICATION (NOTION-INSPIRED)
+   TYPOGRAPHY SPECIFICATION (SWISS MINIMALISM × NOTION WORKSPACE)
    ============================================================ */
 
 .page-title,
 h1.page-title,
 h1 {
-  margin: 0 0 var(--space-2);
-  font-size: 2rem !important;               /* 32px */
-  line-height: 1.25 !important;             /* 40px */
+  margin: 0 0 var(--space-heading-to-desc, var(--space-2));
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
   font-weight: var(--heading-weight);
-  letter-spacing: -0.025em;
+  letter-spacing: var(--tracking-heading);
   color: var(--dash-text);
   overflow-wrap: anywhere;
 }
 
 .section-title,
 h2.section-title {
-  margin: 0 0 var(--space-4);
-  font-size: 1.375rem;           /* 22px */
-  line-height: 1.364;            /* 30px */
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  margin: 0 0 var(--space-heading-to-body, var(--space-4));
+  font-size: var(--text-h2);
+  line-height: var(--leading-heading);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--tracking-heading);
   color: var(--dash-text);
 }
 
 .item-title,
 h3.item-title {
   margin: 0 0 var(--space-2);
-  font-size: 1.0625rem;          /* 17px */
-  line-height: 1.4117;           /* 24px */
-  font-weight: 600;
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-subheading);
   color: var(--dash-text);
 }
 
+h4,
+.subitem-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-weight-semibold);
+  color: var(--dash-text);
+}
+
+p {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  margin: 0 0 var(--space-para-to-para, var(--space-4));
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Standalone prose article paragraphs get full 14px reading body */
+.dash-prose p,
+.place-prose p {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  max-width: 68ch;
+}
+
+/* Phrasing elements inherit their parent typography naturally */
+span {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+:is(h1, h2, h3, h4, h5, h6) :is(span, p) {
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
+
+:is(code, kbd, pre) :is(span, p) {
+  font-size: inherit;
+}
+
+.mac-dot,
+.cert-mini-dot,
+.traffic-dot,
+.brand-feed-dot,
+.brand-feed-status-dot,
+.dash-bullet,
+.service-bullet {
+  font-size: inherit;
+}
+
 .page-lead {
-  font-size: 1.0625rem;          /* 17px */
-  line-height: 1.65;             /* 28px */
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   color: var(--dash-muted);
   max-width: 68ch;
   margin: 0 0 var(--space-4);
@@ -370,8 +483,13 @@ h3.item-title {
   width: 100%;
 }
 
-.page-section + .page-section {
+.page-section ~ .page-section {
   margin-top: var(--dash-section-gap, calc(var(--space-12) * 1.1));   /* 52.8px (increased 10% from 48px) */
+}
+
+.page-section--divided {
+  border-top: var(--dash-border-width, 1px) solid var(--dash-border);
+  padding-top: var(--docs-space-divider, 44px);
 }
 
 /* ============================================================
@@ -388,9 +506,9 @@ h3.item-title {
   padding: 7px 14px;
   border: var(--dash-border-width, 0.9px) solid var(--dash-border);
   border-radius: var(--radius-control);
-  font-size: 0.875rem;           /* 14px */
-  line-height: 1.25rem;          /* 20px */
-  font-weight: 500;
+  font-size: var(--text-body);           /* 14px */
+  line-height: var(--leading-compact);
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
   cursor: pointer;
   background: transparent;
@@ -519,8 +637,8 @@ h3.item-title {
 
 .dash-callout-content {
   flex: 1;
-  font-size: 0.875rem;
-  line-height: 1.55;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
   color: var(--dash-text);
 }
 
@@ -529,9 +647,9 @@ h3.item-title {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.75rem;            /* 12px */
-  line-height: 1.125rem;         /* 18px */
-  font-weight: 500;
+  font-size: var(--text-caption);
+  line-height: var(--leading-compact);
+  font-weight: var(--font-weight-medium);
   padding: 2px 7px;
   border-radius: var(--radius-tag); /* 4px */
   background: var(--dash-surface-subtle);
@@ -549,8 +667,8 @@ h3.item-title {
 /* Quiet Filter Button Chips */
 .dash-filter-chip {
   padding: 6px 12px;
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-medium);
   border-radius: var(--radius-control);
   background: var(--dash-surface);
   border: var(--dash-border-width, 0.9px) solid var(--dash-border);
@@ -577,7 +695,7 @@ h3.item-title {
   background: var(--dash-selected);
   color: var(--dash-text);
   border-color: var(--dash-border-strong);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .dash-filter-chip.active:hover {
@@ -603,23 +721,23 @@ h3.item-title {
 }
 
 .dash-metric-value {
-  font-size: 1.75rem;            /* 28px */
-  line-height: 2.25rem;          /* 36px */
-  font-weight: 600;
+  font-size: var(--text-h2);
+  line-height: var(--leading-heading);
+  font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tracking-heading);
   color: var(--dash-text);
 }
 
 .dash-metric-label {
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-medium);
   color: var(--dash-text);
   margin-top: 2px;
 }
 
 .dash-metric-context {
-  font-size: 0.75rem;
+  font-size: var(--text-micro);
   color: var(--dash-muted);
   margin-top: 2px;
 }
@@ -786,16 +904,16 @@ abbr {
 }
 
 .dash-user-name {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--dash-text);
-  line-height: 1.2;
+  line-height: var(--leading-compact);
 }
 
 .dash-user-meta {
-  font-size: 0.75rem;
+  font-size: var(--text-micro);
   color: var(--dash-muted);
-  line-height: 1.2;
+  line-height: var(--leading-compact);
 }
 
 .dash-nav-group {
@@ -803,8 +921,8 @@ abbr {
 }
 
 .dash-nav-heading {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: var(--text-micro);
+  font-weight: var(--font-weight-medium);
   color: var(--dash-muted);
   padding: 0 8px 6px;
   text-transform: none;
@@ -828,8 +946,8 @@ abbr {
   padding: 7px 10px;
   border-radius: var(--radius-control);
   text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 400;
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-regular);
   color: var(--dash-muted);
   transition: background-color var(--duration-fast), color var(--duration-fast);
 }
@@ -883,7 +1001,7 @@ abbr {
 
 .dash-nav-link:hover {
   background: var(--dash-hover);
-  color: var(--dash-text);
+  color: var(--dash-link-hover);
 }
 
 .dash-nav-link.active {
@@ -896,6 +1014,12 @@ abbr {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.dash-nav-icon,
+.dash-social-icon {
+  color: var(--dash-link-hover);
+  flex-shrink: 0;
 }
 
 .dash-nav-tree {
@@ -942,9 +1066,9 @@ abbr {
   padding: 3px 8px;
   border-radius: var(--radius-control);
   color: var(--dash-muted);
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  font-weight: 400;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-compact);
+  font-weight: var(--font-weight-regular);
   text-decoration: none !important;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -954,7 +1078,7 @@ abbr {
 
 .dash-nav-tree-link:hover {
   background: var(--dash-hover);
-  color: var(--dash-text);
+  color: var(--dash-link-hover);
 }
 
 .dash-nav-tree-link.active {
@@ -970,14 +1094,14 @@ abbr {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 0.75rem;
+  font-size: var(--text-micro);
   color: var(--dash-muted);
 }
 
 .dash-sidebar-email {
   color: var(--dash-muted);
   text-decoration: none !important;
-  font-size: 0.8125rem;
+  font-size: var(--text-body-sm);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -986,7 +1110,7 @@ abbr {
 }
 
 .dash-sidebar-email:hover {
-  color: var(--dash-text);
+  color: var(--dash-link-hover);
   text-decoration: underline !important;
 }
 
@@ -1113,8 +1237,8 @@ abbr {
   }
 
   .mobile-page-label {
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
     color: var(--dash-text);
   }
 
@@ -1164,21 +1288,21 @@ abbr {
   .page-title,
   h1.page-title,
   h1 {
-    font-size: 1.625rem !important;
-    line-height: 1.25 !important;
+    font-size: var(--text-h1);
+    line-height: var(--leading-heading);
   }
 
   .section-title,
   h2.section-title {
-    font-size: 1.3125rem;
-    line-height: 1.381;
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
   }
 
   .page-header {
     margin-bottom: calc(var(--space-8) * 1.21);
   }
 
-  .page-section + .page-section {
+  .page-section ~ .page-section {
     margin-top: var(--dash-section-gap-mobile, calc(var(--space-8) * 1.21));
   }
 }
@@ -1439,11 +1563,11 @@ abbr {
 }
 
 .folder-title {
-  font-family: var(--sans);
-  font-size: 0.875rem; /* 14px compact */
-  font-weight: 500;
+  font-family: var(--font-family-base);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--dash-text);
-  line-height: 1.35;
+  line-height: var(--leading-snug);
   transition: color var(--duration-fast, 180ms) ease;
 }
 

@@ -346,9 +346,7 @@ const certificates = [
   </div>
 
   <!-- Certificate Data injected for Client Script -->
-  <script is:inline define:vars={{ certificates }}>
-    window.__CERTIFICATES_DATA__ = certificates;
-  </script>
+  <script type="application/json" id="certificates-data" set:html={JSON.stringify(certificates).replace(/</g, "\\u003c")} />
 </DashboardLayout>
 
 <style>
@@ -413,7 +411,6 @@ const certificates = [
     z-index: 10;
   }
 
-  .folder-wrapper:hover::before,
   .folder-wrapper:focus-visible::before {
     pointer-events: auto;
   }
@@ -470,7 +467,6 @@ const certificates = [
   .cert-secondary-line.line-2 { width: 65%; }
   .cert-secondary-line.line-3 { width: 45%; }
 
-  .folder-wrapper:hover .folder-cert-secondary,
   .folder-wrapper:focus-visible .folder-cert-secondary {
     transform: translateX(-50%) translateY(-30px) translateX(10px) rotate(5deg);
     opacity: 0.76;
@@ -508,7 +504,6 @@ const certificates = [
   }
 
   /* Coursera Card Hover Animation: Slides gracefully out of folder! */
-  .folder-wrapper:hover .folder-cert-card,
   .folder-wrapper:focus-visible .folder-cert-card {
     transform: translateX(-50%) translateY(-46px) translateX(-4px) rotate(-3deg);
     box-shadow:
@@ -589,9 +584,9 @@ const certificates = [
 
   .course-logo-name {
     max-width: 100%;
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 600;
+    font-family: var(--font-family-base);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
     line-height: 1.08;
     color: #0056d2;
     letter-spacing: -0.04em;
@@ -611,15 +606,11 @@ const certificates = [
   }
 
   .folder-caption-text {
-    font-size: 0.8125rem;
-    font-weight: 500;
-    line-height: 1.35;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-snug);
     color: var(--dash-text);
     transition: color 150ms ease;
-  }
-
-  .folder-wrapper:hover .folder-caption-text {
-    color: var(--dash-accent);
   }
 
   /* ── Responsive Breakpoints ── */
@@ -641,11 +632,11 @@ const certificates = [
       overscroll-behavior-x: contain;
       touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
       gap: 18px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 52px;
       padding-bottom: 24px;
       scrollbar-width: none;
@@ -665,9 +656,6 @@ const certificates = [
 
   @media (max-width: 359px) {
     .folder-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
       gap: 14px;
     }
 
@@ -785,13 +773,13 @@ const certificates = [
     transition: opacity 120ms ease;
   }
 
-  .modal-traffic-lights:hover .dot-icon {
+  .traffic-dot:focus-visible .dot-icon {
     opacity: 1;
   }
 
   .modal-titlebar-title {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
     color: var(--dash-muted);
   }
 
@@ -815,35 +803,36 @@ const certificates = [
   }
 
   .modal-pill-tag {
-    font-size: 0.6875rem;
-    font-weight: 600;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-semibold);
     padding: 2px 8px;
     border-radius: 999px;
     background: #0056D2;
     color: #ffffff;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-label);
   }
 
   .modal-verified-badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 0.6875rem;
-    font-weight: 600;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-semibold);
     color: var(--dash-success);
   }
 
   .modal-main-title {
     margin: 0 0 4px;
-    font-size: 1.25rem;
-    line-height: 1.3;
-    font-weight: 700;
-    color: var(--dash-text);
+    font-size: var(--text-h4);
+    line-height: var(--leading-heading);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-subheading);
+    color: var(--color-jet);
   }
 
   .modal-issuer-text {
     margin: 0;
-    font-size: 0.8125rem;
+    font-size: var(--text-caption);
     color: var(--dash-muted);
   }
 
@@ -855,17 +844,17 @@ const certificates = [
 
   .modal-subhead {
     margin: 0 0 6px;
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
     color: var(--dash-text);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-caps);
   }
 
   .modal-desc-text {
     margin: 0;
-    font-size: 0.8125rem;
-    line-height: 1.55;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
     color: var(--dash-muted);
   }
 
@@ -880,7 +869,7 @@ const certificates = [
     background: var(--dash-surface);
     border: var(--dash-border-width, 0.9px) solid var(--dash-border);
     border-radius: 6px;
-    font-size: 0.75rem;
+    font-size: var(--text-micro);
     color: var(--dash-text);
   }
 
@@ -902,15 +891,15 @@ const certificates = [
   }
 
   .info-label {
-    font-size: 0.6875rem;
+    font-size: var(--text-micro);
     color: var(--dash-muted);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-caps);
   }
 
   .info-val {
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
     color: var(--dash-text);
   }
 
@@ -919,29 +908,56 @@ const certificates = [
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 10px 14px;
-    background: var(--dash-accent);
+    padding: 10px 18px;
+    min-height: 40px;
+    background: var(--color-jet);
     color: #ffffff !important;
-    border-radius: var(--radius-control, 6px);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    border-radius: 9999px;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
     text-decoration: none;
-    transition: opacity 150ms ease;
-  }
-
-  .modal-verify-btn:hover {
-    opacity: 0.92;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   @media (max-width: 580px) {
+    .cert-modal-root {
+      padding: 12px;
+    }
+
+    .cert-modal-window {
+      max-height: calc(100dvh - 24px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-content {
+      padding: 16px;
+      overflow-y: auto;
+    }
+
     .modal-body-grid {
       grid-template-columns: 1fr;
+      gap: 16px;
     }
   }
 </style>
 
-<script is:inline>
-  function setupCertificateModal() {
+<script>
+  import { onPageLoad } from "../scripts/page-lifecycle";
+
+  interface CertificateData {
+    fullName: string;
+    issuer: string;
+    issued: string;
+    desc: string;
+    tag: string;
+    credentialId: string;
+    partner?: string;
+    credential: string;
+    skills: string[];
+  }
+
+  onPageLoad((signal) => {
     const modalRoot = document.getElementById("cert-modal-root");
     const backdrop = document.getElementById("cert-modal-backdrop");
     const closeBtn = document.getElementById("cert-modal-close-dot");
@@ -955,12 +971,13 @@ const certificates = [
     const modalYear = document.getElementById("cert-modal-year");
     const modalPlatform = document.getElementById("cert-modal-platform");
     const modalSkills = document.getElementById("cert-modal-skills");
-    const modalLink = document.getElementById("cert-modal-link");
+    const modalLink = document.querySelector<HTMLAnchorElement>("#cert-modal-link");
     const modalWindowTitle = document.getElementById("cert-modal-window-title");
 
-    const certData = window.__CERTIFICATES_DATA__ || [];
+    if (!modalRoot) return;
+    const certData: CertificateData[] = JSON.parse(document.getElementById("certificates-data")?.textContent || "[]");
 
-    function openModal(cert) {
+    function openModal(cert: CertificateData) {
       if (!cert || !modalRoot) return;
 
       if (modalTitle) modalTitle.textContent = cert.fullName;
@@ -1004,22 +1021,18 @@ const certificates = [
         const index = parseInt(btn.getAttribute("data-cert-index") || "0", 10);
         const cert = certData[index];
         if (cert) openModal(cert);
-      });
+      }, { signal });
     });
 
-    closeBtn?.addEventListener("click", closeModal);
-    minimizeBtn?.addEventListener("click", closeModal);
-    backdrop?.addEventListener("click", closeModal);
+    closeBtn?.addEventListener("click", closeModal, { signal });
+    minimizeBtn?.addEventListener("click", closeModal, { signal });
+    backdrop?.addEventListener("click", closeModal, { signal });
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && modalRoot?.classList.contains("is-open")) {
         closeModal();
       }
-    });
-  }
-
-  document.addEventListener("astro:page-load", setupCertificateModal);
-  if (document.readyState === "complete" || document.readyState === "interactive") {
-    setupCertificateModal();
-  }
+    }, { signal });
+    signal.addEventListener("abort", closeModal, { once: true });
+  });
 </script>

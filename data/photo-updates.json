@@ -1,0 +1,102 @@
+{
+  "bali": {
+    "updatedAt": "2026-09-27T08:46:19.796Z",
+    "contentHash": "078b3bb7e8b5256ac959e515b67d42c1d4d925a1eabc4349bbb1426ec21d3d5b"
+  },
+  "bu-gia-map": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "97c594239b301d8990d84a59f3e6416521d418945f41b9fc6555f2b110a9156a"
+  },
+  "da-lat": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "6927c157edbbd0c3c87376b9746ca630facd0f25eb3bd9974aac890f0a7eff1b"
+  },
+  "da-nang": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "93500f5eed422d7199b86dd18f35ad80f67b66248725cd6ed170ac7978fb6dbb"
+  },
+  "ha-giang": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "06b921550afcfd49262deb05e1120f61bb3ee4324e330391d8bc5a7420b652e3"
+  },
+  "ha-long-bay": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "498933117e4badd44e5977afaa053ef9ab13591af5da3faff09a500949bcdd16"
+  },
+  "ha-noi": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "8d3640d75b4c5aea7f769933206c54707406ad25519db92136ac6f04de27e223"
+  },
+  "hoi-an": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "935e8e366bb5c6b257d4712b79558859c84fedc7c05c584b1e4101b8fd3596eb"
+  },
+  "hue": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "d0803655a102374cd9f7fdee3d35fb82e1911e30a84d6e760520175264190782"
+  },
+  "kien-giang": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "cd329b3a101dbb355f3a8e936ceb4ef96f04d4d369ee4770aa37d36025bbc4a5"
+  },
+  "kuala-lumpur": {
+    "updatedAt": "2026-09-27T08:46:19.797Z",
+    "contentHash": "6902c3e783c8551556b7b52da5256ef093d73cbb85825cbe88d396610e40a594"
+  },
+  "malacca": {
+    "updatedAt": "2026-09-27T08:46:19.797Z",
+    "contentHash": "58dc1052ca3b79a525cdda9e7de3c66c076ee8b55069613bc61a4e85d23f2c6a"
+  },
+  "my-tho": {
+    "updatedAt": "2026-09-21T10:27:44.436Z",
+    "contentHash": "5cc8c11fa71b30ec697cf0fc78fe0f452881a9bca822beb0422e344f5291157b"
+  },
+  "nha-trang": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "0683f741d77e788954edc767948f9c8037be70864ec2c6c66851b1526aac80be"
+  },
+  "phu-quy": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "d52d357cf414e7ddf86dc4eaa8af785332fe52f0d734a1ae3d1b2fee11702442"
+  },
+  "phu-yen": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "332d4c74c079adf50564ec7e9066598a6a6e1f1f80fa33f2f41875d451fa4415"
+  },
+  "quy-nhon": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "4d345b0132189c1e3dcaa4ce2c5e3a4dd836b41ca111117f96bc1b7a4adf6905"
+  },
+  "sa-pa": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "33a16f806b63347727a2f65fc51e0caa2b8edf5940ba4f56cf18bde7f87f58e4"
+  },
+  "sai-gon": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "1bc683c64034d599301cadf0496231b930000e78e5afa77b36c5cd8b63f49796"
+  },
+  "singapore": {
+    "updatedAt": "2026-09-27T08:46:19.797Z",
+    "contentHash": "a5c208512e787cb1bb878d7a17f15763a8702b0166b8293003a8fcbd3b4cc266"
+  },
+  "ta-chi-nhu": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "86ae3a0d5953a94a00e622952b15f9597d40ed5ee977b167d510b8ceeeb1d237"
+  },
+  "tam-coc-hoa-lu": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "ca7cb8d9fbac74d1451d4582b9d42790267528f2d16b0a10ba4a803fbfdd5eb5"
+  },
+  "thai-lan": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "0c8bc15d49afa27e4004e36c173023f7c0c45d91213f18d6e89b4abc97c10c35"
+  },
+  "thung-ui": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "88506ec70b7b6520fca30892f56cee308c5920896629ea62f176eeeeae063d44"
+  },
+  "trang-an": {
+    "updatedAt": "2026-11-11T13:44:40.327Z",
+    "contentHash": "27c83f67f248af6c56e0e21679d656f79acf8f1e799d83d12a575fe1afeb9c4f"
+  }
+}

@@ -1,35 +1,5 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { getPhotoLocations } from "../lib/cms";
-import { 
-  Mail,
-} from "../components/icons/majesticons";
-
-const photoLocations = await getPhotoLocations();
-
-// 4 Selected Impact Metrics with verified context
-const notableResults = [
-  {
-    metric: "1B+ VND/mo",
-    label: "TikTok Shop Revenue Scaled",
-    context: "ROAS > 10"
-  },
-  {
-    metric: "5,000+",
-    label: "Bookings & 2k+ Leads",
-    context: "4M+ impressions"
-  },
-  {
-    metric: "2.5M MAU",
-    label: "Monthly Active Users",
-    context: "10x organic growth"
-  },
-  {
-    metric: "4,000,000+",
-    label: "Community Members Reached",
-    context: "Zero ad spend"
-  }
-];
 
 // Experience summary items:
 const experienceHighlights = [
@@ -86,20 +56,6 @@ const servicesPreview = [
     summary: "Make/Zapier CRM integrations, automated lead routing, and programmatic content engines."
   }
 ];
-
-// 5 Featured Destinations for overview with enhanced fanned photo cards
-const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
-  const images = loc.images || [];
-  const heroPhoto = loc.heroImage?.src || images[0]?.src || "";
-  const leftPhoto = images[1]?.src || heroPhoto;
-  const rightPhoto = images[2]?.src || images[0]?.src || heroPhoto;
-  return {
-    ...loc,
-    heroPhoto,
-    leftPhoto,
-    rightPhoto,
-  };
-});
 ---
 
 <DashboardLayout 
@@ -113,38 +69,18 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
        ============================================================ -->
   <header class="page-header">
     <div style="max-width: 76ch;">
-      <h1 class="page-title" style="margin-bottom: 4px;">Phuc Loc Nguyen</h1>
-      <div style="font-size: 0.9375rem; color: var(--dash-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-        <span>Senior Performance Marketing Executive</span>
-        <span style="opacity: 0.4;">·</span>
-        <span>Saigon, Vietnam</span>
+      <h1 class="page-title" style="margin-bottom: var(--space-1);">Phuc Loc Nguyen</h1>
+      <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); margin-bottom: var(--space-3); display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <span style="font-weight: 500;">Senior Performance Marketing Executive</span>
       </div>
-      <p style="font-size: 1rem; line-height: 1.625; color: var(--dash-text); max-width: 68ch; margin: 0 0 16px;">
+      <p class="page-lead" style="margin: 0;">
         I design and scale full-funnel digital acquisition engines—connecting paid media, TikTok Shop GMV acceleration, attribution modeling, and fast web experiences to turn marketing investments into sustainable revenue.
       </p>
-
     </div>
   </header>
 
   <!-- ============================================================
-       2. SELECTED IMPACT (Quiet horizontal group)
-       ============================================================ -->
-  <section class="page-section" aria-label="Selected commercial impact">
-    <div class="dash-metric-group">
-      {notableResults.map((item) => (
-        <div class="dash-metric-item">
-          <span class="dash-metric-value">{item.metric}</span>
-          <span class="dash-metric-label">{item.label}</span>
-          <span class="dash-metric-context">{item.context}</span>
-        </div>
-      ))}
-    </div>
-  </section>
-
-
-
-  <!-- ============================================================
-       4. ABOUT (Concise Company / Role / Date Rows)
+       ABOUT (Concise Company / Role / Date Rows)
        ============================================================ -->
   <section class="page-section home-experience-section" aria-labelledby="heading-experience">
     <div class="section-header-row">
@@ -154,22 +90,22 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
       </a>
     </div>
 
-    <div class="home-experience-list" style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);">
+    <div class="home-experience-list" style="border-top: var(--dash-border-width, 1px) solid var(--dash-border);">
       {experienceHighlights.map((exp) => (
-        <div class="dash-row">
-          <div style="flex: 1; min-width: 200px;">
-            <div style="font-weight: 600; font-size: 0.9375rem; color: var(--dash-text);">
+        <div class="dash-row" style="display: block;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+            <h3 class="item-title" style="font-size: var(--text-body); line-height: var(--leading-compact); margin: 0; color: #0075de;">
               {exp.company}
-            </div>
-            <div style="font-size: 0.8125rem; color: var(--dash-muted); margin-top: 2px;">
-              {exp.role}
-            </div>
-            <div style="font-size: 0.8125rem; color: var(--dash-muted); margin-top: 4px; line-height: 1.5;">
-              {exp.focus}
-            </div>
+            </h3>
+            <span style="font-size: var(--text-body-sm); font-weight: 500; line-height: var(--leading-compact); color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums; flex-shrink: 0;">
+              {exp.period}
+            </span>
           </div>
-          <div style="font-size: 0.8125rem; color: var(--dash-muted); white-space: nowrap;">
-            {exp.period}
+          <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); font-weight: 500; color: #454545; margin-top: 2px;">
+            {exp.role}
+          </div>
+          <div style="font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-muted); margin-top: 4px;">
+            {exp.focus}
           </div>
         </div>
       ))}
@@ -201,105 +137,6 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
     </div>
   </section>
 
-  <!-- ============================================================
-       6. PHOTOGRAPHY SNAPSHOT (4 Destination Previews)
-       ============================================================ -->
-  <section class="page-section" aria-labelledby="heading-photos">
-    <div class="section-header-row">
-      <h2 id="heading-photos" class="section-title" style="margin: 0;">Photography</h2>
-      <a href="/photos" class="dash-link section-header-link">
-        View 17 travel galleries →
-      </a>
-    </div>
-
-    <div class="home-photo-grid">
-      {featuredPhotos.map((loc) => (
-        <div class="folder-item">
-          <a 
-            href={`/photos/${loc.slug}`} 
-            class="folder-wrapper"
-            aria-label={`Open photo folder: ${loc.name || loc.location}`}
-          >
-            <!-- 3D MANILA FOLDER -->
-            <div class="folder" data-folder-surface>
-              <!-- 1. BACK FOLDER FLAP (Behind cards) -->
-              <div class="folder-back" aria-hidden="true"></div>
-
-              <!-- 2. FAN OF 3 PHOTO CARDS (Inside folder pocket) -->
-              {loc.heroPhoto && (
-                <div class="folder-cards" aria-hidden="true">
-                  <div class="folder-card folder-card--left">
-                    <img
-                      src={loc.leftPhoto}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </div>
-                  <div class="folder-card folder-card--right">
-                    <img
-                      src={loc.rightPhoto}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </div>
-                  <div class="folder-card folder-card--center">
-                    <img
-                      src={loc.heroPhoto}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <!-- 3. FRONT FOLDER FLAP (In front of cards) -->
-              <div class="folder-front" aria-hidden="true"></div>
-            </div>
-
-            <!-- LOCATION NAME -->
-            <div class="folder-caption">
-              <span class="folder-title">{loc.name || loc.location}</span>
-            </div>
-
-          </a>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- ============================================================
-       7. CONTACT CALLOUT (Restrained Closing Section)
-       ============================================================ -->
-  <section class="page-section" aria-label="Contact and collaboration">
-    <div class="dash-callout">
-      <div class="dash-callout-icon">
-        <Mail size={18} aria-hidden="true" />
-      </div>
-      <div class="dash-callout-content">
-        <div style="font-weight: 600; color: var(--dash-text); margin-bottom: 4px;">
-          Open for selective advisory & growth retainers
-        </div>
-        <p style="margin: 0 0 10px; color: var(--dash-muted);">
-          Currently accepting new commercial discussions for performance media, e-commerce GMV acceleration, and full-funnel digital architecture.
-        </p>
-        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <a href="mailto:hi@loc.digital" class="dash-button dash-button--primary" style="min-height: 32px; padding: 4px 12px; font-size: 0.8125rem;">
-            hi@loc.digital
-          </a>
-          <a href="/contact" class="dash-button dash-button--secondary" style="min-height: 32px; padding: 4px 12px; font-size: 0.8125rem;">
-            Direct contact channels →
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </DashboardLayout>
 
 <style>
@@ -317,7 +154,7 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
   .section-header-link {
     display: inline-flex;
     align-items: center;
-    font-size: 0.8125rem;
+    font-size: var(--text-body-sm);
     white-space: nowrap;
     flex-shrink: 0;
     line-height: 1;
@@ -349,9 +186,9 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
 
   @media (max-width: 840px) and (min-width: 769px) {
     .home-photo-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       grid-column-gap: 16px;
-      grid-row-gap: 24px;
+      grid-row-gap: 28px;
     }
   }
 
@@ -360,16 +197,17 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
       display: flex;
       flex-wrap: nowrap;
       overflow-x: auto;
-      overflow-y: hidden;
+      overflow-y: visible;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
       gap: 16px;
-      margin-inline: -8px;
-      padding-inline: 8px;
-      padding-top: 10px;
-      padding-bottom: 20px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
+      padding-top: 56px;
+      padding-bottom: 16px;
+      margin-top: -36px;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -379,93 +217,61 @@ const featuredPhotos = photoLocations.slice(0, 5).map((loc) => {
     }
 
     .home-photo-grid .folder-item {
-      flex: 0 0 clamp(140px, 42vw, 160px);
-      width: clamp(140px, 42vw, 160px);
+      flex: 0 0 clamp(136px, 38vw, 156px);
+      width: clamp(136px, 38vw, 156px);
       scroll-snap-align: start;
-    }
-  }
-
-  @media (max-width: 359px) {
-    .home-photo-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
-    }
-
-    .home-photo-grid .folder-item {
-      flex: 0 0 136px;
-      width: 136px;
     }
   }
 
   /* Capabilities Section */
   .capabilities-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--docs-space-grid-gap, 16px);
   }
 
   .capability-card {
-    padding: 16px;
+    padding: var(--docs-space-card-padding, 24px);
     display: flex;
     flex-direction: column;
   }
 
   .capability-title {
-    font-size: 0.9375rem;
-    font-weight: 600;
+    font-size: var(--text-body);
+    line-height: var(--leading-snug);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-subheading);
     color: var(--dash-text);
     margin: 0 0 6px;
   }
 
   .capability-desc {
-    font-size: 0.8125rem;
-    line-height: 1.55;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
     color: var(--dash-muted);
     margin: 0;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 860px) {
     .capabilities-grid {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
-      -webkit-overflow-scrolling: touch;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      margin-inline: -8px;
-      padding-inline: 8px;
-      padding-top: 2px;
-      padding-bottom: 8px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    .capabilities-grid::-webkit-scrollbar {
-      display: none;
-    }
-
-    .capability-card {
-      flex: 0 0 min(340px, calc(100vw - 16px));
-      width: min(340px, calc(100vw - 16px));
-      scroll-snap-align: start;
     }
   }
 
-  @media (max-width: 359px) {
+  @media (max-width: 560px) {
     .capabilities-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
 
     .capability-card {
-      flex: 0 0 250px;
-      width: 250px;
+      padding: 14px 16px;
     }
   }
 
 </style>
+
+<script>
+  import "../scripts/folder-previews";
+</script>

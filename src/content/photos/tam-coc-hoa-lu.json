@@ -1,0 +1,222 @@
+{
+  "slug": "tam-coc-hoa-lu",
+  "order": 23,
+  "type": "check-in",
+  "location": "Tam Cốc / Hoa Lư",
+  "name": "Tam Cốc / Hoa Lư",
+  "country": "Vietnam",
+  "region": "Northern Vietnam",
+  "headline": "Limestone landscapes and lights on the water.",
+  "description": "Photographs from Tam Cốc and Hoa Lư.",
+  "images": [
+    {
+      "id": "tam-coc-hoa-lu-dsc_3923",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_3923.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_3923",
+      "width": 1600,
+      "height": 2400,
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_3952",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_3952.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_3952",
+      "width": 1600,
+      "height": 2400,
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4011",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4011.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4011",
+      "width": 1600,
+      "height": 2400,
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4029",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4029.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4029",
+      "width": 2400,
+      "height": 1600,
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4048",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4048.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4048",
+      "width": 1600,
+      "height": 2400,
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4080",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4080.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4080",
+      "width": 2400,
+      "height": 1600,
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4129",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4129.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4129",
+      "width": 2400,
+      "height": 1600,
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4201",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4201.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4201",
+      "width": 1600,
+      "height": 2400,
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4211",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4211.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4211",
+      "width": 1600,
+      "height": 2400,
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4225",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4225.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4225",
+      "width": 2400,
+      "height": 1600,
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4254",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4254.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4254",
+      "width": 2400,
+      "height": 1600,
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4256",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4256.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4256",
+      "width": 2400,
+      "height": 1600,
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4259",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4259.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4259",
+      "width": 2400,
+      "height": 1600,
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4271",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4271.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4271",
+      "width": 1600,
+      "height": 2400,
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4284",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4284.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4284",
+      "width": 2400,
+      "height": 1600,
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4291",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4291.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4291",
+      "width": 2400,
+      "height": 1600,
+      "order": 16,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4296",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4296.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4296",
+      "width": 1600,
+      "height": 2400,
+      "order": 17,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4300",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4300.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4300",
+      "width": 1600,
+      "height": 2400,
+      "order": 18,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4307",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4307.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4307",
+      "width": 2400,
+      "height": 1600,
+      "order": 19,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4310",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4310.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4310",
+      "width": 2400,
+      "height": 1600,
+      "order": 20,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4315",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4315.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4315",
+      "width": 1600,
+      "height": 2400,
+      "order": 21,
+      "isCover": false
+    },
+    {
+      "id": "tam-coc-hoa-lu-dsc_4320",
+      "src": "/assets/photos/tam-coc-hoa-lu/DSC_4320.webp",
+      "alt": "Tam Cốc / Hoa Lư — DSC_4320",
+      "width": 1600,
+      "height": 2400,
+      "order": 22,
+      "isCover": false
+    }
+  ],
+  "published": true,
+  "heroImage": {
+    "id": "tam-coc-hoa-lu-dsc_3923",
+    "src": "/assets/photos/tam-coc-hoa-lu/DSC_3923.webp",
+    "alt": "Tam Cốc / Hoa Lư — DSC_3923",
+    "width": 1600,
+    "height": 2400,
+    "order": 1,
+    "isCover": true
+  },
+  "seoImage": "/assets/photos/tam-coc-hoa-lu/DSC_3923.webp"
+}

@@ -8,6 +8,12 @@ import {
 } from "../components/icons/majesticons";
 
 export const prerender = true;
+
+const homePath = "/";
+const workPath = "/work";
+const contactPath = "/contact";
+const photosPath = "/photos";
+const servicesPath = "/services";
 ---
 
 <DashboardLayout
@@ -35,15 +41,15 @@ export const prerender = true;
 
     <!-- Quick Action Buttons -->
     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: var(--space-10);">
-      <a href="/" class="dash-button dash-button--primary">
+      <a href={homePath} class="dash-button dash-button--primary" data-astro-prefetch>
         <Home size={15} aria-hidden="true" />
         <span>Return to overview</span>
       </a>
-      <a href="/work" class="dash-button dash-button--secondary">
+      <a href={workPath} class="dash-button dash-button--secondary" data-astro-prefetch>
         <Briefcase size={15} aria-hidden="true" />
         <span>Explore work</span>
       </a>
-      <a href="/contact" class="dash-button dash-button--ghost">
+      <a href={contactPath} class="dash-button dash-button--ghost" data-astro-prefetch>
         <ContactIcon size={15} aria-hidden="true" />
         <span>Contact me</span>
       </a>
@@ -51,32 +57,26 @@ export const prerender = true;
 
     <!-- Suggested Workspace Sections -->
     <div class="dash-card" style="padding: 16px;">
-      <h2 class="item-title" style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--dash-muted); margin-bottom: 12px;">
+      <h2 class="item-title" style="font-size: var(--text-micro); text-transform: uppercase; letter-spacing: var(--tracking-caps); color: var(--dash-muted); margin-bottom: 12px;">
         Suggested documents
       </h2>
       <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
         <li>
-          <a href="/work" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+          <a href={workPath} class="dash-link" style="font-size: var(--text-body-sm); font-weight: 500; display: inline-flex; align-items: center; gap: 4px;" data-astro-prefetch>
             <span>Work (6 deep case studies)</span>
-            <ArrowRight size={12} aria-hidden="true" />
+            <ArrowRight size={13} aria-hidden="true" />
           </a>
         </li>
         <li>
-          <a href="/about" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
-            <span>About & Credentials</span>
-            <ArrowRight size={12} aria-hidden="true" />
+          <a href={servicesPath} class="dash-link" style="font-size: var(--text-body-sm); font-weight: 500; display: inline-flex; align-items: center; gap: 4px;" data-astro-prefetch>
+            <span>Services & Retainers (6 modular capabilities)</span>
+            <ArrowRight size={13} aria-hidden="true" />
           </a>
         </li>
         <li>
-          <a href="/services" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
-            <span>Marketing Advisory & Retainer Packages</span>
-            <ArrowRight size={12} aria-hidden="true" />
-          </a>
-        </li>
-        <li>
-          <a href="/photos" class="dash-link" style="font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
-            <span>Photo Essays & Travel Galleries</span>
-            <ArrowRight size={12} aria-hidden="true" />
+          <a href={photosPath} class="dash-link" style="font-size: var(--text-body-sm); font-weight: 500; display: inline-flex; align-items: center; gap: 4px;" data-astro-prefetch>
+            <span>Photography (17 travel galleries)</span>
+            <ArrowRight size={13} aria-hidden="true" />
           </a>
         </li>
       </ul>

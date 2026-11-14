@@ -1,0 +1,237 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import { ArrowRight } from "../icons/majesticons";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
+import { getWritingEntries, writingDate, writingReadTime } from "../../lib/writing";
+
+interface Props { category?: string; }
+const { category } = Astro.props;
+
+const allEntries = await getWritingEntries();
+const entries = category ? allEntries.filter(entry => entry.data.category === category) : allEntries;
+const samplePreview = entries.length > 0 && entries.every(entry => entry.data.sample);
+
+const basePath = "/writing";
+const homePath = "/";
+---
+
+<DashboardLayout
+  title={category ? `${category} — Writing — Phuc Loc Nguyen` : "Writing — Phuc Loc Nguyen"}
+  pageTitle="Writing"
+  description={category ? `Articles about ${category} by Phuc Loc Nguyen.` : "Articles, notes, and ideas by Phuc Loc Nguyen."}
+  breadcrumbs={[
+    { label: "Personal", href: homePath },
+    { label: "Writing", href: category ? basePath : undefined },
+    ...(category ? [{ label: category }] : [])
+  ]}
+  maxWidthVariant="default"
+  currentPath={Astro.url.pathname}
+>
+  <header class="page-header">
+    <h1 class="page-title">{category || "Writing"}</h1>
+    <p class="page-lead">
+      {category ? `${entries.length} ${entries.length === 1 ? "article" : "articles"} in this topic.` : "Notes on marketing, measurement, and building for the web."}
+    </p>
+    {samplePreview && (
+      <p class="writing-preview-note">
+        {category ? "Sample content, created to preview the writing layout." : "Three sample articles, created to preview the writing layout."}
+      </p>
+    )}
+  </header>
+
+  {entries.length > 0 ? (
+    <section class="writing-list" aria-label="Articles">
+      {entries.map((entry, index) => {
+        const isLinkable = entry.data.linkable !== false;
+        return (
+        <article class:list={["writing-entry", { "writing-entry--with-image": Boolean(entry.data.coverImage) }]}>
+          {entry.data.coverImage && (
+            isLinkable ? (
+              <a href={`${basePath}/${entry.slug}`} class="writing-thumbnail" tabindex="-1" aria-hidden="true" data-astro-prefetch>
+                <ResponsiveImage
+                  src={entry.data.coverImage.src}
+                  alt={entry.data.coverImage.alt}
+                  width={400}
+                  height={250}
+                  widths={[240, 400, 600, 800]}
+                  sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1100px) 180px, 200px"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchpriority={index === 0 ? "high" : "auto"}
+                />
+              </a>
+            ) : (
+              <div class="writing-thumbnail" aria-hidden="true">
+                <ResponsiveImage
+                  src={entry.data.coverImage.src}
+                  alt={entry.data.coverImage.alt}
+                  width={400}
+                  height={250}
+                  widths={[240, 400, 600, 800]}
+                  sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1100px) 180px, 200px"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchpriority={index === 0 ? "high" : "auto"}
+                />
+              </div>
+            )
+          )}
+          <div class="writing-entry-content">
+            <div class="writing-entry-meta">
+              <span class="writing-date">
+                <time datetime={entry.data.date.toISOString()}>{writingDate(entry.data.date)}</time>
+                {isLinkable && (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    {writingReadTime(entry)} min read
+                  </>
+                )}
+              </span>
+            </div>
+            <div class="writing-entry-body">
+              <div>
+                <h2>
+                  {isLinkable ? (
+                    <a href={`${basePath}/${entry.slug}`} class="writing-entry-link" data-astro-prefetch>
+                      {entry.data.title}
+                    </a>
+                  ) : (
+                    <span class="writing-entry-link">{entry.data.title}</span>
+                  )}
+                </h2>
+                <p>{entry.data.description}</p>
+              </div>
+              {isLinkable && (
+                <a href={`${basePath}/${entry.slug}`} class="writing-open" aria-label={`Read ${entry.data.title}`} data-astro-prefetch>
+                  <ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" className="writing-entry-arrow" />
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+        );
+      })}
+    </section>
+  ) : (
+    <section class="writing-empty dash-prose" aria-labelledby="writing-empty-title">
+      <h2 id="writing-empty-title" class="item-title">No posts yet.</h2>
+      <p>There aren’t any published articles here yet.</p>
+      <p>
+        In the meantime, explore <a href="/work">selected work</a> or browse the <a href="/photos">photography archive</a>.
+      </p>
+    </section>
+  )}
+</DashboardLayout>
+
+<style>
+  .writing-preview-note {
+    margin: 12px 0 0;
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+  }
+
+  .writing-entry {
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    padding: 24px 0;
+  }
+
+  .writing-entry:last-child {
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .writing-entry--with-image {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+  }
+
+  .writing-entry-content { min-width: 0; }
+
+  .writing-thumbnail {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-ivory);
+    text-decoration: none !important;
+  }
+
+  .writing-thumbnail :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .writing-entry-link {
+    color: var(--dash-text);
+    text-decoration: none !important;
+  }
+
+  .writing-entry-meta,
+  .writing-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
+  }
+
+  .writing-entry-meta {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .writing-date {
+    color: var(--dash-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .writing-entry-body {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .writing-entry-body h2 {
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-subheading);
+    margin: 0 0 4px;
+  }
+
+  .writing-entry-body p {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted);
+    margin: 0;
+  }
+
+  .writing-open {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dash-muted);
+    flex-shrink: 0;
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .writing-entry:hover .writing-open {
+    color: var(--dash-accent);
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 640px) {
+    .writing-entry--with-image {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .writing-thumbnail {
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

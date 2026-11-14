@@ -5,7 +5,6 @@ import BeforeAfterPerformance from "../../components/ui/BeforeAfterPerformance.a
 import ShowcasePassGate from "../../components/ui/ShowcasePassGate.astro";
 import BrandPositioningFeed from "../../components/ui/BrandPositioningFeed.astro";
 import { 
-  ArrowLeft, 
   ExternalLink
 } from "../../components/icons/majesticons";
 
@@ -45,15 +44,15 @@ if (project.slug === "playah") {
     heading: "From Static Brand Awareness to +10x TikTok Shop GMV",
     description: "Multi-layered comparison: scaling from tens of millions to >1B VND monthly revenue while maintaining ROAS > 10.",
     categoryLabel: "TikTok Shop Acceleration",
-    beforeLabel: "Baseline (Th07/2025)",
-    afterLabel: "Scaled Engine (Th08/2025)",
+    beforeLabel: "Baseline (Jul 2025)",
+    afterLabel: "Scaled Engine (Aug 2025)",
     beforeImage: {
       src: "/images/playah/playah-before.png",
-      alt: "PlayAh! Doanh thu & GMV TikTok Shop trước tối ưu (Tháng 7/2025 — 125 triệu)",
+      alt: "PlayAh! TikTok Shop Revenue & GMV baseline before optimization (July 2025 — 125M VND)",
     },
     afterImage: {
       src: "/images/playah/playah-after.png",
-      alt: "PlayAh! Doanh thu & GMV TikTok Shop sau tối ưu (Tháng 8/2025 — 1.46 tỷ)",
+      alt: "PlayAh! TikTok Shop Revenue & GMV after optimization (August 2025 — 1.46B VND)",
     },
     beforePanel: {
       eyebrow: "Initial Phase",
@@ -94,18 +93,9 @@ if (project.slug === "playah") {
   ]}
   maxWidthVariant="default"
 >
-  <!-- Back to work & External link bar -->
-  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6); font-size: 0.8125rem;">
-    <a 
-      href="/work" 
-      class="dash-link"
-      style="display: inline-flex; align-items: center; gap: 4px; color: var(--dash-muted);"
-    >
-      <ArrowLeft size={14} aria-hidden="true" />
-      <span>All case studies</span>
-    </a>
-
-    {project.link && (
+  <!-- External link bar (if available) -->
+  {project.link && (
+    <div style="display: flex; justify-content: flex-end; margin-bottom: var(--space-6); font-size: var(--text-body-sm);">
       <a 
         href={project.link} 
         target="_blank" 
@@ -116,13 +106,13 @@ if (project.slug === "playah") {
         <span>{project.linkLabel || "Live project"}</span>
         <ExternalLink size={12} aria-hidden="true" />
       </a>
-    )}
-  </div>
+    </div>
+  )}
 
   <!-- Page Introduction (Open document surface) -->
   <header class="page-header">
     <h1 class="page-title">{project.title}</h1>
-    <p class="page-lead">{project.summary}</p>
+    <p class="page-lead project-summary">{project.summary}</p>
 
     <!-- Properties List -->
     <div class="project-properties" role="list" aria-label="Project properties">
@@ -145,7 +135,7 @@ if (project.slug === "playah") {
   {comparisonData && (
     <section class="page-section" aria-label="Performance comparison">
       <h2 class="section-title">Performance breakdown</h2>
-      <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0 0 16px;">
+      <p style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--dash-muted); margin: 0 0 var(--space-4);">
         {comparisonData.description}
       </p>
 
@@ -177,10 +167,10 @@ if (project.slug === "playah") {
   )}
 
   <!-- More Case Studies -->
-  <section class="page-section more-work-section" aria-labelledby="heading-more-work" style="border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-top: calc(var(--space-8) * 1.1);">
-    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
+  <section class="page-section page-section--divided more-work-section" aria-labelledby="heading-more-work">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--docs-space-section-header-bottom, 16px);">
       <h2 id="heading-more-work" class="section-title" style="margin: 0;">More case studies</h2>
-      <a href="/work" class="dash-link" style="font-size: 0.8125rem;">
+      <a href="/work" class="dash-link" style="font-size: var(--text-body-sm);">
         View directory →
       </a>
     </div>
@@ -223,6 +213,11 @@ if (project.slug === "playah") {
 </DashboardLayout>
 
 <style>
+  .project-summary {
+    width: 100%;
+    max-width: none;
+  }
+
   .work-narrative-section {
     width: 100%;
   }
@@ -239,8 +234,8 @@ if (project.slug === "playah") {
     justify-items: stretch;
     align-items: start;
     text-align: left;
-    font-family: var(--sans);
-    font-size: 0.8125rem;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body-sm);
   }
 
   .project-property {
@@ -257,16 +252,18 @@ if (project.slug === "playah") {
 
   .project-property-label {
     margin-bottom: 2px;
+    font-size: var(--text-caption);
     color: var(--dash-muted);
   }
 
   .project-property-value {
+    font-size: var(--text-body-sm);
     color: var(--dash-text);
     overflow-wrap: anywhere;
   }
 
   .project-property-value--strong {
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
   }
 
   .more-work-section {
@@ -276,11 +273,11 @@ if (project.slug === "playah") {
   .work-narrative-prose {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: var(--space-para-to-para, 16px);
     width: 100%;
     color: var(--dash-text);
-    font-size: 0.9375rem;
-    line-height: 1.68;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
   }
 
   .work-narrative-prose p {
@@ -324,8 +321,8 @@ if (project.slug === "playah") {
     }
 
     .work-narrative-prose {
-      font-size: 0.9375rem;
-      line-height: 1.6;
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-body);
     }
 
     .work-narrative-prose p {
@@ -336,14 +333,14 @@ if (project.slug === "playah") {
       display: flex;
       flex-wrap: nowrap;
       overflow-x: auto;
-      overflow-y: hidden;
+      overflow-y: visible;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
-      gap: 18px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      gap: 16px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 16px;
       padding-bottom: 24px;
       scrollbar-width: none;

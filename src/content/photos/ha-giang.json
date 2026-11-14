@@ -8,7 +8,7 @@
   "district": "",
   "country": "Vietnam",
   "province": "Hà Giang",
-  "region": "Miền Bắc",
+  "region": "Northern Vietnam",
   "headline": "Mountain passes above the clouds.",
   "subheadline": "Stone plateaus, sharp roads, and northern light.",
   "introduction": "Hà Giang is built around movement: winding passes, limestone valleys, roadside pauses, and the feeling that every turn changes the scale of the landscape.",
@@ -68,16 +68,276 @@
     "Travelers who dislike long road days or exposed mountain routes."
   ],
   "heroImage": {
-    "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hknwguh57xp9l2wiefouaq5nzugod3mbyct70-ha-gi",
-    "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
-    "alt": "Hà Giang --- photo 1",
-    "width": 1440,
-    "height": 1439,
-    "caption": "",
+    "id": "ha-giang-dsc_5711",
+    "src": "/assets/photos/ha-giang/DSC_5711.webp",
+    "alt": "Hà Giang — DSC_5711",
+    "width": 2400,
+    "height": 1600,
     "order": 1,
     "isCover": true
   },
   "images": [
+    {
+      "id": "ha-giang-dsc_5711",
+      "src": "/assets/photos/ha-giang/DSC_5711.webp",
+      "alt": "Hà Giang — DSC_5711",
+      "width": 2400,
+      "height": 1600,
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "ha-giang-dsc_5496",
+      "src": "/assets/photos/ha-giang/DSC_5496.webp",
+      "alt": "Hà Giang — DSC_5496",
+      "width": 2400,
+      "height": 1600,
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5516",
+      "src": "/assets/photos/ha-giang/DSC_5516.webp",
+      "alt": "Hà Giang — DSC_5516",
+      "width": 2400,
+      "height": 1600,
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5532",
+      "src": "/assets/photos/ha-giang/DSC_5532.webp",
+      "alt": "Hà Giang — DSC_5532",
+      "width": 2400,
+      "height": 1600,
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5537-edit",
+      "src": "/assets/photos/ha-giang/DSC_5537-Edit.webp",
+      "alt": "Hà Giang — DSC_5537-Edit",
+      "width": 2400,
+      "height": 1600,
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5543",
+      "src": "/assets/photos/ha-giang/DSC_5543.webp",
+      "alt": "Hà Giang — DSC_5543",
+      "width": 2400,
+      "height": 1600,
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5574",
+      "src": "/assets/photos/ha-giang/DSC_5574.webp",
+      "alt": "Hà Giang — DSC_5574",
+      "width": 2400,
+      "height": 1600,
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5598",
+      "src": "/assets/photos/ha-giang/DSC_5598.webp",
+      "alt": "Hà Giang — DSC_5598",
+      "width": 1600,
+      "height": 2400,
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5614",
+      "src": "/assets/photos/ha-giang/DSC_5614.webp",
+      "alt": "Hà Giang — DSC_5614",
+      "width": 2400,
+      "height": 1600,
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5615",
+      "src": "/assets/photos/ha-giang/DSC_5615.webp",
+      "alt": "Hà Giang — DSC_5615",
+      "width": 2400,
+      "height": 1600,
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5618",
+      "src": "/assets/photos/ha-giang/DSC_5618.webp",
+      "alt": "Hà Giang — DSC_5618",
+      "width": 1600,
+      "height": 2400,
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5623",
+      "src": "/assets/photos/ha-giang/DSC_5623.webp",
+      "alt": "Hà Giang — DSC_5623",
+      "width": 1600,
+      "height": 2400,
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5626",
+      "src": "/assets/photos/ha-giang/DSC_5626.webp",
+      "alt": "Hà Giang — DSC_5626",
+      "width": 1600,
+      "height": 2400,
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5639",
+      "src": "/assets/photos/ha-giang/DSC_5639.webp",
+      "alt": "Hà Giang — DSC_5639",
+      "width": 1600,
+      "height": 2400,
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_5654",
+      "src": "/assets/photos/ha-giang/DSC_5654.webp",
+      "alt": "Hà Giang — DSC_5654",
+      "width": 2400,
+      "height": 1600,
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6023",
+      "src": "/assets/photos/ha-giang/DSC_6023.webp",
+      "alt": "Hà Giang — DSC_6023",
+      "width": 2400,
+      "height": 1600,
+      "order": 16,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6046",
+      "src": "/assets/photos/ha-giang/DSC_6046.webp",
+      "alt": "Hà Giang — DSC_6046",
+      "width": 1600,
+      "height": 2400,
+      "order": 17,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6078",
+      "src": "/assets/photos/ha-giang/DSC_6078.webp",
+      "alt": "Hà Giang — DSC_6078",
+      "width": 2400,
+      "height": 1600,
+      "order": 18,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6084",
+      "src": "/assets/photos/ha-giang/DSC_6084.webp",
+      "alt": "Hà Giang — DSC_6084",
+      "width": 1600,
+      "height": 2400,
+      "order": 19,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6124",
+      "src": "/assets/photos/ha-giang/DSC_6124.webp",
+      "alt": "Hà Giang — DSC_6124",
+      "width": 2400,
+      "height": 1600,
+      "order": 20,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6128",
+      "src": "/assets/photos/ha-giang/DSC_6128.webp",
+      "alt": "Hà Giang — DSC_6128",
+      "width": 2400,
+      "height": 1600,
+      "order": 21,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6140",
+      "src": "/assets/photos/ha-giang/DSC_6140.webp",
+      "alt": "Hà Giang — DSC_6140",
+      "width": 2400,
+      "height": 1600,
+      "order": 22,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6142",
+      "src": "/assets/photos/ha-giang/DSC_6142.webp",
+      "alt": "Hà Giang — DSC_6142",
+      "width": 2400,
+      "height": 1600,
+      "order": 23,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6195",
+      "src": "/assets/photos/ha-giang/DSC_6195.webp",
+      "alt": "Hà Giang — DSC_6195",
+      "width": 2400,
+      "height": 1600,
+      "order": 24,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6226",
+      "src": "/assets/photos/ha-giang/DSC_6226.webp",
+      "alt": "Hà Giang — DSC_6226",
+      "width": 2400,
+      "height": 1600,
+      "order": 25,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6229",
+      "src": "/assets/photos/ha-giang/DSC_6229.webp",
+      "alt": "Hà Giang — DSC_6229",
+      "width": 2400,
+      "height": 1600,
+      "order": 26,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6239",
+      "src": "/assets/photos/ha-giang/DSC_6239.webp",
+      "alt": "Hà Giang — DSC_6239",
+      "width": 2400,
+      "height": 1600,
+      "order": 27,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6245",
+      "src": "/assets/photos/ha-giang/DSC_6245.webp",
+      "alt": "Hà Giang — DSC_6245",
+      "width": 2400,
+      "height": 1600,
+      "order": 28,
+      "isCover": false
+    },
+    {
+      "id": "ha-giang-dsc_6249",
+      "src": "/assets/photos/ha-giang/DSC_6249.webp",
+      "alt": "Hà Giang — DSC_6249",
+      "width": 2400,
+      "height": 1600,
+      "order": 29,
+      "isCover": false
+    },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hknwguh57xp9l2wiefouaq5nzugod3mbyct70-ha-gi",
       "src": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hknwguh57Xp9L2WIefOuAq5NzUGoD3MbYCT70",
@@ -85,7 +345,7 @@
       "width": 1440,
       "height": 1439,
       "caption": "",
-      "order": 1,
+      "order": 30,
       "isCover": false
     },
     {
@@ -95,7 +355,7 @@
       "width": 900,
       "height": 1600,
       "caption": "",
-      "order": 2,
+      "order": 31,
       "isCover": false
     },
     {
@@ -105,7 +365,7 @@
       "width": 1440,
       "height": 1439,
       "caption": "",
-      "order": 3,
+      "order": 32,
       "isCover": false
     },
     {
@@ -115,7 +375,7 @@
       "width": 898,
       "height": 1600,
       "caption": "",
-      "order": 4,
+      "order": 33,
       "isCover": false
     },
     {
@@ -125,7 +385,7 @@
       "width": 898,
       "height": 1600,
       "caption": "",
-      "order": 5,
+      "order": 34,
       "isCover": false
     }
   ],
@@ -149,7 +409,7 @@
   "published": true,
   "seoTitle": "Hà Giang Photo Notes | Mountain Passes and Stone Plateaus",
   "seoDescription": "A short editorial photo note from Hà Giang: northern mountain passes, stone plateaus, valleys, road days, and dramatic landscape travel.",
-  "seoImage": "",
+  "seoImage": "/assets/photos/ha-giang/DSC_5711.webp",
   "relatedLocations": [
     {
       "slug": "da-lat",

@@ -69,9 +69,8 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
   <div class="showcase-pass-gate-reveal" data-gate-reveal hidden>
     <slot />
   </div>
-</section>
 
-<script is:inline define:vars={{ id, passwordHashes, storageKey, errorMessage }}>
+<script is:inline data-astro-rerun define:vars={{ id, passwordHashes, storageKey, errorMessage }}>
   (() => {
     const root = document.getElementById(id);
     if (!root || root.dataset.gateReady === "true") return;
@@ -190,18 +189,16 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     });
   })();
 </script>
+</section>
 
 <style>
   .showcase-pass-gate {
-    font-family: var(--sans);
+    font-family: var(--font-family-base);
     container-type: inline-size;
     padding: 24px;
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
-    border-width: var(--dash-border-width, 0.9px) !important;
-    border-style: solid;
-    border-color: var(--dash-border, #00000014);
-    border-radius: 8px;
-    background: #FFFFFF;
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
+    border-radius: 16px;
+    background: var(--color-ivory, #F9F8F6);
     box-shadow: none;
     overflow: hidden;
   }
@@ -228,7 +225,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
   .showcase-pass-gate-icon {
     flex: 0 0 auto;
     margin-top: 2px;
-    color: var(--dash-muted, #686863);
+    color: var(--color-fog, #7D8187);
   }
 
   .showcase-pass-gate-text {
@@ -237,26 +234,22 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
 
   .showcase-pass-gate-title {
     margin: 0;
-    font-family: var(--sans);
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    line-height: 24px !important;
-    color: var(--dash-text, #292927);
-    letter-spacing: 0;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-heading);
+    color: var(--color-jet, #0A0A0A);
+    letter-spacing: var(--tracking-subheading);
   }
 
   .showcase-pass-gate-description {
     max-width: 56ch;
-    margin: 2px 0 0;
-    font-family: var(--sans);
-    font-size: var(--site-copy-size) !important;
-    font-weight: 400;
-    line-height: 22px;
-    color: var(--dash-muted, #686863);
-  }
-
-  .showcase-pass-gate :is(.showcase-pass-gate-description, #showcase-pass-gate-copy-size-override) {
-    font-size: var(--site-copy-size) !important;
+    margin: 4px 0 0;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted, rgba(10, 10, 10, 0.60));
   }
 
   .showcase-pass-gate-form {
@@ -269,11 +262,12 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
   }
 
   .showcase-pass-gate-label {
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
-    color: var(--dash-muted, #686863);
+    font-family: var(--font-family-base);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-compact);
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-fog, #7D8187);
   }
 
   .showcase-pass-gate-row {
@@ -287,38 +281,39 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     min-width: 0;
     flex: 1 1 auto;
     height: 40px;
-    padding: 0 12px;
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
-    border-radius: 6px;
+    padding: 10px 14px;
+    border: 1px solid var(--color-dove, #D5D9E2);
+    border-radius: 12px;
     outline: 0;
     background: #FFFFFF;
-    font-family: var(--sans);
-    font-size: var(--site-copy-size);
-    line-height: 20px;
-    color: var(--dash-text, #292927);
-    transition: border-color 160ms ease, box-shadow 160ms ease;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--color-jet, #0A0A0A);
+    transition: border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .showcase-pass-gate-input::placeholder {
-    color: var(--dash-placeholder, #73736D);
+    font-size: var(--text-body-sm);
+    color: var(--color-fog, #7D8187);
     opacity: 1;
   }
 
   .showcase-pass-gate-input:focus,
   .showcase-pass-gate-input:focus-visible {
-    outline: 2px solid var(--dash-accent, #245D9F);
-    outline-offset: 2px;
-    border-color: var(--dash-accent, #245D9F);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--dash-accent, #245D9F) 18%, transparent);
+    outline: none;
+    border-color: var(--color-jet, #0A0A0A);
+    box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.08);
   }
 
   .showcase-pass-gate-input.has-error {
-    border-color: var(--state-error, #F64932);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--state-error, #F64932) 16%, transparent);
+    border-color: var(--state-error, #97232E);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--state-error, #97232E) 16%, transparent);
   }
 
   .showcase-pass-gate-input.has-error::placeholder {
-    color: var(--state-error, #F64932);
+    color: var(--state-error, #97232E);
   }
 
   .showcase-pass-gate-input.is-shaking {
@@ -338,23 +333,18 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     height: 40px;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
-    border: var(--dash-border-width, 0.9px) solid var(--dash-primary, #292927);
-    border-radius: 6px;
-    background: var(--dash-primary, #292927);
+    padding: 10px 18px;
+    border: 0 !important;
+    border-radius: 9999px;
+    background: var(--color-jet, #0A0A0A);
     color: #FFFFFF;
-    font-family: var(--sans);
-    font-size: var(--site-copy-size) !important;
-    font-weight: 600;
-    line-height: 20px;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-compact);
     white-space: nowrap;
     cursor: pointer;
-    transition: background-color 160ms ease, border-color 160ms ease, opacity 160ms ease;
-  }
-
-  .showcase-pass-gate-button:hover {
-    background: var(--dash-primary-hover, #41413D);
-    border-color: var(--dash-primary-hover, #41413D);
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms ease;
   }
 
   .showcase-pass-gate-button:focus-visible {
@@ -369,10 +359,10 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
 
   .showcase-pass-gate-success {
     margin: 6px 0 0;
-    font-family: var(--sans);
-    font-size: 12px !important;
-    line-height: 16px;
-    font-weight: 500;
+    font-family: var(--font-family-base);
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
+    font-weight: var(--font-weight-medium);
     color: var(--state-success);
   }
 

@@ -1,26 +1,22 @@
 ---
+import avatar from "../../assets/avatar.webp";
+import SidebarIcon from "./SidebarIcon.astro";
 import { 
-  SquaresFour, 
-  FolderSimple, 
-  Briefcase, 
-  Stack, 
-  Camera, 
-  GearIcon, 
-  CertificateIcon, 
-  ContactIcon, 
-  FileText,
-  CaretRight,
   X,
   LinkedIn,
   Instagram,
-  Pexels
+  Pexels,
+  type MajesticonName,
 } from "../icons/majesticons";
 
 interface Props {
   currentPath?: string;
+  locale?: string;
 }
 
-const { currentPath = "/" } = Astro.props;
+const {
+  currentPath = Astro.url.pathname,
+} = Astro.props;
 
 const normalizePath = (path: string) => {
   if (path === "/" || path === "") return "/";
@@ -32,12 +28,8 @@ const activePath = normalizePath(currentPath);
 interface NavItem {
   label: string;
   href: string;
-  icon: any;
+  icon: MajesticonName;
   exact?: boolean;
-  children?: {
-    label: string;
-    href: string;
-  }[];
 }
 
 interface NavSection {
@@ -49,41 +41,21 @@ const navSections: NavSection[] = [
   {
     group: "Workspace",
     items: [
-      { label: "Overview", href: "/", icon: SquaresFour, exact: true },
-      { label: "About", href: "/about", icon: Briefcase },
-      {
-        label: "Work",
-        href: "/work",
-        icon: FolderSimple,
-        children: [
-          { label: "SONY", href: "/work/sony" },
-          { label: "PlayAh!", href: "/work/playah" },
-          { label: "WorkFlow Space", href: "/work/workflow-space" },
-          { label: "POPS Worldwide", href: "/work/pops-worldwide" },
-          { label: "TOMATO", href: "/work/tomato-childrens-home" },
-        ],
-      },
-      {
-        label: "Services",
-        href: "/services",
-        icon: Stack,
-      },
-    ]
+      { label: "Overview", href: "/", icon: "home-simple", exact: true },
+      { label: "About", href: "/about", icon: "user" },
+      { label: "Work", href: "/work", icon: "suitcase" },
+      { label: "Services", href: "/services", icon: "layout-grid-2" },
+    ],
   },
   {
     group: "Personal",
     items: [
-      {
-        label: "Photography",
-        href: "/photos",
-        icon: Camera,
-      },
-      { label: "Gear", href: "/gear", icon: GearIcon },
-      { label: "Certificates", href: "/certificates", icon: CertificateIcon },
-      { label: "Contact", href: "/contact", icon: ContactIcon },
-      { label: "Resume", href: "/resume", icon: FileText },
-    ]
-  }
+      { label: "Writing", href: "/writing", icon: "note-text" },
+      { label: "Photography", href: "/photos", icon: "image" },
+      { label: "Gear", href: "/gear", icon: "monitor" },
+      { label: "Contact", href: "/contact", icon: "mail" },
+    ],
+  },
 ];
 
 const isItemActive = (href: string, exact?: boolean) => {
@@ -94,7 +66,6 @@ const isItemActive = (href: string, exact?: boolean) => {
   return activePath.startsWith(normHref);
 };
 
-const isChildActive = (href: string) => activePath === normalizePath(href);
 const isCurrentPage = (href: string) => activePath === normalizePath(href);
 ---
 
@@ -111,11 +82,12 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home">
             <img 
-              src="/favicon.svg" 
+              src={avatar.src}
               alt="Nguyen Phuc Loc" 
               class="dash-user-avatar"
               width="28"
               height="28"
+              decoding="async"
             />
             <div>
               <div class="dash-user-name">Phuc Loc Nguyen</div>
@@ -140,70 +112,23 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
         {navSections.map((section) => (
           <div class="dash-nav-group">
             <div class="dash-nav-heading">{section.group}</div>
-            <ul class="dash-nav-list">
+            <ul class="dash-nav-list" aria-label={section.group}>
               {section.items.map((item) => {
-                const Icon = item.icon;
                 const active = isItemActive(item.href, item.exact);
                 const current = isCurrentPage(item.href);
-                const children = item.children ?? [];
-                const hasChildren = children.length > 0;
-                const treeId = `dash-nav-tree-${item.href.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")}`;
                 return (
                   <li>
-                    {hasChildren ? (
-                      <div class={`dash-nav-link dash-nav-parent ${active ? "active" : ""}`}>
-                        <a
-                          href={item.href}
-                          class="dash-nav-parent-link"
-                          aria-current={current ? "page" : undefined}
-                        >
-                          <div class="dash-nav-link-left">
-                            <Icon size={16} strokeWidth={active ? 2 : 1.75} aria-hidden="true" />
-                            <span>{item.label}</span>
-                          </div>
-                        </a>
-                        <button
-                          type="button"
-                          class="dash-nav-disclosure"
-                          aria-label={`Toggle ${item.label} pages`}
-                          aria-expanded={active ? "true" : "false"}
-                          aria-controls={treeId}
-                          data-nav-disclosure
-                          data-nav-key={item.href}
-                        >
-                          <CaretRight className="dash-nav-disclosure-icon" size={13} aria-hidden="true" />
-                        </button>
+                    <a
+                      href={item.href}
+                      class={`dash-nav-link ${active ? "active" : ""}`}
+                      aria-current={current ? "page" : undefined}
+                      data-astro-prefetch
+                    >
+                      <div class="dash-nav-link-left">
+                        <SidebarIcon name={item.icon} />
+                        <span>{item.label}</span>
                       </div>
-                    ) : (
-                      <a
-                        href={item.href}
-                        class={`dash-nav-link ${active ? "active" : ""}`}
-                        aria-current={current ? "page" : undefined}
-                      >
-                        <div class="dash-nav-link-left">
-                          <Icon size={16} strokeWidth={active ? 2 : 1.75} aria-hidden="true" />
-                          <span>{item.label}</span>
-                        </div>
-                      </a>
-                    )}
-                    {hasChildren && (
-                      <ul id={treeId} class="dash-nav-tree" aria-label={`${item.label} pages`} hidden={!active}>
-                        {children.map((child) => {
-                          const childActive = isChildActive(child.href);
-                          return (
-                            <li class="dash-nav-tree-item">
-                              <a
-                                href={child.href}
-                                class={`dash-nav-tree-link ${childActive ? "active" : ""}`}
-                                aria-current={childActive ? "page" : undefined}
-                              >
-                                {child.label}
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
+                    </a>
                   </li>
                 );
               })}
@@ -216,9 +141,8 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
     <!-- Sidebar Footer -->
     <div class="dash-sidebar-footer">
       <!-- Saigon Timezone -->
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span>Saigon · GMT+7</span>
-        <span id="dash-saigon-time" style="font-variant-numeric:tabular-nums;">--:--</span>
+      <div style="margin-bottom:var(--space-2);">
+        <span style="font-size:var(--text-micro);color:var(--dash-muted);">Saigon · GMT+7</span>
       </div>
 
       <!-- Direct Email Link -->
@@ -241,7 +165,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
           title="LinkedIn"
           aria-label="LinkedIn Profile"
         >
-          <LinkedIn size={15} strokeWidth={1.8} />
+          <LinkedIn size={16} strokeWidth={1.8} className="dash-social-icon" aria-hidden="true" focusable="false" />
         </a>
         <a 
           href="https://www.instagram.com/henrygoodkid" 
@@ -251,7 +175,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
           title="Instagram"
           aria-label="Instagram Profile"
         >
-          <Instagram size={15} strokeWidth={1.8} />
+          <Instagram size={16} strokeWidth={1.8} className="dash-social-icon" aria-hidden="true" focusable="false" />
         </a>
         <a 
           href="https://www.pexels.com/@henrygoodkid" 
@@ -261,7 +185,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
           title="Pexels Photography"
           aria-label="Pexels Photography"
         >
-          <Pexels size={15} strokeWidth={1.8} />
+          <Pexels size={16} strokeWidth={1.8} className="dash-social-icon" aria-hidden="true" focusable="false" />
         </a>
       </div>
     </div>
@@ -269,151 +193,16 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
   </div>
 </aside>
 
-<script is:inline>
-  function setupSidebarInteractions() {
-    const timeEl = document.getElementById("dash-saigon-time");
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  onPageLoad(() => {
     const closeBtn = document.getElementById("dash-drawer-close");
     const sidebar = document.getElementById("dash-sidebar");
-    const backdrop = document.getElementById("dash-drawer-backdrop");
+    if (!sidebar) return;
 
     if (window.innerWidth < 1024 && closeBtn) {
       closeBtn.style.display = "flex";
     }
-
-    closeBtn?.addEventListener("click", () => {
-      sidebar?.classList.remove("is-open");
-      backdrop?.classList.remove("is-open");
-      document.body.style.overflow = "";
-    });
-
-    const disclosureButtons = Array.from(document.querySelectorAll("[data-nav-disclosure]"));
-
-    const playDisclosureClick = () => {
-      try {
-        const AudioContext = window.AudioContext;
-        if (!AudioContext) return;
-        const audioContext = window._dashClickAudioContext || new AudioContext();
-        window._dashClickAudioContext = audioContext;
-
-        const now = audioContext.currentTime;
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-
-        oscillator.type = "triangle";
-        oscillator.frequency.setValueAtTime(1200, now);
-        oscillator.frequency.exponentialRampToValueAtTime(520, now + 0.035);
-        gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.exponentialRampToValueAtTime(0.04, now + 0.006);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
-
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
-        oscillator.start(now);
-        oscillator.stop(now + 0.06);
-      } catch {}
-    };
-
-    // Clean up legacy multi-open storage keys if present
-    try {
-      for (let i = window.sessionStorage.length - 1; i >= 0; i--) {
-        const k = window.sessionStorage.key(i);
-        if (k && k.startsWith("dash-nav-expanded:")) {
-          window.sessionStorage.removeItem(k);
-        }
-      }
-    } catch {}
-
-    const setExpanded = (btn, isExpanded) => {
-      btn.setAttribute("aria-expanded", isExpanded ? "true" : "false");
-      const controlsId = btn.getAttribute("aria-controls");
-      const tree = controlsId ? document.getElementById(controlsId) : null;
-      if (tree) {
-        tree.hidden = !isExpanded;
-      }
-    };
-
-    // Find if any folder contains or matches the active page
-    const activePageButton = disclosureButtons.find((btn) => {
-      const controlsId = btn.getAttribute("aria-controls");
-      const tree = controlsId ? document.getElementById(controlsId) : null;
-      return (
-        Boolean(tree?.querySelector(".dash-nav-tree-link.active")) ||
-        Boolean(btn.closest(".dash-nav-parent")?.classList.contains("active"))
-      );
-    });
-
-    // Tree sub-menu ONLY opens when the active page is inside that tree (e.g. /work or /work/*).
-    // When clicking into any other page, the tree sub-menu automatically collapses.
-    const buttonToOpen = activePageButton || null;
-
-    try {
-      window.sessionStorage.removeItem("dash-nav-active-folder");
-    } catch {}
-
-    // Enforce: open only buttonToOpen (if on the tree's page), close all others
-    disclosureButtons.forEach((button) => {
-      setExpanded(button, button === buttonToOpen);
-
-      if (button.dataset.navReady === "true") return;
-      button.dataset.navReady = "true";
-
-      button.addEventListener("click", () => {
-        playDisclosureClick();
-        const isCurrentlyOpen = button.getAttribute("aria-expanded") === "true";
-        if (isCurrentlyOpen) {
-          setExpanded(button, false);
-        } else {
-          // Close all other disclosures
-          disclosureButtons.forEach((other) => {
-            if (other !== button) {
-              setExpanded(other, false);
-            }
-          });
-          // Open this disclosure
-          setExpanded(button, true);
-        }
-      });
-    });
-
-    // When clicking any link that navigates to another page, immediately collapse tree
-    const allNavLinks = Array.from(document.querySelectorAll(".dash-nav-list a"));
-    allNavLinks.forEach((link) => {
-      if (link.dataset.collapseBound === "true") return;
-      link.dataset.collapseBound = "true";
-
-      link.addEventListener("click", () => {
-        const isTreeChild = Boolean(link.closest(".dash-nav-tree"));
-        const isTreeParent = Boolean(link.closest(".dash-nav-parent"));
-
-        // If clicking a link to any other page (not within the tree or its parent), close all trees immediately
-        if (!isTreeChild && !isTreeParent) {
-          disclosureButtons.forEach((button) => setExpanded(button, false));
-        }
-      });
-    });
-
-
-    // Update Saigon time once per minute
-    function updateSaigonTime() {
-      if (!timeEl) return;
-      const now = new Date();
-      // GMT+7 calculation
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const saigon = new Date(utc + (3600000 * 7));
-      const hours = String(saigon.getHours()).padStart(2, '0');
-      const mins = String(saigon.getMinutes()).padStart(2, '0');
-      timeEl.textContent = `${hours}:${mins}`;
-    }
-
-    updateSaigonTime();
-    if (window._saigonInterval) clearInterval(window._saigonInterval);
-    if (!window.matchMedia("(max-width: 768px)").matches) {
-      window._saigonInterval = setInterval(updateSaigonTime, 60000);
-    }
-  }
-
-  document.addEventListener("astro:page-load", setupSidebarInteractions);
-  if (document.readyState === "complete" || document.readyState === "interactive") {
-    setupSidebarInteractions();
-  }
+  });
 </script>

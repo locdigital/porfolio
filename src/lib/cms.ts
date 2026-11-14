@@ -222,11 +222,7 @@ export async function getPhotoLocations() {
   const entries = await getCollection("photos");
   return entries
     .map((entry) => mapPhotoLocation(entry.data))
-    .sort((a, b) => {
-      const aOrder = entries.find((entry) => entry.data.slug === a.slug)?.data.order ?? 0;
-      const bOrder = entries.find((entry) => entry.data.slug === b.slug)?.data.order ?? 0;
-      return aOrder - bOrder;
-    });
+    .sort((a, b) => a.order - b.order);
 }
 
 export async function getGear(): Promise<GearData | undefined> {

@@ -1,121 +1,24 @@
 import { getCollection, type CollectionEntry } from "astro:content";
-import { existsSync, readdirSync } from "node:fs";
-import { listPosts, type Post } from "./writing/posts";
 
-const writingDir = new URL("../content/writing", import.meta.url);
-
-type WritingPostData = {
-  title: string;
-  headline: string;
-  summary?: string;
-  keyword?: string;
-  metaDescription?: string;
-  coverImage?: string;
-  publishedAt: Date;
-  tags: string[];
-};
-
-type LocalWritingPost = CollectionEntry<"writing"> & {
-  source: "local";
-  slug: string;
-};
-
-type EditorWritingPost = {
-  source: "editor";
-  id: string;
-  slug: string;
-  data: WritingPostData;
-  post: Post;
-};
-
-export type WritingPost = LocalWritingPost | EditorWritingPost;
-
-function validDate(value?: string): Date {
-  const date = value ? new Date(value) : new Date();
-  return Number.isNaN(date.getTime()) ? new Date() : date;
+export async function getWritingEntries() {
+  const entries = await getCollection("writing", ({ data }) => !data.draft);
+  return entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime() || a.data.order - b.data.order || a.slug.localeCompare(b.slug));
 }
 
-function textFromHtml(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<style[\s\S]*?<\/style>/gi, "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+export function writingReadTime(entry: CollectionEntry<"writing">) {
+  return Math.max(1, Math.ceil(entry.body.trim().split(/\s+/).length / 200));
 }
 
-function truncateText(text: string, maxLength = 180): string {
-  const clean = text.replace(/\s+/g, " ").trim();
-  if (clean.length <= maxLength) return clean;
-  return `${clean.slice(0, maxLength).trimEnd()}...`;
+export function writingDate(date: Date) {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Ho_Chi_Minh",
+  }).format(date);
 }
 
-function editorPostSummary(post: Post): string | undefined {
-  const summary =
-    post.excerpt ||
-    post.seoDescription ||
-    post.ogDescription ||
-    post.contentMarkdown ||
-    textFromHtml(post.contentHtml);
-
-  return summary ? truncateText(summary) : undefined;
+export function writingCategorySlug(category: string) {
+  return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-async function getLocalWritingPosts(): Promise<LocalWritingPost[]> {
-  try {
-    if (!existsSync(writingDir) || !readdirSync(writingDir).some((file) => /\.(md|mdx)$/i.test(file))) {
-      return [];
-    }
-
-    const entries = await getCollection("writing", ({ data }) => !data.draft);
-    return entries
-      .map((entry) => ({ ...entry, source: "local" as const, slug: entry.slug }))
-      .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
-  } catch (error) {
-    console.error("[writing] Failed to fetch local writing posts:", error);
-    return [];
-  }
-}
-
-async function getEditorWritingPosts(): Promise<EditorWritingPost[]> {
-  try {
-    const posts = await listPosts();
-
-    return posts
-      .filter((post) => post.status === "published")
-      .map((post) => {
-        const summary = editorPostSummary(post);
-        const publishedAt = validDate(post.publishedAt ?? post.updatedAt ?? post.createdAt);
-
-        return {
-          source: "editor" as const,
-          id: post.id,
-          slug: post.slug,
-          post,
-          data: {
-            title: post.title,
-            headline: post.title,
-            summary,
-            metaDescription: post.seoDescription || summary,
-            coverImage: post.coverImage || post.ogImage,
-            publishedAt,
-            tags: post.tags ?? [],
-          },
-        };
-      });
-  } catch (error) {
-    console.error("[writing] Failed to fetch editor writing posts:", error);
-    return [];
-  }
-}
-
-export async function getWritingPosts(): Promise<WritingPost[]> {
-  const [localPosts, editorPosts] = await Promise.all([
-    getLocalWritingPosts(),
-    getEditorWritingPosts(),
-  ]);
-
-  return [...localPosts, ...editorPosts].sort(
-    (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
-  );
+export function writingCategoryPath(category: string) {
+  return `/writing/category/${writingCategorySlug(category)}`;
 }

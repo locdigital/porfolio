@@ -1,0 +1,78 @@
+{
+  "slug": "thung-ui",
+  "order": 24,
+  "type": "check-in",
+  "location": "Thung Ui",
+  "name": "Thung Ui",
+  "country": "Vietnam",
+  "region": "Northern Vietnam",
+  "headline": "Green water between limestone hills.",
+  "description": "Photographs from Thung Ui.",
+  "images": [
+    {
+      "id": "thung-ui-dsc_4348",
+      "src": "/assets/photos/thung-ui/DSC_4348.webp",
+      "alt": "Thung Ui — DSC_4348",
+      "width": 2400,
+      "height": 1600,
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "thung-ui-dsc_4335",
+      "src": "/assets/photos/thung-ui/DSC_4335.webp",
+      "alt": "Thung Ui — DSC_4335",
+      "width": 2400,
+      "height": 1600,
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "thung-ui-dsc_4336",
+      "src": "/assets/photos/thung-ui/DSC_4336.webp",
+      "alt": "Thung Ui — DSC_4336",
+      "width": 2400,
+      "height": 1600,
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "thung-ui-dsc_4358",
+      "src": "/assets/photos/thung-ui/DSC_4358.webp",
+      "alt": "Thung Ui — DSC_4358",
+      "width": 1600,
+      "height": 2400,
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "thung-ui-dsc_4369",
+      "src": "/assets/photos/thung-ui/DSC_4369.webp",
+      "alt": "Thung Ui — DSC_4369",
+      "width": 1600,
+      "height": 2400,
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "thung-ui-dsc_4375",
+      "src": "/assets/photos/thung-ui/DSC_4375.webp",
+      "alt": "Thung Ui — DSC_4375",
+      "width": 1600,
+      "height": 2400,
+      "order": 6,
+      "isCover": false
+    }
+  ],
+  "published": true,
+  "heroImage": {
+    "id": "thung-ui-dsc_4348",
+    "src": "/assets/photos/thung-ui/DSC_4348.webp",
+    "alt": "Thung Ui — DSC_4348",
+    "width": 2400,
+    "height": 1600,
+    "order": 1,
+    "isCover": true
+  },
+  "seoImage": "/assets/photos/thung-ui/DSC_4348.webp"
+}

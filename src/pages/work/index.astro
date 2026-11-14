@@ -2,6 +2,7 @@
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import { getProjects } from "../../lib/cms";
 import { ChevronRight, ChevronLeft } from "../../components/icons/majesticons";
+import ResponsiveImage from "../../components/ui/ResponsiveImage.astro";
 
 export const prerender = true;
 
@@ -64,7 +65,7 @@ const projectCount = enhancedProjects.length;
     id="projects-grid" 
     class="projects-grid"
   >
-    {enhancedProjects.map((p) => (
+    {enhancedProjects.map((p, index) => (
       <article 
         class="dash-card project-item" 
         data-category={p.category}
@@ -83,11 +84,16 @@ const projectCount = enhancedProjects.length;
             tabindex="-1"
             aria-hidden="true"
           >
-            <img 
+            <ResponsiveImage
               src={p.coverImage} 
               alt={p.title} 
+              width={640}
+              height={360}
+              widths={[320, 360, 480, 640, 720, 960]}
+              sizes="(max-width: 768px) 85vw, (max-width: 1100px) 50vw, 33vw"
               class="project-card-img"
-              loading="lazy"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "auto"}
             />
           </a>
         )}
@@ -168,24 +174,24 @@ const projectCount = enhancedProjects.length;
   }
 
   .project-item {
-    --card-outer-radius: 18px;
-    --card-padding: 16px;
+    --card-outer-radius: 20px;
+    --card-padding: 14px;
     border-radius: var(--card-outer-radius);
     padding: var(--card-padding);
-    background: var(--dash-surface);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    background: var(--color-ivory);
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    transition: transform var(--duration-fast, 250ms) var(--ease-smooth-out),
-                box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out),
-                border-color var(--duration-fast, 250ms) var(--ease-smooth-out);
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .project-item:hover {
-    border-color: var(--dash-border-strong);
-    transform: none;
-    box-shadow: none;
+    border-color: rgba(10, 10, 10, 0.16);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(10, 10, 10, 0.04);
   }
 
   .project-card-meta {
@@ -196,8 +202,8 @@ const projectCount = enhancedProjects.length;
   }
 
   .project-card-date {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
     color: var(--dash-muted);
     font-variant-numeric: tabular-nums;
   }
@@ -226,11 +232,11 @@ const projectCount = enhancedProjects.length;
   }
 
   .project-card-title {
-    margin: 0 0 8px;
-    font-size: 1.0625rem;
-    line-height: 1.4;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    font-size: var(--text-h4);
+    line-height: var(--leading-heading);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-subheading);
   }
 
   .project-card-title a {
@@ -239,7 +245,7 @@ const projectCount = enhancedProjects.length;
     transition: color var(--duration-fast, 150ms) ease;
   }
 
-  .project-card-title a:hover {
+  .project-card-title a:not(:where(button, [role="button"], .dash-button, .btn, .dash-filter-chip, .pricing-btn, .modal-verify-btn, .showcase-pass-gate-button, .ig-sort-btn, .carousel-btn, .mobile-menu-btn, .dash-nav-disclosure, .hero-primary, .hero-secondary, .gallery-arrow, .email-copy, .back-to-top, .mobile-pill-link, .t-learn, .t-tab, .traffic-dot, .dash-traffic-dot)):hover {
     color: var(--dash-accent);
   }
 
@@ -250,8 +256,8 @@ const projectCount = enhancedProjects.length;
   }
 
   .project-card-summary {
-    font-size: 0.8125rem;
-    line-height: 1.55;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
     color: var(--dash-muted);
     margin: 0 0 14px;
     display: -webkit-box;
@@ -279,14 +285,14 @@ const projectCount = enhancedProjects.length;
   }
 
   .project-card-label {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
     color: var(--dash-muted);
   }
 
   .project-card-link {
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
     display: inline-flex;
     align-items: center;
     gap: 3px;
@@ -315,11 +321,11 @@ const projectCount = enhancedProjects.length;
       overscroll-behavior-x: contain;
       touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
-      scroll-padding-inline: 8px;
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
       gap: 14px;
-      margin-inline: -8px;
-      padding-inline: 8px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 2px;
       padding-bottom: 12px;
       scrollbar-width: none;
@@ -339,9 +345,9 @@ const projectCount = enhancedProjects.length;
 
     .project-item {
       --card-padding: 14px;
-      flex: 0 0 min(390px, calc(100vw - 16px)) !important;
-      width: min(390px, calc(100vw - 16px)) !important;
-      max-width: min(390px, calc(100vw - 16px)) !important;
+      flex: 0 0 min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2))) !important;
+      width: min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2))) !important;
+      max-width: min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2))) !important;
       scroll-snap-align: start;
       scroll-snap-stop: normal;
     }
@@ -367,8 +373,8 @@ const projectCount = enhancedProjects.length;
     }
 
     .carousel-counter {
-      font-size: 0.8125rem;
-      font-weight: 600;
+      font-size: var(--text-body-sm);
+      font-weight: var(--font-weight-semibold);
       color: var(--dash-muted);
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.02em;
@@ -386,19 +392,13 @@ const projectCount = enhancedProjects.length;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: var(--dash-surface);
-      border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-      border-radius: var(--radius-control, 6px);
-      color: var(--dash-text);
+      background: var(--btn-bg);
+      border: 0;
+      border-radius: 9999px;
+      color: var(--color-jet);
       cursor: pointer;
       padding: 0;
-      transition: background-color var(--duration-fast, 150ms) ease, border-color var(--duration-fast, 150ms) ease, opacity var(--duration-fast, 150ms) ease;
-    }
-
-    .carousel-btn:hover:not(:disabled) {
-      background: var(--dash-surface-subtle);
-      border-color: var(--dash-border);
-      color: var(--dash-text);
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms ease;
     }
 
     .carousel-btn:focus-visible {
@@ -415,34 +415,34 @@ const projectCount = enhancedProjects.length;
 
   @media (max-width: 359px) {
     .projects-grid {
-      margin-inline: -8px;
-      padding-inline: 8px;
-      scroll-padding-inline: 8px;
       gap: 12px;
-    }
-
-    .project-item {
-      flex: 0 0 calc(100vw - 16px) !important;
-      width: calc(100vw - 16px) !important;
-      max-width: calc(100vw - 16px) !important;
     }
   }
 </style>
 
-<script is:inline>
-  function setupProjectCarousel() {
-    const grid = document.getElementById("projects-grid");
-    if (!grid) return;
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
 
-    const projectItems = Array.from(grid.querySelectorAll(".project-item"));
+  onPageLoad((signal) => {
+    const gridElement = document.getElementById("projects-grid");
+    if (!gridElement) return;
+    const grid = gridElement;
+
+    const projectItems = Array.from(grid.querySelectorAll<HTMLElement>(".project-item"));
 
     const controls = document.getElementById("carousel-controls");
     const counter = document.getElementById("carousel-counter");
     const navGroup = document.getElementById("carousel-nav");
-    const prevBtn = document.getElementById("carousel-prev");
-    const nextBtn = document.getElementById("carousel-next");
+    const prevBtn = document.querySelector<HTMLButtonElement>("#carousel-prev");
+    const nextBtn = document.querySelector<HTMLButtonElement>("#carousel-next");
 
     let activeVisibleIndex = 0;
+    let snapPositions: number[] = [];
+    const measureItems = () => {
+      const firstOffset = projectItems[0]?.offsetLeft || 0;
+      snapPositions = projectItems.map((item) => item.offsetLeft - firstOffset);
+    };
+    measureItems();
 
     function getVisibleItems() {
       return projectItems;
@@ -494,14 +494,12 @@ const projectCount = enhancedProjects.length;
       }
     }
 
-    function scrollToItem(index, smooth = true) {
+    function scrollToItem(index: number, smooth = true) {
       const visible = getVisibleItems();
       if (index < 0 || index >= visible.length) return;
       activeVisibleIndex = index;
 
-      const targetItem = visible[index];
-      const firstItem = visible[0];
-      const scrollLeft = targetItem.offsetLeft - firstItem.offsetLeft;
+      const scrollLeft = snapPositions[index] ?? 0;
 
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       grid.scrollTo({
@@ -521,14 +519,11 @@ const projectCount = enhancedProjects.length;
       }
 
       const scrollLeft = grid.scrollLeft;
-      const firstItem = visible[0];
-      const baseOffset = firstItem ? firstItem.offsetLeft : 0;
 
       let closestIndex = 0;
       let smallestDistance = Infinity;
 
-      visible.forEach((item, idx) => {
-        const itemSnapPos = item.offsetLeft - baseOffset;
+      snapPositions.forEach((itemSnapPos, idx) => {
         const dist = Math.abs(scrollLeft - itemSnapPos);
         if (dist < smallestDistance) {
           smallestDistance = dist;
@@ -542,19 +537,17 @@ const projectCount = enhancedProjects.length;
       }
     }
 
-    let isThrottled = false;
+    let scrollFrame = 0;
     function handleScroll() {
-      if (!isThrottled) {
-        window.requestAnimationFrame(() => {
-          calculateActiveIndexFromScroll();
-          isThrottled = false;
-        });
-        isThrottled = true;
-      }
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
+        calculateActiveIndexFromScroll();
+      });
     }
 
-    grid.addEventListener("scroll", handleScroll, { passive: true });
-    grid.addEventListener("scrollend", calculateActiveIndexFromScroll, { passive: true });
+    grid.addEventListener("scroll", handleScroll, { passive: true, signal });
+    grid.addEventListener("scrollend", calculateActiveIndexFromScroll, { passive: true, signal });
 
     // Mouse Drag-to-Scroll support for desktop emulation / previewing
     let isDown = false;
@@ -569,7 +562,7 @@ const projectCount = enhancedProjects.length;
       startX = e.pageX;
       scrollStart = grid.scrollLeft;
       grid.classList.add("is-dragging");
-    });
+    }, { signal });
 
     window.addEventListener("mousemove", (e) => {
       if (!isDown) return;
@@ -578,7 +571,7 @@ const projectCount = enhancedProjects.length;
         hasDragged = true;
       }
       grid.scrollLeft = scrollStart - walk;
-    });
+    }, { signal });
 
     const onMouseUp = () => {
       if (!isDown) return;
@@ -587,7 +580,7 @@ const projectCount = enhancedProjects.length;
       calculateActiveIndexFromScroll();
     };
 
-    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("mouseup", onMouseUp, { signal });
 
     grid.addEventListener(
       "click",
@@ -598,31 +591,32 @@ const projectCount = enhancedProjects.length;
           hasDragged = false;
         }
       },
-      true
+      { capture: true, signal }
     );
 
     prevBtn?.addEventListener("click", () => {
       if (activeVisibleIndex > 0) {
         scrollToItem(activeVisibleIndex - 1, true);
       }
-    });
+    }, { signal });
 
     nextBtn?.addEventListener("click", () => {
       const visible = getVisibleItems();
       if (activeVisibleIndex < visible.length - 1) {
         scrollToItem(activeVisibleIndex + 1, true);
       }
-    });
+    }, { signal });
 
-    window.addEventListener("resize", () => {
-      calculateActiveIndexFromScroll();
+    const resizeObserver = new ResizeObserver(() => {
+      measureItems();
+      handleScroll();
     });
+    resizeObserver.observe(grid);
+    signal.addEventListener("abort", () => {
+      resizeObserver.disconnect();
+      cancelAnimationFrame(scrollFrame);
+    }, { once: true });
 
     updateControls();
-  }
-
-  document.addEventListener("astro:page-load", setupProjectCarousel);
-  if (document.readyState === "complete" || document.readyState === "interactive") {
-    setupProjectCarousel();
-  }
+  });
 </script>

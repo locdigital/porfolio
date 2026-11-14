@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import '../styles/dashboard.css';
+import '../styles/page-transitions.css';
+import interLatinFont from '../assets/fonts/inter-latin-variable.woff2?url';
 import { ViewTransitions } from 'astro:transitions';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
@@ -29,7 +31,10 @@ const {
   ogImage = DEFAULT_OG_IMAGE,
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site || "https://loc.digital");
+const siteBase = Astro.site?.origin || "https://loc.digital";
+const canonicalUrl = new URL(Astro.url.pathname, siteBase);
+const markdownUrl = new URL(canonicalUrl.pathname === "/" ? "/index.md" : `${canonicalUrl.pathname.replace(/\/$/, "")}.md`, canonicalUrl);
+
 const pageSchemas = Array.isArray(schema) ? schema : [schema];
 const jsonLd = safeJsonLd(graphSchema(pageSchemas));
 
@@ -51,6 +56,7 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
   <meta name="description" content={description}>
   <meta name="robots" content="index, follow">
+  <meta name="is-agentic-site-type" content="business">
   
   <!-- Open Graph / Social Media -->
   <meta property="og:title" content={title}>
@@ -58,6 +64,7 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
   <meta property="og:image" content={ogImage}>
   <meta property="og:url" content={canonicalUrl}>
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Phuc Loc Nguyen — Workspace">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -74,25 +81,19 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
   </script>
   <meta name="theme-color" content="#FFFFFF">
   <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="en" href={canonicalUrl.href} />
+  <link rel="alternate" hreflang="x-default" href={canonicalUrl.href} />
+  <link rel="alternate" type="text/markdown" href={markdownUrl} title="Markdown version" />
   
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
 
-  <ViewTransitions />
+  <link rel="preload" href={interLatinFont} as="font" type="font/woff2" crossorigin />
+
+  <ViewTransitions fallback="swap" />
   <script is:inline type="application/ld+json" set:html={jsonLd}></script>
 
-  <style is:global>
-    /* Clean, rock-solid page navigation — no jitter, no screen shaking, no blur */
-    ::view-transition-group(root),
-    ::view-transition-image-pair(root),
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation: none !important;
-      transform: none !important;
-      mix-blend-mode: normal !important;
-    }
-  </style>
 </head>
 
 <body>
@@ -103,7 +104,7 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
     <div class="mac-window-container">
       
       <!-- Desktop Window Titlebar (44px, white background, traffic lights) -->
-      <MacTitlebar title="Phuc Loc Nguyen — Workspace" />
+      <MacTitlebar title="Phuc Loc Nguyen — Workspace" currentPath={currentPath} />
 
       <!-- Mobile Sticky Top Bar (< 1024px) -->
       <header class="mobile-topbar" aria-label="Mobile Navigation Bar">
@@ -119,9 +120,7 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
           </button>
           <span class="mobile-page-label">{mobileLabel}</span>
         </div>
-        <a href="/contact" class="dash-button dash-button--secondary" style="min-height:32px;padding:4px 10px;font-size:0.75rem;">
-          Contact
-        </a>
+        <div class="mobile-topbar-right" style="display: flex; align-items: center; gap: 6px;"></div>
       </header>
 
       <!-- Two-column Body: 232px Sidebar + Main Content -->
@@ -131,18 +130,24 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
         <DashboardSidebar currentPath={currentPath} />
 
         <!-- Main Workspace Document Surface -->
-        <main id="main-content" class="workspace-main">
+        <main
+          id="main-content"
+          class="workspace-main"
+          tabindex="-1"
+          transition:name="workspace-document"
+          transition:animate="initial"
+        >
           
           <div class={contentClass}>
             <!-- Optional Breadcrumbs if provided -->
             {breadcrumbs && breadcrumbs.length > 0 && (
-              <nav class="dash-breadcrumbs" aria-label="Breadcrumbs" style="margin-bottom: 1.25rem;">
-                <ol style="display:flex;align-items:center;gap:0.4rem;list-style:none;margin:0;padding:0;font-size:0.8125rem;color:var(--dash-muted);">
+              <nav class="dash-breadcrumbs" aria-label="Breadcrumbs" style="margin-bottom: var(--space-6);">
+                <ol style="display:flex;align-items:center;gap:0.4rem;list-style:none;margin:0;padding:0;font-size:var(--text-body-sm);color:var(--dash-muted);">
                   {breadcrumbs.map((crumb, idx) => (
                     <li style="display:inline-flex;align-items:center;gap:0.4rem;">
                       {idx > 0 && <span style="opacity:0.5;display:inline-flex;"><ChevronRight size={12} aria-hidden="true" /></span>}
                       {crumb.href ? (
-                        <a href={crumb.href} style="color:inherit;" class="dash-crumb-link">
+                        <a href={crumb.href} style="color:inherit;" class="dash-crumb-link" data-astro-prefetch>
                           {crumb.label}
                         </a>
                       ) : (
@@ -166,144 +171,6 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
 
   </div>
 
-  <!-- Mobile Drawer + Reveal Script -->
-  <script is:inline>
-    (() => {
-      const state = window.__locDashboardMotion ||= {};
-      const root = document.documentElement;
-      root.classList.add("js");
-
-      function setupMobileDrawer() {
-        state.drawerAbort?.abort();
-
-        const controller = new AbortController();
-        const { signal } = controller;
-        state.drawerAbort = controller;
-
-        const toggleBtn = document.getElementById("mobile-drawer-toggle");
-        const closeBtn = document.getElementById("dash-drawer-close");
-        const sidebar = document.getElementById("dash-sidebar");
-        const backdrop = document.getElementById("dash-drawer-backdrop");
-
-        function openDrawer() {
-          sidebar?.classList.add("is-open");
-          backdrop?.classList.add("is-open");
-          toggleBtn?.setAttribute("aria-expanded", "true");
-          document.body.style.overflow = "hidden";
-        }
-
-        function closeDrawer() {
-          sidebar?.classList.remove("is-open");
-          backdrop?.classList.remove("is-open");
-          toggleBtn?.setAttribute("aria-expanded", "false");
-          document.body.style.overflow = "";
-        }
-
-        toggleBtn?.addEventListener("click", () => {
-          const isOpen = sidebar?.classList.contains("is-open");
-          if (isOpen) closeDrawer();
-          else openDrawer();
-        }, { signal });
-
-        closeBtn?.addEventListener("click", closeDrawer, { signal });
-        backdrop?.addEventListener("click", closeDrawer, { signal });
-
-        window.addEventListener("keydown", (event) => {
-          if (event.key === "Escape" && sidebar?.classList.contains("is-open")) {
-            closeDrawer();
-          }
-        }, { signal });
-      }
-
-      function setupScrollReveals() {
-        state.revealObserver?.disconnect();
-
-        const elements = Array.from(document.querySelectorAll('.r, .toki-r, .reveal, .dash-reveal'));
-        if (!elements.length) return;
-
-        const reveal = (element) => element.classList.add('in', 'is-in');
-        const mobileLite = window.matchMedia("(max-width: 768px)").matches;
-
-        if (mobileLite) {
-          elements.forEach(reveal);
-          return;
-        }
-
-        const isInInitialViewport = (element) => {
-          const rect = element.getBoundingClientRect();
-          return rect.top < window.innerHeight + 72 && rect.bottom > -72;
-        };
-
-        if (!('IntersectionObserver' in window)) {
-          elements.forEach(reveal);
-          return;
-        }
-
-        elements.forEach((element) => {
-          if (isInInitialViewport(element)) reveal(element);
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              reveal(entry.target);
-              observer.unobserve(entry.target);
-            }
-          });
-        }, {
-          threshold: 0.06,
-          rootMargin: '0px 0px -36px 0px'
-        });
-
-        elements.forEach((element) => {
-          if (!element.classList.contains('in') && !element.classList.contains('is-in')) {
-            observer.observe(element);
-          }
-        });
-
-        state.revealObserver = observer;
-      }
-
-      state.initPageEffects = () => {
-        setupMobileDrawer();
-        setupScrollReveals();
-      };
-
-      if (!state.bound) {
-        state.bound = true;
-
-        document.addEventListener("astro:before-swap", () => {
-          root.classList.add("is-page-swapping");
-          state.drawerAbort?.abort();
-          state.revealObserver?.disconnect();
-          document.body.style.overflow = "";
-        });
-
-        document.addEventListener("astro:after-swap", () => {
-          state.initPageEffects?.();
-          if (window.matchMedia("(max-width: 768px)").matches) {
-            root.classList.remove("is-page-swapping");
-          } else {
-            requestAnimationFrame(() => root.classList.remove("is-page-swapping"));
-          }
-        });
-
-        document.addEventListener("astro:page-load", () => {
-          state.initPageEffects?.();
-          if (window.matchMedia("(max-width: 768px)").matches) {
-            root.classList.remove("is-page-swapping");
-          } else {
-            requestAnimationFrame(() => root.classList.remove("is-page-swapping"));
-          }
-        });
-
-        window.addEventListener("pageshow", () => state.initPageEffects?.());
-      }
-
-      if (document.readyState === "complete" || document.readyState === "interactive") {
-        state.initPageEffects();
-      }
-    })();
-  </script>
+  <script src="../scripts/dashboard.ts"></script>
 </body>
 </html>

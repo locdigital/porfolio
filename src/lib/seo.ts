@@ -1,5 +1,5 @@
 export const SITE_URL = "https://loc.digital";
-export const SITE_NAME = "Lộc Digital";
+export const SITE_NAME = "Loc Digital";
 export const PERSON_NAME = "Phuc Loc Nguyen";
 export const DEFAULT_DESCRIPTION =
   "Senior Performance Marketing Executive based in Ho Chi Minh City. Helping brands scale paid media, TikTok Shop GMV, SEO growth, automation, and full-funnel campaigns.";
@@ -23,6 +23,7 @@ export function personSchema(): JsonLd {
     "@type": "Person",
     "@id": `${SITE_URL}/#person`,
     name: PERSON_NAME,
+    description: DEFAULT_DESCRIPTION,
     url: SITE_URL,
     image: DEFAULT_OG_IMAGE,
     jobTitle: "Senior Performance Marketing Executive",

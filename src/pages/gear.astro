@@ -1,6 +1,7 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
 import { getGear } from "../lib/cms";
+import ResponsiveImage from "../components/ui/ResponsiveImage.astro";
 
 export const prerender = true;
 
@@ -29,45 +30,50 @@ const imageScaleBySlug: Record<string, number> = {
   </header>
 
   <!-- Gear Sections -->
-  <div style="display: flex; flex-direction: column; gap: var(--space-12);">
-    {sections.map((section: any) => (
+  <div>
+    {sections.map((section: any, sectionIndex: number) => (
       <section class="page-section" aria-labelledby={`heading-${section.title?.toLowerCase().replace(/\s+/g, '-')}`}>
-        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: var(--docs-space-section-header-bottom, 16px);">
           <div>
             <h2 id={`heading-${section.title?.toLowerCase().replace(/\s+/g, '-')}`} class="section-title" style="margin: 0 0 4px;">
               {section.title}
             </h2>
             {section.description && (
-              <p style="font-size: 0.875rem; color: var(--dash-muted); margin: 0;">
+              <p style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--dash-muted); margin: 0;">
                 {section.description}
               </p>
             )}
           </div>
-          <span style="font-size: 0.75rem; color: var(--dash-muted); white-space: nowrap;">
+          <span style="font-size: var(--text-body-sm); font-weight: var(--font-weight-medium); color: var(--dash-muted); white-space: nowrap;">
             {section.items?.length || 0} items
           </span>
         </div>
 
         <!-- Items Grid -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">
-          {section.items?.map((item: any) => (
-            <div class="dash-card" style="--card-outer-radius: 18px; --card-padding: 12px; border-radius: var(--card-outer-radius); padding: var(--card-padding);">
+        <div class="gear-items-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--docs-space-grid-gap, 16px);">
+          {section.items?.map((item: any, itemIndex: number) => (
+            <div class="dash-card gear-item-card" style="--card-outer-radius: 20px; --card-padding: 14px; border-radius: var(--card-outer-radius); padding: var(--card-padding);">
               {item.image && (
-                <div style="aspect-ratio: 16/10; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; background: #EFEFED; border: var(--dash-border-width, 0.9px) solid var(--dash-border); margin-bottom: 10px;">
-                  <img 
+                <div class="gear-item-media" style="aspect-ratio: 16/10; border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding))); overflow: hidden; background: var(--dash-surface-subtle); border: var(--dash-border-width, 1px) solid var(--dash-border); margin-bottom: 12px;">
+                  <ResponsiveImage
                     src={item.image} 
                     alt={item.name} 
+                    width={720}
+                    height={450}
+                    widths={[320, 360, 480, 720]}
+                    sizes="(max-width: 768px) 50vw, 300px"
                     style={`width: 100%; height: 100%; object-fit: cover;${imageScaleBySlug[item.slug] ? ` transform: scale(${imageScaleBySlug[item.slug]});` : ""}`}
-                    loading="lazy"
+                    loading={sectionIndex === 0 && itemIndex === 0 ? "eager" : "lazy"}
+                    fetchpriority={sectionIndex === 0 && itemIndex === 0 ? "high" : "auto"}
                   />
                 </div>
               )}
 
-              <h3 class="item-title" style="margin: 0 0 6px; font-size: 0.9375rem;">
+              <h3 class="item-title gear-item-title" style="font-size: var(--text-h4); margin: 0 0 var(--space-1);">
                 {item.name}
               </h3>
 
-              <p style="font-size: 0.8125rem; line-height: 1.5; color: var(--dash-muted); margin: 0;">
+              <p class="gear-item-desc" style="font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-muted); margin: 0;">
                 {item.description}
               </p>
             </div>
@@ -77,3 +83,34 @@ const imageScaleBySlug: Record<string, number> = {
     ))}
   </div>
 </DashboardLayout>
+
+<style>
+  @media (max-width: 768px) {
+    .gear-items-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 12px 10px !important;
+    }
+
+    .gear-item-card {
+      --card-outer-radius: 14px !important;
+      --card-padding: 10px !important;
+      min-width: 0;
+      padding: 10px !important;
+    }
+
+    .gear-item-media {
+      margin-bottom: 8px !important;
+    }
+
+    .gear-item-title {
+      font-size: var(--text-body-sm) !important;
+      line-height: var(--leading-snug) !important;
+      margin-bottom: 4px !important;
+    }
+
+    .gear-item-desc {
+      font-size: var(--text-caption) !important;
+      line-height: var(--leading-compact) !important;
+    }
+  }
+</style>

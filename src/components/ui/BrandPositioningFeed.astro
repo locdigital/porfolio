@@ -1,6 +1,7 @@
 ---
 import instagramPosts from "../../data/instagram-workflowspace.json";
 import { ExternalLink, Heart, MessageCircle, Instagram } from "../icons/majesticons";
+import ResponsiveImage from "./ResponsiveImage.astro";
 
 // Deterministic like/comment generators so metrics stay stable per shortcode
 function getSimulatedMetrics(shortcode: string) {
@@ -114,11 +115,13 @@ const enrichedPosts = instagramPosts.map((post) => ({
           data-timestamp={post.timestamp}
           title="View post on Instagram"
         >
-          <img
+          <ResponsiveImage
             src={post.image}
             alt={`WorkFlow Space Post ${post.shortcode}`}
-            loading={idx < 10 ? "eager" : "lazy"}
-            decoding="async"
+            width={480}
+            height={480}
+            widths={[240, 480, 720]}
+            sizes="(max-width: 600px) 33vw, (max-width: 900px) 25vw, (max-width: 1023px) 20vw, 192px"
             class="ig-post-img"
           />
 
@@ -155,7 +158,7 @@ const enrichedPosts = instagramPosts.map((post) => ({
   </div>
 </div>
 
-<script is:inline>
+<script is:inline data-astro-rerun>
   (() => {
     const grid = document.getElementById("ig-posts-grid");
     if (!grid) return;
@@ -183,7 +186,7 @@ const enrichedPosts = instagramPosts.map((post) => ({
 <style>
   .brand-positioning-block {
     width: 100%;
-    font-family: var(--font-sans);
+    font-family: var(--font-family-base);
   }
 
   .brand-feed-header {
@@ -214,17 +217,17 @@ const enrichedPosts = instagramPosts.map((post) => ({
   }
 
   .brand-feed-subtitle {
-    font-size: 0.8125rem; /* 13px */
+    font-size: var(--text-caption);
     color: var(--dash-muted);
-    font-weight: 400;
+    font-weight: var(--font-weight-regular);
   }
 
   .brand-feed-ig-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
     color: var(--dash-muted);
     text-decoration: none;
     transition: color 140ms ease;
@@ -236,16 +239,16 @@ const enrichedPosts = instagramPosts.map((post) => ({
 
   .brand-feed-heading {
     margin: 0 0 10px;
-    font-size: 1.375rem; /* 22px, matching section-title */
-    line-height: 1.364;
-    font-weight: 600;
-    letter-spacing: -0.015em;
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-heading);
     color: var(--dash-text);
   }
 
   .brand-feed-lead {
-    font-size: 0.875rem; /* 14px compact */
-    line-height: 1.6;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
     color: var(--dash-muted);
     width: 100%;
     margin: 0 0 20px;
@@ -259,33 +262,33 @@ const enrichedPosts = instagramPosts.map((post) => ({
   }
 
   .brand-metric-card {
-    background: var(--dash-surface);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    border-radius: var(--radius-control); /* 6px */
-    padding: 12px 14px;
+    background: var(--color-ivory);
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
+    border-radius: 12px;
+    padding: 14px 16px;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
 
   .brand-metric-label {
-    font-family: var(--font-sans);
-    font-size: 0.75rem; /* 12px */
-    font-weight: 500;
-    color: var(--dash-muted);
+    font-family: var(--font-family-base);
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-fog);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-caps);
     margin-bottom: 4px;
-    line-height: 1.3;
+    line-height: var(--leading-heading);
   }
 
   .brand-metric-val {
-    font-family: var(--font-sans);
-    font-size: 1.25rem; /* 20px */
-    font-weight: 600;
-    color: var(--dash-text);
-    line-height: 1.2;
-    letter-spacing: -0.015em;
+    font-family: var(--font-family-base);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-jet);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
     font-variant-numeric: tabular-nums;
   }
 
@@ -323,13 +326,13 @@ const enrichedPosts = instagramPosts.map((post) => ({
   }
 
   .brand-feed-toolbar-name {
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
     color: var(--dash-text);
   }
 
   .brand-feed-toolbar-count {
-    font-size: 0.75rem;
+    font-size: var(--text-caption);
     color: var(--dash-muted);
   }
 
@@ -349,21 +352,17 @@ const enrichedPosts = instagramPosts.map((post) => ({
     border: none;
     background: transparent;
     color: var(--dash-muted);
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
     font-family: inherit;
     cursor: pointer;
     transition: background 120ms ease, color 120ms ease;
   }
 
-  .ig-sort-btn:hover {
-    color: var(--dash-text);
-  }
-
   .ig-sort-btn.active {
     background: var(--dash-primary);
     color: var(--dash-on-primary);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
   }
 
   /* Posts Grid */
@@ -456,8 +455,8 @@ const enrichedPosts = instagramPosts.map((post) => ({
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
   }
 
   .ig-post-stat {
@@ -467,12 +466,15 @@ const enrichedPosts = instagramPosts.map((post) => ({
   }
 
   .ig-open-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     padding: 2px 8px;
     border-radius: 9999px;
     background: rgba(255, 255, 255, 0.2);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-label);
   }
 
   /* Responsive Breakpoints */
@@ -491,10 +493,6 @@ const enrichedPosts = instagramPosts.map((post) => ({
     .brand-posts-grid {
       grid-template-columns: repeat(3, 1fr);
       gap: 4px;
-    }
-
-    .brand-feed-heading {
-      font-size: 1.25rem;
     }
   }
 </style>
