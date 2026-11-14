@@ -1,0 +1,195 @@
+{
+  "slug": "ha-long-bay",
+  "order": 18,
+  "type": "check-in",
+  "location": "Hạ Long Bay",
+  "name": "Hạ Long Bay",
+  "country": "Vietnam",
+  "region": "Northern Vietnam",
+  "headline": "Limestone islands and open water.",
+  "description": "Photographs from Hạ Long Bay.",
+  "images": [
+    {
+      "id": "ha-long-bay-dsc_5041",
+      "src": "/assets/photos/ha-long-bay/DSC_5041.webp",
+      "alt": "Hạ Long Bay — DSC_5041",
+      "width": 2400,
+      "height": 1600,
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "ha-long-bay-dsc_4875",
+      "src": "/assets/photos/ha-long-bay/DSC_4875.webp",
+      "alt": "Hạ Long Bay — DSC_4875",
+      "width": 2400,
+      "height": 1600,
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4884",
+      "src": "/assets/photos/ha-long-bay/DSC_4884.webp",
+      "alt": "Hạ Long Bay — DSC_4884",
+      "width": 2400,
+      "height": 1600,
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4895",
+      "src": "/assets/photos/ha-long-bay/DSC_4895.webp",
+      "alt": "Hạ Long Bay — DSC_4895",
+      "width": 1600,
+      "height": 2400,
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4897",
+      "src": "/assets/photos/ha-long-bay/DSC_4897.webp",
+      "alt": "Hạ Long Bay — DSC_4897",
+      "width": 2400,
+      "height": 1600,
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4935",
+      "src": "/assets/photos/ha-long-bay/DSC_4935.webp",
+      "alt": "Hạ Long Bay — DSC_4935",
+      "width": 2400,
+      "height": 1600,
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4946",
+      "src": "/assets/photos/ha-long-bay/DSC_4946.webp",
+      "alt": "Hạ Long Bay — DSC_4946",
+      "width": 2400,
+      "height": 1600,
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4949",
+      "src": "/assets/photos/ha-long-bay/DSC_4949.webp",
+      "alt": "Hạ Long Bay — DSC_4949",
+      "width": 2400,
+      "height": 1600,
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4954",
+      "src": "/assets/photos/ha-long-bay/DSC_4954.webp",
+      "alt": "Hạ Long Bay — DSC_4954",
+      "width": 2400,
+      "height": 1600,
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_4992",
+      "src": "/assets/photos/ha-long-bay/DSC_4992.webp",
+      "alt": "Hạ Long Bay — DSC_4992",
+      "width": 2400,
+      "height": 1600,
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5000",
+      "src": "/assets/photos/ha-long-bay/DSC_5000.webp",
+      "alt": "Hạ Long Bay — DSC_5000",
+      "width": 1600,
+      "height": 2400,
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5006",
+      "src": "/assets/photos/ha-long-bay/DSC_5006.webp",
+      "alt": "Hạ Long Bay — DSC_5006",
+      "width": 2400,
+      "height": 1600,
+      "order": 12,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5007",
+      "src": "/assets/photos/ha-long-bay/DSC_5007.webp",
+      "alt": "Hạ Long Bay — DSC_5007",
+      "width": 2400,
+      "height": 1600,
+      "order": 13,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5016",
+      "src": "/assets/photos/ha-long-bay/DSC_5016.webp",
+      "alt": "Hạ Long Bay — DSC_5016",
+      "width": 2400,
+      "height": 1600,
+      "order": 14,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5019",
+      "src": "/assets/photos/ha-long-bay/DSC_5019.webp",
+      "alt": "Hạ Long Bay — DSC_5019",
+      "width": 2400,
+      "height": 1600,
+      "order": 15,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5023",
+      "src": "/assets/photos/ha-long-bay/DSC_5023.webp",
+      "alt": "Hạ Long Bay — DSC_5023",
+      "width": 1600,
+      "height": 2400,
+      "order": 16,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5035",
+      "src": "/assets/photos/ha-long-bay/DSC_5035.webp",
+      "alt": "Hạ Long Bay — DSC_5035",
+      "width": 2400,
+      "height": 1600,
+      "order": 17,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5038",
+      "src": "/assets/photos/ha-long-bay/DSC_5038.webp",
+      "alt": "Hạ Long Bay — DSC_5038",
+      "width": 2400,
+      "height": 1600,
+      "order": 18,
+      "isCover": false
+    },
+    {
+      "id": "ha-long-bay-dsc_5040",
+      "src": "/assets/photos/ha-long-bay/DSC_5040.webp",
+      "alt": "Hạ Long Bay — DSC_5040",
+      "width": 2400,
+      "height": 1600,
+      "order": 19,
+      "isCover": false
+    }
+  ],
+  "published": true,
+  "heroImage": {
+    "id": "ha-long-bay-dsc_5041",
+    "src": "/assets/photos/ha-long-bay/DSC_5041.webp",
+    "alt": "Hạ Long Bay — DSC_5041",
+    "width": 2400,
+    "height": 1600,
+    "order": 1,
+    "isCover": true
+  },
+  "seoImage": "/assets/photos/ha-long-bay/DSC_5041.webp"
+}

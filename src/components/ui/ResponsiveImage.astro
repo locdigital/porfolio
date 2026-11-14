@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { ImageQuality } from "astro";
+import { responsiveImageAttributes } from "../../lib/photo-assets";
+
+interface Props extends Omit<HTMLAttributes<"img">, "src" | "width" | "height"> {
+  src: string;
+  width: number;
+  height: number;
+  widths?: number[];
+  quality?: ImageQuality;
+}
+
+const { src, width, height, widths, sizes, quality, loading = "lazy", decoding = "async", ...attributes } = Astro.props;
+const image = await responsiveImageAttributes(src, { width, height, widths, sizes: sizes ?? undefined, quality });
+---
+
+<img {...attributes} {...image} loading={loading} decoding={decoding} />

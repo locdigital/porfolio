@@ -1,0 +1,132 @@
+{
+  "slug": "sai-gon",
+  "order": 21,
+  "type": "check-in",
+  "location": "Sài Gòn",
+  "name": "Sài Gòn",
+  "country": "Vietnam",
+  "region": "Southern Vietnam",
+  "headline": "Small encounters around the city.",
+  "description": "Photographs from Sài Gòn.",
+  "images": [
+    {
+      "id": "sai-gon-dsc_3588",
+      "src": "/assets/photos/sai-gon/DSC_3588.webp",
+      "alt": "Sài Gòn — DSC_3588",
+      "width": 1600,
+      "height": 2400,
+      "order": 1,
+      "isCover": true
+    },
+    {
+      "id": "sai-gon-dsc_3572",
+      "src": "/assets/photos/sai-gon/DSC_3572.webp",
+      "alt": "Sài Gòn — DSC_3572",
+      "width": 1600,
+      "height": 2400,
+      "order": 2,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3581",
+      "src": "/assets/photos/sai-gon/DSC_3581.webp",
+      "alt": "Sài Gòn — DSC_3581",
+      "width": 1600,
+      "height": 2400,
+      "order": 3,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3583",
+      "src": "/assets/photos/sai-gon/DSC_3583.webp",
+      "alt": "Sài Gòn — DSC_3583",
+      "width": 1600,
+      "height": 2400,
+      "order": 4,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3585",
+      "src": "/assets/photos/sai-gon/DSC_3585.webp",
+      "alt": "Sài Gòn — DSC_3585",
+      "width": 1600,
+      "height": 2400,
+      "order": 5,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3587",
+      "src": "/assets/photos/sai-gon/DSC_3587.webp",
+      "alt": "Sài Gòn — DSC_3587",
+      "width": 1600,
+      "height": 2400,
+      "order": 6,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3625",
+      "src": "/assets/photos/sai-gon/DSC_3625.webp",
+      "alt": "Sài Gòn — DSC_3625",
+      "width": 1600,
+      "height": 2400,
+      "order": 7,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3626",
+      "src": "/assets/photos/sai-gon/DSC_3626.webp",
+      "alt": "Sài Gòn — DSC_3626",
+      "width": 1600,
+      "height": 2400,
+      "order": 8,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3628",
+      "src": "/assets/photos/sai-gon/DSC_3628.webp",
+      "alt": "Sài Gòn — DSC_3628",
+      "width": 1600,
+      "height": 2400,
+      "order": 9,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3647",
+      "src": "/assets/photos/sai-gon/DSC_3647.webp",
+      "alt": "Sài Gòn — DSC_3647",
+      "width": 1600,
+      "height": 2400,
+      "order": 10,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3652",
+      "src": "/assets/photos/sai-gon/DSC_3652.webp",
+      "alt": "Sài Gòn — DSC_3652",
+      "width": 1600,
+      "height": 2400,
+      "order": 11,
+      "isCover": false
+    },
+    {
+      "id": "sai-gon-dsc_3659",
+      "src": "/assets/photos/sai-gon/DSC_3659.webp",
+      "alt": "Sài Gòn — DSC_3659",
+      "width": 1600,
+      "height": 2400,
+      "order": 12,
+      "isCover": false
+    }
+  ],
+  "published": true,
+  "heroImage": {
+    "id": "sai-gon-dsc_3588",
+    "src": "/assets/photos/sai-gon/DSC_3588.webp",
+    "alt": "Sài Gòn — DSC_3588",
+    "width": 1600,
+    "height": 2400,
+    "order": 1,
+    "isCover": true
+  },
+  "seoImage": "/assets/photos/sai-gon/DSC_3588.webp"
+}

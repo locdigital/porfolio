@@ -12,8 +12,8 @@
     "icons:generate": "node scripts/generate-majesticons.mjs",
     "prestart": "node scripts/ensure-node-20.mjs",
     "start": "astro dev",
-    "prebuild": "node scripts/ensure-node-20.mjs",
-    "build": "astro check && astro build && node scripts/patch-vercel-runtime.mjs",
+    "prebuild": "node scripts/ensure-node-20.mjs && node scripts/sync-photo-updates.mjs",
+    "build": "astro check && astro build && node scripts/patch-vercel-runtime.mjs && node scripts/build-agent-content.mjs",
     "precheck": "node scripts/ensure-node-20.mjs",
     "check": "astro check",
     "pretest": "node scripts/ensure-node-20.mjs",
@@ -54,6 +54,7 @@
     "@types/node": "^20.19.43",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "parse5": "7.3.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.15"
   }

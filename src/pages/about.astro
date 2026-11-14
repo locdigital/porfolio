@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
+import PhotoStackShowcase from "../components/about/PhotoStackShowcase.astro";
 
 const aboutParagraphs = [
   "I started exploring social media in ninth grade and was buying and selling Facebook pages by the time I finished high school. Back then, I didn’t know I was learning marketing. I was figuring things out and finding ways to make money. Studying Graphic Design at Arena and Digital Marketing at FPT University eventually gave a name—and some structure—to the skills I’d been teaching myself.",
@@ -9,37 +10,6 @@ const aboutParagraphs = [
   "Photography has been with me since childhood. Before I owned a camera, I used to make a rectangle with my fingers to frame whatever caught my eye. That little habit became a big reason to save up for my first camera.",
   "These days, photography and trekking fit naturally together. They give me a reason to explore, slow down, and notice things I might otherwise miss. My laptop still comes along on most trips, though. Apparently, travelling light has its limits.",
   "I like things that look simple at first, then reward a closer look. A thoughtful detail, a useful idea, a photograph that makes you pause. That’s the kind of care I try to bring to my work, too."
-];
-
-const lifestylePursuits = [
-  {
-    title: "Landscape & Street",
-    category: "Photography",
-    image: "/images/about-lifestyle/01-landscape-photography.webp",
-    href: "/photos",
-    linkText: "View photos"
-  },
-  {
-    title: "Highland Trails",
-    category: "Trekking & Cycling",
-    image: "/images/about-lifestyle/03-highland-trails.webp",
-    href: "/photos",
-    linkText: "See gallery"
-  },
-  {
-    title: "Slow Coffee",
-    category: "Mindfulness",
-    image: "/images/about-lifestyle/04-specialty-coffee.webp",
-    href: "/contact",
-    linkText: "Connect"
-  },
-  {
-    title: "Gear & Vibe Coding",
-    category: "Tools & AI",
-    image: "/images/about-lifestyle/05-ai-automation.webp",
-    href: "/gear",
-    linkText: "Explore gear"
-  }
 ];
 ---
 
@@ -71,55 +41,8 @@ const lifestylePursuits = [
     </div>
   </section>
 
-  <!-- Lifestyle & Pursuits (4-column grid matching Resume Working Areas) -->
-  <section class="page-section" aria-labelledby="heading-lifestyle">
-    <div class="section-title-row">
-      <h2 id="heading-lifestyle" class="section-title" style="margin-bottom: 0;">In my free time</h2>
-      <span class="section-count">4 pursuits</span>
-    </div>
-
-    <div class="lifestyle-grid">
-      {lifestylePursuits.map((item) => (
-        <a href={item.href} class="lifestyle-card" aria-label={`${item.title}: ${item.linkText}`}>
-          <img
-            src={item.image}
-            alt={item.title}
-            loading="lazy"
-            decoding="async"
-            fetchpriority="low"
-            sizes="(max-width: 768px) calc((100vw - 10px - 12px) / 2), 25vw"
-            class="lifestyle-img"
-          />
-          <span class="lifestyle-caption">
-            <span class="lifestyle-category">{item.category}</span>
-            <span class="lifestyle-title">{item.title}</span>
-          </span>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- Quick Explore Strip -->
-  <section class="page-section" aria-label="Portfolio and resume quick links">
-    <div class="about-cta-strip">
-      <div class="about-cta-text">
-        <div style="font-weight: 600; color: var(--dash-text); font-size: 0.9375rem; margin-bottom: 2px;">
-          Want to explore the work and detailed background?
-        </div>
-        <div style="font-size: 0.8125rem; color: var(--dash-muted);">
-          Review verified campaign metrics, agency retainers, and chronological experience.
-        </div>
-      </div>
-      <div class="about-cta-actions">
-        <a href="/work" class="dash-button dash-button--primary">
-          View Selected Work
-        </a>
-        <a href="/resume" class="dash-button dash-button--secondary">
-          View Resume
-        </a>
-      </div>
-    </div>
-  </section>
+  <!-- Photo Stack Showcase (4 random albums from Photos) -->
+  <PhotoStackShowcase />
 
 </DashboardLayout>
 
@@ -143,14 +66,13 @@ const lifestylePursuits = [
     width: 100%;
   }
 
-  .page-lead,
   .about-story-prose p {
     max-width: none;
     width: 100%;
-    margin: 0 0 16px;
-    color: var(--dash-text);
-    font-size: var(--font-size-base, 14px);
-    line-height: 1.72;
+    margin: 0 0 var(--space-para-to-para, 16px);
+    color: var(--color-jet);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
   }
 
   .about-story-prose p:last-child {
@@ -166,9 +88,9 @@ const lifestylePursuits = [
   }
 
   .section-count {
-    font-size: 0.75rem;
+    font-size: var(--text-body-sm);
     color: var(--dash-muted);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
   }
 
   .lifestyle-grid {
@@ -189,26 +111,26 @@ const lifestylePursuits = [
     border-radius: 20px;
     background: var(--dash-surface);
     border: var(--dash-border-width, 0.9px) solid var(--dash-border-subtle, rgba(0, 0, 0, 0.08));
-    box-shadow: none;
+    box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.45);
     text-decoration: none;
     transform: rotate(var(--lifestyle-tilt, 0deg));
-    transform-origin: center center;
+    transition: none;
   }
 
   .lifestyle-card:nth-child(1) {
-    --lifestyle-tilt: -2.8deg;
+    --lifestyle-tilt: -1.6deg;
   }
 
   .lifestyle-card:nth-child(2) {
-    --lifestyle-tilt: 2.8deg;
+    --lifestyle-tilt: 1.9deg;
   }
 
   .lifestyle-card:nth-child(3) {
-    --lifestyle-tilt: -2.2deg;
+    --lifestyle-tilt: -1.2deg;
   }
 
   .lifestyle-card:nth-child(4) {
-    --lifestyle-tilt: 2.4deg;
+    --lifestyle-tilt: 1.4deg;
   }
 
   .lifestyle-img {
@@ -250,9 +172,9 @@ const lifestylePursuits = [
     background: rgba(0, 0, 0, 0.46);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-compact);
   }
 
   .lifestyle-category::before {
@@ -265,9 +187,10 @@ const lifestylePursuits = [
 
   .lifestyle-title {
     color: #FFFFFF;
-    font-size: clamp(1rem, 1.45vw, 1.35rem);
-    line-height: 1.1;
-    font-weight: var(--heading-weight);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: var(--font-weight-medium);
+    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.4);
   }
 
   .lifestyle-card:focus-visible {
@@ -275,17 +198,17 @@ const lifestylePursuits = [
     outline-offset: 4px;
   }
 
-  /* Quick action strip */
+  /* Quick action strip (Warm Ivory #F9F8F6 & 16px radius) */
   .about-cta-strip {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
-    padding: 16px 20px;
-    background: var(--dash-surface);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    border-radius: var(--radius-window, 10px);
+    padding: var(--docs-space-card-padding, 24px);
+    background: var(--color-ivory);
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
+    border-radius: var(--docs-card-radius, 16px);
   }
 
   .about-cta-actions {
@@ -296,7 +219,7 @@ const lifestylePursuits = [
   }
 
   /* Responsive Breakpoints */
-  @media (max-width: 1100px) and (min-width: 769px) {
+  @media (max-width: 1100px) {
     .lifestyle-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       max-width: 760px;
@@ -304,71 +227,29 @@ const lifestylePursuits = [
     }
   }
 
-  @media (max-width: 768px) {
-    .page-lead,
-    .about-story-prose p {
-      font-size: var(--font-size-base, 10px) !important;
-      line-height: 1.65 !important;
-      margin-bottom: 12px;
-    }
-
-    .section-title-row {
-      align-items: flex-start;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
+  @media (max-width: 640px) {
     .lifestyle-grid {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--mobile-page-edge, 16px);
-      -webkit-overflow-scrolling: touch;
-      gap: 16px;
-      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
-      padding-inline: var(--mobile-page-edge, 16px);
-      padding-top: 18px;
-      padding-bottom: 26px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      width: calc(100% + (var(--mobile-page-edge, 16px) * 2));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       max-width: none;
-    }
-
-    .lifestyle-grid::-webkit-scrollbar {
-      display: none;
+      gap: 12px;
+      padding: 4px 0 8px;
     }
 
     .lifestyle-card {
-      flex: 0 0 clamp(230px, 70vw, 280px);
-      width: clamp(230px, 70vw, 280px);
-      max-width: 78vw;
       aspect-ratio: 4 / 5;
-      border-radius: 20px;
-      scroll-snap-align: start;
-      transform: rotate(var(--lifestyle-tilt, 0deg));
-      transform-origin: center center;
-      box-shadow: none;
+      border-radius: 14px;
+      transform: rotate(0deg);
     }
 
     .lifestyle-caption {
-      left: 14px;
-      right: 14px;
-      bottom: 14px;
-      gap: 6px;
-    }
-
-    .lifestyle-category {
-      padding: 4px 10px;
-      font-size: 0.6875rem;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
     }
 
     .lifestyle-title {
-      font-size: 1.125rem;
-      line-height: 1.15;
+      font-size: var(--text-body-sm);
+      line-height: var(--leading-snug);
     }
 
     .about-story-container {
@@ -378,37 +259,22 @@ const lifestylePursuits = [
     .about-cta-strip {
       flex-direction: column;
       align-items: flex-start;
-      gap: 12px;
-      padding: 12px;
-      border-radius: 12px;
+      padding: 16px;
     }
 
     .about-cta-actions {
       width: 100%;
-      flex-direction: column;
-      gap: 8px;
     }
 
     .about-cta-actions .dash-button {
-      width: 100%;
-      flex: none;
+      flex: 1;
       justify-content: center;
     }
   }
 
   @media (max-width: 359px) {
     .lifestyle-grid {
-      gap: 10px;
-    }
-
-    .lifestyle-card {
-      flex: 0 0 230px;
-      width: 230px;
-      border-radius: 16px;
-    }
-
-    .lifestyle-title {
-      font-size: 1rem;
+      grid-template-columns: 1fr;
     }
   }
 </style>

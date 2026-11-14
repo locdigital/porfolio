@@ -158,12 +158,12 @@ const skillClusters = [
       <div class="dash-callout-content">
         <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
           <div style="font-weight: 600; color: var(--dash-text);">FPT University</div>
-          <span style="font-size: 0.75rem; color: var(--dash-muted);">2019 — 2023 · Ho Chi Minh City</span>
+          <span style="font-size: var(--text-caption); color: var(--dash-muted);">2019 — 2023 · Ho Chi Minh City</span>
         </div>
-        <div style="font-size: 0.8125rem; font-weight: 500; color: var(--dash-accent); margin: 2px 0 6px;">
+        <div style="font-size: var(--text-body-sm); font-weight: 500; color: var(--dash-accent); margin: 2px 0 6px;">
           Bachelor of Digital Marketing · Graduated with Honors
         </div>
-        <p style="margin: 0; font-size: var(--font-size-base); color: var(--dash-muted); line-height: 1.55;">
+        <p style="margin: 0; font-size: var(--text-body-sm); color: var(--dash-muted); line-height: var(--leading-body);">
           Cumulative GPA: <strong style="color: var(--dash-text);">9.4 / 10</strong>. Specialization in digital marketing economics, customer acquisition modeling, and media data analytics.
         </p>
       </div>
@@ -173,33 +173,33 @@ const skillClusters = [
   <section id="career-timeline" class="page-section" aria-label="Chronological Employment History">
     <h2 class="section-title">Selected experience</h2>
 
-    <div style="display: flex; flex-direction: column; gap: var(--space-8);">
+    <div style="display: flex; flex-direction: column; gap: var(--docs-space-subsection-gap, 32px);">
       {experiences.map((exp) => (
-        <article class="resume-experience-card" style="border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); padding-bottom: var(--space-6);">
-          <div class="resume-experience-head" style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
-            <div class="resume-experience-title">
-              <span class="resume-role" style="font-size: 1.0625rem; font-weight: 600; color: var(--dash-accent);">{exp.role}</span>
-              <span class="resume-title-separator" style="color: var(--dash-muted); margin: 0 4px;">·</span>
-              <span class="resume-company" style="font-size: 0.9375rem; font-weight: 500; color: var(--dash-accent);">{exp.company}</span>
+        <article style="border-bottom: var(--dash-border-width, 1px) solid var(--dash-border); padding-bottom: var(--space-6);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
+            <div>
+              <h3 class="item-title" style="font-size: var(--text-body); display: inline; margin: 0; color: var(--dash-text);">{exp.role}</h3>
+              <span style="color: var(--dash-muted); margin: 0 6px;">·</span>
+              <span style="font-size: var(--text-body); font-weight: 500; color: var(--dash-accent);">{exp.company}</span>
             </div>
-            <span class="resume-period" style="font-size: 0.8125rem; color: var(--dash-muted); white-space: nowrap;">{exp.period}</span>
+            <span style="font-size: var(--text-body-sm); font-weight: 500; color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums;">{exp.period}</span>
           </div>
 
-          <div class="resume-meta-line" style="font-size: 0.75rem; color: var(--dash-muted); margin-bottom: 10px;">
+          <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); margin-bottom: 10px;">
             {exp.type} · {exp.location}
           </div>
 
-          <p class="resume-description" style="font-size: var(--font-size-base); line-height: 1.6; color: var(--dash-text); margin: 0 0 12px;">
+          <p style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--dash-text); margin: 0 0 12px;">
             {exp.description}
           </p>
 
-          <div class="resume-contributions" style="margin-bottom: 12px; padding: 10px 14px; background: var(--dash-surface-subtle); border-radius: var(--radius-control); border: var(--dash-border-width, 0.9px) solid var(--dash-border);">
-            <div class="resume-contrib-title" style="font-size: 0.75rem; font-weight: 600; color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+          <div style="margin-bottom: 12px; padding: 14px 18px; background: var(--color-ivory); border-radius: 12px; border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));">
+            <div style="font-size: var(--text-micro); font-weight: 600; color: var(--color-fog); text-transform: uppercase; margin-bottom: 6px; letter-spacing: var(--tracking-caps);">
               Notable contributions
             </div>
-            <ul class="resume-contrib-list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--docs-space-list-item-gap, 8px);">
               {exp.achievements.map((ach) => (
-                <li class="resume-contrib-item" style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--font-size-base); line-height: 1.5; color: var(--dash-text);">
+                <li style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text);">
                   <span class="dash-bullet" aria-hidden="true"></span>
                   <span>{ach}</span>
                 </li>
@@ -207,7 +207,7 @@ const skillClusters = [
             </ul>
           </div>
 
-          <div class="resume-tool-list" style="display: flex; flex-wrap: wrap; gap: 4px;">
+          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
             {exp.tools.map((t) => (
               <span class="dash-tag">{t}</span>
             ))}
@@ -222,13 +222,13 @@ const skillClusters = [
 
     <div class="skill-cluster-grid">
       {skillClusters.map((cluster) => (
-        <div class="dash-card skill-cluster-card" style="padding: 16px;">
-          <h3 class="skill-cluster-title" style="font-size: 1rem; font-weight: 600; color: var(--dash-text); margin: 0 0 10px;">
+        <div class="dash-card" style="padding: var(--docs-space-card-padding, 20px);">
+          <h3 class="item-title" style="font-size: var(--text-h4); margin: 0 0 var(--space-2);">
             {cluster.title}
           </h3>
-          <ul class="skill-cluster-list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--docs-space-list-item-gap, 8px);">
             {cluster.items.map((item) => (
-              <li class="skill-cluster-item" style="display: flex; align-items: center; gap: 6px; font-size: var(--font-size-base); color: var(--dash-muted);">
+              <li style="display: flex; align-items: center; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-muted);">
                 <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--dash-control-border);"></span>
                 <span>{item}</span>
               </li>
@@ -244,7 +244,7 @@ const skillClusters = [
   .skill-cluster-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
+    gap: var(--docs-space-grid-gap, 16px);
   }
 
   @media (max-width: 1100px) {
@@ -256,90 +256,6 @@ const skillClusters = [
   @media (max-width: 640px) {
     .skill-cluster-grid {
       grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .resume-experience-card {
-      padding-bottom: 22px !important;
-    }
-
-    .resume-experience-head {
-      align-items: flex-start !important;
-      flex-direction: column;
-      gap: 3px !important;
-      margin-bottom: 6px !important;
-    }
-
-    .resume-experience-title {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-
-    .resume-title-separator {
-      display: none;
-    }
-
-    .resume-role {
-      font-size: 1rem !important;
-      line-height: 1.35 !important;
-    }
-
-    .resume-company,
-    .resume-period,
-    .resume-meta-line {
-      font-size: 0.8125rem !important;
-      line-height: 1.4 !important;
-      white-space: normal !important;
-    }
-
-    .resume-description {
-      font-size: 0.875rem !important;
-      line-height: 1.58 !important;
-      margin-bottom: 10px !important;
-    }
-
-    .resume-contributions {
-      padding: 10px !important;
-      margin-bottom: 10px !important;
-      border-radius: 8px !important;
-    }
-
-    .resume-contrib-title {
-      font-size: 0.6875rem !important;
-      line-height: 1.3 !important;
-      margin-bottom: 6px !important;
-    }
-
-    .resume-contrib-list {
-      gap: 5px !important;
-    }
-
-    .resume-contrib-item,
-    .skill-cluster-item {
-      font-size: 0.8125rem !important;
-      line-height: 1.45 !important;
-      align-items: flex-start !important;
-    }
-
-    .resume-tool-list {
-      gap: 5px !important;
-    }
-
-    .skill-cluster-card {
-      padding: 12px !important;
-      border-radius: 12px;
-    }
-
-    .skill-cluster-title {
-      font-size: 0.9375rem !important;
-      line-height: 1.35 !important;
-      margin-bottom: 8px !important;
-    }
-
-    .skill-cluster-list {
-      gap: 5px !important;
     }
   }
 </style>

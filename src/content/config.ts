@@ -1,33 +1,5 @@
 import { defineCollection, z } from 'astro:content';
 
-const pages = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    headline: z.string().optional(),
-    subheadline: z.string().optional(),
-    description: z.string().optional(),
-    metaDescription: z.string().optional(),
-    coverImage: z.string().optional(),
-    draft: z.boolean().optional().default(false),
-  }),
-});
-
-const writing = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    headline: z.string(),
-    summary: z.string().optional(),
-    keyword: z.string().optional(),
-    metaDescription: z.string().optional(),
-    coverImage: z.string().optional(),
-    publishedAt: z.coerce.date(),
-    tags: z.array(z.string()).optional().default([]),
-    draft: z.boolean().optional().default(false),
-  }),
-});
-
 const projects = defineCollection({
   type: 'data',
   schema: z.object({
@@ -175,4 +147,25 @@ const gear = defineCollection({
   }),
 });
 
-export const collections = { pages, writing, projects, photos, gear };
+const writing = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(),
+    date: z.coerce.date(),
+    order: z.number().default(0),
+    sample: z.boolean().default(false),
+    draft: z.boolean().default(false),
+    linkable: z.boolean().default(true),
+    coverImage: z.object({
+      src: z.string(),
+      alt: z.string(),
+      width: z.number().positive(),
+      height: z.number().positive(),
+      caption: z.string().optional(),
+    }).optional(),
+  }),
+});
+
+export const collections = { projects, photos, gear, writing };

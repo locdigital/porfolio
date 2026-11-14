@@ -182,7 +182,6 @@ const collaborationLogos = [
   { name: "Canva", role: "Creative Design", initials: "Ca", logo: "https://www.google.com/s2/favicons?domain=canva.com&sz=128" },
   { name: "OpenAI", role: "AI Operations", initials: "AI", logo: "https://www.google.com/s2/favicons?domain=openai.com&sz=128" },
   { name: "Runway", role: "AI Video", initials: "Rw", logo: "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128" },
-  { name: "Notion", role: "Project Docs", initials: "No", logo: "https://cdn.simpleicons.org/notion/111111" },
 ];
 ---
 
@@ -209,30 +208,30 @@ const collaborationLogos = [
       {services.map((s) => (
         <article
           class="dash-card service-capability-card"
-          style={`--service-color: ${s.color}; --service-soft: ${s.soft}; --service-border: ${s.border}; --service-ink: ${s.ink}; --card-outer-radius: 12px; --card-padding: 16px;`}
+          style={`--service-color: ${s.color}; --service-soft: ${s.soft}; --service-border: ${s.border}; --service-ink: ${s.ink}; --card-outer-radius: 20px; --card-padding: 14px;`}
         >
-          <div class="service-card-body">
+          <div>
             <div class="service-card-header">
               <span class="dash-tag service-category-pill">{s.category}</span>
               <span class="service-card-id">{s.id}</span>
             </div>
 
-            <h3 class="item-title" style="margin-bottom: 8px;">
+            <h3 class="item-title" style="font-size: var(--text-body); margin-bottom: 6px;">
               {s.title}
             </h3>
 
-            <p class="service-card-desc">
+            <p style="font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); margin: 0 0 14px;">
               {s.summary}
             </p>
 
             <!-- Scope Checklist (Concentric nested surface block) -->
             <div class="dash-card-nested-block service-scope-block">
-              <div class="service-scope-label">
+              <div style="font-size: var(--text-caption); font-weight: var(--font-weight-semibold); color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: var(--tracking-caps);">
                 Scope & deliverables
               </div>
-              <ul class="service-checklist">
+              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
                 {s.checklist.map((item) => (
-                  <li class="service-checklist-item">
+                  <li style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-text);">
                     <span class="dash-bullet service-bullet" aria-hidden="true"></span>
                     <span>{item}</span>
                   </li>
@@ -241,7 +240,7 @@ const collaborationLogos = [
             </div>
 
             <!-- Tags -->
-            <div class="service-tags-wrap">
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px;">
               {s.tags.map((t) => (
                 <span class="dash-tag service-tech-tag">{t}</span>
               ))}
@@ -326,7 +325,7 @@ const collaborationLogos = [
   <!-- Creative Collaboration Tools -->
   <section class="page-section" aria-labelledby="heading-partners">
     <h2 id="heading-partners" class="section-title">Creative tooling collaboration</h2>
-    <p style="font-size: var(--font-size-base); color: var(--dash-muted); margin: 0 0 16px;">
+    <p style="font-size: var(--text-body-sm); color: var(--dash-muted); margin: 0 0 16px;">
       Brand, web, AI creative, motion, and interface systems built with a modern toolkit across strategy, production, and launch.
     </p>
 
@@ -341,11 +340,8 @@ const collaborationLogos = [
                     src={p.logo}
                     alt={groupIndex === 0 ? p.name : ""}
                     class="partner-logo"
-                    width="28"
-                    height="28"
                     loading="lazy"
                     decoding="async"
-                    fetchpriority="low"
                   />
                 ) : (
                   <span class="partner-wordmark" aria-hidden="true">
@@ -377,31 +373,17 @@ const collaborationLogos = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 16px;
-    align-items: stretch;
   }
 
   .service-capability-card {
     position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     overflow: hidden;
     border-radius: var(--card-outer-radius);
     border-color: color-mix(in srgb, var(--service-border) 72%, var(--dash-border));
     padding: var(--card-padding);
-    height: auto;
-  }
-
-  .service-card-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .service-card-desc {
-    font-size: var(--font-size-base);
-    line-height: 1.55;
-    color: var(--dash-muted);
-    margin: 0 0 14px;
   }
 
   .service-capability-card::before {
@@ -431,8 +413,8 @@ const collaborationLogos = [
   }
 
   .service-card-id {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
     color: var(--service-color);
     font-variant-numeric: tabular-nums;
   }
@@ -446,44 +428,8 @@ const collaborationLogos = [
     border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding)));
   }
 
-  .service-scope-label {
-    font-size: 0.6875rem; /* 11px */
-    font-weight: 600;
-    color: var(--dash-muted);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    letter-spacing: 0.04em;
-  }
-
-  .service-checklist {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .service-checklist-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-size: 0.8125rem; /* 13px */
-    line-height: 1.45;
-    color: var(--dash-text);
-  }
-
   .service-capability-card .dash-bullet {
     background-color: var(--service-color);
-    margin-top: 4px;
-  }
-
-  .service-tags-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: auto;
-    padding-top: 4px;
   }
 
   .service-tech-tag {
@@ -502,12 +448,11 @@ const collaborationLogos = [
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
-      align-items: flex-start;
-      gap: 12px;
+      gap: 14px;
       margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
       padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 4px;
-      padding-bottom: 16px;
+      padding-bottom: 14px;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -517,64 +462,33 @@ const collaborationLogos = [
     }
 
     .service-capability-card {
-      flex: 0 0 clamp(290px, 84vw, 340px);
-      width: clamp(290px, 84vw, 340px);
-      max-width: 84vw;
+      flex: 0 0 min(350px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
+      width: min(350px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
       scroll-snap-align: start;
-    }
-
-    .service-checklist-item {
-      font-size: 0.75rem; /* 12px on mobile */
-      line-height: 1.4;
-      gap: 6px;
-    }
-
-    .service-scope-block {
-      margin-bottom: 12px;
-      padding: 8px 10px;
-    }
-  }
-
-  @media (max-width: 359px) {
-    .services-grid {
-      gap: 10px;
-      scroll-padding-inline: 12px;
-      margin-inline: -12px;
-      padding-inline: 12px;
-    }
-
-    .service-capability-card {
-      flex: 0 0 calc(100vw - 36px);
-      width: calc(100vw - 36px);
-      max-width: calc(100vw - 36px);
     }
   }
 
   /* ============================================================
-     NOTION-INSPIRED PRICING SECTION
+     x.ai (SpaceXSI) PRICING SECTION
      ============================================================ */
   
   .pricing-section-title {
-    font-size: 1.875rem; /* 30px */
-    line-height: 1.25;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--dash-text);
-    margin: 0 0 8px;
+    font-family: var(--font-family-headline);
+    font-optical-sizing: auto;
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-jet);
+    margin: 0 0 6px;
     text-align: left;
   }
 
-  @media (max-width: 640px) {
-    .pricing-section-title {
-      font-size: 1.625rem; /* 26px */
-    }
-  }
-
   .pricing-section-desc {
-    font-size: var(--font-size-base);
-    line-height: 1.6;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
     color: var(--dash-muted);
-    margin: 0 0 28px;
+    margin: 0 0 var(--space-5, 20px);
     max-width: 64ch;
     text-align: left;
   }
@@ -584,29 +498,29 @@ const collaborationLogos = [
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: auto auto auto auto auto 1fr auto;
-    column-gap: 20px;
+    column-gap: var(--docs-space-grid-gap, 16px);
     row-gap: 0;
     align-items: stretch;
   }
 
-  /* Pricing Card */
+  /* Pricing Card (Warm Ivory #F9F8F6, 16px radius, 24px padding) */
   .pricing-card {
     grid-row: 1 / 8;
     display: grid;
     grid-template-rows: subgrid;
-    background: var(--dash-surface);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    border-radius: 8px;
-    padding: 24px;
+    background: var(--color-ivory);
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
+    border-radius: var(--docs-card-radius, 16px);
+    padding: 28px 24px;
     box-sizing: border-box;
     box-shadow: none;
-    transition: border-color var(--duration-fast, 250ms) var(--ease-smooth-out),
-                box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out),
-                transform var(--duration-fast, 250ms) var(--ease-smooth-out);
+    transition: border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .pricing-card:hover {
-    border-color: var(--dash-border-strong);
+    border-color: rgba(10, 10, 10, 0.16);
     transform: none;
     box-shadow: none;
   }
@@ -625,7 +539,7 @@ const collaborationLogos = [
 
   /* Recommended Plan subtle emphasis */
   .pricing-card--recommended {
-    border-color: var(--dash-border-strong);
+    border-color: rgba(10, 10, 10, 0.18);
   }
 
   /* Row 1: Header / Category & Badge */
@@ -635,40 +549,40 @@ const collaborationLogos = [
     justify-content: space-between;
     gap: 8px;
     min-height: 24px;
-    margin: 0 0 12px;
+    margin: 0 0 10px;
   }
 
   .pricing-category {
-    font-size: 0.75rem; /* 12px */
-    font-weight: 500;
-    color: var(--dash-muted);
-    line-height: 1.35;
-    letter-spacing: 0.01em;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-fog);
+    line-height: var(--leading-compact);
+    letter-spacing: var(--tracking-caps);
   }
 
   .pricing-recommended-badge {
     display: inline-flex;
     align-items: center;
-    font-size: 0.6875rem; /* 11px */
-    font-weight: 500;
-    color: var(--dash-text);
-    background: var(--dash-surface-subtle);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    border-radius: 4px;
-    padding: 1px 7px;
-    line-height: 1.4;
-    letter-spacing: 0.01em;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    color: var(--dash-accent);
+    background: var(--dash-accent-soft);
+    border: 1px solid rgba(9, 105, 218, 0.22);
+    border-radius: 9999px;
+    padding: 2px 10px;
+    line-height: var(--leading-compact);
+    letter-spacing: var(--tracking-caps);
     white-space: nowrap;
   }
 
-  /* Row 2: Plan Title */
+  /* Row 2: Plan Title (13px) */
   .pricing-plan-title {
-    font-size: 1rem;
-    line-height: 1.35;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    color: var(--dash-text);
-    margin: 0 0 14px;
+    font-size: var(--text-body);
+    line-height: var(--leading-heading);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-subheading);
+    color: var(--color-jet);
+    margin: 0 0 12px;
   }
 
   /* Row 3: Price Block */
@@ -683,39 +597,40 @@ const collaborationLogos = [
   }
 
   .pricing-amount {
-    font-size: 1.875rem; /* 30px */
-    font-weight: 600;
-    line-height: 1.15;
-    letter-spacing: -0.025em;
-    color: var(--dash-text);
+    font-family: var(--font-family-headline);
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    color: var(--color-jet);
     font-variant-numeric: tabular-nums;
   }
 
   .pricing-interval {
-    font-size: 0.8125rem; /* 13px */
-    color: var(--dash-muted);
-    font-weight: 400;
+    font-size: var(--text-body-sm);
+    color: var(--color-fog);
+    font-weight: var(--font-weight-regular);
   }
 
   .pricing-fixed-scope {
-    font-size: 0.8125rem; /* 13px */
-    line-height: 1.4;
-    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--color-fog);
     margin-top: 4px;
   }
 
   /* Row 4: Thin Divider */
   .pricing-divider {
     border: none;
-    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-top: 1px solid var(--dash-border);
     margin: 0 0 16px;
     width: 100%;
   }
 
   /* Row 5: Description */
   .pricing-description {
-    font-size: var(--font-size-base);
-    line-height: 1.55;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
     color: var(--dash-muted);
     margin: 0 0 18px;
   }
@@ -743,18 +658,18 @@ const collaborationLogos = [
     width: 14px;
     height: 21px; /* Center-aligned with 14px/1.5 first line of text */
     flex-shrink: 0;
-    color: var(--dash-muted);
+    color: var(--color-fog);
   }
 
   .pricing-feature-text {
-    font-size: var(--font-size-base);
-    line-height: 1.5;
-    color: var(--dash-text);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--color-jet);
     flex: 1;
     min-width: 0;
   }
 
-  /* Row 7: Action Button */
+  /* Row 7: Action Button (x.ai Pill Button Spec: 9999px radius, border: 0) */
   .pricing-action-wrap {
     display: flex;
     align-items: flex-end;
@@ -767,70 +682,46 @@ const collaborationLogos = [
     justify-content: center;
     gap: 8px;
     width: 100%;
-    height: 42px;
-    min-height: 42px;
-    border-radius: 6px;
-    font-size: 0.875rem; /* 14px */
-    font-weight: 500;
+    height: 40px;
+    min-height: 40px;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    border: 0 !important;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    font-weight: var(--font-weight-medium);
     text-decoration: none !important;
     cursor: pointer;
     box-sizing: border-box;
-    transition: background-color var(--duration-fast, 250ms) var(--ease-smooth-out),
-                border-color var(--duration-fast, 250ms) var(--ease-smooth-out),
-                color var(--duration-fast, 250ms) var(--ease-smooth-out),
-                transform var(--duration-quick, 150ms) var(--ease-smooth-out),
-                box-shadow var(--duration-fast, 250ms) var(--ease-smooth-out);
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                filter 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .pricing-btn span {
     text-decoration: none;
   }
 
-  .pricing-btn:hover {
-    text-decoration: none !important;
-    transform: none;
-    box-shadow: none;
-  }
-
   .pricing-btn:active {
     transform: scale(0.985);
   }
 
-  .pricing-btn:hover span,
-  .pricing-btn:focus-visible span {
-    text-decoration: underline !important;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 1.5px;
-  }
-
   .pricing-btn:focus-visible {
-    outline: 2px solid var(--dash-primary);
+    outline: 2px solid var(--color-jet);
     outline-offset: 2px;
   }
 
   .pricing-btn--secondary {
-    background: var(--dash-surface);
-    color: var(--dash-text);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-  }
-
-  .pricing-btn--secondary:hover {
-    background: var(--dash-hover);
-    border-color: var(--dash-border-strong);
-    color: var(--dash-text);
+    background: var(--btn-bg);
+    color: var(--color-jet);
+    border: 0 !important;
   }
 
   .pricing-btn--primary {
-    background: #0071e3;
-    color: #ffffff !important;
-    border: var(--dash-border-width, 0.9px) solid #0071e3;
-    box-shadow: none;
-  }
-
-  .pricing-btn--primary:hover {
-    background: #0062c4;
-    border-color: #0062c4;
-    color: #ffffff !important;
+    background: var(--color-jet);
+    color: var(--color-white) !important;
+    border: 0 !important;
     box-shadow: none;
   }
 
@@ -845,7 +736,7 @@ const collaborationLogos = [
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--mobile-page-edge, 16px);
       -webkit-overflow-scrolling: touch;
-      gap: 14px;
+      gap: 16px;
       margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
       padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 4px;
@@ -861,20 +752,12 @@ const collaborationLogos = [
     .pricing-card {
       grid-column: auto !important;
       grid-row: auto !important;
-      display: flex !important;
-      flex-direction: column !important;
-      flex: 0 0 clamp(290px, 84vw, 360px);
-      width: clamp(290px, 84vw, 360px);
-      max-width: 84vw;
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 min(350px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
+      width: min(350px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
       scroll-snap-align: start;
-      padding: 22px 20px;
-    }
-
-    .pricing-card:nth-child(1),
-    .pricing-card:nth-child(2),
-    .pricing-card:nth-child(3) {
-      grid-column: auto !important;
-      grid-row: auto !important;
+      padding: 20px 18px;
     }
 
     .pricing-features {
@@ -884,20 +767,6 @@ const collaborationLogos = [
 
     .pricing-action-wrap {
       margin-top: auto;
-    }
-  }
-
-  @media (max-width: 359px) {
-    .pricing-grid {
-      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
-      padding-inline: var(--mobile-page-edge, 5px);
-      scroll-padding-inline: var(--mobile-page-edge, 5px);
-    }
-
-    .pricing-card {
-      flex: 0 0 calc(100vw - (var(--mobile-page-edge, 5px) * 2));
-      width: calc(100vw - (var(--mobile-page-edge, 5px) * 2));
-      padding: 18px 16px;
     }
   }
 
@@ -925,23 +794,13 @@ const collaborationLogos = [
      ============================================================ */
   .partners-marquee-container {
     position: relative;
-    width: calc(100% + (var(--mobile-page-edge, 5px) * 2));
-    margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
-    padding-inline: var(--mobile-page-edge, 5px);
+    width: calc(100% + (var(--mobile-page-edge, 16px) * 2));
+    margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+    padding-inline: var(--mobile-page-edge, 16px);
     padding-block: 4px;
     overflow: hidden;
-    mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
-  }
-
-  @media (max-width: 359px) {
-    .partners-marquee-container {
-      width: calc(100% + (var(--mobile-page-edge, 5px) * 2));
-      margin-inline: calc(var(--mobile-page-edge, 5px) * -1);
-      padding-inline: var(--mobile-page-edge, 5px);
-      mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
-    }
+    mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
   }
 
   .partners-marquee-track {
@@ -970,14 +829,7 @@ const collaborationLogos = [
 
   @media (max-width: 768px) {
     .partners-marquee-track {
-      animation: none !important;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      will-change: auto;
-    }
-
-    .partner-card {
-      scroll-snap-align: start;
+      animation: partners-scroll 46s linear infinite !important;
     }
   }
 
@@ -986,9 +838,9 @@ const collaborationLogos = [
     align-items: center;
     gap: 12px;
     padding: 9px 14px 9px 10px;
-    border-radius: 8px;
-    background: var(--dash-surface);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 12px;
+    background: var(--color-ivory);
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
     flex-shrink: 0;
     min-width: 184px;
     user-select: none;
@@ -1005,17 +857,17 @@ const collaborationLogos = [
   .partner-logo {
     padding: 6px;
     object-fit: contain;
-    background: var(--dash-surface-subtle);
+    background: var(--color-white);
   }
 
   .partner-wordmark {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--dash-surface-subtle);
-    color: var(--dash-text);
-    font-size: 0.75rem;
-    font-weight: 700;
+    background: var(--color-white);
+    color: var(--color-jet);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
     letter-spacing: 0;
   }
 
@@ -1026,18 +878,18 @@ const collaborationLogos = [
   }
 
   .partner-name {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--dash-text);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-jet);
     white-space: nowrap;
-    line-height: 1.35;
+    line-height: var(--leading-snug);
   }
 
   .partner-role {
-    font-size: 0.75rem;
+    font-size: var(--text-caption);
     color: var(--dash-muted);
     white-space: nowrap;
-    line-height: 1.35;
+    line-height: var(--leading-snug);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1049,17 +901,6 @@ const collaborationLogos = [
 
     .partner-card {
       scroll-snap-align: start;
-    }
-  }
-
-
-  @media (max-width: 768px) {
-    .partners-marquee-container {
-      width: 100%;
-      margin-inline: 0;
-      padding-inline: 0;
-      mask-image: none;
-      -webkit-mask-image: none;
     }
   }
 </style>

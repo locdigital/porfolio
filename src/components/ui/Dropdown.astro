@@ -1,0 +1,104 @@
+---
+export interface DropdownOption {
+  value: string;
+  label: string;
+  selected?: boolean;
+}
+
+interface Props {
+  id: string;
+  name: string;
+  dataKey?: string;
+  defaultLabel: string;
+  header?: string;
+  options?: DropdownOption[];
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  name,
+  dataKey = name,
+  defaultLabel,
+  header,
+  options = [],
+  disabled = false,
+  class: className = "",
+} = Astro.props;
+
+const selectedOption = options.find(opt => opt.selected);
+const currentLabel = selectedOption ? selectedOption.label : defaultLabel;
+const triggerId = `${id}-trigger`;
+const menuId = `${id}-menu`;
+---
+
+<div
+  class:list={["ui-dropdown", className]}
+  data-dropdown={dataKey}
+>
+  <button
+    type="button"
+    class="ui-dropdown-trigger"
+    id={triggerId}
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls={menuId}
+    disabled={disabled}
+    data-default-label={defaultLabel}
+  >
+    <span class="ui-dropdown-value" data-value-text>{currentLabel}</span>
+    <svg
+      class="ui-dropdown-arrow"
+      width="12"
+      height="12"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m4 6 4 4 4-4" />
+    </svg>
+  </button>
+
+  <div
+    class="ui-dropdown-menu"
+    id={menuId}
+    role="listbox"
+    aria-labelledby={triggerId}
+    tabindex="-1"
+  >
+    {header && <div class="ui-dropdown-header">{header}</div>}
+    <div class="ui-dropdown-list" data-options-list>
+      {options.map(opt => (
+        <button
+          type="button"
+          class="ui-dropdown-item"
+          role="option"
+          aria-selected={opt.selected ? "true" : "false"}
+          data-value={opt.value}
+        >
+          <span class="ui-dropdown-item-label">{opt.label}</span>
+          {opt.selected && (
+            <span class="ui-dropdown-item-check" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3.5 8.5 3 3 6-7" />
+              </svg>
+            </span>
+          )}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <select id={id} name={name} class="sr-only" tabindex="-1" disabled={disabled}>
+    <option value="">{defaultLabel}</option>
+    {options.map(opt => (
+      <option value={opt.value} selected={opt.selected}>{opt.label}</option>
+    ))}
+  </select>
+</div>
+

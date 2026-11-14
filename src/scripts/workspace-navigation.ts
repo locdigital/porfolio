@@ -1,0 +1,115 @@
+import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
+
+type ScrollPosition = { top: number; left: number };
+
+// Astro restores window scroll. Desktop uses a separate, scrolling <main>.
+const positions = new Map<number, ScrollPosition>();
+let activeIndex: number = history.state?.index ?? 0;
+let activePage = location.pathname + location.search;
+let pending: { traverse: boolean; hash: string; oldTop: number } | undefined;
+
+const mainContent = () => document.getElementById("main-content");
+
+function rememberScroll() {
+  const main = mainContent();
+  if (main) positions.set(activeIndex, { top: main.scrollTop, left: main.scrollLeft });
+}
+
+function restoreScroll(index: number) {
+  const main = mainContent();
+  const position = positions.get(index) ?? history.state?.workspaceScroll;
+  if (main && position) {
+    main.scrollTop = position.top;
+    main.scrollLeft = position.left;
+  }
+}
+
+function scrollToHash(hash: string) {
+  if (!hash) return;
+  try {
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    target?.scrollIntoView({ block: "start", behavior: "instant" });
+  } catch {
+    // Malformed fragments still navigate normally through Astro.
+  }
+}
+
+function isLocalHashLink(event: MouseEvent) {
+  const link = event.target instanceof Element ? event.target.closest("a") : null;
+  return link && link.origin === location.origin && link.pathname + link.search === activePage && link.hash;
+}
+
+// Hash links are handled synchronously by Astro, without any swap lifecycle.
+// Remember the old entry before its click handler, then read the new index after it.
+document.addEventListener("click", (event) => {
+  if (isLocalHashLink(event)) rememberScroll();
+}, { capture: true });
+window.addEventListener("click", (event) => {
+  if (isLocalHashLink(event)) activeIndex = history.state?.index ?? activeIndex;
+});
+
+document.addEventListener("scroll", (event) => {
+  if (event.target === mainContent() && history.state?.index === activeIndex) rememberScroll();
+}, { capture: true, passive: true });
+
+window.addEventListener("hashchange", () => {
+  activeIndex = history.state?.index ?? activeIndex;
+});
+
+document.addEventListener("astro:before-swap", (event) => {
+  const navigation = event as TransitionBeforeSwapEvent;
+  rememberScroll();
+  // Do not overwrite the destination history entry during a popstate traversal.
+  if (history.state?.index === activeIndex) {
+    history.replaceState({ ...history.state, workspaceScroll: positions.get(activeIndex) }, "");
+  }
+  pending = {
+    traverse: navigation.navigationType === "traverse",
+    hash: navigation.to.hash,
+    oldTop: mainContent()?.getBoundingClientRect().top ?? 0,
+  };
+});
+
+document.addEventListener("astro:after-swap", () => {
+  activeIndex = history.state?.index ?? 0;
+  activePage = location.pathname + location.search;
+  if (pending?.traverse) {
+    restoreScroll(activeIndex);
+  } else {
+    scrollToHash(pending?.hash ?? "");
+    rememberScroll();
+  }
+  const main = mainContent();
+  if (main && pending) {
+    const bounds = main.getBoundingClientRect();
+    const scale = bounds.height / main.offsetHeight || 1;
+    // Keep the outgoing snapshot at its actual viewport position on long mobile pages.
+    document.documentElement.style.setProperty("--page-exit-offset", `${(pending.oldTop - bounds.top) / scale}px`);
+  }
+  main?.focus({ preventScroll: true });
+  pending = undefined;
+});
+
+// Hash-only history navigation does not swap the document or emit swap events.
+window.addEventListener("popstate", () => {
+  if (location.pathname + location.search !== activePage) return;
+  rememberScroll();
+  activeIndex = history.state?.index ?? activeIndex;
+  restoreScroll(activeIndex);
+});
+
+window.addEventListener("pagehide", () => {
+  rememberScroll();
+  if (history.state?.index === activeIndex) {
+    history.replaceState({ ...history.state, workspaceScroll: positions.get(activeIndex) }, "");
+  }
+});
+
+// Bound memory on long browsing sessions to 80 cached history entries.
+document.addEventListener("astro:page-load", () => {
+  if (!positions.has(activeIndex)) {
+    restoreScroll(activeIndex);
+    rememberScroll();
+  }
+  while (positions.size > 80) positions.delete(positions.keys().next().value!);
+});

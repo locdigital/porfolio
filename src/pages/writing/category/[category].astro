@@ -1,0 +1,17 @@
+---
+import WritingArchive from "../../../components/writing/WritingArchive.astro";
+import { getWritingEntries, writingCategorySlug } from "../../../lib/writing";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const entries = (await getWritingEntries()).filter(entry => entry.data.linkable !== false);
+  const categories = [...new Set(entries.map(entry => entry.data.category))];
+  return categories.map(category => ({ params: { category: writingCategorySlug(category) }, props: { category } }));
+}
+
+interface Props { category: string; }
+const { category } = Astro.props;
+---
+
+<WritingArchive category={category} />

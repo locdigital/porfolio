@@ -1,6 +1,37 @@
-import type { ImageOutputFormat, ImageQuality } from "astro";
+import type { ImageMetadata, ImageOutputFormat, ImageQuality } from "astro";
+import { getImage } from "astro:assets";
 import type { Photo } from "./locations";
 import { uploadedAssetUrl } from "./uploadthing-assets";
+import uploadManifest from "../../data/uploadthing-images.json";
+
+// Imported metadata lets Astro emit hashed, immutable WebP files during prerendering.
+// Reuse local originals when available; UploadThing remains the source for other images.
+const localImages = import.meta.glob<{ default: ImageMetadata }>(
+  [
+    "/public/**/*.webp",
+    "/public/uploads/**/*.{avif,jpeg,jpg,png}",
+    "/public/instagram_workflowspace/**/*.{avif,jpeg,jpg,png}",
+  ],
+);
+const localUploads = new Map<string, string>();
+for (const [source, url] of Object.entries(uploadManifest.images)) {
+  const key = `/${source}`;
+  if (localImages[key]) localUploads.set(url, key);
+}
+const imageSources = new Map<string, Promise<ImageMetadata | string>>();
+
+function resolveImageSource(src: string): Promise<ImageMetadata | string> {
+  let image = imageSources.get(src);
+  if (!image) {
+    const key = src.startsWith("/")
+      ? `/public${decodeURIComponent(src.split("?")[0])}`
+      : localUploads.get(src);
+    const load = key && localImages[key];
+    image = load ? load().then((module) => module.default) : Promise.resolve(src);
+    imageSources.set(src, image);
+  }
+  return image;
+}
 
 type OptimizePhotoOptions = {
   previewWidth?: number;
@@ -36,28 +67,70 @@ export const MASONRY_GRID_SIZES =
 export const STRIP_GALLERY_SIZES =
   "(max-width: 700px) 70vw, 360px";
 
+type ResponsiveImageOptions = {
+  width: number;
+  height: number;
+  widths?: number[];
+  sizes?: string;
+  quality?: ImageQuality;
+};
+
+/** Keep originals for downloads/lightboxes; send a display-sized image to the page. */
+export async function responsiveImageAttributes(
+  source: string,
+  { width, height, widths = [320, 480, 720, 960, 1280], sizes, quality = 75 }: ResponsiveImageOptions,
+) {
+  const src = uploadedAssetUrl(source);
+  const canOptimize = src.startsWith("/") || src.startsWith("https://65wv0vnolo.ufs.sh/");
+  if (!canOptimize) return { src, width, height, sizes };
+
+  const sourceImage = await resolveImageSource(src);
+  const outputWidths = typeof sourceImage === "string"
+    ? widths
+    : [...new Set(widths.map((candidate) => Math.min(candidate, sourceImage.width)))];
+  const image = await getImage({
+    src: sourceImage,
+    width: typeof sourceImage === "string" ? width : Math.min(width, sourceImage.width),
+    ...(typeof sourceImage === "string" ? { height } : {}),
+    widths: outputWidths,
+    quality,
+    format: "webp",
+  });
+  return { src: image.src, srcset: image.srcSet.attribute, width, height, sizes };
+}
+
 export async function optimizePhoto(
   photo: Photo,
   options: OptimizePhotoOptions = {},
 ): Promise<OptimizedPhoto> {
-  const width = photo.w || options.previewWidth || 1600;
-  const height = photo.h || 1200;
+  const originalWidth = photo.w || 1600;
+  const originalHeight = photo.h || 1200;
+  const width = Math.min(options.previewWidth ?? 960, originalWidth);
+  const height = Math.round(width * originalHeight / originalWidth);
   const src = uploadedAssetUrl(photo.src);
+  const previewSizes = options.previewSizes ?? PHOTO_GRID_SIZES;
+  const preview = await responsiveImageAttributes(src, {
+    width,
+    height,
+    widths: options.previewWidths,
+    sizes: previewSizes,
+    quality: options.previewQuality,
+  });
 
   return {
     ...photo,
-    w: width,
-    h: height,
+    w: originalWidth,
+    h: originalHeight,
     originalSrc: photo.src,
-    previewSrc: src,
-    previewSrcSet: "",
+    previewSrc: preview.src,
+    previewSrcSet: preview.srcset ?? "",
     webpSrcSet: undefined,
-    previewSizes: options.previewSizes ?? PHOTO_GRID_SIZES,
+    previewSizes,
     previewWidth: width,
     previewHeight: height,
     fullSrc: src,
-    fullWidth: width,
-    fullHeight: height,
+    fullWidth: originalWidth,
+    fullHeight: originalHeight,
   };
 }
 

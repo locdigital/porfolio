@@ -5,7 +5,7 @@ import { uploadedAssetUrl } from "../../../lib/uploadthing-assets";
 
 export const prerender = false;
 
-const photosRoot = path.resolve(process.cwd(), "src", "assets", "photos");
+const photosRoot = path.resolve(process.cwd(), "public", "assets", "photos");
 
 const contentTypes: Record<string, string> = {
   ".avif": "image/avif",

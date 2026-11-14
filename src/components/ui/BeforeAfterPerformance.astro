@@ -1,4 +1,6 @@
 ---
+import ResponsiveImage from "./ResponsiveImage.astro";
+
 export interface PerformanceMetric {
   label: string;
   value: string;
@@ -84,7 +86,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   <div class="bap-shell">
     <div class="bap-copy">
       {badge && <span class="bap-badge">{badge}</span>}
-      {heading && <h2 class="bap-heading">{heading}</h2>}
+      {heading && <h2 class="section-title bap-heading">{heading}</h2>}
       {description && <p class="bap-description">{description}</p>}
 
       {highlights.length > 0 && (
@@ -125,7 +127,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
         <!-- AFTER LAYER (Bottom) -->
         <div class="bap-layer bap-after-layer">
           {effectiveAfter?.src ? (
-            <img src={effectiveAfter.src} alt={effectiveAfter.alt} loading="lazy" decoding="async" />
+            <ResponsiveImage src={effectiveAfter.src} alt={effectiveAfter.alt} width={960} height={600} widths={[480, 720, 960, 1280]} sizes="(max-width: 768px) 100vw, 640px" loading="lazy" decoding="async" />
           ) : (
             <div class="bap-state">
               <div>
@@ -153,7 +155,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
           style={`clip-path: ${isHorizontal ? `inset(0 ${100 - initialPosition}% 0 0)` : `inset(0 0 ${100 - initialPosition}% 0)`};`}
         >
           {effectiveBefore?.src ? (
-            <img src={effectiveBefore.src} alt={effectiveBefore.alt} loading="lazy" decoding="async" />
+            <ResponsiveImage src={effectiveBefore.src} alt={effectiveBefore.alt} width={960} height={600} widths={[480, 720, 960, 1280]} sizes="(max-width: 768px) 100vw, 640px" loading="lazy" decoding="async" />
           ) : (
             <div class="bap-state">
               <div>
@@ -225,9 +227,9 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   .bap-shell {
     display: grid;
     grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
-    gap: clamp(28px, 5vw, 72px);
+    gap: clamp(24px, 4vw, 48px);
     align-items: center;
-    padding: clamp(56px, 8vw, 104px) 0;
+    padding: 16px 0 24px;
     border-bottom: var(--dash-border-width, 0.9px) solid var(--divider);
   }
 
@@ -243,29 +245,23 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
     border: var(--dash-border-width, 0.9px) solid var(--divider);
     border-radius: 999px;
     color: var(--muted);
-    font-family: var(--mono);
-    font-size: 12px !important;
-    letter-spacing: 0.08em;
+    font-family: var(--font-family-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-caps);
     line-height: 1;
     padding: 8px 11px;
     text-transform: uppercase;
   }
 
   .bap-heading {
-    color: var(--text);
-    font-family: var(--serif);
-    font-size: clamp(25px, 3.5vw, 43px) !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
     margin: 0;
   }
 
   .bap-description {
     color: var(--muted);
-    font-family: var(--sans);
-    font-size: var(--font-size-base) !important;
-    line-height: 1.65;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
     margin: 0;
     max-width: 48ch;
   }
@@ -300,18 +296,18 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   .bap-highlight-title {
     color: var(--text);
-    font-family: var(--sans);
-    font-size: var(--font-size-base) !important;
-    font-weight: 600;
-    line-height: 1.3;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
     margin: 0;
   }
 
   .bap-highlight-desc {
     color: var(--muted);
-    font-family: var(--sans);
-    font-size: var(--font-size-base) !important;
-    line-height: 1.5;
+    font-family: var(--font-family-base);
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
     margin: 3px 0 0;
   }
 
@@ -340,11 +336,11 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   }
 
   .bap-slider-tag {
-    font-family: var(--sans);
-    font-size: 11px !important;
-    font-weight: 600;
+    font-family: var(--font-family-base);
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-semibold);
     color: var(--dash-muted, #6b6a66);
-    letter-spacing: 0.05em;
+    letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
   }
 
@@ -352,9 +348,9 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 11px;
+    font-size: var(--text-caption);
     color: var(--dash-muted, #6b6a66);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
   }
 
   .bap-legend-item {
@@ -380,7 +376,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   .bap-legend-sep {
     opacity: 0.4;
-    font-size: 10px;
+    font-size: var(--text-caption);
   }
 
   .bap-slider {
@@ -447,28 +443,28 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   .bap-state-eyebrow {
     color: var(--muted);
-    font-family: var(--mono);
-    font-size: 12px !important;
-    letter-spacing: 0.08em;
+    font-family: var(--font-family-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-caps);
     margin: 0 0 14px;
     text-transform: uppercase;
   }
 
   .bap-state-title {
     color: var(--text);
-    font-family: var(--serif);
-    font-size: clamp(25px, 3.5vw, 40px) !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
+    font-family: var(--font-family-base);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-heading);
+    line-height: var(--leading-heading);
     margin: 0;
   }
 
   .bap-state-desc {
     color: var(--muted);
-    font-family: var(--sans);
-    font-size: var(--font-size-base) !important;
-    line-height: 1.55;
+    font-family: var(--font-family-base);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
     margin: 16px 0 0;
     max-width: 42ch;
   }
@@ -489,17 +485,18 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   .bap-metric span {
     color: var(--text);
     display: block;
-    font-family: var(--serif);
-    font-size: 30px !important;
-    line-height: 0.95;
+    font-family: var(--font-family-base);
+    font-size: var(--text-h2);
+    line-height: var(--leading-display);
+    font-weight: var(--font-weight-semibold);
   }
 
   .bap-metric p {
     color: var(--muted);
-    font-family: var(--mono);
-    font-size: var(--font-size-base) !important;
-    letter-spacing: 0.04em;
-    line-height: 1.25;
+    font-family: var(--font-family-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--tracking-caps);
+    line-height: var(--leading-snug);
     margin: 8px 0 0;
     text-transform: uppercase;
   }
@@ -594,7 +591,8 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   @media (max-width: 620px) {
     .bap-shell {
-      padding: 48px 0;
+      padding: 12px 0 20px;
+      gap: 20px;
     }
 
     .bap-metrics {
@@ -604,16 +602,18 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 </style>
 
 <script>
-  function initBeforeAfterSliders() {
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  onPageLoad((signal) => {
     const sliders = document.querySelectorAll<HTMLElement>('.bap-slider');
 
     sliders.forEach((slider) => {
-      if (slider.dataset.initialized === 'true') return;
-      slider.dataset.initialized = 'true';
-
       const isHorizontal = slider.dataset.orientation !== 'vertical';
       let position = parseFloat(slider.dataset.initialPos || '50');
       let isDragging = false;
+      let dragRect: DOMRect | undefined;
+      let moveFrame = 0;
+      let pendingPosition: number | undefined;
 
       const beforeLayer = slider.querySelector<HTMLElement>('.bap-before-layer');
       const divider = slider.querySelector<HTMLElement>('.bap-divider');
@@ -648,7 +648,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
       }
 
       function calculatePosition(clientX: number, clientY: number) {
-        const rect = slider.getBoundingClientRect();
+        const rect = dragRect ?? slider.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) return position;
 
         return isHorizontal
@@ -658,6 +658,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
       function startDragging(clientX: number, clientY: number) {
         isDragging = true;
+        dragRect = slider.getBoundingClientRect();
         slider.classList.add('is-dragging');
         document.body.style.userSelect = 'none';
         updateSlider(calculatePosition(clientX, clientY));
@@ -665,12 +666,23 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
       function moveDragging(clientX: number, clientY: number) {
         if (!isDragging) return;
-        updateSlider(calculatePosition(clientX, clientY));
+        pendingPosition = calculatePosition(clientX, clientY);
+        if (moveFrame) return;
+        moveFrame = requestAnimationFrame(() => {
+          moveFrame = 0;
+          if (pendingPosition !== undefined) updateSlider(pendingPosition);
+          pendingPosition = undefined;
+        });
       }
 
       function stopDragging() {
         if (!isDragging) return;
         isDragging = false;
+        cancelAnimationFrame(moveFrame);
+        moveFrame = 0;
+        if (pendingPosition !== undefined) updateSlider(pendingPosition);
+        pendingPosition = undefined;
+        dragRect = undefined;
         slider.classList.remove('is-dragging');
         document.body.style.userSelect = '';
       }
@@ -682,12 +694,12 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
           slider.setPointerCapture(e.pointerId);
         } catch (_) {}
         startDragging(e.clientX, e.clientY);
-      });
+      }, { signal });
 
       slider.addEventListener('pointermove', (e) => {
         if (!isDragging) return;
         moveDragging(e.clientX, e.clientY);
-      });
+      }, { passive: true, signal });
 
       const onPointerEnd = (e: PointerEvent) => {
         try {
@@ -698,27 +710,12 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
         stopDragging();
       };
 
-      slider.addEventListener('pointerup', onPointerEnd);
-      slider.addEventListener('pointercancel', onPointerEnd);
+      slider.addEventListener('pointerup', onPointerEnd, { signal });
+      slider.addEventListener('pointercancel', onPointerEnd, { signal });
+      slider.addEventListener('lostpointercapture', stopDragging, { signal });
+      signal.addEventListener('abort', stopDragging, { once: true });
 
-      // Touch events for mobile devices
-      slider.addEventListener('touchstart', (e) => {
-        if (e.touches.length !== 1) return;
-        const touch = e.touches[0];
-        startDragging(touch.clientX, touch.clientY);
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (e) => {
-        if (!isDragging || e.touches.length !== 1) return;
-        if (e.cancelable) {
-          e.preventDefault();
-        }
-        const touch = e.touches[0];
-        moveDragging(touch.clientX, touch.clientY);
-      }, { passive: false });
-
-      window.addEventListener('touchend', stopDragging, { passive: true });
-      window.addEventListener('touchcancel', stopDragging, { passive: true });
+      // Pointer capture handles mouse, pen, and touch without global touch listeners.
 
       // Keyboard accessibility
       slider.addEventListener('keydown', (e) => {
@@ -736,11 +733,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
           e.preventDefault();
           updateSlider(100);
         }
-      });
+      }, { signal });
     });
-  }
-
-  // Run on page load and on Astro view transitions
-  initBeforeAfterSliders();
-  document.addEventListener('astro:page-load', initBeforeAfterSliders);
+  });
 </script>
