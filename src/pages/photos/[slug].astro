@@ -114,11 +114,6 @@ const formattedBudget =
       ? location.budgetNote
       : undefined;
 
-const travelSummary =
-  location.travelFrom && location.travelTime
-    ? `${location.travelTime} from ${location.travelFrom}`
-    : location.travelTime || undefined;
-
 const hasPlanningDetails = Boolean(
   location.overview ||
     location.favoriteThings ||
@@ -225,12 +220,6 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
         <div>
           <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Recommended Stay</span>
           <span style="font-weight: 500; color: var(--dash-text);">{location.recommendedStay}</span>
-        </div>
-      )}
-      {travelSummary && (
-        <div>
-          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Access</span>
-          <span style="font-weight: 500; color: var(--dash-text);">{travelSummary}</span>
         </div>
       )}
       {formattedBudget && (
@@ -706,7 +695,7 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
   .editorial-source-link span {
     text-decoration: underline;
     text-decoration-color: var(--dash-underline, #858580);
-    text-underline-offset: 3px;
+    text-underline-offset: 1px;
     text-decoration-thickness: 0.5px;
     transition: text-decoration-color 150ms ease;
   }

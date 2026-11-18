@@ -380,7 +380,7 @@ async function runAudit() {
     !gearHtml.includes(".gear-masonry:not([data-gear-shuffled=\"1\"]){visibility:hidden}"),
     "/gear CSS hides catalog when html.js is absent",
   );
-  warn(gearHtml.includes("MacBook Pro M4 Max"), "/gear missing expected item in initial HTML");
+  warn(gearHtml.includes("MacBook Pro M4 Pro"), "/gear missing expected item in initial HTML");
 }
 
 await runAudit();

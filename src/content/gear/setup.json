@@ -11,17 +11,17 @@
       "image": "",
       "items": [
         {
-          "name": "MacBook Pro M4 Max",
-          "slug": "macbook-pro-m4-max",
+          "name": "MacBook Pro M4 Pro",
+          "slug": "macbook-pro-m4-pro",
           "headline": "Main Laptop",
-          "description": "Maxed out M4 Max for heavy development, design work, and containerized local environments.",
+          "description": "Apple M4 Pro for heavy development, design work, and containerized local environments.",
           "image": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h64KFsPMgx3rw7LHmJhekT2K4Uy81ajfobtSv",
           "url": "https://www.apple.com/macbook-pro/",
           "tag": "Laptop"
         },
         {
-          "name": "Mac mini M4 Pro",
-          "slug": "mac-mini-m4-pro",
+          "name": "Mac mini M4",
+          "slug": "mac-mini-m4",
           "headline": "Desktop Powerhouse",
           "description": "Compact desktop serving as the main stationary node in my office workstation setup.",
           "image": "/uploads/mac_mini_m4_pro.webp",
