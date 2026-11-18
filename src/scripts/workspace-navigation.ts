@@ -1,5 +1,7 @@
 import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
 
+import { shuffleGearGrid } from "../lib/gear-shuffle";
+
 type ScrollPosition = { top: number; left: number };
 
 // Astro restores window scroll. Desktop uses a separate, scrolling <main>.
@@ -80,11 +82,23 @@ document.addEventListener("astro:after-swap", () => {
     rememberScroll();
   }
   const main = mainContent();
+  if (main) {
+    shuffleGearGrid(main);
+    const autoFolders = Array.from(main.querySelectorAll<HTMLElement>(".gf-root[data-auto]"));
+    if (autoFolders.length > 0) {
+      const folderWidths = autoFolders.map((el) => el.clientWidth);
+      autoFolders.forEach((el, i) => {
+        const w = folderWidths[i];
+        if (w > 0) el.style.setProperty("--gf-k", String(w / 340));
+      });
+    }
+  }
   if (main && pending) {
     const bounds = main.getBoundingClientRect();
     const scale = bounds.height / main.offsetHeight || 1;
+    const offset = Math.abs(pending.oldTop - bounds.top) < 1 ? 0 : (pending.oldTop - bounds.top) / scale;
     // Keep the outgoing snapshot at its actual viewport position on long mobile pages.
-    document.documentElement.style.setProperty("--page-exit-offset", `${(pending.oldTop - bounds.top) / scale}px`);
+    document.documentElement.style.setProperty("--page-exit-offset", `${offset}px`);
   }
   main?.focus({ preventScroll: true });
   pending = undefined;

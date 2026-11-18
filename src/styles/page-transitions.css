@@ -1,9 +1,9 @@
 :root {
   /* Keep shared chrome live and clickable; capture only explicitly named elements. */
   view-transition-name: none;
-  --page-exit-duration: 120ms;
-  --page-enter-duration: 280ms;
-  --page-enter-offset: 8px;
+  --page-exit-duration: 140ms;
+  --page-enter-duration: 240ms;
+  --page-enter-offset: 6px;
   --page-transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -32,15 +32,21 @@ html,
   overflow: clip;
 }
 
+::view-transition-old(workspace-document),
+::view-transition-new(workspace-document) {
+  width: 100%;
+  height: auto;
+  mix-blend-mode: normal;
+  will-change: transform, opacity;
+}
+
 ::view-transition-old(workspace-document) {
   animation: workspace-page-exit var(--page-exit-duration) var(--page-transition-ease) both;
   transform: translateY(var(--page-exit-offset, 0px));
-  mix-blend-mode: normal;
 }
 
 ::view-transition-new(workspace-document) {
   animation: workspace-page-enter var(--page-enter-duration) var(--page-transition-ease) both;
-  mix-blend-mode: normal;
 }
 
 @keyframes workspace-page-exit {
@@ -49,8 +55,8 @@ html,
 }
 
 @keyframes workspace-page-enter {
-  from { opacity: 0; transform: translateY(var(--page-enter-offset)); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translate3d(0, var(--page-enter-offset), 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

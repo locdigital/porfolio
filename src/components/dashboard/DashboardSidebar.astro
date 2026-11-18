@@ -1,13 +1,7 @@
 ---
 import avatar from "../../assets/avatar.webp";
-import SidebarIcon from "./SidebarIcon.astro";
-import { 
-  X,
-  LinkedIn,
-  Instagram,
-  Pexels,
-  type MajesticonName,
-} from "../icons/majesticons";
+import Heroicon from "../icons/Heroicon.astro";
+import type { HeroiconName } from "../icons/heroicons";
 
 interface Props {
   currentPath?: string;
@@ -28,7 +22,7 @@ const activePath = normalizePath(currentPath);
 interface NavItem {
   label: string;
   href: string;
-  icon: MajesticonName;
+  icon: HeroiconName;
   exact?: boolean;
 }
 
@@ -41,19 +35,20 @@ const navSections: NavSection[] = [
   {
     group: "Workspace",
     items: [
-      { label: "Overview", href: "/", icon: "home-simple", exact: true },
-      { label: "About", href: "/about", icon: "user" },
-      { label: "Work", href: "/work", icon: "suitcase" },
-      { label: "Services", href: "/services", icon: "layout-grid-2" },
+      { label: "Overview", href: "/", icon: "home", exact: true },
+      { label: "About", href: "/about", icon: "finger-print" },
+      { label: "Work", href: "/work", icon: "briefcase" },
+      { label: "Services", href: "/services", icon: "square-3-stack-3d" },
     ],
   },
   {
     group: "Personal",
     items: [
-      { label: "Writing", href: "/writing", icon: "note-text" },
-      { label: "Photography", href: "/photos", icon: "image" },
-      { label: "Gear", href: "/gear", icon: "monitor" },
-      { label: "Contact", href: "/contact", icon: "mail" },
+      { label: "Writing", href: "/writing", icon: "pencil-square" },
+      { label: "Growth Hub", href: "/growth", icon: "chart-bar" },
+      { label: "Photography", href: "/photos", icon: "camera" },
+      { label: "Gear", href: "/gear", icon: "computer-desktop" },
+      { label: "Contact", href: "/contact", icon: "envelope" },
     ],
   },
 ];
@@ -100,9 +95,8 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
             id="dash-drawer-close" 
             class="mobile-menu-btn" 
             aria-label="Close navigation menu"
-            style="display:none;"
           >
-            <X size={18} />
+            <Heroicon name="x-mark" size={18} />
           </button>
         </div>
       </div>
@@ -125,7 +119,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
                       data-astro-prefetch
                     >
                       <div class="dash-nav-link-left">
-                        <SidebarIcon name={item.icon} />
+                        <Heroicon name={item.icon} size={16} class="dash-nav-icon" />
                         <span>{item.label}</span>
                       </div>
                     </a>
@@ -138,71 +132,5 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
       </nav>
     </div>
 
-    <!-- Sidebar Footer -->
-    <div class="dash-sidebar-footer">
-      <!-- Saigon Timezone -->
-      <div style="margin-bottom:var(--space-2);">
-        <span style="font-size:var(--text-micro);color:var(--dash-muted);">Saigon · GMT+7</span>
-      </div>
-
-      <!-- Direct Email Link -->
-      <div>
-        <a 
-          href="mailto:hi@loc.digital" 
-          class="dash-sidebar-email"
-        >
-          hi@loc.digital
-        </a>
-      </div>
-
-      <!-- Social Links Row -->
-      <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-        <a 
-          href="https://www.linkedin.com/in/phucloc" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          style="color:var(--dash-muted);text-decoration:none;"
-          title="LinkedIn"
-          aria-label="LinkedIn Profile"
-        >
-          <LinkedIn size={16} strokeWidth={1.8} className="dash-social-icon" aria-hidden="true" focusable="false" />
-        </a>
-        <a 
-          href="https://www.instagram.com/henrygoodkid" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          style="color:var(--dash-muted);text-decoration:none;"
-          title="Instagram"
-          aria-label="Instagram Profile"
-        >
-          <Instagram size={16} strokeWidth={1.8} className="dash-social-icon" aria-hidden="true" focusable="false" />
-        </a>
-        <a 
-          href="https://www.pexels.com/@henrygoodkid" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          style="color:var(--dash-muted);text-decoration:none;"
-          title="Pexels Photography"
-          aria-label="Pexels Photography"
-        >
-          <Pexels size={16} strokeWidth={1.8} className="dash-social-icon" aria-hidden="true" focusable="false" />
-        </a>
-      </div>
-    </div>
-
   </div>
 </aside>
-
-<script>
-  import { onPageLoad } from "../../scripts/page-lifecycle";
-
-  onPageLoad(() => {
-    const closeBtn = document.getElementById("dash-drawer-close");
-    const sidebar = document.getElementById("dash-sidebar");
-    if (!sidebar) return;
-
-    if (window.innerWidth < 1024 && closeBtn) {
-      closeBtn.style.display = "flex";
-    }
-  });
-</script>

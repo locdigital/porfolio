@@ -1,11 +1,12 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { 
+import { getPhotoLocations } from "../lib/content";
+import {
   Home,
   Briefcase,
   ContactIcon,
   ArrowRight
-} from "../components/icons/majesticons";
+} from "../components/icons/phosphor";
 
 export const prerender = true;
 
@@ -14,14 +15,18 @@ const workPath = "/work";
 const contactPath = "/contact";
 const photosPath = "/photos";
 const servicesPath = "/services";
+const growthPath = "/growth";
+const publishedLocations = await getPhotoLocations();
+const galleryCount = publishedLocations.length;
 ---
 
 <DashboardLayout
   title="404 · Page Not Found — Phuc Loc Nguyen"
   pageTitle="404 Not Found"
-  description="The page you are looking for does not exist or has been moved."
+  description="The page you are looking for does not exist or has moved."
   breadcrumbs={[{ label: "404 Not Found" }]}
   maxWidthVariant="default"
+  noindex={true}
 >
   <div style="padding: var(--space-8) 0; max-width: 620px;">
     <!-- 404 Badge -->
@@ -63,7 +68,13 @@ const servicesPath = "/services";
       <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
         <li>
           <a href={workPath} class="dash-link" style="font-size: var(--text-body-sm); font-weight: 500; display: inline-flex; align-items: center; gap: 4px;" data-astro-prefetch>
-            <span>Work (6 deep case studies)</span>
+            <span>Work (6 case studies)</span>
+            <ArrowRight size={13} aria-hidden="true" />
+          </a>
+        </li>
+        <li>
+          <a href={growthPath} class="dash-link" style="font-size: var(--text-body-sm); font-weight: 500; display: inline-flex; align-items: center; gap: 4px;" data-astro-prefetch>
+            <span>Growth Hub & Performance Marketing Formulas</span>
             <ArrowRight size={13} aria-hidden="true" />
           </a>
         </li>
@@ -75,7 +86,7 @@ const servicesPath = "/services";
         </li>
         <li>
           <a href={photosPath} class="dash-link" style="font-size: var(--text-body-sm); font-weight: 500; display: inline-flex; align-items: center; gap: 4px;" data-astro-prefetch>
-            <span>Photography (17 travel galleries)</span>
+            <span>Photography ({galleryCount} travel galleries)</span>
             <ArrowRight size={13} aria-hidden="true" />
           </a>
         </li>

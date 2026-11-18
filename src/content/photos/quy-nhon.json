@@ -85,7 +85,12 @@
       "height": 1600,
       "caption": "",
       "order": 1,
-      "isCover": false
+      "isCover": false,
+      "title": "Red Railing Along Eo Gió",
+      "story": "The wind at Eo Gió lived up to its reputation, nearly taking my cap before I even made it down the steps. I followed the red railing hugging the cliff edge, watching the deep blue swell push steadily into the rocky cove below. Quy Nhơn has an easy rhythm, but the morning coastal breeze here was definitely wide awake.",
+      "location": "Eo Gió, Quy Nhơn",
+      "capturedAt": "2024-03-17T08:42:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hs0z4ykdgra7eybcwumusqx5evhs86daj2tdq-quy-n",
@@ -95,7 +100,12 @@
       "height": 1067,
       "caption": "",
       "order": 2,
-      "isCover": false
+      "isCover": false,
+      "title": "Craggy Ridge and Reefs",
+      "story": "From higher up the ridge, the coastline looked completely untamed, carved out into sharp dark rocks and shallow reefs. The water close to the shore was clear enough to track the seabed through the foam. It felt good to stand against the salt wind and let the morning burn off the last bit of city rust.",
+      "location": "Eo Gió, Quy Nhơn",
+      "capturedAt": "2024-03-17T09:28:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hseio2yqgljkfmjpy5ivzwibmnwqxy3shz4d9-quy-n",
@@ -105,7 +115,12 @@
       "height": 1067,
       "caption": "",
       "order": 3,
-      "isCover": false
+      "isCover": false,
+      "title": "Wind Turbines Across the Bay",
+      "story": "From this vantage point, you could see the entire sweep of the bay curving toward the white coastal dunes. A neat row of wind turbines stood faintly against the hazy hills across the water, turning slowly in the coastal draft. Between the temple roofs below and the open horizon, the landscape felt delightfully wide open.",
+      "location": "Quy Nhơn",
+      "capturedAt": "2024-03-17T10:35:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59h65d03rmgx3rw7lhmjhekt2k4uy81ajfobtsv-quy-n",
@@ -115,7 +130,12 @@
       "height": 1067,
       "caption": "",
       "order": 4,
-      "isCover": false
+      "isCover": false,
+      "title": "Solitary Islet in Azure Waters",
+      "story": "By midday, the sea had turned an intense, solid cobalt blue under a cloudless sky. A solitary mound of rock rested out on the horizon, framed only by the jagged cliff dropping steeply on my right. In heat like this, staring into all that empty blue felt almost as refreshing as a dip in the surf.",
+      "location": "Eo Gió, Quy Nhơn",
+      "capturedAt": "2024-03-17T11:45:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-05",
@@ -125,7 +145,12 @@
       "height": 1600,
       "caption": "Chiếc bút mài thủ công urushi cùng vỏ sao biển trên bờ cát Quy Nhơn",
       "order": 5,
-      "isCover": false
+      "isCover": false,
+      "title": "Urushi Pen on Dried Starfish",
+      "story": "I carried my handcrafted urushi maki-e pen down to the shore and set it across a pale, dried starfish in a wooden tray. The afternoon sun caught every tiny fleck of shell lacquer on the barrel against the warm grain of the wood. Bringing a fragile custom fountain pen to a sandy beach is a questionable habit of mine, but the light was too good to resist.",
+      "location": "Quy Nhơn",
+      "capturedAt": "2024-03-18T14:25:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-06",
@@ -135,7 +160,12 @@
       "height": 1067,
       "caption": "Thuyền thúng ven bờ biển Quy Nhơn hướng tầm nhìn về tượng Phật chùa Linh Phong trên đỉnh núi",
       "order": 6,
-      "isCover": false
+      "isCover": false,
+      "title": "Coracle Boats Facing Linh Phong",
+      "story": "Round coracle boats sat resting on the sand, waiting for the evening tide while the sky softened under a layer of quiet clouds. High on the green ridge behind the beach houses, the white pagoda tower and seated Buddha of Linh Phong kept watch over the bay. There was no rush anywhere in sight, just the slow hum of coastal life settling in before dusk.",
+      "location": "Linh Phong, Quy Nhơn",
+      "capturedAt": "2024-03-18T16:45:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-07",
@@ -145,7 +175,12 @@
       "height": 1600,
       "caption": "Bọt sóng vỗ bờ cát ẩm bên chiếc bút lưu niệm tại Quy Nhơn",
       "order": 7,
-      "isCover": false
+      "isCover": false,
+      "title": "Fountain Pen on Damp Sand",
+      "story": "I set my souvenir fountain pen down on the wet sand for a quick shot before the tide caught on. The gentle foam crept dangerously close within seconds, catching the pale afternoon sun on the grains. Quy Nhơn's shore was so quiet that even a misplaced pen felt like the day's main event.",
+      "location": "Quy Nhơn",
+      "capturedAt": "2024-03-17T16:35:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-08",
@@ -155,7 +190,12 @@
       "height": 1600,
       "caption": "Chèo SUP và tắm biển trong làn nước xanh ngọc bích dưới vách đá Kỳ Co",
       "order": 8,
-      "isCover": false
+      "isCover": false,
+      "title": "Paddling Under Kỳ Co Cliffs",
+      "story": "The water off Kỳ Co was an absurdly clear turquoise, hemmed in by steep, sun-baked sea cliffs. My friends paddled their SUPs outward while the rest of us kicked around in life jackets, stirring up cool bubbles in the morning swell. It was hard to complain about the midday heat when the sea felt this welcoming.",
+      "location": "Kỳ Co, Quy Nhơn",
+      "capturedAt": "2024-03-18T10:20:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-09",
@@ -165,7 +205,12 @@
       "height": 1600,
       "caption": "Nhà bè nổi với thuyền thúng xanh và ván chèo SUP giữa vịnh biển Quy Nhơn",
       "order": 9,
-      "isCover": false
+      "isCover": false,
+      "title": "Floating Raft and Basket Boats",
+      "story": "Under the harsh midday sun, our floating raft bobbed gently with stacks of colorful paddleboards and round blue basket boats. A local boatman was busy rinsing the hull, working barefoot with the casual balance that only comes from living on water. The wooden planks smelled faintly of salt and diesel, grounded against the wide blue bay.",
+      "location": "Quy Nhơn",
+      "capturedAt": "2024-03-18T11:45:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-10",
@@ -175,7 +220,12 @@
       "height": 1066,
       "caption": "Bình minh Quy Nhơn với những vệt nắng chiếu xuyên qua mây rọi xuống mặt biển và tàu cá",
       "order": 10,
-      "isCover": false
+      "isCover": false,
+      "title": "First Sunbeams on Fishing Boats",
+      "story": "Waking up before dawn paid off the moment the low cloud deck cracked open and spilled pale golden rays across the water. A handful of fishing boats drifted near the horizon, completely unbothered by the dramatic sky above them. The cool morning breeze and rhythmic lap of small waves made it easy to just stand there in silence.",
+      "location": "Quy Nhơn",
+      "capturedAt": "2024-03-19T06:05:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-11",
@@ -185,7 +235,12 @@
       "height": 1066,
       "caption": "Khu villa sát biển với thảm cỏ xanh mướt nhìn ra bờ sóng và dãy núi đá Quy Nhơn",
       "order": 11,
-      "isCover": false
+      "isCover": false,
+      "title": "Green Lawn Beside Ocean Surf",
+      "story": "A wide patch of trimmed grass sloped straight toward the sand, separating the tidy resort bungalows from the wilder coastline beyond. Farther along the beach, distant swimmers drifted in the surf against the silhouette of the rocky headlands. Quy Nhơn has this easy way of letting manicured lawns and raw coastal hills share the same view.",
+      "location": "Quy Nhơn",
+      "capturedAt": "2024-03-19T15:20:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-12",
@@ -195,7 +250,12 @@
       "height": 1066,
       "caption": "Hàng cọ bên khu nghỉ dưỡng hướng về tượng Phật chùa Ông Núi trên triền núi cao",
       "order": 12,
-      "isCover": false
+      "isCover": false,
+      "title": "Linh Phong Buddha Above Villas",
+      "story": "From the sandy path between the villas, you look up and find the giant white Buddha of Linh Phong seated calmly atop the mountain ridge. A bent palm leaned against the evening wind as the overcast sky deepened into twilight. It felt slightly surreal having such an imposing monument quietly keeping watch over our afternoon lounge chairs.",
+      "location": "Linh Phong Pagoda, Quy Nhơn",
+      "capturedAt": "2024-03-19T17:40:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "quy-nhon-13",
@@ -205,7 +265,12 @@
       "height": 1066,
       "caption": "Tia nước tưới cỏ ban mai lấp lánh trước khung cảnh biển êm và đoàn tàu đánh cá Quy Nhơn",
       "order": 13,
-      "isCover": false
+      "isCover": false,
+      "title": "Morning Sprinklers by the Shore",
+      "story": "I stopped to watch the beachfront sprinklers throw fine arcs of water across the grass, backlit by the low morning sun. Out in the calm water, fishing boats sat quietly while a handful of early walkers strolled along the tide line. It felt like the easiest, most unhurried way for the town to start the day.",
+      "location": "Quy Nhơn",
+      "capturedAt": "2024-03-19T06:48:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     }
   ],
   "googleMapsUrl": "",

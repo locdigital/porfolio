@@ -1,13 +1,27 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
+import Heroicon from "../components/icons/Heroicon.astro";
+import { PERSON_ID, canonicalUrl, pageSchema } from "../lib/seo";
+
+const contactUrl = canonicalUrl("/contact");
+const contactSchema = pageSchema({
+  url: contactUrl,
+  title: "Contact & Collaboration — Phuc Loc Nguyen",
+  description: "Connect with Phuc Loc Nguyen (Nguyen Phuc Loc) for performance marketing retainers, TikTok Shop acceleration, digital growth consulting, or photography licensing.",
+  type: "ContactPage",
+  mainEntity: { "@id": PERSON_ID },
+  breadcrumbId: `${contactUrl}#breadcrumbs`,
+});
 ---
 
 <DashboardLayout
   title="Contact & Collaboration — Phuc Loc Nguyen"
   pageTitle="Contact"
-  description="Connect with Nguyen Phuc Loc for performance marketing retainers, TikTok Shop acceleration, and digital growth consulting."
-  breadcrumbs={[{ label: "Contact" }]}
+  description="Connect with Phuc Loc Nguyen (Nguyen Phuc Loc) for performance marketing retainers, TikTok Shop acceleration, and digital growth consulting."
+  breadcrumbs={[{ label: "Personal", href: "/" }, { label: "Contact" }]}
   maxWidthVariant="default"
+  pageType="ContactPage"
+  schema={contactSchema}
 >
   <!-- Page Header -->
   <header class="page-header">
@@ -58,10 +72,11 @@ import DashboardLayout from "../layouts/DashboardLayout.astro";
             target="_blank"
             rel="noopener noreferrer"
             class="dash-button dash-button--secondary"
-            style="min-height: 28px; padding: 2px 10px; font-size: var(--text-body-sm); text-decoration: none;"
+            style="min-height: 28px; padding: 2px 10px; font-size: var(--text-body-sm); text-decoration: none; display: inline-flex; align-items: center; gap: 5px;"
             aria-label="Open Zalo chat"
           >
-            Chat Zalo ↗
+            <span>Chat Zalo</span>
+            <Heroicon name="link" variant="outline" size={13} />
           </a>
         </div>
         <a 

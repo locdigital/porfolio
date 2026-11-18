@@ -48,15 +48,16 @@
   --text-display: clamp(2.25rem, 4.1vw, 3.625rem);    /* 36px (mobile) -> 47px (tablet) -> 58px (desktop) */
   --text-h1: clamp(1.8125rem, 3.1vw, 2.6875rem);      /* 29px (mobile) -> 36px (tablet) -> 43px (desktop) */
   --text-h2: clamp(1.4375rem, 2.15vw, 1.8125rem);    /* 23px (mobile) -> 25px (tablet) -> 29px (desktop) */
-  --text-h3: clamp(1.1875rem, 1.45vw, 1.375rem);     /* 19px (mobile) -> 20px (tablet) -> 22px (desktop) */
+  --text-h3: clamp(1.375rem, calc(1.45vw + 3px), 1.5625rem); /* 22px (mobile) -> 23px (tablet) -> 25px (desktop) */
   --text-h4: clamp(1rem, 1.15vw, 1.125rem);           /* 16px (mobile) -> 16px (tablet) -> 18px (desktop) */
 
   /* Controlled Body / Metadata Scale */
   --text-body-lg: clamp(0.9375rem, 1.05vw, 1rem);     /* 15px (mobile/tablet) -> 16px (desktop) */
   --text-body: 0.875rem;     /* 14px (standard body across all viewports) */
-  --text-body-sm: 0.8125rem; /* 13px */
-  --text-caption: 0.75rem;   /* 12px */
-  --text-micro: 0.6875rem;   /* 11px */
+  --text-min: 12.25px;
+  --text-body-sm: max(var(--text-min), 0.8125rem);
+  --text-caption: max(var(--text-min), 0.75rem);
+  --text-micro: max(var(--text-min), 0.6875rem);
 
   /* Color Tokens */
   --dash-outer: #FFFFFF;
@@ -134,7 +135,7 @@
   /* Layout dimensions & Section Spacing */
   --sidebar-w: 232px;
   --workspace-window-zoom: 0.864;
-  --mobile-page-edge: 8px;
+  --mobile-page-edge: 24px;
   --dash-section-gap: calc(var(--space-12) * 1.1);        /* 52.8px (increased 10% from 48px) */
   --dash-section-gap-mobile: calc(var(--space-8) * 1.21);  /* 38.7px (increased 10% from 35.2px) */
 }
@@ -187,8 +188,10 @@ img {
    APPLICATION SHELL (macOS WINDOW & SCROLLING)
    ============================================================ */
 
-/* Outer Canvas - Pure White background */
+/* Outer canvas contains the wallpaper and the foreground window. */
 .workspace-canvas {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   min-height: 100dvh;
   height: 100dvh;
@@ -201,6 +204,14 @@ img {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+
+.workspace-wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 /* Centered macOS Window Frame - Normal document flow, grows with content */
@@ -362,6 +373,9 @@ img {
   width: 100%;
   max-width: 960px;
   margin-inline: auto;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .workspace-content--reading {
@@ -370,6 +384,11 @@ img {
 
 .workspace-content--gallery {
   max-width: 960px;
+}
+
+.dash-breadcrumbs ol {
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
 }
 
 /* Unified Page Header Standard */
@@ -403,6 +422,7 @@ h2.section-title {
   color: var(--dash-text);
 }
 
+h3,
 .item-title,
 h3.item-title {
   margin: 0 0 var(--space-2);
@@ -468,7 +488,7 @@ span {
 }
 
 .page-lead {
-  font-size: var(--text-body);
+  font-size: var(--text-body-sm);
   line-height: var(--leading-body);
   color: var(--dash-muted);
   max-width: 68ch;
@@ -546,9 +566,9 @@ span {
 }
 
 .dash-button--secondary:hover {
-  background: var(--dash-hover);
-  color: var(--dash-text);
-  border-color: var(--dash-border-strong);
+  background: #eaf4ff;
+  color: var(--dash-link-hover, #0969DA) !important;
+  border-color: rgba(9, 105, 218, 0.35);
   transform: none;
   box-shadow: none;
 }
@@ -766,17 +786,14 @@ span {
   --dash-underline-hover: #0969DA;
 }
 
-/* Explicit dotted underline utility & prose links */
+/* Explicit link & prose link styling (clean, no underline) */
 .dash-link,
 .dash-prose a,
 .dash-crumb-link,
 .dash-dotted-link,
 .dash-underline-dotted {
-  text-decoration: underline dotted !important;
-  text-decoration-thickness: 1.5px !important;
-  text-underline-offset: 4px !important;
-  text-decoration-color: var(--dash-underline) !important;
-  transition: text-decoration-color var(--duration-fast) ease, color var(--duration-fast) ease;
+  text-decoration: none !important;
+  transition: color var(--duration-fast) ease;
 }
 
 .dash-link:hover,
@@ -784,7 +801,7 @@ span {
 .dash-crumb-link:hover,
 .dash-dotted-link:hover,
 .dash-underline-dotted:hover {
-  text-decoration-color: var(--dash-link-hover) !important;
+  text-decoration: none !important;
   color: var(--dash-link-hover) !important;
 }
 
@@ -805,32 +822,26 @@ span {
   text-decoration: none !important;
 }
 
-/* Breadcrumb links: quiet default, blue dotted underline on hover */
+/* Breadcrumb links: quiet default, clean blue hover without underline */
 a.dash-crumb-link {
   text-decoration: none !important;
   color: var(--dash-muted) !important;
-  transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
+  transition: color var(--duration-fast) ease;
 }
 
 a.dash-crumb-link:hover {
   color: var(--dash-link-hover) !important;
-  text-decoration: underline dotted !important;
-  text-decoration-thickness: 1.5px !important;
-  text-underline-offset: 3px !important;
-  text-decoration-color: var(--dash-link-hover) !important;
+  text-decoration: none !important;
 }
 
 /* Global rule for all standard text anchor links outside buttons and controls */
 a:not(.dash-button):not(.dash-card):not(.dash-nav-link):not(.dash-user-row):not(.dash-filter-chip):not(.dash-tag):not(.dash-traffic-dot):not([role="button"]):not(.dash-sidebar a):not(.dash-crumb-link):not(.pricing-btn) {
-  text-decoration: underline dotted;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--dash-underline);
-  transition: text-decoration-color var(--duration-fast) ease, color var(--duration-fast) ease;
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
 }
 
 a:not(.dash-button):not(.dash-card):not(.dash-nav-link):not(.dash-user-row):not(.dash-filter-chip):not(.dash-tag):not(.dash-traffic-dot):not([role="button"]):not(.dash-sidebar a):not(.dash-crumb-link):not(.pricing-btn):hover {
-  text-decoration-color: var(--dash-link-hover);
+  text-decoration: none;
   color: var(--dash-link-hover) !important;
 }
 
@@ -858,10 +869,7 @@ h4 a:hover {
 
 abbr[title],
 abbr {
-  text-decoration: underline dotted !important;
-  text-decoration-thickness: 1.5px !important;
-  text-underline-offset: 4px !important;
-  text-decoration-color: var(--dash-underline) !important;
+  text-decoration: none !important;
   cursor: help;
 }
 
@@ -946,7 +954,8 @@ abbr {
   padding: 7px 10px;
   border-radius: var(--radius-control);
   text-decoration: none;
-  font-size: var(--text-body-sm);
+  font-family: var(--font-family-base);
+  font-size: var(--text-body);
   font-weight: var(--font-weight-regular);
   color: var(--dash-muted);
   transition: background-color var(--duration-fast), color var(--duration-fast);
@@ -1000,14 +1009,14 @@ abbr {
 }
 
 .dash-nav-link:hover {
-  background: var(--dash-hover);
   color: var(--dash-link-hover);
 }
 
-.dash-nav-link.active {
+.dash-nav-link.active,
+.dash-nav-link.active:hover {
   background: var(--dash-selected);
   color: var(--dash-text);
-  font-weight: 500;
+  font-weight: var(--font-weight-regular);
 }
 
 .dash-nav-link-left {
@@ -1077,11 +1086,11 @@ abbr {
 }
 
 .dash-nav-tree-link:hover {
-  background: var(--dash-hover);
   color: var(--dash-link-hover);
 }
 
-.dash-nav-tree-link.active {
+.dash-nav-tree-link.active,
+.dash-nav-tree-link.active:hover {
   background: var(--dash-selected);
   color: var(--dash-text);
   font-weight: 500;
@@ -1111,7 +1120,7 @@ abbr {
 
 .dash-sidebar-email:hover {
   color: var(--dash-link-hover);
-  text-decoration: underline !important;
+  text-decoration: none !important;
 }
 
 /* ============================================================
@@ -1119,6 +1128,10 @@ abbr {
    ============================================================ */
 
 .mobile-topbar {
+  display: none;
+}
+
+#dash-drawer-close {
   display: none;
 }
 
@@ -1142,12 +1155,49 @@ abbr {
   }
 }
 
+/* Use the available screen area on tablets and portrait desktop monitors. */
+@media (min-width: 1024px) and (max-width: 1366px), (min-width: 1024px) and (orientation: portrait) {
+  :root {
+    --sidebar-w: 208px;
+  }
+
+  .mac-window-container {
+    width: calc(100% - 32px);
+    height: calc(100dvh - 32px);
+    max-height: none;
+    transform: none;
+  }
+
+  .workspace-main {
+    padding: 28px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1366px), (min-width: 600px) and (orientation: portrait) {
+  html {
+    font-size: 16px;
+  }
+}
+
 /* Tablet & Mobile (< 1024px) */
 @media (max-width: 1023px) {
+  html, body {
+    height: auto;
+    min-height: 100%;
+    overflow-x: clip;
+    scrollbar-gutter: auto;
+  }
+
+  .workspace-wallpaper {
+    display: none;
+  }
+
   .workspace-canvas {
     padding: 0;
-    min-height: auto;
+    height: auto;
+    min-height: 100dvh;
     max-height: none;
+    align-items: flex-start;
     overflow: visible;
   }
 
@@ -1156,6 +1206,7 @@ abbr {
     max-width: none;
     margin: 0;
     height: auto;
+    min-height: 100dvh;
     max-height: none;
     border: none;
     border-radius: 0;
@@ -1169,9 +1220,12 @@ abbr {
   }
 
   .workspace-body {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
     border-radius: 0;
     min-height: auto;
+    overflow: visible;
   }
 
   /* Sticky Mobile Topbar */
@@ -1182,7 +1236,7 @@ abbr {
     position: sticky;
     top: 0;
     z-index: 30;
-    height: 52px;
+    height: 60px;
     padding: 0 var(--mobile-page-edge);
     background: var(--dash-surface);
     border-bottom: 0;
@@ -1202,6 +1256,7 @@ abbr {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
   }
 
   .mobile-menu-btn {
@@ -1209,6 +1264,10 @@ abbr {
     border: 0 !important;
     box-shadow: none !important;
     padding: 6px;
+    margin-left: -12px;
+    min-width: 44px;
+    min-height: 44px;
+    flex-shrink: 0;
     color: var(--dash-text);
     cursor: pointer;
     border-radius: var(--radius-control);
@@ -1240,6 +1299,17 @@ abbr {
     font-size: var(--text-body-sm);
     font-weight: var(--font-weight-semibold);
     color: var(--dash-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #dash-drawer-close {
+    display: flex;
+  }
+
+  .dash-nav-link {
+    min-height: 44px;
   }
 
   /* Slide-out Navigation Drawer */
@@ -1266,14 +1336,16 @@ abbr {
 
   .workspace-sidebar-inner {
     position: static;
-    max-height: 100vh;
+    max-height: 100dvh;
     padding: 22px 18px;
   }
 
   .workspace-main {
-    padding: 26px 10px;
+    padding: 28px var(--mobile-page-edge) 28px;
+    flex: 1 0 auto;
     min-height: auto;
-    overflow-y: visible;
+    overflow: visible;
+    scrollbar-gutter: auto;
   }
 
   .dash-button {
@@ -1307,9 +1379,15 @@ abbr {
   }
 }
 
+@media (min-width: 600px) and (max-width: 1023px) {
+  :root {
+    --mobile-page-edge: clamp(24px, 4vw, 40px);
+  }
+}
+
 @media (max-width: 359px) {
   .workspace-main {
-    padding-inline: 8px;
+    padding-inline: 16px;
   }
 }
 
@@ -1614,31 +1692,15 @@ abbr {
   }
 
   .workspace-content {
-    width: calc(100% + (var(--mobile-page-edge) * 2)) !important;
+    width: 100% !important;
     max-width: none !important;
-    margin-inline: calc(var(--mobile-page-edge) * -1) !important;
+    margin-inline: auto !important;
   }
 
   html,
   html:focus-within,
   .workspace-main {
     scroll-behavior: auto !important;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  ::view-transition-group(root),
-  ::view-transition-image-pair(root),
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none !important;
-    transform: none !important;
-    filter: none !important;
   }
 
   .r,

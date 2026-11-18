@@ -1,28 +1,57 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
+import { getPhotoLocations } from "../lib/content";
+import { PERSON_ID, canonicalUrl, pageSchema } from "../lib/seo";
+
+const publishedLocations = await getPhotoLocations();
+const galleryCount = publishedLocations.length;
+const homeUrl = canonicalUrl("/");
+const homeSchema = pageSchema({
+  url: homeUrl,
+  title: "Phuc Loc Nguyen — Performance Marketing & Travel Photography",
+  description: "Phuc Loc Nguyen (Loc / Henry) workspace: performance marketing frameworks, TikTok Shop GMV scaling, paid media case studies, and first-hand travel photography across Vietnam and Southeast Asia.",
+  type: "WebPage",
+  mainEntity: { "@id": PERSON_ID },
+});
 
 // Experience summary items:
 const experienceHighlights = [
   {
     company: "WorkFlow Space",
+    logo: "/assets/logos/logo-workflow.webp",
+    logoBg: "#181818",
+    logoFit: "cover",
+    logoScale: 1.5,
     role: "Digital Marketing Executive",
     period: "2024 — 2026",
     focus: "Full-funnel performance marketing & branch launches across Ho Chi Minh City."
   },
   {
     company: "PlayAh!",
+    logo: "/assets/logos/logo-playah.webp",
+    logoBg: "#f7f7f7",
+    logoFit: "contain",
+    logoScale: 1.46,
     role: "Performance Senior Executive",
     period: "2024 — 2026",
     focus: "TikTok Shop GMV acceleration, creator affiliate network, and automated retention."
   },
   {
     company: "Asia Strategic Holdings",
+    logo: "/assets/logos/logo-asia-strategic.png",
+    logoBg: "#ffffff",
+    logoFit: "contain",
+    logoScale: 0.92,
     role: "Performance Marketing",
     period: "2025 — 2026",
     focus: "Growth marketing, customer acquisition modeling, and multi-channel attribution."
   },
   {
     company: "POPS Worldwide",
+    logo: "/assets/logos/logo-pops.webp",
+    logoBg: "#ea500e",
+    logoFit: "cover",
+    logoScale: 1.35,
     role: "SEO Executive",
     period: "2022 — 2023",
     focus: "Technical SEO roadmap scaling organic traffic to 2.5M MAU across regional platforms."
@@ -60,9 +89,10 @@ const servicesPreview = [
 
 <DashboardLayout 
   title="Phuc Loc Nguyen — Workspace"
-  description="Senior Performance Marketing Executive workspace: scaling multi-channel paid media, TikTok Shop GMV, SEO, and web engineering."
+  description="Phuc Loc Nguyen (Loc / Henry) workspace: scaling multi-channel paid media, TikTok Shop GMV, unit economics, SEO, and first-hand travel photography across Vietnam and Southeast Asia."
   breadcrumbs={[{ label: "Overview" }]}
   maxWidthVariant="default"
+  schema={homeSchema}
 >
   <!-- ============================================================
        1. IDENTITY & INTRODUCTION (Directly on document surface)
@@ -84,28 +114,38 @@ const servicesPreview = [
        ============================================================ -->
   <section class="page-section home-experience-section" aria-labelledby="heading-experience">
     <div class="section-header-row">
-      <h2 id="heading-experience" class="section-title" style="margin: 0;">About</h2>
-      <a href="/about" class="dash-link section-header-link">
-        About & timeline →
-      </a>
+      <h2 id="heading-experience" class="section-title" style="margin: 0;">Work</h2>
     </div>
 
     <div class="home-experience-list" style="border-top: var(--dash-border-width, 1px) solid var(--dash-border);">
       {experienceHighlights.map((exp) => (
-        <div class="dash-row" style="display: block;">
-          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
-            <h3 class="item-title" style="font-size: var(--text-body); line-height: var(--leading-compact); margin: 0; color: #0075de;">
-              {exp.company}
-            </h3>
-            <span style="font-size: var(--text-body-sm); font-weight: 500; line-height: var(--leading-compact); color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums; flex-shrink: 0;">
-              {exp.period}
-            </span>
+        <div class="dash-row home-exp-row">
+          <div class="home-exp-logo" style={`background: ${exp.logoBg};`} aria-hidden="true">
+            <img
+              src={exp.logo}
+              alt=""
+              width="44"
+              height="44"
+              loading="lazy"
+              decoding="async"
+              style={`object-fit: ${exp.logoFit}; transform: scale(${exp.logoScale});`}
+            />
           </div>
-          <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); font-weight: 500; color: #454545; margin-top: 2px;">
-            {exp.role}
-          </div>
-          <div style="font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-muted); margin-top: 4px;">
-            {exp.focus}
+          <div class="home-exp-body">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+              <h3 class="item-title" style="font-size: calc(var(--text-body) + 3px); line-height: var(--leading-compact); margin: 0; color: #0075de;">
+                {exp.company}
+              </h3>
+              <span style="font-size: var(--text-body-sm); font-weight: 500; line-height: var(--leading-compact); color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums; flex-shrink: 0;">
+                {exp.period}
+              </span>
+            </div>
+            <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); font-weight: 500; color: #454545; margin-top: 2px;">
+              {exp.role}
+            </div>
+            <div class="content-description" style="font-size: var(--text-body-sm); line-height: var(--leading-body); margin-top: 4px;">
+              {exp.focus}
+            </div>
           </div>
         </div>
       ))}
@@ -118,12 +158,9 @@ const servicesPreview = [
   <section class="page-section" aria-labelledby="heading-capabilities">
     <div class="section-header-row">
       <h2 id="heading-capabilities" class="section-title" style="margin: 0;">Services & capabilities</h2>
-      <a href="/services" class="dash-link section-header-link">
-        Scope & retainers →
-      </a>
     </div>
 
-    <div class="capabilities-grid">
+    <div class="capabilities-grid capabilities-grid--scroll">
       {servicesPreview.map((svc) => (
         <div class="dash-card capability-card">
           <h3 class="capability-title">
@@ -134,6 +171,31 @@ const servicesPreview = [
           </p>
         </div>
       ))}
+    </div>
+  </section>
+
+  <!-- ============================================================
+       6. KNOWLEDGE PILLARS (Growth & Travel Hubs)
+       ============================================================ -->
+  <section class="page-section" aria-labelledby="heading-pillars">
+    <div class="section-header-row">
+      <h2 id="heading-pillars" class="section-title" style="margin: 0;">Knowledge & archives</h2>
+    </div>
+
+    <div class="capabilities-grid">
+      <article class="dash-card capability-card">
+        <h3 class="capability-title">Growth & Performance Marketing</h3>
+        <p class="capability-desc">
+          Experience-backed paid media playbooks, unit economics formulas (ROAS, MER, CAC, Break-even ROAS), and campaign case studies across TikTok Shop, Meta, Google, and SEO.
+        </p>
+      </article>
+
+      <article class="dash-card capability-card">
+        <h3 class="capability-title">Travel & Photography</h3>
+        <p class="capability-desc">
+          First-hand field journals, shooting notes, and {galleryCount} destination galleries across Vietnam and Southeast Asia—from Hà Giang and Tràng An to Mỹ Tho and Bù Gia Mập.
+        </p>
+      </article>
     </div>
   </section>
 
@@ -163,12 +225,59 @@ const servicesPreview = [
   .home-experience-list .dash-row {
     border-radius: 0;
     transition: none;
+    padding-block: calc(var(--space-3) * 1.3);
+  }
+
+  .home-exp-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .home-exp-logo {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    margin-top: 2px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    padding: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(10, 10, 10, 0.08);
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+  }
+
+  .home-exp-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-position: center;
+  }
+
+  .home-exp-body {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .home-experience-list .dash-row:hover {
     background: transparent;
     padding-left: 0;
     padding-right: 0;
+  }
+
+  @media (max-width: 640px) {
+    .home-exp-row {
+      gap: 12px;
+    }
+
+    .home-exp-logo {
+      flex-basis: 38px;
+      width: 38px;
+      height: 38px;
+    }
   }
 
   /* Photography Folder Grid */
@@ -226,7 +335,7 @@ const servicesPreview = [
   /* Capabilities Section */
   .capabilities-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
     gap: var(--docs-space-grid-gap, 16px);
   }
 
@@ -237,9 +346,9 @@ const servicesPreview = [
   }
 
   .capability-title {
-    font-size: var(--text-body);
+    font-size: calc(var(--text-body) + 3px);
     line-height: var(--leading-snug);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     letter-spacing: var(--tracking-subheading);
     color: var(--dash-text);
     margin: 0 0 6px;
@@ -256,6 +365,36 @@ const servicesPreview = [
     .capabilities-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .capabilities-grid--scroll {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
+      -webkit-overflow-scrolling: touch;
+      gap: 12px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
+      padding-block: 2px 6px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .capabilities-grid--scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .capabilities-grid--scroll .capability-card {
+      flex: 0 0 min(78vw, 280px);
+      scroll-snap-align: start;
+      padding: 16px 18px;
     }
   }
 

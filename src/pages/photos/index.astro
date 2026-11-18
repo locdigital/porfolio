@@ -1,9 +1,9 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
-import { getPhotoLocations } from "../../lib/cms";
-import { Folder } from "../../components/icons/majesticons";
-import ResponsiveImage from "../../components/ui/ResponsiveImage.astro";
+import { getPhotoLocations } from "../../lib/content";
+import GlassFolder from "../../components/ui/GlassFolder";
 import { optimizePhotos } from "../../lib/photo-assets";
+import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
 import photoUpdates from "../../../data/photo-updates.json";
 
 export const prerender = true;
@@ -13,27 +13,39 @@ const updatedTime = (slug: string) => Date.parse(updates[slug]?.updatedAt ?? "")
 const locations = (await getPhotoLocations()).sort((a, b) =>
   updatedTime(b.slug) - updatedTime(a.slug) || a.order - b.order
 );
-const emptyPreviewImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E";
 
-// Group destinations by region:
+const regionLabels: Record<string, string> = {
+  "Northern Vietnam": "North",
+  "Central Highlands": "Highlands",
+  "Central Vietnam": "Central",
+  "South Central Coast": "Central",
+  "Southern Vietnam": "South",
+  "Mekong Delta": "South",
+  "Miền Bắc": "North",
+  "Tây Nguyên": "Highlands",
+  "Miền Trung": "Central",
+  "Nam Trung Bộ": "Central",
+  "Miền Nam": "South",
+  "Tây Nam Bộ": "South",
+};
+
+const regionGroupLabels: Record<string, string> = {
+  "Northern Vietnam": "Northern Vietnam",
+  "Central Vietnam": "Central Vietnam",
+  "South Central Coast": "South Central Coast",
+  "Central Highlands": "Central Highlands",
+  "Southern Vietnam": "Southern Vietnam",
+  "Mekong Delta": "Mekong Delta",
+};
+
 const enhancedLocations = await Promise.all(locations.map(async (loc) => {
-  const regionLabels: Record<string, string> = {
-    "Northern Vietnam": "North",
-    "Central Highlands": "Highlands",
-    "Central Vietnam": "Central",
-    "South Central Coast": "Central",
-    "Southern Vietnam": "South",
-    "Mekong Delta": "South",
-    "Miền Bắc": "North",
-    "Tây Nguyên": "Highlands",
-    "Miền Trung": "Central",
-    "Nam Trung Bộ": "Central",
-    "Miền Nam": "South",
-    "Tây Nam Bộ": "South",
-  };
   const region = loc.country && loc.country !== "Vietnam"
     ? "International"
     : regionLabels[loc.region || ""] || "Vietnam";
+
+  const directoryGroup = loc.country && loc.country !== "Vietnam"
+    ? "Southeast Asia (Outside Vietnam)"
+    : regionGroupLabels[loc.region || ""] || "Vietnam";
 
   const photoCount = loc.photos?.length || 0;
   const images = loc.images || [];
@@ -43,382 +55,309 @@ const enhancedLocations = await Promise.all(locations.map(async (loc) => {
   const previews = await optimizePhotos([rawHero, rawLeft, rawRight].filter(Boolean).map((src) => ({
     src,
     alt: "",
-    w: 240,
-    h: 180,
+    w: 480,
+    h: 360,
   })), {
-    previewWidth: 240,
-    previewWidths: [240],
+    previewWidth: 480,
+    previewWidths: [480],
   });
   const previewImages = previews.map((photo) => photo.previewSrc);
-
   const heroPhoto = previewImages[0] || "";
-  const leftPhoto = previewImages[1] || heroPhoto;
-  const rightPhoto = previewImages[2] || heroPhoto;
 
   return {
     ...loc,
     region,
+    directoryGroup,
     photoCount,
     previewImages,
     heroPhoto,
-    leftPhoto,
-    rightPhoto,
   };
 }));
+
+const photosUrl = canonicalUrl("/photos");
+const photosSchema = collectionPageSchema({
+  url: photosUrl,
+  title: "Photography & Travel Journals — Phuc Loc Nguyen",
+  description: `First-hand travel photography and destination notes across ${locations.length} destinations in Vietnam and Southeast Asia.`,
+  items: enhancedLocations.map((loc) => ({
+    name: loc.name || loc.location,
+    url: `/photos/${loc.slug}`,
+    description: loc.seoDescription || loc.headline,
+    image: loc.heroPhoto || undefined,
+  })),
+  breadcrumbId: `${photosUrl}#breadcrumbs`,
+});
 ---
 
 <DashboardLayout
   title="Photography — Phuc Loc Nguyen"
   pageTitle="Photography"
-  description="Visual records and field notes across Southeast Asia and Vietnam: landscapes, local scenes, and quiet travel moments."
+  description={`First-hand travel photography and field notes across ${locations.length} destinations in Vietnam and Southeast Asia: mountain passes, karst rivers, coastal towns, and street scenes.`}
   breadcrumbs={[{ label: "Personal", href: "/" }, { label: "Photography" }]}
   maxWidthVariant="default"
+  schema={photosSchema}
 >
   <!-- Page Header -->
   <header class="page-header">
     <h1 class="page-title">Photography</h1>
     <p class="page-lead">
-      Shot on whatever was in my pocket—Leica Q3, Nikon Zf, or iPhone. Visual notes and field reflections across {locations.length} destinations.
+      Shot on whatever was in my pocket—Leica Q3, Nikon Zf, or iPhone. Visual notes and first-hand field reflections across {locations.length} destinations in Vietnam and Southeast Asia.
     </p>
   </header>
 
-  <!-- Photos Views Container (Desktop: Grid, Mobile: List) -->
+  <!-- Photos Views Container -->
   <div id="photos-views-wrapper" class="photos-views-wrapper">
-    <!-- 1. Manila Folder Grid View -->
-    <div id="photos-grid" class="folder-grid">
-      {enhancedLocations.map((loc) => (
-        <div class="folder-item" data-region={loc.region}>
-          <a
-            href={`/photos/${loc.slug}`}
-            class="folder-wrapper"
-            data-folder-preview
-            aria-label={`Open ${loc.name || loc.location} gallery`}
-          >
-            <!-- 3D MACOS FOLDER COMPONENT -->
-            <div class="folder" data-folder-surface>
-              <!-- 1. BACK FOLDER FLAP (Behind cards) -->
-              <div class="folder-back" aria-hidden="true"></div>
-
-              <!-- 2. FAN OF 3 PHOTO CARDS (Inside folder pocket) -->
-              {loc.heroPhoto && (
-                <div class="folder-cards" aria-hidden="true">
-                  <div class="folder-card folder-card--left">
-                    <img
-                      src={emptyPreviewImage}
-                      data-src={loc.leftPhoto}
-                      width={240}
-                      height={180}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </div>
-                  <div class="folder-card folder-card--right">
-                    <img
-                      src={emptyPreviewImage}
-                      data-src={loc.rightPhoto}
-                      width={240}
-                      height={180}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </div>
-                  <div class="folder-card folder-card--center">
-                    <img
-                      src={emptyPreviewImage}
-                      data-src={loc.heroPhoto}
-                      width={240}
-                      height={180}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <!-- 3. FRONT FOLDER FLAP (In front of cards) -->
-              <div class="folder-front" aria-hidden="true"></div>
-            </div>
-
-            <!-- LOCATION NAME -->
-            <div class="folder-caption">
-              <span class="folder-title">{loc.name || loc.location}</span>
-            </div>
-          </a>
-        </div>
-      ))}
-    </div>
-
-    <!-- 2. Clean List View -->
-    <div id="photos-list" class="photos-list-container">
-      <div class="photos-list-wrapper">
-        {enhancedLocations.map((loc) => (
-          <a
-            href={`/photos/${loc.slug}`}
-            class="photo-list-row"
-            data-region={loc.region}
-            aria-label={`Open ${loc.name || loc.location} gallery`}
-          >
-            <div class="photo-list-main">
-              {loc.heroPhoto ? (
-                <span class="photo-list-thumb" aria-hidden="true">
-                  <ResponsiveImage
-                    src={loc.photos[0]?.src || ""}
-                    width={96}
-                    height={96}
-                    widths={[48, 96]}
-                    sizes="48px"
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </span>
-              ) : (
-                <span class="photo-list-icon" aria-hidden="true">
-                  <Folder size={17} aria-hidden="true" />
-                </span>
-              )}
-              <div class="photo-list-info">
-                <div class="photo-list-title-wrap">
-                  <span class="photo-list-title">{loc.name || loc.location}</span>
-                  <span class="dash-tag photo-list-tag">{loc.region}</span>
-                </div>
-                {loc.headline && (
-                  <span class="photo-list-headline">{loc.headline}</span>
-                )}
-              </div>
-            </div>
-
-            <div class="photo-list-meta">
-              <span class="photo-list-count">{loc.photoCount} photos</span>
-            </div>
-          </a>
-        ))}
-      </div>
+    <!-- Glass folders show actual album previews between the panels. -->
+    <div id="photos-grid" class="glass-folder-grid">
+      {enhancedLocations.map((loc, idx) => {
+        const folderProps = {
+          label: loc.name || loc.location,
+          meta: `${loc.photoCount} photos · ${loc.region}`,
+          image: loc.heroPhoto || undefined,
+          art: "none" as const,
+          files: loc.previewImages.map((image, index) => ({
+            name: `${loc.name || loc.location} — ${index + 1}`,
+            image,
+            href: `/photos/${loc.slug}`,
+          })),
+          href: `/photos/${loc.slug}`,
+          action: "none" as const,
+          appear: false,
+          defaultWidth: 212,
+          eager: idx < 8,
+        };
+        return (
+          <div class="glass-folder-item" data-region={loc.region} data-href={`/photos/${loc.slug}`}>
+            <GlassFolder {...folderProps} />
+          </div>
+        );
+      })}
     </div>
   </div>
 </DashboardLayout>
 
 <style>
-  .folder-wrapper {
-    cursor: pointer;
-  }
-
-  /* ── 5-COLUMN MANILA FOLDER GRID (Default on Desktop) ── */
-  .folder-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 48px;
-    padding: 16px 0 52px;
-  }
-
-  .folder-grid .folder-item {
-    justify-content: flex-start;
-  }
-
-  @media (max-width: 960px) {
-    .folder-grid {
-      grid-template-columns: repeat(4, 1fr);
-      grid-column-gap: 16px;
-      grid-row-gap: 44px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .folder-grid {
-      grid-template-columns: repeat(3, 1fr);
-      grid-column-gap: 16px;
-      grid-row-gap: 40px;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .folder-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-column-gap: 14px;
-      grid-row-gap: 36px;
-      padding-top: 0;
-    }
-  }
-
-  @media (max-width: 340px) {
-    .folder-grid {
-      grid-template-columns: 1fr;
-      grid-row-gap: 32px;
-    }
-  }
-
-  /* ── LIST VIEW STYLING (Default on Mobile, Hidden on Desktop) ── */
-  .photos-list-container {
-    display: none;
-    padding: 0 0 48px;
-  }
-
-  /* Mobile default: show list view instead of folder grid. */
-  @media (max-width: 768px) {
-    .folder-grid {
-      display: none;
-    }
-
-    .photos-list-container {
-      display: block;
-    }
-  }
-
-  .photos-list-wrapper {
+  .section-header-row {
     display: flex;
-    flex-direction: column;
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    border-radius: 10px;
-    background: var(--dash-surface);
-    overflow: hidden;
-  }
-
-  .photo-list-row {
-    display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    gap: 16px;
-    padding: 12px 16px;
-    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    text-decoration: none !important;
-    color: inherit;
-    cursor: pointer;
-    transition: background 140ms ease;
-  }
-
-  .photo-list-row:last-child {
-    border-bottom: none;
-  }
-
-  .photo-list-row:hover {
-    background: var(--dash-hover);
-  }
-
-  .photo-list-main {
-    display: flex;
-    align-items: center;
     gap: 12px;
+    margin-bottom: var(--space-2);
+  }
+
+  .glass-folder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: 48px 32px;
+    padding: 16px 8px 52px;
+  }
+
+  .glass-folder-item {
     min-width: 0;
-    flex: 1;
+    position: relative;
   }
 
-  .photo-list-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--dash-accent); /* macOS folder blue tone */
-    flex-shrink: 0;
+  .glass-folder-item:hover,
+  .glass-folder-item:focus-within {
+    z-index: 1;
   }
 
-  .photo-list-thumb {
-    display: block;
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    overflow: hidden;
-    flex: 0 0 48px;
-    background: var(--dash-surface-subtle);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  .destination-groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 16px;
   }
 
-  .photo-list-thumb img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
+  .destination-group-card {
+    padding: 18px 20px;
   }
 
-  .photo-list-info {
+  .destination-group-title {
+    margin: 0 0 12px;
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--dash-text);
+  }
+
+  .destination-group-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .photo-list-title-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .photo-list-title {
-    font-family: var(--font-family-base);
-    font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--dash-text);
-    line-height: var(--leading-snug);
-    transition: color 140ms ease;
-  }
-
-  .photo-list-row:hover .photo-list-title {
-    color: var(--dash-accent);
-  }
-
-  .photo-list-tag {
-    font-size: var(--text-micro);
-    padding: 1px 6px;
-    border-radius: 4px;
-  }
-
-  .photo-list-headline {
-    font-size: var(--text-caption);
-    color: var(--dash-muted);
-    line-height: var(--leading-compact);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 58ch;
-  }
-
-  .photo-list-meta {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    flex-shrink: 0;
   }
 
-  .photo-list-count {
+  .destination-group-item {
+    padding-top: 10px;
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .destination-group-item:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .destination-item-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .destination-item-link {
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-medium);
+    color: var(--dash-text);
+  }
+
+  .destination-item-count {
     font-size: var(--text-caption);
     color: var(--dash-muted);
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
+  .destination-item-headline {
+    margin: 2px 0 0;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted);
+  }
+
+  .destination-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  /* Mobile: keep the same GlassFolder grid in a 2-column layout. */
   @media (max-width: 768px) {
-    .photo-list-headline {
-      max-width: 32ch;
+    .glass-folder-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px 16px;
+      padding: 8px 0 40px;
     }
   }
 
-  @media (max-width: 540px) {
-    .photo-list-row {
-      padding: 10px 12px;
-      gap: 10px;
-    }
-
-    .photo-list-main {
-      gap: 10px;
-    }
-
-    .photo-list-headline {
-      display: none;
-    }
-
-    .photo-list-thumb {
-      width: 44px;
-      height: 44px;
-      flex-basis: 44px;
-      border-radius: 7px;
+  @media (max-width: 359px) {
+    .glass-folder-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
     }
   }
 </style>
 
 <script>
-  import "../../scripts/folder-previews";
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  onPageLoad((signal) => {
+    const grid = document.getElementById("photos-grid");
+    if (!grid) return;
+
+    const FOLDER_BASE_WIDTH = 340;
+    const items = Array.from(grid.querySelectorAll<HTMLElement>(".glass-folder-item"));
+
+    const setFolderOpen = (root: HTMLElement, open: boolean) => {
+      if (open) root.setAttribute("data-open", "true");
+      else root.removeAttribute("data-open");
+
+      const hit = root.querySelector<HTMLButtonElement>(".gf-hit");
+      hit?.setAttribute("aria-expanded", String(open));
+
+      const files = root.querySelector<HTMLElement>(".gf-files");
+      if (files) files.inert = !open;
+    };
+
+    const closeAll = (except?: HTMLElement) => {
+      items.forEach((item) => {
+        const root = item.querySelector<HTMLElement>(".gf-root");
+        if (root && root !== except && root.hasAttribute("data-open")) {
+          setFolderOpen(root, false);
+        }
+      });
+    };
+
+    const ro = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            const w = entry.contentRect.width;
+            if (w > 0) {
+              (entry.target as HTMLElement).style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
+            }
+          }
+        })
+      : null;
+
+    items.forEach((item) => {
+      const root = item.querySelector<HTMLElement>(".gf-root");
+      const hit = item.querySelector<HTMLButtonElement>(".gf-hit");
+      const href = item.dataset.href;
+      if (!root) return;
+
+      const w = root.clientWidth;
+      if (w > 0) root.style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
+      ro?.observe(root);
+
+      let raf = 0;
+      let px = 0;
+      let py = 0;
+      const write = () => {
+        raf = 0;
+        root.style.setProperty("--gf-px", px.toFixed(3));
+        root.style.setProperty("--gf-py", py.toFixed(3));
+      };
+
+      root.addEventListener("pointermove", (e) => {
+        if (e.pointerType === "touch") return;
+        const r = root.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        px = ((e.clientX - r.left) / r.width) * 2 - 1;
+        py = ((e.clientY - r.top) / r.height) * 2 - 1;
+        if (!raf) raf = requestAnimationFrame(write);
+      }, { signal });
+
+      root.addEventListener("pointerleave", () => {
+        px = 0;
+        py = 0;
+        if (!raf) raf = requestAnimationFrame(write);
+      }, { signal });
+
+      hit?.addEventListener("click", () => {
+        const isOpen = root.hasAttribute("data-open");
+        if (isOpen && href && window.matchMedia("(hover: none)").matches) {
+          window.location.href = href;
+          return;
+        }
+        closeAll(root);
+        setFolderOpen(root, !isOpen);
+      }, { signal });
+
+      hit?.addEventListener("dblclick", () => {
+        if (href) window.location.href = href;
+      }, { signal });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAll();
+    }, { signal });
+
+    document.addEventListener("pointerdown", (e) => {
+      const target = e.target as Node | null;
+      if (target && !grid.contains(target)) {
+        closeAll();
+      } else if (target) {
+        const openRoot = grid.querySelector<HTMLElement>(".gf-root[data-open]");
+        if (openRoot && !openRoot.contains(target)) {
+          setFolderOpen(openRoot, false);
+        }
+      }
+    }, { signal });
+
+    signal.addEventListener("abort", () => {
+      ro?.disconnect();
+    }, { once: true });
+  });
 </script>

@@ -1,0 +1,275 @@
+---
+import { formatPhotoCapture } from "../../lib/photo-capture";
+
+interface Props {
+  id: string;
+  imageUrl: string;
+  alt: string;
+  title: string;
+  story?: string;
+  capturedAt?: string;
+  capturedTimeZone?: string;
+  location?: string;
+  photoNumber?: number;
+  width: number;
+  height: number;
+  srcset?: string;
+  sizes?: string;
+  eager?: boolean;
+}
+
+const { id, imageUrl, alt, title, story, capturedAt, capturedTimeZone, location, photoNumber,
+  width, height, srcset, sizes, eager = false } = Astro.props;
+const capture = formatPhotoCapture(capturedAt, capturedTimeZone);
+const frame = photoNumber == null ? id : String(photoNumber).padStart(3, "0");
+const descriptionId = `${id}-memory`;
+---
+
+<figure class="pixel-photo" data-pixel-photo data-flipped="false">
+  <button
+    class="pixel-photo__control"
+    type="button"
+    data-flip-control
+    aria-pressed="false"
+    aria-label={`Flip photo: ${title}`}
+    aria-describedby={descriptionId}
+    data-title={title}
+    data-description={descriptionId}
+  >
+    <span class="pixel-photo__shadow" data-flip-shadow aria-hidden="true"></span>
+    <span class="pixel-photo__lift">
+      <span class="pixel-photo__paper" data-flip-paper>
+        <span class="pixel-photo__front" data-flip-front>
+          <img src={imageUrl} srcset={srcset} sizes={sizes} alt={alt}
+            width={width} height={height} loading={eager ? "eager" : "lazy"}
+            fetchpriority={eager ? "high" : "auto"} decoding="async" draggable="false" />
+        </span>
+        <span class="pixel-photo__back" data-flip-back aria-hidden="true" id={descriptionId}>
+          <span class="pixel-photo__archive">Photo notes</span>
+          <span class="pixel-photo__memory" data-flip-scroll>
+            <span class="pixel-photo__back-title" data-flip-title>{title}</span>
+            <span class="pixel-photo__metadata">
+              <span><span class="pixel-photo__label">Date</span><span>{capture.date}</span></span>
+              <span><span class="pixel-photo__label">Time</span><span>{capture.time}</span></span>
+              <span><span class="pixel-photo__label">Place</span><span>{location || "Not updated"}</span></span>
+              <span><span class="pixel-photo__label">Frame</span><span>#{frame}</span></span>
+            </span>
+            <span class="pixel-photo__story-label pixel-photo__label">Story</span>
+            <span class="pixel-photo__story" data-flip-story>{story?.trim() || "Story coming soon."}</span>
+          </span>
+          <span class="pixel-photo__back-footer">Tap to flip<span class="pixel-photo__scroll-hint"> · Scroll to read</span></span>
+        </span>
+      </span>
+    </span>
+    <span class="pixel-photo__light-clip" aria-hidden="true"><span class="pixel-photo__light" data-flip-light></span></span>
+  </button>
+</figure>
+
+<script>
+  import "../../scripts/pixel-flip-photo";
+</script>
+
+<style>
+  .pixel-photo {
+    position: relative;
+    isolation: isolate;
+    container-type: inline-size;
+    margin: 0 0 28px;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+  }
+  .pixel-photo:focus-within,
+  .pixel-photo[data-animating] { z-index: 2; }
+  .pixel-photo__control {
+    all: unset;
+    display: block;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    perspective: 1350px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y pinch-zoom;
+    text-align: left;
+  }
+  .pixel-photo__control:focus-visible {
+    outline: 2px solid var(--dash-accent);
+    outline-offset: 6px;
+    border-radius: var(--radius-card-sm);
+  }
+  .pixel-photo__shadow {
+    position: absolute;
+    inset: 12px 5px 0;
+    border-radius: var(--radius-card-sm);
+    background: rgb(24 24 24 / .4);
+    filter: blur(9px);
+    opacity: .17;
+    transform: translate3d(0, 5px, -1px) scale(.98, .98);
+    pointer-events: none;
+  }
+  .pixel-photo__lift,
+  .pixel-photo__paper {
+    display: block;
+    position: relative;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+  .pixel-photo__lift { transition: transform 180ms ease; }
+  .pixel-photo__paper { transform: translate3d(0, 0, 0) rotateZ(0deg) rotateY(0deg); }
+  .pixel-photo[data-flipped="true"] .pixel-photo__paper { transform: translate3d(0, 0, 0) rotateZ(0deg) rotateY(180deg); }
+  .pixel-photo[data-fallback] .pixel-photo__paper { transition: transform 980ms cubic-bezier(.22, .7, .24, 1); }
+  .pixel-photo__front,
+  .pixel-photo__back {
+    box-sizing: border-box;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius-card-sm);
+  }
+  .pixel-photo__front {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    transform: translateZ(.2px);
+    overflow: hidden;
+    touch-action: pan-y pinch-zoom;
+  }
+  .pixel-photo__front img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: inherit;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .pixel-photo__back {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: clamp(16px, 5cqi, 24px);
+    transform: rotateY(180deg) translateZ(.2px);
+    background: #fdfcf8;
+    color: #27272a;
+    border: 1px solid rgb(206 189 154 / 0.45);
+    box-shadow: inset 0 0 24px rgb(228 214 180 / 0.18);
+    font-family: var(--font-family-base);
+    overflow: hidden;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .pixel-photo__back::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='220' viewBox='0 0 240 220'%3E%3Cg fill='%23d4b472' fill-opacity='0.34'%3E%3Cg transform='translate(58 58) rotate(-28)'%3E%3Ctext x='0' y='0' text-anchor='middle' font-family='Arial Narrow, Helvetica Neue, Arial, sans-serif' font-weight='800' font-size='13' letter-spacing='1.4'%3ENIKON%3C/text%3E%3C/g%3E%3Cg transform='translate(174 148) rotate(-28)' font-family='Georgia, Times New Roman, serif' font-style='italic' text-anchor='middle'%3E%3Ctext x='0' y='-13' font-size='10.5'%3ENikon%3C/text%3E%3Ctext x='0' y='0' font-size='11'%3ECrystal Archive Paper%3C/text%3E%3Ctext x='0' y='13' font-size='10.5'%3ESupreme%3C/text%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 220px 200px;
+  }
+
+  .pixel-photo__archive,
+  .pixel-photo__memory,
+  .pixel-photo__back-footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  .pixel-photo[data-flipped="false"] .pixel-photo__back,
+  .pixel-photo[data-flipped="true"] .pixel-photo__front {
+    pointer-events: none;
+  }
+
+  .pixel-photo[data-flipped="false"] .pixel-photo__front,
+  .pixel-photo[data-flipped="true"] .pixel-photo__back {
+    pointer-events: auto;
+  }
+  .pixel-photo__label {
+    font-family: inherit;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+  }
+  .pixel-photo__archive {
+    display: block;
+    flex: none;
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: var(--text-caption);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(63 63 70 / 0.72);
+  }
+  .pixel-photo__memory {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 2.2cqi, 12px);
+    flex: 1;
+    min-height: 0;
+    overflow-y: visible;
+    overscroll-behavior: auto;
+    touch-action: pan-y pinch-zoom;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dash-border-strong) transparent;
+    user-select: text;
+  }
+
+  .pixel-photo[data-scrollable="true"] .pixel-photo__memory {
+    overflow-y: auto;
+  }
+
+  .pixel-photo:not([data-scrollable="true"]) .pixel-photo__scroll-hint {
+    display: none;
+  }
+  .pixel-photo__memory > span { flex-shrink: 0; }
+  .pixel-photo__back-title {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: clamp(14.4px, 3.6cqi, 18px);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    display: block;
+    flex-shrink: 0;
+    color: #3a3028;
+  }
+  .pixel-photo__metadata { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; border-block: 0.5px solid rgb(180 165 130 / 0.35); padding-block: 12px; }
+  .pixel-photo__metadata > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .pixel-photo__metadata > span > span:last-child { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--text-body-sm); line-height: 1.4; overflow-wrap: anywhere; }
+  .pixel-photo__story-label { display: block; flex: none; color: var(--dash-text); font-size: var(--text-body-sm); }
+  .pixel-photo__story {
+    display: block;
+    font-size: clamp(var(--text-caption), 3.5cqi, var(--text-body));
+    line-height: var(--leading-body);
+    color: var(--dash-muted);
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    user-select: text;
+  }
+  .pixel-photo__back-footer {
+    display: block;
+    flex: none;
+    padding-top: var(--space-2);
+    border-top: 0.5px solid var(--dash-border);
+    font-size: var(--text-micro);
+    color: var(--dash-muted);
+  }
+  .pixel-photo__light-clip { position: absolute; inset: -28px -12px; overflow: hidden; pointer-events: none; }
+  .pixel-photo__light {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / .5) 48%, transparent 65%);
+    transform: translate3d(-100%, 0, 0);
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .pixel-photo__control:hover .pixel-photo__lift { transform: translate3d(0, -3px, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pixel-photo__lift, .pixel-photo__paper { transition: none !important; }
+    .pixel-photo__light { display: none; }
+  }
+</style>

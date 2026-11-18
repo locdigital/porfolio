@@ -84,9 +84,9 @@ describe("Typography Design System Standards", () => {
 
     it("verifies the compact minimalism typography scale tokens", () => {
       expect(dashboardCss).toContain("--text-body: 0.875rem;");
-      expect(dashboardCss).toContain("--text-body-sm: 0.8125rem;");
-      expect(dashboardCss).toContain("--text-caption: 0.75rem;");
-      expect(dashboardCss).toContain("--text-micro: 0.6875rem;");
+      expect(dashboardCss).toContain("--text-body-sm: max(var(--text-min), 0.8125rem);");
+      expect(dashboardCss).toContain("--text-caption: max(var(--text-min), 0.75rem);");
+      expect(dashboardCss).toContain("--text-micro: max(var(--text-min), 0.6875rem);");
       expect(globalCss).toContain("--type-body: var(--text-body, 14px);");
       expect(globalCss).toContain("--button-font-size: var(--text-body, 14px);");
     });

@@ -34,6 +34,33 @@ test('Markdown uses the public main content, resolves links, and excludes hidden
   assert.doesNotMatch(markdown, /Sidebar|PRIVATE|SECRET|Decorative|Duplicate|Icon noise/);
 });
 
+test('Markdown extracts PixelFlipPhoto image, title, capture metadata, and story without duplicating UI chrome', () => {
+  const markdown = htmlToMarkdown(`<!doctype html><body><main>
+    <h1>Tràng An</h1>
+    <figure class="pixel-photo" data-pixel-photo data-flipped="false">
+      <button type="button" data-flip-control>
+        <span class="pixel-photo__front"><img src="/_astro/test.webp" alt="Limestone Pinnacle — Tràng An"></span>
+        <span class="pixel-photo__back" aria-hidden="true">
+          <span class="pixel-photo__archive">Photo notes</span>
+          <span class="pixel-photo__back-title" data-flip-title>Limestone Pinnacle on Still Water</span>
+          <span class="pixel-photo__metadata">
+            <span><span>Date</span><span>18/10/2025</span></span>
+            <span><span>Place</span><span>Tràng An</span></span>
+          </span>
+          <span class="pixel-photo__story" data-flip-story>Every dip of an oar echoed against the limestone wall.</span>
+          <span class="pixel-photo__back-footer">Tap to flip</span>
+        </span>
+      </button>
+    </figure>
+    <footer class="workspace-doc-footer"><a href="/privacy">Privacy</a></footer>
+  </main></body>`, 'https://loc.digital/photos/trang-an');
+  assert.match(markdown, /!\[Limestone Pinnacle — Tràng An\]\(https:\/\/loc\.digital\/_astro\/test\.webp\)/);
+  assert.match(markdown, /\*\*Limestone Pinnacle on Still Water\*\*/);
+  assert.match(markdown, /Date: 18\/10\/2025/);
+  assert.match(markdown, /Every dip of an oar echoed against the limestone wall\./);
+  assert.doesNotMatch(markdown, /Tap to flip|Photo notes/);
+});
+
 test('Markdown responses and recovery preserve status, type, Vary, and cache separation', async () => {
   const handler = createContentHandler({ '/': '# Loc\n\nPublic portfolio content.\n', '/404': '# Not found\n' });
   const home = await handler(new Request('https://loc.digital/', { headers: { Accept: 'text/markdown' } }));

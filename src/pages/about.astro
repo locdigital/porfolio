@@ -1,6 +1,17 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import PhotoStackShowcase from "../components/about/PhotoStackShowcase.astro";
+import Heroicon from "../components/icons/Heroicon.astro";
+import { PERSON_ID, canonicalUrl, pageSchema } from "../lib/seo";
+
+const aboutUrl = canonicalUrl("/about");
+const aboutSchema = pageSchema({
+  url: aboutUrl,
+  title: "About — Phuc Loc Nguyen",
+  description: "About Phuc Loc Nguyen (Loc / Henry): performance marketing, growth strategy, travel photography, trekking, and the work behind loc.digital.",
+  type: "ProfilePage",
+  mainEntity: { "@id": PERSON_ID },
+  breadcrumbId: `${aboutUrl}#breadcrumbs`,
+});
 
 const aboutParagraphs = [
   "I started exploring social media in ninth grade and was buying and selling Facebook pages by the time I finished high school. Back then, I didn’t know I was learning marketing. I was figuring things out and finding ways to make money. Studying Graphic Design at Arena and Digital Marketing at FPT University eventually gave a name—and some structure—to the skills I’d been teaching myself.",
@@ -16,265 +27,262 @@ const aboutParagraphs = [
 <DashboardLayout
   title="About — Phuc Loc Nguyen"
   pageTitle="About"
-  description="About Loc, also known as Henry: digital media, performance marketing, creative strategy, photography, trekking, and the work behind the portfolio."
-  breadcrumbs={[{ label: "About" }]}
+  description="About Phuc Loc Nguyen (Loc / Henry): digital media, performance marketing, creative strategy, photography, trekking, and the work behind the portfolio."
+  breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "About" }]}
   maxWidthVariant="default"
+  pageType="ProfilePage"
+  ogType="profile"
+  schema={aboutSchema}
 >
-  <!-- Page Header -->
-  <header class="page-header">
-    <h1 class="page-title">Growth Marketer and part-time Photographer.</h1>
-    <p class="page-lead">
-      I’m Loc, also known as Henry. Born in My Tho and now based in Sai Gon, I work in digital media, bringing together creative thinking, performance marketing, and data.
-    </p>
-  </header>
-
-  <!-- Story Prose Section -->
-  <section class="page-section about-story-section" aria-labelledby="heading-about-story">
-    <h2 id="heading-about-story" class="section-title">A closer look</h2>
-    
-    <div class="about-story-container">
-      <div class="about-story-prose">
-        {aboutParagraphs.map((paragraph) => (
-          <p>{paragraph}</p>
-        ))}
+  <div class="about-layout">
+    <article class="about-story" aria-labelledby="about-heading">
+      <h1 id="about-heading">Growth Marketer<br />and Photoholic</h1>
+      <div class="about-prose">
+        <p class="content-description">I’m Loc, also known as Henry. Born in My Tho and now based in Sai Gon, I work in digital media, bringing together creative thinking, performance marketing, and data.</p>
+        {aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
       </div>
-    </div>
-  </section>
+    </article>
 
-  <!-- Photo Stack Showcase (4 random albums from Photos) -->
-  <PhotoStackShowcase />
-
+    <aside class="about-sidebar" aria-label="Photo and contact links">
+      <div class="about-photo">
+        <img
+          src="/images/about-photographer.png"
+          alt="Pixel-art illustration of a photographer surrounded by greenery and pink blossoms"
+          width="1024"
+          height="1536"
+          loading="eager"
+          decoding="sync"
+        />
+      </div>
+      <nav class="about-socials" aria-label="Find me online">
+        <ul role="list" class="about-socials-list">
+          <li class="about-social-item">
+            <a href="https://www.instagram.com/henrygoodkid" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="about-social-icon">
+                <path d="M12 3c-2.444 0-2.75.01-3.71.054-.959.044-1.613.196-2.185.418A4.412 4.412 0 0 0 4.51 4.511c-.5.5-.809 1.002-1.039 1.594-.222.572-.374 1.226-.418 2.184C3.01 9.25 3 9.556 3 12s.01 2.75.054 3.71c.044.959.196 1.613.418 2.185.23.592.538 1.094 1.039 1.595.5.5 1.002.808 1.594 1.038.572.222 1.226.374 2.184.418C9.25 20.99 9.556 21 12 21s2.75-.01 3.71-.054c.959-.044 1.613-.196 2.185-.419a4.412 4.412 0 0 0 1.595-1.038c.5-.5.808-1.002 1.038-1.594.222-.572.374-1.226.418-2.184.044-.96.054-1.267.054-3.711s-.01-2.75-.054-3.71c-.044-.959-.196-1.613-.419-2.185A4.412 4.412 0 0 0 19.49 4.51c-.5-.5-1.002-.809-1.594-1.039-.572-.222-1.226-.374-2.184-.418C14.75 3.01 14.444 3 12 3Zm0 1.622c2.403 0 2.688.009 3.637.052.877.04 1.354.187 1.67.31.421.163.72.358 1.036.673.315.315.51.615.673 1.035.123.317.27.794.31 1.671.043.95.052 1.234.052 3.637s-.009 2.688-.052 3.637c-.04.877-.187 1.354-.31 1.67-.163.421-.358.72-.673 1.036a2.79 2.79 0 0 1-1.035.673c-.317.123-.794.27-1.671.31-.95.043-1.234.052-3.637.052s-2.688-.009-3.637-.052c-.877-.04-1.354-.187-1.67-.31a2.789 2.789 0 0 1-1.036-.673 2.79 2.79 0 0 1-.673-1.035c-.123-.317-.27-.794-.31-1.671-.043-.95-.052-1.234-.052-3.637s.009-2.688.052-3.637c.04-.877.187-1.354.31-1.67.163-.421.358-.72.673-1.036.315-.315.615-.51 1.035-.673.317-.123.794-.27 1.671-.31.95-.043 1.234-.052 3.637-.052Z"></path>
+                <path d="M12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0-7.622a4.622 4.622 0 1 0 0 9.244 4.622 4.622 0 0 0 0-9.244Zm5.884-.182a1.08 1.08 0 1 1-2.16 0 1.08 1.08 0 0 1 2.16 0Z"></path>
+              </svg>
+              <span>Follow on Instagram</span>
+            </a>
+          </li>
+          <li class="about-social-item">
+            <a href="https://www.pexels.com/@henrygoodkid" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="about-social-icon">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Zm2.5 3.8v10.4H11v-3.8h1.7a3.3 3.3 0 0 0 0-6.6H8.5Zm2.5 2h1.6a1.3 1.3 0 0 1 0 2.6H11V8.8Z"></path>
+              </svg>
+              <span>Explore on Pexels</span>
+            </a>
+          </li>
+          <li class="about-social-item">
+            <a href="https://www.linkedin.com/in/phucloc" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="about-social-icon">
+                <path d="M18.335 18.339H15.67v-4.177c0-.996-.02-2.278-1.39-2.278-1.389 0-1.601 1.084-1.601 2.205v4.25h-2.666V9.75h2.56v1.17h.035c.358-.674 1.228-1.387 2.528-1.387 2.7 0 3.2 1.778 3.2 4.091v4.715zM7.003 8.575a1.546 1.546 0 01-1.548-1.549 1.548 1.548 0 111.547 1.549zm1.336 9.764H5.666V9.75H8.34v8.589zM19.67 3H4.329C3.593 3 3 3.58 3 4.297v15.406C3 20.42 3.594 21 4.328 21h15.338C20.4 21 21 20.42 21 19.703V4.297C21 3.58 20.4 3 19.666 3h.003z"></path>
+              </svg>
+              <span>Connect on LinkedIn</span>
+            </a>
+          </li>
+          <li class="about-social-item about-social-email">
+            <a href="mailto:hi@loc.digital">
+              <Heroicon name="envelope" size={24} class="about-social-icon" />
+              <span>hi@loc.digital</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+  </div>
 </DashboardLayout>
 
 <style>
-  /* Story section */
-  .about-story-section {
-    max-width: none;
-    width: 100%;
+  .about-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(32px, 5vw, 72px);
+    padding-block: 12px 40px;
   }
 
-  .about-story-container {
-    width: 100%;
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    padding: 0;
+  .about-story h1 {
+    margin: 0 0 30px;
+    color: var(--dash-text);
+    font-size: clamp(32px, 3.5vw, 48px);
+    font-weight: 650;
+    line-height: 1.12;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
   }
 
-  .about-story-prose {
-    max-width: none;
-    width: 100%;
+  .about-prose {
+    color: var(--dash-text);
+    font-size: var(--text-body-sm);
+    line-height: 1.85;
   }
 
-  .about-story-prose p {
-    max-width: none;
-    width: 100%;
-    margin: 0 0 var(--space-para-to-para, 16px);
-    color: var(--color-jet);
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
+  .about-prose p {
+    font-size: inherit;
+    margin: 0 0 28px;
   }
 
-  .about-story-prose p:last-child {
+  .about-prose p:last-child {
     margin-bottom: 0;
   }
 
-  /* Section Title Row */
-  .section-title-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: var(--space-4);
+  .about-sidebar {
+    min-width: 0;
+    padding: 6px 10px 0;
   }
 
-  .section-count {
-    font-size: var(--text-body-sm);
-    color: var(--dash-muted);
-    font-weight: var(--font-weight-medium);
-  }
-
-  .lifestyle-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(8px, 1.1vw, 14px);
-    width: 100%;
-    align-items: center;
-    padding: 10px 6px 16px;
-  }
-
-  .lifestyle-card {
-    position: relative;
-    display: block;
+  .about-photo {
     overflow: hidden;
-    padding: 0;
-    aspect-ratio: 4 / 5;
     border-radius: 20px;
+    transform: rotate(3deg);
     background: var(--dash-surface);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border-subtle, rgba(0, 0, 0, 0.08));
-    box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.45);
-    text-decoration: none;
-    transform: rotate(var(--lifestyle-tilt, 0deg));
-    transition: none;
+    will-change: transform, opacity;
+    animation:
+      about-photo-fade 0.36s ease-out 0.26s both,
+      about-photo-rise 0.6s cubic-bezier(0.34, 1.45, 0.64, 1) 0.26s both;
   }
 
-  .lifestyle-card:nth-child(1) {
-    --lifestyle-tilt: -1.6deg;
+  @supports (animation-timing-function: linear(0, 1)) {
+    .about-photo {
+      animation:
+        about-photo-fade 0.36s ease-out 0.26s both,
+        about-photo-rise 0.6s linear(
+          0, 0.1379, 0.4245, 0.7174, 0.9408, 1.0722, 1.123, 1.1189,
+          1.0872, 1.0489, 1.0168, 0.9958, 0.9859, 0.9842, 0.9873,
+          0.992, 0.9965, 0.9997, 1.0015, 1.002, 1
+        ) 0.26s both;
+    }
   }
 
-  .lifestyle-card:nth-child(2) {
-    --lifestyle-tilt: 1.9deg;
+  @keyframes about-photo-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
-  .lifestyle-card:nth-child(3) {
-    --lifestyle-tilt: -1.2deg;
+  @keyframes about-photo-rise {
+    from {
+      transform: translate3d(0, 28px, 0) rotate(3deg);
+    }
+    to {
+      transform: translate3d(0, 0, 0) rotate(3deg);
+    }
   }
 
-  .lifestyle-card:nth-child(4) {
-    --lifestyle-tilt: 1.4deg;
-  }
-
-  .lifestyle-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .about-photo img {
     display: block;
-    transition: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
   }
 
-  .lifestyle-card::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 0;
-    height: 42%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0));
-    pointer-events: none;
+  .about-socials {
+    margin-top: 46px;
   }
 
-  .lifestyle-caption {
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: 16px;
+  .about-socials-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .about-social-item {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    color: #FFFFFF;
-    z-index: 1;
   }
 
-  .lifestyle-category {
-    width: fit-content;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, 0.46);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    font-size: var(--text-caption);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--leading-compact);
+  .about-social-item + .about-social-item {
+    margin-top: 16px;
   }
 
-  .lifestyle-category::before {
-    content: "";
-    width: 5px;
-    height: 5px;
-    border-radius: 999px;
-    background: var(--dash-accent, #0075DE);
+  .about-social-item.about-social-email {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--dash-border);
   }
 
-  .lifestyle-title {
-    color: #FFFFFF;
-    font-size: var(--text-h4);
-    line-height: var(--leading-snug);
-    font-weight: var(--font-weight-medium);
-    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.4);
-  }
-
-  .lifestyle-card:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--dash-accent) 50%, transparent);
-    outline-offset: 4px;
-  }
-
-  /* Quick action strip (Warm Ivory #F9F8F6 & 16px radius) */
-  .about-cta-strip {
+  .about-socials a {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
     gap: 16px;
-    padding: var(--docs-space-card-padding, 24px);
-    background: var(--color-ivory);
-    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
-    border-radius: var(--docs-card-radius, 16px);
+    color: var(--dash-text);
+    font-size: var(--text-body);
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: color var(--duration-fast, 150ms) ease;
   }
 
-  .about-cta-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+  .about-social-icon {
+    width: 24px;
+    height: 24px;
+    flex: none;
+    fill: var(--dash-muted);
+    transition: fill var(--duration-fast, 150ms) ease;
   }
 
-  /* Responsive Breakpoints */
-  @media (max-width: 1100px) {
-    .lifestyle-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 760px;
-      margin-inline: auto;
+  .about-socials a:hover {
+    color: var(--dash-link-hover, #0969DA);
+  }
+
+  .about-socials a:hover .about-social-icon {
+    fill: var(--dash-link-hover, #0969DA);
+  }
+
+  .about-socials a:focus-visible {
+    outline: 2px solid var(--dash-accent);
+    outline-offset: 5px;
+  }
+
+  @media (max-width: 1100px) and (min-width: 769px) {
+    .about-layout {
+      gap: 28px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+    }
+
+    .about-story h1 {
+      font-size: var(--text-h1);
     }
   }
 
-  @media (max-width: 640px) {
-    .lifestyle-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: none;
-      gap: 12px;
-      padding: 4px 0 8px;
+  @media (max-width: 768px) {
+    .about-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 32px;
+      padding-top: 0;
     }
 
-    .lifestyle-card {
-      aspect-ratio: 4 / 5;
-      border-radius: 14px;
-      transform: rotate(0deg);
+    .about-story h1 {
+      max-width: 540px;
+      margin-bottom: 24px;
+      font-size: clamp(24px, 6vw, 32px);
     }
 
-    .lifestyle-caption {
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
+    .about-sidebar {
+      display: contents;
     }
 
-    .lifestyle-title {
+    .about-photo {
+      order: -1;
+      width: 60%;
+      max-width: 240px;
+      margin: 0 0 0 8px;
+      animation-delay: 0.12s, 0.12s;
+    }
+
+    .about-socials {
+      order: 1;
+      margin-top: 0;
+    }
+
+    .about-prose {
       font-size: var(--text-body-sm);
-      line-height: var(--leading-snug);
-    }
-
-    .about-story-container {
-      padding: 0;
-    }
-
-    .about-cta-strip {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 16px;
-    }
-
-    .about-cta-actions {
-      width: 100%;
-    }
-
-    .about-cta-actions .dash-button {
-      flex: 1;
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 359px) {
-    .lifestyle-grid {
-      grid-template-columns: 1fr;
+      line-height: 1.8;
     }
   }
 </style>

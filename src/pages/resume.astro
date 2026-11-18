@@ -1,10 +1,37 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { GraduationCap } from "../components/icons/majesticons";
+import { GraduationCap } from "../components/icons/phosphor";
+import { PERSON_ID, canonicalUrl, pageSchema } from "../lib/seo";
+
+const resumeUrl = canonicalUrl("/resume");
+const resumeSchema = pageSchema({
+  url: resumeUrl,
+  title: "Resume — Phuc Loc Nguyen",
+  description: "Resume of Phuc Loc Nguyen (Loc / Henry): education at FPT University, performance marketing experience, SEO leadership, and growth competencies.",
+  type: "ProfilePage",
+  mainEntity: { "@id": PERSON_ID },
+  breadcrumbId: `${resumeUrl}#breadcrumbs`,
+});
 
 const experiences = [
   {
+    company: "SONY",
+    logo: "/assets/logos/logo-sony.webp",
+    role: "D2C Marketing",
+    period: "2025 — 2026",
+    type: "Consumer Electronics & E-Commerce",
+    location: "Vietnam / Regional",
+    description: "Supported direct-to-consumer marketing and e-commerce operations across website content, campaign assets, performance analysis, experimentation, AI workflows, and CRM coordination.",
+    achievements: [
+      "Improved engagement by 5% in FY25 through AI-powered copy testing and predictive analytics initiatives.",
+      "Managed and coordinated resolution for 200+ monthly customer support incidents through Salesforce CRM.",
+      "Optimized product pages, promotional banners, and campaign content through Adobe Analytics, A/B testing, and personalization."
+    ],
+    tools: ["Adobe Analytics", "Adobe Experience Manager", "Salesforce CRM", "A/B Testing", "AI Workflows"]
+  },
+  {
     company: "WorkFlow Space",
+    logo: "/assets/logos/logo-workflow.webp",
     role: "Digital Marketing Executive",
     period: "2024 — 2026",
     type: "Co-working & Private Pods",
@@ -19,6 +46,7 @@ const experiences = [
   },
   {
     company: "Đi Làm Đừng Đi Lầm",
+    logo: "/assets/logos/logo-dlddl.png",
     role: "Co-Founder & Community Lead",
     period: "2023 — Present",
     type: "Career Guidance Community",
@@ -33,6 +61,7 @@ const experiences = [
   },
   {
     company: "Đại Học Đừng Học Đại",
+    logo: "/assets/logos/logo-community.png",
     role: "Co-Founder & Community Lead",
     period: "2021 — Present",
     type: "Youth Education Network",
@@ -47,20 +76,22 @@ const experiences = [
   },
   {
     company: "PlayAh!",
+    logo: "/assets/logos/logo-playah.webp",
     role: "Performance Senior Executive",
     period: "2024 — 2026",
     type: "E-Commerce Retainer",
     location: "Saigon",
     description: "Scaled e-commerce acquisition across TikTok Shop, website, and Facebook by connecting KOC booking, paid media, creative testing, and AI-assisted conversion flows.",
     achievements: [
-      "Scaled TikTok Shop revenue to over 1B+ VND monthly.",
+      "Scaled TikTok Shop revenue to 1B+ VND monthly.",
       "Increased website revenue by 10x in 2 months with ROAS > 10.",
       "Automated Facebook Messenger AI funnels boosting sales by 300%."
     ],
-    tools: ["TikTok Ads", "TikTok Shop", "Meta Ads", "AI Funnels"]
+    tools: ["TikTok Ads", "TikTok Shop", "Meta Ads", "Google Ads", "AI Funnels"]
   },
   {
     company: "Asia Strategic Holdings",
+    logo: "/assets/logos/logo-asia-strategic.png",
     role: "Performance Marketing",
     period: "2025 — 2026",
     type: "Growth Media",
@@ -75,6 +106,7 @@ const experiences = [
   },
   {
     company: "Vinh Cara",
+    logo: "/assets/logos/logo-vinhcara.png",
     role: "Digital Marketing Specialist",
     period: "2024 — 2025",
     type: "Luxury Retail",
@@ -88,6 +120,7 @@ const experiences = [
   },
   {
     company: "TOMATO Children's Home",
+    logo: "/assets/logos/logo-tomato.webp",
     role: "Digital Marketing Executive",
     period: "2023 — 2024",
     type: "Early Childhood Education",
@@ -102,6 +135,7 @@ const experiences = [
   },
   {
     company: "POPS Worldwide",
+    logo: "/assets/logos/logo-pops.webp",
     role: "Search Engine Optimization Executive",
     period: "2022 — 2023",
     type: "Digital Entertainment",
@@ -139,9 +173,12 @@ const skillClusters = [
 <DashboardLayout
   title="Resume — Phuc Loc Nguyen"
   pageTitle="Resume"
-  description="Resume of Nguyen Phuc Loc, including education, selected experience, notable contributions, tools, and specialized skill clusters."
-  breadcrumbs={[{ label: "Resume" }]}
+  description="Resume of Phuc Loc Nguyen (Nguyen Phuc Loc), including FPT University education, performance marketing experience, community growth, tools, and skill clusters."
+  breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "Resume" }]}
   maxWidthVariant="default"
+  pageType="ProfilePage"
+  ogType="profile"
+  schema={resumeSchema}
 >
   <header class="page-header">
     <h1 class="page-title">Resume</h1>
@@ -160,7 +197,7 @@ const skillClusters = [
           <div style="font-weight: 600; color: var(--dash-text);">FPT University</div>
           <span style="font-size: var(--text-caption); color: var(--dash-muted);">2019 — 2023 · Ho Chi Minh City</span>
         </div>
-        <div style="font-size: var(--text-body-sm); font-weight: 500; color: var(--dash-accent); margin: 2px 0 6px;">
+        <div style="font-size: var(--text-body-sm); font-weight: 500; color: var(--dash-link-hover, #0969DA); margin: 2px 0 6px;">
           Bachelor of Digital Marketing · Graduated with Honors
         </div>
         <p style="margin: 0; font-size: var(--text-body-sm); color: var(--dash-muted); line-height: var(--leading-body);">
@@ -175,42 +212,48 @@ const skillClusters = [
 
     <div style="display: flex; flex-direction: column; gap: var(--docs-space-subsection-gap, 32px);">
       {experiences.map((exp) => (
-        <article style="border-bottom: var(--dash-border-width, 1px) solid var(--dash-border); padding-bottom: var(--space-6);">
-          <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
-            <div>
-              <h3 class="item-title" style="font-size: var(--text-body); display: inline; margin: 0; color: var(--dash-text);">{exp.role}</h3>
-              <span style="color: var(--dash-muted); margin: 0 6px;">·</span>
-              <span style="font-size: var(--text-body); font-weight: 500; color: var(--dash-accent);">{exp.company}</span>
-            </div>
-            <span style="font-size: var(--text-body-sm); font-weight: 500; color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums;">{exp.period}</span>
+        <article class="experience-item">
+          <div class="experience-logo" aria-hidden="true">
+            <img src={exp.logo} alt="" loading="lazy" decoding="async" />
           </div>
 
-          <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); margin-bottom: 10px;">
-            {exp.type} · {exp.location}
-          </div>
-
-          <p style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--dash-text); margin: 0 0 12px;">
-            {exp.description}
-          </p>
-
-          <div style="margin-bottom: 12px; padding: 14px 18px; background: var(--color-ivory); border-radius: 12px; border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));">
-            <div style="font-size: var(--text-micro); font-weight: 600; color: var(--color-fog); text-transform: uppercase; margin-bottom: 6px; letter-spacing: var(--tracking-caps);">
-              Notable contributions
+          <div class="experience-content">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
+              <div>
+                <h3 class="item-title" style="font-size: calc(var(--text-body) + 3px); display: inline; margin: 0; color: var(--dash-text);">{exp.role}</h3>
+                <span style="color: var(--dash-muted); margin: 0 6px;">·</span>
+                <span style="font-size: var(--text-body); font-weight: 500; color: var(--dash-link-hover, #0969DA);">{exp.company}</span>
+              </div>
+              <span style="font-size: var(--text-body-sm); font-weight: 500; color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums;">{exp.period}</span>
             </div>
-            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--docs-space-list-item-gap, 8px);">
-              {exp.achievements.map((ach) => (
-                <li style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text);">
-                  <span class="dash-bullet" aria-hidden="true"></span>
-                  <span>{ach}</span>
-                </li>
+
+            <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); margin-bottom: 10px;">
+              {exp.type} · {exp.location}
+            </div>
+
+            <p class="content-description" style="font-size: var(--text-body-sm); line-height: var(--leading-body); margin: 0 0 12px;">
+              {exp.description}
+            </p>
+
+            <div style="margin-bottom: 12px; padding: 14px 18px; background: var(--color-ivory); border-radius: 12px; border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));">
+              <div style="font-size: var(--text-micro); font-weight: 600; color: var(--color-fog); text-transform: uppercase; margin-bottom: 6px; letter-spacing: var(--tracking-caps);">
+                Notable contributions
+              </div>
+              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--docs-space-list-item-gap, 8px);">
+                {exp.achievements.map((ach) => (
+                  <li style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text);">
+                    <span class="dash-bullet" aria-hidden="true"></span>
+                    <span>{ach}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+              {exp.tools.map((t) => (
+                <span class="dash-tag">{t}</span>
               ))}
-            </ul>
-          </div>
-
-          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-            {exp.tools.map((t) => (
-              <span class="dash-tag">{t}</span>
-            ))}
+            </div>
           </div>
         </article>
       ))}
@@ -223,7 +266,7 @@ const skillClusters = [
     <div class="skill-cluster-grid">
       {skillClusters.map((cluster) => (
         <div class="dash-card" style="padding: var(--docs-space-card-padding, 20px);">
-          <h3 class="item-title" style="font-size: var(--text-h4); margin: 0 0 var(--space-2);">
+          <h3 class="item-title" style="font-size: calc(var(--text-h4) + 3px); margin: 0 0 var(--space-2);">
             {cluster.title}
           </h3>
           <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--docs-space-list-item-gap, 8px);">
@@ -241,6 +284,42 @@ const skillClusters = [
 </DashboardLayout>
 
 <style>
+  .experience-item {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    border-bottom: var(--dash-border-width, 1px) solid var(--dash-border);
+    padding-bottom: var(--space-6);
+  }
+
+  .experience-logo {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 7px;
+    overflow: hidden;
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.1));
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  }
+
+  .experience-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .experience-content {
+    min-width: 0;
+  }
+
   .skill-cluster-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -254,6 +333,17 @@ const skillClusters = [
   }
 
   @media (max-width: 640px) {
+    .experience-item {
+      grid-template-columns: 40px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .experience-logo {
+      width: 40px;
+      height: 40px;
+      padding: 6px;
+    }
+
     .skill-cluster-grid {
       grid-template-columns: 1fr;
     }

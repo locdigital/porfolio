@@ -87,7 +87,12 @@
       "height": 1600,
       "caption": "Christ Church Melaka red colonial facade",
       "order": 1,
-      "isCover": true
+      "isCover": true,
+      "title": "Terracotta Red on Dutch Square",
+      "story": "Stepping off the coach into Dutch Square felt like walking straight onto a warm, painted postcard. The heavy terracotta walls of Christ Church and the clock tower dominated the roundabout, with white lettering from 1753 still sharp against the brick. Around the base, modern traffic buzzed past without paying the centuries much mind.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-28T15:22:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-02",
@@ -97,7 +102,12 @@
       "height": 1600,
       "caption": "Red Square clock tower and bustling trishaws",
       "order": 2,
-      "isCover": false
+      "isCover": false,
+      "title": "Trishaw Fleet Below the Tower",
+      "story": "From up on the stone steps, the square looked like a negotiation between serious colonial history and total sensory overload. A whole fleet of trishaws sat huddled beneath the clock tower, each canopy competing with plastic flowers, cartoon cutouts, and speaker rigs. The riders leaned on their handlebars, waiting patiently for the afternoon crowd to pick a ride.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-28T16:04:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-03",
@@ -107,7 +117,12 @@
       "height": 1600,
       "caption": "Clock tower and vintage street lamp at golden hour",
       "order": 3,
-      "isCover": false
+      "isCover": false,
+      "title": "Hazy Sun Beside the Lantern",
+      "story": "By late afternoon, the tropical humidity had softened the sun into a pale, glowing circle just beside the clock tower roof. The black iron street lamp stood crisp in the foreground, framing the Roman numerals and weathered red paintwork. Up here, above the chatter of the square, the heat finally began to break.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-28T16:47:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-04",
@@ -117,7 +132,12 @@
       "height": 1600,
       "caption": "Dutch colonial heritage of Christ Church Melaka",
       "order": 4,
-      "isCover": false
+      "isCover": false,
+      "title": "Dutch Heritage and Blue Commute",
+      "story": "The Dutch built Christ Church out of imported Zeeland bricks in 1753, coating them in this unapologetic coral red that refuses to fade. Watching a compact blue hatchback zip across the foreground felt like a reminder that Melaka is an active town, not a sealed museum. The bell gable sat quiet above it all, perfectly indifferent to the afternoon rush.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-28T17:15:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-05",
@@ -127,7 +147,12 @@
       "height": 1600,
       "caption": "Elaborately decorated flower trishaw in Melaka",
       "order": 5,
-      "isCover": false
+      "isCover": false,
+      "title": "Between Rides in the Shade",
+      "story": "I caught this through the roadside foliage while the square paused for breath. Behind an explosion of pink ribbons, character cutouts, and padded vinyl, the driver was completely lost in his phone screen. It felt like the truest picture of modern Melaka: unbothered calm wrapped in neon plastic.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-28T17:42:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-06",
@@ -137,7 +162,12 @@
       "height": 1067,
       "caption": "Melaka Straits Floating Mosque above the sea",
       "order": 6,
-      "isCover": false
+      "isCover": false,
+      "title": "Floating Dome at Blue Hour",
+      "story": "We reached the edge of Pulau Melaka just as twilight set in over the water. Built out over concrete stilts, the mosque seemed to hover directly above the gentle swell of the strait, its gold-and-blue dome glowing against the cooling sky. Watching the sea wash quietly around the pilings was the perfect counterpoint to the busy streets in town.",
+      "location": "Melaka Straits Mosque",
+      "capturedAt": "2024-12-28T18:48:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-07",
@@ -147,7 +177,12 @@
       "height": 1067,
       "caption": "Floating mosque illuminated at dusk",
       "order": 7,
-      "isCover": false
+      "isCover": false,
+      "title": "Straits Mosque at Blue Hour",
+      "story": "The tide crept up against the concrete stilts just as the call to prayer began and the domes flicked on. Violet and amber floodlights washed across the whitewashed walls, throwing a warm streak across the grey Malacca Strait. Walking around the seawall, the cool sea breeze was a welcome relief from the afternoon humidity.",
+      "location": "Melaka Straits Mosque",
+      "capturedAt": "2024-12-28T18:48:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-08",
@@ -157,7 +192,12 @@
       "height": 1600,
       "caption": "Daytime river cruise gliding past heritage shophouses",
       "order": 8,
-      "isCover": false
+      "isCover": false,
+      "title": "Morning Wake on Malacca River",
+      "story": "I leaned over the river rail just as the tourist boat throttled up, trailing a frothy white wake past the terracotta shophouse roofs. Rows of Malaysian flags flapped lazily along the Kampung Jawa bridge ahead, with barely enough morning breeze to keep them moving. The river cruise looked tempting, though watching it glide from above cost nothing and gave me better angles.",
+      "location": "Malacca River",
+      "capturedAt": "2024-12-29T10:24:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-09",
@@ -167,7 +207,12 @@
       "height": 1600,
       "caption": "Colorful shophouse facade with traditional lanterns",
       "order": 9,
-      "isCover": false
+      "isCover": false,
+      "title": "Pulley Basket on Turquoise Balcony",
+      "story": "Standing on the narrow street below, I heard a small brass bell ring before spotting the vendor peering down from his curved turquoise balcony. He was busy winching a woven bamboo basket up on a rope, sheltered under two floral umbrella lanterns. It was a remarkably efficient setup for serving passersby without having to walk down a single flight of stairs.",
+      "location": "Malacca",
+      "capturedAt": "2024-12-29T11:35:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-10",
@@ -177,7 +222,12 @@
       "height": 1067,
       "caption": "Malacca River night lights and boardwalk from above",
       "order": 10,
-      "isCover": false
+      "isCover": false,
+      "title": "River Bend After Dark",
+      "story": "From up high, the river curled like dark glass between strings of golden quayside lights and glowing neon signs. Down below, families ambled between food stalls while the red-lit wooden masts of the museum ship stood out against the pavement. The whole town seems to catch its second wind once the sun drops and the river breeze takes over.",
+      "location": "Malacca River",
+      "capturedAt": "2024-12-29T20:15:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-11",
@@ -187,7 +237,12 @@
       "height": 1600,
       "caption": "Red Square clock tower illuminated at night",
       "order": 11,
-      "isCover": false
+      "isCover": false,
+      "title": "Clock Tower in Red Square",
+      "story": "The daytime tour crowds had completely vanished from Dutch Square, leaving the red clock tower standing quietly under a black sky. Floodlights caught the salmon-red brickwork and white arched louvers, with a pair of rented e-scooters parked casually by the curb. It was past nine, but the square felt cooler and far more dignified than it did under the midday sun.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-29T21:12:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-12",
@@ -197,7 +252,12 @@
       "height": 1600,
       "caption": "Historic Stadthuys colonial facade at night",
       "order": 12,
-      "isCover": false
+      "isCover": false,
+      "title": "Stadthuys Complex After Hours",
+      "story": "A warm spotlight washed over the gabled Dutch facade, picking out the 'AD 1931' inscription and the small second-floor balcony. In front, neatly trimmed topiary bushes and a solitary black lamppost kept watch over the quiet flowerbeds. Wandering past these colonial walls without dodging trishaw music was easily the best way to see them.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-29T21:38:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-13",
@@ -207,7 +267,12 @@
       "height": 1600,
       "caption": "Jonker Street heritage shophouse at night",
       "order": 13,
-      "isCover": false
+      "isCover": false,
+      "title": "Terracotta Balconies After Dark",
+      "story": "Once the day-trippers cleared out, the Stadthuys traded its museum bustle for something much calmer. Amber street lamps lit up the heavy terracotta walls and white shuttered windows, leaving the grand outdoor staircase in quiet relief.",
+      "location": "Dutch Square, Malacca",
+      "capturedAt": "2024-12-28T20:15:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-14",
@@ -217,7 +282,12 @@
       "height": 1600,
       "caption": "Night river cruise boats gliding past colorful murals",
       "order": 14,
-      "isCover": false
+      "isCover": false,
+      "title": "Neon Wakes on Malacca River",
+      "story": "Leaning on the bridge railing, I watched the river cruise boats glide along the waterway like illuminated water bugs. Electric neon strips along their roofs sent ripples of green and violet across the dark water toward the riverside promenades.",
+      "location": "Malacca River, Malacca",
+      "capturedAt": "2024-12-28T20:38:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-15",
@@ -227,7 +297,12 @@
       "height": 1600,
       "caption": "Illuminated river cruise on the Malacca River",
       "order": 15,
-      "isCover": false
+      "isCover": false,
+      "title": "River Cruise Under Bridge Lights",
+      "story": "A passing boat drifted right beneath my viewpoint, packed with passengers soaking in the cool river breeze. Warm lighting from the waterfront shophouses flickered over the dark wake, mingling with the boat's cool blue LED glow.",
+      "location": "Malacca River, Malacca",
+      "capturedAt": "2024-12-28T20:42:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-16",
@@ -237,7 +312,12 @@
       "height": 1600,
       "caption": "Travelers enjoying the cool night river breeze",
       "order": 16,
-      "isCover": false
+      "isCover": false,
+      "title": "Friendly Waves on the River",
+      "story": "Looking down from the crossing, I caught an entire tour group in matching burgundy tunics looking straight up and waving with real enthusiasm. Even in a town geared for tourists, that spontaneous greeting between bridge and boat was hard not to smile at.",
+      "location": "Malacca River, Malacca",
+      "capturedAt": "2024-12-28T20:47:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-17",
@@ -247,7 +327,12 @@
       "height": 1600,
       "caption": "Riverside heritage houses glowing in lantern light",
       "order": 17,
-      "isCover": false
+      "isCover": false,
+      "title": "Red Lanterns of Jonker Walk",
+      "story": "A towering red banner for Admiral Zheng He dominated the corner shophouses at the entrance to Jonker Walk, flanked by rows of glowing lanterns. Down below, motorbikes darted past the illuminated storefronts as night market crowds began to scatter.",
+      "location": "Jonker Walk, Malacca",
+      "capturedAt": "2024-12-28T21:14:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-18",
@@ -257,7 +342,12 @@
       "height": 1600,
       "caption": "Ornate temple entrance courtyard at night",
       "order": 18,
-      "isCover": false
+      "isCover": false,
+      "title": "Gilded Doors of Istana Kesultanan",
+      "story": "Tucked against the base of St. Paul's Hill, the reconstructed Melaka Sultanate Palace stood silent under warm downlights. The steep wooden stairs rose toward intricate gilded doors, completely free of the daytime crowds that usually clog the steps.",
+      "location": "Melaka Sultanate Palace, Malacca",
+      "capturedAt": "2024-12-28T21:38:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-19",
@@ -267,7 +357,12 @@
       "height": 1600,
       "caption": "Night market dessert artisan blowtorching custard",
       "order": 19,
-      "isCover": false
+      "isCover": false,
+      "title": "The Rizz Quesillo Stand",
+      "story": "I had to smile at the bold 'Rizz Quesillo' banner standing proudly amid the Jonker Walk evening rush. The vendor worked with quiet absorption, steadying a knife to lift a golden wedge from a wide wheel of custard resting in dark caramel syrup. Even with the weekend market bustling around him, his hands remained completely steady.",
+      "location": "Jonker Walk, Malacca",
+      "capturedAt": "2024-12-28T20:18:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-20",
@@ -277,7 +372,12 @@
       "height": 1600,
       "caption": "Sizzling skewers and street food at Jonker Walk",
       "order": 20,
-      "isCover": false
+      "isCover": false,
+      "title": "Flames, Crayfish, and Night Skewers",
+      "story": "Flames flared up from the grill grate as marinade dripped onto the coals, sending bursts of savory smoke past the red market signs. Long metal skewers lined the counter beneath hanging heat lamps, right beside an overflowing stainless basin piled high with crayfish. The cook kept his rhythm steady with the tongs, unfazed by the heat or the dense crowd pressing close.",
+      "location": "Jonker Walk, Malacca",
+      "capturedAt": "2024-12-28T20:29:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-21",
@@ -287,7 +387,12 @@
       "height": 1600,
       "caption": "Local chef preparing snacks under warm stall bulbs",
       "order": 21,
-      "isCover": false
+      "isCover": false,
+      "title": "A Generous Caramel Drizzle",
+      "story": "Under the warm glow of the stall lamps, the vendor tilted an amber bottle to coat a slice of custard in thick caramel sauce. He worked methodically in the evening air, letting the glossy syrup pool neatly into the corners of the plastic box. The rich scent of burnt sugar lingered over the counter, drawing a steady trickle of curious dessert hunters.",
+      "location": "Jonker Walk, Malacca",
+      "capturedAt": "2024-12-28T20:38:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     },
     {
       "id": "malacca-22",
@@ -297,7 +402,12 @@
       "height": 1600,
       "caption": "Sizzling night market skewers on Jonker Walk",
       "order": 22,
-      "isCover": false
+      "isCover": false,
+      "title": "Lamb Skewers Over Glowing Embers",
+      "story": "A handwritten sign marked lamb skewers at ten ringgit, propped just in front of rows of meat sizzling above the charcoal. The vendor watched the grill intently through drifting smoke and steam, turning each stick right before the spiced crust took on too much char. Bathed in the amber light of the overhead heat lamps, the stall had the focused, no-nonsense rhythm of a veteran market run.",
+      "location": "Jonker Walk, Malacca",
+      "capturedAt": "2024-12-28T20:47:00+08:00",
+      "capturedTimeZone": "Asia/Kuala_Lumpur"
     }
   ]
 }

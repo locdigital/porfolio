@@ -2,11 +2,16 @@
 title: "From Curiosity to Creation."
 description: "A story of figuring things out, one step at a time."
 category: "Story"
-date: 2026-11-13
+date: 2026-08-11
 order: 1
 sample: false
 draft: false
 linkable: false
+coverImage:
+  src: "/images/writing/from-curiosity-to-creation.webp"
+  alt: "Cinematic thumbnail for From Curiosity to Creation featuring Phu Quy island"
+  width: 1920
+  height: 1080
 ---
 
 Most of the things I know how to do today did not start with a formal plan. They started with a small question: *how does this actually work, and what happens if I try making one myself?*

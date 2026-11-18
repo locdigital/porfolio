@@ -1,8 +1,14 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
-import { getPhotoLocations } from "../../lib/cms";
+import { getPhotoLocations } from "../../lib/content";
 import { optimizePhotos } from "../../lib/photo-assets";
+import { uploadedAssetUrl } from "../../lib/uploadthing-assets";
 import { getLocationEditorial } from "../../data/location-stories";
+import { Camera, PhosphorIcon } from "../../components/icons/phosphor";
+import Heroicon from "../../components/icons/Heroicon.astro";
+import PixelFlipPhoto from "../../components/ui/PixelFlipPhoto.astro";
+import { canonicalUrl, imageGallerySchema } from "../../lib/seo";
+import photoUpdates from "../../../data/photo-updates.json";
 
 export const prerender = true;
 
@@ -22,39 +28,160 @@ if (!location) {
 }
 
 const editorial = getLocationEditorial(location.slug);
+const updates = photoUpdates as Record<string, { updatedAt: string }>;
+const realUpdatedAt = location.updatedAt || updates[location.slug]?.updatedAt;
+const formattedUpdatedDate =
+  realUpdatedAt && !Number.isNaN(Date.parse(realUpdatedAt))
+    ? new Intl.DateTimeFormat("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        timeZone: "Asia/Ho_Chi_Minh",
+      }).format(new Date(realUpdatedAt))
+    : undefined;
 
-// Process photos
-const sourcePhotos: { src: string; alt: string; caption: string; w: number; h: number }[] = (location.photos || []).map((p: any, idx: number) => {
-  const src = typeof p === "string" ? p : p.src;
-  const alt = typeof p === "string" ? `${location.name} frame ${idx + 1}` : (p.alt || p.caption || `${location.name} photo`);
-  const caption = typeof p === "string" ? "" : (p.caption || "");
-  const w = p.w || p.width || 1200;
-  const h = p.h || p.height || 900;
-  return { src, alt, caption, w, h };
-});
+// Process photos with descriptive alt fallback
+type GalleryPhoto = Awaited<ReturnType<typeof getPhotoLocations>>[number]["photos"][number];
+const sourcePhotos = (location.photos as GalleryPhoto[]).map((photo) => ({
+  ...photo,
+  alt: photo.alt,
+}));
 const photos = await optimizePhotos(sourcePhotos, {
   previewWidth: 960,
   previewWidths: [320, 360, 480, 640, 720, 960, 1280],
   previewSizes: "(max-width: 640px) calc(100vw - 32px), (max-width: 768px) calc((100vw - 48px) / 2), (max-width: 1023px) calc((100vw - 64px) / 2), (max-width: 1279px) calc((94vw - 334px) / 2), (max-width: 1376px) calc((94vw - 350px) / 2), 472px",
 });
+
+const locationTitle = location.name || location.location;
+const seoTitle = location.seoTitle
+  ? `${location.seoTitle} — Phuc Loc Nguyen`
+  : `${locationTitle} — Travel Journal & Photography | Phuc Loc Nguyen`;
+const seoDescription =
+  location.seoDescription ||
+  editorial?.seoDescription ||
+  location.shortDescription ||
+  location.introduction ||
+  location.headline ||
+  `First-hand photographs and travel notes from ${locationTitle} by Phuc Loc Nguyen.`;
+
+const rawOgImage = location.seoImage || location.heroImage?.src || photos[0]?.fullSrc || photos[0]?.previewSrc;
+const ogImage = rawOgImage ? uploadedAssetUrl(rawOgImage) : undefined;
+const ogImageAlt = location.heroImage?.alt || photos[0]?.alt || `${locationTitle} travel photograph by Phuc Loc Nguyen`;
+
+const pageUrl = canonicalUrl(`/photos/${location.slug}`);
+const gallerySchema = imageGallerySchema({
+  url: pageUrl,
+  title: seoTitle,
+  description: seoDescription,
+  locationName: locationTitle,
+  alternateNames: location.alternateNames,
+  country: location.country,
+  region: location.region,
+  latitude: location.latitude,
+  longitude: location.longitude,
+  dateModified: realUpdatedAt,
+  lang: location.language || "en",
+  breadcrumbId: `${pageUrl}#breadcrumbs`,
+  images: photos.map((p, idx) => ({
+    url: p.fullSrc || p.previewSrc,
+    name: sourcePhotos[idx]?.title || p.alt,
+    caption: sourcePhotos[idx]?.story || sourcePhotos[idx]?.caption || p.alt,
+    width: p.w,
+    height: p.h,
+    dateCreated: sourcePhotos[idx]?.capturedAt,
+    locationName: sourcePhotos[idx]?.location || locationTitle,
+  })),
+});
+
+const crowdLabels: Record<string, string> = {
+  quiet: "Quiet",
+  moderate: "Moderate",
+  busy_weekends: "Busy on weekends",
+  very_busy: "Very busy",
+};
+
+const difficultyLabels: Record<string, string> = {
+  very_easy: "Very easy",
+  easy: "Easy",
+  moderate: "Moderate",
+  requires_preparation: "Requires preparation",
+};
+
+const formattedBudget =
+  location.budgetCurrency && (location.budgetMin || location.budgetMax)
+    ? `${location.budgetMin ?? ""}${location.budgetMin && location.budgetMax ? "–" : ""}${location.budgetMax ?? ""} ${location.budgetCurrency}${location.budgetNote ? ` (${location.budgetNote})` : ""}`
+    : location.budgetNote && !location.budgetNote.toLowerCase().startsWith("per ")
+      ? location.budgetNote
+      : undefined;
+
+const travelSummary =
+  location.travelFrom && location.travelTime
+    ? `${location.travelTime} from ${location.travelFrom}`
+    : location.travelTime || undefined;
+
+const hasPlanningDetails = Boolean(
+  location.overview ||
+    location.favoriteThings ||
+    location.whatIWouldDoAgain ||
+    (location.suitableFor && location.suitableFor.length > 0) ||
+    (location.notFor && location.notFor.length > 0) ||
+    (location.transportation && location.transportation.length > 0) ||
+    (location.localTransport && location.localTransport.length > 0) ||
+    (location.bestTimeOfDay && location.bestTimeOfDay.length > 0) ||
+    location.weatherNote ||
+    (location.travelTips && location.travelTips.length > 0) ||
+    location.crowdLevel ||
+    location.travelDifficulty,
+);
+
+const publishedBySlug = new Map(allLocations.map((loc) => [loc.slug, loc]));
+const explicitRelated = (location.relatedLocations ?? [])
+  .map((rel) => {
+    const target = publishedBySlug.get(rel.slug);
+    return target ? { ...rel, target } : null;
+  })
+  .filter((item): item is NonNullable<typeof item> => Boolean(item))
+  .slice(0, 3);
+
+const usedRelatedSlugs = new Set([location.slug, ...explicitRelated.map((item) => item.target.slug)]);
+const fallbackCandidates = [
+  ...allLocations.filter(
+    (other) => !usedRelatedSlugs.has(other.slug) && (other.region === location.region || other.country === location.country),
+  ),
+  ...allLocations.filter(
+    (other) => !usedRelatedSlugs.has(other.slug) && other.region !== location.region && other.country !== location.country,
+  ),
+];
+
+const siblingRelated = fallbackCandidates
+  .slice(0, Math.max(0, 3 - explicitRelated.length))
+  .map((target) => ({ slug: target.slug, distance: target.region || target.country, category: target.headline, target }));
+
+const relatedDestinations = [...explicitRelated, ...siblingRelated];
 ---
 
 <DashboardLayout
-  title={`${location.name || location.location} | Photo Journal — Phuc Loc Nguyen`}
-  pageTitle={location.name || location.location}
-  description={location.headline || `Travel photography field notes from ${location.name}`}
+  title={seoTitle}
+  pageTitle={locationTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+  ogType="article"
+  dateModified={realUpdatedAt}
+  lang={location.language || "en"}
   breadcrumbs={[
     { label: "Personal", href: "/" },
     { label: "Photography", href: "/photos" },
-    { label: location.name || location.location }
+    { label: locationTitle }
   ]}
   maxWidthVariant="default"
   currentPath={`/photos/${location.slug}`}
+  schema={gallerySchema}
 >
   <!-- Page Introduction -->
   <header class="page-header photo-introduction">
     <div style="margin-bottom: 4px;">
-      <h1 class="page-title" style="margin: 0;">{location.name || location.location}</h1>
+      <h1 class="page-title" style="margin: 0;">{locationTitle}</h1>
     </div>
 
     <p class="page-lead" style="margin-bottom: var(--space-2);">{location.headline}</p>
@@ -63,31 +190,53 @@ const photos = await optimizePhotos(sourcePhotos, {
     )}
 
     {location.introduction && (
-      <p style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--dash-text); margin: 0 0 var(--space-4);">
+      <p style="font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text); margin: 0 0 var(--space-4);">
         {location.introduction}
       </p>
     )}
     {!editorial && (location.introduction?.trim().length || 0) < 300 && (
-      <p class="dash-prose" style="font-size: var(--text-body); line-height: var(--leading-body); margin: 0 0 var(--space-4);">
-        This collection brings together {photos.length} photographs from {location.name || location.location}, {location.country || "Vietnam"}, by Phuc Loc Nguyen.
+      <p class="dash-prose" style="font-size: var(--text-body-sm); line-height: var(--leading-body); margin: 0 0 var(--space-4);">
+        This collection brings together {photos.length} photographs from {locationTitle}, {location.country || "Vietnam"}, by Phuc Loc Nguyen.
         It is part of a personal photography archive covering {allLocations.length} destinations across Vietnam and Southeast Asia.
-        Browse the photographs below and open an image for a larger view, or explore other collections in the <a href="/photos">Photography directory</a>.
+        Flip a photograph to read its notes, or explore other collections in the <a href="/photos">Photography directory</a>.
         For image use or a collaboration inquiry, <a href="/contact">contact Loc</a> with a link to this gallery and identify the photograph you have in mind.
       </p>
     )}
 
     <!-- Properties Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; padding: 14px 0; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); font-size: var(--text-body-sm);">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; padding: 14px 0; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); font-size: var(--text-body-sm);">
+      {(location.region || location.country) && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Region</span>
+          <span style="font-weight: 500; color: var(--dash-text);">
+            {location.region && location.country && location.region !== location.country
+              ? `${location.region}, ${location.country}`
+              : location.region || location.country}
+          </span>
+        </div>
+      )}
       {location.bestMonths && (
         <div>
-          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Best Season</span>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Best Season (Visited)</span>
           <span style="font-weight: 500; color: var(--dash-text);">{location.bestMonths}</span>
         </div>
       )}
-      {location.budgetNote && (
+      {location.recommendedStay && (
         <div>
-          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Estimated Budget</span>
-          <span style="font-weight: 500; color: var(--dash-text);">{location.budgetNote}</span>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Recommended Stay</span>
+          <span style="font-weight: 500; color: var(--dash-text);">{location.recommendedStay}</span>
+        </div>
+      )}
+      {travelSummary && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Access</span>
+          <span style="font-weight: 500; color: var(--dash-text);">{travelSummary}</span>
+        </div>
+      )}
+      {formattedBudget && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Budget Note</span>
+          <span style="font-weight: 500; color: var(--dash-text);">{formattedBudget}</span>
         </div>
       )}
       {location.wouldReturn && (
@@ -100,36 +249,156 @@ const photos = await optimizePhotos(sourcePhotos, {
         <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Gallery</span>
         <span style="color: var(--dash-text);">{photos.length} photos</span>
       </div>
+      {formattedUpdatedDate && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Updated</span>
+          <span style="color: var(--dash-text);">{formattedUpdatedDate}</span>
+        </div>
+      )}
     </div>
   </header>
 
   <!-- Photo Stream (Masonry gallery) -->
+  <p class="photo-flip-hint">Tap a photo to read its story.</p>
   <section class="page-section" aria-label="Photo stream">
-    <div 
-      class="dash-gallery photo-stream-gallery" 
+    <div
+      class="dash-gallery photo-stream-gallery"
     >
       {photos.map((p, index) => (
-        <figure 
-          class="gallery-figure" 
-          style="break-inside: avoid; margin-bottom: 16px; border-radius: var(--radius-card); overflow: hidden; background: #EFEFED; border: var(--dash-border-width, 0.9px) solid var(--dash-border);"
-        >
-          <img 
-            src={p.previewSrc}
-            srcset={p.previewSrcSet}
-            sizes={p.previewSizes}
-            alt={p.alt || location.name} 
-            width={p.w}
-            height={p.h}
-            loading={index === 0 ? "eager" : "lazy"}
-            fetchpriority={index === 0 ? "high" : "auto"}
-            decoding="async"
-            draggable="false"
-            style="width: 100%; height: auto; display: block;"
-          />
-        </figure>
+        <PixelFlipPhoto
+          id={`photo-${location.slug}-${index + 1}`}
+          imageUrl={p.previewSrc}
+          srcset={p.previewSrcSet}
+          sizes={p.previewSizes}
+          alt={p.alt}
+          width={p.w}
+          height={p.h}
+          eager={index === 0}
+          title={sourcePhotos[index].title || p.alt}
+          story={sourcePhotos[index].story || sourcePhotos[index].caption}
+          capturedAt={sourcePhotos[index].capturedAt}
+          capturedTimeZone={sourcePhotos[index].capturedTimeZone}
+          location={sourcePhotos[index].location || locationTitle}
+          photoNumber={index + 1}
+        />
       ))}
     </div>
   </section>
+
+  <!-- Verified First-Hand Field Notes & Practical Planning (from destination JSON) -->
+  {hasPlanningDetails && (
+    <section class="page-section page-section--divided editorial-section" aria-labelledby="heading-field-notes">
+      <div class="editorial-label-row">
+        <span class="editorial-kicker">First-Hand Field Notes</span>
+      </div>
+      <h2 id="heading-field-notes" class="section-title" style="margin: 0;">
+        Trip notes & practical planning for {locationTitle}
+      </h2>
+
+      {location.overview && (
+        <div class="editorial-prose">
+          {location.overview.split(/\n{2,}/).map((para: string) => (
+            <p>{para.trim()}</p>
+          ))}
+        </div>
+      )}
+
+      {(location.favoriteThings || location.whatIWouldDoAgain) && (
+        <div class="editorial-columns-grid">
+          {location.favoriteThings && (
+            <div class="editorial-col">
+              <h3 class="item-title editorial-col-title">Favorite Details</h3>
+              <p class="field-note-text">{location.favoriteThings}</p>
+            </div>
+          )}
+          {location.whatIWouldDoAgain && (
+            <div class="editorial-col">
+              <h3 class="item-title editorial-col-title">What I Would Do Again</h3>
+              <p class="field-note-text">{location.whatIWouldDoAgain}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div class="editorial-columns-grid">
+        {((location.suitableFor && location.suitableFor.length > 0) || (location.notFor && location.notFor.length > 0)) && (
+          <div class="editorial-col">
+            <h3 class="item-title editorial-col-title">Who It Suits</h3>
+            {location.suitableFor && location.suitableFor.length > 0 && (
+              <div class="field-tags-row" aria-label="Suitable for">
+                {location.suitableFor.map((tag: string) => (
+                  <span class="dash-tag">{tag}</span>
+                ))}
+              </div>
+            )}
+            {location.notFor && location.notFor.length > 0 && (
+              <div style="margin-top: 12px;">
+                <div class="field-sub-label">Less ideal if</div>
+                <ul class="editorial-list">
+                  {location.notFor.map((item: string) => (
+                    <li>
+                      <span class="dash-bullet" aria-hidden="true"></span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {((location.travelTips && location.travelTips.length > 0) || location.weatherNote || (location.transportation && location.transportation.length > 0) || (location.localTransport && location.localTransport.length > 0) || location.crowdLevel || location.travelDifficulty) && (
+          <div class="editorial-col">
+            <h3 class="item-title editorial-col-title">Practical Logistics</h3>
+            <ul class="editorial-list">
+              {location.transportation && location.transportation.length > 0 && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>Getting there:</strong> {location.transportation.join(", ")}</span>
+                </li>
+              )}
+              {location.localTransport && location.localTransport.length > 0 && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>Getting around:</strong> {location.localTransport.join(", ")}</span>
+                </li>
+              )}
+              {location.bestTimeOfDay && location.bestTimeOfDay.length > 0 && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>Best light & timing:</strong> {location.bestTimeOfDay.join(", ")}</span>
+                </li>
+              )}
+              {location.crowdLevel && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>Crowds:</strong> {crowdLabels[location.crowdLevel] || location.crowdLevel}</span>
+                </li>
+              )}
+              {location.travelDifficulty && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>Difficulty:</strong> {difficultyLabels[location.travelDifficulty] || location.travelDifficulty}</span>
+                </li>
+              )}
+              {location.weatherNote && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>Weather note:</strong> {location.weatherNote}</span>
+                </li>
+              )}
+              {location.travelTips && location.travelTips.map((tip: string) => (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
 
   <!-- Editorial Section: Travel Journal & Cultural Notes -->
   {editorial && (
@@ -137,7 +406,7 @@ const photos = await optimizePhotos(sourcePhotos, {
       <!-- Travel Journal Story -->
       <article class="editorial-story-block">
         <div class="editorial-label-row">
-          <span class="editorial-kicker">Travel Journal</span>
+          <span class="editorial-kicker">Travel Journal · Personal Observations</span>
         </div>
         <h2 id="heading-story" class="section-title editorial-story-heading">
           {editorial.subtitle}
@@ -152,19 +421,16 @@ const photos = await optimizePhotos(sourcePhotos, {
       <!-- Historical Context Card -->
       <div class="editorial-history-card">
         <div class="editorial-history-header">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" />
-            <polyline points="12 6 12 12 16 14" />
-          </svg>
-          <h3 class="editorial-history-title">Historical & Cultural Heritage</h3>
+          <PhosphorIcon name="scroll" size={17} weight="light" aria-hidden="true" />
+          <h3 class="editorial-history-title">Historical & Cultural Context (External Reference Summary)</h3>
         </div>
         <p class="editorial-history-text">{editorial.history}</p>
       </div>
 
       <!-- Personal Review -->
       <div class="editorial-review-block">
-        <h3 class="item-title" style="font-size: var(--text-h4); margin-bottom: var(--space-2);">Photographer’s Perspective</h3>
-        <p style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--dash-text); margin: 0;">
+        <h3 class="item-title" style="font-size: calc(var(--text-h4) + 3px); margin-bottom: var(--space-2);">Photographer’s Perspective</h3>
+        <p style="font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text); margin: 0;">
           {editorial.review}
         </p>
       </div>
@@ -173,7 +439,10 @@ const photos = await optimizePhotos(sourcePhotos, {
       <div class="editorial-columns-grid">
         {editorial.highlights && editorial.highlights.length > 0 && (
           <div class="editorial-col">
-            <h3 class="item-title" style="font-size: var(--text-h4); margin-bottom: var(--space-2);">Standout Highlights</h3>
+            <h3 class="item-title editorial-col-title">
+              <PhosphorIcon name="compass" size={16} weight="light" className="editorial-col-icon" aria-hidden="true" />
+              <span>Standout Highlights</span>
+            </h3>
             <ul class="editorial-list">
               {editorial.highlights.map((item) => (
                 <li>
@@ -187,7 +456,10 @@ const photos = await optimizePhotos(sourcePhotos, {
 
         {editorial.photographyTips && editorial.photographyTips.length > 0 && (
           <div class="editorial-col">
-            <h3 class="item-title" style="font-size: var(--text-h4); margin-bottom: var(--space-2);">Photography & Lighting Notes</h3>
+            <h3 class="item-title editorial-col-title">
+              <Camera size={16} weight="light" className="editorial-col-icon" aria-hidden="true" />
+              <span>Photography & Lighting Notes</span>
+            </h3>
             <ul class="editorial-list">
               {editorial.photographyTips.map((tip) => (
                 <li>
@@ -200,22 +472,42 @@ const photos = await optimizePhotos(sourcePhotos, {
         )}
       </div>
 
-      <!-- Research Sources / References (Subtle, verified) -->
+      <!-- Research Sources / References -->
       {editorial.sources && editorial.sources.length > 0 && (
         <div class="editorial-sources-footer">
-          <span class="editorial-sources-title">Research References:</span>
+          <span class="editorial-sources-title">Historical & Reference Sources:</span>
           <ul class="editorial-sources-items">
             {editorial.sources.map((s) => (
               <li>
                 <a href={s.url} target="_blank" rel="noopener noreferrer" class="editorial-source-link">
-                  {s.title}
-                  <span aria-hidden="true"> ↗</span>
+                  <Heroicon name="link" variant="outline" size={14} class="editorial-source-icon" />
+                  <span>{s.title}</span>
                 </a>
               </li>
             ))}
           </ul>
         </div>
       )}
+    </section>
+  )}
+
+  <!-- Related Destinations & Author Attribution -->
+  {relatedDestinations.length > 0 && (
+    <section class="page-section page-section--divided" aria-labelledby="heading-related-destinations">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: var(--space-4);">
+        <h2 id="heading-related-destinations" class="section-title" style="margin: 0;">Explore nearby & related destinations</h2>
+        <a href="/photos" class="dash-link" style="font-size: var(--text-body-sm);" data-astro-prefetch>
+          All {allLocations.length} galleries →
+        </a>
+      </div>
+      <div class="related-destinations-grid">
+        {relatedDestinations.map(({ target, distance, category }) => (
+          <a href={`/photos/${target.slug}`} class="dash-card related-destination-card" data-astro-prefetch>
+            <span class="related-destination-name">{target.name || target.location}</span>
+            <span class="related-destination-meta">{[category, distance].filter(Boolean).join(" · ") || target.headline}</span>
+          </a>
+        ))}
+      </div>
     </section>
   )}
 </DashboardLayout>
@@ -233,22 +525,15 @@ const photos = await optimizePhotos(sourcePhotos, {
     margin: 0 0 16px;
   }
 
+  .photo-flip-hint {
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+    margin: 0 0 16px;
+  }
+
   .photo-stream-gallery {
     columns: 2;
     column-gap: 16px;
-  }
-
-  .gallery-figure {
-    overflow: hidden;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  .gallery-figure img {
-    transition: none;
-    pointer-events: none;
-    -webkit-user-drag: none;
   }
 
   /* Editorial Section Styling */
@@ -277,7 +562,7 @@ const photos = await optimizePhotos(sourcePhotos, {
   }
 
   .editorial-prose p {
-    font-size: var(--text-body);
+    font-size: var(--text-body-sm);
     line-height: var(--leading-body);
     color: var(--dash-text);
     margin: 0 0 var(--space-4);
@@ -286,6 +571,26 @@ const photos = await optimizePhotos(sourcePhotos, {
 
   .editorial-prose p:last-child {
     margin-bottom: 0;
+  }
+
+  .field-note-text {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-text);
+    margin: 0;
+  }
+
+  .field-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .field-sub-label {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    color: var(--dash-muted);
+    margin-bottom: 6px;
   }
 
   .editorial-history-card {
@@ -304,14 +609,14 @@ const photos = await optimizePhotos(sourcePhotos, {
   }
 
   .editorial-history-title {
-    font-size: var(--text-h4);
+    font-size: calc(var(--text-h4) + 3px);
     font-weight: var(--font-weight-semibold);
     line-height: var(--leading-snug);
     margin: 0;
   }
 
   .editorial-history-text {
-    font-size: var(--text-body);
+    font-size: var(--text-body-sm);
     line-height: var(--leading-body);
     color: var(--dash-text);
     margin: 0;
@@ -326,6 +631,26 @@ const photos = await optimizePhotos(sourcePhotos, {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
+  }
+
+  .editorial-col {
+    border: var(--dash-border-width, 1px) solid var(--dash-border);
+    border-radius: var(--radius-card-sm, 10px);
+    background: var(--dash-surface);
+    padding: 18px 20px;
+  }
+
+  .editorial-col-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: calc(var(--text-h4) + 3px);
+    margin: 0 0 var(--space-3);
+  }
+
+  .editorial-col-icon {
+    color: var(--dash-muted);
+    flex-shrink: 0;
   }
 
   .editorial-list {
@@ -370,14 +695,65 @@ const photos = await optimizePhotos(sourcePhotos, {
   }
 
   .editorial-source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     color: var(--dash-muted);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
     transition: color 150ms ease;
   }
 
+  .editorial-source-link span {
+    text-decoration: underline;
+    text-decoration-color: var(--dash-underline, #858580);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 0.5px;
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .editorial-source-icon {
+    flex: none;
+  }
+
   .editorial-source-link:hover {
+    color: var(--dash-link-hover);
+  }
+
+  .editorial-source-link:hover span {
+    text-decoration-color: currentColor;
+  }
+
+  .related-destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 12px;
+  }
+
+  .related-destination-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    text-decoration: none !important;
+  }
+
+  .related-destination-name {
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
     color: var(--dash-text);
+  }
+
+  .related-destination-meta {
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+    line-height: var(--leading-compact);
+  }
+
+  .destination-author-note {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-body-sm);
+    color: var(--dash-muted);
+    line-height: var(--leading-body);
   }
 
   @media (max-width: 640px) {

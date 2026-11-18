@@ -87,7 +87,12 @@
       "height": 1600,
       "caption": "Jewel Changi Rain Vortex from beneath the lattice dome",
       "order": 1,
-      "isCover": true
+      "isCover": true,
+      "title": "Under the Rain Vortex",
+      "story": "Stepping off the terminal concourse straight into a misty indoor gorge is quite an orientation to Singapore. The sheer volume of water tumbling through the glass diagrid fills the dome with a cool, steady roar while morning daylight filters down into the ferns. It felt slightly surreal watching small silhouettes of early travelers stroll across the skybridge right through the plume.",
+      "location": "Jewel Changi, Singapore",
+      "capturedAt": "2024-12-26T08:45:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-02",
@@ -97,7 +102,12 @@
       "height": 1600,
       "caption": "Lush terraced greenery inside Jewel Changi",
       "order": 2,
-      "isCover": false
+      "isCover": false,
+      "title": "Terraces of the Forest Valley",
+      "story": "Away from the main waterfall basin, the paths wind up through steep terraces of palms and broadleaf undergrowth. Little uplights hidden beneath the dark stone ledges catch the ribs of the fronds, making the whole indoor valley feel surprisingly quiet and sheltered. It is easy to forget you are still technically inside an airport terminal complex.",
+      "location": "Jewel Changi, Singapore",
+      "capturedAt": "2024-12-26T09:15:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-03",
@@ -107,7 +117,12 @@
       "height": 1600,
       "caption": "Fort Canning tree tunnel in morning light",
       "order": 3,
-      "isCover": false
+      "isCover": false,
+      "title": "Canopy Above the Spiral Staircase",
+      "story": "We lined up at the base of the spiral staircase just as the morning humidity began settling over the park. Looking up from the cool pit of the tunnel, the trailing vines and the broad rain tree canopy frame the sky like a green open skylight. Catching a calm moment here without a dozen people in line takes a little patience, but the perspective looking upward is worth the wait.",
+      "location": "Fort Canning Park, Singapore",
+      "capturedAt": "2024-12-26T10:15:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-04",
@@ -117,7 +132,12 @@
       "height": 1600,
       "caption": "Colonial heritage cresting Fort Canning hill",
       "order": 4,
-      "isCover": false
+      "isCover": false,
+      "title": "Striped Brick Beyond the Trees",
+      "story": "Walking along the upper rim of the park, the trees part to frame the striped brick tower and copper cupolas of the Central Fire Station below. The red-and-white masonry cuts cleanly through the pale morning haze, sitting quietly among thick roadside canopies. It felt like catching a glimpse of an older, slower Singapore tucked right at the foot of the hill.",
+      "location": "Fort Canning Park, Singapore",
+      "capturedAt": "2024-12-26T10:50:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-05",
@@ -127,7 +147,12 @@
       "height": 1600,
       "caption": "Buddha Tooth Relic Temple in Chinatown",
       "order": 5,
-      "isCover": false
+      "isCover": false,
+      "title": "Scaffolding and Lacquered Eaves",
+      "story": "We reached the corner of the Buddha Tooth Relic Temple only to find the upper tiers shrouded in grey construction mesh for maintenance. Even under wraps, the brilliant crimson woodwork, green lattice slats, and gold dragon ornaments along the lower eaves held their ground. There was something oddly grounded about seeing such heavy Tang-style grandeur sharing the sidewalk with regular street bollards and recycling bins.",
+      "location": "Buddha Tooth Relic Temple, Singapore",
+      "capturedAt": "2024-12-26T11:45:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-06",
@@ -137,7 +162,12 @@
       "height": 1600,
       "caption": "Chinatown heritage roofs and traditional eaves",
       "order": 6,
-      "isCover": false
+      "isCover": false,
+      "title": "Terracotta Tiles and Glazed Eaves",
+      "story": "Looking across Chinatown's rooflines shows just how tightly Singapore compresses its eras together. The weathered terracotta tiles and white timber shutters sit right below the sweeping green ceramic eaves of a heritage roof, with towering modern glass blocks rising behind them. Everything is stacked clean and upright under the flat midday glare.",
+      "location": "Chinatown, Singapore",
+      "capturedAt": "2024-12-26T12:25:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-07",
@@ -147,7 +177,12 @@
       "height": 1600,
       "caption": "Street walk beneath modern covered walkways",
       "order": 7,
-      "isCover": false
+      "isCover": false,
+      "title": "Midday Under the Sheltered Colonnade",
+      "story": "The covered walkways offer sweet relief from the tropical heat, turning entire city blocks into breezy pedestrian corridors. I paused under the low ceiling as someone strode past with wired earphones and a pink takeaway bag, framed by the blue glow of a 24-hour ATM. It felt like an effortless snapshot of ordinary city rhythm.",
+      "location": "Singapore",
+      "capturedAt": "2024-12-26T11:42:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-08",
@@ -157,7 +192,12 @@
       "height": 1600,
       "caption": "Quiet afternoon along the sheltered colonnade",
       "order": 8,
-      "isCover": false
+      "isCover": false,
+      "title": "Quiet Bench Along the Corridor",
+      "story": "An elderly uncle sat with folded arms on a white cast-iron bench, completely unfazed by the pedestrian traffic drifting past. The massive concrete pillar gave him a pocket of deep shade while high-rises peeked through the breezeway behind. There was a quiet dignity in how comfortably he claimed his slice of afternoon downtime.",
+      "location": "Singapore",
+      "capturedAt": "2024-12-26T11:51:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-09",
@@ -167,7 +207,12 @@
       "height": 1600,
       "caption": "Lush pedestrian pathway weaving through the city",
       "order": 9,
-      "isCover": false
+      "isCover": false,
+      "title": "Leaning Along the Garden Wall",
+      "story": "Dense layers of tropical foliage soften the edges of every sidewalk here, making even commercial plazas feel surprisingly lush. A guy in chunky sneakers took advantage of the low retaining wall to check his phone in the dappled midday shade. I liked the contrast between the clipped hedges and the sleek concrete backdrop.",
+      "location": "Singapore",
+      "capturedAt": "2024-12-26T12:20:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-10",
@@ -177,7 +222,12 @@
       "height": 1600,
       "caption": "Futuristic architectural facades",
       "order": 10,
-      "isCover": false
+      "isCover": false,
+      "title": "Orange Cursive on Ribbed Concrete",
+      "story": "Walking down toward the river, the striking orange cursive of lyf popped against the stepped, angular facade of the building. Deep green canopy branches crept into the frame, contrasting with the geometric terracotta base below. It is that classic Singapore habit of threading nature directly into sharp modern design.",
+      "location": "lyf Funan, Singapore",
+      "capturedAt": "2024-12-26T12:45:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-11",
@@ -187,7 +237,12 @@
       "height": 1600,
       "caption": "Singapore River and Clarke Quay waterfront",
       "order": 11,
-      "isCover": false
+      "isCover": false,
+      "title": "Moored Bumboat at Clarke Quay",
+      "story": "A wooden bumboat idled quietly against the floating jetty along Clarke Quay, waiting for the evening rush of sightseers. Across the murky green water, the pastel shophouse facades sat sheltered beneath those enormous, umbrella-like canopy structures. By midday it was peaceful, with only the faint lap of the river breaking the silence.",
+      "location": "Clarke Quay, Singapore",
+      "capturedAt": "2024-12-26T13:10:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-12",
@@ -197,7 +252,12 @@
       "height": 1067,
       "caption": "Historic bridges over the Singapore River",
       "order": 12,
-      "isCover": false
+      "isCover": false,
+      "title": "River Promenade Facing Clarke Quay",
+      "story": "I stopped along the curving stone tiers of the riverbank to take in the full sweep of the waterway. The restored riverside warehouses and their futuristic canopies looked almost toy-like set against the towering office blocks in the haze. You can easily trace how the city's maritime trading past evolved into today's glass-and-steel hub.",
+      "location": "Singapore River, Singapore",
+      "capturedAt": "2024-12-26T13:22:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-13",
@@ -207,7 +267,12 @@
       "height": 1600,
       "caption": "River cruise passing waterfront terraces",
       "order": 13,
-      "isCover": false
+      "isCover": false,
+      "title": "Bumboats Docked at Clarke Quay",
+      "story": "Bumboats lined up quietly along the water while the lunch rush was just beginning to stir beneath the giant umbrella canopies. Across the river, the pastel-painted shophouses looked almost like toy blocks against the pale midday haze. I paused on the pedestrian bridge to catch a brief breeze off the water before heading further inland.",
+      "location": "Clarke Quay, Singapore",
+      "capturedAt": "2024-12-26T11:45:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-14",
@@ -217,7 +282,12 @@
       "height": 1600,
       "caption": "Iconic rainbow shutters of Old Hill Street Police Station",
       "order": 14,
-      "isCover": false
+      "isCover": false,
+      "title": "Rainbow Shutters on Hill Street",
+      "story": "More than nine hundred louvred shutters rise up the neoclassical facade in a gradient from cheerful yellow to deep red. Even under a flat, overcast sky, the sheer density of color turns an old colonial headquarters into an impossible landmark to miss. I waited at the River Valley crossing for a momentary break in traffic to capture the symmetry.",
+      "location": "Old Hill Street Police Station, Singapore",
+      "capturedAt": "2024-12-26T12:20:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-15",
@@ -227,7 +297,12 @@
       "height": 1600,
       "caption": "Universal Studios globe at Sentosa",
       "order": 15,
-      "isCover": false
+      "isCover": false,
+      "title": "The Spinning Universal Globe",
+      "story": "The cool mist blowing off the ring fountain was a welcome relief the second I stepped onto the plaza at Sentosa. A small crowd milled around the perimeter, everyone trying to time their selfie right as the letters rotated into view. I stepped back beneath the palm fronds, waiting for the globe to align against the pale sky.",
+      "location": "Universal Studios Singapore, Sentosa",
+      "capturedAt": "2024-12-26T13:50:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-16",
@@ -237,7 +312,12 @@
       "height": 1067,
       "caption": "Sci-Fi City at Universal Studios",
       "order": 16,
-      "isCover": false
+      "isCover": false,
+      "title": "Bumblebee Above Sci-Fi City",
+      "story": "Bumblebee crouches directly over the entrance gate, weathered in scuffed yellow plating like he just walked out of a cinematic brawl. The heavy industrial steel scaffolding and neon signage overhead gave the concourse a surprisingly gritty edge. Even under the midday heat, the mechanical detail on every joint kept me staring upward.",
+      "location": "Universal Studios Singapore, Sentosa",
+      "capturedAt": "2024-12-26T14:40:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-17",
@@ -247,7 +327,12 @@
       "height": 1600,
       "caption": "Far Far Away fairytale castle at Universal Studios",
       "order": 17,
-      "isCover": false
+      "isCover": false,
+      "title": "Tracks Around the Fairytale Tower",
+      "story": "The burgundy steel rails of Enchanted Airways wind tightly around a weathered stone tower topped with a quirky weathervane. In the distance, the pastel turrets of Far Far Away peeked quietly over the tree canopy. It felt amusingly surreal seeing modern coaster mechanics grafted directly onto storybook architecture.",
+      "location": "Universal Studios Singapore, Sentosa",
+      "capturedAt": "2024-12-26T15:25:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-18",
@@ -257,7 +342,12 @@
       "height": 1600,
       "caption": "Battlestar Galactica dueling coaster loops",
       "order": 18,
-      "isCover": false
+      "isCover": false,
+      "title": "Dueling Loops of Battlestar Galactica",
+      "story": "The dueling tracks of Battlestar Galactica twist together in an intricate knot of white steel pillars, crimson tracks, and dark inverted loops. Standing beside the lagoon, the sound of coaster trains roared across the water every time the tracks crossed. Against the muted afternoon clouds, the tangled metal looked almost like a massive abstract sculpture.",
+      "location": "Universal Studios Singapore, Sentosa",
+      "capturedAt": "2024-12-26T16:10:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-19",
@@ -267,7 +357,12 @@
       "height": 1600,
       "caption": "Minion Land installations at Sentosa",
       "order": 19,
-      "isCover": false
+      "isCover": false,
+      "title": "Minion Land Welcome",
+      "story": "Stepping past the turnstiles into Sentosa brought us right in front of Minion Land's cheerful blue signboard. The afternoon humidity was relentless, but watching visitors strike playful poses beside the smiling yellow figure made the heat easy to overlook. Even the trimmed hedge of pink bougainvillea seemed perfectly staged for the comic backdrop.",
+      "location": "Sentosa, Singapore",
+      "capturedAt": "2024-12-27T15:25:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-20",
@@ -277,7 +372,12 @@
       "height": 1600,
       "caption": "Glowing blue Lumos chamber at Harry Potter: Visions of Magic",
       "order": 20,
-      "isCover": false
+      "isCover": false,
+      "title": "Chamber of Glowing Orbs",
+      "story": "Stepping into the Lumos chamber inside Visions of Magic plunged us into near-complete darkness broken only by tiers of luminous blue glass. Hundreds of spheres rested along dark shelves, casting a cool, aquatic glow across our faces. It felt strangely quiet in here, like being underwater inside a library of stored spells.",
+      "location": "Harry Potter: Visions of Magic, Sentosa",
+      "capturedAt": "2024-12-27T16:10:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-21",
@@ -287,7 +387,12 @@
       "height": 1600,
       "caption": "Dark Arts chamber at Visions of Magic",
       "order": 21,
-      "isCover": false
+      "isCover": false,
+      "title": "Red Letters in the Dark",
+      "story": "Further along the exhibit, the air turned colder and the walls dropped into pitch blackness. Fiery crimson letters hovered in midair beneath heavy, undulating folds of dark green fabric, spelling out Voldemort's name in sharp jagged strokes. It was theatrical and moody, drawing an uneasy hush from everyone drifting through the room.",
+      "location": "Harry Potter: Visions of Magic, Sentosa",
+      "capturedAt": "2024-12-27T16:28:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-22",
@@ -297,7 +402,12 @@
       "height": 1600,
       "caption": "Luminescent magical corridor display",
       "order": 22,
-      "isCover": false
+      "isCover": false,
+      "title": "Armored Knight in Shadow",
+      "story": "Around the next corner, a spotlight caught the hammered metal contours of a giant armored knight looming overhead. Its decorative chest piece and shield carried ornate geometric tooling, bathed in deep purple and amber shadows. Looking up from below made the cavernous hall feel distinctly grand and just slightly forbidding.",
+      "location": "Harry Potter: Visions of Magic, Sentosa",
+      "capturedAt": "2024-12-27T16:42:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-23",
@@ -307,7 +417,12 @@
       "height": 1067,
       "caption": "Supertree Grove night illumination at Gardens by the Bay",
       "order": 23,
-      "isCover": false
+      "isCover": false,
+      "title": "Canopies Against the Night",
+      "story": "By evening we crossed back to the mainland and caught the Supertree Grove just as the canopies flared to life. The massive steel branches radiated warm orange against an ink-black sky, crisscrossing in elaborate geometric webs. Tilting my camera straight upward felt like peering into an alien forest designed entirely by engineers.",
+      "location": "Gardens by the Bay, Singapore",
+      "capturedAt": "2024-12-27T19:42:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-24",
@@ -317,7 +432,12 @@
       "height": 1600,
       "caption": "Intricate vertical garden trunk illuminated at night",
       "order": 24,
-      "isCover": false
+      "isCover": false,
+      "title": "Living Trunk Under Lights",
+      "story": "Up close to the base, the vertical garden trunks looked even more impressive than from afar. Thousands of bromeliads and ferns clung to the steel core, highlighted in rich gold and amber from the upward spotlights. In the background, the curving walkway cut through the framework, linking the illuminated giants across the dark.",
+      "location": "Gardens by the Bay, Singapore",
+      "capturedAt": "2024-12-27T19:54:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-25",
@@ -327,7 +447,12 @@
       "height": 1600,
       "caption": "Neon canopy glow of Supertree Grove",
       "order": 25,
-      "isCover": false
+      "isCover": false,
+      "title": "Amber Canopy at Supertree Grove",
+      "story": "I stepped between two massive vertical trunks to let their hanging creepers frame the shot. Against the ink-black sky, the flared metal canopy radiated a deep amber heat, looking less like steel architecture and more like an overgrown bioluminescent organism.",
+      "location": "Supertree Grove, Gardens by the Bay",
+      "capturedAt": "2024-12-27T19:46:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-26",
@@ -337,7 +462,12 @@
       "height": 1600,
       "caption": "Warm geometric window light in the night skyline",
       "order": 26,
-      "isCover": false
+      "isCover": false,
+      "title": "Grid of Illuminated Stairwells",
+      "story": "Looking up from the pavement, the building's exterior completely dissolved into the night, leaving only a tidy grid of warm stairwells and empty landings. Each glowing cutout felt like a quiet stage, framed by black concrete and silent steel railings.",
+      "location": "Singapore",
+      "capturedAt": "2024-12-27T20:18:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-27",
@@ -347,7 +477,12 @@
       "height": 1600,
       "caption": "Golden Hainanese chicken rice at local hawker stall",
       "order": 27,
-      "isCover": false
+      "isCover": false,
+      "title": "Hanging Chickens at the Hawker",
+      "story": "Golden roasted birds and pale poached chickens hung in a neat row behind the glass, glistening under the bright stall spotlights. The menu scrawled in red and white offered straightforward comfort, with the cook methodically cleaving portions over a thick wooden chopping block.",
+      "location": "Singapore",
+      "capturedAt": "2024-12-27T20:52:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-28",
@@ -357,7 +492,12 @@
       "height": 1600,
       "caption": "Steaming night bites in Chinatown",
       "order": 28,
-      "isCover": false
+      "isCover": false,
+      "title": "Night Steam at Stall 02-16",
+      "story": "Tucked into the upper floor of the complex, stall 02-16 was winding down its evening service under a warm orange light. A yellow clock ticked on the pillar beside dangling takeaway bags, while steam still curled softly from the display counter.",
+      "location": "Chinatown, Singapore",
+      "capturedAt": "2024-12-27T21:18:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-29",
@@ -367,7 +507,12 @@
       "height": 1600,
       "caption": "Lively singing crowd at evening gathering",
       "order": 29,
-      "isCover": false
+      "isCover": false,
+      "title": "Singing Along in Devil Horns",
+      "story": "I ran into this spontaneous open-air karaoke session where nobody held back, least of all the aunties sporting red devil horns and cat ears. The singer in the wheelchair gripped her microphone with absolute conviction, drawing a delighted crowd under the pink neon glare.",
+      "location": "Chinatown, Singapore",
+      "capturedAt": "2024-12-27T21:42:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-30",
@@ -377,7 +522,12 @@
       "height": 1600,
       "caption": "Warm lantern glow on heritage shophouse corner",
       "order": 30,
-      "isCover": false
+      "isCover": false,
+      "title": "Gold Calligraphy on Heritage Stucco",
+      "story": "Standing on the pavement corner, I looked up at the intricate plaster pilasters and shuttered windows bathed in golden spotlighting. Two long banners hung beside the column with bold calligraphy advertising seafood, anchoring decades of Chinatown history against the black midnight sky.",
+      "location": "Chinatown, Singapore",
+      "capturedAt": "2024-12-27T22:08:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-31",
@@ -387,7 +537,12 @@
       "height": 1600,
       "caption": "Victoria Theatre clock tower illuminated at night",
       "order": 31,
-      "isCover": false
+      "isCover": false,
+      "title": "Clock Tower Against the Dark",
+      "story": "The clock tower rose sharply into the pitch-black sky, its brickwork and cupola bathed in warm architectural light. Down on the street, late traffic streaked past the corner, leaving faint trails of white light across the empty asphalt. The city felt surprisingly quiet here, with only the hum of the intersection cutting through the warm night air.",
+      "location": "Victoria Theatre, Singapore",
+      "capturedAt": "2024-12-26T21:15:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-32",
@@ -397,7 +552,12 @@
       "height": 1600,
       "caption": "Neoclassical colonial facade of Victoria Memorial Hall",
       "order": 32,
-      "isCover": false
+      "isCover": false,
+      "title": "Neoclassical Facade Under Light",
+      "story": "Every arch, balcony, and decorative pillar stood out in sharp relief under the brilliant floodlights. The white architectural trim glowed against the dark sky, highlighting the intricate colonial detailing above the quiet street. It was hard not to admire how clean and deliberate the symmetry looked from across the road.",
+      "location": "Victoria Memorial Hall, Singapore",
+      "capturedAt": "2024-12-26T21:32:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-33",
@@ -407,7 +567,12 @@
       "height": 1600,
       "caption": "ArtScience Museum lotus structure across Marina Bay",
       "order": 33,
-      "isCover": false
+      "isCover": false,
+      "title": "Lotus Blossom Over Marina Bay",
+      "story": "Across the open water of Marina Bay, the white curved petals of the ArtScience Museum seemed to float against a warm, overcast sky. The futuristic shape felt surprisingly gentle from this distance, resembling a giant flower opening toward the evening haze. A light breeze stirred the water just enough to blur the building's pale reflection.",
+      "location": "ArtScience Museum, Singapore",
+      "capturedAt": "2024-12-27T17:52:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     },
     {
       "id": "singapore-34",
@@ -417,7 +582,12 @@
       "height": 1600,
       "caption": "Singapore Flyer and waterfront silhouettes at dusk",
       "order": 34,
-      "isCover": false
+      "isCover": false,
+      "title": "The Flyer and the Cranes",
+      "story": "The giant wheel of the Singapore Flyer turned slowly against the pale dusk sky, framed by a thicket of construction cranes along the waterfront. There was an appealing contrast between the sleek observation capsules and the raw steel skeletal booms towering over the shoreline. As twilight deepened, the whole waterfront settled into sharp, geometric silhouettes.",
+      "location": "Singapore Flyer, Singapore",
+      "capturedAt": "2024-12-27T18:38:00+08:00",
+      "capturedTimeZone": "Asia/Singapore"
     }
   ]
 }

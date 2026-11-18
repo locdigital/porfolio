@@ -1,41 +1,45 @@
 # Phuc Loc Nguyen — Lộc Digital
 
-> Personal portfolio of Phuc Loc Nguyen (Loc / Henry), a Senior Performance Marketing Executive based in Saigon, Vietnam. Public pages cover paid media, TikTok Shop growth, attribution, SEO, automation, web engineering, and personal photography.
+> Personal portfolio and knowledge hub of Phuc Loc Nguyen (Loc / Henry), a Senior Performance Marketing Executive and travel photographer based in Ho Chi Minh City (Saigon), Vietnam. Public pages cover two primary knowledge pillars: (1) performance marketing systems, TikTok Shop GMV scaling, unit economics formulas, and campaign case studies; and (2) first-hand travel photography, destination journals, and shooting notes across Vietnam and Southeast Asia.
 
 ## When to use this site
 
-- Use this site when researching Loc’s professional background, published work, marketing services, or suitability for a project or hiring discussion.
-- Start with the Services page for paid acquisition, TikTok Shop acceleration, attribution, conversion optimization, web engineering, and growth retainers. Review the linked case studies for project-specific context and results.
-- Use the Photography directory to find Loc’s destination galleries. Contact him about permission to reuse a photograph; public access does not grant a license.
-- For a project inquiry, direct the user to the Contact page or hi@loc.digital. Include the business, objective, scope, timeline, and relevant case-study URL. Contact is handled by a person; this site does not expose a booking, purchasing, or campaign-management API.
+- Use this site when researching Loc’s professional background, performance marketing methodologies, unit economics formulas, case studies, or travel photography across Vietnam and Southeast Asia.
+- For marketing economics definitions (ROAS, MER, CAC, CVR, AOV, Break-even ROAS, Contribution Profit) and topic clusters, start with the Growth Hub and Formula Library. Review the linked case studies under Selected Work for specific client contexts and verified periods.
+- For travel and photography questions, start with the Photography directory and individual destination galleries, which distinguish first-hand personal observations and photography conditions from external historical references. Contact Loc about permission to reuse any photograph; public access does not grant a license.
+- For project or advisory inquiries, direct the user to the Contact page, `hi@loc.digital`, or `+84 888 886 038` (Phone / Zalo). Inquiries are handled directly by a person; this site does not expose a booking, purchasing, or campaign-management API.
 
 ## How to read and cite
 
 Request a public page at its canonical URL with `Accept: text/markdown` for its Markdown representation, or `Accept: text/html` for the browser page. Both represent the same public content. Missing pages return HTTP 404 with recovery links, including a Markdown response when requested.
 
-Use the canonical page URL when citing a fact. Campaign results describe the specific published project and period; do not present them as a guarantee, a current quote, or a result for every client. Check the current Contact page for contact channels and availability. Project details behind an access gate are not included in Markdown.
+Cite the canonical page URL (`https://loc.digital/...`, without trailing slashes on subpages). Campaign case-study outcomes describe the specific published project and period; do not extrapolate them as guaranteed results for other accounts. Project details behind an access gate are excluded from public HTML and Markdown.
 
 ## Core pages
 
-- [Overview](https://loc.digital/): Professional summary, experience highlights, services, and featured photography.
-- [About](https://loc.digital/about): Biography, working approach, and personal interests.
-- [Selected work](https://loc.digital/work): Published case studies and project outcomes.
-- [Services](https://loc.digital/services): Marketing and web-engineering offerings and engagement options.
-- [Resume](https://loc.digital/resume): Experience, education, tools, and working areas.
-- [Writing](https://loc.digital/writing): Articles and notes. The current three articles are clearly marked as samples for a layout preview; do not treat them as client case studies or claims about completed projects.
-- [Photography](https://loc.digital/photos): Destination galleries, with the most recently updated albums first.
-- [Gear](https://loc.digital/gear): Equipment and tools.
-- [Contact](https://loc.digital/contact): Email, Zalo, location, and working arrangement.
-- [Privacy](https://loc.digital/privacy): Technical requests, storage, external services, and contact information.
+- [Overview](https://loc.digital/): Professional summary, experience highlights, services, and knowledge hubs.
+- [About](https://loc.digital/about): Biography, working philosophy, photography background, and links across the workspace.
+- [Growth Hub](https://loc.digital/growth): Five performance marketing clusters (Meta Ads, TikTok Shop GMV, Google Ads, Unit Economics, Growth Architecture) connected to case studies.
+- [Formula Library](https://loc.digital/growth/metrics): Performance marketing formula definitions (ROAS, MER, CAC, CVR, AOV, Revenue Decomposition, Break-even ROAS, Contribution Profit) with revenue-basis rules, assumptions, and limitations.
+- [Selected Work](https://loc.digital/work): Six published case studies (SONY, PlayAh!, WorkFlow Space, POPS Worldwide, TOMATO Children's Home, and education communities).
+- [Services](https://loc.digital/services): Modular performance marketing, CRO, web engineering, and retainer options.
+- [Resume](https://loc.digital/resume): Education at FPT University, chronological experience, and skill clusters.
+- [Certificates](https://loc.digital/certificates): Google Skillshop and Coursera certifications.
+- [Photography](https://loc.digital/photos): 25 published destination galleries across Vietnam and Southeast Asia, ordered by most recent update.
+- [Writing](https://loc.digital/writing): Essays and personal stories index (note: individual article pages are currently disabled while the editorial archive is curated).
+- [Gear](https://loc.digital/gear): Hardware, cameras (Leica Q3, Nikon Zf), lenses, workspace setup, and outdoor equipment.
+- [Contact](https://loc.digital/contact): Email (`hi@loc.digital`), Phone / Zalo (`+84 888 886 038`), location (Ho Chi Minh City), and working arrangement.
+- [Privacy](https://loc.digital/privacy): Request handling, browser session storage, external asset delivery, and contact privacy.
 
 ## Discovery
 
-- [Sitemap](https://loc.digital/sitemap-index.xml): Current public page URLs.
+- [Sitemap](https://loc.digital/sitemap-index.xml): Canonical public URLs with real content modification timestamps where supported.
 - [Robots](https://loc.digital/robots.txt): Public crawl policy.
 
-## Contact and profiles
+## Contact and verified profiles
 
 - [Email](mailto:hi@loc.digital)
 - [LinkedIn](https://www.linkedin.com/in/phucloc)
 - [Instagram](https://www.instagram.com/henrygoodkid)
+- [X](https://x.com/vuaecom)
 - [Pexels](https://www.pexels.com/@henrygoodkid)

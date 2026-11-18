@@ -84,7 +84,12 @@
       "width": 2400,
       "height": 1600,
       "order": 1,
-      "isCover": true
+      "isCover": true,
+      "title": "Flag Tower Over Clay Rooftops",
+      "story": "Woke up in Lô Lô Chải to rows of cold yin-yang roof tiles and the Lũng Cú flag tower perched silently on the far peak. The morning was so quiet you could hear someone boiling water down the lane. Standing here, right at the northern tip of the country, everything felt dialed back to just rock, earth, and sky.",
+      "location": "Lô Lô Chải, Hà Giang",
+      "capturedAt": "2026-01-09T07:42:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5496",
@@ -93,7 +98,12 @@
       "width": 2400,
       "height": 1600,
       "order": 2,
-      "isCover": false
+      "isCover": false,
+      "title": "Footpath to the Hilltop Lookout",
+      "story": "Followed the narrow concrete path past stacked firewood and banana leaves toward the small wooden lookout on the rise. A heavy wall of dark clouds was rolling in behind the hill, but down in the village not a leaf was stirring. It had that tense, beautiful stillness that happens right before the mountain weather makes up its mind.",
+      "location": "Lô Lô Chải, Hà Giang",
+      "capturedAt": "2026-01-09T09:25:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5516",
@@ -102,7 +112,12 @@
       "width": 2400,
       "height": 1600,
       "order": 3,
-      "isCover": false
+      "isCover": false,
+      "title": "Glossy Mountain Persimmons",
+      "story": "Stopped at a roadside stall where a mountain of freshly picked persimmons caught the midday light. Their skins were taut and waxy, ranging from pale gold to deep amber. Buying a small bag was basically non-negotiable, and they turned out every bit as crisp and sweet as promised.",
+      "location": "Hà Giang",
+      "capturedAt": "2026-01-09T11:48:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5532",
@@ -111,7 +126,12 @@
       "width": 2400,
       "height": 1600,
       "order": 4,
-      "isCover": false
+      "isCover": false,
+      "title": "Roadside Flowers at Thẩm Mã",
+      "story": "Pulled over at the stone barrier where local women and girls sat holding tiny bundles of wildflowers. Their bright blue and embroidered tunics stood out sharply against the dull green hillside behind them. We exchanged polite smiles while the little girl quietly fiddled with the beaded fringe on her collar.",
+      "location": "Dốc Thẩm Mã, Hà Giang",
+      "capturedAt": "2026-01-09T15:15:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5537-edit",
@@ -120,7 +140,12 @@
       "width": 2400,
       "height": 1600,
       "order": 5,
-      "isCover": false
+      "isCover": false,
+      "title": "Curves of Dốc Thẩm Mã",
+      "story": "You see photos of Dốc Thẩm Mã everywhere, but standing above the actual switchbacks makes you appreciate whoever engineered this snake through the karst. The road hugs the slope in tight, confident ribbon curves wrapped in dense brush. Riding down it takes steady brakes and zero rush.",
+      "location": "Dốc Thẩm Mã, Hà Giang",
+      "capturedAt": "2026-01-09T15:38:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5543",
@@ -129,7 +154,12 @@
       "width": 2400,
       "height": 1600,
       "order": 6,
-      "isCover": false
+      "isCover": false,
+      "title": "Silver Torque and Mountain Blossoms",
+      "story": "She rested on the stone parapet with her hands cupped around a bundle of roadside blossoms, completely unfazed by the tourist bikes humming past. Behind her, the curves of the pass fell away into the valley. Her heavy silver collar caught the flat afternoon light as she gave me a steady, knowing nod.",
+      "location": "Dốc Thẩm Mã, Hà Giang",
+      "capturedAt": "2026-01-09T15:52:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5574",
@@ -138,7 +168,12 @@
       "width": 2400,
       "height": 1600,
       "order": 7,
-      "isCover": false
+      "isCover": false,
+      "title": "Buckwheat Blossoms in the Valley",
+      "story": "I crouched down beside a patch of buckwheat flowers just off the trail before heading into the village. Up close, the pale pink blossoms looked fragile against the dark foliage, but they manage to thrive on these rocky mountain slopes without complaining. It was nice to pause and focus on something small after hours of massive ridgelines.",
+      "location": "Sủng Là, Hà Giang",
+      "capturedAt": "2026-01-10T10:15:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5598",
@@ -147,7 +182,12 @@
       "width": 1600,
       "height": 2400,
       "order": 8,
-      "isCover": false
+      "isCover": false,
+      "title": "Corn Wine Vendor at Pao's House",
+      "story": "He stood quietly under the timber beams of his stall, framed by a handwritten board advertising corn wine. When I asked for a photo, his expression barely shifted, just a faint, knowing smirk that felt entirely earned. There was no sales pitch, just a calm presence that matched the pace of the village.",
+      "location": "Pao's House, Sủng Là",
+      "capturedAt": "2026-01-10T10:32:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5614",
@@ -156,7 +196,12 @@
       "width": 2400,
       "height": 1600,
       "order": 9,
-      "isCover": false
+      "isCover": false,
+      "title": "Curled Up on Cold Stone",
+      "story": "Right outside the stone courtyard, this tabby had picked the coolest slab of rock it could find for a morning nap. Footsteps and motorbikes rumbled past just a few feet away, but it refused to twitch an ear. Sometimes the best travel strategy is simply finding a solid stone and clocking out.",
+      "location": "Pao's House, Sủng Là",
+      "capturedAt": "2026-01-10T10:41:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5615",
@@ -165,7 +210,12 @@
       "width": 2400,
       "height": 1600,
       "order": 10,
-      "isCover": false
+      "isCover": false,
+      "title": "Limestone Face Above the Terraces",
+      "story": "Looking up from the valley floor, the sheer gray cliff face looked like a massive wave frozen above the pine canopy. Narrow terraced plots were carved into every gentle slope beneath it, catching patches of mid-morning sun. You quickly realize in Hà Giang that people here farm on whatever inch of vertical rock they can reach.",
+      "location": "Sủng Là, Hà Giang",
+      "capturedAt": "2026-01-10T10:55:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5618",
@@ -174,7 +224,12 @@
       "width": 1600,
       "height": 2400,
       "order": 11,
-      "isCover": false
+      "isCover": false,
+      "title": "Pipe Smoke and Corn Wine",
+      "story": "After a few curious visitors drifted off, he sat back down with his long bamboo pipe and lit up. Rows of bottled corn wine flanked his bench, glowing faintly in the shade beside a bright pink checkered tablecloth. Watching the thin ribbon of smoke drift into the cool air felt like catching a routine that has happened every morning for decades.",
+      "location": "Pao's House, Sủng Là",
+      "capturedAt": "2026-01-10T11:08:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5623",
@@ -183,7 +238,12 @@
       "width": 1600,
       "height": 2400,
       "order": 12,
-      "isCover": false
+      "isCover": false,
+      "title": "Exhale in the Morning Light",
+      "story": "The sun crept slightly further under the timber eaves, warming the weathered wooden boards behind his stall. He turned his head toward the road to exhale, letting the smoke catch the incoming light while dried corn cobs swayed overhead. He never seemed in a rush to sell anything, which probably made everyone want to buy a bottle anyway.",
+      "location": "Pao's House, Sủng Là",
+      "capturedAt": "2026-01-10T11:12:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5626",
@@ -192,7 +252,12 @@
       "width": 1600,
       "height": 2400,
       "order": 13,
-      "isCover": false
+      "isCover": false,
+      "title": "Corn Wine and Bamboo Smoke",
+      "story": "He sat completely unbothered by visitors, exhaling a slow plume from his bamboo water pipe beside rows of bottled corn wine. Between the dried cobs dangling from the rafters and the neon-checkered cloth, the porch smelled like roasted tobacco and fermented mash. It felt like he’d been sitting in that exact patch of shade long before the tour groups arrived.",
+      "location": "Pao's House, Hà Giang",
+      "capturedAt": "2026-01-10T14:22:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5639",
@@ -201,7 +266,12 @@
       "width": 1600,
       "height": 2400,
       "order": 14,
-      "isCover": false
+      "isCover": false,
+      "title": "Layered Eaves Below the Pines",
+      "story": "The dark yin-yang tiles sat heavy and weathered across the gables, catching the afternoon sun while the rest of the timber frame sank into shadow. Straight, needle-thin sa mộc trees towered directly behind the ridge, framing the roofline against the pale sky. Up close, the craftsmanship felt wonderfully sturdy, built to endure decades of mountain frost.",
+      "location": "Pao's House, Hà Giang",
+      "capturedAt": "2026-01-10T14:48:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_5654",
@@ -210,7 +280,12 @@
       "width": 2400,
       "height": 1600,
       "order": 15,
-      "isCover": false
+      "isCover": false,
+      "title": "Pao's House from the Eaves",
+      "story": "Looking down over the weathered ceramic tiles revealed the quiet symmetry of the inner stone courtyard. Shaded timber galleries wrapped around all four sides, shielding the rooms from northern gusts while funneling a clean patch of sky right into the center. Even with visitors wandering through the front gate, this tucked-away yard felt remarkably still.",
+      "location": "Pao's House, Hà Giang",
+      "capturedAt": "2026-01-10T15:15:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6023",
@@ -219,7 +294,12 @@
       "width": 2400,
       "height": 1600,
       "order": 16,
-      "isCover": false
+      "isCover": false,
+      "title": "Red Flag Over Lũng Cú",
+      "story": "Climbing the stone steps to the northernmost border post was a serious leg workout, but watching the massive red flag ripple in the stiff wind made every step worth it. Against the deep blue dusk sky, the yellow star snapped sharp and bright with each gust. Standing right beneath the tower, looking out toward China just miles away, gave the whole place an undeniable gravity.",
+      "location": "Lũng Cú Flag Tower, Hà Giang",
+      "capturedAt": "2026-01-10T17:38:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6046",
@@ -228,7 +308,12 @@
       "width": 1600,
       "height": 2400,
       "order": 17,
-      "isCover": false
+      "isCover": false,
+      "title": "Bonfire Circle in Lô Lô Chải",
+      "story": "After the temperature plummeted with sunset, everyone in the village seemed to gravitate naturally toward the open blaze. Complete strangers linked arms in a chaotic, laughing circle, dancing to upbeat music while embers drifted into the chilly night. The blast of heat on my face was easily the best antidote to a long day of riding through the mountain wind.",
+      "location": "Lô Lô Chải, Hà Giang",
+      "capturedAt": "2026-01-10T20:45:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6078",
@@ -237,7 +322,12 @@
       "width": 2400,
       "height": 1600,
       "order": 18,
-      "isCover": false
+      "isCover": false,
+      "title": "Two Wakes on the Nho Quế",
+      "story": "From high above on the pass, the Nho Quế showed off that absurdly vivid jade-green water that phone cameras never quite capture accurately. Two tiny tour boats traced white V-shaped wakes across the calm surface, looking like miniatures dropped between giant limestone walls. The view from up here was dizzying, but it convinced us to make the steep trek down to the boat dock next.",
+      "location": "Nho Quế River, Hà Giang",
+      "capturedAt": "2026-01-11T10:15:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6084",
@@ -246,7 +336,12 @@
       "width": 1600,
       "height": 2400,
       "order": 19,
-      "isCover": false
+      "isCover": false,
+      "title": "Glittering Wake from High Above",
+      "story": "Looking straight down from the pass, the river boats looked no bigger than beetles crawling across dark slate. The afternoon sun hit just right, turning the boat's trail of foam into a sharp, gleaming scar of light across the turquoise water.",
+      "location": "Nho Quế River, Hà Giang",
+      "capturedAt": "2026-01-10T14:18:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6124",
@@ -255,7 +350,12 @@
       "width": 2400,
       "height": 1600,
       "order": 20,
-      "isCover": false
+      "isCover": false,
+      "title": "Churned Emerald in the Wake",
+      "story": "Finally down at water level, the engine hummed as we sliced through the deep teal current. Watching the propeller churn the still river into clouds of pale green foam was oddly hypnotic.",
+      "location": "Nho Quế River, Hà Giang",
+      "capturedAt": "2026-01-10T15:08:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6128",
@@ -264,7 +364,12 @@
       "width": 2400,
       "height": 1600,
       "order": 21,
-      "isCover": false
+      "isCover": false,
+      "title": "Under the Karst Giants",
+      "story": "The sheer scale of the gorge only really sinks in once you're floating at the bottom looking up. The cliffs shoot straight into the overcast sky, dwarfing every wooden boat out on the water.",
+      "location": "Nho Quế River, Hà Giang",
+      "capturedAt": "2026-01-10T15:22:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6140",
@@ -273,7 +378,12 @@
       "width": 2400,
       "height": 1600,
       "order": 22,
-      "isCover": false
+      "isCover": false,
+      "title": "Red Flag on Green Water",
+      "story": "A couple of boats crossed our path, their little red flags standing out against the endless green. Everyone on board was doing the exact same thing: looking up at the ridgelines in total silence.",
+      "location": "Nho Quế River, Hà Giang",
+      "capturedAt": "2026-01-10T15:37:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6142",
@@ -282,7 +392,12 @@
       "width": 2400,
       "height": 1600,
       "order": 23,
-      "isCover": false
+      "isCover": false,
+      "title": "Down the Mountain Corridor",
+      "story": "Looking back toward the narrowest bend, the canyon felt like a private corridor cut through the rock. The wind off the water was crisp and cold, carrying a fine spray every time the driver picked up speed.",
+      "location": "Nho Quế River, Hà Giang",
+      "capturedAt": "2026-01-10T15:54:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6195",
@@ -291,7 +406,12 @@
       "width": 2400,
       "height": 1600,
       "order": 24,
-      "isCover": false
+      "isCover": false,
+      "title": "Walking Tall Under Corn Stalks",
+      "story": "She walked past with a towering bundle of dried corn stalks balanced on her back, making it look almost effortless. Against the gray limestone slopes, her bright purple skirt was the only real pop of color on the road.",
+      "location": "Hà Giang",
+      "capturedAt": "2026-01-11T10:42:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6226",
@@ -300,7 +420,12 @@
       "width": 2400,
       "height": 1600,
       "order": 25,
-      "isCover": false
+      "isCover": false,
+      "title": "Sunbreak on Karst Ridges",
+      "story": "Standing high above the pass, you can watch drifting clouds drag massive shadows across the limestone folds. Down in the valley, the mountain road looks like a pale thread someone scratched into the slopes.",
+      "location": "Mã Pí Lèng, Hà Giang",
+      "capturedAt": "2026-01-11T13:38:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6229",
@@ -309,7 +434,12 @@
       "width": 2400,
       "height": 1600,
       "order": 26,
-      "isCover": false
+      "isCover": false,
+      "title": "Karst Peaks in Blue Haze",
+      "story": "Layer after layer of cone-shaped limestone ridges fade out into pale blue haze. Out here, the geology looks less like solid rock and more like a choppy ocean caught mid-crest.",
+      "location": "Đồng Văn Karst Plateau, Hà Giang",
+      "capturedAt": "2026-01-11T14:25:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6239",
@@ -318,7 +448,12 @@
       "width": 2400,
       "height": 1600,
       "order": 27,
-      "isCover": false
+      "isCover": false,
+      "title": "Tight Turns Toward the Valley",
+      "story": "Looking down at the road from above makes your brake hand twitch instinctively. The asphalt ribbons curl so steeply down the mountain that every homestead looks pinned to the slope for dear life.",
+      "location": "Mã Pí Lèng, Hà Giang",
+      "capturedAt": "2026-01-11T15:15:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6245",
@@ -327,7 +462,12 @@
       "width": 2400,
       "height": 1600,
       "order": 28,
-      "isCover": false
+      "isCover": false,
+      "title": "Turquoise Ribbon Far Below",
+      "story": "The Nho Quế river shows up hundreds of meters down in the chasm as a sharp turquoise curve. From this bend on the pass, looking past the thin guardrail puts the sheer scale of the gorge into immediate perspective.",
+      "location": "Nho Quế River, Hà Giang",
+      "capturedAt": "2026-01-11T16:05:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "ha-giang-dsc_6249",
@@ -336,7 +476,12 @@
       "width": 2400,
       "height": 1600,
       "order": 29,
-      "isCover": false
+      "isCover": false,
+      "title": "Deep Inside Tu Sản Chasm",
+      "story": "Tu Sản gorge drops so abruptly that afternoon shadows completely swallow the water while the ridges above are still bright. The tour boats down below look like floating needles leaving faint white ripples across the dark green.",
+      "location": "Tu Sản Canyon, Hà Giang",
+      "capturedAt": "2026-01-11T16:40:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hknwguh57xp9l2wiefouaq5nzugod3mbyct70-ha-gi",
@@ -346,7 +491,12 @@
       "height": 1439,
       "caption": "",
       "order": 30,
-      "isCover": false
+      "isCover": false,
+      "title": "Morning Sun at Pao's House",
+      "story": "An elderly local gentleman took a quiet breather outside the weathered timber doorway of Pao's House, soaking in the morning warmth. Beside him, a woven pack basket full of yellow mustard flowers caught the low sun against the dark wood.",
+      "location": "Pao's House, Hà Giang",
+      "capturedAt": "2026-01-12T09:20:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hj8fahhkgpnlew4qezijraqkphdbcxs3tc1i7-ha-gi",
@@ -356,7 +506,12 @@
       "height": 1600,
       "caption": "",
       "order": 31,
-      "isCover": false
+      "isCover": false,
+      "title": "Valley Road Beneath the Eaves",
+      "story": "I pulled over under a rough timber shelter to let the motorbike engine cool down after a long climb. Framed by the dark roof overhang, the narrow tarmac ribbon curved quietly along the flank of the valley toward distant hazy ridges. It looked almost peaceful from up here, even if my forearms were still buzzing from the gravel turns.",
+      "location": "Mã Pí Lèng, Hà Giang",
+      "capturedAt": "2026-01-12T11:25:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59htmcgjil2ojwmzq4odlka9nlegfi1h3xyh6zw-ha-gi",
@@ -366,7 +521,12 @@
       "height": 1439,
       "caption": "",
       "order": 32,
-      "isCover": false
+      "isCover": false,
+      "title": "Cucumber Snack by the Doorway",
+      "story": "Leaning against the dark wooden doorframe, this kid had his hands full between a red plastic toy truck and a thick slice of cucumber. He gave my camera a brief, unimpressed once-over before going right back to chewing. A cozy hoodie and an uninterrupted snack seemed like the right way to spend a quiet midday.",
+      "location": "Hà Giang",
+      "capturedAt": "2026-01-12T13:10:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hcqtmcmbtheqno0psaegxlfyglidrrmucfdjv-ha-gi",
@@ -376,7 +536,12 @@
       "height": 1600,
       "caption": "",
       "order": 33,
-      "isCover": false
+      "isCover": false,
+      "title": "Synchronized Yawns on Stone Wall",
+      "story": "Two kids sat perched along the stone wall with bright blue woven baskets overflowing with yellow mustard blossoms. Right as I wandered past, the girl let out an enormous yawn, and the boy beside her caught it almost instantly. Watching them fight off the afternoon slump against the backdrop of quiet village roofs made the whole stop feel wonderfully unscripted.",
+      "location": "Hà Giang",
+      "capturedAt": "2026-01-12T15:05:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "https-65wv0vnolo-ufs-sh-f-0dwdtvjms59hjuw17g94kroisafpdmjw9clq8qriyzespbug-ha-gi",
@@ -386,7 +551,12 @@
       "height": 1600,
       "caption": "",
       "order": 34,
-      "isCover": false
+      "isCover": false,
+      "title": "Laughter on the Stone Ledge",
+      "story": "Perched side by side on the roadside parapet with baskets of freshly picked mustard flowers, the two girls broke into sudden, effortless laughter. Behind them, the steep mountain face dropped into the afternoon haze, but all the warmth was concentrated right on that stone ledge. It felt like the warmest send-off the plateau could give.",
+      "location": "Mã Pí Lèng, Hà Giang",
+      "capturedAt": "2026-01-12T16:20:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     }
   ],
   "googleMapsUrl": "",

@@ -1,12 +1,11 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
-import { getProjects } from "../../lib/cms";
+import { getProjects } from "../../lib/content";
 import BeforeAfterPerformance from "../../components/ui/BeforeAfterPerformance.astro";
 import ShowcasePassGate from "../../components/ui/ShowcasePassGate.astro";
 import BrandPositioningFeed from "../../components/ui/BrandPositioningFeed.astro";
-import { 
-  ExternalLink
-} from "../../components/icons/majesticons";
+import Heroicon from "../../components/icons/Heroicon.astro";
+import { articleSchema, canonicalUrl } from "../../lib/seo";
 
 export const prerender = true;
 
@@ -47,11 +46,11 @@ if (project.slug === "playah") {
     beforeLabel: "Baseline (Jul 2025)",
     afterLabel: "Scaled Engine (Aug 2025)",
     beforeImage: {
-      src: "/images/playah/playah-before.png",
+      src: "/images/playah/playah-before.webp",
       alt: "PlayAh! TikTok Shop Revenue & GMV baseline before optimization (July 2025 — 125M VND)",
     },
     afterImage: {
-      src: "/images/playah/playah-after.png",
+      src: "/images/playah/playah-after.webp",
       alt: "PlayAh! TikTok Shop Revenue & GMV after optimization (August 2025 — 1.46B VND)",
     },
     beforePanel: {
@@ -80,18 +79,38 @@ if (project.slug === "playah") {
     ]
   };
 }
+
+const caseUrl = canonicalUrl(`/work/${project.slug}`);
+const caseTags = [...(project.tools ?? []), ...(project.skills ?? [])];
+const caseSchema = articleSchema({
+  url: caseUrl,
+  title: project.title,
+  description: project.summary,
+  type: "CreativeWork",
+  image: project.coverImage || undefined,
+  articleSection: "Case Study",
+  keywords: caseTags,
+  datePublished: project.publishedAt,
+  dateModified: project.updatedAt,
+});
 ---
 
 <DashboardLayout
   title={`${project.title} | Case Study — Phuc Loc Nguyen`}
   pageTitle={project.title}
   description={project.summary}
+  ogImage={project.coverImage || undefined}
+  ogImageAlt={`${project.title} — case study by Phuc Loc Nguyen`}
+  ogType="article"
+  datePublished={project.publishedAt}
+  dateModified={project.updatedAt}
   breadcrumbs={[
     { label: "Workspace", href: "/" },
     { label: "Work", href: "/work" },
     { label: project.title }
   ]}
   maxWidthVariant="default"
+  schema={caseSchema}
 >
   <!-- External link bar (if available) -->
   {project.link && (
@@ -101,10 +120,10 @@ if (project.slug === "playah") {
         target="_blank" 
         rel="noopener noreferrer" 
         class="dash-link"
-        style="color: var(--dash-accent); display: inline-flex; align-items: center; gap: 4px;"
+        style="color: var(--dash-accent); display: inline-flex; align-items: center; gap: 6px;"
       >
-        <span>{project.linkLabel || "Live project"}</span>
-        <ExternalLink size={12} aria-hidden="true" />
+        <Heroicon name="link" variant="outline" size={15} />
+        <span style="text-decoration: underline; text-decoration-color: currentColor; text-underline-offset: 3px; text-decoration-thickness: 0.5px;">{project.linkLabel || "Live project"}</span>
       </a>
     </div>
   )}
@@ -152,6 +171,16 @@ if (project.slug === "playah") {
         <p>{para}</p>
       ))}
     </div>
+
+    {caseTags.length > 0 && (
+      <div class="work-taxonomy-block">
+        <div class="work-tags-row" aria-label="Tools and capabilities applied">
+          {caseTags.map((tag: string) => (
+            <span class="dash-tag">{tag}</span>
+          ))}
+        </div>
+      </div>
+    )}
   </section>
 
   <!-- Special Feed for WorkFlow Space -->
@@ -286,6 +315,19 @@ if (project.slug === "playah") {
     margin: 0;
     text-align: left;
     text-wrap: pretty;
+  }
+
+  .work-taxonomy-block {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .work-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: var(--space-3);
   }
 
   .more-work-grid {

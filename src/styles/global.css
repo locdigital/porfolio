@@ -868,12 +868,10 @@
       font-weight: inherit !important;
       line-height: inherit !important;
       color: var(--accent);
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      text-decoration-color: var(--border-bright);
+      text-decoration: none;
       cursor: pointer;
       position: relative;
-      transition: color .25s ease, text-decoration-color .25s ease;
+      transition: color .25s ease;
       background: none;
       border: none;
       padding-right: 0.12em;

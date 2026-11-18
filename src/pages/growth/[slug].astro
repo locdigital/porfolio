@@ -1,0 +1,113 @@
+---
+import type { CollectionEntry } from "astro:content";
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import { getGrowthPlaybooks, getProjects } from "../../lib/content";
+import { articleSchema, canonicalUrl } from "../../lib/seo";
+import Heroicon from "../../components/icons/Heroicon.astro";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const playbooks = await getGrowthPlaybooks();
+  return playbooks.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"growth">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const projects = await getProjects();
+const relatedProjects = projects.filter((p) => entry.data.relatedCaseStudies.includes(p.slug));
+const pageUrl = canonicalUrl(`/growth/${entry.slug}`);
+const publishedIso = entry.data.publishedAt.toISOString();
+const modifiedIso = (entry.data.updatedAt ?? entry.data.publishedAt).toISOString();
+
+const playbookSchema = articleSchema({
+  url: pageUrl,
+  title: entry.data.title,
+  description: entry.data.summary,
+  type: "TechArticle",
+  datePublished: publishedIso,
+  dateModified: modifiedIso,
+  articleSection: entry.data.topicCluster,
+  keywords: entry.data.keyMetrics,
+  lang: entry.data.lang,
+});
+---
+
+<DashboardLayout
+  title={`${entry.data.title} — Growth Playbook — Phuc Loc Nguyen`}
+  pageTitle={entry.data.title}
+  description={entry.data.summary}
+  ogType="article"
+  datePublished={publishedIso}
+  dateModified={modifiedIso}
+  lang={entry.data.lang}
+  breadcrumbs={[
+    { label: "Workspace", href: "/" },
+    { label: "Growth Hub", href: "/growth" },
+    { label: entry.data.title },
+  ]}
+  maxWidthVariant="reading"
+  schema={playbookSchema}
+>
+  <article class="dash-prose">
+    <header class="page-header">
+      <h1 class="page-title">{entry.data.title}</h1>
+      <p class="page-lead">{entry.data.summary}</p>
+      <p style="font-size: var(--text-caption); color: var(--dash-muted); margin: 0;">
+        By <a href="/about" class="dash-link" data-astro-prefetch>{entry.data.author}</a> · Published <time datetime={publishedIso}>{publishedIso.slice(0, 10)}</time>
+        {entry.data.updatedAt && <> · Updated <time datetime={modifiedIso}>{modifiedIso.slice(0, 10)}</time></>}
+      </p>
+    </header>
+
+    <section class="page-section">
+      <h2 class="section-title">Problem & fit</h2>
+      <p>{entry.data.problem}</p>
+      {entry.data.suitableFor.length > 0 && (
+        <div>
+          <h3>Suitable for</h3>
+          <ul>{entry.data.suitableFor.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      )}
+      {entry.data.notSuitableFor.length > 0 && (
+        <div>
+          <h3>Not suitable for</h3>
+          <ul>{entry.data.notSuitableFor.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      )}
+    </section>
+
+    <section class="page-section">
+      <Content />
+    </section>
+
+    {entry.data.limitations.length > 0 && (
+      <section class="page-section">
+        <h2 class="section-title">Risks & limitations</h2>
+        <ul>{entry.data.limitations.map((item) => <li>{item}</li>)}</ul>
+      </section>
+    )}
+
+    {relatedProjects.length > 0 && (
+      <section class="page-section">
+        <h2 class="section-title">Related case studies</h2>
+        <ul>
+          {relatedProjects.map((p) => (
+            <li>
+              <a href={`/work/${p.slug}`} class="dash-link" style="display: inline-flex; align-items: center; gap: 6px;" data-astro-prefetch>
+                <Heroicon name="link" variant="outline" size={14} />
+                <span style="text-decoration: underline; text-decoration-color: var(--dash-underline, #858580); text-underline-offset: 3px; text-decoration-thickness: 0.5px;">{p.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+</DashboardLayout>

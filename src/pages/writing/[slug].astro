@@ -2,8 +2,9 @@
 import type { CollectionEntry } from "astro:content";
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import ResponsiveImage from "../../components/ui/ResponsiveImage.astro";
-import { ArrowRight } from "../../components/icons/majesticons";
+import { ArrowRight } from "../../components/icons/phosphor";
 import { getWritingEntries, writingDate, writingReadTime } from "../../lib/writing";
+import { articleSchema, canonicalUrl } from "../../lib/seo";
 
 export const prerender = true;
 
@@ -18,20 +19,49 @@ const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
 const sections = headings.filter(heading => heading.depth === 2);
 const related = (await getWritingEntries()).filter(other => other.data.linkable !== false && other.slug !== entry.slug).slice(0, 2);
+const postUrl = canonicalUrl(`/writing/${entry.slug}`);
+const publishedIso = entry.data.date.toISOString();
+const modifiedIso = (entry.data.updatedAt ?? entry.data.date).toISOString();
+const coverUrl = entry.data.coverImage ? new URL(entry.data.coverImage.src, Astro.site || "https://loc.digital").href : undefined;
+const postSchema = articleSchema({
+  url: postUrl,
+  title: entry.data.title,
+  description: entry.data.description,
+  type: "BlogPosting",
+  image: coverUrl,
+  datePublished: publishedIso,
+  dateModified: modifiedIso,
+  articleSection: entry.data.category,
+  lang: entry.data.lang,
+});
 ---
 
 <DashboardLayout
   title={`${entry.data.title} — Writing — Phuc Loc Nguyen`}
   pageTitle="Writing"
   description={entry.data.description}
-  ogImage={entry.data.coverImage ? new URL(entry.data.coverImage.src, Astro.site || "https://loc.digital").href : undefined}
+  ogImage={coverUrl}
+  ogImageAlt={entry.data.coverImage?.alt || entry.data.title}
+  ogType="article"
+  datePublished={publishedIso}
+  dateModified={modifiedIso}
+  lang={entry.data.lang}
   breadcrumbs={[{ label: "Personal", href: "/" }, { label: "Writing", href: "/writing" }, { label: entry.data.title }]}
+  schema={postSchema}
 >
   <article class="writing-article">
     <header class="page-header writing-article-header">
       <h1 class="page-title">{entry.data.title}</h1>
       <div class="writing-article-meta">
-        <time datetime={entry.data.date.toISOString()}>{writingDate(entry.data.date)}</time>
+        <span>By <a href="/about" class="dash-link" data-astro-prefetch>Phuc Loc Nguyen</a></span>
+        <span aria-hidden="true">·</span>
+        <time datetime={publishedIso}>{writingDate(entry.data.date)}</time>
+        {entry.data.updatedAt && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span>Updated <time datetime={modifiedIso}>{writingDate(entry.data.updatedAt)}</time></span>
+          </>
+        )}
         <span aria-hidden="true">·</span>
         <span>{writingReadTime(entry)} min read</span>
       </div>
@@ -74,7 +104,7 @@ const related = (await getWritingEntries()).filter(other => other.data.linkable 
       <h2 id="writing-related-title" class="section-title">More writing</h2>
       {related.map(other => (
         <a href={`/writing/${other.slug}`} class:list={["writing-related-link", { "writing-related-link--with-image": Boolean(other.data.coverImage) }]}>
-          {other.data.coverImage && <ResponsiveImage src={other.data.coverImage.src} alt="" width={160} height={100} widths={[80, 160]} sizes="80px" class="writing-related-image" />}
+          {other.data.coverImage && <ResponsiveImage src={other.data.coverImage.src} alt="" width={160} height={90} widths={[80, 160]} sizes="80px" class="writing-related-image" />}
           <span><span class="writing-related-category">{other.data.category}</span><span class="writing-related-title">{other.data.title}</span></span>
           <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
         </a>
@@ -135,7 +165,7 @@ const related = (await getWritingEntries()).filter(other => other.data.linkable 
   .writing-prose :global(table) { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 24px 0; font-size: var(--text-body-sm); overflow-wrap: anywhere; }
   .writing-prose :global(th), .writing-prose :global(td) { padding: 12px 10px; text-align: left; vertical-align: top; border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); }
   .writing-prose :global(th) { background: var(--color-ivory); font-weight: var(--font-weight-medium); }
-  .writing-prose :global(a) { color: var(--dash-text); text-decoration-line: underline; text-decoration-style: dotted; text-underline-offset: 4px; }
+  .writing-prose :global(a) { color: var(--dash-text); text-decoration: none; }
 
   .writing-toc { position: sticky; top: 24px; font-size: var(--text-body-sm); line-height: var(--leading-compact); }
   .writing-toc-title { margin: 0 0 12px; font-size: var(--text-body-sm); font-weight: var(--font-weight-medium); }
@@ -145,7 +175,7 @@ const related = (await getWritingEntries()).filter(other => other.data.linkable 
   .writing-related { margin-top: 48px; padding-top: 28px; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); }
   .writing-related-link { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 0; color: var(--dash-text); text-decoration: none !important; font-size: var(--text-body-sm); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); }
   .writing-related-link--with-image { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; gap: 16px; }
-  .writing-related-link :global(.writing-related-image) { display: block; width: 80px; height: 50px; object-fit: cover; border-radius: 8px; }
+  .writing-related-link :global(.writing-related-image) { display: block; width: 80px; height: 45px; object-fit: cover; object-position: left center; border-radius: 8px; }
   .writing-related-category { display: block; margin-bottom: 4px; color: var(--dash-muted); font-size: var(--text-caption); }
   .writing-related-title { font-weight: var(--font-weight-medium); line-height: var(--leading-compact); font-size: var(--text-body); }
 

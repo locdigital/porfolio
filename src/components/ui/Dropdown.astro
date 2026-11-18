@@ -1,4 +1,6 @@
 ---
+import { ChevronDown, Check } from "../icons/phosphor";
+
 export interface DropdownOption {
   value: string;
   label: string;
@@ -48,20 +50,12 @@ const menuId = `${id}-menu`;
     data-default-label={defaultLabel}
   >
     <span class="ui-dropdown-value" data-value-text>{currentLabel}</span>
-    <svg
-      class="ui-dropdown-arrow"
-      width="12"
-      height="12"
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.75"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+    <ChevronDown
+      className="ui-dropdown-arrow"
+      size={13}
+      strokeWidth={1.8}
       aria-hidden="true"
-    >
-      <path d="m4 6 4 4 4-4" />
-    </svg>
+    />
   </button>
 
   <div
@@ -84,9 +78,7 @@ const menuId = `${id}-menu`;
           <span class="ui-dropdown-item-label">{opt.label}</span>
           {opt.selected && (
             <span class="ui-dropdown-item-check" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m3.5 8.5 3 3 6-7" />
-              </svg>
+              <Check size={14} strokeWidth={1.8} />
             </span>
           )}
         </button>

@@ -1,0 +1,103 @@
+/* Shared content roles across the workspace. */
+:root {
+  --color-description: var(--dash-muted);
+  --color-hyperlink: #0969da;
+}
+
+.workspace-canvas :is(
+  .page-lead,
+  .content-description,
+  .capability-desc,
+  .project-card-summary,
+  .project-summary,
+  .gear-card-description,
+  .pricing-section-desc,
+  .pricing-description,
+  .editorial-subtitle,
+  .psc-subtitle,
+  .photo-list-headline,
+  .modal-desc-text,
+  .showcase-pass-gate-description,
+  .brand-feed-subtitle,
+  .brand-feed-lead,
+  .bap-description,
+  .bap-highlight-desc,
+  .bap-state-desc
+) {
+  color: var(--color-description) !important;
+}
+
+.workspace-canvas :is(.about-prose, .writing-prose, .editorial-prose, .dash-prose) {
+  color: var(--dash-text);
+}
+
+/* Linked cards keep descriptions gray; inline links use blue, while titles start dark and turn blue on hover. */
+:where(.workspace-canvas a[href]:not(.gf-sheet--art):not(.dash-nav-link):not(.dash-nav-tree-link):not(.dash-crumb-link):not(.dash-user-row):not(.project-card-title-link):not(.writing-card-title-link):not(.gear-row-link):not(.dash-button):not(.pricing-btn)),
+:where(.workspace-canvas a[href]:not(.gf-sheet--art):not(.dash-nav-link):not(.dash-nav-tree-link):not(.dash-crumb-link):not(.dash-user-row):not(.project-card-title-link):not(.writing-card-title-link):not(.gear-row-link):not(.dash-button):not(.pricing-btn):visited),
+:where(.workspace-canvas a[href]:not(.gf-sheet--art):not(.dash-nav-link):not(.dash-nav-tree-link):not(.dash-button):not(.pricing-btn):hover) {
+  color: var(--color-hyperlink);
+}
+
+.workspace-canvas :is(h1, h2, h3, h4, .item-title) a[href]:not(.gf-sheet--art):not(.dash-nav-link):not(.dash-nav-tree-link),
+.workspace-canvas a[href]:not(.gf-sheet--art):not(.dash-nav-link):not(.dash-nav-tree-link) :is(h1, h2, h3, h4, .photo-list-title, .dash-user-name, .psc-title),
+.workspace-canvas :is(.project-card-title-link, .writing-card-title-link, .gear-row-link, .dash-user-row) {
+  color: var(--dash-text) !important;
+  transition: color var(--duration-fast, 150ms) ease;
+}
+
+.workspace-canvas :is(h1, h2, h3, h4, .item-title) a[href]:not(.gf-sheet--art):not(.dash-nav-link):not(.dash-nav-tree-link):not(.gear-row-link):hover,
+.workspace-canvas a[href]:not(.gf-sheet--art):not(.dash-nav-link):not(.dash-nav-tree-link):not(.gear-row-link):hover :is(h1, h2, h3, h4, .photo-list-title, .dash-user-name, .psc-title),
+.workspace-canvas :is(.project-card-title-link, .writing-card-title-link, .dash-user-row):hover,
+.workspace-canvas .project-item:hover .project-card-title-link,
+.workspace-canvas .project-item:focus-within .project-card-title-link,
+.workspace-canvas .writing-featured-card:hover .writing-card-title-link,
+.workspace-canvas .writing-featured-card:focus-within .writing-card-title-link,
+.workspace-canvas .writing-timeline-content:hover .writing-card-title-link,
+.workspace-canvas .writing-timeline-content:focus-within .writing-card-title-link {
+  color: var(--color-hyperlink) !important;
+}
+
+.workspace-canvas .gear-row-link,
+.workspace-canvas .gear-row-link:hover,
+.workspace-canvas .gear-row:hover .gear-row-link {
+  color: var(--dash-text) !important;
+}
+
+.workspace-canvas .gear-row:hover .gear-row-arrow,
+.workspace-canvas .gear-row:focus-within .gear-row-arrow,
+.workspace-canvas .gear-row-link:hover .gear-row-arrow {
+  color: var(--color-hyperlink) !important;
+}
+
+.workspace-canvas .about-socials a[href],
+.workspace-canvas .about-socials a[href]:visited {
+  color: var(--dash-text) !important;
+}
+
+.workspace-canvas .about-socials a[href] svg {
+  color: var(--dash-muted) !important;
+}
+
+.workspace-canvas .about-socials a[href]:hover,
+.workspace-canvas .about-socials a[href]:hover svg {
+  color: var(--color-hyperlink) !important;
+}
+
+/* Sidebar navigation links stay dark text instead of hyperlink blue. */
+.workspace-canvas a.dash-nav-link[href],
+.workspace-canvas a.dash-nav-link[href]:visited {
+  color: var(--dash-text) !important;
+}
+
+/* Photo preview labels sit over images, including on hover and focus. */
+.workspace-canvas a.gf-sheet--art[href],
+.workspace-canvas a.gf-sheet--art[href]:visited,
+.workspace-canvas a.gf-sheet--art[href]:hover,
+.workspace-canvas a.gf-sheet--art[href]:focus,
+.workspace-canvas a.gf-sheet--art[href]:focus-visible,
+.workspace-canvas a.gf-sheet--art[href] .gf-sheet-name,
+.workspace-canvas a.gf-sheet--art[href]:hover .gf-sheet-name,
+.workspace-canvas a.gf-sheet--art[href]:focus-visible .gf-sheet-name {
+  color: #fff !important;
+  text-decoration-color: #fff !important;
+}

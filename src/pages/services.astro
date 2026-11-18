@@ -1,6 +1,8 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { ArrowUpRight, Check } from "../components/icons/majesticons";
+import { serviceColors } from "../data/service-colors";
+import { ArrowUpRight, Check } from "../components/icons/phosphor";
+import { canonicalUrl, serviceItemsSchema } from "../lib/seo";
 
 const services = [
   {
@@ -8,10 +10,7 @@ const services = [
     category: "Performance Marketing",
     title: "Performance Ads & Attribution",
     metric: "4.2x Avg ROAS",
-    color: "#2383E2",
-    soft: "#EAF4FF",
-    border: "#B9DDFF",
-    ink: "#0B5CAD",
+    ...serviceColors[0],
     summary: "Acquisition scaling and CAC reduction across Meta, Google Search/PMax, and TikTok Ads supported by server-side CAPI and attribution modeling.",
     tags: ["Meta Ads", "Google Ads", "TikTok Ads", "GA4 Server-Side", "Looker Studio"],
     checklist: [
@@ -26,10 +25,7 @@ const services = [
     category: "Social Seeding",
     title: "Organic Seeding & Advocacy",
     metric: "85% Trust Index",
-    color: "#FFB224",
-    soft: "#FFF4D8",
-    border: "#FFD98A",
-    ink: "#8A5A00",
+    ...serviceColors[1],
     summary: "Authentic peer discussion seeding across high-intent communities, sentiment management, and micro-influencer advocacy.",
     tags: ["Forum Seeding", "Reddit & Facebook", "Sentiment Mgmt", "KOC Booking"],
     checklist: [
@@ -44,10 +40,7 @@ const services = [
     category: "Brand Marketing",
     title: "Strategic Brand Positioning",
     metric: "100% Alignment",
-    color: "#FF4938",
-    soft: "#FFEDEA",
-    border: "#FFC1B8",
-    ink: "#A51E12",
+    ...serviceColors[2],
     summary: "Core brand positioning, tone-of-voice frameworks, and visual identity guidelines to differentiate in crowded digital markets.",
     tags: ["Market Positioning", "Messaging Maps", "Visual Styleguides", "Tone of Voice"],
     checklist: [
@@ -62,10 +55,7 @@ const services = [
     category: "E-Commerce Growth",
     title: "DTC Storefront Optimization",
     metric: "+28% Conversion",
-    color: "#20B84E",
-    soft: "#E8F8EE",
-    border: "#AEE7C1",
-    ink: "#137633",
+    ...serviceColors[3],
     summary: "Storefront UX refinement and retention funnel architecture to maximize Average Order Value (AOV) and customer lifetime value (LTV).",
     tags: ["Shopify CRO", "Cart Funnel", "Klaviyo CRM", "Catalog Feed"],
     checklist: [
@@ -80,10 +70,7 @@ const services = [
     category: "Web Development",
     title: "Headless Web Engineering",
     metric: "100/100 Speed",
-    color: "#1710A8",
-    soft: "#ECEBFF",
-    border: "#C7C3FF",
-    ink: "#1710A8",
+    ...serviceColors[4],
     summary: "Ultra-fast responsive static websites built on Astro and React, achieving perfect Google Lighthouse scores and strict technical SEO.",
     tags: ["Astro Framework", "React & TS", "Keystatic CMS", "Core Web Vitals"],
     checklist: [
@@ -98,10 +85,7 @@ const services = [
     category: "Growth Automation",
     title: "AI Funnels & Growth Automation",
     metric: "95% Automation",
-    color: "#8B7CF6",
-    soft: "#F1EFFF",
-    border: "#D6D0FF",
-    ink: "#4C3CCF",
+    ...serviceColors[5],
     summary: "Eliminating manual marketing operations and scaling lead acquisition through CRM workflows, webhook syncs, and AI content engines.",
     tags: ["Make.com", "Zapier", "AI Scripting", "CRM Flows", "Programmatic SEO"],
     checklist: [
@@ -183,6 +167,16 @@ const collaborationLogos = [
   { name: "OpenAI", role: "AI Operations", initials: "AI", logo: "https://www.google.com/s2/favicons?domain=openai.com&sz=128" },
   { name: "Runway", role: "AI Video", initials: "Rw", logo: "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128" },
 ];
+
+const servicesUrl = canonicalUrl("/services");
+const servicesSchemas = serviceItemsSchema(
+  services.map((s) => ({
+    name: s.title,
+    category: s.category,
+    description: s.summary,
+    url: servicesUrl,
+  })),
+);
 ---
 
 <DashboardLayout
@@ -191,6 +185,7 @@ const collaborationLogos = [
   description="Performance ads, TikTok Shop acceleration, DTC CRO, headless web development, and AI marketing automation services."
   breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "Services" }]}
   maxWidthVariant="default"
+  schema={servicesSchemas}
 >
   <!-- Page Header -->
   <header class="page-header">
@@ -216,11 +211,11 @@ const collaborationLogos = [
               <span class="service-card-id">{s.id}</span>
             </div>
 
-            <h3 class="item-title" style="font-size: var(--text-body); margin-bottom: 6px;">
+            <h3 class="item-title" style="font-size: calc(var(--text-body) + 7px); margin-bottom: 6px;">
               {s.title}
             </h3>
 
-            <p style="font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); margin: 0 0 14px;">
+            <p class="content-description" style="font-size: var(--text-body-sm); line-height: var(--leading-compact); margin: 0 0 14px;">
               {s.summary}
             </p>
 
@@ -371,7 +366,7 @@ const collaborationLogos = [
      ============================================================ */
   .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
     gap: 16px;
   }
 
@@ -485,7 +480,7 @@ const collaborationLogos = [
   }
 
   .pricing-section-desc {
-    font-size: var(--text-body);
+    font-size: var(--text-body-sm);
     line-height: var(--leading-body);
     color: var(--dash-muted);
     margin: 0 0 var(--space-5, 20px);
@@ -505,6 +500,7 @@ const collaborationLogos = [
 
   /* Pricing Card (Warm Ivory #F9F8F6, 16px radius, 24px padding) */
   .pricing-card {
+    min-width: 0;
     grid-row: 1 / 8;
     display: grid;
     grid-template-rows: subgrid;
@@ -545,6 +541,7 @@ const collaborationLogos = [
   /* Row 1: Header / Category & Badge */
   .pricing-meta-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
@@ -577,7 +574,7 @@ const collaborationLogos = [
 
   /* Row 2: Plan Title (13px) */
   .pricing-plan-title {
-    font-size: var(--text-body);
+    font-size: calc(var(--text-body) + 3px);
     line-height: var(--leading-heading);
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--tracking-subheading);
@@ -713,16 +710,26 @@ const collaborationLogos = [
   }
 
   .pricing-btn--secondary {
-    background: var(--btn-bg);
-    color: var(--color-jet);
+    background: transparent;
+    color: var(--dash-text, #292927);
     border: 0 !important;
   }
 
+  .pricing-btn--secondary:hover {
+    background: #eaf4ff;
+    color: var(--dash-link-hover, #0969DA) !important;
+  }
+
   .pricing-btn--primary {
-    background: var(--color-jet);
-    color: var(--color-white) !important;
+    background: #eaf4ff;
+    color: var(--dash-text, #292927) !important;
     border: 0 !important;
     box-shadow: none;
+  }
+
+  .pricing-btn--primary:hover {
+    background: #dbeeff;
+    color: var(--dash-link-hover, #0969DA) !important;
   }
 
   /* Responsive: Switch to horizontal swipe on mobile & tablet */
@@ -763,6 +770,35 @@ const collaborationLogos = [
     .pricing-features {
       margin-bottom: 20px;
       flex: 1 1 auto;
+    }
+
+    .pricing-action-wrap {
+      margin-top: auto;
+    }
+  }
+
+  /* Tablet plans stay readable without requiring a horizontal swipe. */
+  @media (min-width: 600px) and (max-width: 1100px) {
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: auto;
+      gap: 16px;
+      margin-inline: 0;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .pricing-card {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      display: flex;
+      flex-direction: column;
+      width: auto;
+    }
+
+    .pricing-features {
+      flex: 1;
     }
 
     .pricing-action-wrap {

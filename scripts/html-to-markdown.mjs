@@ -3,6 +3,7 @@ import { parse } from "parse5";
 const omitted = new Set(["script", "style", "svg", "nav", "button", "form", "template", "noscript"]);
 const blocks = new Set(["address", "article", "aside", "div", "dl", "dt", "dd", "figure", "figcaption", "footer", "header", "main", "p", "section", "summary"]);
 const attr = (node, name) => node.attrs?.find((a) => a.name === name)?.value;
+const hasClass = (node, cls) => (attr(node, "class") ?? "").split(/\s+/).includes(cls);
 const children = (node) => node.childNodes ?? [];
 const escapeText = (text) => text.replace(/[\\`*_[\]<>]/g, "\\$&");
 
@@ -12,6 +13,12 @@ function find(node, predicate) {
     const match = find(child, predicate);
     if (match) return match;
   }
+}
+
+function textOf(node) {
+  if (!node) return "";
+  if (node.nodeName === "#text") return node.value;
+  return children(node).map(textOf).join("");
 }
 
 export function htmlToMarkdown(html, canonicalUrl) {
@@ -26,10 +33,61 @@ export function htmlToMarkdown(html, canonicalUrl) {
     } catch { return ""; }
   }
 
+  function renderPixelPhoto(figureNode) {
+    const imgNode = find(figureNode, (n) => n.tagName === "img");
+    const titleNode = find(figureNode, (n) => attr(n, "data-flip-title") !== undefined);
+    const metaNode = find(figureNode, (n) => hasClass(n, "pixel-photo__metadata"));
+    const storyNode = find(figureNode, (n) => attr(n, "data-flip-story") !== undefined);
+
+    const lines = [];
+    if (imgNode) {
+      const alt = attr(imgNode, "alt");
+      const src = url(attr(imgNode, "src"));
+      if (alt?.trim() && src) lines.push(`![${escapeText(alt.trim())}](${src})`);
+    }
+
+    const title = textOf(titleNode).replace(/\s+/g, " ").trim();
+    const metaParts = [];
+    if (metaNode) {
+      for (const row of children(metaNode)) {
+        const spans = children(row).filter((n) => n.tagName === "span");
+        if (spans.length >= 2) {
+          const label = textOf(spans[0]).replace(/\s+/g, " ").trim();
+          const val = textOf(spans[1]).replace(/\s+/g, " ").trim();
+          if (val && val !== "Chưa cập nhật" && val !== "Not updated") {
+            metaParts.push(`${label}: ${val}`);
+          }
+        }
+      }
+    }
+
+    if (title) {
+      lines.push(metaParts.length > 0 ? `**${escapeText(title)}** (${escapeText(metaParts.join(" · "))})` : `**${escapeText(title)}**`);
+    } else if (metaParts.length > 0) {
+      lines.push(escapeText(metaParts.join(" · ")));
+    }
+
+    const story = textOf(storyNode).replace(/\r\n/g, "\n").trim();
+    if (story && story !== "Story coming soon.") {
+      lines.push(escapeText(story));
+    }
+
+    return lines.length > 0 ? `\n\n${lines.join("\n\n")}\n\n` : "";
+  }
+
   function render(node) {
     if (node.nodeName === "#text") return escapeText(node.value.replace(/\s+/g, " "));
     const tag = node.tagName;
-    if (omitted.has(tag) || attr(node, "hidden") !== undefined || attr(node, "aria-hidden") === "true" || attr(node, "id") === "photos-list") return "";
+    if (
+      omitted.has(tag) ||
+      attr(node, "hidden") !== undefined ||
+      attr(node, "aria-hidden") === "true" ||
+      attr(node, "id") === "photos-list" ||
+      hasClass(node, "workspace-doc-footer")
+    ) return "";
+    if (tag === "figure" && attr(node, "data-pixel-photo") !== undefined) {
+      return renderPixelPhoto(node);
+    }
     const body = children(node).map(render).join("");
     if (/^h[1-6]$/.test(tag)) return `\n\n${"#".repeat(Number(tag[1]))} ${body.trim()}\n\n`;
     if (tag === "a") {

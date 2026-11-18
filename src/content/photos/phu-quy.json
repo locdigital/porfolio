@@ -84,7 +84,12 @@
       "height": 1440,
       "caption": "",
       "order": 1,
-      "isCover": false
+      "isCover": false,
+      "title": "Morning Walk Toward the Coast",
+      "story": "We stopped for a quick reset before catching the ferry out to the island, and the resort felt almost unnervingly quiet after the drive. Tall coconut palms framed the walkway all the way down to a sliver of blue sea at the end of the path. The morning breeze was warm and smelled like sun-baked leaves.",
+      "location": "Phú Quý / Mũi Né",
+      "capturedAt": "2024-05-07T09:42:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-02",
@@ -94,7 +99,12 @@
       "height": 1440,
       "caption": "",
       "order": 2,
-      "isCover": false
+      "isCover": false,
+      "title": "Four Chairs Facing the Sea",
+      "story": "Late in the afternoon, the glare over the water softened into a pale amber haze. Four lounge chairs were parked around a lone thatched umbrella, completely empty as the tide crawled in. Sitting there with nothing on the schedule felt like the best possible prelude to two weeks on an island.",
+      "location": "Phú Quý / Mũi Né",
+      "capturedAt": "2024-05-07T17:24:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-03",
@@ -104,7 +114,12 @@
       "height": 1440,
       "caption": "",
       "order": 3,
-      "isCover": false
+      "isCover": false,
+      "title": "Stucco Corner and Slatted Canopy",
+      "story": "The morning sun here had an edge to it that turned ordinary resort stucco into sharp geometric cuts against an empty sky. I liked the warm grain of the wooden slats tucked under the overhang and the quiet rhythm of the shadows. Sometimes taking a vacation just means staring at clean architecture for ten minutes without checking your phone.",
+      "location": "Phú Quý / Mũi Né",
+      "capturedAt": "2024-05-08T10:35:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-04",
@@ -114,7 +129,12 @@
       "height": 1600,
       "caption": "",
       "order": 4,
-      "isCover": false
+      "isCover": false,
+      "title": "Speedboat Cutting Deep Blue",
+      "story": "Once you leave the shore behind, the ocean turns an impossibly deep shade of blue that makes everything else feel small. A solitary speedboat was skimming across the horizon, trailing a sharp ribbon of white foam across the swell. From up on the rocks, the only sound was the distant hum of its engine fading into the wind.",
+      "location": "Phú Quý / Mũi Né",
+      "capturedAt": "2024-05-09T14:18:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-05",
@@ -124,7 +144,12 @@
       "height": 1600,
       "caption": "",
       "order": 5,
-      "isCover": false
+      "isCover": false,
+      "title": "Two Fishing Boats at Anchor",
+      "story": "By late afternoon, the coastal wind settled and the water went completely glassy around the black basalt outcrops. Two squid boats sat anchored just beyond the shallows with their long outrigger frames resting against the horizon. It is the kind of quiet that makes you forget how rough the ferry ride was to get here.",
+      "location": "Phú Quý / Mũi Né",
+      "capturedAt": "2024-05-10T16:42:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-06",
@@ -134,7 +159,12 @@
       "height": 1059,
       "caption": "",
       "order": 6,
-      "isCover": false
+      "isCover": false,
+      "title": "Long Hải Bay from Cao Cát",
+      "story": "Climbing up to Mount Cao Cát gave me my first real look at the island's scale, framed by jagged volcanic rock on the edge of the cliff. Below, hundreds of small boats were scattered across the bay like confetti, anchored right off the edge of the village. The late afternoon light was gentle, laying soft shadows over the green patches and tin roofs.",
+      "location": "Mount Cao Cát, Phú Quý",
+      "capturedAt": "2024-05-11T17:38:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-07",
@@ -144,7 +174,12 @@
       "height": 1600,
       "caption": "",
       "order": 7,
-      "isCover": false
+      "isCover": false,
+      "title": "Milky Way Above Island Rocks",
+      "story": "I waited out on the dark crags until the town lights vanished completely behind me. Seeing the Milky Way for the first time felt almost absurdly crisp, with a pale drift of stars hanging over the black ridge.",
+      "location": "Phú Quý",
+      "capturedAt": "2024-05-10T21:45:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-08",
@@ -154,7 +189,12 @@
       "height": 1600,
       "caption": "",
       "order": 8,
-      "isCover": false
+      "isCover": false,
+      "title": "Turquoise Shallows at Bãi Nhỏ",
+      "story": "Looking straight down from the cliff path, the sea looked more like glass than ocean. You could track every scattered volcanic rock along the sand bar, undisturbed by any swimmers.",
+      "location": "Bãi Nhỏ, Phú Quý",
+      "capturedAt": "2024-05-11T11:25:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-09",
@@ -164,7 +204,12 @@
       "height": 1067,
       "caption": "",
       "order": 9,
-      "isCover": false
+      "isCover": false,
+      "title": "Driftwood Post and Red Flag",
+      "story": "A makeshift gate of weathered timber and strung floats marked the rough track down to the sand. Beyond the coastal scrub, wooden fishing boats rested quietly on pale turquoise water.",
+      "location": "Hòn Tranh, Phú Quý",
+      "capturedAt": "2024-05-12T14:35:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-10",
@@ -174,7 +219,12 @@
       "height": 1067,
       "caption": "",
       "order": 10,
-      "isCover": false
+      "isCover": false,
+      "title": "Volcanic Pool at Gành Hang",
+      "story": "Rough basalt ridges naturally trapped a pocket of clear ocean water right above the crashing surf. We clambered down the dark stone just to sit with our feet in the cold, calm pool while the sea churned outside.",
+      "location": "Gành Hang, Phú Quý",
+      "capturedAt": "2024-05-13T12:50:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-11",
@@ -184,7 +234,12 @@
       "height": 1067,
       "caption": "",
       "order": 11,
-      "isCover": false
+      "isCover": false,
+      "title": "Old Stone Fish Sanctuary",
+      "story": "The circular stone walls of the abandoned fish farm reached out into the bay like ancient fortifications. In the gentle late-afternoon haze, distant fishing vessels sat parked across a flat blue horizon.",
+      "location": "Hồ Cá Làng Dương, Phú Quý",
+      "capturedAt": "2024-05-14T16:20:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     },
     {
       "id": "phu-quy-12",
@@ -194,7 +249,12 @@
       "height": 1067,
       "caption": "",
       "order": 12,
-      "isCover": false
+      "isCover": false,
+      "title": "Churning Wake on Open Sea",
+      "story": "White sea spray whipped over the stern as our boat picked up speed away from the shore. The dark headland slowly shrank into the distance under a pale blue sky, ending two weeks of island time.",
+      "location": "Phú Quý / Mũi Né",
+      "capturedAt": "2024-05-16T13:40:00+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     }
   ],
   "googleMapsUrl": "",

@@ -1,0 +1,39 @@
+---
+import { HEROICONS_OUTLINE, HEROICONS_SOLID, type HeroiconName } from "./heroicons";
+
+interface Props {
+  name: HeroiconName;
+  variant?: "solid" | "outline";
+  size?: number | string;
+  strokeWidth?: number | string;
+  class?: string;
+}
+
+const {
+  name,
+  variant,
+  size = 16,
+  strokeWidth = 1.5,
+  class: className,
+} = Astro.props;
+
+const isOutline = variant === "outline" || (!(name in HEROICONS_SOLID) && name in HEROICONS_OUTLINE);
+const innerHtml = isOutline
+  ? (HEROICONS_OUTLINE[name as keyof typeof HEROICONS_OUTLINE] ?? "")
+  : (HEROICONS_SOLID[name as keyof typeof HEROICONS_SOLID] ?? "");
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width={size}
+  height={size}
+  fill={isOutline ? "none" : "currentColor"}
+  stroke={isOutline ? "currentColor" : undefined}
+  stroke-width={isOutline ? strokeWidth : undefined}
+  aria-hidden="true"
+  data-slot="icon"
+  focusable="false"
+  class={className}
+  set:html={innerHtml}
+/>

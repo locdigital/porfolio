@@ -1,6 +1,7 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro";
-import { CheckCircle2, ChevronRight } from "../components/icons/majesticons";
+import { CheckCircle2, ChevronRight } from "../components/icons/phosphor";
+import { canonicalUrl, collectionPageSchema } from "../lib/seo";
 
 export const prerender = true;
 
@@ -156,6 +157,19 @@ const certificates = [
     type: "Specialization Certificate",
   },
 ];
+
+const certsUrl = canonicalUrl("/certificates");
+const certsSchema = collectionPageSchema({
+  url: certsUrl,
+  title: "Certificates & Credentials — Phuc Loc Nguyen",
+  description: "Accredited Google Skillshop and Coursera professional certifications across Google Ads, Analytics (GA4), Performance Max, Measurement, and AI Workflows.",
+  items: certificates.map((cert) => ({
+    name: cert.fullName,
+    url: `${certsUrl}#${cert.id}`,
+    description: `${cert.issuer} (${cert.partner}, ${cert.issued}) — ${cert.desc}`,
+  })),
+  breadcrumbId: `${certsUrl}#breadcrumbs`,
+});
 ---
 
 <DashboardLayout
@@ -164,6 +178,7 @@ const certificates = [
   description="Accredited Google Skillshop and Coursera professional certifications across Google Ads, Analytics (GA4), Performance Max, Measurement, and AI Workflows."
   breadcrumbs={[{ label: "Workspace", href: "/" }, { label: "Certificates" }]}
   maxWidthVariant="default"
+  schema={certsSchema}
 >
   <!-- Page Header -->
   <header class="page-header">
@@ -230,6 +245,29 @@ const certificates = [
             </div>
           </button>
         </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Readable Credential Directory (accessible without modal click) -->
+  <section class="page-section page-section--divided" aria-labelledby="heading-cert-directory">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: var(--space-4);">
+      <h2 id="heading-cert-directory" class="section-title" style="margin: 0;">Credential index</h2>
+      <a href="/resume" class="dash-link" style="font-size: var(--text-body-sm);" data-astro-prefetch>
+        View full resume →
+      </a>
+    </div>
+    <div class="cert-directory-list">
+      {certificates.map((cert) => (
+        <article id={cert.id} class="dash-row cert-directory-row">
+          <div class="cert-directory-head">
+            <h3 class="item-title" style="font-size: calc(var(--text-body) + 3px); margin: 0;">{cert.fullName}</h3>
+            <span class="cert-directory-meta">{cert.issuer} · {cert.partner} · {cert.issued}</span>
+          </div>
+          <p class="content-description" style="font-size: var(--text-body-sm); line-height: var(--leading-compact); margin: 4px 0 0;">
+            {cert.desc}
+          </p>
+        </article>
       ))}
     </div>
   </section>
@@ -844,7 +882,7 @@ const certificates = [
 
   .modal-subhead {
     margin: 0 0 6px;
-    font-size: var(--text-caption);
+    font-size: calc(var(--text-caption) + 3px);
     font-weight: var(--font-weight-semibold);
     color: var(--dash-text);
     text-transform: uppercase;
@@ -939,6 +977,36 @@ const certificates = [
       grid-template-columns: 1fr;
       gap: 16px;
     }
+  }
+
+  .cert-directory-list {
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .cert-directory-row {
+    display: block;
+    padding-block: 12px;
+    border-radius: 0;
+  }
+
+  .cert-directory-row:hover {
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .cert-directory-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+
+  .cert-directory-meta {
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+    font-variant-numeric: tabular-nums;
   }
 </style>
 

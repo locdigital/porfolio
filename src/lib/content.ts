@@ -1,5 +1,9 @@
-import { getCollection } from "astro:content";
+// Portfolio content is read from local Astro collections at build time.
+import { getCollection, type CollectionEntry } from "astro:content";
 import { uploadedAssetUrl } from "./uploadthing-assets";
+import { resolvePhotoAlt } from "./photo-alt";
+
+export { resolvePhotoAlt };
 
 export type ProjectData = {
   slug: string;
@@ -19,6 +23,39 @@ export type ProjectData = {
   linkLabel?: string;
   caseStudyLink?: string;
   password?: string;
+  topicCluster?: string;
+  relatedServices?: string[];
+  limitations?: string;
+  publishedAt?: string;
+  updatedAt?: string;
+};
+
+export type PhotoImageData = {
+  id?: string;
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  caption?: string;
+  title?: string;
+  story?: string;
+  capturedAt?: string;
+  capturedTimeZone?: string;
+  location?: string;
+  order?: number;
+  isCover?: boolean;
+  camera?: string;
+  lens?: string;
+  focalLength?: string;
+  aperture?: string;
+  shutterSpeed?: string;
+  iso?: number | string;
+  latitude?: number | string;
+  longitude?: number | string;
+  copyright?: string;
+  creator?: string;
+  credit?: string;
+  license?: string;
 };
 
 export type PhotoLocationData = {
@@ -27,26 +64,38 @@ export type PhotoLocationData = {
   type?: "hotel" | "restaurant" | "cafe" | "check-in";
   location: string;
   name?: string;
+  alternateNames?: string[];
   city?: string;
   district?: string;
   country?: string;
   province?: string;
   region?: string;
+  destinationType?: string;
   headline: string;
   subheadline?: string;
   introduction?: string;
   shortDescription?: string;
   description?: string;
   longDescription?: string;
+  editorialSummary?: string;
+  personalExperience?: string;
+  visitStartDate?: string;
+  visitEndDate?: string;
   travelFrom?: string;
   travelTime?: string;
   recommendedStay?: string;
   bestMonths?: string;
   budgetMin?: number;
   budgetMax?: number;
+  budgetCurrency?: string;
+  budgetVerifiedAt?: string;
   budgetNote?: string;
   transportation?: string[];
   suitableFor?: string[];
+  activities?: string[];
+  highlights?: string[];
+  photographySpots?: string[];
+  bestLightConditions?: string;
   overview?: string;
   favoriteThings?: string;
   whatIWouldDoAgain?: string;
@@ -67,27 +116,14 @@ export type PhotoLocationData = {
   crowdLevel?: "quiet" | "moderate" | "busy_weekends" | "very_busy";
   travelDifficulty?: "very_easy" | "easy" | "moderate" | "requires_preparation";
   travelTips?: string[];
+  limitations?: string[];
+  safetyNotes?: string[];
   notFor?: string[];
-  heroImage?: {
-    id?: string;
-    src: string;
-    alt: string;
-    width?: number;
-    height?: number;
-    caption?: string;
-    order?: number;
-    isCover?: boolean;
-  };
-  images: {
-    id?: string;
-    src: string;
-    alt: string;
-    width?: number;
-    height?: number;
-    caption?: string;
-    order?: number;
-    isCover?: boolean;
-  }[];
+  historicalContext?: string;
+  historicalSources?: { title: string; url: string; verifiedAt?: string }[];
+  officialSources?: { title: string; url: string; verifiedAt?: string }[];
+  heroImage?: PhotoImageData;
+  images: PhotoImageData[];
   googleMapsUrl?: string;
   latitude?: string;
   longitude?: string;
@@ -100,10 +136,15 @@ export type PhotoLocationData = {
   tags?: string[];
   featured?: boolean;
   published?: boolean;
+  status?: "draft" | "verified" | "published";
+  language?: "en" | "vi";
+  publishedAt?: string;
+  updatedAt?: string;
   seoTitle?: string;
   seoDescription?: string;
   seoImage?: string;
   relatedLocations?: { slug: string; distance?: string; category?: string }[];
+  relatedGalleryIds?: string[];
   relatedArticles?: { slug: string; title?: string }[];
   amenities?: string[];
   roomTypes?: string[];
@@ -186,7 +227,9 @@ export async function getProjects() {
     .sort((a, b) => a.order - b.order);
 }
 
-export async function getPhotoLocations() {
+export async function getPhotoLocations(options: { includeUnpublished?: boolean } = {}) {
+  const { includeUnpublished = false } = options;
+
   const mapPhotoLocation = (data: PhotoLocationData) => {
     const sortedImages = [...(data.images ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     const rawHero = data.heroImage ?? sortedImages.find((image) => image.isCover) ?? sortedImages[0];
@@ -209,17 +252,37 @@ export async function getPhotoLocations() {
       description: introduction,
       longDescription: data.longDescription ?? data.editorialReview ?? data.description ?? "",
       heroImage,
-      photos: sortedImages.map((image) => ({
+      photos: sortedImages.map((image, index) => ({
         src: uploadedAssetUrl(image.src),
-        alt: image.alt,
+        alt: resolvePhotoAlt(image, name, index),
         w: image.width ?? 1600,
         h: image.height ?? 1200,
         caption: image.caption,
+        id: image.id,
+        title: image.title,
+        story: image.story,
+        capturedAt: image.capturedAt,
+        capturedTimeZone: image.capturedTimeZone,
+        location: image.location,
+        camera: image.camera,
+        lens: image.lens,
+        focalLength: image.focalLength,
+        aperture: image.aperture,
+        shutterSpeed: image.shutterSpeed,
+        iso: image.iso,
+        latitude: image.latitude,
+        longitude: image.longitude,
+        copyright: image.copyright,
+        creator: image.creator,
+        credit: image.credit,
+        license: image.license,
       })),
     };
   };
 
-  const entries = await getCollection("photos");
+  const entries = await getCollection("photos", ({ data }) =>
+    includeUnpublished ? true : data.published !== false,
+  );
   return entries
     .map((entry) => mapPhotoLocation(entry.data))
     .sort((a, b) => a.order - b.order);
@@ -240,4 +303,20 @@ export async function getGear(): Promise<GearData | undefined> {
       })),
     })),
   };
+}
+
+export async function getGrowthPlaybooks(): Promise<CollectionEntry<"growth">[]> {
+  try {
+    const entries = await getCollection(
+      "growth",
+      ({ data }) => !data.draft && data.status === "published",
+    );
+    return entries.sort(
+      (a, b) =>
+        (b.data.updatedAt ?? b.data.publishedAt).getTime() -
+        (a.data.updatedAt ?? a.data.publishedAt).getTime(),
+    );
+  } catch {
+    return [];
+  }
 }
