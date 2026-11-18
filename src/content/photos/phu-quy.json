@@ -255,6 +255,21 @@
       "location": "Phú Quý / Mũi Né",
       "capturedAt": "2024-05-16T13:40:00+07:00",
       "capturedTimeZone": "Asia/Ho_Chi_Minh"
+    },
+    {
+      "id": "phu-quy-13",
+      "src": "/assets/photos/phu-quy/phu-quy-13.webp",
+      "alt": "White dress on dark volcanic rocks overlooking the deep blue sea at Phú Quý",
+      "width": 1086,
+      "height": 724,
+      "caption": "",
+      "order": 13,
+      "isCover": false,
+      "title": "White Dress on Volcanic Rocks",
+      "story": "Sitting quietly on the dark volcanic rocks above the deep blue water as a small boat crossed the horizon in the afternoon light.",
+      "location": "Phú Quý",
+      "capturedAt": "2026-05-23T16:52:06+07:00",
+      "capturedTimeZone": "Asia/Ho_Chi_Minh"
     }
   ],
   "googleMapsUrl": "",

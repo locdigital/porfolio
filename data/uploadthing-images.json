@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-07T14:27:34.756Z",
+  "generatedAt": "2026-11-18T14:44:41.812Z",
   "appId": "65wv0vnolo",
   "totals": {
     "files": 112,
-    "images": 1063,
-    "unique": 569,
+    "images": 1073,
+    "unique": 574,
     "uploaded": 52
   },
   "images": {
@@ -1070,7 +1070,17 @@
     "public/assets/photos/trang-an/DSC_3906.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyA0so9GxsFHdfJjrMPbwZN7OcmnvgYRak59A",
     "src/assets/photos/trang-an/DSC_3906.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hyA0so9GxsFHdfJjrMPbwZN7OcmnvgYRak59A",
     "public/assets/photos/trang-an/DSC_3916.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h45sKP5t2SauPZhDd1JkterOsqjvc6In5YK9L",
-    "src/assets/photos/trang-an/DSC_3916.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h45sKP5t2SauPZhDd1JkterOsqjvc6In5YK9L"
+    "src/assets/photos/trang-an/DSC_3916.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59h45sKP5t2SauPZhDd1JkterOsqjvc6In5YK9L",
+    "public/assets/photos/phu-quy/phu-quy-13.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hb50t4BxkAEiMVyIw93QvFdHjfCaP5rqRXL4b",
+    "src/assets/photos/phu-quy/phu-quy-13.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hb50t4BxkAEiMVyIw93QvFdHjfCaP5rqRXL4b",
+    "public/assets/photos/da-lat/DSC_2212.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbSB2CTkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
+    "src/assets/photos/da-lat/DSC_2212.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbSB2CTkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
+    "public/assets/photos/da-lat/DSC_2215.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hhFuYurPHf5yp1VcajsQ0mDlbuT3iS78NqYEM",
+    "src/assets/photos/da-lat/DSC_2215.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hhFuYurPHf5yp1VcajsQ0mDlbuT3iS78NqYEM",
+    "public/assets/photos/da-lat/DSC_2216.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hIOOcOF5WlPNf9shR3SkuyHBoXviJTb1wmZFO",
+    "src/assets/photos/da-lat/DSC_2216.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hIOOcOF5WlPNf9shR3SkuyHBoXviJTb1wmZFO",
+    "public/assets/photos/da-lat/DSC_2226.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heNrhVqrF5SZbgwmYlorQ7kjUtxfnz84XBWqD",
+    "src/assets/photos/da-lat/DSC_2226.webp": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heNrhVqrF5SZbgwmYlorQ7kjUtxfnz84XBWqD"
   },
   "unique": {
     "022836a0f7b6524412a375cddec9f421830b3fabe6736042b94eaee996ac2089": {
@@ -5793,13 +5803,58 @@
         "public/assets/photos/trang-an/DSC_3916.webp",
         "src/assets/photos/trang-an/DSC_3916.webp"
       ]
+    },
+    "d2740a3714295ac7897f1cb54b48913e66f42975505ab75cd4bae28ea7252e6e": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hb50t4BxkAEiMVyIw93QvFdHjfCaP5rqRXL4b",
+      "fileKey": "0DwDtVjMS59hb50t4BxkAEiMVyIw93QvFdHjfCaP5rqRXL4b",
+      "fileHash": "d457e874a888ebed072ce14111131553",
+      "paths": [
+        "public/assets/photos/phu-quy/phu-quy-13.webp",
+        "src/assets/photos/phu-quy/phu-quy-13.webp"
+      ]
+    },
+    "8db339207d02edc8413bf4d432ada21a94c019afb773bcdff14016d73f10a551": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hbSB2CTkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
+      "fileKey": "0DwDtVjMS59hbSB2CTkAEiMVyIw93QvFdHjfCaP5rqRXL4bO",
+      "fileHash": "e38f07341d8f94605c23e17e4501c203",
+      "paths": [
+        "public/assets/photos/da-lat/DSC_2212.webp",
+        "src/assets/photos/da-lat/DSC_2212.webp"
+      ]
+    },
+    "d74c4f9e1856a5d20e365823f5c440b0f735cd21a14c3ff5402cd4f67ca0ef0c": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hhFuYurPHf5yp1VcajsQ0mDlbuT3iS78NqYEM",
+      "fileKey": "0DwDtVjMS59hhFuYurPHf5yp1VcajsQ0mDlbuT3iS78NqYEM",
+      "fileHash": "6caa8743fb5c48f4119bafd6533aa2c9",
+      "paths": [
+        "public/assets/photos/da-lat/DSC_2215.webp",
+        "src/assets/photos/da-lat/DSC_2215.webp"
+      ]
+    },
+    "d4f19364a15908ff92cf1f1b5e0cd17f9a9395da0dd8fe7bd32a0e2460bda496": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59hIOOcOF5WlPNf9shR3SkuyHBoXviJTb1wmZFO",
+      "fileKey": "0DwDtVjMS59hIOOcOF5WlPNf9shR3SkuyHBoXviJTb1wmZFO",
+      "fileHash": "67d4593ec764f53db80ee71f7cf05d25",
+      "paths": [
+        "public/assets/photos/da-lat/DSC_2216.webp",
+        "src/assets/photos/da-lat/DSC_2216.webp"
+      ]
+    },
+    "ce2afb3c3f879c6f1d2703d72ff5ab51ac8dc586d59f8fc2a45b3dc3c53a0193": {
+      "url": "https://65wv0vnolo.ufs.sh/f/0DwDtVjMS59heNrhVqrF5SZbgwmYlorQ7kjUtxfnz84XBWqD",
+      "fileKey": "0DwDtVjMS59heNrhVqrF5SZbgwmYlorQ7kjUtxfnz84XBWqD",
+      "fileHash": "1a7e25796a572916dd458a78d60a0a4c",
+      "paths": [
+        "public/assets/photos/da-lat/DSC_2226.webp",
+        "src/assets/photos/da-lat/DSC_2226.webp"
+      ]
     }
   },
   "photoSync": {
-    "sources": 305,
-    "mapped": 247,
+    "sources": 310,
+    "mapped": 306,
     "reused": 0,
-    "uploaded": 58,
+    "uploaded": 4,
     "remaining": 0
   }
 }
