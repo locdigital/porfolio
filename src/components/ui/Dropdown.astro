@@ -1,9 +1,9 @@
 ---
-import { ChevronDown, Check } from "../icons/phosphor";
+import SelectWithSearch, {
+  type SelectWithSearchOption,
+} from "./select-with-search";
 
-export interface DropdownOption {
-  value: string;
-  label: string;
+export interface DropdownOption extends SelectWithSearchOption {
   selected?: boolean;
 }
 
@@ -11,86 +11,72 @@ interface Props {
   id: string;
   name: string;
   dataKey?: string;
+  selectDataAttr?: string;
+  label?: string;
   defaultLabel: string;
+  searchPlaceholder?: string;
+  emptyText?: string;
   header?: string;
   options?: DropdownOption[];
+  allowDeselect?: boolean;
   disabled?: boolean;
+  align?: "start" | "center" | "end";
   class?: string;
+  triggerClassName?: string;
+  contentClassName?: string;
 }
 
 const {
   id,
   name,
   dataKey = name,
+  selectDataAttr,
+  label,
   defaultLabel,
+  searchPlaceholder = "Search...",
+  emptyText = "No results found.",
   header,
   options = [],
+  allowDeselect = true,
   disabled = false,
+  align = "start",
   class: className = "",
+  triggerClassName,
+  contentClassName,
 } = Astro.props;
 
-const selectedOption = options.find(opt => opt.selected);
-const currentLabel = selectedOption ? selectedOption.label : defaultLabel;
-const triggerId = `${id}-trigger`;
-const menuId = `${id}-menu`;
+const selectedOption = options.find((opt) => opt.selected);
+const defaultValue =
+  selectedOption?.value ?? (allowDeselect ? "" : (options[0]?.value ?? ""));
+
+const normalizedOptions: SelectWithSearchOption[] = options.map(
+  ({ value, label: optLabel, description, keywords, disabled: optDisabled }) => ({
+    value,
+    label: optLabel,
+    description,
+    keywords,
+    disabled: optDisabled,
+  }),
+);
 ---
 
-<div
-  class:list={["ui-dropdown", className]}
-  data-dropdown={dataKey}
->
-  <button
-    type="button"
-    class="ui-dropdown-trigger"
-    id={triggerId}
-    aria-haspopup="listbox"
-    aria-expanded="false"
-    aria-controls={menuId}
-    disabled={disabled}
-    data-default-label={defaultLabel}
-  >
-    <span class="ui-dropdown-value" data-value-text>{currentLabel}</span>
-    <ChevronDown
-      className="ui-dropdown-arrow"
-      size={13}
-      strokeWidth={1.8}
-      aria-hidden="true"
-    />
-  </button>
-
-  <div
-    class="ui-dropdown-menu"
-    id={menuId}
-    role="listbox"
-    aria-labelledby={triggerId}
-    tabindex="-1"
-  >
-    {header && <div class="ui-dropdown-header">{header}</div>}
-    <div class="ui-dropdown-list" data-options-list>
-      {options.map(opt => (
-        <button
-          type="button"
-          class="ui-dropdown-item"
-          role="option"
-          aria-selected={opt.selected ? "true" : "false"}
-          data-value={opt.value}
-        >
-          <span class="ui-dropdown-item-label">{opt.label}</span>
-          {opt.selected && (
-            <span class="ui-dropdown-item-check" aria-hidden="true">
-              <Check size={14} strokeWidth={1.8} />
-            </span>
-          )}
-        </button>
-      ))}
-    </div>
-  </div>
-
-  <select id={id} name={name} class="sr-only" tabindex="-1" disabled={disabled}>
-    <option value="">{defaultLabel}</option>
-    {options.map(opt => (
-      <option value={opt.value} selected={opt.selected}>{opt.label}</option>
-    ))}
-  </select>
-</div>
-
+<SelectWithSearch
+  client:load
+  id={id}
+  name={name}
+  dataKey={dataKey}
+  selectDataAttr={selectDataAttr}
+  label={label}
+  placeholder={defaultLabel}
+  searchPlaceholder={searchPlaceholder}
+  emptyText={emptyText}
+  header={header}
+  options={normalizedOptions}
+  defaultValue={defaultValue}
+  allowDeselect={allowDeselect}
+  disabled={disabled}
+  align={align}
+  className={className}
+  triggerClassName={triggerClassName}
+  contentClassName={contentClassName}
+/>

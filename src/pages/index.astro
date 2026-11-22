@@ -31,7 +31,7 @@ const experienceHighlights = [
     logo: "/assets/logos/logo-playah.webp",
     logoBg: "#f7f7f7",
     logoFit: "contain",
-    logoScale: 1.46,
+    logoScale: 1.9,
     role: "Performance Senior Executive",
     period: "2024 — 2026",
     focus: "TikTok Shop GMV acceleration, creator affiliate network, and automated retention."
@@ -202,24 +202,13 @@ const servicesPreview = [
 </DashboardLayout>
 
 <style>
-
-
-  /* Section Header Row (Headline and Action button aligned vertically center) */
+  /* Section Header Row */
   .section-header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     margin-bottom: var(--space-4);
-  }
-
-  .section-header-link {
-    display: inline-flex;
-    align-items: center;
-    font-size: var(--text-body-sm);
-    white-space: nowrap;
-    flex-shrink: 0;
-    line-height: 1;
   }
 
   .home-experience-list .dash-row {
@@ -244,7 +233,6 @@ const servicesPreview = [
     display: grid;
     place-items: center;
     padding: 4px;
-    box-sizing: border-box;
     border: 1px solid rgba(10, 10, 10, 0.08);
     box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
   }
@@ -280,67 +268,15 @@ const servicesPreview = [
     }
   }
 
-  /* Photography Folder Grid */
-  .home-photo-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 32px;
-    padding: 16px 0 24px;
-  }
-
-  .home-photo-grid .folder-item {
-    justify-content: flex-start;
-  }
-
-  @media (max-width: 840px) and (min-width: 769px) {
-    .home-photo-grid {
-      grid-template-columns: repeat(3, 1fr);
-      grid-column-gap: 16px;
-      grid-row-gap: 28px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .home-photo-grid {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: visible;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--mobile-page-edge, 16px);
-      -webkit-overflow-scrolling: touch;
-      gap: 16px;
-      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
-      padding-inline: var(--mobile-page-edge, 16px);
-      padding-top: 56px;
-      padding-bottom: 16px;
-      margin-top: -36px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    .home-photo-grid::-webkit-scrollbar {
-      display: none;
-    }
-
-    .home-photo-grid .folder-item {
-      flex: 0 0 clamp(136px, 38vw, 156px);
-      width: clamp(136px, 38vw, 156px);
-      scroll-snap-align: start;
-    }
-  }
-
   /* Capabilities Section */
   .capabilities-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-    gap: var(--docs-space-grid-gap, 16px);
+    gap: 16px;
   }
 
   .capability-card {
-    padding: var(--docs-space-card-padding, 24px);
+    padding: 24px;
     display: flex;
     flex-direction: column;
   }
@@ -378,13 +314,11 @@ const servicesPreview = [
       touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--mobile-page-edge, 16px);
-      -webkit-overflow-scrolling: touch;
       gap: 12px;
       margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
       padding-inline: var(--mobile-page-edge, 16px);
       padding-block: 2px 6px;
       scrollbar-width: none;
-      -ms-overflow-style: none;
     }
 
     .capabilities-grid--scroll::-webkit-scrollbar {
@@ -408,9 +342,4 @@ const servicesPreview = [
       padding: 14px 16px;
     }
   }
-
 </style>
-
-<script>
-  import "../scripts/folder-previews";
-</script>

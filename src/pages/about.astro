@@ -36,7 +36,7 @@ const aboutParagraphs = [
 >
   <div class="about-layout">
     <article class="about-story" aria-labelledby="about-heading">
-      <h1 id="about-heading">Growth Marketer<br />and Photoholic</h1>
+      <h1 id="about-heading" class="page-title">Growth Marketer<br />and Photoholic</h1>
       <div class="about-prose">
         <p class="content-description">I’m Loc, also known as Henry. Born in My Tho and now based in Sai Gon, I work in digital media, bringing together creative thinking, performance marketing, and data.</p>
         {aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
@@ -105,10 +105,10 @@ const aboutParagraphs = [
   .about-story h1 {
     margin: 0 0 30px;
     color: var(--dash-text);
-    font-size: clamp(32px, 3.5vw, 48px);
-    font-weight: 650;
-    line-height: 1.12;
-    letter-spacing: -0.045em;
+    font-size: var(--text-h1);
+    font-weight: var(--heading-weight);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
     text-wrap: balance;
   }
 
@@ -260,7 +260,7 @@ const aboutParagraphs = [
     .about-story h1 {
       max-width: 540px;
       margin-bottom: 24px;
-      font-size: clamp(24px, 6vw, 32px);
+      font-size: var(--text-h1);
     }
 
     .about-sidebar {

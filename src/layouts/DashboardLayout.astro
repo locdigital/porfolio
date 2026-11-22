@@ -4,10 +4,13 @@ import '../styles/dashboard.css';
 import '../styles/page-transitions.css';
 import '../styles/content-colors.css';
 import interLatinFont from '../assets/fonts/inter-latin-variable.woff2?url';
+import wallpaperImage from '../../Chibi Hikers Above the Sunset Clouds.png';
+import { Image } from 'astro:assets';
 import { ViewTransitions } from 'astro:transitions';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
-import { AsciiArt } from '@/components/ui/sss';
+import CommandSearch from '../components/dashboard/CommandSearch.astro';
+import { DesktopShell } from '../components/desktop/DesktopShell';
 import Heroicon from '../components/icons/Heroicon.astro';
 import { ChevronRight } from '../components/icons/phosphor';
 import {
@@ -162,6 +165,15 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
     if (window.matchMedia("(max-width: 768px)").matches) {
       document.documentElement.classList.add("mobile-lite");
     }
+    try {
+      const saved = JSON.parse(sessionStorage.getItem("workspace-window-state") || "null");
+      if (saved && typeof saved === "object") {
+        const closed = saved.closed === true;
+        document.documentElement.classList.toggle("window-closed", closed);
+        document.documentElement.classList.toggle("window-minimized", !closed && saved.minimized === true);
+        document.documentElement.classList.toggle("window-maximized", !closed && saved.maximized === true);
+      }
+    } catch {}
   </script>
   <meta name="theme-color" content="#FFFFFF">
   {!noindex && (
@@ -193,10 +205,22 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
 </head>
 
 <body>
-  <!-- Animated desktop wallpaper behind the application window. -->
+  <!-- Desktop wallpaper behind the application window. -->
   <div class="workspace-canvas">
     <div class="workspace-wallpaper" aria-hidden="true" transition:persist="workspace-wallpaper">
-      <AsciiArt />
+      <Image
+        class="workspace-wallpaper-image"
+        src={wallpaperImage}
+        alt=""
+        format="webp"
+        quality={88}
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <div class="workspace-dock-persist" transition:persist="workspace-dock">
+      <DesktopShell client:load initialPath={currentPath} />
     </div>
 
     <!-- Floating macOS-inspired Application Window -->
@@ -219,7 +243,33 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
           </button>
           <span class="mobile-page-label">{mobileLabel}</span>
         </div>
-        <div class="mobile-topbar-right" style="display: flex; align-items: center; gap: 6px;"></div>
+        <div class="mobile-topbar-right" style="display: flex; align-items: center; gap: 6px;">
+          <button
+            type="button"
+            class="mobile-search-btn"
+            data-command-search-open
+            aria-label="Search workspace"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-keyshortcuts="Meta+K Control+K"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <span>Search</span>
+          </button>
+        </div>
       </header>
 
       <!-- Two-column Body: 232px Sidebar + Main Content -->
@@ -274,26 +324,23 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
       </div>
     </div>
 
+    <button
+      class="workspace-window-restore"
+      type="button"
+      data-window-action="restore"
+      aria-label="Open workspace"
+      title="Open workspace"
+      hidden
+    >
+      <span class="workspace-window-restore-icon" aria-hidden="true"></span>
+      <span>Open workspace</span>
+    </button>
+
   </div>
 
+  <CommandSearch />
+
   <script src="../scripts/dashboard.ts"></script>
-  <script>
-    import { onPageLoad } from '../scripts/page-lifecycle';
-
-    onPageLoad((signal) => {
-      const video = document.querySelector<HTMLVideoElement>('.workspace-wallpaper video');
-      if (!video) return;
-
-      const still = window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 1023px)');
-      const syncPlayback = () => {
-        if (still.matches) video.pause();
-        else void video.play().catch(() => { /* The poster remains if autoplay is blocked. */ });
-      };
-
-      syncPlayback();
-      still.addEventListener('change', syncPlayback, { signal });
-    });
-  </script>
 </body>
 </html>
 

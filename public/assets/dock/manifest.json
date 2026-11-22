@@ -1,0 +1,92 @@
+[
+  {
+    "id": "spotify",
+    "name": "Spotify",
+    "file": "/assets/dock/spotify.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ce/b5/1c/ceb51c33-0a63-56fb-db99-5d345728ae9e/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/512x512bb.jpg",
+    "publisher": "Spotify",
+    "bytes": 36958,
+    "licenseNote": "Spotify AB official app icon via Apple App Store CDN (brand asset, all rights reserved by Spotify AB).",
+    "status": "ok"
+  },
+  {
+    "id": "netflix",
+    "name": "Netflix",
+    "file": "/assets/dock/netflix.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/4d/5d/8d/4d5d8d1d-8455-6c65-a256-f41ac98a2419/AppIcon-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/512x512bb.jpg",
+    "publisher": "Netflix, Inc.",
+    "bytes": 23300,
+    "licenseNote": "Netflix, Inc. official app icon via Apple App Store CDN (brand asset, all rights reserved by Netflix, Inc.).",
+    "status": "ok"
+  },
+  {
+    "id": "lightroom",
+    "name": "Adobe Lightroom",
+    "file": "/assets/dock/lightroom.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/29/0d/17/290d17eb-8a8a-2ae7-93f4-a700883cc028/AppIcon-0-0-1x_U007ephone-0-1-0-0-85-220.png/512x512bb.jpg",
+    "publisher": "Adobe Inc.",
+    "bytes": 10748,
+    "licenseNote": "Adobe Inc. official Adobe Lightroom app icon via Apple App Store CDN (brand asset, all rights reserved by Adobe Inc.).",
+    "status": "ok"
+  },
+  {
+    "id": "photoshop",
+    "name": "Adobe Photoshop",
+    "file": "/assets/dock/photoshop.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d4/da/1e/d4da1efa-c555-2344-1919-93100e2b18da/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/512x512bb.jpg",
+    "publisher": "Adobe Inc.",
+    "bytes": 14992,
+    "licenseNote": "Adobe Inc. official Adobe Photoshop app icon via Apple App Store CDN (brand asset, all rights reserved by Adobe Inc.).",
+    "status": "ok"
+  },
+  {
+    "id": "figma",
+    "name": "Figma",
+    "file": "/assets/dock/figma.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1b/12/a1/1b12a136-fa2c-2f5e-5b6d-d509f834073d/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/512x512bb.jpg",
+    "publisher": "Figma Inc.",
+    "bytes": 20527,
+    "licenseNote": "Figma, Inc. official app icon via Apple App Store CDN (brand asset, all rights reserved by Figma, Inc.).",
+    "status": "ok"
+  },
+  {
+    "id": "notion",
+    "name": "Notion",
+    "file": "/assets/dock/notion.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ea/1b/48/ea1b4840-9ee3-ab66-a482-659ced115cbb/AppIconProd-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/512x512bb.jpg",
+    "publisher": "Notion Labs, Incorporated",
+    "bytes": 24160,
+    "licenseNote": "Notion Labs, Inc. official app icon via Apple App Store CDN (brand asset, all rights reserved by Notion Labs, Inc.).",
+    "status": "ok"
+  },
+  {
+    "id": "chrome",
+    "name": "Google Chrome",
+    "file": "/assets/dock/chrome.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/84/f7/78/84f778d8-131e-7ce0-fa6b-c3e58f598e68/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/512x512bb.jpg",
+    "publisher": "Google",
+    "bytes": 33373,
+    "licenseNote": "Google LLC official Google Chrome app icon via Apple App Store CDN (brand asset, all rights reserved by Google LLC).",
+    "status": "ok"
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "file": "/assets/dock/github.png",
+    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ca/30/05/ca3005de-a1ac-aef3-7ce0-ee2b09b6751f/AppIcon-0-0-1x_U007epad-0-1-85-220.png/512x512bb.jpg",
+    "publisher": "GitHub",
+    "bytes": 26781,
+    "licenseNote": "GitHub, Inc. official app icon via Apple App Store CDN (brand asset, all rights reserved by GitHub, Inc.).",
+    "status": "ok"
+  },
+  {
+    "id": "vscode",
+    "name": "Visual Studio Code",
+    "file": "/assets/dock/vscode.png",
+    "sourceUrl": "https://raw.githubusercontent.com/microsoft/vscode/main/resources/linux/code.png",
+    "publisher": "Microsoft Corporation",
+    "bytes": 2721,
+    "licenseNote": "Microsoft Corporation official Visual Studio Code stable app icon from microsoft/vscode repository (brand asset, all rights reserved by Microsoft).",
+    "status": "ok"
+  }
+]

@@ -1,0 +1,121 @@
+/* Floating macOS-style mini-app windows */
+.desktop-app-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(1160px, calc(100vw - 120px));
+  height: min(760px, calc(100vh - 72px));
+  margin-left: calc(min(1160px, calc(100vw - 120px)) / -2);
+  margin-top: calc(min(760px, calc(100vh - 72px)) / -2);
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow:
+    0 28px 70px rgba(15, 23, 42, 0.22),
+    0 8px 24px rgba(15, 23, 42, 0.1),
+    0 0 0 0.5px rgba(255, 255, 255, 0.6) inset;
+  overflow: hidden;
+  animation: desktop-window-enter 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.desktop-app-window.is-inactive {
+  box-shadow:
+    0 18px 42px rgba(15, 23, 42, 0.14),
+    0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.desktop-app-window.is-minimized {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  animation: none;
+}
+
+.desktop-app-window.is-maximized {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border-radius: 0;
+  border: 0;
+  transform: none !important;
+}
+
+@keyframes desktop-window-enter {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+    margin-top: calc(min(760px, calc(100vh - 72px)) / -2 + 12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    margin-top: calc(min(760px, calc(100vh - 72px)) / -2);
+  }
+}
+
+.desktop-app-titlebar {
+  position: relative;
+  height: 44px;
+  flex: 0 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  user-select: none;
+  cursor: grab;
+}
+
+.desktop-app-titlebar:active {
+  cursor: grabbing;
+}
+
+.desktop-app-titlebar .mac-traffic-lights {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.desktop-app-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #ffffff;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile & Tablet (< 1024px): fullscreen window above bottom dock */
+@media (max-width: 1023px) {
+  .desktop-app-window {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    transform: none !important;
+    animation: none;
+  }
+
+  .desktop-app-titlebar {
+    cursor: default;
+  }
+
+  .desktop-app-body {
+    padding-bottom: 76px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-app-window {
+    animation: none;
+  }
+}

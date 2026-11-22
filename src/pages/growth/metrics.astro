@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import FormulaCalculator from "../../components/growth/FormulaCalculator.astro";
 import { articleSchema, canonicalUrl } from "../../lib/seo";
 
 export const prerender = true;
@@ -346,121 +347,271 @@ const metricsSchema = articleSchema({
   maxWidthVariant="default"
   schema={metricsSchema}
 >
-  <header class="page-header">
-    <h1 class="page-title">Performance Marketing Formula Library</h1>
-    <p class="page-lead">
-      Practical definitions, variable units, attribution caveats, and break-even economics written by <a href="/about" class="dash-link" data-astro-prefetch>Phuc Loc Nguyen</a>. Designed to prevent double-counting costs or confusing platform ROAS with real contribution profit.
-    </p>
-  </header>
+  <div class="metrics-layout">
+    <header class="page-header metrics-header">
+      <h1 class="page-title">Performance Marketing Formula Library</h1>
+      <p class="page-lead">
+        Practical definitions, variable units, attribution caveats, and break-even economics written by <a href="/about" class="dash-link" data-astro-prefetch>Phuc Loc Nguyen</a>. Designed to prevent double-counting costs or confusing platform ROAS with real contribution profit.
+      </p>
+    </header>
 
-  <!-- Quick Formula Index -->
-  <section class="page-section" aria-labelledby="heading-formula-index">
-    <h2 id="heading-formula-index" class="section-title">Quick reference</h2>
-    <div class="formula-index-grid">
-      {formulas.map((f) => (
-        <a href={`#${f.id}`} class="dash-card formula-index-card">
-          <span class="formula-index-name">{f.name}</span>
-          <code class="formula-index-eq">{f.equation}</code>
-        </a>
-      ))}
+    <div class="metrics-main">
+      <!-- Interactive Metric Calculator -->
+      <section class="page-section metrics-calculator-section" aria-label="Interactive metric calculator">
+        <FormulaCalculator />
+      </section>
+
+      <!-- Detailed Formula Entries -->
+      <section class="page-section page-section--divided" aria-label="Formula definitions and assumptions">
+        <div class="formula-entries">
+          {formulas.map((f) => (
+            <article id={f.id} class="dash-card formula-entry-card" data-formula-section>
+              <header class="formula-entry-header">
+                <h2 class="formula-entry-title">{f.name}</h2>
+                <p class="formula-entry-summary">{f.summary}</p>
+                <div class="formula-equation-box">
+                  <code>{f.equation}</code>
+                </div>
+              </header>
+
+              <div class="formula-subblock">
+                <h3 class="formula-subhead">Variables & units</h3>
+                <ul class="formula-list">
+                  {f.variables.map((v) => (
+                    <li>
+                      <span class="dash-bullet" aria-hidden="true"></span>
+                      <span>
+                        <strong>{v.symbol}</strong> ({v.unit}): {v.definition}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="formula-subblock">
+                <h3 class="formula-subhead">Revenue basis & attribution distinction</h3>
+                <p class="formula-body-copy">{f.revenueBasis}</p>
+              </div>
+
+              <div class="formula-two-col">
+                <div class="formula-subblock">
+                  <h3 class="formula-subhead">Assumptions & guardrails</h3>
+                  <ul class="formula-list">
+                    {f.assumptions.map((item) => (
+                      <li>
+                        <span class="dash-bullet" aria-hidden="true"></span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="formula-subblock">
+                  <h3 class="formula-subhead">When this formula misleads</h3>
+                  <ul class="formula-list">
+                    {f.whenInappropriate.map((item) => (
+                      <li>
+                        <span class="dash-bullet" aria-hidden="true"></span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="formula-example-box">
+                <div class="formula-example-label">{f.workedExample.scenario}</div>
+                <p class="formula-example-line"><strong>Inputs:</strong> {f.workedExample.inputs}</p>
+                <p class="formula-example-line"><strong>Calculation:</strong> <code>{f.workedExample.calculation}</code></p>
+                <p class="formula-example-line" style="margin-bottom: 0;"><strong>Decision insight:</strong> {f.workedExample.interpretation}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
-  </section>
 
-  <!-- Detailed Formula Entries -->
-  <section class="page-section page-section--divided" aria-label="Formula definitions and assumptions">
-    <div class="formula-entries">
-      {formulas.map((f) => (
-        <article id={f.id} class="dash-card formula-entry-card">
-          <header class="formula-entry-header">
-            <h2 class="formula-entry-title">{f.name}</h2>
-            <p class="formula-entry-summary">{f.summary}</p>
-            <div class="formula-equation-box">
-              <code>{f.equation}</code>
-            </div>
-          </header>
-
-          <div class="formula-subblock">
-            <h3 class="formula-subhead">Variables & units</h3>
-            <ul class="formula-list">
-              {f.variables.map((v) => (
-                <li>
-                  <span class="dash-bullet" aria-hidden="true"></span>
-                  <span>
-                    <strong>{v.symbol}</strong> ({v.unit}): {v.definition}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div class="formula-subblock">
-            <h3 class="formula-subhead">Revenue basis & attribution distinction</h3>
-            <p class="formula-body-copy">{f.revenueBasis}</p>
-          </div>
-
-          <div class="formula-two-col">
-            <div class="formula-subblock">
-              <h3 class="formula-subhead">Assumptions & guardrails</h3>
-              <ul class="formula-list">
-                {f.assumptions.map((item) => (
-                  <li>
-                    <span class="dash-bullet" aria-hidden="true"></span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div class="formula-subblock">
-              <h3 class="formula-subhead">When this formula misleads</h3>
-              <ul class="formula-list">
-                {f.whenInappropriate.map((item) => (
-                  <li>
-                    <span class="dash-bullet" aria-hidden="true"></span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div class="formula-example-box">
-            <div class="formula-example-label">{f.workedExample.scenario}</div>
-            <p class="formula-example-line"><strong>Inputs:</strong> {f.workedExample.inputs}</p>
-            <p class="formula-example-line"><strong>Calculation:</strong> <code>{f.workedExample.calculation}</code></p>
-            <p class="formula-example-line" style="margin-bottom: 0;"><strong>Decision insight:</strong> {f.workedExample.interpretation}</p>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
+    <!-- Right-side Sticky Table of Contents -->
+    <aside class="formula-toc-aside" aria-label="Formula table of contents">
+      <nav class="formula-toc" aria-label="Formula table of contents" data-formula-toc>
+        <ol class="formula-toc-list">
+          {formulas.map((f, index) => (
+            <li>
+              <a
+                href={`#${f.id}`}
+                class:list={["formula-toc-link", index === 0 && "is-active"]}
+                data-toc-link={f.id}
+                aria-current={index === 0 ? "location" : undefined}
+              >
+                <span class="formula-toc-dot" aria-hidden="true"></span>
+                <span>{f.name}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </aside>
+  </div>
 </DashboardLayout>
 
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  onPageLoad((signal) => {
+    const toc = document.querySelector<HTMLElement>("[data-formula-toc]");
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-formula-section]"));
+    if (!toc || sections.length === 0) return;
+
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
+    const linkById = new Map(links.map((link) => [link.dataset.tocLink ?? "", link]));
+
+    const setActive = (id: string) => {
+      links.forEach((link) => {
+        const active = link.dataset.tocLink === id;
+        link.classList.toggle("is-active", active);
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+
+    const initialHash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+    if (initialHash && linkById.has(initialHash)) {
+      setActive(initialHash);
+    }
+
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        const id = link.dataset.tocLink;
+        if (id) setActive(id);
+      }, { signal });
+    });
+
+    const mainScroll = document.getElementById("main-content");
+    const useMainScroll = window.matchMedia("(min-width: 1024px)").matches && mainScroll;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]?.target.id) {
+          setActive(visible[0].target.id);
+        }
+      },
+      {
+        root: useMainScroll ? mainScroll : null,
+        rootMargin: "-10% 0px -70% 0px",
+        threshold: 0,
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  });
+</script>
+
 <style>
-  .formula-index-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-    gap: 12px;
+  /* Allow wider document rail on desktop so the main column stays roomy beside the right TOC. */
+  @media (min-width: 1024px) {
+    :global(.workspace-content:has(.metrics-layout)) {
+      max-width: 1160px;
+    }
   }
 
-  .formula-index-card {
+  .metrics-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 232px;
+    grid-template-areas:
+      "header toc"
+      "content toc";
+    column-gap: 36px;
+    align-items: start;
+  }
+
+  .metrics-header {
+    grid-area: header;
+    min-width: 0;
+  }
+
+  .metrics-main {
+    grid-area: content;
+    min-width: 0;
+  }
+
+  .metrics-calculator-section :global(.metric-calculator) {
+    margin-top: 0;
+  }
+
+  .formula-toc-aside {
+    grid-area: toc;
+    position: sticky;
+    top: 8px;
+    min-width: 0;
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    padding-left: 20px;
+    border-left: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .formula-toc {
+    padding: 2px 0;
+  }
+
+  .formula-toc-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 14px 16px;
-    text-decoration: none !important;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .formula-index-name {
+  .formula-toc-list li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .formula-toc-link {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 10px;
+    margin-left: -10px;
+    border-radius: var(--radius-control);
+    color: var(--dash-muted);
     font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--dash-text);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-snug);
+    text-decoration: none !important;
+    transition: color 160ms ease, background-color 160ms ease;
   }
 
-  .formula-index-eq {
-    font-size: var(--text-caption);
+  .formula-toc-link:hover,
+  .formula-toc-link:focus-visible {
+    color: var(--dash-text);
+    background: var(--dash-hover);
+  }
+
+  .formula-toc-link.is-active {
     color: var(--dash-accent);
-    white-space: normal;
+    background: var(--dash-accent-soft);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .formula-toc-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    margin-top: 0.45em;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.45;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .formula-toc-link:hover .formula-toc-dot,
+  .formula-toc-link.is-active .formula-toc-dot {
+    opacity: 1;
   }
 
   .formula-entries {
@@ -568,7 +719,57 @@ const metricsSchema = articleSchema({
     color: var(--dash-text);
   }
 
+  @media (max-width: 1199px) {
+    .metrics-layout {
+      grid-template-columns: minmax(0, 1fr) 204px;
+      gap: 24px;
+    }
+
+    .formula-toc-aside {
+      padding-left: 16px;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .metrics-layout {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "header"
+        "toc"
+        "content";
+      row-gap: 20px;
+    }
+
+    .metrics-header {
+      margin-bottom: 0;
+    }
+
+    .formula-toc-aside {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 14px 16px;
+      border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+      border-radius: 12px;
+      background: var(--dash-surface);
+    }
+
+    .formula-toc-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 16px;
+    }
+
+    .formula-toc-link {
+      margin-left: 0;
+    }
+  }
+
   @media (max-width: 720px) {
+    .formula-toc-list {
+      grid-template-columns: 1fr;
+    }
+
     .formula-two-col {
       grid-template-columns: 1fr;
     }

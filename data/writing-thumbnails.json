@@ -1,0 +1,37 @@
+{
+  "find-the-bottleneck": {
+    "source": "public/assets/photos/thai-lan/DSC_0007.webp",
+    "album": "thai-lan",
+    "photoTitle": "Yellow Roller on City Tarmac",
+    "style": "pixel-art-chibi",
+    "generatedAt": "2026-11-18T18:14:45.006Z"
+  },
+  "sa-pa": {
+    "source": "public/assets/photos/sa-pa/DSC_6545.webp",
+    "album": "sa-pa",
+    "photoTitle": "Terraced Slopes and Distant Hamlets",
+    "style": "pixel-art-chibi",
+    "generatedAt": "2026-11-18T18:26:24.674Z"
+  },
+  "believe-in-yourself": {
+    "source": "public/assets/photos/da-lat/DSC_2212.webp",
+    "album": "da-lat",
+    "photoTitle": "Pine Trunks Over Distant Ridges",
+    "style": "pixel-art-chibi",
+    "generatedAt": "2026-11-18T18:57:51.682Z"
+  },
+  "my-first-100k": {
+    "source": "public/assets/photos/tam-coc-hoa-lu/DSC_4307.webp",
+    "album": "tam-coc-hoa-lu",
+    "photoTitle": "River Bend Below Hang Múa",
+    "style": "pixel-art-chibi",
+    "generatedAt": "2026-11-18T18:52:57.736Z"
+  },
+  "fake-it-till-you-make-it": {
+    "source": "public/assets/photos/thung-ui/DSC_4336.webp",
+    "album": "thung-ui",
+    "photoTitle": "Gates of Điện Kính Thiên",
+    "style": "pixel-art-chibi",
+    "generatedAt": "2026-11-21T16:20:45.123Z"
+  }
+}

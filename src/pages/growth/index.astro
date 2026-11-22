@@ -4,6 +4,7 @@ import { getGrowthPlaybooks, getProjects } from "../../lib/content";
 import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
 import { ChevronLeft, ChevronRight } from "../../components/icons/phosphor";
 import Heroicon from "../../components/icons/Heroicon.astro";
+import ContributionSkyline from "../../components/ui/contribution-skyline";
 
 export const prerender = true;
 
@@ -122,6 +123,23 @@ const growthSchema = collectionPageSchema({
       Structured methodologies, unit economics formulas, and campaign evidence by <a href="/about" class="dash-link" data-astro-prefetch>Phuc Loc Nguyen</a>—focused on turning ad spend and creative output into contribution profit rather than vanity platform numbers.
     </p>
   </header>
+
+  <section class="page-section" aria-label="Contribution activity heatmap">
+    <ContributionSkyline
+      client:load
+      title="Contribution activity · last 12 months"
+      className="!border-0 !p-0"
+      unit="activity"
+      unitPlural="activities"
+      palette="ocean"
+      defaultView="2d"
+      showToggle={false}
+      showStats={false}
+      orbit={false}
+      footer="Hover a day or use the arrow keys to explore."
+      seed={19}
+    />
+  </section>
 
   <section class="page-section" aria-labelledby="heading-clusters">
     <h2 id="heading-clusters" class="section-title">Five core topic clusters</h2>

@@ -1,0 +1,576 @@
+---
+import Dropdown, { type DropdownOption } from "../ui/Dropdown.astro";
+
+interface CalculatorField {
+  id: string;
+  label: string;
+  placeholder: string;
+  suffix?: string;
+  min?: string;
+  max?: string;
+}
+
+interface CalculatorMetric {
+  id: string;
+  label: string;
+  formula: string;
+  resultLabel: string;
+  resultHint: string;
+  fields: CalculatorField[];
+}
+
+const metrics: CalculatorMetric[] = [
+  {
+    id: "roas",
+    label: "ROAS",
+    formula: "Attributed Revenue / Advertising Spend",
+    resultLabel: "Return on ad spend",
+    resultHint: "Revenue generated for every 1 unit of ad spend.",
+    fields: [
+      { id: "revenue", label: "Attributed revenue", placeholder: "400000000", suffix: "currency", min: "0" },
+      { id: "spend", label: "Advertising spend", placeholder: "100000000", suffix: "currency", min: "0" },
+    ],
+  },
+  {
+    id: "mer",
+    label: "MER",
+    formula: "Total Revenue / Total Marketing Spend",
+    resultLabel: "Marketing efficiency ratio",
+    resultHint: "Total revenue generated for every 1 unit of marketing spend.",
+    fields: [
+      { id: "revenue", label: "Total revenue", placeholder: "1200000000", suffix: "currency", min: "0" },
+      { id: "spend", label: "Total marketing spend", placeholder: "240000000", suffix: "currency", min: "0" },
+    ],
+  },
+  {
+    id: "cac",
+    label: "CAC",
+    formula: "Acquisition Cost / New Customers Acquired",
+    resultLabel: "Customer acquisition cost",
+    resultHint: "Cost to acquire one new customer, in the currency used above.",
+    fields: [
+      { id: "cost", label: "Acquisition cost", placeholder: "150000000", suffix: "currency", min: "0" },
+      { id: "customers", label: "New customers acquired", placeholder: "600", suffix: "customers", min: "0" },
+    ],
+  },
+  {
+    id: "cvr",
+    label: "CVR",
+    formula: "Orders / Sessions × 100",
+    resultLabel: "Conversion rate",
+    resultHint: "Percentage of sessions that resulted in an order.",
+    fields: [
+      { id: "orders", label: "Orders", placeholder: "640", suffix: "orders", min: "0" },
+      { id: "sessions", label: "Sessions", placeholder: "20000", suffix: "sessions", min: "0" },
+    ],
+  },
+  {
+    id: "aov",
+    label: "AOV",
+    formula: "Revenue / Number of Orders",
+    resultLabel: "Average order value",
+    resultHint: "Average revenue per order, in the currency used above.",
+    fields: [
+      { id: "revenue", label: "Revenue", placeholder: "450000000", suffix: "currency", min: "0" },
+      { id: "orders", label: "Number of orders", placeholder: "1000", suffix: "orders", min: "0" },
+    ],
+  },
+  {
+    id: "revenue",
+    label: "Revenue Decomposition",
+    formula: "Sessions × Conversion Rate × Average Order Value",
+    resultLabel: "Estimated revenue",
+    resultHint: "Estimated revenue in the same currency used for AOV.",
+    fields: [
+      { id: "sessions", label: "Sessions", placeholder: "25000", suffix: "sessions", min: "0" },
+      { id: "cvr", label: "Conversion rate", placeholder: "3", suffix: "%", min: "0", max: "100" },
+      { id: "aov", label: "Average order value", placeholder: "400000", suffix: "currency", min: "0" },
+    ],
+  },
+  {
+    id: "break-even-roas",
+    label: "Break-Even ROAS",
+    formula: "1 / Pre-ad Contribution Margin Rate",
+    resultLabel: "Break-even ROAS",
+    resultHint: "Minimum ROAS required to cover ad spend before fixed costs.",
+    fields: [
+      { id: "margin", label: "Pre-ad contribution margin rate", placeholder: "40", suffix: "%", min: "0", max: "100" },
+    ],
+  },
+  {
+    id: "contribution-profit",
+    label: "Contribution Profit",
+    formula: "(Revenue × Pre-ad Contribution Margin Rate) − Advertising Spend",
+    resultLabel: "Post-ad contribution profit",
+    resultHint: "Amount left after non-ad variable costs and advertising spend.",
+    fields: [
+      { id: "revenue", label: "Revenue", placeholder: "1000000000", suffix: "currency", min: "0" },
+      { id: "margin", label: "Pre-ad contribution margin rate", placeholder: "40", suffix: "%", min: "0", max: "100" },
+      { id: "spend", label: "Advertising spend", placeholder: "220000000", suffix: "currency", min: "0" },
+    ],
+  },
+];
+
+const metricOptions: DropdownOption[] = metrics.map((metric, index) => ({
+  value: metric.id,
+  label: metric.label,
+  keywords: `${metric.id} ${metric.resultLabel} ${metric.formula}`,
+  selected: index === 0,
+}));
+---
+
+<div class="metric-calculator dash-card" data-metric-calculator>
+  <div class="calculator-heading">
+    <div>
+      <span class="calculator-kicker">Interactive tool</span>
+      <h3 class="calculator-title">Metric calculator</h3>
+      <p class="calculator-intro">Choose a metric and enter your own numbers. Results update as you type.</p>
+    </div>
+
+    <div class="metric-select-field">
+      <Dropdown
+        id="calculator-metric"
+        name="metric"
+        dataKey="calculator-metric"
+        selectDataAttr="data-metric-select"
+        label="Metric"
+        defaultLabel="Select metric"
+        searchPlaceholder="Search metric..."
+        emptyText="No metric found."
+        allowDeselect={false}
+        options={metricOptions}
+        triggerClassName="h-[46px] rounded-[10px]"
+      />
+    </div>
+  </div>
+
+  <form class="calculator-form" data-calculator-form novalidate>
+    <div class="calculator-input-area">
+      {metrics.map((metric, metricIndex) => (
+        <fieldset class="calculator-fields" data-metric-panel={metric.id} hidden={metricIndex !== 0}>
+          <legend class="sr-only">{metric.label} inputs</legend>
+          <div class="calculator-field-grid">
+            {metric.fields.map((field) => (
+              <label class="calculator-field">
+                <span class="calculator-field-label">{field.label}</span>
+                <span class="calculator-input-wrap">
+                  <input
+                    class="calculator-input"
+                    type="number"
+                    inputmode="decimal"
+                    name={`${metric.id}-${field.id}`}
+                    data-value={field.id}
+                    min={field.min}
+                    max={field.max}
+                    step="any"
+                    placeholder={field.placeholder}
+                    autocomplete="off"
+                  />
+                  {field.suffix && <span class="calculator-suffix">{field.suffix}</span>}
+                </span>
+              </label>
+            ))}
+          </div>
+          <p class="calculator-formula"><span>Formula</span><code>{metric.formula}</code></p>
+        </fieldset>
+      ))}
+    </div>
+
+    <output class="calculator-result" data-calculator-result aria-live="polite">
+      <span class="calculator-result-label" data-result-label>{metrics[0].resultLabel}</span>
+      <strong class="calculator-result-value" data-result-value>—</strong>
+      <span class="calculator-result-hint" data-result-hint>{metrics[0].resultHint}</span>
+      <span class="calculator-result-error" data-result-error hidden></span>
+    </output>
+  </form>
+</div>
+
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  const calculatorDefinitions = {
+    roas: {
+      label: "Return on ad spend",
+      hint: "Revenue generated for every 1 unit of ad spend.",
+      calculate: ({ revenue, spend }: Record<string, number>) => revenue / spend,
+      format: "ratio",
+      denominator: "spend",
+    },
+    mer: {
+      label: "Marketing efficiency ratio",
+      hint: "Total revenue generated for every 1 unit of marketing spend.",
+      calculate: ({ revenue, spend }: Record<string, number>) => revenue / spend,
+      format: "ratio",
+      denominator: "spend",
+    },
+    cac: {
+      label: "Customer acquisition cost",
+      hint: "Cost to acquire one new customer, in the currency used above.",
+      calculate: ({ cost, customers }: Record<string, number>) => cost / customers,
+      format: "number",
+      denominator: "customers",
+    },
+    cvr: {
+      label: "Conversion rate",
+      hint: "Percentage of sessions that resulted in an order.",
+      calculate: ({ orders, sessions }: Record<string, number>) => (orders / sessions) * 100,
+      format: "percent",
+      denominator: "sessions",
+    },
+    aov: {
+      label: "Average order value",
+      hint: "Average revenue per order, in the currency used above.",
+      calculate: ({ revenue, orders }: Record<string, number>) => revenue / orders,
+      format: "number",
+      denominator: "orders",
+    },
+    revenue: {
+      label: "Estimated revenue",
+      hint: "Estimated revenue in the same currency used for AOV.",
+      calculate: ({ sessions, cvr, aov }: Record<string, number>) => sessions * (cvr / 100) * aov,
+      format: "number",
+    },
+    "break-even-roas": {
+      label: "Break-even ROAS",
+      hint: "Minimum ROAS required to cover ad spend before fixed costs.",
+      calculate: ({ margin }: Record<string, number>) => 1 / (margin / 100),
+      format: "ratio",
+      denominator: "margin",
+    },
+    "contribution-profit": {
+      label: "Post-ad contribution profit",
+      hint: "Amount left after non-ad variable costs and advertising spend.",
+      calculate: ({ revenue, margin, spend }: Record<string, number>) => revenue * (margin / 100) - spend,
+      format: "number",
+    },
+  } as const;
+
+  onPageLoad((signal) => {
+    document.querySelectorAll<HTMLElement>("[data-metric-calculator]").forEach((calculator) => {
+      const form = calculator.querySelector<HTMLFormElement>("[data-calculator-form]");
+      const resultLabel = calculator.querySelector<HTMLElement>("[data-result-label]");
+      const resultValue = calculator.querySelector<HTMLElement>("[data-result-value]");
+      const resultHint = calculator.querySelector<HTMLElement>("[data-result-hint]");
+      const resultError = calculator.querySelector<HTMLElement>("[data-result-error]");
+      if (!form || !resultLabel || !resultValue || !resultHint || !resultError) return;
+
+      const getSelect = () => calculator.querySelector<HTMLSelectElement>("[data-metric-select]");
+      const numberFormatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
+      const preciseFormatter = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      const updateResult = () => {
+        const select = getSelect();
+        if (!select) return;
+        const metricId = select.value as keyof typeof calculatorDefinitions;
+        const definition = calculatorDefinitions[metricId];
+        const activePanel = calculator.querySelector<HTMLElement>(`[data-metric-panel="${metricId}"]`);
+        if (!definition || !activePanel) return;
+
+        resultLabel.textContent = definition.label;
+        resultHint.textContent = definition.hint;
+        resultError.hidden = true;
+
+        const inputs = Array.from(activePanel.querySelectorAll<HTMLInputElement>("[data-value]"));
+        const hasEmptyInput = inputs.some((input) => input.value.trim() === "");
+        if (hasEmptyInput) {
+          resultValue.textContent = "—";
+          return;
+        }
+
+        const values = Object.fromEntries(inputs.map((input) => [input.dataset.value, input.valueAsNumber]));
+        const hasInvalidInput = inputs.some((input) => !Number.isFinite(input.valueAsNumber) || !input.checkValidity());
+        if (hasInvalidInput) {
+          resultValue.textContent = "—";
+          resultError.textContent = "Enter a valid number within the allowed range.";
+          resultError.hidden = false;
+          return;
+        }
+
+        if ("denominator" in definition && values[definition.denominator] === 0) {
+          resultValue.textContent = "—";
+          resultError.textContent = "The divisor must be greater than zero.";
+          resultError.hidden = false;
+          return;
+        }
+
+        const result = definition.calculate(values);
+        if (!Number.isFinite(result)) {
+          resultValue.textContent = "—";
+          return;
+        }
+
+        if (definition.format === "ratio") resultValue.textContent = `${preciseFormatter.format(result)}x`;
+        else if (definition.format === "percent") resultValue.textContent = `${preciseFormatter.format(result)}%`;
+        else resultValue.textContent = numberFormatter.format(result);
+
+        resultValue.classList.toggle("is-negative", result < 0);
+      };
+
+      const showMetric = () => {
+        const select = getSelect();
+        if (!select) return;
+        calculator.querySelectorAll<HTMLElement>("[data-metric-panel]").forEach((panel) => {
+          panel.hidden = panel.dataset.metricPanel !== select.value;
+        });
+        resultValue.classList.remove("is-negative");
+        updateResult();
+      };
+
+      calculator.addEventListener("change", (event) => {
+        if (event.target instanceof Element && event.target.matches("[data-metric-select]")) {
+          showMetric();
+        }
+      }, { signal });
+      calculator.addEventListener("dropdown:change", showMetric, { signal });
+      form.addEventListener("input", updateResult, { signal });
+      showMetric();
+    });
+  });
+</script>
+
+<style>
+  .metric-calculator {
+    margin-top: 16px;
+    padding: 22px 24px 24px;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .calculator-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+    gap: 32px;
+    align-items: end;
+    padding-bottom: 20px;
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .calculator-kicker {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--dash-accent);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+  }
+
+  .calculator-title {
+    margin: 0;
+    color: var(--dash-text);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  .calculator-intro {
+    margin: 5px 0 0;
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+  }
+
+  .calculator-field-label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--dash-text);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .calculator-input {
+    width: 100%;
+    min-height: 46px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 10px;
+    background: var(--dash-surface);
+    color: var(--dash-text);
+    font: inherit;
+    font-size: var(--text-body-sm);
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .calculator-input:focus-visible {
+    border-color: var(--dash-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--dash-accent) 14%, transparent);
+  }
+
+  .calculator-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(230px, 0.75fr);
+    gap: 24px;
+    padding-top: 24px;
+  }
+
+  .calculator-fields {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .calculator-fields[hidden] {
+    display: none;
+  }
+
+  .calculator-field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .calculator-input-wrap {
+    position: relative;
+    display: block;
+  }
+
+  .calculator-input {
+    padding: 10px 88px 10px 13px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .calculator-input::placeholder {
+    color: color-mix(in srgb, var(--dash-muted) 65%, transparent);
+  }
+
+  .calculator-input::-webkit-inner-spin-button,
+  .calculator-input::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+  }
+
+  .calculator-suffix {
+    position: absolute;
+    top: 50%;
+    right: 11px;
+    max-width: 74px;
+    overflow: hidden;
+    color: var(--dash-muted);
+    font-size: var(--text-caption);
+    line-height: 1;
+    pointer-events: none;
+    text-overflow: ellipsis;
+    transform: translateY(-50%);
+    white-space: nowrap;
+  }
+
+  .calculator-formula {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    margin: 14px 0 0;
+    color: var(--dash-muted);
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
+  }
+
+  .calculator-formula span {
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .calculator-formula code {
+    color: var(--dash-accent);
+    white-space: normal;
+  }
+
+  .calculator-result {
+    display: flex;
+    min-height: 142px;
+    padding: 18px;
+    flex-direction: column;
+    justify-content: center;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-radius: 12px;
+    background: var(--dash-surface-subtle, #f5f5f3);
+  }
+
+  .calculator-result-label {
+    color: var(--dash-muted);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .calculator-result-value {
+    margin: 4px 0 6px;
+    color: var(--dash-accent);
+    font-size: clamp(1.75rem, 4vw, 2.6rem);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  .calculator-result-value.is-negative,
+  .calculator-result-error {
+    color: #b42318;
+  }
+
+  .calculator-result-hint,
+  .calculator-result-error {
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
+  }
+
+  .calculator-result-hint {
+    color: var(--dash-muted);
+  }
+
+  .calculator-result-error {
+    margin-top: 5px;
+  }
+
+  @container (max-width: 760px) {
+    .calculator-field-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @container (max-width: 620px) {
+    .calculator-heading,
+    .calculator-form {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .calculator-form {
+      padding-top: 18px;
+    }
+
+    .calculator-field-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 880px) {
+    .calculator-field-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .metric-calculator {
+      padding: 18px 16px;
+    }
+
+    .calculator-heading,
+    .calculator-form {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .calculator-form {
+      padding-top: 18px;
+    }
+
+    .calculator-field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .calculator-result {
+      min-height: 126px;
+    }
+  }
+</style>

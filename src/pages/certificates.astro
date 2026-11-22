@@ -403,62 +403,20 @@ const certsSchema = collectionPageSchema({
     padding-bottom: 24px;
   }
 
-  /* ── Folder Item Container ── */
-  .folder-item {
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-
+  /* ── Folder Item Overrides (base styles live in dashboard.css) ── */
   .folder-wrapper {
-    position: relative;
-    width: 100%;
     max-width: 156px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
     font: inherit;
-    color: inherit;
     text-align: inherit;
-    cursor: pointer;
   }
 
-  .folder-wrapper:focus-visible {
-    outline: none;
-  }
-
-  .folder-wrapper:focus-visible .folder {
-    outline: 2px solid var(--dash-accent);
-    outline-offset: 4px;
-    border-radius: 12px;
-  }
-
-  /* ── Hover Bridge ── */
   .folder-wrapper::before {
-    content: "";
-    position: absolute;
-    top: -85px;
     left: -20px;
     right: -20px;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 10;
   }
 
-  .folder-wrapper:focus-visible::before {
-    pointer-events: auto;
-  }
-
-  /* ── Folder 3D Container ── */
   .folder {
-    position: relative;
-    width: 100%;
     max-width: 156px;
-    aspect-ratio: 480 / 379;
     perspective: 800px;
   }
 
@@ -671,14 +629,12 @@ const certsSchema = collectionPageSchema({
       touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--mobile-page-edge, 16px);
-      -webkit-overflow-scrolling: touch;
       gap: 18px;
       margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
       padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 52px;
       padding-bottom: 24px;
       scrollbar-width: none;
-      -ms-overflow-style: none;
     }
 
     .folder-grid::-webkit-scrollbar {

@@ -1,0 +1,319 @@
+:root {
+  --dock-bg: rgba(235, 235, 238, 0.74);
+  --dock-blur: 24px;
+  --dock-radius: 16px;
+  --dock-padding-x: 7px;
+  --dock-padding-y: 8px;
+
+  --dock-icon-size: 36px;
+  --dock-icon-gap: 8px;
+
+  --dock-border: rgba(255, 255, 255, 0.58);
+  --dock-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.14),
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.macos-dock-anchor {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  transition:
+    opacity 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Left-side vertical Dock outside the floating workspace window */
+.macos-dock-anchor--left {
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Optional bottom horizontal Dock */
+.macos-dock-anchor--bottom {
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+}
+
+/* Hide cleanly when a window is maximized to full viewport on desktop */
+html.window-maximized .macos-dock-anchor--left {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-16px, -50%);
+}
+
+.macos-dock {
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dock-icon-gap);
+  padding: var(--dock-padding-y) var(--dock-padding-x);
+  border-radius: var(--dock-radius);
+  background: var(--dock-bg);
+  border: 1px solid var(--dock-border);
+  box-shadow: var(--dock-shadow);
+  backdrop-filter: blur(var(--dock-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--dock-blur)) saturate(180%);
+  overflow: visible;
+  user-select: none;
+}
+
+.macos-dock--left {
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--dock-icon-size) + var(--dock-padding-x) * 2);
+}
+
+.macos-dock--bottom {
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 10px;
+}
+
+.macos-dock-slot {
+  position: relative;
+  width: var(--dock-icon-size);
+  height: var(--dock-icon-size);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.macos-dock-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 22.5%;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.macos-dock--left .macos-dock-item {
+  transform-origin: left center;
+}
+
+.macos-dock--bottom .macos-dock-item {
+  transform-origin: center bottom;
+}
+
+.macos-dock-item:focus-visible {
+  outline: 2px solid var(--dash-accent, #0969da);
+  outline-offset: 3px;
+}
+
+.macos-dock-item.is-bouncing {
+  animation: macos-dock-bounce 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes macos-dock-bounce {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  35% {
+    transform: translate3d(5px, 0, 0) scale(0.94);
+  }
+  70% {
+    transform: translate3d(-1px, 0, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.macos-dock-icon-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 22.5%;
+  overflow: hidden;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.16),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.macos-dock-icon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  image-rendering: auto;
+}
+
+.macos-dock-icon-img.is-contain {
+  object-fit: contain;
+  padding: 3px;
+}
+
+/* Active / running dot indicator */
+.macos-dock-indicator {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: rgba(29, 29, 31, 0.48);
+  pointer-events: none;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.macos-dock-indicator.is-active {
+  background: #1d1d1f;
+  transform: scale(1.2);
+}
+
+.macos-dock--left .macos-dock-indicator {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.macos-dock--left .macos-dock-indicator.is-active {
+  transform: translateY(-50%) scale(1.2);
+}
+
+.macos-dock--bottom .macos-dock-indicator {
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.macos-dock--bottom .macos-dock-indicator.is-active {
+  transform: translateX(-50%) scale(1.2);
+}
+
+/* Tooltip — crisp light frosted macOS pill */
+.macos-dock-tooltip {
+  position: absolute;
+  z-index: 70;
+  pointer-events: none;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.macos-dock-tooltip--left {
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translate3d(-4px, -50%, 0);
+}
+
+.macos-dock-tooltip--left.is-visible {
+  opacity: 1;
+  transform: translate3d(0, -50%, 0);
+}
+
+.macos-dock-tooltip--bottom {
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translate3d(-50%, 4px, 0);
+}
+
+.macos-dock-tooltip--bottom.is-visible {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0);
+}
+
+/* Smaller desktop: slightly tighter icon size */
+@media (max-width: 1280px) and (min-width: 1024px) {
+  :root {
+    --dock-icon-size: 32px;
+    --dock-icon-gap: 6px;
+    --dock-padding-x: 6px;
+    --dock-padding-y: 7px;
+    --dock-radius: 14px;
+  }
+
+  .macos-dock-anchor--left {
+    left: 10px;
+  }
+}
+
+/* Tablet & Mobile (< 1024px): compact bottom dock with >= 44x44 tap targets */
+@media (max-width: 1023px) {
+  .macos-dock-anchor--left {
+    left: 50%;
+    top: auto;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+  }
+
+  .macos-dock--left {
+    flex-direction: row;
+    width: auto;
+    padding: 6px 10px;
+    gap: 6px;
+    border-radius: 18px;
+    background: rgba(245, 245, 247, 0.88);
+  }
+
+  .macos-dock--left .macos-dock-slot {
+    width: 44px;
+    height: 44px;
+  }
+
+  .macos-dock--left .macos-dock-item {
+    width: 44px;
+    height: 44px;
+    padding: 4px;
+    transform-origin: center bottom;
+  }
+
+  .macos-dock--left .macos-dock-indicator {
+    left: 50%;
+    top: auto;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
+
+  .macos-dock--left .macos-dock-tooltip--left {
+    left: 50%;
+    top: auto;
+    bottom: calc(100% + 10px);
+    transform: translate3d(-50%, 4px, 0);
+  }
+
+  .macos-dock--left .macos-dock-tooltip--left.is-visible {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .macos-dock-anchor,
+  .macos-dock-tooltip,
+  .macos-dock-item,
+  .macos-dock-item.is-bouncing {
+    transition: none;
+    animation: none;
+  }
+}

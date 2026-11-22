@@ -75,7 +75,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
       <!-- Top Identity Block -->
       <div class="dash-sidebar-header">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home">
+          <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home" data-astro-prefetch="load">
             <img 
               src={avatar.src}
               alt="Nguyen Phuc Loc" 
@@ -116,7 +116,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
                       href={item.href}
                       class={`dash-nav-link ${active ? "active" : ""}`}
                       aria-current={current ? "page" : undefined}
-                      data-astro-prefetch
+                      data-astro-prefetch="load"
                     >
                       <div class="dash-nav-link-left">
                         <Heroicon name={item.icon} size={16} class="dash-nav-icon" />

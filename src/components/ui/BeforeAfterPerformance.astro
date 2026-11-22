@@ -205,11 +205,6 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 </section>
 
 <style>
-  .before-after-performance,
-  .before-after-performance * {
-    box-sizing: border-box;
-  }
-
   .before-after-performance :is(div, p, span) {
     font-size: revert !important;
   }
@@ -220,7 +215,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
     gap: clamp(24px, 4vw, 48px);
     align-items: center;
     padding: 16px 0 24px;
-    border-bottom: var(--dash-border-width, 0.9px) solid var(--divider);
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
   }
 
   .bap-copy {
@@ -232,9 +227,9 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   .bap-badge {
     align-self: flex-start;
-    border: var(--dash-border-width, 0.9px) solid var(--divider);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
     border-radius: 999px;
-    color: var(--muted);
+    color: var(--dash-muted);
     font-family: var(--font-family-mono);
     font-size: var(--text-micro);
     letter-spacing: var(--tracking-caps);
@@ -248,7 +243,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   }
 
   .bap-description {
-    color: var(--muted);
+    color: var(--dash-muted);
     font-family: var(--font-family-base);
     font-size: var(--text-body-sm);
     line-height: var(--leading-body);
@@ -281,11 +276,11 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
     width: 5px;
     height: 5px;
     border-radius: 999px;
-    background-color: color-mix(in srgb, var(--text) 45%, var(--muted));
+    background-color: color-mix(in srgb, var(--dash-text) 45%, var(--dash-muted));
   }
 
   .bap-highlight-title {
-    color: var(--text);
+    color: var(--dash-text);
     font-family: var(--font-family-base);
     font-size: var(--text-body-sm);
     font-weight: var(--font-weight-semibold);
@@ -294,7 +289,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   }
 
   .bap-highlight-desc {
-    color: var(--muted);
+    color: var(--dash-muted);
     font-family: var(--font-family-base);
     font-size: var(--text-caption);
     line-height: var(--leading-compact);
@@ -305,10 +300,10 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
     --bap-outer-radius: 20px;
     --bap-pad: 12px;
     align-self: center;
-    background: var(--dash-surface, #ffffff);
-    border: var(--dash-border-width, 0.9px) solid var(--dash-border, #00000014);
+    background: var(--dash-surface);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
     border-radius: var(--bap-outer-radius);
-    box-shadow: var(--dash-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     padding: var(--bap-pad);
     display: flex;
     flex-direction: column;
@@ -432,7 +427,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   }
 
   .bap-state-eyebrow {
-    color: var(--muted);
+    color: var(--dash-muted);
     font-family: var(--font-family-mono);
     font-size: var(--text-micro);
     letter-spacing: var(--tracking-caps);
@@ -441,7 +436,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   }
 
   .bap-state-title {
-    color: var(--text);
+    color: var(--dash-text);
     font-family: var(--font-family-base);
     font-size: var(--text-h3);
     font-weight: var(--font-weight-medium);
@@ -451,7 +446,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   }
 
   .bap-state-desc {
-    color: var(--muted);
+    color: var(--dash-muted);
     font-family: var(--font-family-base);
     font-size: var(--text-body-sm);
     line-height: var(--leading-compact);
@@ -467,13 +462,13 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
 
   .bap-metric {
     background: rgba(255, 255, 255, 0.72);
-    border: var(--dash-border-width, 0.9px) solid var(--divider);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
     border-radius: 12px;
     padding: 12px;
   }
 
   .bap-metric span {
-    color: var(--text);
+    color: var(--dash-text);
     display: block;
     font-family: var(--font-family-base);
     font-size: var(--text-h2);
@@ -482,7 +477,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
   }
 
   .bap-metric p {
-    color: var(--muted);
+    color: var(--dash-muted);
     font-family: var(--font-family-mono);
     font-size: var(--text-micro);
     letter-spacing: var(--tracking-caps);

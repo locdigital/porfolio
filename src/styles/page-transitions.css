@@ -1,9 +1,9 @@
 :root {
   /* Keep shared chrome live and clickable; capture only explicitly named elements. */
   view-transition-name: none;
-  --page-exit-duration: 140ms;
-  --page-enter-duration: 240ms;
-  --page-enter-offset: 6px;
+  --page-exit-duration: 80ms;
+  --page-enter-duration: 160ms;
+  --page-enter-offset: 3px;
   --page-transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -57,6 +57,25 @@ html,
 @keyframes workspace-page-enter {
   from { opacity: 0; transform: translate3d(0, var(--page-enter-offset), 0); }
   to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Small screens benefit more from an instant swap than from snapshot animation. */
+@media (max-width: 1023px) {
+  ::view-transition-group(workspace-document),
+  ::view-transition-old(workspace-document),
+  ::view-transition-new(workspace-document) {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  ::view-transition-old(workspace-document) {
+    opacity: 0;
+  }
+
+  ::view-transition-new(workspace-document) {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="window-close" viewBox="0 0 48 48">
+    <defs>
+      <linearGradient id="window-red" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ec5552"/>
+        <stop offset="0.44" stop-color="#e34445"/>
+        <stop offset="1" stop-color="#e44343"/>
+      </linearGradient>
+    </defs>
+    <circle cx="24" cy="24" r="23.45" fill="url(#window-red)" stroke="#e63e3d" stroke-width="1.1"/>
+    <path d="M13.7 13.7L34.3 34.3M34.3 13.7L13.7 34.3" stroke="#711810" stroke-width="3.9" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="window-minimize" viewBox="0 0 48 48">
+    <defs>
+      <linearGradient id="window-yellow" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#facb39"/>
+        <stop offset="0.47" stop-color="#f4b419"/>
+        <stop offset="1" stop-color="#f5ba27"/>
+      </linearGradient>
+    </defs>
+    <circle cx="24" cy="24" r="23.45" fill="url(#window-yellow)" stroke="#e2a31d" stroke-width="1.1"/>
+    <path d="M9.4 24H38.6" stroke="#99520b" stroke-width="4" stroke-linecap="square"/>
+  </symbol>
+  <symbol id="window-maximize" viewBox="0 0 48 48">
+    <defs>
+      <linearGradient id="window-green" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#69d13b"/>
+        <stop offset="0.48" stop-color="#5dc92b"/>
+        <stop offset="1" stop-color="#5aca2a"/>
+      </linearGradient>
+    </defs>
+    <circle cx="24" cy="24" r="23.45" fill="url(#window-green)" stroke="#38ae22" stroke-width="1.1"/>
+    <path d="M18 12H36V30Z" fill="#306800"/>
+    <path d="M12 18V36H30Z" fill="#306800"/>
+  </symbol>
+</svg>

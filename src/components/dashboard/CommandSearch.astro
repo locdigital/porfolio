@@ -1,0 +1,162 @@
+---
+import CommandSearchPalette from "../ui/command-search";
+import type { CommandSearchItem } from "../../lib/command-search";
+import {
+  getGear,
+  getGrowthPlaybooks,
+  getPhotoLocations,
+  getProjects,
+} from "../../lib/content";
+import { getWritingEntries } from "../../lib/writing";
+
+const [projects, writing, photos, playbooks, gear] = await Promise.all([
+  getProjects(),
+  getWritingEntries(),
+  getPhotoLocations(),
+  getGrowthPlaybooks(),
+  getGear(),
+]);
+
+const gearKeywords = [
+  "setup equipment cameras lenses hardware",
+  ...(gear?.sections ?? []).flatMap((section) => [
+    section.title,
+    ...section.items.map((item) => item.name),
+  ]),
+].join(" ");
+
+const navigationItems: CommandSearchItem[] = [
+  {
+    title: "Overview",
+    description: "Phuc Loc Nguyen's personal workspace",
+    href: "/",
+    group: "Navigation",
+    keywords: "home workspace portfolio dashboard",
+  },
+  {
+    title: "About",
+    description: "Background, experience, and approach",
+    href: "/about",
+    group: "Navigation",
+    keywords: "profile bio experience story",
+  },
+  {
+    title: "Work",
+    description: "Selected performance marketing case studies",
+    href: "/work",
+    group: "Navigation",
+    keywords: "projects portfolio case studies clients",
+  },
+  {
+    title: "Services",
+    description: "Growth and performance marketing services",
+    href: "/services",
+    group: "Navigation",
+    keywords: "consulting marketing retainer tiktok shop paid media",
+  },
+  {
+    title: "Writing",
+    description: "Essays, notes, and field observations",
+    href: "/writing",
+    group: "Navigation",
+    keywords: "articles blog essays notes",
+  },
+  {
+    title: "Growth Hub",
+    description: "Playbooks, systems, and marketing formulas",
+    href: "/growth",
+    group: "Navigation",
+    keywords: "performance marketing guides playbooks systems",
+  },
+  {
+    title: "Marketing formulas",
+    description: "ROAS, MER, CAC, CVR, AOV, and contribution profit",
+    href: "/growth/metrics",
+    group: "Navigation",
+    keywords: "metrics calculator formulas roas mer cac cvr aov break-even",
+  },
+  {
+    title: "Photography",
+    description: "Travel journals and photography collections",
+    href: "/photos",
+    group: "Navigation",
+    keywords: "photos travel albums galleries vietnam",
+  },
+  {
+    title: "Gear",
+    description: "Cameras, computers, and everyday tools",
+    href: "/gear",
+    group: "Navigation",
+    keywords: gearKeywords,
+  },
+  {
+    title: "Resume",
+    description: "Professional experience and capabilities",
+    href: "/resume",
+    group: "Navigation",
+    keywords: "cv career work history",
+  },
+  {
+    title: "Certificates",
+    description: "Professional certificates and credentials",
+    href: "/certificates",
+    group: "Navigation",
+    keywords: "certifications credentials google ads ga4 skillshop",
+  },
+  {
+    title: "Contact",
+    description: "Get in touch with Phuc Loc Nguyen",
+    href: "/contact",
+    group: "Navigation",
+    keywords: "email message hire zalo hi@loc.digital",
+  },
+];
+
+const searchItems: CommandSearchItem[] = [
+  ...navigationItems,
+  ...projects.map((project) => ({
+    title: project.client || project.title,
+    description: project.summary,
+    href: `/work/${project.slug}`,
+    group: "Work" as const,
+    keywords: [project.title, project.role, ...project.tools, ...project.skills].join(" "),
+  })),
+  ...writing.map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.description,
+    href: `/writing/${entry.slug}`,
+    group: "Writing" as const,
+    keywords: entry.data.category,
+  })),
+  ...playbooks.map((playbook) => ({
+    title: playbook.data.title,
+    description: playbook.data.summary,
+    href: `/growth/${playbook.slug}`,
+    group: "Growth" as const,
+    keywords: [playbook.data.topicCluster, ...playbook.data.keyMetrics].join(" "),
+  })),
+  ...photos.map((photo) => ({
+    title: photo.name || photo.location,
+    description: photo.headline || photo.description,
+    href: `/photos/${photo.slug}`,
+    group: "Photography" as const,
+    keywords: [
+      photo.location,
+      photo.city,
+      photo.province,
+      photo.region,
+      photo.country,
+      ...(photo.alternateNames ?? []),
+      ...(photo.tags ?? []),
+    ]
+      .filter(Boolean)
+      .join(" "),
+  })),
+];
+---
+
+<CommandSearchPalette
+  items={searchItems}
+  client:load
+  transition:persist="workspace-command-search"
+/>

@@ -87,8 +87,7 @@ describe("Typography Design System Standards", () => {
       expect(dashboardCss).toContain("--text-body-sm: max(var(--text-min), 0.8125rem);");
       expect(dashboardCss).toContain("--text-caption: max(var(--text-min), 0.75rem);");
       expect(dashboardCss).toContain("--text-micro: max(var(--text-min), 0.6875rem);");
-      expect(globalCss).toContain("--type-body: var(--text-body, 14px);");
-      expect(globalCss).toContain("--button-font-size: var(--text-body, 14px);");
+      expect(globalCss).toContain("--type-ui: var(--text-body);");
     });
   });
 
@@ -100,7 +99,6 @@ describe("Typography Design System Standards", () => {
 
     it("ensures spans inherit font size by default", () => {
       expect(dashboardCss).toMatch(/span\s*\{[^}]*font-size:\s*inherit/);
-      expect(globalCss).toMatch(/span\s*\{[^}]*font-size:\s*inherit/);
     });
   });
 

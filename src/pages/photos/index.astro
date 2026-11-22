@@ -137,14 +137,6 @@ const photosSchema = collectionPageSchema({
 </DashboardLayout>
 
 <style>
-  .section-header-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: var(--space-2);
-  }
-
   .glass-folder-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
@@ -160,77 +152,6 @@ const photosSchema = collectionPageSchema({
   .glass-folder-item:hover,
   .glass-folder-item:focus-within {
     z-index: 1;
-  }
-
-  .destination-groups-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 16px;
-  }
-
-  .destination-group-card {
-    padding: 18px 20px;
-  }
-
-  .destination-group-title {
-    margin: 0 0 12px;
-    font-size: var(--text-h4);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--leading-snug);
-    color: var(--dash-text);
-  }
-
-  .destination-group-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .destination-group-item {
-    padding-top: 10px;
-    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
-  }
-
-  .destination-group-item:first-child {
-    padding-top: 0;
-    border-top: none;
-  }
-
-  .destination-item-top {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .destination-item-link {
-    font-size: var(--text-body);
-    font-weight: var(--font-weight-medium);
-    color: var(--dash-text);
-  }
-
-  .destination-item-count {
-    font-size: var(--text-caption);
-    color: var(--dash-muted);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  .destination-item-headline {
-    margin: 2px 0 0;
-    font-size: var(--text-body-sm);
-    line-height: var(--leading-compact);
-    color: var(--dash-muted);
-  }
-
-  .destination-item-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 6px;
   }
 
   /* Mobile: keep the same GlassFolder grid in a 2-column layout. */

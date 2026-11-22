@@ -9,7 +9,7 @@ draft: false
 linkable: false
 coverImage:
   src: "/images/writing/my-first-100k.webp"
-  alt: "Cinematic thumbnail for My First $100K featuring the Singapore skyline"
+  alt: "Cute chibi anime pixel-art illustration for My First $100K based on River Bend Below Hang Múa in Hang Múa, Ninh Bình"
   width: 1920
   height: 1080
 ---

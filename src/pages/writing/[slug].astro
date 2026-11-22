@@ -2,8 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import ResponsiveImage from "../../components/ui/ResponsiveImage.astro";
-import { ArrowRight } from "../../components/icons/phosphor";
-import { getWritingEntries, writingDate, writingReadTime } from "../../lib/writing";
+import { getWritingEntries } from "../../lib/writing";
 import { articleSchema, canonicalUrl } from "../../lib/seo";
 
 export const prerender = true;
@@ -16,9 +15,17 @@ export async function getStaticPaths() {
 
 interface Props { entry: CollectionEntry<"writing">; }
 const { entry } = Astro.props;
-const { Content, headings } = await entry.render();
-const sections = headings.filter(heading => heading.depth === 2);
-const related = (await getWritingEntries()).filter(other => other.data.linkable !== false && other.slug !== entry.slug).slice(0, 2);
+const { Content } = await entry.render();
+
+function articleDate(date: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "Asia/Ho_Chi_Minh",
+  }).format(date);
+}
+
 const postUrl = canonicalUrl(`/writing/${entry.slug}`);
 const publishedIso = entry.data.date.toISOString();
 const modifiedIso = (entry.data.updatedAt ?? entry.data.date).toISOString();
@@ -49,138 +56,324 @@ const postSchema = articleSchema({
   breadcrumbs={[{ label: "Personal", href: "/" }, { label: "Writing", href: "/writing" }, { label: entry.data.title }]}
   schema={postSchema}
 >
-  <article class="writing-article">
-    <header class="page-header writing-article-header">
-      <h1 class="page-title">{entry.data.title}</h1>
-      <div class="writing-article-meta">
-        <span>By <a href="/about" class="dash-link" data-astro-prefetch>Phuc Loc Nguyen</a></span>
-        <span aria-hidden="true">·</span>
-        <time datetime={publishedIso}>{writingDate(entry.data.date)}</time>
-        {entry.data.updatedAt && (
-          <>
-            <span aria-hidden="true">·</span>
-            <span>Updated <time datetime={modifiedIso}>{writingDate(entry.data.updatedAt)}</time></span>
-          </>
-        )}
-        <span aria-hidden="true">·</span>
-        <span>{writingReadTime(entry)} min read</span>
-      </div>
-      <p class="page-lead">{entry.data.description}</p>
-      {entry.data.sample && <p class="writing-sample-note">Sample article · Created for this layout preview.</p>}
-    </header>
+  <div class="writing-article-shell">
+    <article class="writing-article">
+      <header class="writing-article-header">
+        <h1 class="page-title">{entry.data.title}</h1>
+        <time datetime={publishedIso} class="writing-article-date">
+          <span class="writing-article-date-bar" aria-hidden="true"></span>
+          <span class="writing-article-date-text">{articleDate(entry.data.date)}</span>
+        </time>
+        <p class="page-lead">{entry.data.description}</p>
+      </header>
 
-    <div class="writing-reading-layout">
-      <div class="writing-prose">
+      <div class="writing-article-body">
         {entry.data.coverImage && (
           <figure class="writing-cover">
-            <ResponsiveImage
-              src={entry.data.coverImage.src}
-              alt={entry.data.coverImage.alt}
-              width={960}
-              height={540}
-              widths={[320, 480, 640, 960, 1280]}
-              sizes="(max-width: 768px) calc(100vw - 32px), 600px"
-              loading="eager"
-              fetchpriority="high"
-            />
+            <div class="writing-cover-media">
+              <ResponsiveImage
+                src={entry.data.coverImage.src}
+                alt={entry.data.coverImage.alt}
+                width={entry.data.coverImage.width}
+                height={entry.data.coverImage.height}
+                widths={[640, 750, 828, 1080, 1200, 1600]}
+                sizes="(min-width: 768px) 42rem, 100vw"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </div>
             {entry.data.coverImage.caption && <figcaption>{entry.data.coverImage.caption}</figcaption>}
           </figure>
         )}
-        <Content />
-      </div>
-      {sections.length > 0 && (
-        <aside class="writing-toc">
-          <nav aria-label="On this page">
-            <p class="writing-toc-title">On this page</p>
-            <ul>{sections.map(section => <li><a href={`#${section.slug}`}>{section.text}</a></li>)}</ul>
-          </nav>
-        </aside>
-      )}
-    </div>
-  </article>
 
-  {related.length > 0 && (
-    <section class="writing-related" aria-labelledby="writing-related-title">
-      <h2 id="writing-related-title" class="section-title">More writing</h2>
-      {related.map(other => (
-        <a href={`/writing/${other.slug}`} class:list={["writing-related-link", { "writing-related-link--with-image": Boolean(other.data.coverImage) }]}>
-          {other.data.coverImage && <ResponsiveImage src={other.data.coverImage.src} alt="" width={160} height={90} widths={[80, 160]} sizes="80px" class="writing-related-image" />}
-          <span><span class="writing-related-category">{other.data.category}</span><span class="writing-related-title">{other.data.title}</span></span>
-          <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
-        </a>
-      ))}
-    </section>
-  )}
+        <div class="writing-prose">
+          <Content />
+        </div>
+      </div>
+    </article>
+  </div>
 </DashboardLayout>
 
 <style>
-  .writing-article-header {
-    padding-bottom: 24px;
-    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  .writing-article-shell {
+    width: 100%;
+    padding-top: var(--space-4);
   }
 
-  .writing-article-header h1 { max-width: 32ch; text-wrap: balance; }
-  .writing-article-header .page-lead { max-width: 75ch; margin: 16px 0 0; }
+  @media (min-width: 1024px) {
+    .writing-article-shell {
+      padding-top: var(--space-10);
+    }
+  }
 
-  .writing-article-meta {
+  .writing-article {
+    width: 100%;
+    max-width: 42rem;
+    margin-inline: 0;
+  }
+
+  .writing-article-header {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .writing-article-date {
+    order: -1;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 8px 20px;
     color: var(--dash-muted);
-    font-size: var(--text-caption);
+    font-size: var(--text-body-sm);
     line-height: var(--leading-compact);
+    font-variant-numeric: tabular-nums;
   }
 
-  .writing-sample-note { margin: 16px 0 0; font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); }
+  .writing-article-date-bar {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 2px;
+    height: 16px;
+    border-radius: 9999px;
+    background: rgba(41, 41, 39, 0.2);
+    background: color-mix(in srgb, var(--dash-text) 20%, transparent);
+  }
 
-  .writing-reading-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 180px;
-    align-items: start;
-    gap: 48px;
+  .writing-article-date-text {
+    margin-left: 12px;
+  }
+
+  .writing-article-header .page-title {
+    margin: 24px 0 0;
+    max-width: none;
+    text-wrap: pretty;
+  }
+
+  .writing-article-header .page-lead {
+    margin: 24px 0 0;
+    max-width: none;
+  }
+
+  .writing-cover {
+    margin: 32px 0 0;
+  }
+
+  .writing-cover-media {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--dash-surface-subtle);
+  }
+
+  .writing-cover-media :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
+  .writing-cover figcaption {
+    margin-top: 12px;
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted);
   }
 
   .writing-prose {
+    margin-top: 32px;
     min-width: 0;
-    max-width: 75ch;
+    max-width: none;
     font-size: var(--text-body);
     line-height: var(--leading-body);
     color: var(--dash-text);
     overflow-wrap: break-word;
   }
 
-  .writing-prose :global(p) { margin: 0 0 var(--space-4); font-size: var(--text-body); line-height: var(--leading-body); }
-  .writing-cover { margin: 0 0 28px; }
-  .writing-cover :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-card); }
-  .writing-cover figcaption { margin-top: 10px; font-size: var(--text-caption); line-height: var(--leading-compact); color: var(--dash-muted); }
-  .writing-prose :global(h2) { margin: 32px 0 12px; font-size: var(--text-h3); font-weight: var(--font-weight-semibold); line-height: var(--leading-snug); letter-spacing: var(--tracking-subheading); scroll-margin-top: 24px; }
-  .writing-prose :global(h3) { margin: 24px 0 10px; font-size: var(--text-h4); font-weight: var(--font-weight-semibold); line-height: var(--leading-snug); scroll-margin-top: 24px; }
-  .writing-prose :global(ul), .writing-prose :global(ol) { margin: 0 0 20px; padding-left: 20px; font-size: var(--text-body); line-height: var(--leading-body); }
-  .writing-prose :global(li) { margin: 6px 0; padding-left: 2px; }
-  .writing-prose :global(li::marker) { color: var(--dash-muted); }
-  .writing-prose :global(strong) { font-weight: var(--font-weight-medium); }
-  .writing-prose :global(blockquote) { margin: 24px 0; padding: 16px 20px; border: 0; border-radius: var(--radius-card); background: var(--color-ivory); }
-  .writing-prose :global(blockquote p:last-child) { margin-bottom: 0; }
-  .writing-prose :global(table) { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 24px 0; font-size: var(--text-body-sm); overflow-wrap: anywhere; }
-  .writing-prose :global(th), .writing-prose :global(td) { padding: 12px 10px; text-align: left; vertical-align: top; border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); }
-  .writing-prose :global(th) { background: var(--color-ivory); font-weight: var(--font-weight-medium); }
-  .writing-prose :global(a) { color: var(--dash-text); text-decoration: none; }
+  .writing-prose > :global(:first-child) {
+    margin-top: 0;
+  }
 
-  .writing-toc { position: sticky; top: 24px; font-size: var(--text-body-sm); line-height: var(--leading-compact); }
-  .writing-toc-title { margin: 0 0 12px; font-size: var(--text-body-sm); font-weight: var(--font-weight-medium); }
-  .writing-toc ul { list-style: none; padding: 0; margin: 0; }
-  .writing-toc li + li { margin-top: 10px; }
-  .writing-toc a { color: var(--dash-muted); text-decoration: none; }
-  .writing-related { margin-top: 48px; padding-top: 28px; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); }
-  .writing-related-link { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 0; color: var(--dash-text); text-decoration: none !important; font-size: var(--text-body-sm); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); }
-  .writing-related-link--with-image { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; gap: 16px; }
-  .writing-related-link :global(.writing-related-image) { display: block; width: 80px; height: 45px; object-fit: cover; object-position: left center; border-radius: 8px; }
-  .writing-related-category { display: block; margin-bottom: 4px; color: var(--dash-muted); font-size: var(--text-caption); }
-  .writing-related-title { font-weight: var(--font-weight-medium); line-height: var(--leading-compact); font-size: var(--text-body); }
+  .writing-prose > :global(:last-child) {
+    margin-bottom: 0;
+  }
 
-  @media (max-width: 1100px) {
-    .writing-reading-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
-    .writing-toc { display: none; }
+  .writing-prose :global(p) {
+    margin: 20px 0;
+    max-width: none;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  .writing-prose :global(h2) {
+    margin: 2em 0 1em;
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-subheading);
+    scroll-margin-top: 24px;
+  }
+
+  .writing-prose :global(h3) {
+    margin: 1.6em 0 0.6em;
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+    scroll-margin-top: 24px;
+  }
+
+  .writing-prose :global(h4) {
+    margin: 1.5em 0 0.5em;
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+    scroll-margin-top: 24px;
+  }
+
+  .writing-prose :global(:is(h2, h3, h4, hr) + *) {
+    margin-top: 0;
+  }
+
+  .writing-prose :global(ul),
+  .writing-prose :global(ol) {
+    margin: 20px 0;
+    padding-left: 26px;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  .writing-prose :global(ul) {
+    list-style: disc;
+  }
+
+  .writing-prose :global(ol) {
+    list-style: decimal;
+  }
+
+  .writing-prose :global(li) {
+    margin: 8px 0;
+    padding-left: 6px;
+    max-width: none;
+  }
+
+  .writing-prose :global(li::marker) {
+    color: var(--dash-muted);
+  }
+
+  .writing-prose :global(li > p) {
+    margin: 12px 0;
+  }
+
+  .writing-prose :global(li > p:first-child) {
+    margin-top: 0;
+  }
+
+  .writing-prose :global(li > p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .writing-prose :global(strong) {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .writing-prose :global(figure),
+  .writing-prose :global(p:has(> img:only-child)) {
+    margin: 32px 0;
+  }
+
+  .writing-prose :global(figure > *) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .writing-prose :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-card);
+  }
+
+  .writing-prose :global(figcaption) {
+    margin-top: 12px;
+    font-size: var(--text-caption);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted);
+  }
+
+  .writing-prose :global(figcaption p) {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  .writing-prose :global(blockquote) {
+    margin: 28px 0;
+    padding: 16px 20px;
+    border: 0;
+    border-radius: var(--radius-card);
+    background: var(--color-ivory, var(--dash-surface-subtle));
+  }
+
+  .writing-prose :global(blockquote p:first-child) {
+    margin-top: 0;
+  }
+
+  .writing-prose :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .writing-prose :global(pre) {
+    margin: 28px 0;
+    padding: 16px 20px;
+    overflow-x: auto;
+    border-radius: var(--radius-card-sm);
+    background: var(--dash-surface-subtle);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+  }
+
+  .writing-prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+  }
+
+  .writing-prose :global(:not(pre) > code) {
+    padding: 2px 6px;
+    border-radius: var(--radius-tag);
+    background: var(--dash-surface-subtle);
+  }
+
+  .writing-prose :global(table) {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 28px 0;
+    font-size: var(--text-body-sm);
+    overflow-wrap: anywhere;
+  }
+
+  .writing-prose :global(th),
+  .writing-prose :global(td) {
+    padding: 12px 10px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .writing-prose :global(th) {
+    background: var(--color-ivory, var(--dash-surface-subtle));
+    font-weight: var(--font-weight-medium);
+  }
+
+  .writing-prose :global(hr) {
+    margin: 48px 0;
+    border: 0;
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .writing-prose :global(a) {
+    text-decoration: none;
   }
 </style>

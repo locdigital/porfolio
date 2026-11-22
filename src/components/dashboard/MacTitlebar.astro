@@ -11,18 +11,47 @@ const {
 ---
 
 <header class="desktop-titlebar" aria-label="Application Window Title Bar">
-  <!-- Traffic Light Circles (Decorative, non-interactive, hidden from AT) -->
-  <div class="mac-traffic-lights" aria-hidden="true">
-    <span class="mac-dot mac-dot-close"></span>
-    <span class="mac-dot mac-dot-minimize"></span>
-    <span class="mac-dot mac-dot-maximize"></span>
+  <!-- Functional macOS-style window controls. -->
+  <div class="mac-traffic-lights" aria-label="Window controls">
+    <button
+      class="mac-dot mac-dot-close"
+      type="button"
+      data-window-action="close"
+      aria-label="Close workspace"
+      title="Close workspace"
+    >
+      <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
+        <use href="/assets/icons/all-three.svg#window-close"></use>
+      </svg>
+    </button>
+    <button
+      class="mac-dot mac-dot-minimize"
+      type="button"
+      data-window-action="minimize"
+      aria-label="Minimize workspace"
+      aria-pressed="false"
+      title="Minimize workspace"
+    >
+      <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
+        <use href="/assets/icons/all-three.svg#window-minimize"></use>
+      </svg>
+    </button>
+    <button
+      class="mac-dot mac-dot-maximize"
+      type="button"
+      data-window-action="maximize"
+      aria-label="Maximize workspace"
+      aria-pressed="false"
+      title="Maximize workspace"
+    >
+      <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
+        <use href="/assets/icons/all-three.svg#window-maximize"></use>
+      </svg>
+    </button>
   </div>
 
   <!-- Centered Workspace Title -->
   <div class="desktop-titlebar-title">
     <span>{title}</span>
   </div>
-
-  <!-- Right Meta -->
-  <div class="desktop-titlebar-meta"></div>
 </header>

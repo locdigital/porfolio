@@ -1,4 +1,4 @@
-import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
+import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from "astro:transitions/client";
 
 import { shuffleGearGrid } from "../lib/gear-shuffle";
 
@@ -41,6 +41,21 @@ function isLocalHashLink(event: MouseEvent) {
   return link && link.origin === location.origin && link.pathname + link.search === activePage && link.hash;
 }
 
+function clearNavigationFeedback() {
+  document.documentElement.classList.remove("is-page-loading");
+  document.querySelectorAll(".dash-nav-link.is-pending").forEach((link) => link.classList.remove("is-pending"));
+}
+
+// Give immediate visual feedback while Astro fetches and prepares the next page.
+document.addEventListener("astro:before-preparation", (event) => {
+  const navigation = event as TransitionBeforePreparationEvent;
+  document.documentElement.classList.add("is-page-loading");
+  const source = navigation.sourceElement instanceof Element
+    ? navigation.sourceElement.closest(".dash-nav-link")
+    : null;
+  source?.classList.add("is-pending");
+});
+
 // Hash links are handled synchronously by Astro, without any swap lifecycle.
 // Remember the old entry before its click handler, then read the new index after it.
 document.addEventListener("click", (event) => {
@@ -60,6 +75,30 @@ window.addEventListener("hashchange", () => {
 
 document.addEventListener("astro:before-swap", (event) => {
   const navigation = event as TransitionBeforeSwapEvent;
+
+  // Preserve window frame state onto the incoming document BEFORE Astro swaps the DOM,
+  // so maximized/minimized/closed windows never flash back to default size during navigation.
+  const currentRoot = document.documentElement;
+  const nextDoc = navigation.newDocument;
+  const isClosed = currentRoot.classList.contains("window-closed");
+  const isMinimized = !isClosed && currentRoot.classList.contains("window-minimized");
+  const isMaximized = !isClosed && currentRoot.classList.contains("window-maximized");
+
+  nextDoc.documentElement.classList.toggle("window-closed", isClosed);
+  nextDoc.documentElement.classList.toggle("window-minimized", isMinimized);
+  nextDoc.documentElement.classList.toggle("window-maximized", isMaximized);
+
+  const nextFrame = nextDoc.querySelector<HTMLElement>(".mac-window-container");
+  if (nextFrame) {
+    nextFrame.hidden = isClosed;
+    nextFrame.classList.toggle("is-minimized", isMinimized);
+    nextFrame.classList.toggle("is-maximized", isMaximized);
+  }
+  const nextRestore = nextDoc.querySelector<HTMLButtonElement>('[data-window-action="restore"]');
+  if (nextRestore) {
+    nextRestore.hidden = !isClosed;
+  }
+
   rememberScroll();
   // Do not overwrite the destination history entry during a popstate traversal.
   if (history.state?.index === activeIndex) {
@@ -121,6 +160,7 @@ window.addEventListener("pagehide", () => {
 
 // Bound memory on long browsing sessions to 80 cached history entries.
 document.addEventListener("astro:page-load", () => {
+  clearNavigationFeedback();
   if (!positions.has(activeIndex)) {
     restoreScroll(activeIndex);
     rememberScroll();
