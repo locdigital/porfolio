@@ -27,6 +27,14 @@ export type WindowAction =
 
 const ALL_APP_IDS: AppId[] = ["netflix", "spotify", "photos", "workspace", "photoshop"];
 
+const DEFAULT_OFFSETS: Record<AppId, { x: number; y: number }> = {
+  workspace: { x: 0, y: 0 },
+  netflix: { x: -32, y: -20 },
+  spotify: { x: 32, y: 18 },
+  photos: { x: -18, y: 24 },
+  photoshop: { x: 44, y: -16 },
+};
+
 export function getDefaultAppForPath(pathname: string): AppId {
   return pathname.startsWith("/photos") ? "photos" : "workspace";
 }
@@ -43,8 +51,8 @@ export function createInitialWindowState(pathname = "/"): WindowManagerState {
       isMinimized: false,
       isMaximized: false,
       zIndex: isInitial ? 10 : 1,
-      offsetX: 0,
-      offsetY: 0,
+      offsetX: DEFAULT_OFFSETS[id].x,
+      offsetY: DEFAULT_OFFSETS[id].y,
     };
   }
 

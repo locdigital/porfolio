@@ -57,13 +57,35 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     return ids;
   }, [hostWindowApp]);
 
-  // Sync maximized class on <html> when any floating window is maximized
+  // Sync maximized class and z-index on host .mac-window-container so all windows can run simultaneously
   useEffect(() => {
     const anyFloatingMaximized = floatingAppIds.some(
       (id) => state.windows[id].isOpen && !state.windows[id].isMinimized && state.windows[id].isMaximized,
     );
     document.documentElement.classList.toggle("desktop-floating-maximized", anyFloatingMaximized);
-  }, [floatingAppIds, state.windows]);
+
+    const hostFrame = document.querySelector<HTMLElement>(".mac-window-container");
+    if (hostFrame) {
+      const hostZ = Math.max(
+        state.windows.workspace.zIndex,
+        hostWindowApp === "photos" ? state.windows.photos.zIndex : 0,
+      );
+      hostFrame.style.position = "relative";
+      hostFrame.style.zIndex = String(25 + hostZ);
+    }
+  }, [floatingAppIds, hostWindowApp, state.windows]);
+
+  // Clicking directly on the Workspace window brings it to front without closing/minimizing other apps
+  useEffect(() => {
+    const handleHostPointerDown = () => {
+      dispatch({ type: "FOCUS_APP", id: hostWindowApp });
+    };
+    const hostFrame = document.querySelector<HTMLElement>(".mac-window-container");
+    hostFrame?.addEventListener("pointerdown", handleHostPointerDown);
+    return () => {
+      hostFrame?.removeEventListener("pointerdown", handleHostPointerDown);
+    };
+  }, [hostWindowApp]);
 
   // Bring the Astro host window (.mac-window-container) to front when workspace or host photos is focused
   const focusHostWindow = useCallback(() => {
@@ -80,24 +102,12 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
   const handleSelectDockApp = useCallback(
     (id: AppId) => {
       if (id === "workspace") {
-        // Minimize floating overlays so Workspace is clearly frontmost
-        for (const fid of floatingAppIds) {
-          if (state.windows[fid].isOpen && !state.windows[fid].isMinimized) {
-            dispatch({ type: "MINIMIZE_APP", id: fid });
-          }
-        }
         focusHostWindow();
         dispatch({ type: "OPEN_APP", id: "workspace" });
         return;
       }
 
       if (id === "photos" && hostWindowApp === "photos") {
-        // Already on /photos route: bring host Photography window to front
-        for (const fid of floatingAppIds) {
-          if (state.windows[fid].isOpen && !state.windows[fid].isMinimized) {
-            dispatch({ type: "MINIMIZE_APP", id: fid });
-          }
-        }
         focusHostWindow();
         dispatch({ type: "OPEN_APP", id: "photos" });
         return;
@@ -105,7 +115,7 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
 
       dispatch({ type: "OPEN_APP", id });
     },
-    [floatingAppIds, focusHostWindow, hostWindowApp, state.windows],
+    [focusHostWindow, hostWindowApp],
   );
 
   const runningApps = useMemo<AppId[]>(() => {

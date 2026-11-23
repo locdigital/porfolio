@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import type { PhotosApiDestination, PhotosApiPhoto } from "../../pages/api/photos.json";
+import GlassFolder from "../ui/GlassFolder";
 
 interface PhotosPayload {
   destinationCount: number;
@@ -268,36 +269,44 @@ export function PhotosApp() {
           ))}
         </div>
       ) : viewMode === "folders" ? (
-        /* 4-Column Glass Folder Grid */
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 mt-2">
-          {filteredDestinations.map((dest) => (
-            <button
+        /* Same GlassFolder 4-Column Layout as /photos */
+        <div
+          className="grid gap-y-12 gap-x-8 px-2 pt-4 pb-12"
+          style={{
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 190px), 1fr))",
+          }}
+        >
+          {filteredDestinations.map((dest, idx) => (
+            <div
               key={dest.slug}
-              type="button"
+              className="min-w-0 relative cursor-pointer hover:z-10 focus-within:z-10"
               onClick={() => setSelectedSlug(dest.slug)}
-              className="group text-left bg-transparent border-0 p-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1d1d1f] rounded-2xl"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setSelectedSlug(dest.slug);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`Open ${dest.name} (${dest.photoCount} photos)`}
             >
-              <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-[#f5f5f7] border border-black/[0.08] shadow-sm transition-transform duration-200 group-hover:-translate-y-0.5">
-                {dest.heroSrc ? (
-                  <img
-                    src={dest.heroSrc}
-                    alt={dest.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                ) : null}
-                {/* Frosted macOS folder front glass */}
-                <div className="absolute inset-x-0 bottom-0 h-[44%] bg-white/75 backdrop-blur-md border-t border-white/80 px-3.5 py-2.5 flex flex-col justify-center">
-                  <div className="text-sm font-semibold text-[#1d1d1f] truncate">
-                    {dest.name}
-                  </div>
-                  <div className="text-[11px] text-[#6e6e73] mt-0.5">
-                    {dest.photoCount} photos · {dest.region}
-                  </div>
-                </div>
-              </div>
-            </button>
+              <GlassFolder
+                label={dest.name}
+                meta={`${dest.photoCount} photos · ${dest.region}`}
+                image={dest.heroSrc || undefined}
+                art="none"
+                files={dest.previewImages.map((image, index) => ({
+                  name: `${dest.name} — ${index + 1}`,
+                  image,
+                }))}
+                action="none"
+                appear={false}
+                defaultWidth={212}
+                eager={idx < 8}
+                onFileSelect={() => setSelectedSlug(dest.slug)}
+              />
+            </div>
           ))}
         </div>
       ) : (
