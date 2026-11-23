@@ -129,7 +129,13 @@ export function SpotifyHeader({
           aria-label="Phuc Loc"
           title="Phuc Loc"
         >
-          L
+          <img
+            src="/images/about-photographer.png"
+            alt="Phuc Loc"
+            className="spotify-avatar-img"
+            width={32}
+            height={32}
+          />
         </button>
       </div>
     </header>

@@ -25,6 +25,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Action", "Thriller"],
     synopsis:
       "A hardened mercenary's mission to rescue the kidnapped son of an imprisoned international crime lord turns into a relentless race for survival across Dhaka.",
+    posterSrc: "/images/netflix/extraction-poster.webp",
+    backdropSrc: "/images/netflix/extraction-backdrop.webp",
     accentColor: "#B45309",
     netflixUrl: "https://www.netflix.com/title/80230399",
     featured: true,
@@ -38,6 +40,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Action", "Thriller"],
     synopsis:
       "Back from the brink of death, commando Tyler Rake embarks on a dangerous mission to extract a ruthless Georgian gangster's battered family from prison.",
+    posterSrc: "/images/netflix/extraction-2-poster.webp",
+    backdropSrc: "/images/netflix/extraction-2-backdrop.webp",
     accentColor: "#9A3412",
     netflixUrl: "https://www.netflix.com/title/81098494",
     sortOrder: 2,
@@ -50,6 +54,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Sci-Fi", "Action"],
     synopsis:
       "After accidentally crash-landing in 2022, time-traveling fighter pilot Adam Reed teams up with his 12-year-old self to save the future.",
+    posterSrc: "/images/netflix/the-adam-project-poster.webp",
+    backdropSrc: "/images/netflix/the-adam-project-backdrop.webp",
     accentColor: "#1D4ED8",
     netflixUrl: "https://www.netflix.com/title/81309354",
     sortOrder: 3,
@@ -62,6 +68,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Mystery", "Drama"],
     synopsis:
       "World-famous detective Benoit Blanc heads to a private Greek island to peel back the layers of a murder mystery surrounding a tech billionaire and his eclectic guests.",
+    posterSrc: "/images/netflix/glass-onion-poster.webp",
+    backdropSrc: "/images/netflix/glass-onion-backdrop.webp",
     accentColor: "#0369A1",
     netflixUrl: "https://www.netflix.com/title/81458416",
     sortOrder: 4,
@@ -74,6 +82,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Action", "Thriller"],
     synopsis:
       "When a shadowy CIA agent uncovers damning agency secrets, he is hunted across the globe by a sociopathic rogue operative who puts a bounty on his head.",
+    posterSrc: "/images/netflix/the-gray-man-poster.webp",
+    backdropSrc: "/images/netflix/the-gray-man-backdrop.webp",
     accentColor: "#334155",
     netflixUrl: "https://www.netflix.com/title/81160697",
     sortOrder: 5,
@@ -86,6 +96,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Thriller", "Drama"],
     synopsis:
       "After a fateful near-miss in Paris, a methodical assassin battles his employers — and himself — on an international manhunt he insists isn't personal.",
+    posterSrc: "/images/netflix/the-killer-poster.webp",
+    backdropSrc: "/images/netflix/the-killer-backdrop.webp",
     accentColor: "#18181B",
     netflixUrl: "https://www.netflix.com/title/80234448",
     sortOrder: 6,
@@ -98,6 +110,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Sci-Fi", "Thriller"],
     synopsis:
       "Five years after an ominous unseen presence drives most of society to despair, a survivor and her two children make a desperate bid to reach safety blindfolded.",
+    posterSrc: "/images/netflix/bird-box-poster.webp",
+    backdropSrc: "/images/netflix/bird-box-backdrop.webp",
     accentColor: "#3F6212",
     netflixUrl: "https://www.netflix.com/title/80196789",
     sortOrder: 7,
@@ -110,6 +124,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Sci-Fi", "Drama"],
     synopsis:
       "Two low-level astronomers go on a giant media tour to warn an indifferent world about an approaching comet that will destroy planet Earth.",
+    posterSrc: "/images/netflix/dont-look-up-poster.webp",
+    backdropSrc: "/images/netflix/dont-look-up-backdrop.webp",
     accentColor: "#7C2D12",
     netflixUrl: "https://www.netflix.com/title/81252357",
     sortOrder: 8,
@@ -122,6 +138,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Mystery", "Drama"],
     synopsis:
       "While searching for her missing mother, intrepid teen Enola Holmes uses her sleuthing skills to outsmart big brother Sherlock and help a runaway lord.",
+    posterSrc: "/images/netflix/enola-holmes-poster.webp",
+    backdropSrc: "/images/netflix/enola-holmes-backdrop.webp",
     accentColor: "#9F1239",
     netflixUrl: "https://www.netflix.com/title/81277950",
     sortOrder: 9,
@@ -134,6 +152,8 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
     genres: ["Action", "Thriller"],
     synopsis:
       "After faking his death, a tech billionaire recruits a team of international operatives for a bold and bloody mission to take down a brutal dictator.",
+    posterSrc: "/images/netflix/6-underground-poster.webp",
+    backdropSrc: "/images/netflix/6-underground-backdrop.webp",
     accentColor: "#0F766E",
     netflixUrl: "https://www.netflix.com/title/81001887",
     sortOrder: 10,

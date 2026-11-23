@@ -216,13 +216,20 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  padding: 0;
+  overflow: hidden;
   border-radius: 9999px;
-  background: #e85d2a;
-  color: #000000;
-  font-size: 13px;
-  font-weight: 700;
+  background: var(--spotify-surface);
   cursor: pointer;
   border: 3px solid var(--spotify-surface);
+}
+
+.spotify-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
 }
 
 /* ── Left Library Sidebar ────────────────────────────────────────────────── */

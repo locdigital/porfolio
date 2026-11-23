@@ -1,27 +1,246 @@
 import "./media-apps.css";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ExternalLink, Film, Sparkles, X } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Info,
+  Play,
+  Plus,
+  Search,
+  X,
+} from "lucide-react";
 import {
   NETFLIX_CURATED_NOTE,
   NETFLIX_GENRES,
   NETFLIX_MOVIES,
   type NetflixMovie,
 } from "../../data/netflix";
-import {
-  MediaEmptyState,
-  MediaFilterBar,
-  MediaSearchInput,
-} from "./MediaAppControls";
+import { MediaEmptyState } from "./MediaAppControls";
+
+const GENRE_THEMES: Record<string, { gradient: string; subtitle: string }> = {
+  Action: {
+    gradient: "linear-gradient(160deg, #dc2626 0%, #7f1d1d 55%, #18181b 100%)",
+    subtitle: "High-octane & relentless",
+  },
+  "Sci-Fi": {
+    gradient: "linear-gradient(160deg, #0284c7 0%, #1e3a8a 55%, #0f172a 100%)",
+    subtitle: "Future worlds & paradoxes",
+  },
+  Thriller: {
+    gradient: "linear-gradient(160deg, #475569 0%, #1e293b 55%, #09090b 100%)",
+    subtitle: "Edge-of-your-seat tension",
+  },
+  Drama: {
+    gradient: "linear-gradient(160deg, #9333ea 0%, #581c87 55%, #18181b 100%)",
+    subtitle: "Character-driven stories",
+  },
+  Mystery: {
+    gradient: "linear-gradient(160deg, #0d9488 0%, #115e59 55%, #0f172a 100%)",
+    subtitle: "Twists & whodunits",
+  },
+};
+
+function ApplePaddleChevron({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 9 31"
+      className={`tv-paddle__icon${direction === "right" ? " tv-paddle__icon--right" : ""}`}
+      aria-hidden="true"
+    >
+      <path
+        fill="currentColor"
+        d="M5.275 29.46a1.61 1.61 0 0 0 1.456 1.077c1.018 0 1.772-.737 1.772-1.737 0-.526-.277-1.186-.449-1.62l-4.68-11.912L8.05 3.363c.172-.442.45-1.116.45-1.625A1.7 1.7 0 0 0 6.728.002a1.6 1.6 0 0 0-1.456 1.09L.675 12.774c-.301.775-.677 1.744-.677 2.495 0 .754.376 1.705.677 2.498L5.272 29.46Z"
+      />
+    </svg>
+  );
+}
+
+function ShelfSection({
+  id,
+  title,
+  showChevron = false,
+  children,
+}: {
+  id: string;
+  title: string;
+  showChevron?: boolean;
+  children: ReactNode;
+}) {
+  const rowRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const syncScrollButtons = useCallback(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(maxScroll - el.scrollLeft > 4);
+  }, []);
+
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    syncScrollButtons();
+    const ro = new ResizeObserver(syncScrollButtons);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [syncScrollButtons]);
+
+  const scrollShelf = (direction: -1 | 1) => {
+    const el = rowRef.current;
+    if (!el) return;
+    const distance = Math.max(240, Math.round(el.clientWidth * 0.78));
+    el.scrollBy({ left: direction * distance, behavior: "smooth" });
+  };
+
+  return (
+    <section className="tv-shelf" aria-labelledby={id}>
+      <div className="tv-shelf__header">
+        <h2 id={id} className="tv-shelf__heading">
+          <span>{title}</span>
+          {showChevron && (
+            <ChevronRight
+              size={18}
+              className="tv-shelf__chevron"
+              aria-hidden="true"
+            />
+          )}
+        </h2>
+      </div>
+      <div className="tv-shelf__viewport">
+        <button
+          type="button"
+          className="tv-paddle tv-paddle--shelf tv-paddle--left"
+          onClick={() => scrollShelf(-1)}
+          disabled={!canScrollLeft}
+          aria-label={`Previous ${title}`}
+        >
+          <ApplePaddleChevron direction="left" />
+        </button>
+
+        <div
+          ref={rowRef}
+          className="tv-shelf__row"
+          onScroll={syncScrollButtons}
+        >
+          {children}
+        </div>
+
+        <button
+          type="button"
+          className="tv-paddle tv-paddle--shelf tv-paddle--right"
+          onClick={() => scrollShelf(1)}
+          disabled={!canScrollRight}
+          aria-label={`Next ${title}`}
+        >
+          <ApplePaddleChevron direction="right" />
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function PosterCard({
+  movie,
+  rank,
+  showBadge = false,
+  onSelect,
+}: {
+  movie: NetflixMovie;
+  rank?: number;
+  showBadge?: boolean;
+  onSelect: (movie: NetflixMovie) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(movie)}
+      className="tv-poster-card group"
+      aria-label={`${movie.title} (${movie.year})`}
+    >
+      <div
+        className="tv-poster-art"
+        style={{
+          background: movie.posterSrc
+            ? `url(${movie.posterSrc}) center / cover no-repeat`
+            : `radial-gradient(circle at 78% 18%, rgba(255,255,255,0.22), transparent 52%), radial-gradient(circle at 20% 85%, rgba(0,0,0,0.45), transparent 60%), linear-gradient(165deg, ${movie.accentColor} 0%, #141417 100%)`,
+        }}
+      >
+        {typeof rank === "number" && (
+          <span className="tv-poster-rank" aria-hidden="true">
+            {rank}
+          </span>
+        )}
+        {showBadge && (
+          <span className="tv-poster-brand" aria-hidden="true">
+            <span className="tv-poster-brand-n">N</span> FILM
+          </span>
+        )}
+        <div className="tv-poster-scrim">
+          <div className="tv-poster-title">{movie.title}</div>
+          <div className="tv-poster-meta">
+            {movie.genres[0]} · {movie.year}
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
 
 export function NetflixApp() {
   const [query, setQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState<string>("All");
   const [selectedMovie, setSelectedMovie] = useState<NetflixMovie | null>(null);
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [myList, setMyList] = useState<string[]>([]);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
-  const featuredMovie = useMemo(
-    () => NETFLIX_MOVIES.find((m) => m.featured) ?? NETFLIX_MOVIES[0],
+  const heroMovies = useMemo(() => {
+    const sorted = [...NETFLIX_MOVIES].sort((a, b) => a.sortOrder - b.sortOrder);
+    return sorted.slice(0, 6);
+  }, []);
+
+  const activeHero = heroMovies[heroIndex] ?? heroMovies[0];
+
+  const topTenMovies = useMemo(
+    () => [...NETFLIX_MOVIES].sort((a, b) => a.sortOrder - b.sortOrder),
+    [],
+  );
+
+  const newReleases = useMemo(
+    () =>
+      [...NETFLIX_MOVIES].sort(
+        (a, b) => b.year - a.year || a.sortOrder - b.sortOrder,
+      ),
+    [],
+  );
+
+  const mustWatchMovies = useMemo(
+    () =>
+      [...NETFLIX_MOVIES].filter((m) =>
+        [
+          "glass-onion-2022",
+          "the-killer-2023",
+          "extraction-2020",
+          "the-adam-project-2022",
+          "dont-look-up-2021",
+          "enola-holmes-2020",
+          "bird-box-2018",
+          "the-gray-man-2022",
+        ].includes(m.id),
+      ),
     [],
   );
 
@@ -39,6 +258,14 @@ export function NetflixApp() {
       return matchesGenre && matchesQuery;
     }).sort((a, b) => a.sortOrder - b.sortOrder);
   }, [query, selectedGenre]);
+
+  const isFiltered = selectedGenre !== "All" || query.trim().length > 0;
+
+  const toggleMyList = (id: string) => {
+    setMyList((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    );
+  };
 
   const openMovie = (movie: NetflixMovie) => {
     lastFocusedRef.current = document.activeElement as HTMLElement | null;
@@ -70,215 +297,407 @@ export function NetflixApp() {
     setSelectedGenre("All");
   };
 
+  const prevHero = () =>
+    setHeroIndex((i) => (i - 1 + heroMovies.length) % heroMovies.length);
+  const nextHero = () => setHeroIndex((i) => (i + 1) % heroMovies.length);
+
   return (
-    <div className="media-app media-app--netflix">
-      <div className="media-app__content">
-        {/* Header */}
-        <div className="media-app__header">
-          <div>
-            <h1 className="media-app__title">
-              <Film size={22} aria-hidden="true" />
-              My Cinema
-            </h1>
-            <p className="text-sm text-[#6e6e73] mt-1 mb-0">
-              A small collection of stories worth watching.
-            </p>
+    <div className="media-app media-app--netflix tv-app">
+      {/* Persistent Apple TV style Top Navigation Header */}
+      <header className="tv-header" aria-label="My Cinema navigation">
+        <div className="tv-header__contents">
+          <div className="tv-header__left">
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="tv-header__brand"
+              aria-label="My Cinema Home"
+            >
+              <span className="tv-brand-mark" aria-hidden="true">
+                N
+              </span>
+              <span>My Cinema</span>
+            </button>
           </div>
 
-          <MediaSearchInput
-            value={query}
-            onChange={setQuery}
-            placeholder={`Search ${NETFLIX_MOVIES.length} titles...`}
-            ariaLabel="Search movies"
-          />
-        </div>
+          <nav className="tv-header__tabs" aria-label="Browse genres">
+            <ul>
+              {NETFLIX_GENRES.map((genre) => {
+                const isCurrent = selectedGenre === genre && !query.trim();
+                return (
+                  <li key={genre} className={isCurrent ? "is-current" : undefined}>
+                    <button
+                      type="button"
+                      aria-current={isCurrent ? "page" : undefined}
+                      onClick={() => {
+                        setQuery("");
+                        setSelectedGenre(genre);
+                      }}
+                    >
+                      {genre === "All" ? "Home" : genre}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
-        {/* Genre Filters */}
-        <MediaFilterBar
-          options={NETFLIX_GENRES}
-          selected={selectedGenre}
-          onSelect={setSelectedGenre}
-          ariaLabel="Filter by genre"
-          filteredCount={filteredMovies.length}
-          totalCount={NETFLIX_MOVIES.length}
-          countLabel="titles"
-        />
-
-        {/* Featured Card */}
-        {featuredMovie && selectedGenre === "All" && !query.trim() && (
-          <div
-            className="cinema-feature relative rounded-2xl overflow-hidden mb-5 text-white"
-            style={{
-              background: `radial-gradient(circle at 85% 20%, rgba(229, 9, 20, 0.28), transparent 55%), linear-gradient(125deg, ${featuredMovie.accentColor} 0%, #18181b 78%)`,
-            }}
-          >
-            <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-white/80 mb-1.5">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#E50914]" />
-                Featured Pick · {featuredMovie.year}
-              </div>
-              <h2 className="text-xl sm:text-2xl font-semibold tracking-tight m-0 text-white">
-                {featuredMovie.title}
-              </h2>
-              <p className="text-sm text-white/85 mt-2 leading-relaxed mb-4 line-clamp-3">
-                {featuredMovie.synopsis}
-              </p>
-              <div className="flex flex-wrap items-center gap-2.5">
-                <a
-                  href={featuredMovie.netflixUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#E50914] hover:bg-[#c80812] text-white text-xs font-semibold no-underline transition"
-                >
-                  <span>Watch on Netflix</span>
-                  <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
-                </a>
+          <div className="tv-header__controls">
+            <label className="tv-search-pill">
+              <Search size={14} aria-hidden="true" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search"
+                aria-label="Search movies"
+              />
+              {query && (
                 <button
                   type="button"
-                  onClick={() => openMovie(featuredMovie)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white text-xs font-medium cursor-pointer transition"
+                  onClick={() => setQuery("")}
+                  className="tv-search-clear"
+                  aria-label="Clear search"
                 >
-                  More Details
+                  <X size={12} aria-hidden="true" />
                 </button>
-              </div>
+              )}
+            </label>
+          </div>
+        </div>
+      </header>
+
+      {/* Full-bleed Apple TV Epic Stage Hero Carousel */}
+      {!isFiltered && activeHero && (
+        <section
+          className="tv-hero"
+          aria-label="Featured title"
+          style={{
+            background: activeHero.backdropSrc
+              ? `url(${activeHero.backdropSrc}) center 22% / cover no-repeat`
+              : `radial-gradient(circle at 75% 24%, rgba(255,255,255,0.16), transparent 46%), radial-gradient(circle at 85% 75%, rgba(229,9,20,0.28), transparent 52%), linear-gradient(125deg, ${activeHero.accentColor} 0%, #18181b 68%, #09090b 100%)`,
+          }}
+        >
+          <div className="tv-hero__scrim" aria-hidden="true" />
+
+          {/* Apple TV edge chevron paddles */}
+          <button
+            type="button"
+            className="tv-paddle tv-paddle--hero tv-paddle--left"
+            onClick={prevHero}
+            aria-label="Previous featured title"
+          >
+            <ApplePaddleChevron direction="left" />
+          </button>
+          <button
+            type="button"
+            className="tv-paddle tv-paddle--hero tv-paddle--right"
+            onClick={nextHero}
+            aria-label="Next featured title"
+          >
+            <ApplePaddleChevron direction="right" />
+          </button>
+
+          {/* Bottom-left metadata stack */}
+          <div className="tv-hero__content">
+            <span className="tv-hero__badge">
+              {activeHero.featured ? "Featured" : "Popular"}
+            </span>
+            <h1 className="tv-hero__title">{activeHero.title}</h1>
+            <div className="tv-hero__meta">
+              <span className="tv-hero__meta-pill">N</span>
+              <span>
+                Film · {activeHero.genres.join(" · ")} · {activeHero.year}
+              </span>
+            </div>
+            <p className="tv-hero__synopsis">{activeHero.synopsis}</p>
+            <div className="tv-hero__rank-note">
+              #{activeHero.sortOrder} on My Cinema
+            </div>
+
+            <div className="tv-hero__actions">
+              <a
+                href={activeHero.netflixUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="tv-btn-primary"
+              >
+                <Play size={14} fill="currentColor" aria-hidden="true" />
+                <span>Watch on Netflix</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => toggleMyList(activeHero.id)}
+                className="tv-btn-circle"
+                aria-label={
+                  myList.includes(activeHero.id)
+                    ? "Remove from My List"
+                    : "Add to My List"
+                }
+                title={
+                  myList.includes(activeHero.id)
+                    ? "In My List"
+                    : "Add to My List"
+                }
+              >
+                {myList.includes(activeHero.id) ? (
+                  <Check size={16} />
+                ) : (
+                  <Plus size={16} />
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => openMovie(activeHero)}
+                className="tv-btn-circle"
+                aria-label="More details"
+                title="More details"
+              >
+                <Info size={16} />
+              </button>
             </div>
           </div>
-        )}
 
-        {/* Cards follow the app window width, not the desktop viewport. */}
-        {filteredMovies.length === 0 ? (
-          <MediaEmptyState
-            message={
-              query.trim()
-                ? `No movies match “${query.trim()}”.`
-                : "No movies in this genre."
-            }
-            onReset={resetFilters}
-          />
-        ) : (
-          <div className="cinema-grid">
-            {filteredMovies.map((movie) => (
-              <button
-                key={movie.id}
-                type="button"
-                onClick={() => openMovie(movie)}
-                className="cinema-card group min-w-0 text-left bg-transparent border-0 p-0 cursor-pointer rounded-xl"
-              >
-                <div
-                  className="cinema-poster relative aspect-[2/3] w-full rounded-xl overflow-hidden border border-black/10 shadow-sm flex flex-col justify-between text-white transition-transform duration-200"
-                  style={{
-                    background: `radial-gradient(circle at 80% 15%, rgba(255,255,255,0.14), transparent 55%), linear-gradient(165deg, ${movie.accentColor} 0%, #111113 100%)`,
-                  }}
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] font-semibold uppercase tracking-wider text-white/80">
-                    <span className="px-1.5 py-0.5 rounded bg-black/25 backdrop-blur-xs">
-                      {movie.genres[0]}
-                    </span>
-                    <span className="tabular-nums">{movie.year}</span>
-                  </div>
-
-                  <div className="my-auto py-2">
-                    {movie.featured && (
-                      <div className="inline-flex items-center gap-1 text-[10px] font-medium text-white/85 mb-1.5">
-                        <Sparkles className="w-3 h-3 text-[#ff6b6b]" aria-hidden="true" />
-                        <span>Featured</span>
-                      </div>
-                    )}
-                    <div className="w-6 h-0.5 bg-[#E50914] mb-2" />
-                    <div className="text-base font-semibold leading-snug tracking-tight text-white">
-                      {movie.title}
-                    </div>
-                    <p className="text-[11px] leading-relaxed text-white/70 mt-1.5 mb-0 line-clamp-2">
-                      {movie.synopsis}
-                    </p>
-                  </div>
-
-                  <div className="text-[10px] font-medium text-white/60 group-hover:text-white/95 transition-colors">
-                    View details →
-                  </div>
-                </div>
-                <div className="mt-2 px-0.5">
-                  <div className="text-xs font-medium text-[#1d1d1f] truncate">
-                    {movie.title}
-                  </div>
-                  <div className="text-[11px] text-[#6e6e73] mt-0.5 truncate">
-                    {movie.year} · {movie.genres.join(", ")}
-                  </div>
-                </div>
-              </button>
-            ))}
+          {/* Bottom-center Apple TV glass pagination platter */}
+          <div className="tv-hero__pagination">
+            <nav
+              className="tv-hero__platter"
+              aria-label="Featured slides"
+            >
+              <div className="tv-hero__dots" role="tablist">
+                {heroMovies.map((movie, idx) => (
+                  <button
+                    key={movie.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={idx === heroIndex}
+                    aria-label={`Show ${movie.title}`}
+                    onClick={() => setHeroIndex(idx)}
+                    className={`tv-hero__dot${idx === heroIndex ? " is-active" : ""}`}
+                  />
+                ))}
+              </div>
+            </nav>
           </div>
+        </section>
+      )}
+
+      {/* Main Shelves / Filtered View */}
+      <div className="tv-body">
+        {isFiltered ? (
+          <section className="tv-filtered">
+            <div className="tv-filtered__bar">
+              <div className="tv-filtered__left">
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="tv-back-btn"
+                >
+                  <ChevronLeft size={16} aria-hidden="true" />
+                  <span>Home</span>
+                </button>
+                <h2 className="tv-shelf__heading">
+                  {selectedGenre !== "All" ? selectedGenre : "Search Results"}
+                </h2>
+                <span className="tv-filtered__count">
+                  {filteredMovies.length}{" "}
+                  {filteredMovies.length === 1 ? "title" : "titles"}
+                </span>
+              </div>
+            </div>
+
+            {filteredMovies.length === 0 ? (
+              <MediaEmptyState
+                message={
+                  query.trim()
+                    ? `No movies match “${query.trim()}”.`
+                    : "No movies in this genre."
+                }
+                onReset={resetFilters}
+              />
+            ) : (
+              <div className="tv-grid">
+                {filteredMovies.map((movie) => (
+                  <PosterCard
+                    key={movie.id}
+                    movie={movie}
+                    showBadge
+                    onSelect={openMovie}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        ) : (
+          <>
+            <ShelfSection id="shelf-top10" title="Top 10 Movies" showChevron>
+              {topTenMovies.map((movie, idx) => (
+                <PosterCard
+                  key={movie.id}
+                  movie={movie}
+                  rank={idx + 1}
+                  onSelect={openMovie}
+                />
+              ))}
+            </ShelfSection>
+
+            <ShelfSection id="shelf-new" title="New Releases" showChevron>
+              {newReleases.map((movie) => (
+                <PosterCard
+                  key={movie.id}
+                  movie={movie}
+                  showBadge
+                  onSelect={openMovie}
+                />
+              ))}
+            </ShelfSection>
+
+            <ShelfSection id="shelf-genres" title="Browse by Genre">
+              {NETFLIX_GENRES.filter((g) => g !== "All").map((genre) => {
+                const theme = GENRE_THEMES[genre] ?? {
+                  gradient: "linear-gradient(160deg, #3f3f46 0%, #18181b 100%)",
+                  subtitle: "Curated picks",
+                };
+                const matching = NETFLIX_MOVIES.filter((m) =>
+                  m.genres.includes(genre),
+                );
+                const count = matching.length;
+                const coverPoster = matching[0]?.posterSrc;
+                return (
+                  <button
+                    key={genre}
+                    type="button"
+                    onClick={() => setSelectedGenre(genre)}
+                    className="tv-genre-card"
+                    style={{
+                      background: coverPoster
+                        ? `linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.78) 100%), url(${coverPoster}) center / cover no-repeat`
+                        : theme.gradient,
+                    }}
+                  >
+                    <span className="tv-genre-card__count">
+                      {count} {count === 1 ? "title" : "titles"}
+                    </span>
+                    <div className="tv-genre-card__bottom">
+                      <div className="tv-genre-card__title">{genre}</div>
+                      <div className="tv-genre-card__sub">{theme.subtitle}</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </ShelfSection>
+
+            <ShelfSection id="shelf-must-watch" title="Must Watch" showChevron>
+              {mustWatchMovies.map((movie) => (
+                <PosterCard
+                  key={movie.id}
+                  movie={movie}
+                  showBadge
+                  onSelect={openMovie}
+                />
+              ))}
+            </ShelfSection>
+          </>
         )}
 
-        {/* Curated Disclaimer */}
-        <p className="mt-6 pt-4 border-t border-black/[0.06] text-[11px] text-[#6e6e73]">
-          {NETFLIX_CURATED_NOTE}
-        </p>
+        {/* Curated Footer */}
+        <footer className="tv-footer">
+          <p>{NETFLIX_CURATED_NOTE}</p>
+        </footer>
+      </div>
 
-        {/* Movie Detail Modal inside window */}
-        {selectedMovie && (
+      {/* Movie Detail Modal */}
+      {selectedMovie && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4"
+          onClick={closeMovie}
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedMovie.title}
+        >
           <div
-            className="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4"
-            onClick={closeMovie}
-            role="dialog"
-            aria-modal="true"
-            aria-label={selectedMovie.title}
+            className="w-full max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-black/10"
+            onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="w-full max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-black/10"
-              onClick={(e) => e.stopPropagation()}
+              className="p-6 pt-24 text-white relative"
+              style={{
+                background: selectedMovie.backdropSrc
+                  ? `linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.85) 100%), url(${selectedMovie.backdropSrc}) center / cover no-repeat`
+                  : `linear-gradient(135deg, ${selectedMovie.accentColor} 0%, #111113 100%)`,
+              }}
             >
-              <div
-                className="p-6 text-white relative"
-                style={{
-                  background: `linear-gradient(135deg, ${selectedMovie.accentColor} 0%, #111113 100%)`,
-                }}
+              <button
+                ref={closeButtonRef}
+                type="button"
+                onClick={closeMovie}
+                aria-label="Close movie details"
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center cursor-pointer transition"
               >
-                <button
-                  ref={closeButtonRef}
-                  type="button"
-                  onClick={closeMovie}
-                  aria-label="Close movie details"
-                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center cursor-pointer transition"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-                <div className="text-xs font-medium text-white/75 mb-1">
-                  {selectedMovie.year} · {selectedMovie.genres.join(" / ")}
-                </div>
-                <h2 className="text-2xl font-semibold tracking-tight m-0 text-white pr-8">
-                  {selectedMovie.title}
-                </h2>
+                <X className="w-4 h-4" />
+              </button>
+              <div className="text-xs font-medium text-white/75 mb-1">
+                {selectedMovie.year} · {selectedMovie.genres.join(" · ")}
               </div>
+              <h2 className="text-2xl font-bold tracking-tight m-0 text-white pr-8">
+                {selectedMovie.title}
+              </h2>
+            </div>
 
-              <div className="p-6">
-                <p className="text-sm text-[#424245] leading-relaxed m-0">
-                  {selectedMovie.synopsis}
-                </p>
+            <div className="p-6">
+              <p className="text-sm text-[#424245] leading-relaxed m-0">
+                {selectedMovie.synopsis}
+              </p>
 
-                <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
                   <a
                     href={selectedMovie.netflixUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#E50914] hover:bg-[#c80812] text-white text-xs font-semibold no-underline transition"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#1d1d1f] hover:bg-[#333336] text-white text-xs font-semibold no-underline transition"
                   >
+                    <Play
+                      className="w-3.5 h-3.5"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    />
                     <span>Watch on Netflix</span>
-                    <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                    <ExternalLink
+                      className="w-3 h-3 opacity-70"
+                      aria-hidden="true"
+                    />
                   </a>
                   <button
                     type="button"
-                    onClick={closeMovie}
-                    className="px-3.5 py-2 rounded-lg bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-medium cursor-pointer transition"
+                    onClick={() => toggleMyList(selectedMovie.id)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-medium cursor-pointer transition"
                   >
-                    Close
+                    {myList.includes(selectedMovie.id) ? (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>In My List</span>
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>My List</span>
+                      </>
+                    )}
                   </button>
                 </div>
+                <button
+                  type="button"
+                  onClick={closeMovie}
+                  className="px-3.5 py-2 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-medium cursor-pointer transition"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
