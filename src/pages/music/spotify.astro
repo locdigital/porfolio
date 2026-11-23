@@ -1,0 +1,16 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+---
+
+<DashboardLayout
+  title="Spotify — My Music"
+  description="Personal Spotify playlist in Phuc Loc Nguyen's workspace."
+  currentPath="/music/spotify"
+  noindex={true}
+>
+  <div class="app-route-fallback" aria-hidden="true"></div>
+</DashboardLayout>
+
+<style>
+  .app-route-fallback { min-height: 1px; }
+</style>

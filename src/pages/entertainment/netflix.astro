@@ -1,0 +1,16 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+---
+
+<DashboardLayout
+  title="Netflix — Personal Library"
+  description="Personal Netflix library in Phuc Loc Nguyen's workspace."
+  currentPath="/entertainment/netflix"
+  noindex={true}
+>
+  <div class="app-route-fallback" aria-hidden="true"></div>
+</DashboardLayout>
+
+<style>
+  .app-route-fallback { min-height: 1px; }
+</style>

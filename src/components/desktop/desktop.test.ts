@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_DOCK_APPS } from "../dock/dock.config";
+import { DEFAULT_DOCK_APPS, getAppRoute } from "../dock/dock.config";
 import {
   clampWindowOffset,
   createInitialWindowState,
   getDefaultAppForPath,
+  getDockNavigationPath,
   windowManagerReducer,
 } from "./window-manager";
 import { NETFLIX_MOVIES } from "../../data/netflix";
@@ -31,10 +32,21 @@ describe("Five-App Dock configuration", () => {
     expect(photoshop?.icon).toBe("/assets/dock/photoshop.png");
     expect(photoshop?.name).toBe("Photoshop");
   });
+
+  it("gives every app a stable, dedicated route", () => {
+    expect(getAppRoute("netflix")).toBe("/entertainment/netflix");
+    expect(getAppRoute("spotify")).toBe("/music/spotify");
+    expect(getAppRoute("photos")).toBe("/photos");
+    expect(getAppRoute("workspace")).toBe("/");
+    expect(getAppRoute("photoshop")).toBe("/color-lab/nikon-recipes");
+  });
 });
 
 describe("WindowManager state transitions", () => {
-  it("defaults to photos on /photos routes and workspace elsewhere", () => {
+  it("resolves dedicated routes to their matching app", () => {
+    expect(getDefaultAppForPath("/entertainment/netflix")).toBe("netflix");
+    expect(getDefaultAppForPath("/music/spotify")).toBe("spotify");
+    expect(getDefaultAppForPath("/color-lab/nikon-recipes")).toBe("photoshop");
     expect(getDefaultAppForPath("/photos")).toBe("photos");
     expect(getDefaultAppForPath("/photos/da-lat")).toBe("photos");
     expect(getDefaultAppForPath("/")).toBe("workspace");
@@ -59,6 +71,42 @@ describe("WindowManager state transitions", () => {
 
     state = windowManagerReducer(state, { type: "CLOSE_APP", id: "netflix" });
     expect(state.windows.netflix.isOpen).toBe(false);
+  });
+
+  it("restores the current album or workspace page without navigating to its root", () => {
+    expect(getDockNavigationPath("photos", "/photos/da-lat")).toBeNull();
+    expect(getDockNavigationPath("photos", "/photos/")).toBeNull();
+    expect(getDockNavigationPath("workspace", "/writing/example")).toBeNull();
+    expect(getDockNavigationPath("workspace", "/photos/da-lat")).toBe("/");
+    expect(getDockNavigationPath("photos", "/writing")).toBe("/photos");
+    expect(getDefaultAppForPath("/photoshop")).toBe("workspace");
+    expect(getDefaultAppForPath("/music/spotify/")).toBe("spotify");
+  });
+
+  it("releases the previous host when switching between Photos and Workspace", () => {
+    let state = createInitialWindowState("/photos/da-lat");
+    state = windowManagerReducer(state, { type: "SYNC_ROUTE", pathname: "/writing" });
+    expect(state.activeApp).toBe("workspace");
+    expect(state.windows.photos.isOpen).toBe(false);
+    expect(state.windows.workspace.isOpen).toBe(true);
+
+    state = windowManagerReducer(state, { type: "SYNC_ROUTE", pathname: "/photos/da-lat" });
+    expect(state.activeApp).toBe("photos");
+    expect(state.windows.photos.isOpen).toBe(true);
+    expect(state.windows.workspace.isOpen).toBe(false);
+
+    state = windowManagerReducer(state, { type: "OPEN_APP", id: "spotify" });
+    state = windowManagerReducer(state, { type: "CLOSE_APP", id: "spotify" });
+    expect(state.activeApp).toBe("photos");
+  });
+
+  it("does not let the replaced Photos host steal focus from a floating app", () => {
+    let state = createInitialWindowState("/photos");
+    state = windowManagerReducer(state, { type: "SYNC_ROUTE", pathname: "/music/spotify" });
+    expect(state.windows.photos.isOpen).toBe(false);
+    expect(state.windows.workspace.isOpen).toBe(false);
+    state = windowManagerReducer(state, { type: "CLOSE_APP", id: "spotify" });
+    expect(state.activeApp).toBeNull();
   });
 
   it("clamps window drag offsets within viewport bounds", () => {

@@ -1,5 +1,6 @@
 import { onPageLoad } from "./page-lifecycle";
 import "./workspace-navigation";
+import { hostWindowStorageKey, readHostWindowState, type HostWindowState } from "../lib/host-window-state";
 
 const root = document.documentElement;
 root.classList.add("js");
@@ -91,7 +92,9 @@ function skipActiveViewTransition() {
 }
 
 function setupWindowControls(signal: AbortSignal) {
-  const storageKey = "workspace-window-state";
+  const app = root.dataset.desktopApp;
+  const appLabel = app === "photos" ? "Photos" : "workspace";
+  const storageKey = hostWindowStorageKey(app);
   const windowFrame = document.querySelector<HTMLElement>(".mac-window-container");
   const closeButton = document.querySelector<HTMLButtonElement>('[data-window-action="close"]');
   const minimizeButton = document.querySelector<HTMLButtonElement>('[data-window-action="minimize"]');
@@ -100,22 +103,13 @@ function setupWindowControls(signal: AbortSignal) {
 
   if (!windowFrame || !closeButton || !minimizeButton || !maximizeButton || !restoreButton) return;
 
-  type WindowState = {
-    closed: boolean;
-    minimized: boolean;
-    maximized: boolean;
-  };
+  type WindowState = HostWindowState;
 
   const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const readState = (): WindowState => {
     try {
-      const saved = JSON.parse(sessionStorage.getItem(storageKey) ?? "null") as Partial<WindowState> | null;
-      return {
-        closed: saved?.closed === true,
-        minimized: saved?.minimized === true,
-        maximized: saved?.maximized === true,
-      };
+      return readHostWindowState(sessionStorage, app);
     } catch {
       return { closed: false, minimized: false, maximized: false };
     }
@@ -146,11 +140,11 @@ function setupWindowControls(signal: AbortSignal) {
     const maximized = windowFrame.classList.contains("is-maximized");
 
     minimizeButton.setAttribute("aria-pressed", String(minimized));
-    minimizeButton.setAttribute("aria-label", minimized ? "Restore workspace" : "Minimize workspace");
-    minimizeButton.title = minimized ? "Restore workspace" : "Minimize workspace";
+    minimizeButton.setAttribute("aria-label", `${minimized ? "Restore" : "Minimize"} ${appLabel}`);
+    minimizeButton.title = `${minimized ? "Restore" : "Minimize"} ${appLabel}`;
     maximizeButton.setAttribute("aria-pressed", String(maximized));
-    maximizeButton.setAttribute("aria-label", maximized ? "Restore window size" : "Maximize workspace");
-    maximizeButton.title = maximized ? "Restore window size" : "Maximize workspace";
+    maximizeButton.setAttribute("aria-label", maximized ? "Restore window size" : `Maximize ${appLabel}`);
+    maximizeButton.title = maximized ? "Restore window size" : `Maximize ${appLabel}`;
   };
 
   const applyState = ({ closed, minimized, maximized }: WindowState) => {

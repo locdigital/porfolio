@@ -1,6 +1,7 @@
 import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from "astro:transitions/client";
 
 import { shuffleGearGrid } from "../lib/gear-shuffle";
+import { hostWindowStorageKey, readHostWindowState } from "../lib/host-window-state";
 
 type ScrollPosition = { top: number; left: number };
 
@@ -80,13 +81,31 @@ document.addEventListener("astro:before-swap", (event) => {
   // so maximized/minimized/closed windows never flash back to default size during navigation.
   const currentRoot = document.documentElement;
   const nextDoc = navigation.newDocument;
-  const isClosed = currentRoot.classList.contains("window-closed");
-  const isMinimized = !isClosed && currentRoot.classList.contains("window-minimized");
-  const isMaximized = !isClosed && currentRoot.classList.contains("window-maximized");
+  const nextApp = nextDoc.documentElement.dataset.desktopApp;
+  const switchingApps = nextApp !== currentRoot.dataset.desktopApp;
+  let isClosed = currentRoot.classList.contains("window-closed");
+  let isMinimized = !isClosed && currentRoot.classList.contains("window-minimized");
+  let isMaximized = !isClosed && currentRoot.classList.contains("window-maximized");
+  if (switchingApps) {
+    // Opening Photos must not inherit a closed/minimized Workspace (or vice versa).
+    isClosed = false;
+    isMinimized = false;
+    isMaximized = false;
+    try {
+      isMaximized = readHostWindowState(sessionStorage, nextApp).maximized;
+      sessionStorage.setItem(hostWindowStorageKey(nextApp), JSON.stringify({
+        closed: false, minimized: false, maximized: isMaximized,
+      }));
+    } catch {
+      // Navigation still opens the destination when storage is unavailable.
+    }
+  }
+  const isAppNavigation = currentRoot.dataset.appNavigation === "true";
 
   nextDoc.documentElement.classList.toggle("window-closed", isClosed);
   nextDoc.documentElement.classList.toggle("window-minimized", isMinimized);
   nextDoc.documentElement.classList.toggle("window-maximized", isMaximized);
+  if (isAppNavigation) nextDoc.documentElement.dataset.appNavigation = "true";
 
   const nextFrame = nextDoc.querySelector<HTMLElement>(".mac-window-container");
   if (nextFrame) {
@@ -140,6 +159,9 @@ document.addEventListener("astro:after-swap", () => {
     document.documentElement.style.setProperty("--page-exit-offset", `${offset}px`);
   }
   main?.focus({ preventScroll: true });
+  if (document.documentElement.dataset.appNavigation === "true") {
+    window.setTimeout(() => delete document.documentElement.dataset.appNavigation, 260);
+  }
   pending = undefined;
 });
 

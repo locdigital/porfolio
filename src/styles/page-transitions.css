@@ -1,9 +1,9 @@
 :root {
   /* Keep shared chrome live and clickable; capture only explicitly named elements. */
   view-transition-name: none;
-  --page-exit-duration: 80ms;
-  --page-enter-duration: 160ms;
-  --page-enter-offset: 3px;
+  --page-exit-duration: 150ms;
+  --page-enter-duration: 250ms;
+  --page-enter-offset: 8px;
   --page-transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -49,6 +49,16 @@ html,
   animation: workspace-page-enter var(--page-enter-duration) var(--page-transition-ease) both;
 }
 
+/* Dock app switches are a distinct route change: use a short horizontal handoff
+   rather than the generic vertical document reveal. */
+html[data-app-navigation="true"]::view-transition-old(workspace-document) {
+  animation-name: workspace-app-exit;
+}
+
+html[data-app-navigation="true"]::view-transition-new(workspace-document) {
+  animation-name: workspace-app-enter;
+}
+
 @keyframes workspace-page-exit {
   from { opacity: 1; }
   to { opacity: 0; }
@@ -57,6 +67,16 @@ html,
 @keyframes workspace-page-enter {
   from { opacity: 0; transform: translate3d(0, var(--page-enter-offset), 0); }
   to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes workspace-app-exit {
+  from { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+  to { opacity: 0; transform: translate3d(calc(var(--page-enter-offset) * -1), 0, 0); filter: blur(3px); }
+}
+
+@keyframes workspace-app-enter {
+  from { opacity: 0; transform: translate3d(var(--page-enter-offset), 0, 0); filter: blur(3px); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
 }
 
 /* Small screens benefit more from an instant swap than from snapshot animation. */

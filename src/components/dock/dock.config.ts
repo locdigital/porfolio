@@ -4,6 +4,8 @@ export interface DockApplication {
   id: AppId;
   name: string;
   windowTitle: string;
+  /** Canonical route for opening this app from the Dock. */
+  route: string;
   icon: string;
   enabled: boolean;
   /** Optional subtle surface fill behind transparent icons. */
@@ -39,6 +41,7 @@ export const DEFAULT_DOCK_APPS: DockApplication[] = [
     id: "netflix",
     name: "Netflix",
     windowTitle: "Netflix — Personal Library",
+    route: "/entertainment/netflix",
     icon: "/assets/dock/netflix.png",
     enabled: true,
   },
@@ -46,6 +49,7 @@ export const DEFAULT_DOCK_APPS: DockApplication[] = [
     id: "spotify",
     name: "Spotify",
     windowTitle: "Spotify — My Music",
+    route: "/music/spotify",
     icon: "/assets/dock/spotify.png",
     enabled: true,
   },
@@ -53,6 +57,7 @@ export const DEFAULT_DOCK_APPS: DockApplication[] = [
     id: "photos",
     name: "Photos",
     windowTitle: "Photos — Photography",
+    route: "/photos",
     icon: "/assets/dock/photos.svg",
     enabled: true,
     iconBackground: "#FFFFFF",
@@ -61,6 +66,7 @@ export const DEFAULT_DOCK_APPS: DockApplication[] = [
     id: "workspace",
     name: "Workspace",
     windowTitle: "Phuc Loc Nguyen — Workspace",
+    route: "/",
     icon: "/apple-touch-icon.png",
     enabled: true,
     iconBackground: "#121214",
@@ -70,7 +76,12 @@ export const DEFAULT_DOCK_APPS: DockApplication[] = [
     id: "photoshop",
     name: "Photoshop",
     windowTitle: "Color Lab — Nikon Imaging Recipes",
+    route: "/color-lab/nikon-recipes",
     icon: "/assets/dock/photoshop.png",
-    enabled: true,
+    enabled: false,
   },
 ];
+
+export function getAppRoute(id: AppId): string {
+  return DEFAULT_DOCK_APPS.find((app) => app.id === id)?.route ?? "/";
+}

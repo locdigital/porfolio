@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { clampWindowOffset, type WindowInstance } from "./window-manager";
 import "./desktop.styles.css";
 
@@ -32,6 +32,27 @@ export function AppWindow({
 }: AppWindowProps) {
   const frameRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimerRef.current !== null) {
+        window.clearTimeout(scrollTimerRef.current);
+      }
+    };
+  }, []);
+
+  const handleBodyScroll = () => {
+    setIsScrolling(true);
+    if (scrollTimerRef.current !== null) {
+      window.clearTimeout(scrollTimerRef.current);
+    }
+    scrollTimerRef.current = window.setTimeout(() => {
+      setIsScrolling(false);
+      scrollTimerRef.current = null;
+    }, 900);
+  };
   const dragStateRef = useRef<{
     startX: number;
     startY: number;
@@ -235,7 +256,12 @@ export function AppWindow({
         </div>
       </header>
 
-      <div className="desktop-app-body">{children}</div>
+      <div
+        className={`desktop-app-body${isScrolling ? " is-scrolling" : ""}`}
+        onScroll={handleBodyScroll}
+      >
+        {children}
+      </div>
 
       {!windowState.isMaximized && (
         <>

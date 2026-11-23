@@ -1,11 +1,13 @@
 ---
 interface Props {
+  appLabel?: string;
   title?: string;
   locale?: string;
   currentPath?: string;
 }
 
 const {
+  appLabel = "workspace",
   title = "Phuc Loc Nguyen — Workspace",
 } = Astro.props;
 ---
@@ -17,8 +19,8 @@ const {
       class="mac-dot mac-dot-close"
       type="button"
       data-window-action="close"
-      aria-label="Close workspace"
-      title="Close workspace"
+      aria-label={`Close ${appLabel}`}
+      title={`Close ${appLabel}`}
     >
       <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
         <use href="/assets/icons/all-three.svg#window-close"></use>
@@ -28,9 +30,9 @@ const {
       class="mac-dot mac-dot-minimize"
       type="button"
       data-window-action="minimize"
-      aria-label="Minimize workspace"
+      aria-label={`Minimize ${appLabel}`}
       aria-pressed="false"
-      title="Minimize workspace"
+      title={`Minimize ${appLabel}`}
     >
       <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
         <use href="/assets/icons/all-three.svg#window-minimize"></use>
@@ -40,9 +42,9 @@ const {
       class="mac-dot mac-dot-maximize"
       type="button"
       data-window-action="maximize"
-      aria-label="Maximize workspace"
+      aria-label={`Maximize ${appLabel}`}
       aria-pressed="false"
-      title="Maximize workspace"
+      title={`Maximize ${appLabel}`}
     >
       <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
         <use href="/assets/icons/all-three.svg#window-maximize"></use>

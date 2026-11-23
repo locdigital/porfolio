@@ -31,6 +31,7 @@ import {
 } from "../lib/seo";
 
 interface Props {
+  app?: 'workspace' | 'photos';
   title?: string;
   pageTitle?: string;
   description?: string;
@@ -49,9 +50,11 @@ interface Props {
   robots?: string;
   lang?: 'en' | 'vi';
   alternates?: { hreflang: string; href: string }[];
+  fullBleed?: boolean;
 }
 
 const {
+  app = 'workspace',
   title = "Phuc Loc Nguyen — Workspace",
   pageTitle,
   description = DEFAULT_DESCRIPTION,
@@ -70,6 +73,7 @@ const {
   robots,
   lang = 'en',
   alternates,
+  fullBleed = false,
 } = Astro.props;
 
 const canonicalHref = canonicalUrl(Astro.url.pathname);
@@ -128,10 +132,12 @@ const contentClass =
       : 'workspace-content';
 
 const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label || "Workspace";
+const appLabel = app === 'photos' ? 'Photos' : 'workspace';
+const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguyen — Workspace';
 ---
 
 <!DOCTYPE html>
-<html lang={lang}>
+<html lang={lang} data-desktop-app={app}>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
@@ -166,7 +172,8 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
       document.documentElement.classList.add("mobile-lite");
     }
     try {
-      const saved = JSON.parse(sessionStorage.getItem("workspace-window-state") || "null");
+      const app = document.documentElement.dataset.desktopApp || "workspace";
+      const saved = JSON.parse(sessionStorage.getItem(`${app}-window-state`) || "null");
       if (saved && typeof saved === "object") {
         const closed = saved.closed === true;
         document.documentElement.classList.toggle("window-closed", closed);
@@ -227,12 +234,12 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
     <div class="mac-window-container">
 
       <!-- Desktop Window Titlebar (44px, white background, traffic lights) -->
-      <MacTitlebar title="Phuc Loc Nguyen — Workspace" currentPath={currentPath} />
+      <MacTitlebar title={windowTitle} appLabel={appLabel} currentPath={currentPath} />
 
       <!-- Mobile Sticky Top Bar (< 1024px) -->
       <header class="mobile-topbar" aria-label="Mobile Navigation Bar">
         <div class="mobile-topbar-left">
-          <button
+          {app === 'workspace' ? <button
             id="mobile-drawer-toggle"
             class="mobile-menu-btn"
             aria-label="Open navigation menu"
@@ -240,7 +247,9 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
             aria-expanded="false"
           >
             <Heroicon name="bars-3" size={20} />
-          </button>
+          </button> : <a href="/photos" class="mobile-menu-btn" aria-label="All photo albums" data-astro-prefetch>
+            <Heroicon name="camera" size={20} />
+          </a>}
           <span class="mobile-page-label">{mobileLabel}</span>
         </div>
         <div class="mobile-topbar-right" style="display: flex; align-items: center; gap: 6px;">
@@ -248,7 +257,7 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
             type="button"
             class="mobile-search-btn"
             data-command-search-open
-            aria-label="Search workspace"
+            aria-label="Search site"
             aria-haspopup="dialog"
             aria-expanded="false"
             aria-keyshortcuts="Meta+K Control+K"
@@ -273,21 +282,21 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
       </header>
 
       <!-- Two-column Body: 232px Sidebar + Main Content -->
-      <div class="workspace-body">
+      <div class:list={["workspace-body", { "photos-body": app === 'photos' }]}>
 
         <!-- Sidebar Navigation -->
-        <DashboardSidebar currentPath={currentPath} />
+        {app === 'workspace' && <DashboardSidebar currentPath={currentPath} />}
 
         <!-- Main Workspace Document Surface -->
         <main
           id="main-content"
-          class="workspace-main"
+          class:list={["workspace-main", { "is-fullbleed": fullBleed }]}
           tabindex="-1"
           transition:name="workspace-document"
           transition:animate="initial"
         >
 
-          <div class={contentClass}>
+          <div class:list={[contentClass, { "is-fullbleed": fullBleed }]}>
             <div class="workspace-doc-main">
               <!-- Optional Breadcrumbs if provided -->
               {breadcrumbs && breadcrumbs.length > 0 && (
@@ -315,9 +324,11 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
               <slot />
             </div>
 
-            <footer class="workspace-doc-footer" aria-label="Footer">
-              <p class="workspace-doc-footer-meta">© {new Date().getFullYear()} Phuc Loc Nguyen.</p>
-            </footer>
+            {!fullBleed && (
+              <footer class="workspace-doc-footer" aria-label="Footer">
+                <p class="workspace-doc-footer-meta">© {new Date().getFullYear()} Phuc Loc Nguyen.</p>
+              </footer>
+            )}
           </div>
         </main>
 
@@ -328,12 +339,12 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
       class="workspace-window-restore"
       type="button"
       data-window-action="restore"
-      aria-label="Open workspace"
-      title="Open workspace"
+      aria-label={`Open ${appLabel}`}
+      title={`Open ${appLabel}`}
       hidden
     >
       <span class="workspace-window-restore-icon" aria-hidden="true"></span>
-      <span>Open workspace</span>
+      <span>Open {appLabel}</span>
     </button>
 
   </div>
@@ -345,6 +356,30 @@ const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label ||
 </html>
 
 <style>
+  .photos-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .workspace-main.is-fullbleed {
+    padding: 0;
+    overflow: hidden;
+    scrollbar-gutter: auto;
+  }
+
+  .workspace-content.is-fullbleed {
+    max-width: none;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .workspace-content.is-fullbleed .workspace-doc-main {
+    height: 100%;
+    min-height: 0;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
   .workspace-doc-main {
     flex: 1 0 auto;
     min-width: 0;

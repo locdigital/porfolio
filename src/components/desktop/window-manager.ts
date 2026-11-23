@@ -1,4 +1,4 @@
-import type { AppId } from "../dock/dock.config";
+import { getAppRoute, type AppId } from "../dock/dock.config";
 
 export interface WindowInstance {
   id: AppId;
@@ -36,7 +36,16 @@ const DEFAULT_OFFSETS: Record<AppId, { x: number; y: number }> = {
 };
 
 export function getDefaultAppForPath(pathname: string): AppId {
-  return pathname.startsWith("/photos") ? "photos" : "workspace";
+  pathname = pathname.replace(/\/+$/, "") || "/";
+  if (pathname === "/entertainment/netflix") return "netflix";
+  if (pathname === "/music/spotify") return "spotify";
+  if (pathname === "/color-lab/nikon-recipes") return "photoshop";
+  return pathname === "/photos" || pathname.startsWith("/photos/") ? "photos" : "workspace";
+}
+
+// The Dock restores the current document, including album and article pages.
+export function getDockNavigationPath(id: AppId, pathname: string): string | null {
+  return getDefaultAppForPath(pathname) === id ? null : getAppRoute(id);
 }
 
 export function createInitialWindowState(pathname = "/"): WindowManagerState {
@@ -227,6 +236,11 @@ export function windowManagerReducer(
         activeApp: routeApp,
         windows: {
           ...state.windows,
+          // Photos and Workspace share the Astro frame; only its current owner
+          // can remain open. Otherwise an invisible host can steal focus later.
+          ...Object.fromEntries((["workspace", "photos"] as const)
+            .filter((id) => id !== routeApp)
+            .map((id) => [id, { ...state.windows[id], isOpen: false, isMinimized: false }])),
           [routeApp]: {
             ...current,
             isOpen: true,

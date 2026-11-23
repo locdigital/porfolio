@@ -1,0 +1,10 @@
+---
+import type { ComponentProps } from "astro/types";
+import DashboardLayout from "./DashboardLayout.astro";
+
+type Props = Omit<ComponentProps<typeof DashboardLayout>, "app">;
+---
+
+<DashboardLayout {...Astro.props} app="photos">
+  <slot />
+</DashboardLayout>

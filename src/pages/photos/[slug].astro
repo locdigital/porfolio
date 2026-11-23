@@ -1,5 +1,5 @@
 ---
-import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import PhotosLayout from "../../layouts/PhotosLayout.astro";
 import { getPhotoLocations } from "../../lib/content";
 import { optimizePhotos } from "../../lib/photo-assets";
 import { uploadedAssetUrl } from "../../lib/uploadthing-assets";
@@ -155,7 +155,7 @@ const siblingRelated = fallbackCandidates
 const relatedDestinations = [...explicitRelated, ...siblingRelated];
 ---
 
-<DashboardLayout
+<PhotosLayout
   title={seoTitle}
   pageTitle={locationTitle}
   description={seoDescription}
@@ -165,7 +165,6 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
   dateModified={realUpdatedAt}
   lang={location.language || "en"}
   breadcrumbs={[
-    { label: "Personal", href: "/" },
     { label: "Photography", href: "/photos" },
     { label: locationTitle }
   ]}
@@ -499,7 +498,7 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
       </div>
     </section>
   )}
-</DashboardLayout>
+</PhotosLayout>
 
 <style>
   .photo-introduction > p {

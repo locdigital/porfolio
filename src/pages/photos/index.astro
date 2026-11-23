@@ -1,5 +1,5 @@
 ---
-import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import PhotosLayout from "../../layouts/PhotosLayout.astro";
 import { getPhotoLocations } from "../../lib/content";
 import GlassFolder from "../../components/ui/GlassFolder";
 import { optimizePhotos } from "../../lib/photo-assets";
@@ -10,8 +10,8 @@ export const prerender = true;
 
 const updates = photoUpdates as Record<string, { updatedAt: string }>;
 const updatedTime = (slug: string) => Date.parse(updates[slug]?.updatedAt ?? "") || 0;
-const locations = (await getPhotoLocations()).sort((a, b) =>
-  updatedTime(b.slug) - updatedTime(a.slug) || a.order - b.order
+const locations = (await getPhotoLocations()).sort(
+  (a, b) => updatedTime(b.slug) - updatedTime(a.slug) || a.order - b.order,
 );
 
 const regionLabels: Record<string, string> = {
@@ -29,50 +29,106 @@ const regionLabels: Record<string, string> = {
   "Tây Nam Bộ": "South",
 };
 
-const regionGroupLabels: Record<string, string> = {
-  "Northern Vietnam": "Northern Vietnam",
-  "Central Vietnam": "Central Vietnam",
-  "South Central Coast": "South Central Coast",
-  "Central Highlands": "Central Highlands",
-  "Southern Vietnam": "Southern Vietnam",
-  "Mekong Delta": "Mekong Delta",
-};
+const PHOTOS_PER_ALBUM_PREVIEW = 6;
 
-const enhancedLocations = await Promise.all(locations.map(async (loc) => {
-  const region = loc.country && loc.country !== "Vietnam"
-    ? "International"
-    : regionLabels[loc.region || ""] || "Vietnam";
+const enhancedLocations = await Promise.all(
+  locations.map(async (loc) => {
+    const name = loc.name || loc.location;
+    const region =
+      loc.country && loc.country !== "Vietnam"
+        ? "International"
+        : regionLabels[loc.region || ""] || "Vietnam";
 
-  const directoryGroup = loc.country && loc.country !== "Vietnam"
-    ? "Southeast Asia (Outside Vietnam)"
-    : regionGroupLabels[loc.region || ""] || "Vietnam";
+    const photos = loc.photos || [];
+    const photoCount = photos.length;
+    const images = loc.images || [];
+    const rawHero = loc.heroImage?.src || images[0]?.src || photos[0]?.src || "";
+    const rawLeft = images[1]?.src || photos[1]?.src || rawHero;
+    const rawRight = images[2]?.src || photos[2]?.src || rawHero;
 
-  const photoCount = loc.photos?.length || 0;
-  const images = loc.images || [];
-  const rawHero = loc.heroImage?.src || images[0]?.src || "";
-  const rawLeft = images[1]?.src || rawHero;
-  const rawRight = images[2]?.src || images[0]?.src || rawHero;
-  const previews = await optimizePhotos([rawHero, rawLeft, rawRight].filter(Boolean).map((src) => ({
-    src,
-    alt: "",
-    w: 480,
-    h: 360,
-  })), {
-    previewWidth: 480,
-    previewWidths: [480],
-  });
-  const previewImages = previews.map((photo) => photo.previewSrc);
-  const heroPhoto = previewImages[0] || "";
+    const previews = await optimizePhotos(
+      [rawHero, rawLeft, rawRight].filter(Boolean).map((src) => ({
+        src,
+        alt: name,
+        w: 480,
+        h: 360,
+      })),
+      { previewWidth: 480, previewWidths: [480] },
+    );
+    const previewImages = previews.map((photo) => photo.previewSrc);
+    const heroPhoto = previewImages[0] || "";
 
-  return {
-    ...loc,
-    region,
-    directoryGroup,
-    photoCount,
-    previewImages,
-    heroPhoto,
-  };
-}));
+    const sampleSource = photos.slice(0, PHOTOS_PER_ALBUM_PREVIEW).map((p, idx) => ({
+      src: p.src,
+      alt: p.alt || `${name} — frame ${idx + 1}`,
+      w: p.w || 4,
+      h: p.h || 5,
+      title: p.title,
+      caption: p.caption,
+      location: p.location || name,
+      capturedAt: p.capturedAt,
+    }));
+
+    const optimizedSample = await optimizePhotos(sampleSource, {
+      previewWidth: 480,
+      previewWidths: [320, 480],
+      previewSizes: "(max-width: 640px) 33vw, (max-width: 1024px) 22vw, 15vw",
+      fullWidth: 1600,
+    });
+
+    const ts = updatedTime(loc.slug);
+    const dateLabel = ts
+      ? new Intl.DateTimeFormat("en-GB", {
+          month: "short",
+          year: "numeric",
+          timeZone: "Asia/Ho_Chi_Minh",
+        }).format(new Date(ts))
+      : "Archive";
+
+    return {
+      ...loc,
+      displayName: name,
+      region,
+      photoCount,
+      updatedTimestamp: ts,
+      dateLabel,
+      yearLabel: ts ? String(new Date(ts).getFullYear()) : "Archive",
+      previewImages,
+      heroPhoto,
+      samplePhotos: optimizedSample.map((photo, idx) => ({
+        ...photo,
+        id: `${loc.slug}-${idx}`,
+        slug: loc.slug,
+        albumName: name,
+        region,
+        country: loc.country || "Vietnam",
+        albumCount: photoCount,
+        title: sampleSource[idx]?.title || name,
+        caption: sampleSource[idx]?.caption || "",
+        location: sampleSource[idx]?.location || name,
+        dateLabel,
+        yearLabel: ts ? String(new Date(ts).getFullYear()) : "Archive",
+        featured: idx === 0,
+        recent: updatedTime(loc.slug) > 0,
+      })),
+    };
+  }),
+);
+
+type GridPhoto = (typeof enhancedLocations)[number]["samplePhotos"][number];
+const allGridPhotos: GridPhoto[] = [];
+for (let i = 0; i < PHOTOS_PER_ALBUM_PREVIEW; i++) {
+  for (const loc of enhancedLocations) {
+    const p = loc.samplePhotos[i];
+    if (p) allGridPhotos.push(p);
+  }
+}
+
+const totalPhotos = enhancedLocations.reduce((sum, loc) => sum + loc.photoCount, 0);
+const regionOrder = ["North", "Highlands", "Central", "South", "International"];
+const availableRegions = regionOrder.filter((r) =>
+  enhancedLocations.some((l) => l.region === r),
+);
 
 const photosUrl = canonicalUrl("/photos");
 const photosSchema = collectionPageSchema({
@@ -80,68 +136,865 @@ const photosSchema = collectionPageSchema({
   title: "Photography & Travel Journals — Phuc Loc Nguyen",
   description: `First-hand travel photography and destination notes across ${locations.length} destinations in Vietnam and Southeast Asia.`,
   items: enhancedLocations.map((loc) => ({
-    name: loc.name || loc.location,
+    name: loc.displayName,
     url: `/photos/${loc.slug}`,
     description: loc.seoDescription || loc.headline,
     image: loc.heroPhoto || undefined,
   })),
-  breadcrumbId: `${photosUrl}#breadcrumbs`,
 });
 ---
 
-<DashboardLayout
-  title="Photography — Phuc Loc Nguyen"
-  pageTitle="Photography"
+<PhotosLayout
+  title="Photos — Photography"
+  pageTitle="Photos"
   description={`First-hand travel photography and field notes across ${locations.length} destinations in Vietnam and Southeast Asia: mountain passes, karst rivers, coastal towns, and street scenes.`}
-  breadcrumbs={[{ label: "Personal", href: "/" }, { label: "Photography" }]}
-  maxWidthVariant="default"
+  maxWidthVariant="gallery"
+  fullBleed={true}
   schema={photosSchema}
 >
-  <!-- Page Header -->
-  <header class="page-header">
-    <h1 class="page-title">Photography</h1>
-    <p class="page-lead">
-      Shot on whatever was in my pocket—Leica Q3, Nikon Zf, or iPhone. Visual notes and first-hand field reflections across {locations.length} destinations in Vietnam and Southeast Asia.
-    </p>
-  </header>
+  <div class="mp-app" id="mp-app">
+    <!-- Top macOS Photos Toolbar -->
+    <header class="mp-toolbar" aria-label="Photos toolbar">
+      <div class="mp-toolbar-left">
+        <button
+          type="button"
+          id="mp-sidebar-toggle"
+          class="mp-icon-btn"
+          aria-label="Toggle sidebar"
+          aria-pressed="true"
+          title="Toggle Sidebar"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M9 3v18" />
+          </svg>
+        </button>
 
-  <!-- Photos Views Container -->
-  <div id="photos-views-wrapper" class="photos-views-wrapper">
-    <!-- Glass folders show actual album previews between the panels. -->
-    <div id="photos-grid" class="glass-folder-grid">
-      {enhancedLocations.map((loc, idx) => {
-        const folderProps = {
-          label: loc.name || loc.location,
-          meta: `${loc.photoCount} photos · ${loc.region}`,
-          image: loc.heroPhoto || undefined,
-          art: "none" as const,
-          files: loc.previewImages.map((image, index) => ({
-            name: `${loc.name || loc.location} — ${index + 1}`,
-            image,
-            href: `/photos/${loc.slug}`,
-          })),
-          href: `/photos/${loc.slug}`,
-          action: "none" as const,
-          appear: false,
-          defaultWidth: 212,
-          eager: idx < 8,
-        };
-        return (
-          <div class="glass-folder-item" data-region={loc.region} data-href={`/photos/${loc.slug}`}>
-            <GlassFolder {...folderProps} />
+        <div class="mp-zoom-control" aria-label="Thumbnail size">
+          <button type="button" id="mp-zoom-out" class="mp-zoom-btn" aria-label="Smaller thumbnails">−</button>
+          <input
+            id="mp-zoom-slider"
+            type="range"
+            min="3"
+            max="9"
+            value="6"
+            aria-label="Grid columns"
+          />
+          <button type="button" id="mp-zoom-in" class="mp-zoom-btn" aria-label="Larger thumbnails">+</button>
+        </div>
+      </div>
+
+      <div class="mp-segmented" role="tablist" aria-label="Time & Library view">
+        <button type="button" class="mp-seg-btn" role="tab" aria-selected="false" data-seg="years">Years</button>
+        <button type="button" class="mp-seg-btn" role="tab" aria-selected="false" data-seg="months">Months</button>
+        <button type="button" class="mp-seg-btn is-active" role="tab" aria-selected="true" data-seg="all">All Photos</button>
+      </div>
+
+      <div class="mp-toolbar-right">
+        <button
+          type="button"
+          id="mp-info-toggle"
+          class="mp-icon-btn"
+          aria-label="Show photo info overlay"
+          aria-pressed="false"
+          title="Show Info"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </button>
+
+        <label class="mp-search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            id="mp-search-input"
+            type="search"
+            placeholder="Search"
+            aria-label="Search photos and albums"
+            autocomplete="off"
+          />
+        </label>
+      </div>
+    </header>
+
+    <!-- 2-Column macOS Photos Body -->
+    <div class="mp-body">
+      <!-- Left Sidebar -->
+      <aside class="mp-sidebar" id="mp-sidebar" aria-label="Photos Library Navigation">
+        <div class="mp-sidebar-section">
+          <div class="mp-sidebar-heading">Photos</div>
+          <button type="button" class="mp-nav-item is-active" data-nav="library">
+            <svg width="16" height="13" viewBox="0 0 250 202" fill="none" aria-hidden="true">
+              <path d="M30.3 26.4 159.8 4.6c12.7-2.2 24.8 6.4 27 19.1l2.9 17.1H87.3c-21.2 0-38.4 17.2-38.4 38.4v85.1c-10.5-.6-19.5-8.3-21.3-19.1L11.1 53.3C8.9 40.6 17.5 28.5 30.3 26.4Z" fill="#80B9FF"/>
+              <rect x="59.6" y="51.4" width="179.1" height="139" rx="25" fill="#087BFA"/>
+              <circle cx="120.2" cy="102.8" r="19.5" fill="#fff"/>
+              <path d="m70.2 162.9 24-22.4c6-5.6 13.8-5.7 19.8-.3l16.4 14 37.1-33.7c7.2-6.5 15.4-5.3 22.5 1.3l38.8 34.5v8.6c0 8.9-7.2 16.1-16.1 16.1H86.2c-9 0-16-7.2-16-16.1v-2Z" fill="#fff"/>
+            </svg>
+            <span>Library</span>
+          </button>
+          <button type="button" class="mp-nav-item" data-nav="recent">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 5H6.5A2.5 2.5 0 0 0 4 7.5v10A2.5 2.5 0 0 0 6.5 20h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M15 5h2.5A2.5 2.5 0 0 1 20 7.5v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12 2.5v10m0 0-3-3m3 3 3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="17.5" cy="17.5" r="4.8" fill="currentColor" />
+              <path d="M17.5 15.1v2.4h2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Recently Saved</span>
+          </button>
+        </div>
+
+        <div class="mp-sidebar-section">
+          <div class="mp-sidebar-heading">Collections</div>
+          <button type="button" class="mp-nav-item" data-nav="trips">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="7" width="18" height="13" rx="2" />
+              <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            <span>Trips</span>
+          </button>
+          <button type="button" class="mp-nav-item" data-nav="featured">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            <span>Featured</span>
+          </button>
+          <button type="button" class="mp-nav-item" data-nav="albums">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+            </svg>
+            <span>Albums</span>
+          </button>
+        </div>
+
+        <div class="mp-sidebar-section">
+          <div class="mp-sidebar-heading">Regions</div>
+          {availableRegions.map((region) => (
+            <button type="button" class="mp-nav-item" data-nav={`region:${region}`}>
+              <svg width="16" height="14" viewBox="0 0 24 20" fill="none" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="16" rx="3.2" stroke="currentColor" stroke-width="1.9" />
+                <circle cx="8" cy="7.5" r="2.1" fill="currentColor" />
+                <path d="M2.5 15.5 7 11.2c.7-.7 1.8-.7 2.5 0l2 1.9 3.6-4.1c.7-.8 1.9-.8 2.6 0l3.8 4.4V16a2 2 0 0 1-2 2H4.5a2 2 0 0 1-2-2v-.5Z" fill="currentColor" />
+              </svg>
+              <span>{region}</span>
+            </button>
+          ))}
+        </div>
+      </aside>
+
+      <!-- Main Scrollable Canvas -->
+      <section class="mp-canvas" id="mp-canvas" aria-label="Photo gallery">
+        <!-- Sticky Frosted Header Bar (like macOS Photos date/filter overlay) -->
+        <div class="mp-canvas-head">
+          <div class="mp-canvas-title-wrap">
+            <h1 id="mp-heading" class="mp-heading">All Photos</h1>
+            <span id="mp-subheading" class="mp-subheading">
+              {locations.length} Destinations · Leica Q3, Nikon Zf &amp; iPhone
+            </span>
           </div>
-        );
-      })}
+
+          <div class="mp-filter-wrap" id="mp-filter-wrap">
+            <button
+              type="button"
+              id="mp-filter-trigger"
+              class="mp-filter-pill"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span class="mp-filter-prefix">Filter By:</span>
+              <strong id="mp-filter-label">All Items</strong>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            <div id="mp-filter-menu" class="mp-popover-menu" role="menu" aria-label="Filter items" hidden>
+              <button type="button" class="mp-menu-item is-selected" role="menuitemradio" aria-checked="true" data-filter-val="all" data-filter-text="All Items">
+                <span class="mp-menu-check" aria-hidden="true">✓</span>
+                <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <rect x="3" y="3" width="5" height="5" rx="1" />
+                  <rect x="10" y="3" width="5" height="5" rx="1" />
+                  <rect x="17" y="3" width="4" height="5" rx="1" />
+                  <rect x="3" y="10" width="5" height="5" rx="1" />
+                  <rect x="10" y="10" width="5" height="5" rx="1" />
+                  <rect x="17" y="10" width="4" height="5" rx="1" />
+                  <rect x="3" y="17" width="5" height="4" rx="1" />
+                  <rect x="10" y="17" width="5" height="4" rx="1" />
+                  <rect x="17" y="17" width="4" height="4" rx="1" />
+                </svg>
+                <span>All Items</span>
+              </button>
+
+              <div class="mp-menu-divider" role="separator"></div>
+
+              <button type="button" class="mp-menu-item" role="menuitemradio" aria-checked="false" data-filter-val="featured" data-filter-text="Featured">
+                <span class="mp-menu-check" aria-hidden="true">✓</span>
+                <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                  <line x1="4" y1="6" x2="20" y2="6" />
+                  <circle cx="9" cy="6" r="2" fill="currentColor" />
+                  <line x1="4" y1="12" x2="20" y2="12" />
+                  <circle cx="15" cy="12" r="2" fill="currentColor" />
+                  <line x1="4" y1="18" x2="20" y2="18" />
+                  <circle cx="10" cy="18" r="2" fill="currentColor" />
+                </svg>
+                <span>Featured</span>
+              </button>
+
+              <button type="button" class="mp-menu-item" role="menuitemradio" aria-checked="false" data-filter-val="recent" data-filter-text="Recently Saved">
+                <span class="mp-menu-check" aria-hidden="true">✓</span>
+                <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="9" cy="9" r="2" />
+                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                </svg>
+                <span>Recently Saved</span>
+              </button>
+
+              <div class="mp-menu-divider" role="separator"></div>
+
+              {availableRegions.map((region) => (
+                <button
+                  type="button"
+                  class="mp-menu-item"
+                  role="menuitemradio"
+                  aria-checked="false"
+                  data-filter-val={`region:${region}`}
+                  data-filter-text={region}
+                >
+                  <span class="mp-menu-check" aria-hidden="true">✓</span>
+                  <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="2.5" />
+                  </svg>
+                  <span>{region}</span>
+                </button>
+              ))}
+
+              <div class="mp-menu-divider" role="separator"></div>
+
+              <div class="mp-menu-scroll">
+                {enhancedLocations.map((loc) => (
+                  <button
+                    type="button"
+                    class="mp-menu-item"
+                    role="menuitemradio"
+                    aria-checked="false"
+                    data-filter-val={`album:${loc.slug}`}
+                    data-filter-text={loc.displayName}
+                  >
+                    <span class="mp-menu-check" aria-hidden="true">✓</span>
+                    <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                    <span>{loc.displayName}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo Grid (All Photos / Years / Months / Favorites / Regions) -->
+        <div id="mp-grid-view" class="mp-grid-view">
+          <div id="mp-grid" class="mp-grid" style="--mp-cols: 6;">
+            {allGridPhotos.map((photo, idx) => (
+              <div
+                class="mp-cell"
+                data-id={photo.id}
+                data-index={idx}
+                data-slug={photo.slug}
+                data-region={photo.region}
+                data-album={photo.albumName.toLowerCase()}
+                data-album-label={photo.albumName}
+                data-date={photo.dateLabel}
+                data-year={photo.yearLabel}
+                data-featured={photo.featured ? "1" : "0"}
+                data-recent={photo.recent ? "1" : "0"}
+                data-full={photo.fullSrc}
+                data-title={photo.title}
+                data-location={photo.location}
+                data-caption={photo.caption}
+                data-search={`${photo.albumName} ${photo.region} ${photo.country} ${photo.title} ${photo.location} ${photo.caption} ${photo.slug}`}
+              >
+                <div class="mp-cell-media">
+                  <img
+                    src={photo.previewSrc}
+                    srcset={photo.previewSrcSet || undefined}
+                    sizes={photo.previewSizes}
+                    alt={photo.alt}
+                    width={photo.previewWidth}
+                    height={photo.previewHeight}
+                    loading={idx < 18 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                </div>
+                <div class="mp-cell-info">
+                  <span>{photo.albumName}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div id="mp-empty" class="mp-empty" hidden>
+            <p id="mp-empty-msg">No photos match your filter.</p>
+            <button type="button" id="mp-reset-btn" class="mp-reset-btn">Show All Photos</button>
+          </div>
+        </div>
+
+        <!-- Trips / Albums Folder View -->
+        <div id="mp-albums-view" class="mp-albums-view" hidden>
+          <div id="mp-folders-grid" class="glass-folder-grid">
+            {enhancedLocations.map((loc, idx) => {
+              const folderProps = {
+                label: loc.displayName,
+                meta: `${loc.photoCount} Photos · ${loc.region}`,
+                image: loc.heroPhoto || undefined,
+                art: "none" as const,
+                files: loc.previewImages.map((image, index) => ({
+                  name: `${loc.displayName} — ${index + 1}`,
+                  image,
+                  href: `/photos/${loc.slug}`,
+                })),
+                href: `/photos/${loc.slug}`,
+                action: "none" as const,
+                appear: false,
+                defaultWidth: 204,
+                eager: idx < 8,
+              };
+              return (
+                <div
+                  class="glass-folder-item"
+                  data-region={loc.region}
+                  data-album={loc.displayName.toLowerCase()}
+                  data-search={`${loc.displayName} ${loc.region} ${loc.country || "Vietnam"} ${loc.headline || ""} ${loc.slug}`}
+                  data-href={`/photos/${loc.slug}`}
+                >
+                  <GlassFolder {...folderProps} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <!-- Bottom macOS Photos Status Footer -->
+        <footer class="mp-footer" aria-label="Library summary">
+          <strong id="mp-footer-count">{totalPhotos.toLocaleString()} Photos, {locations.length} Destinations</strong>
+          <span>Shot on Leica Q3, Nikon Zf &amp; iPhone</span>
+        </footer>
+      </section>
     </div>
   </div>
-</DashboardLayout>
+</PhotosLayout>
 
 <style>
+  .mp-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    background: #ffffff;
+    color: var(--dash-text);
+    font-family: var(--font-family-base);
+    overflow: hidden;
+  }
+
+  /* ── Top macOS Photos Toolbar ───────────────────────────────────────────── */
+  .mp-toolbar {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    background: #f7f7f8;
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    user-select: none;
+  }
+
+  .mp-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .mp-toolbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .mp-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 26px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--dash-muted);
+    cursor: pointer;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+
+  .mp-icon-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--dash-text);
+  }
+
+  .mp-icon-btn.is-active {
+    background: rgba(0, 122, 255, 0.14);
+    color: #007aff;
+  }
+
+  .mp-zoom-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mp-zoom-btn {
+    border: 0;
+    background: transparent;
+    color: var(--dash-muted);
+    font-family: inherit;
+    font-size: var(--text-body-sm);
+    line-height: 1;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .mp-zoom-control input[type="range"] {
+    width: 68px;
+    height: 4px;
+    accent-color: #8e8e93;
+    cursor: pointer;
+  }
+
+  .mp-segmented {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    background: #e5e5ea;
+    border-radius: 7px;
+    gap: 2px;
+  }
+
+  .mp-seg-btn {
+    border: 0;
+    background: transparent;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    padding: 4px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 140ms ease, box-shadow 140ms ease;
+  }
+
+  .mp-seg-btn.is-active {
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .mp-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+    height: 26px;
+    width: 168px;
+    background: rgba(0, 0, 0, 0.05);
+    border: var(--dash-border-width, 0.9px) solid rgba(0, 0, 0, 0.06);
+    border-radius: 7px;
+    color: var(--dash-muted);
+  }
+
+  .mp-search:focus-within {
+    background: #ffffff;
+    border-color: rgba(0, 122, 255, 0.45);
+  }
+
+  .mp-search input {
+    border: 0;
+    background: transparent;
+    width: 100%;
+    min-width: 0;
+    font-family: inherit;
+    font-size: var(--text-caption);
+    color: var(--dash-text);
+    outline: none;
+  }
+
+  .mp-search input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+
+  /* ── 2-Column macOS Photos Body ─────────────────────────────────────────── */
+  .mp-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 196px minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  .mp-app.sidebar-collapsed .mp-body {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+
+  .mp-app.sidebar-collapsed .mp-sidebar {
+    opacity: 0;
+    pointer-events: none;
+    border-right-width: 0;
+    padding-inline: 0;
+  }
+
+  .mp-sidebar {
+    background: #f5f5f7;
+    border-right: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    padding: 12px 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+  }
+
+  .mp-sidebar::-webkit-scrollbar,
+  .mp-canvas::-webkit-scrollbar,
+  .mp-menu-scroll::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  .mp-sidebar::-webkit-scrollbar-track,
+  .mp-canvas::-webkit-scrollbar-track,
+  .mp-menu-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .mp-sidebar::-webkit-scrollbar-thumb,
+  .mp-canvas::-webkit-scrollbar-thumb,
+  .mp-menu-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 9999px;
+  }
+
+  .mp-sidebar::-webkit-scrollbar-thumb:hover,
+  .mp-canvas::-webkit-scrollbar-thumb:hover,
+  .mp-menu-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.38);
+  }
+
+  .mp-sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mp-sidebar-heading {
+    padding: 2px 8px 4px;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-muted);
+  }
+
+  .mp-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-regular);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mp-nav-item svg {
+    color: #007aff;
+    flex-shrink: 0;
+  }
+
+  .mp-nav-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .mp-nav-item.is-active {
+    background: #dceafe;
+    color: #005bb5;
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* ── Main Scrollable Canvas ─────────────────────────────────────────────── */
+  .mp-canvas {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
+
+  .mp-canvas-head {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: var(--dash-border-width, 0.9px) solid rgba(0, 0, 0, 0.05);
+  }
+
+  .mp-canvas-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .mp-heading {
+    margin: 0;
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-subheading);
+    color: var(--dash-text);
+    line-height: var(--leading-snug);
+  }
+
+  .mp-subheading {
+    font-size: var(--text-micro);
+    color: var(--dash-muted);
+    line-height: var(--leading-snug);
+  }
+
+  .mp-filter-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .mp-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    background: #f2f2f7;
+    border: var(--dash-border-width, 0.9px) solid rgba(0, 0, 0, 0.08);
+    border-radius: 9999px;
+    font-family: inherit;
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+    cursor: pointer;
+    transition: background-color 140ms ease;
+  }
+
+  .mp-filter-pill:hover {
+    background: #e8e8ed;
+  }
+
+  .mp-filter-pill strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-text);
+  }
+
+  .mp-popover-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 40;
+    width: 224px;
+    padding: 6px;
+    border-radius: 14px;
+    background: rgba(240, 240, 243, 0.92);
+    backdrop-filter: blur(26px) saturate(180%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow:
+      0 14px 36px rgba(0, 0, 0, 0.18),
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .mp-popover-menu[hidden] {
+    display: none;
+  }
+
+  .mp-popover-menu::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: 22px;
+    width: 11px;
+    height: 11px;
+    transform: rotate(45deg);
+    background: rgba(240, 240, 243, 0.95);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .mp-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-regular);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .mp-menu-item:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .mp-menu-check {
+    width: 12px;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    opacity: 0;
+    flex-shrink: 0;
+  }
+
+  .mp-menu-item.is-selected .mp-menu-check {
+    opacity: 1;
+  }
+
+  .mp-menu-icon {
+    color: #3a3a3c;
+    flex-shrink: 0;
+  }
+
+  .mp-menu-item span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mp-menu-divider {
+    height: 1px;
+    margin: 4px 8px;
+    background: rgba(0, 0, 0, 0.09);
+  }
+
+  .mp-menu-scroll {
+    max-height: 180px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    scrollbar-width: thin;
+  }
+
+  /* ── Dense macOS Photos Grid ────────────────────────────────────────────── */
+  .mp-grid-view {
+    flex: 1 0 auto;
+    padding: 4px 12px 16px;
+  }
+
+  .mp-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--mp-cols, 6), minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .mp-cell {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: #f5f5f7;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .mp-cell[hidden] {
+    display: none;
+  }
+
+  .mp-cell-media {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mp-cell-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-cell-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 14px 6px 5px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.62), transparent);
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    pointer-events: none;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 140ms ease;
+  }
+
+  .mp-app.show-info .mp-cell-info,
+  .mp-cell:hover .mp-cell-info {
+    opacity: 1;
+  }
+
+  /* ── Trips / Albums GlassFolder Grid ────────────────────────────────────── */
+  .mp-albums-view {
+    flex: 1 0 auto;
+    padding: 18px 20px 32px;
+  }
+
   .glass-folder-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
-    gap: 48px 32px;
-    padding: 16px 8px 52px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 184px), 1fr));
+    gap: 44px 28px;
   }
 
   .glass-folder-item {
@@ -149,24 +1002,71 @@ const photosSchema = collectionPageSchema({
     position: relative;
   }
 
+  .glass-folder-item[hidden] {
+    display: none;
+  }
+
   .glass-folder-item:hover,
   .glass-folder-item:focus-within {
     z-index: 1;
   }
 
-  /* Mobile: keep the same GlassFolder grid in a 2-column layout. */
-  @media (max-width: 768px) {
-    .glass-folder-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 28px 16px;
-      padding: 8px 0 40px;
-    }
+  /* Empty State */
+  .mp-empty {
+    padding: 48px 16px;
+    text-align: center;
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
   }
 
-  @media (max-width: 359px) {
-    .glass-folder-grid {
+  .mp-reset-btn {
+    margin-top: 10px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border-strong);
+    background: #ffffff;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+
+  /* Bottom macOS Photos Summary Footer */
+  .mp-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 20px 16px 26px;
+    text-align: center;
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+  }
+
+  .mp-footer strong {
+    color: var(--dash-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @media (max-width: 820px) {
+    .mp-toolbar {
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+    }
+    .mp-zoom-control,
+    .mp-toolbar-right {
+      display: none;
+    }
+    .mp-body {
       grid-template-columns: minmax(0, 1fr);
-      gap: 24px;
+    }
+    .mp-sidebar {
+      display: none;
+    }
+    .mp-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 </style>
@@ -175,110 +1075,372 @@ const photosSchema = collectionPageSchema({
   import { onPageLoad } from "../../scripts/page-lifecycle";
 
   onPageLoad((signal) => {
-    const grid = document.getElementById("photos-grid");
-    if (!grid) return;
+    const app = document.getElementById("mp-app");
+    if (!app) return;
 
-    const FOLDER_BASE_WIDTH = 340;
-    const items = Array.from(grid.querySelectorAll<HTMLElement>(".glass-folder-item"));
+    const grid = document.getElementById("mp-grid");
+    const gridView = document.getElementById("mp-grid-view");
+    const albumsView = document.getElementById("mp-albums-view");
+    const emptyEl = document.getElementById("mp-empty");
+    const headingEl = document.getElementById("mp-heading");
+    const subheadingEl = document.getElementById("mp-subheading");
+    const filterWrap = document.getElementById("mp-filter-wrap");
+    const filterTrigger = document.getElementById("mp-filter-trigger");
+    const filterMenu = document.getElementById("mp-filter-menu");
+    const filterLabel = document.getElementById("mp-filter-label");
+    const filterMenuItems = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter-val]"));
+    const searchInput = document.getElementById("mp-search-input") as HTMLInputElement | null;
+    const zoomSlider = document.getElementById("mp-zoom-slider") as HTMLInputElement | null;
+    const zoomOutBtn = document.getElementById("mp-zoom-out");
+    const zoomInBtn = document.getElementById("mp-zoom-in");
+    const sidebarToggle = document.getElementById("mp-sidebar-toggle");
+    const infoToggle = document.getElementById("mp-info-toggle");
+    const resetBtn = document.getElementById("mp-reset-btn");
 
-    const setFolderOpen = (root: HTMLElement, open: boolean) => {
-      if (open) root.setAttribute("data-open", "true");
-      else root.removeAttribute("data-open");
+    const segButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".mp-seg-btn"));
+    const navButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".mp-nav-item"));
+    const cells = Array.from(document.querySelectorAll<HTMLElement>(".mp-cell"));
+    const folderItems = Array.from(document.querySelectorAll<HTMLElement>(".glass-folder-item"));
 
-      const hit = root.querySelector<HTMLButtonElement>(".gf-hit");
-      hit?.setAttribute("aria-expanded", String(open));
+    let activeNav = "library";
+    let activeFilter = "all";
+    let activeQuery = "";
 
-      const files = root.querySelector<HTMLElement>(".gf-files");
-      if (files) files.inert = !open;
+    const REGION_ALIASES: Record<string, string> = {
+      "mien bac": "north",
+      bac: "north",
+      "tay nguyen": "highlands",
+      "mien trung": "central",
+      trung: "central",
+      "mien nam": "south",
+      nam: "south",
+      "quoc te": "international",
+      "nuoc ngoai": "international",
+      hcm: "sai gon",
+      tphcm: "sai gon",
+      "ho chi minh": "sai gon",
     };
 
-    const closeAll = (except?: HTMLElement) => {
-      items.forEach((item) => {
-        const root = item.querySelector<HTMLElement>(".gf-root");
-        if (root && root !== except && root.hasAttribute("data-open")) {
-          setFolderOpen(root, false);
-        }
+    const normalizeText = (value: string) =>
+      value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[đĐ]/g, "d")
+        .toLowerCase()
+        .replace(/[-_/]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const matchesSmartQuery = (rawHaystack: string, rawQuery: string) => {
+      const normQ = normalizeText(rawQuery);
+      if (!normQ) return true;
+      const expandedQ = REGION_ALIASES[normQ] ? `${normQ} ${REGION_ALIASES[normQ]}` : normQ;
+      const normHaystack = normalizeText(rawHaystack);
+      const compactHaystack = normHaystack.replace(/\s+/g, "");
+      const tokens = normQ.split(" ").filter(Boolean);
+      const allTokensMatch = tokens.every(
+        (token) => normHaystack.includes(token) || compactHaystack.includes(token),
+      );
+      if (allTokensMatch) return true;
+      if (expandedQ !== normQ) {
+        const aliasTarget = normalizeText(REGION_ALIASES[normQ]);
+        return normHaystack.includes(aliasTarget) || compactHaystack.includes(aliasTarget.replace(/\s+/g, ""));
+      }
+      return false;
+    };
+
+    const applyState = () => {
+      const q = activeQuery.trim().toLowerCase();
+      const isAlbumsMode = activeNav === "trips" || activeNav === "albums";
+
+      navButtons.forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.nav === activeNav);
       });
+
+      if (gridView) gridView.hidden = isAlbumsMode;
+      if (albumsView) albumsView.hidden = !isAlbumsMode;
+
+      if (isAlbumsMode) {
+        let visibleAlbums = 0;
+        folderItems.forEach((item) => {
+          const region = item.dataset.region || "";
+          const searchHaystack = item.dataset.search || item.dataset.album || "";
+          const matchFilter =
+            activeFilter === "all" ||
+            (activeFilter.startsWith("region:") && region === activeFilter.slice(7));
+          const matchQuery = matchesSmartQuery(searchHaystack, q);
+          const show = matchFilter && matchQuery;
+          item.hidden = !show;
+          if (show) visibleAlbums++;
+        });
+        if (headingEl) headingEl.textContent = activeNav === "trips" ? "Trips" : "Albums";
+        if (subheadingEl) subheadingEl.textContent = `${visibleAlbums} Destinations`;
+        return;
+      }
+
+      let visibleCount = 0;
+      cells.forEach((cell) => {
+        const slug = cell.dataset.slug || "";
+        const region = cell.dataset.region || "";
+        const album = cell.dataset.album || "";
+        const title = (cell.dataset.title || "").toLowerCase();
+        const location = (cell.dataset.location || "").toLowerCase();
+
+        let matchNav = true;
+        if (activeNav === "featured") matchNav = cell.dataset.featured === "1";
+        else if (activeNav === "recent") matchNav = cell.dataset.recent === "1";
+        else if (activeNav.startsWith("region:")) matchNav = region === activeNav.slice(7);
+
+        let matchFilter = true;
+        if (activeFilter === "featured") matchFilter = cell.dataset.featured === "1";
+        else if (activeFilter === "recent") matchFilter = cell.dataset.recent === "1";
+        else if (activeFilter.startsWith("region:")) matchFilter = region === activeFilter.slice(7);
+        else if (activeFilter.startsWith("album:")) matchFilter = slug === activeFilter.slice(6);
+
+        const searchHaystack =
+          cell.dataset.search || `${album} ${region} ${title} ${location} ${slug}`;
+        const matchQuery = matchesSmartQuery(searchHaystack, q);
+
+        const show = matchNav && matchFilter && matchQuery;
+        cell.hidden = !show;
+        if (show) visibleCount++;
+      });
+
+      if (emptyEl) emptyEl.hidden = visibleCount > 0;
+
+      const navLabels: Record<string, string> = {
+        library: "All Photos",
+        recent: "Recently Saved",
+        featured: "Featured",
+      };
+      if (headingEl) {
+        headingEl.textContent = activeNav.startsWith("region:")
+          ? activeNav.slice(7)
+          : navLabels[activeNav] || "All Photos";
+      }
+      if (subheadingEl) {
+        subheadingEl.textContent = `${visibleCount} Items · Leica Q3, Nikon Zf & iPhone`;
+      }
     };
 
-    const ro = typeof ResizeObserver !== "undefined"
-      ? new ResizeObserver((entries) => {
-          for (const entry of entries) {
-            const w = entry.contentRect.width;
-            if (w > 0) {
-              (entry.target as HTMLElement).style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
-            }
+    // Sidebar toggle
+    sidebarToggle?.addEventListener(
+      "click",
+      () => {
+        const collapsed = app.classList.toggle("sidebar-collapsed");
+        sidebarToggle.setAttribute("aria-pressed", String(!collapsed));
+      },
+      { signal },
+    );
+
+    // Info overlay toggle
+    infoToggle?.addEventListener(
+      "click",
+      () => {
+        const active = app.classList.toggle("show-info");
+        infoToggle.classList.toggle("is-active", active);
+        infoToggle.setAttribute("aria-pressed", String(active));
+      },
+      { signal },
+    );
+
+    // Zoom slider
+    const setCols = (val: number) => {
+      const clamped = Math.max(3, Math.min(9, val));
+      if (zoomSlider) zoomSlider.value = String(clamped);
+      grid?.style.setProperty("--mp-cols", String(clamped));
+    };
+    zoomSlider?.addEventListener("input", () => setCols(Number(zoomSlider.value)), { signal });
+    zoomOutBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) + 1), { signal });
+    zoomInBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) - 1), { signal });
+
+    // Segmented control
+    segButtons.forEach((btn) => {
+      btn.addEventListener(
+        "click",
+        () => {
+          segButtons.forEach((b) => {
+            b.classList.toggle("is-active", b === btn);
+            b.setAttribute("aria-selected", String(b === btn));
+          });
+          const seg = btn.dataset.seg;
+          if (seg === "years") setCols(8);
+          else if (seg === "months") setCols(5);
+          else setCols(6);
+          if (activeNav === "trips" || activeNav === "albums") {
+            activeNav = "library";
           }
-        })
-      : null;
-
-    items.forEach((item) => {
-      const root = item.querySelector<HTMLElement>(".gf-root");
-      const hit = item.querySelector<HTMLButtonElement>(".gf-hit");
-      const href = item.dataset.href;
-      if (!root) return;
-
-      const w = root.clientWidth;
-      if (w > 0) root.style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
-      ro?.observe(root);
-
-      let raf = 0;
-      let px = 0;
-      let py = 0;
-      const write = () => {
-        raf = 0;
-        root.style.setProperty("--gf-px", px.toFixed(3));
-        root.style.setProperty("--gf-py", py.toFixed(3));
-      };
-
-      root.addEventListener("pointermove", (e) => {
-        if (e.pointerType === "touch") return;
-        const r = root.getBoundingClientRect();
-        if (!r.width || !r.height) return;
-        px = ((e.clientX - r.left) / r.width) * 2 - 1;
-        py = ((e.clientY - r.top) / r.height) * 2 - 1;
-        if (!raf) raf = requestAnimationFrame(write);
-      }, { signal });
-
-      root.addEventListener("pointerleave", () => {
-        px = 0;
-        py = 0;
-        if (!raf) raf = requestAnimationFrame(write);
-      }, { signal });
-
-      hit?.addEventListener("click", () => {
-        const isOpen = root.hasAttribute("data-open");
-        if (isOpen && href && window.matchMedia("(hover: none)").matches) {
-          window.location.href = href;
-          return;
-        }
-        closeAll(root);
-        setFolderOpen(root, !isOpen);
-      }, { signal });
-
-      hit?.addEventListener("dblclick", () => {
-        if (href) window.location.href = href;
-      }, { signal });
+          applyState();
+        },
+        { signal },
+      );
     });
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeAll();
-    }, { signal });
+    // Sidebar navigation
+    navButtons.forEach((btn) => {
+      btn.addEventListener(
+        "click",
+        () => {
+          activeNav = btn.dataset.nav || "library";
+          applyState();
+        },
+        { signal },
+      );
+    });
 
-    document.addEventListener("pointerdown", (e) => {
-      const target = e.target as Node | null;
-      if (target && !grid.contains(target)) {
-        closeAll();
-      } else if (target) {
-        const openRoot = grid.querySelector<HTMLElement>(".gf-root[data-open]");
-        if (openRoot && !openRoot.contains(target)) {
-          setFolderOpen(openRoot, false);
+    const closeFilterMenu = () => {
+      if (!filterMenu || !filterTrigger) return;
+      filterMenu.hidden = true;
+      filterTrigger.setAttribute("aria-expanded", "false");
+    };
+
+    filterTrigger?.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+        if (!filterMenu) return;
+        const nextOpen = filterMenu.hidden;
+        filterMenu.hidden = !nextOpen;
+        filterTrigger.setAttribute("aria-expanded", String(nextOpen));
+      },
+      { signal },
+    );
+
+    filterMenuItems.forEach((item) => {
+      item.addEventListener(
+        "click",
+        () => {
+          activeFilter = item.dataset.filterVal || "all";
+          if (filterLabel) filterLabel.textContent = item.dataset.filterText || "All Items";
+          filterMenuItems.forEach((btn) => {
+            const selected = btn === item;
+            btn.classList.toggle("is-selected", selected);
+            btn.setAttribute("aria-checked", String(selected));
+          });
+          closeFilterMenu();
+          applyState();
+        },
+        { signal },
+      );
+    });
+
+    document.addEventListener(
+      "click",
+      (e) => {
+        if (filterMenu && !filterMenu.hidden && !filterWrap?.contains(e.target as Node)) {
+          closeFilterMenu();
         }
-      }
-    }, { signal });
+      },
+      { signal },
+    );
 
-    signal.addEventListener("abort", () => {
-      ro?.disconnect();
-    }, { once: true });
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape" && filterMenu && !filterMenu.hidden) {
+          closeFilterMenu();
+        }
+      },
+      { signal },
+    );
+
+    searchInput?.addEventListener(
+      "input",
+      () => {
+        activeQuery = searchInput.value;
+        applyState();
+      },
+      { signal },
+    );
+
+    resetBtn?.addEventListener(
+      "click",
+      () => {
+        activeNav = "library";
+        activeFilter = "all";
+        activeQuery = "";
+        if (filterLabel) filterLabel.textContent = "All Items";
+        filterMenuItems.forEach((btn) => {
+          const selected = btn.dataset.filterVal === "all";
+          btn.classList.toggle("is-selected", selected);
+          btn.setAttribute("aria-checked", String(selected));
+        });
+        if (searchInput) searchInput.value = "";
+        applyState();
+      },
+      { signal },
+    );
+
+    // GlassFolder interactions for Trips / Albums
+    const foldersGrid = document.getElementById("mp-folders-grid");
+    if (foldersGrid) {
+      const FOLDER_BASE_WIDTH = 340;
+      const setFolderOpen = (root: HTMLElement, open: boolean) => {
+        if (open) root.setAttribute("data-open", "true");
+        else root.removeAttribute("data-open");
+        root.querySelector<HTMLButtonElement>(".gf-hit")?.setAttribute("aria-expanded", String(open));
+        const files = root.querySelector<HTMLElement>(".gf-files");
+        if (files) files.inert = !open;
+      };
+
+      const closeAllFolders = (except?: HTMLElement) => {
+        folderItems.forEach((item) => {
+          const root = item.querySelector<HTMLElement>(".gf-root");
+          if (root && root !== except && root.hasAttribute("data-open")) {
+            setFolderOpen(root, false);
+          }
+        });
+      };
+
+      const ro =
+        typeof ResizeObserver !== "undefined"
+          ? new ResizeObserver((entries) => {
+              for (const entry of entries) {
+                const w = entry.contentRect.width;
+                if (w > 0) {
+                  (entry.target as HTMLElement).style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
+                }
+              }
+            })
+          : null;
+
+      folderItems.forEach((item) => {
+        const root = item.querySelector<HTMLElement>(".gf-root");
+        const hit = item.querySelector<HTMLButtonElement>(".gf-hit");
+        const href = item.dataset.href;
+        if (!root) return;
+
+        const w = root.clientWidth;
+        if (w > 0) root.style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
+        ro?.observe(root);
+
+        hit?.addEventListener(
+          "click",
+          () => {
+            const isOpen = root.hasAttribute("data-open");
+            if (!isOpen) {
+              closeAllFolders(root);
+              setFolderOpen(root, true);
+            } else if (href) {
+              window.location.href = href;
+            }
+          },
+          { signal },
+        );
+      });
+
+      document.addEventListener(
+        "click",
+        (e) => {
+          const target = e.target as HTMLElement | null;
+          if (!target?.closest(".glass-folder-item")) closeAllFolders();
+        },
+        { signal },
+      );
+
+      signal.addEventListener("abort", () => ro?.disconnect());
+    }
+
+    applyState();
   });
 </script>

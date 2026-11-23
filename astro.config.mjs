@@ -131,6 +131,8 @@ export default defineConfig({
         },
       },
     },
-    optimizeDeps: {},
+    optimizeDeps: {
+      include: ['recharts'],
+    },
   },
 });
