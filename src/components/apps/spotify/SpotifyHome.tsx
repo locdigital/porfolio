@@ -63,9 +63,9 @@ export function SpotifyHome({
   };
 
   const activeTip = TIPS[tipIndex];
-  const popularTracks = SPOTIFY_TRACKS.slice(0, 6);
-  const radioCollections = ALL_SPOTIFY_COLLECTIONS.slice(0, 6);
-  const recentsList = (recentTracks.length > 0 ? recentTracks : SPOTIFY_TRACKS).slice(0, 6);
+  const popularTracks = SPOTIFY_TRACKS;
+  const radioCollections = ALL_SPOTIFY_COLLECTIONS;
+  const recentsList = recentTracks.length > 0 ? recentTracks : SPOTIFY_TRACKS;
 
   return (
     <div className="spotify-home-ambient">
@@ -165,13 +165,6 @@ export function SpotifyHome({
               <h2 id="spotify-popular-singles" className="spotify-h2">
                 Popular albums and singles
               </h2>
-              <button
-                type="button"
-                className="spotify-section-link"
-                onClick={() => onNavigate({ kind: "albums" })}
-              >
-                Show all
-              </button>
             </div>
 
             <div className="spotify-hscroll-row spotify-hscroll-row--3">
@@ -223,13 +216,6 @@ export function SpotifyHome({
             <h2 id="spotify-popular-radio" className="spotify-h2">
               Popular radio
             </h2>
-            <button
-              type="button"
-              className="spotify-section-link"
-              onClick={() => onNavigate({ kind: "radio" })}
-            >
-              Show all
-            </button>
           </div>
 
           <div className="spotify-hscroll-row spotify-hscroll-row--5">
@@ -300,13 +286,6 @@ export function SpotifyHome({
             <h2 id="spotify-recents" className="spotify-h2">
               Recents
             </h2>
-            <button
-              type="button"
-              className="spotify-section-link"
-              onClick={() => onNavigate({ kind: "recently-played" })}
-            >
-              Show all
-            </button>
           </div>
 
           <div className="spotify-hscroll-row spotify-hscroll-row--5">

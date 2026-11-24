@@ -671,13 +671,13 @@ const photosSchema = collectionPageSchema({
     display: flex;
     flex-direction: column;
     gap: 16px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+    scrollbar-width: auto;
   }
 
   .mp-sidebar::-webkit-scrollbar,
   .mp-canvas::-webkit-scrollbar,
   .mp-menu-scroll::-webkit-scrollbar {
+    -webkit-appearance: none;
     width: 4px;
     height: 4px;
   }
@@ -691,6 +691,7 @@ const photosSchema = collectionPageSchema({
   .mp-sidebar::-webkit-scrollbar-thumb,
   .mp-canvas::-webkit-scrollbar-thumb,
   .mp-menu-scroll::-webkit-scrollbar-thumb {
+    -webkit-appearance: none;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 9999px;
   }
@@ -699,6 +700,15 @@ const photosSchema = collectionPageSchema({
   .mp-canvas::-webkit-scrollbar-thumb:hover,
   .mp-menu-scroll::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.38);
+  }
+
+  @supports (-moz-appearance: none) {
+    .mp-sidebar,
+    .mp-canvas,
+    .mp-menu-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    }
   }
 
   .mp-sidebar-section {
@@ -758,8 +768,7 @@ const photosSchema = collectionPageSchema({
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    scrollbar-width: auto;
   }
 
   .mp-canvas-head {
@@ -922,7 +931,7 @@ const photosSchema = collectionPageSchema({
     display: flex;
     flex-direction: column;
     gap: 1px;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
   }
 
   /* ── Dense macOS Photos Grid ────────────────────────────────────────────── */
@@ -993,8 +1002,8 @@ const photosSchema = collectionPageSchema({
 
   .glass-folder-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 184px), 1fr));
-    gap: 44px 28px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 152px), 1fr));
+    gap: 36px 20px;
   }
 
   .glass-folder-item {
@@ -1223,12 +1232,27 @@ const photosSchema = collectionPageSchema({
       }
     };
 
+    const ZOOM_STORAGE_KEY = "mp-photos-cols";
+    const SIDEBAR_STORAGE_KEY = "mp-photos-sidebar-collapsed";
+
+    // Restore sidebar collapsed state
+    try {
+      const savedCollapsed = localStorage.getItem(SIDEBAR_STORAGE_KEY);
+      if (savedCollapsed === "1") {
+        app.classList.add("sidebar-collapsed");
+        sidebarToggle?.setAttribute("aria-pressed", "false");
+      }
+    } catch {}
+
     // Sidebar toggle
     sidebarToggle?.addEventListener(
       "click",
       () => {
         const collapsed = app.classList.toggle("sidebar-collapsed");
         sidebarToggle.setAttribute("aria-pressed", String(!collapsed));
+        try {
+          localStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? "1" : "0");
+        } catch {}
       },
       { signal },
     );
@@ -1245,11 +1269,24 @@ const photosSchema = collectionPageSchema({
     );
 
     // Zoom slider
-    const setCols = (val: number) => {
+    const setCols = (val: number, persist = true) => {
       const clamped = Math.max(3, Math.min(9, val));
       if (zoomSlider) zoomSlider.value = String(clamped);
       grid?.style.setProperty("--mp-cols", String(clamped));
+      if (persist) {
+        try {
+          localStorage.setItem(ZOOM_STORAGE_KEY, String(clamped));
+        } catch {}
+      }
     };
+
+    try {
+      const savedCols = Number(localStorage.getItem(ZOOM_STORAGE_KEY));
+      if (Number.isFinite(savedCols) && savedCols >= 3 && savedCols <= 9) {
+        setCols(savedCols, false);
+      }
+    } catch {}
+
     zoomSlider?.addEventListener("input", () => setCols(Number(zoomSlider.value)), { signal });
     zoomOutBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) + 1), { signal });
     zoomInBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) - 1), { signal });
@@ -1263,10 +1300,6 @@ const photosSchema = collectionPageSchema({
             b.classList.toggle("is-active", b === btn);
             b.setAttribute("aria-selected", String(b === btn));
           });
-          const seg = btn.dataset.seg;
-          if (seg === "years") setCols(8);
-          else if (seg === "months") setCols(5);
-          else setCols(6);
           if (activeNav === "trips" || activeNav === "albums") {
             activeNav = "library";
           }

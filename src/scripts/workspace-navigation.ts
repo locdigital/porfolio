@@ -1,4 +1,8 @@
-import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from "astro:transitions/client";
+import {
+  swapFunctions,
+  type TransitionBeforePreparationEvent,
+  type TransitionBeforeSwapEvent,
+} from "astro:transitions/client";
 
 import { shuffleGearGrid } from "../lib/gear-shuffle";
 import { hostWindowStorageKey, readHostWindowState } from "../lib/host-window-state";
@@ -107,11 +111,37 @@ document.addEventListener("astro:before-swap", (event) => {
   nextDoc.documentElement.classList.toggle("window-maximized", isMaximized);
   if (isAppNavigation) nextDoc.documentElement.dataset.appNavigation = "true";
 
+  const currentFrame = document.querySelector<HTMLElement>(".mac-window-container");
   const nextFrame = nextDoc.querySelector<HTMLElement>(".mac-window-container");
   if (nextFrame) {
     nextFrame.hidden = isClosed;
     nextFrame.classList.toggle("is-minimized", isMinimized);
     nextFrame.classList.toggle("is-maximized", isMaximized);
+    if (!switchingApps && currentFrame) {
+      nextFrame.style.zIndex = currentFrame.style.zIndex;
+      nextFrame.classList.toggle("is-pinned", currentFrame.classList.contains("is-pinned"));
+      if (currentFrame.classList.contains("is-tiled")) {
+        nextFrame.classList.add("is-tiled");
+        nextFrame.style.position = currentFrame.style.position;
+        nextFrame.style.left = currentFrame.style.left;
+        nextFrame.style.top = currentFrame.style.top;
+        nextFrame.style.width = currentFrame.style.width;
+        nextFrame.style.height = currentFrame.style.height;
+        nextFrame.style.margin = currentFrame.style.margin;
+        nextFrame.style.transition = "none";
+      }
+      // Swap only the host window frame in-place so .workspace-dock-persist
+      // (and any floating windows / iframes like Photos, Spotify, Netflix)
+      // are never detached or reloaded during in-app navigation.
+      navigation.swap = () => {
+        swapFunctions.deselectScripts(nextDoc);
+        swapFunctions.swapRootAttributes(nextDoc);
+        swapFunctions.swapHeadElements(nextDoc);
+        const restoreFocus = swapFunctions.saveFocus();
+        currentFrame.replaceWith(nextFrame);
+        restoreFocus();
+      };
+    }
   }
   const nextRestore = nextDoc.querySelector<HTMLButtonElement>('[data-window-action="restore"]');
   if (nextRestore) {
@@ -157,6 +187,12 @@ document.addEventListener("astro:after-swap", () => {
     const offset = Math.abs(pending.oldTop - bounds.top) < 1 ? 0 : (pending.oldTop - bounds.top) / scale;
     // Keep the outgoing snapshot at its actual viewport position on long mobile pages.
     document.documentElement.style.setProperty("--page-exit-offset", `${offset}px`);
+  }
+  const swappedFrame = document.querySelector<HTMLElement>(".mac-window-container");
+  if (swappedFrame?.style.transition === "none") {
+    requestAnimationFrame(() => {
+      swappedFrame.style.transition = "";
+    });
   }
   main?.focus({ preventScroll: true });
   if (document.documentElement.dataset.appNavigation === "true") {

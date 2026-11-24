@@ -9,6 +9,7 @@ interface DockItemProps {
   isActive?: boolean;
   isRunning?: boolean;
   onSelect?: (id: AppId) => void;
+  onContextMenu?: (id: AppId, rect: DOMRect) => void;
   registerSlotRef?: (id: AppId, el: HTMLDivElement | null) => void;
 }
 
@@ -19,6 +20,7 @@ export function DockItem({
   isActive = false,
   isRunning = false,
   onSelect,
+  onContextMenu,
   registerSlotRef,
 }: DockItemProps) {
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -58,6 +60,13 @@ export function DockItem({
     onSelect?.(app.id);
   };
 
+  const handleContextMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    hideTooltip();
+    onContextMenu?.(app.id, event.currentTarget.getBoundingClientRect());
+  };
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === "Escape") {
       hideTooltip();
@@ -86,6 +95,7 @@ export function DockItem({
         onFocus={showTooltip}
         onBlur={hideTooltip}
         onClick={handleClick}
+        onContextMenu={handleContextMenu}
         onKeyDown={handleKeyDown}
         style={{
           transform: iconTransform,

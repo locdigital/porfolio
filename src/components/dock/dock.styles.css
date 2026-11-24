@@ -1,18 +1,24 @@
 :root {
-  --dock-bg: rgba(235, 235, 238, 0.74);
-  --dock-blur: 24px;
-  --dock-radius: 9px;
-  --dock-padding-x: 4px;
-  --dock-padding-y: 4px;
+  --dock-bg: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.13) 52%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  --dock-blur: 28px;
+  --dock-radius: 8px;
+  --dock-padding-x: 5px;
+  --dock-padding-y: 5px;
 
   --dock-icon-size: 20px;
-  --dock-icon-gap: 4px;
+  --dock-icon-gap: 5px;
 
-  --dock-border: rgba(255, 255, 255, 0.58);
+  --dock-border: rgba(255, 255, 255, 0.42);
   --dock-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.14),
-    0 2px 6px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    0 12px 32px rgba(0, 0, 0, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.32),
+    inset 0 1px 1px rgba(255, 255, 255, 0.42);
 }
 
 .macos-dock-anchor {
@@ -59,8 +65,8 @@ html.window-maximized .macos-dock-anchor--left {
   background: var(--dock-bg);
   border: 1px solid var(--dock-border);
   box-shadow: var(--dock-shadow);
-  backdrop-filter: blur(var(--dock-blur)) saturate(180%);
-  -webkit-backdrop-filter: blur(var(--dock-blur)) saturate(180%);
+  backdrop-filter: blur(var(--dock-blur)) saturate(210%) brightness(1.06);
+  -webkit-backdrop-filter: blur(var(--dock-blur)) saturate(210%) brightness(1.06);
   overflow: visible;
   user-select: none;
 }
@@ -68,7 +74,7 @@ html.window-maximized .macos-dock-anchor--left {
 .macos-dock--left {
   flex-direction: column;
   align-items: center;
-  width: calc(var(--dock-icon-size) + var(--dock-padding-x) * 2);
+  width: auto;
 }
 
 .macos-dock--bottom {
@@ -114,8 +120,7 @@ html.window-maximized .macos-dock-anchor--left {
 }
 
 .macos-dock-item:focus-visible {
-  outline: 2px solid var(--dash-accent, #0969da);
-  outline-offset: 3px;
+  outline: none;
 }
 
 .macos-dock-item.is-bouncing {
@@ -254,9 +259,9 @@ html.window-maximized .macos-dock-anchor--left {
   :root {
     --dock-icon-size: 32px;
     --dock-icon-gap: 6px;
-    --dock-padding-x: 6px;
+    --dock-padding-x: 7px;
     --dock-padding-y: 7px;
-    --dock-radius: 14px;
+    --dock-radius: 10px;
   }
 
   .macos-dock-anchor--left {
@@ -276,10 +281,10 @@ html.window-maximized .macos-dock-anchor--left {
   .macos-dock--left {
     flex-direction: row;
     width: auto;
-    padding: 6px 10px;
+    padding: 7px 10px;
     gap: 6px;
-    border-radius: 18px;
-    background: rgba(245, 245, 247, 0.88);
+    border-radius: 12px;
+    background: var(--dock-bg);
   }
 
   .macos-dock--left .macos-dock-slot {
@@ -322,4 +327,76 @@ html.window-maximized .macos-dock-anchor--left {
     transition: none;
     animation: none;
   }
+}
+
+/* macOS Dock right-click context menu popover */
+.macos-dock-context-menu {
+  position: fixed;
+  z-index: 95;
+  pointer-events: auto;
+  min-width: 104px;
+  padding: 5px;
+  border-radius: 10px;
+  background: rgba(244, 244, 247, 0.96);
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.16),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  user-select: none;
+}
+
+.macos-dock-context-menu--left {
+  transform: translateY(-50%);
+}
+
+.macos-dock-context-menu--left::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  width: 7px;
+  height: 14px;
+  background: rgba(244, 244, 247, 0.96);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.macos-dock-context-menu--bottom {
+  transform: translate(-50%, -100%);
+}
+
+.macos-dock-context-menu__item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #1d1d1f;
+  cursor: pointer;
+  transition: background-color 110ms ease, color 110ms ease;
+}
+
+.macos-dock-context-menu__item:hover,
+.macos-dock-context-menu__item:focus-visible {
+  background: #0a84ff;
+  color: #ffffff;
+  outline: none;
+}
+
+.macos-dock-context-menu__divider {
+  height: 1px;
+  margin: 3px 8px;
+  background: rgba(0, 0, 0, 0.12);
 }

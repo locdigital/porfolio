@@ -8,6 +8,8 @@ import {
   getProjects,
 } from "../../lib/content";
 import { getWritingEntries } from "../../lib/writing";
+import { NETFLIX_MOVIES } from "../../data/netflix";
+import { SPOTIFY_TRACKS } from "../../data/spotify";
 
 const [projects, writing, photos, playbooks, gear] = await Promise.all([
   getProjects(),
@@ -112,7 +114,43 @@ const navigationItems: CommandSearchItem[] = [
   },
 ];
 
+const appItems: CommandSearchItem[] = [
+  {
+    title: "Workspace",
+    description: "Open Phuc Loc Nguyen's main workspace window",
+    href: "/",
+    group: "Apps",
+    keywords: "app desktop workspace home portfolio",
+    appId: "workspace",
+  },
+  {
+    title: "Photos",
+    description: "Open Photos app — 25 destinations & photography archive",
+    href: "/photos",
+    group: "Apps",
+    keywords: "app photos photography gallery albums trips camera",
+    appId: "photos",
+  },
+  {
+    title: "Spotify",
+    description: "Open Spotify app — curated personal music playlist",
+    href: "/music/spotify",
+    group: "Apps",
+    keywords: "app spotify music songs tracks playlist audio",
+    appId: "spotify",
+  },
+  {
+    title: "Netflix",
+    description: "Open Netflix app — personal film & series library",
+    href: "/entertainment/netflix",
+    group: "Apps",
+    keywords: "app netflix movies films cinema entertainment watch",
+    appId: "netflix",
+  },
+];
+
 const searchItems: CommandSearchItem[] = [
+  ...appItems,
   ...navigationItems,
   ...projects.map((project) => ({
     title: project.client || project.title,
@@ -151,6 +189,22 @@ const searchItems: CommandSearchItem[] = [
     ]
       .filter(Boolean)
       .join(" "),
+  })),
+  ...NETFLIX_MOVIES.map((movie) => ({
+    title: movie.title,
+    description: `${movie.year} · ${movie.genres.join(", ")} — ${movie.synopsis}`,
+    href: "/entertainment/netflix",
+    group: "Netflix" as const,
+    keywords: [movie.title, ...movie.genres, String(movie.year), "netflix movie film"].filter(Boolean).join(" "),
+    appId: "netflix" as const,
+  })),
+  ...SPOTIFY_TRACKS.map((track) => ({
+    title: track.title,
+    description: `${track.artist} · ${track.album}`,
+    href: "/music/spotify",
+    group: "Spotify" as const,
+    keywords: [track.title, track.artist, track.album, "spotify music song track"].filter(Boolean).join(" "),
+    appId: "spotify" as const,
   })),
 ];
 ---

@@ -1,11 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { clampWindowOffset, type WindowInstance } from "./window-manager";
+import {
+  clampWindowOffset,
+  getTileGeometryStyle,
+  getWindowZIndex,
+  type WindowInstance,
+  type WindowTilePreset,
+} from "./window-manager";
+import { WindowTileMenu } from "./WindowTileMenu";
 import "./desktop.styles.css";
 
 const MIN_WINDOW_WIDTH = 420;
 const MIN_WINDOW_HEIGHT = 360;
 
-type ResizeEdge = "e" | "s" | "se";
+type ResizeEdge = "e" | "w" | "s" | "se" | "sw";
 
 interface AppWindowProps {
   windowState: WindowInstance;
@@ -15,6 +22,8 @@ interface AppWindowProps {
   onClose: () => void;
   onMinimize: () => void;
   onToggleMaximize: () => void;
+  onTogglePin: () => void;
+  onTile: (preset: WindowTilePreset) => void;
   onMove: (offsetX: number, offsetY: number) => void;
   children: React.ReactNode;
 }
@@ -27,16 +36,75 @@ export function AppWindow({
   onClose,
   onMinimize,
   onToggleMaximize,
+  onTogglePin,
+  onTile,
   onMove,
   children,
 }: AppWindowProps) {
   const frameRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+  const [tileMenu, setTileMenu] = useState<{ x: number; y: number } | null>(null);
+  const tileOpenTimerRef = useRef<number | null>(null);
+  const tileCloseTimerRef = useRef<number | null>(null);
   const scrollTimerRef = useRef<number | null>(null);
+
+  const clearTileTimers = () => {
+    if (tileOpenTimerRef.current !== null) {
+      window.clearTimeout(tileOpenTimerRef.current);
+      tileOpenTimerRef.current = null;
+    }
+    if (tileCloseTimerRef.current !== null) {
+      window.clearTimeout(tileCloseTimerRef.current);
+      tileCloseTimerRef.current = null;
+    }
+  };
+
+  const scheduleTileMenuOpen = (btn: HTMLButtonElement) => {
+    if (window.innerWidth < 1024) return;
+    clearTileTimers();
+    const rect = btn.getBoundingClientRect();
+    tileOpenTimerRef.current = window.setTimeout(() => {
+      const menuW = 248;
+      const x = Math.max(8, Math.min(rect.left - 18, window.innerWidth - menuW - 8));
+      const y = Math.min(rect.bottom + 10, window.innerHeight - 190);
+      setTileMenu({ x, y });
+    }, 220);
+  };
+
+  const scheduleTileMenuClose = () => {
+    clearTileTimers();
+    tileCloseTimerRef.current = window.setTimeout(() => {
+      setTileMenu(null);
+    }, 180);
+  };
+
+  useEffect(() => {
+    if (!contextMenu) return;
+    const handlePointerDown = (e: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setContextMenu(null);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setContextMenu(null);
+    };
+    const handleClose = () => setContextMenu(null);
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleClose);
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleClose);
+    };
+  }, [contextMenu]);
 
   useEffect(() => {
     return () => {
+      clearTileTimers();
       if (scrollTimerRef.current !== null) {
         window.clearTimeout(scrollTimerRef.current);
       }
@@ -58,6 +126,7 @@ export function AppWindow({
     startY: number;
     origX: number;
     origY: number;
+    dragging: boolean;
   } | null>(null);
   const resizeStateRef = useRef<{
     edge: ResizeEdge;
@@ -77,23 +146,33 @@ export function AppWindow({
 
   const handleTitlebarPointerDown = (e: React.PointerEvent<HTMLElement>) => {
     // Only drag on desktop and when not clicking buttons or maximized
+    if (e.button !== 0) return;
     if (window.innerWidth < 1024 || windowState.isMaximized) return;
-    if ((e.target as HTMLElement).closest("button")) return;
+    if ((e.target as Element).closest("button, a, input, select, textarea")) return;
 
     onFocus();
-    e.currentTarget.setPointerCapture(e.pointerId);
     dragStateRef.current = {
       startX: e.clientX,
       startY: e.clientY,
       origX: windowState.offsetX,
       origY: windowState.offsetY,
+      dragging: false,
     };
   };
 
   const handleTitlebarPointerMove = (e: React.PointerEvent<HTMLElement>) => {
     if (!dragStateRef.current) return;
+    if (e.buttons !== 1) {
+      dragStateRef.current = null;
+      return;
+    }
     const dx = e.clientX - dragStateRef.current.startX;
     const dy = e.clientY - dragStateRef.current.startY;
+    if (!dragStateRef.current.dragging) {
+      if (Math.hypot(dx, dy) < 5) return;
+      dragStateRef.current.dragging = true;
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
     const rect = frameRef.current?.getBoundingClientRect();
     const clamped = clampWindowOffset(
       dragStateRef.current.origX + dx,
@@ -141,18 +220,24 @@ export function AppWindow({
     const maxW = Math.max(MIN_WINDOW_WIDTH, window.innerWidth - 88);
     const maxH = Math.max(MIN_WINDOW_HEIGHT, window.innerHeight - 40);
 
-    const nextW =
-      r.edge === "e" || r.edge === "se"
-        ? Math.max(MIN_WINDOW_WIDTH, Math.min(maxW, r.origW + dx))
+    const isEast = r.edge === "e" || r.edge === "se";
+    const isWest = r.edge === "w" || r.edge === "sw";
+    const isSouth = r.edge === "s" || r.edge === "se" || r.edge === "sw";
+
+    const nextW = isEast
+      ? Math.max(MIN_WINDOW_WIDTH, Math.min(maxW, r.origW + dx))
+      : isWest
+        ? Math.max(MIN_WINDOW_WIDTH, Math.min(maxW, r.origW - dx))
         : r.origW;
-    const nextH =
-      r.edge === "s" || r.edge === "se"
-        ? Math.max(MIN_WINDOW_HEIGHT, Math.min(maxH, r.origH + dy))
-        : r.origH;
+    const nextH = isSouth
+      ? Math.max(MIN_WINDOW_HEIGHT, Math.min(maxH, r.origH + dy))
+      : r.origH;
 
     setSize({ width: nextW, height: nextH });
 
-    const nextOffsetX = r.origOffsetX + (nextW - r.origW) / 2;
+    const nextOffsetX = isWest
+      ? r.origOffsetX - (nextW - r.origW) / 2
+      : r.origOffsetX + (nextW - r.origW) / 2;
     const nextOffsetY = r.origOffsetY + (nextH - r.origH) / 2;
     onMove(nextOffsetX, nextOffsetY);
   };
@@ -165,12 +250,16 @@ export function AppWindow({
     }
   };
 
-  const transformStyle = windowState.isMaximized
-    ? undefined
-    : `translate3d(${windowState.offsetX}px, ${windowState.offsetY}px, 0)`;
+  const isTiled = !windowState.isMaximized && windowState.tile !== null;
 
-  const sizeStyle: React.CSSProperties =
-    !windowState.isMaximized && size
+  const transformStyle =
+    windowState.isMaximized || isTiled
+      ? undefined
+      : `translate3d(${windowState.offsetX}px, ${windowState.offsetY}px, 0)`;
+
+  const sizeStyle: React.CSSProperties = isTiled && windowState.tile
+    ? getTileGeometryStyle(windowState.tile)
+    : !windowState.isMaximized && size
       ? {
           width: `${size.width}px`,
           height: `${size.height}px`,
@@ -179,7 +268,19 @@ export function AppWindow({
         }
       : {};
 
+  const handleTitlebarContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onFocus();
+    const menuWidth = 190;
+    const menuHeight = 44;
+    const x = Math.min(e.clientX, window.innerWidth - menuWidth - 8);
+    const y = Math.min(e.clientY, window.innerHeight - menuHeight - 8);
+    setContextMenu({ x: Math.max(8, x), y: Math.max(8, y) });
+  };
+
   return (
+    <>
     <section
       ref={frameRef}
       role="dialog"
@@ -187,22 +288,35 @@ export function AppWindow({
       aria-modal="false"
       aria-hidden={isMinimized || undefined}
       className={`desktop-app-window${windowState.isMaximized ? " is-maximized" : ""}${
+        isTiled ? " is-tiled" : ""
+      }${
         isMinimized ? " is-minimized" : ""
-      }${isActive && !isMinimized ? " is-active" : " is-inactive"}`}
+      }${windowState.isPinned ? " is-pinned is-widget" : ""}${
+        isActive && !isMinimized ? " is-active" : " is-inactive"
+      }`}
       style={{
-        zIndex: isMinimized ? -1 : 25 + windowState.zIndex,
+        zIndex: getWindowZIndex(windowState),
         transform: transformStyle,
         ...sizeStyle,
       }}
       onPointerDown={onFocus}
+      onFocus={onFocus}
     >
       <header
         className="desktop-app-titlebar"
         onPointerDown={handleTitlebarPointerDown}
         onPointerMove={handleTitlebarPointerMove}
         onPointerUp={handleTitlebarPointerUp}
-        onDoubleClick={() => {
-          if (window.innerWidth >= 1024) onToggleMaximize();
+        onPointerCancel={handleTitlebarPointerUp}
+        onContextMenu={handleTitlebarContextMenu}
+        onClick={(event) => {
+          if ((event.target as Element).closest("button, a, input, select, textarea")) return;
+          onFocus();
+        }}
+        onDoubleClick={(event) => {
+          if ((event.target as Element).closest("button, a, input, select, textarea")) return;
+          event.preventDefault();
+          onToggleMaximize();
         }}
       >
         <div className="mac-traffic-lights" aria-label="Window controls">
@@ -239,8 +353,12 @@ export function AppWindow({
             type="button"
             onClick={(e) => {
               e.stopPropagation();
+              clearTileTimers();
+              setTileMenu(null);
               onToggleMaximize();
             }}
+            onMouseEnter={(e) => scheduleTileMenuOpen(e.currentTarget)}
+            onMouseLeave={scheduleTileMenuClose}
             aria-label={windowState.isMaximized ? `Restore ${title}` : `Maximize ${title}`}
             aria-pressed={windowState.isMaximized}
             title={windowState.isMaximized ? `Restore ${title}` : `Maximize ${title}`}
@@ -254,6 +372,23 @@ export function AppWindow({
         <div className="desktop-titlebar-title">
           <span>{title}</span>
         </div>
+
+        {windowState.isPinned && (
+          <button
+            type="button"
+            className="desktop-pin-badge"
+            onClick={(e) => {
+              e.stopPropagation();
+              onTogglePin();
+            }}
+            aria-label="Unpin window"
+            title="Pinned on top — click to unpin"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M16 3a1 1 0 0 1 .7.3l4 4a1 1 0 0 1-.2 1.6l-3.6 1.8-2.3 2.3.5 3.8a1 1 0 0 1-1.7.8L10 14.2 5.7 18.5a1 1 0 0 1-1.4-1.4L8.6 12.8 5.2 9.4a1 1 0 0 1 .8-1.7l3.8.5 2.3-2.3 1.8-3.6A1 1 0 0 1 16 3Z" />
+            </svg>
+          </button>
+        )}
       </header>
 
       <div
@@ -265,6 +400,13 @@ export function AppWindow({
 
       {!windowState.isMaximized && (
         <>
+          <div
+            className="desktop-resize-handle desktop-resize-handle--w"
+            onPointerDown={handleResizePointerDown("w")}
+            onPointerMove={handleResizePointerMove}
+            onPointerUp={handleResizePointerUp}
+            aria-hidden="true"
+          />
           <div
             className="desktop-resize-handle desktop-resize-handle--e"
             onPointerDown={handleResizePointerDown("e")}
@@ -280,30 +422,62 @@ export function AppWindow({
             aria-hidden="true"
           />
           <div
+            className="desktop-resize-handle desktop-resize-handle--sw"
+            onPointerDown={handleResizePointerDown("sw")}
+            onPointerMove={handleResizePointerMove}
+            onPointerUp={handleResizePointerUp}
+            aria-hidden="true"
+          />
+          <div
             className="desktop-resize-handle desktop-resize-handle--se"
             onPointerDown={handleResizePointerDown("se")}
             onPointerMove={handleResizePointerMove}
             onPointerUp={handleResizePointerUp}
-            title="Drag to resize"
             aria-hidden="true"
-          >
-            <svg
-              className="desktop-resize-icon"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M9.5 3.5H12.5V6.5" />
-              <path d="M6.5 12.5H3.5V9.5" />
-              <path d="M12.5 3.5L3.5 12.5" />
-            </svg>
-          </div>
+          />
         </>
       )}
     </section>
+
+    {tileMenu && (
+      <WindowTileMenu
+        x={tileMenu.x}
+        y={tileMenu.y}
+        onMouseEnter={clearTileTimers}
+        onMouseLeave={scheduleTileMenuClose}
+        onSelect={(preset) => {
+          clearTileTimers();
+          setTileMenu(null);
+          onTile(preset);
+        }}
+      />
+    )}
+
+    {contextMenu && (
+      <div
+        ref={menuRef}
+        role="menu"
+        className="desktop-context-menu"
+        style={{ left: contextMenu.x, top: contextMenu.y }}
+      >
+        <button
+          type="button"
+          role="menuitemcheckbox"
+          aria-checked={windowState.isPinned}
+          className={`desktop-context-menu__item${windowState.isPinned ? " is-checked" : ""}`}
+          onClick={() => {
+            onTogglePin();
+            setContextMenu(null);
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 17v5" />
+            <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+          </svg>
+          <span>{windowState.isPinned ? "Unpin widget" : "Pin as widget"}</span>
+        </button>
+      </div>
+    )}
+    </>
   );
 }

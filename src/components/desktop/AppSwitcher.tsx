@@ -101,7 +101,7 @@ export function AppSwitcher({
         <div className="macos-switcher-footer">
           <span className="macos-switcher-active-name">{selectedApp?.name}</span>
           <span className="macos-switcher-hint">
-            ⌥ Tab / Click to switch · Esc to close
+            Tab / Click to switch · Enter to open · Esc to close
           </span>
         </div>
       </div>

@@ -250,23 +250,228 @@ function setupWindowControls(signal: AbortSignal) {
   }, { signal });
 
   const titlebar = windowFrame.querySelector<HTMLElement>(".desktop-titlebar");
-  titlebar?.addEventListener("dblclick", (event) => {
-    if (event.target instanceof Element && event.target.closest("button, a, input")) return;
-    animateFrameChange(() => {
-      if (windowFrame.classList.contains("is-minimized")) {
-        windowFrame.classList.remove("is-minimized");
-      } else {
-        windowFrame.classList.toggle("is-maximized");
-      }
-    });
-  }, { signal });
-
-  maximizeButton.addEventListener("click", () => {
+  const toggleMaximize = () => {
     animateFrameChange(() => {
       windowFrame.classList.remove("is-minimized");
       windowFrame.classList.toggle("is-maximized");
     });
+  };
+  titlebar?.addEventListener("dblclick", (event) => {
+    if (event.target instanceof Element && event.target.closest("button, a, input, select, textarea")) return;
+    event.preventDefault();
+    toggleMaximize();
   }, { signal });
+
+  if (titlebar) {
+    const offsetStorageKey = `${app}-window-offset`;
+    const sizeStorageKey = `${app}-window-size`;
+    const MIN_W = 420;
+    const MIN_H = 360;
+    let offsetX = 0;
+    let offsetY = 0;
+    let customSize: { width: number; height: number } | null = null;
+
+    const applyOffset = (x: number, y: number, persist = true) => {
+      offsetX = x;
+      offsetY = y;
+      windowFrame.style.setProperty("--window-offset-x", `${x}px`);
+      windowFrame.style.setProperty("--window-offset-y", `${y}px`);
+      if (persist) {
+        try {
+          sessionStorage.setItem(offsetStorageKey, JSON.stringify({ x, y }));
+        } catch {}
+      }
+    };
+
+    const applySize = (width: number, height: number, persist = true) => {
+      customSize = { width, height };
+      windowFrame.style.setProperty("--window-width", `${width}px`);
+      windowFrame.style.setProperty("--window-height", `${height}px`);
+      if (persist) {
+        try {
+          sessionStorage.setItem(sizeStorageKey, JSON.stringify({ width, height }));
+        } catch {}
+      }
+    };
+
+    try {
+      const savedOffset = JSON.parse(sessionStorage.getItem(offsetStorageKey) || "null");
+      if (
+        savedOffset &&
+        typeof savedOffset.x === "number" &&
+        typeof savedOffset.y === "number" &&
+        Number.isFinite(savedOffset.x) &&
+        Number.isFinite(savedOffset.y)
+      ) {
+        applyOffset(savedOffset.x, savedOffset.y, false);
+      }
+      const savedSize = JSON.parse(sessionStorage.getItem(sizeStorageKey) || "null");
+      if (
+        savedSize &&
+        typeof savedSize.width === "number" &&
+        typeof savedSize.height === "number" &&
+        Number.isFinite(savedSize.width) &&
+        Number.isFinite(savedSize.height)
+      ) {
+        applySize(savedSize.width, savedSize.height, false);
+      }
+    } catch {}
+
+    let dragState: { startX: number; startY: number; origX: number; origY: number; dragging: boolean } | null = null;
+
+    const clampOffset = (x: number, y: number) => {
+      const rect = windowFrame.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const maxX = Math.max(0, (vw + rect.width) / 2 - 160);
+      const minY = -Math.max(0, (vh - rect.height) / 2);
+      const maxY = Math.max(0, (vh + rect.height) / 2 - 56);
+      return {
+        x: Math.max(-maxX, Math.min(maxX, x)),
+        y: Math.max(minY, Math.min(maxY, y)),
+      };
+    };
+
+    titlebar.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      if (
+        window.innerWidth < 1024 ||
+        windowFrame.classList.contains("is-maximized") ||
+        windowFrame.classList.contains("is-tiled") ||
+        windowFrame.classList.contains("is-pinned")
+      ) {
+        return;
+      }
+      if (event.target instanceof Element && event.target.closest("button, a, input")) return;
+
+      dragState = {
+        startX: event.clientX,
+        startY: event.clientY,
+        origX: offsetX,
+        origY: offsetY,
+        dragging: false,
+      };
+    }, { signal });
+
+    titlebar.addEventListener("pointermove", (event) => {
+      if (!dragState) return;
+      if (event.buttons !== 1) {
+        dragState = null;
+        windowFrame.classList.remove("is-dragging");
+        return;
+      }
+      if (!dragState.dragging) {
+        if (Math.hypot(event.clientX - dragState.startX, event.clientY - dragState.startY) < 5) return;
+        dragState.dragging = true;
+        titlebar.setPointerCapture(event.pointerId);
+        windowFrame.classList.add("is-dragging");
+      }
+      const next = clampOffset(
+        dragState.origX + (event.clientX - dragState.startX),
+        dragState.origY + (event.clientY - dragState.startY),
+      );
+      applyOffset(next.x, next.y, false);
+    }, { signal });
+
+    const endDrag = (event: PointerEvent) => {
+      if (!dragState) return;
+      dragState = null;
+      windowFrame.classList.remove("is-dragging");
+      if (titlebar.hasPointerCapture(event.pointerId)) {
+        titlebar.releasePointerCapture(event.pointerId);
+      }
+      applyOffset(offsetX, offsetY, true);
+    };
+
+    titlebar.addEventListener("pointerup", endDrag, { signal });
+    titlebar.addEventListener("pointercancel", endDrag, { signal });
+
+    // Resize handles (w, e, s, sw, se)
+    type HostResizeEdge = "w" | "e" | "s" | "sw" | "se";
+    let resizeState: {
+      edge: HostResizeEdge;
+      startX: number;
+      startY: number;
+      origW: number;
+      origH: number;
+      origOffsetX: number;
+      origOffsetY: number;
+    } | null = null;
+
+    const resizeHandles = windowFrame.querySelectorAll<HTMLElement>("[data-window-resize]");
+    resizeHandles.forEach((handle) => {
+      const edge = handle.dataset.windowResize as HostResizeEdge | undefined;
+      if (!edge) return;
+
+      handle.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0) return;
+        if (
+          window.innerWidth < 1024 ||
+          windowFrame.classList.contains("is-maximized") ||
+          windowFrame.classList.contains("is-tiled")
+        ) {
+          return;
+        }
+        event.stopPropagation();
+        const rect = windowFrame.getBoundingClientRect();
+        handle.setPointerCapture(event.pointerId);
+        resizeState = {
+          edge,
+          startX: event.clientX,
+          startY: event.clientY,
+          origW: rect.width,
+          origH: rect.height,
+          origOffsetX: offsetX,
+          origOffsetY: offsetY,
+        };
+      }, { signal });
+
+      handle.addEventListener("pointermove", (event) => {
+        if (!resizeState) return;
+        const dx = event.clientX - resizeState.startX;
+        const dy = event.clientY - resizeState.startY;
+        const maxW = Math.min(1500, Math.max(MIN_W, window.innerWidth - 88));
+        const maxH = Math.max(MIN_H, window.innerHeight - 40);
+
+        const isEast = resizeState.edge === "e" || resizeState.edge === "se";
+        const isWest = resizeState.edge === "w" || resizeState.edge === "sw";
+        const isSouth = resizeState.edge === "s" || resizeState.edge === "se" || resizeState.edge === "sw";
+
+        const nextW = isEast
+          ? Math.max(MIN_W, Math.min(maxW, resizeState.origW + dx))
+          : isWest
+            ? Math.max(MIN_W, Math.min(maxW, resizeState.origW - dx))
+            : resizeState.origW;
+        const nextH = isSouth
+          ? Math.max(MIN_H, Math.min(maxH, resizeState.origH + dy))
+          : resizeState.origH;
+
+        applySize(nextW, nextH, false);
+        const nextOffsetX = isWest
+          ? resizeState.origOffsetX - (nextW - resizeState.origW) / 2
+          : resizeState.origOffsetX + (nextW - resizeState.origW) / 2;
+        const nextOffsetY = resizeState.origOffsetY + (nextH - resizeState.origH) / 2;
+        applyOffset(nextOffsetX, nextOffsetY, false);
+      }, { signal });
+
+      const endResize = (event: PointerEvent) => {
+        if (!resizeState) return;
+        resizeState = null;
+        if (handle.hasPointerCapture(event.pointerId)) {
+          handle.releasePointerCapture(event.pointerId);
+        }
+        if (customSize) {
+          applySize(customSize.width, customSize.height, true);
+        }
+        applyOffset(offsetX, offsetY, true);
+      };
+
+      handle.addEventListener("pointerup", endResize, { signal });
+      handle.addEventListener("pointercancel", endResize, { signal });
+    });
+  }
+
+  maximizeButton.addEventListener("click", toggleMaximize, { signal });
 
   window.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || windowFrame.hidden || event.defaultPrevented) return;

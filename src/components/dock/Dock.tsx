@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   DEFAULT_DOCK_APPS,
   DEFAULT_DOCK_MOTION,
@@ -14,7 +15,12 @@ export interface DockProps {
   position?: DockPosition;
   activeApp?: AppId | null;
   runningApps?: AppId[];
+  pinnedApps?: AppId[];
+  isPinMode?: boolean;
   onSelectApp?: (id: AppId) => void;
+  onPinApp?: (id: AppId) => void;
+  onTogglePinMode?: () => void;
+  onQuitApp?: (id: AppId) => void;
   className?: string;
 }
 
@@ -23,13 +29,64 @@ export function Dock({
   position = "left",
   activeApp = null,
   runningApps = [],
+  pinnedApps = [],
+  isPinMode = false,
   onSelectApp,
+  onPinApp,
+  onTogglePinMode,
+  onQuitApp,
   className = "",
 }: DockProps) {
   const visibleApps = useMemo(() => apps.filter((app) => app.enabled), [apps]);
   const [pointerPos, setPointerPos] = useState<number | null>(null);
   const slotRefs = useRef<Map<AppId, HTMLDivElement>>(new Map());
   const [scales, setScales] = useState<Record<string, number>>({});
+  const [contextMenu, setContextMenu] = useState<{
+    id: AppId;
+    x: number;
+    y: number;
+  } | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!contextMenu) return;
+    const handlePointerDown = (e: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setContextMenu(null);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setContextMenu(null);
+    };
+    const handleClose = () => setContextMenu(null);
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleClose);
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleClose);
+    };
+  }, [contextMenu]);
+
+  const handleItemContextMenu = useCallback(
+    (id: AppId, rect: DOMRect) => {
+      if (position === "left") {
+        setContextMenu({
+          id,
+          x: rect.right + 14,
+          y: rect.top + rect.height / 2,
+        });
+      } else {
+        setContextMenu({
+          id,
+          x: rect.left + rect.width / 2,
+          y: rect.top - 14,
+        });
+      }
+    },
+    [position],
+  );
 
   const registerSlotRef = useCallback((id: AppId, el: HTMLDivElement | null) => {
     if (el) slotRefs.current.set(id, el);
@@ -105,10 +162,73 @@ export function Dock({
             isActive={activeApp === app.id}
             isRunning={runningApps.includes(app.id)}
             onSelect={onSelectApp}
+            onContextMenu={handleItemContextMenu}
             registerSlotRef={registerSlotRef}
           />
         ))}
       </div>
+
+      {contextMenu &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={menuRef}
+            role="menu"
+            className={`macos-dock-context-menu macos-dock-context-menu--${position}`}
+            style={{ left: contextMenu.x, top: contextMenu.y }}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              role="menuitem"
+              className="macos-dock-context-menu__item"
+              onClick={() => {
+                onPinApp?.(contextMenu.id);
+                setContextMenu(null);
+              }}
+            >
+              {pinnedApps.includes(contextMenu.id) ? "Unpin" : "Pin"}
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="macos-dock-context-menu__item"
+              onClick={() => {
+                onTogglePinMode?.();
+                setContextMenu(null);
+              }}
+            >
+              {isPinMode ? "Exit pin mode" : "Pin mode"}
+            </button>
+            <div className="macos-dock-context-menu__divider" role="separator" />
+            {runningApps.includes(contextMenu.id) ? (
+              <button
+                type="button"
+                role="menuitem"
+                className="macos-dock-context-menu__item"
+                onClick={() => {
+                  onQuitApp?.(contextMenu.id);
+                  setContextMenu(null);
+                }}
+              >
+                Quit
+              </button>
+            ) : (
+              <button
+                type="button"
+                role="menuitem"
+                className="macos-dock-context-menu__item"
+                onClick={() => {
+                  onSelectApp?.(contextMenu.id);
+                  setContextMenu(null);
+                }}
+              >
+                Open
+              </button>
+            )}
+          </div>,
+          document.body,
+        )}
     </nav>
   );
 }

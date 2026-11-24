@@ -2,6 +2,7 @@
 
 import { navigate } from "astro:transitions/client";
 import {
+  AppWindow,
   ArrowUpRight,
   Award,
   Briefcase,
@@ -10,11 +11,13 @@ import {
   Check,
   Copy,
   FileText,
+  Film,
   Home,
   Layers,
   Link2,
   Mail,
   Monitor,
+  Music,
   PenLine,
   Search,
   TrendingUp,
@@ -51,11 +54,14 @@ export const COMMAND_SEARCH_TOGGLE_EVENT = "workspace-command-search:toggle";
 const CONTACT_EMAIL = "hi@loc.digital";
 
 const GROUP_ORDER: SearchItemGroup[] = [
+  "Apps",
   "Navigation",
   "Work",
   "Writing",
   "Growth",
   "Photography",
+  "Netflix",
+  "Spotify",
 ];
 
 function isApplePlatform(): boolean {
@@ -115,10 +121,13 @@ function getItemIcon(item: CommandSearchItem) {
     "aria-hidden": true as const,
   };
 
+  if (item.group === "Apps") return <AppWindow {...iconProps} />;
   if (item.group === "Work") return <Briefcase {...iconProps} />;
   if (item.group === "Writing") return <FileText {...iconProps} />;
   if (item.group === "Growth") return <TrendingUp {...iconProps} />;
   if (item.group === "Photography") return <Camera {...iconProps} />;
+  if (item.group === "Netflix") return <Film {...iconProps} />;
+  if (item.group === "Spotify") return <Music {...iconProps} />;
 
   switch (item.href) {
     case "/":
@@ -383,6 +392,22 @@ export function CommandSearch({
     [closeAll],
   );
 
+  const handleSelectItem = React.useCallback(
+    (item: CommandSearchItem) => {
+      if (item.appId) {
+        closeAll();
+        window.requestAnimationFrame(() => {
+          window.dispatchEvent(
+            new CustomEvent("desktop:open-app", { detail: { id: item.appId } }),
+          );
+        });
+        return;
+      }
+      handleSelectHref(item.href);
+    },
+    [closeAll, handleSelectHref],
+  );
+
   const handleCopyAction = React.useCallback(
     async (kind: "email" | "link", value: string) => {
       const ok = await copyText(value);
@@ -416,10 +441,10 @@ export function CommandSearch({
                 ];
                 return (
                   <CommandItem
-                    key={`${item.group}:${item.href}`}
-                    value={`${item.title} :: ${item.href}`}
+                    key={`${item.group}:${item.href}:${item.title}`}
+                    value={`${item.title} :: ${item.group}:${item.href}`}
                     keywords={keywords}
-                    onSelect={() => handleSelectHref(item.href)}
+                    onSelect={() => handleSelectItem(item)}
                   >
                     {getItemIcon(item)}
                     <div className="flex min-w-0 flex-1 flex-col">

@@ -94,7 +94,7 @@ export function SpotifyActivity({
               >
                 {track.title}
               </div>
-              <div className="text-[11px] text-[#737373] truncate">
+              <div className="text-[11px] text-[#b3b3b3] truncate">
                 {track.artist} · {track.album}
               </div>
             </div>
@@ -121,10 +121,10 @@ export function SpotifyActivity({
             className="spotify-activity-thumb"
           />
           <div className="min-w-0 flex-1">
-            <div className="text-[13px] font-semibold text-[#181818] truncate">
+            <div className="text-[13px] font-semibold text-white truncate">
               {col.title}
             </div>
-            <div className="text-[11px] text-[#737373] truncate">
+            <div className="text-[11px] text-[#b3b3b3] truncate">
               {col.trackIds.length} tracks
             </div>
           </div>

@@ -26,26 +26,36 @@ import {
 } from "../../data/netflix";
 import { MediaEmptyState } from "./MediaAppControls";
 
-const GENRE_THEMES: Record<string, { gradient: string; subtitle: string }> = {
+const GENRE_THEMES: Record<string, { gradient: string; subtitle: string; coverSlug?: string }> = {
+  Anime: {
+    gradient: "linear-gradient(160deg, #ea580c 0%, #9a3412 55%, #18181b 100%)",
+    subtitle: "Iconic series & worlds",
+    coverSlug: "naruto",
+  },
   Action: {
     gradient: "linear-gradient(160deg, #dc2626 0%, #7f1d1d 55%, #18181b 100%)",
     subtitle: "High-octane & relentless",
+    coverSlug: "spider-man",
   },
-  "Sci-Fi": {
-    gradient: "linear-gradient(160deg, #0284c7 0%, #1e3a8a 55%, #0f172a 100%)",
-    subtitle: "Future worlds & paradoxes",
+  Fantasy: {
+    gradient: "linear-gradient(160deg, #15803d 0%, #14532d 55%, #0f172a 100%)",
+    subtitle: "Epic realms & magic",
+    coverSlug: "the-lord-of-the-rings",
   },
   Thriller: {
     gradient: "linear-gradient(160deg, #475569 0%, #1e293b 55%, #09090b 100%)",
     subtitle: "Edge-of-your-seat tension",
+    coverSlug: "phi-vu-trieu-do",
   },
   Drama: {
     gradient: "linear-gradient(160deg, #9333ea 0%, #581c87 55%, #18181b 100%)",
     subtitle: "Character-driven stories",
+    coverSlug: "the-godfather",
   },
-  Mystery: {
-    gradient: "linear-gradient(160deg, #0d9488 0%, #115e59 55%, #0f172a 100%)",
-    subtitle: "Twists & whodunits",
+  Family: {
+    gradient: "linear-gradient(160deg, #0284c7 0%, #1e3a8a 55%, #0f172a 100%)",
+    subtitle: "Timeless & heartwarming",
+    coverSlug: "doraemon",
   },
 };
 
@@ -168,6 +178,7 @@ function PosterCard({
       onClick={() => onSelect(movie)}
       className="tv-poster-card group"
       aria-label={`${movie.title} (${movie.year})`}
+      title={`${movie.title} (${movie.year})`}
     >
       <div
         className="tv-poster-art"
@@ -182,17 +193,6 @@ function PosterCard({
             {rank}
           </span>
         )}
-        {showBadge && (
-          <span className="tv-poster-brand" aria-hidden="true">
-            <span className="tv-poster-brand-n">N</span> FILM
-          </span>
-        )}
-        <div className="tv-poster-scrim">
-          <div className="tv-poster-title">{movie.title}</div>
-          <div className="tv-poster-meta">
-            {movie.genres[0]} · {movie.year}
-          </div>
-        </div>
       </div>
     </button>
   );
@@ -306,19 +306,7 @@ export function NetflixApp() {
       {/* Persistent Apple TV style Top Navigation Header */}
       <header className="tv-header" aria-label="My Cinema navigation">
         <div className="tv-header__contents">
-          <div className="tv-header__left">
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="tv-header__brand"
-              aria-label="My Cinema Home"
-            >
-              <span className="tv-brand-mark" aria-hidden="true">
-                N
-              </span>
-              <span>My Cinema</span>
-            </button>
-          </div>
+          <div className="tv-header__left" aria-hidden="true" />
 
           <nav className="tv-header__tabs" aria-label="Browse genres">
             <ul>
@@ -405,9 +393,8 @@ export function NetflixApp() {
             </span>
             <h1 className="tv-hero__title">{activeHero.title}</h1>
             <div className="tv-hero__meta">
-              <span className="tv-hero__meta-pill">N</span>
               <span>
-                Film · {activeHero.genres.join(" · ")} · {activeHero.year}
+                {activeHero.genres.join(" · ")} · {activeHero.year}
               </span>
             </div>
             <p className="tv-hero__synopsis">{activeHero.synopsis}</p>
@@ -553,38 +540,49 @@ export function NetflixApp() {
             </ShelfSection>
 
             <ShelfSection id="shelf-genres" title="Browse by Genre">
-              {NETFLIX_GENRES.filter((g) => g !== "All").map((genre) => {
-                const theme = GENRE_THEMES[genre] ?? {
-                  gradient: "linear-gradient(160deg, #3f3f46 0%, #18181b 100%)",
-                  subtitle: "Curated picks",
-                };
-                const matching = NETFLIX_MOVIES.filter((m) =>
-                  m.genres.includes(genre),
-                );
-                const count = matching.length;
-                const coverPoster = matching[0]?.posterSrc;
-                return (
-                  <button
-                    key={genre}
-                    type="button"
-                    onClick={() => setSelectedGenre(genre)}
-                    className="tv-genre-card"
-                    style={{
-                      background: coverPoster
-                        ? `linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.78) 100%), url(${coverPoster}) center / cover no-repeat`
-                        : theme.gradient,
-                    }}
-                  >
-                    <span className="tv-genre-card__count">
-                      {count} {count === 1 ? "title" : "titles"}
-                    </span>
-                    <div className="tv-genre-card__bottom">
-                      <div className="tv-genre-card__title">{genre}</div>
-                      <div className="tv-genre-card__sub">{theme.subtitle}</div>
-                    </div>
-                  </button>
-                );
-              })}
+              {(() => {
+                const usedPosters = new Set<string>();
+                return NETFLIX_GENRES.filter((g) => g !== "All").map((genre) => {
+                  const theme = GENRE_THEMES[genre] ?? {
+                    gradient: "linear-gradient(160deg, #3f3f46 0%, #18181b 100%)",
+                    subtitle: "Curated picks",
+                  };
+                  const matching = NETFLIX_MOVIES.filter((m) =>
+                    m.genres.includes(genre),
+                  );
+                  const count = matching.length;
+                  const preferred = theme.coverSlug
+                    ? matching.find((m) => m.slug === theme.coverSlug)
+                    : undefined;
+                  const fallbackUnique = matching.find(
+                    (m) => m.posterSrc && !usedPosters.has(m.posterSrc),
+                  );
+                  const coverPoster =
+                    preferred?.posterSrc ?? fallbackUnique?.posterSrc ?? matching[0]?.posterSrc;
+                  if (coverPoster) usedPosters.add(coverPoster);
+                  return (
+                    <button
+                      key={genre}
+                      type="button"
+                      onClick={() => setSelectedGenre(genre)}
+                      className="tv-genre-card"
+                      style={{
+                        background: coverPoster
+                          ? `linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.78) 100%), url(${coverPoster}) center / cover no-repeat`
+                          : theme.gradient,
+                      }}
+                    >
+                      <span className="tv-genre-card__count">
+                        {count} {count === 1 ? "title" : "titles"}
+                      </span>
+                      <div className="tv-genre-card__bottom">
+                        <div className="tv-genre-card__title">{genre}</div>
+                        <div className="tv-genre-card__sub">{theme.subtitle}</div>
+                      </div>
+                    </button>
+                  );
+                });
+              })()}
             </ShelfSection>
 
             <ShelfSection id="shelf-must-watch" title="Must Watch" showChevron>
@@ -648,52 +646,6 @@ export function NetflixApp() {
               <p className="text-sm text-[#424245] leading-relaxed m-0">
                 {selectedMovie.synopsis}
               </p>
-
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <a
-                    href={selectedMovie.netflixUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#1d1d1f] hover:bg-[#333336] text-white text-xs font-semibold no-underline transition"
-                  >
-                    <Play
-                      className="w-3.5 h-3.5"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    />
-                    <span>Watch on Netflix</span>
-                    <ExternalLink
-                      className="w-3 h-3 opacity-70"
-                      aria-hidden="true"
-                    />
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => toggleMyList(selectedMovie.id)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-medium cursor-pointer transition"
-                  >
-                    {myList.includes(selectedMovie.id) ? (
-                      <>
-                        <Check className="w-3.5 h-3.5" />
-                        <span>In My List</span>
-                      </>
-                    ) : (
-                      <>
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>My List</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  onClick={closeMovie}
-                  className="px-3.5 py-2 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-medium cursor-pointer transition"
-                >
-                  Close
-                </button>
-              </div>
             </div>
           </div>
         </div>

@@ -168,6 +168,9 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
   <title>{title}</title>
   <script is:inline>
     document.documentElement.classList.add("js");
+    if (window.self !== window.top || new URLSearchParams(window.location.search).get("embed") === "1") {
+      document.documentElement.classList.add("is-embedded-window");
+    }
     if (window.matchMedia("(max-width: 768px)").matches) {
       document.documentElement.classList.add("mobile-lite");
     }
@@ -333,6 +336,13 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
         </main>
 
       </div>
+
+      <!-- Desktop resize handles (left/right/bottom edges, bottom-left/bottom-right corners) -->
+      <div class="desktop-resize-handle desktop-resize-handle--w" data-window-resize="w" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--e" data-window-resize="e" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--s" data-window-resize="s" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--sw" data-window-resize="sw" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--se" data-window-resize="se" aria-hidden="true"></div>
     </div>
 
     <button
@@ -356,6 +366,32 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
 </html>
 
 <style>
+  :global(html.is-embedded-window .workspace-wallpaper),
+  :global(html.is-embedded-window .workspace-dock-persist),
+  :global(html.is-embedded-window .desktop-titlebar),
+  :global(html.is-embedded-window .mobile-topbar),
+  :global(html.is-embedded-window .workspace-window-restore) {
+    display: none !important;
+  }
+
+  :global(html.is-embedded-window .workspace-canvas) {
+    padding: 0 !important;
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    background: #ffffff !important;
+  }
+
+  :global(html.is-embedded-window .mac-window-container) {
+    width: 100% !important;
+    max-width: none !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
   .photos-body {
     grid-template-columns: minmax(0, 1fr);
   }

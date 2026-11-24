@@ -1,12 +1,15 @@
+import { useEffect, useRef } from "react";
 import {
   Heart,
   ListMusic,
+  Pause,
   Play,
   Repeat,
   Shuffle,
   SkipBack,
   SkipForward,
   Volume2,
+  VolumeX,
   X,
 } from "lucide-react";
 import {
@@ -16,6 +19,7 @@ import {
 } from "../../../data/spotify";
 import { SpotifyArtwork } from "./SpotifyArtwork";
 import type { RepeatMode } from "./useSpotifyState";
+import { sharedSpotifyAudio, useSharedSpotifyAudio } from "./spotify-audio";
 
 interface SpotifyPlayerProps {
   selectedTrack: SpotifyTrack;
@@ -46,6 +50,59 @@ export function SpotifyPlayer({
   onToggleQueue,
   onSelectTrack,
 }: SpotifyPlayerProps) {
+  const audio = useSharedSpotifyAudio();
+  const prevTrackIdRef = useRef(selectedTrack.id);
+
+  // On mount, if another track is already playing in the shared audio engine, sync UI to it
+  useEffect(() => {
+    const active = SPOTIFY_TRACKS.find((t) => t.id === sharedSpotifyAudio.getSnapshot().trackId);
+    if (active && active.id !== selectedTrack.id) {
+      prevTrackIdRef.current = active.id;
+      onSelectTrack(active);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // When user picks a new track inside SpotifyApp, play it on the shared engine
+  useEffect(() => {
+    if (prevTrackIdRef.current !== selectedTrack.id) {
+      prevTrackIdRef.current = selectedTrack.id;
+      sharedSpotifyAudio.playTrack(selectedTrack);
+    }
+  }, [selectedTrack]);
+
+  // Sync repeat mode & ended callback
+  useEffect(() => {
+    sharedSpotifyAudio.setRepeat(repeatMode === "one");
+  }, [repeatMode]);
+
+  useEffect(() => {
+    sharedSpotifyAudio.setOnEnded(() => {
+      onNext();
+    });
+    return () => sharedSpotifyAudio.setOnEnded(null);
+  }, [onNext]);
+
+  const activeTrack =
+    SPOTIFY_TRACKS.find((t) => t.id === audio.trackId) ?? selectedTrack;
+
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!audio.duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    sharedSpotifyAudio.seek(ratio * audio.duration);
+  };
+
+  const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    sharedSpotifyAudio.setVolume(ratio);
+  };
+
+  const progressPct =
+    audio.duration > 0 ? Math.min(100, (audio.currentTime / audio.duration) * 100) : 0;
+  const totalMs = audio.duration > 0 ? audio.duration * 1000 : activeTrack.durationMs;
+
   return (
     <>
       {isQueueOpen && (
@@ -69,24 +126,24 @@ export function SpotifyPlayer({
           <div className="spotify-popover-section">Now selected</div>
           <div className="spotify-activity-row" style={{ cursor: "default" }}>
             <SpotifyArtwork
-              src={selectedTrack.coverSrc}
-              alt={selectedTrack.title}
-              fallbackColor={selectedTrack.accentColor}
-              fallbackText={selectedTrack.artist}
+              src={activeTrack.coverSrc}
+              alt={activeTrack.title}
+              fallbackColor={activeTrack.accentColor}
+              fallbackText={activeTrack.artist}
               className="spotify-activity-thumb"
             />
             <div className="min-w-0 flex-1">
               <div className="text-[13px] font-semibold text-[#1ed760] truncate">
-                {selectedTrack.title}
+                {activeTrack.title}
               </div>
               <div className="text-[11px] text-[#b3b3b3] truncate">
-                {selectedTrack.artist}
+                {activeTrack.artist}
               </div>
             </div>
           </div>
 
           <div className="spotify-popover-section">Next in rotation</div>
-          {SPOTIFY_TRACKS.filter((t) => t.id !== selectedTrack.id)
+          {SPOTIFY_TRACKS.filter((t) => t.id !== activeTrack.id)
             .slice(0, 5)
             .map((track) => (
               <button
@@ -119,20 +176,20 @@ export function SpotifyPlayer({
         {/* Left: Track info */}
         <div className="spotify-player-track">
           <SpotifyArtwork
-            src={selectedTrack.coverSrc}
-            alt={`${selectedTrack.album} cover`}
-            fallbackColor={selectedTrack.accentColor}
-            fallbackText={selectedTrack.artist}
+            src={activeTrack.coverSrc}
+            alt={`${activeTrack.album} cover`}
+            fallbackColor={activeTrack.accentColor}
+            fallbackText={activeTrack.artist}
             className="spotify-player-art"
           />
           <div className="min-w-0">
-            <div className="spotify-player-title">{selectedTrack.title}</div>
-            <div className="spotify-player-artist">{selectedTrack.artist}</div>
+            <div className="spotify-player-title">{activeTrack.title}</div>
+            <div className="spotify-player-artist">{activeTrack.artist}</div>
           </div>
           <button
             type="button"
             className={`spotify-like-btn${isLiked ? " is-liked" : ""}`}
-            onClick={() => onToggleLike(selectedTrack.id)}
+            onClick={() => onToggleLike(activeTrack.id)}
             aria-label={isLiked ? "Remove from Liked songs" : "Save to Liked songs"}
             aria-pressed={isLiked}
           >
@@ -144,7 +201,7 @@ export function SpotifyPlayer({
           </button>
         </div>
 
-        {/* Center: Playback controls + honest progress bar */}
+        {/* Center: Playback controls + live progress bar */}
         <div className="spotify-player-center">
           <div className="spotify-player-controls">
             <button
@@ -166,16 +223,19 @@ export function SpotifyPlayer({
             >
               <SkipBack size={16} fill="currentColor" aria-hidden="true" />
             </button>
-            <a
-              href={selectedTrack.spotifyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
               className="spotify-play-main"
-              aria-label={`Play ${selectedTrack.title} on Spotify`}
-              title="Play on Spotify"
+              onClick={() => sharedSpotifyAudio.togglePlay(activeTrack)}
+              aria-label={audio.isPlaying ? `Pause ${activeTrack.title}` : `Play ${activeTrack.title}`}
+              title={audio.isPlaying ? "Pause" : "Play"}
             >
-              <Play size={15} fill="currentColor" style={{ marginLeft: "1px" }} aria-hidden="true" />
-            </a>
+              {audio.isPlaying ? (
+                <Pause size={15} fill="currentColor" aria-hidden="true" />
+              ) : (
+                <Play size={15} fill="currentColor" style={{ marginLeft: "1px" }} aria-hidden="true" />
+              )}
+            </button>
             <button
               type="button"
               className="spotify-ctrl-btn"
@@ -196,21 +256,29 @@ export function SpotifyPlayer({
             </button>
           </div>
 
-          <div
-            className="spotify-player-progress"
-            title="Playback position is controlled inside the official Spotify Embed"
-          >
-            <span>0:00</span>
-            <div className="spotify-progress-bar" aria-hidden="true">
-              <div className="spotify-progress-fill" />
+          <div className="spotify-player-progress">
+            <span>{formatDurationMs(audio.currentTime * 1000)}</span>
+            <div
+              className="spotify-progress-bar"
+              role="slider"
+              aria-label="Seek"
+              aria-valuemin={0}
+              aria-valuemax={Math.round(audio.duration)}
+              aria-valuenow={Math.round(audio.currentTime)}
+              tabIndex={0}
+              style={{ cursor: "pointer" }}
+              onClick={handleSeek}
+            >
+              <div
+                className="spotify-progress-fill"
+                style={{ width: `${progressPct}%` }}
+              />
             </div>
-            <span>
-              {formatDurationMs(selectedTrack.durationMs)}
-            </span>
+            <span>{formatDurationMs(totalMs)}</span>
           </div>
         </div>
 
-        {/* Right: Queue & Volume indicator */}
+        {/* Right: Queue & Volume */}
         <div className="spotify-player-right">
           <button
             type="button"
@@ -223,13 +291,30 @@ export function SpotifyPlayer({
             <ListMusic size={16} aria-hidden="true" />
           </button>
 
-          <div
-            className="inline-flex items-center gap-2"
-            title="Volume is managed by the official Spotify Embed or your system"
-          >
-            <Volume2 size={15} className="text-[#b3b3b3]" aria-hidden="true" />
-            <div className="spotify-volume-bar" aria-hidden="true">
-              <div className="spotify-volume-fill" />
+          <div className="inline-flex items-center gap-2">
+            <button
+              type="button"
+              className="spotify-ctrl-btn"
+              onClick={() => sharedSpotifyAudio.toggleMute()}
+              aria-label={audio.isMuted ? "Unmute" : "Mute"}
+              title={audio.isMuted ? "Unmute" : "Mute"}
+            >
+              {audio.isMuted || audio.volume === 0 ? (
+                <VolumeX size={15} className="text-[#b3b3b3]" aria-hidden="true" />
+              ) : (
+                <Volume2 size={15} className="text-[#b3b3b3]" aria-hidden="true" />
+              )}
+            </button>
+            <div
+              className="spotify-volume-bar"
+              style={{ cursor: "pointer" }}
+              onClick={handleVolumeClick}
+              title={`Volume ${Math.round((audio.isMuted ? 0 : audio.volume) * 100)}%`}
+            >
+              <div
+                className="spotify-volume-fill"
+                style={{ width: `${(audio.isMuted ? 0 : audio.volume) * 100}%` }}
+              />
             </div>
           </div>
         </div>
@@ -237,4 +322,3 @@ export function SpotifyPlayer({
     </>
   );
 }
-

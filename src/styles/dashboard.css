@@ -115,6 +115,10 @@
   /* Layout Dimensions & Section Spacing */
   --sidebar-w: 232px;
   --workspace-window-zoom: 0.864;
+  --window-width: calc(min(1500px, 94vw) * var(--workspace-window-zoom));
+  --window-height: calc(min(940px, calc(100dvh - 36px)) * var(--workspace-window-zoom));
+  --window-titlebar-height: 32px;
+  --window-title-size: var(--text-body-sm);
   --mobile-page-edge: 24px;
   --dash-section-gap: calc(var(--space-12) * 1.1);
   --dash-section-gap-mobile: calc(var(--space-8) * 1.21);
@@ -193,20 +197,56 @@ img {
 }
 
 .mac-window-container {
-  width: min(1500px, 94vw);
+  container-type: inline-size;
+  container-name: workspace-window;
+  width: var(--window-width);
   max-width: 1500px;
-  height: min(940px, calc(100dvh - 36px));
-  max-height: min(940px, calc(100dvh - 36px));
+  height: var(--window-height);
+  max-height: var(--window-height);
   margin: auto;
-  border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  border: 0.5px solid rgba(148, 163, 184, 0.25);
   border-radius: var(--radius-window);
   background: var(--dash-bg);
   box-shadow: var(--shadow-window);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transform: scale(var(--workspace-window-zoom));
+  transform: translate3d(var(--window-offset-x, 0px), var(--window-offset-y, 0px), 0);
   transform-origin: center center;
+}
+
+.mac-window-container:not(.is-maximized):not(.is-tiled):not(.is-pinned) .desktop-titlebar {
+  cursor: grab;
+  touch-action: none;
+}
+
+.mac-window-container.is-dragging .desktop-titlebar {
+  cursor: grabbing;
+}
+
+.mac-window-container.is-maximized .desktop-resize-handle,
+html.window-maximized .mac-window-container .desktop-resize-handle,
+.mac-window-container.is-tiled .desktop-resize-handle,
+.mac-window-container.is-pinned .desktop-resize-handle {
+  display: none;
+}
+
+.mac-window-container.is-pinned {
+  position: fixed !important;
+  left: 60px;
+  top: 16px;
+  width: calc(100vw - 60px - min(480px, calc(100vw - 32px)) - 32px);
+  max-width: none;
+  height: calc(100dvh - 32px);
+  max-height: none;
+  margin: 0;
+  transform: none !important;
+  border-radius: var(--radius-window, 14px);
+  box-shadow: var(--shadow-window);
+  transition: width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    left 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    top 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .mac-window-container.is-maximized,
@@ -287,7 +327,7 @@ html.window-closed .workspace-window-restore,
 /* Desktop Titlebar */
 .desktop-titlebar {
   position: relative;
-  height: 44px;
+  height: var(--window-titlebar-height);
   background: var(--dash-surface);
   border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
   display: flex;
@@ -362,10 +402,15 @@ html.window-closed .workspace-window-restore,
   transform: translateX(-50%);
   pointer-events: none;
   white-space: nowrap;
-  font-size: var(--text-caption);
+  font-family: var(--font-family-base);
+  font-size: var(--window-title-size);
+  line-height: var(--leading-compact);
   font-weight: var(--font-weight-medium);
   color: var(--dash-muted);
   letter-spacing: var(--tracking-heading);
+  max-width: calc(100% - 180px);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Two-column Shell Body */
@@ -960,6 +1005,8 @@ abbr {
 (min-width: 1024px) and (orientation: portrait) {
   :root {
     --sidebar-w: 208px;
+    --window-width: calc(100vw - 32px);
+    --window-height: calc(100dvh - 32px);
   }
 
   .mac-window-container {
@@ -1095,9 +1142,11 @@ abbr {
   .mobile-search-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 168px;
     min-height: 36px;
-    padding: 0 11px;
+    padding: 0 12px;
     border-radius: 8px;
     border: var(--dash-border-width, 0.9px) solid var(--dash-border);
     background: var(--dash-surface-subtle);
@@ -1352,5 +1401,142 @@ abbr {
   .folder-cert-secondary,
   .project-card-img {
     will-change: auto !important;
+  }
+}
+
+/* ============================================================
+   COMPACT / PINNED / TILED WORKSPACE WINDOW (MOBILE-STYLE)
+   ============================================================ */
+
+@container workspace-window (max-width: 920px) {
+  .workspace-body {
+    grid-template-columns: 196px minmax(0, 1fr);
+  }
+
+  .workspace-main {
+    padding: 28px;
+  }
+}
+
+@container workspace-window (max-width: 720px) {
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 30;
+    height: 48px;
+    flex: 0 0 48px;
+    padding: 0 16px;
+    background: var(--dash-surface);
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .mobile-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .mobile-menu-btn {
+    padding: 6px;
+    margin-left: -6px;
+    min-width: 36px;
+    min-height: 36px;
+    flex-shrink: 0;
+    color: var(--dash-text);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-control);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-page-label {
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-search-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 168px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    background: var(--dash-bg);
+    color: var(--dash-muted);
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .workspace-body {
+    position: relative;
+    display: block;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .workspace-sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(260px, 82%);
+    z-index: 45;
+    transform: translateX(-105%);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 12px 0 32px rgba(15, 23, 42, 0.16);
+    border-bottom-left-radius: 0;
+  }
+
+  .workspace-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  #dash-drawer-close {
+    display: inline-flex;
+  }
+
+  .workspace-main {
+    width: 100%;
+    height: 100%;
+    padding: 20px 20px 28px;
+    scrollbar-gutter: auto;
+  }
+
+  .workspace-main h1 {
+    font-size: clamp(1.65rem, 7.5cqi, 2.35rem);
+    line-height: 1.15;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .workspace-main h2 {
+    font-size: clamp(1.2rem, 5cqi, 1.55rem);
+  }
+
+  /* Match mobile single-column stacking inside narrow/pinned Workspace windows */
+  .workspace-main [class*="-grid"],
+  .workspace-main [class*="grid-cols-"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .workspace-main [class*="md:flex-row"],
+  .workspace-main [class*="lg:flex-row"] {
+    flex-direction: column !important;
+  }
+
+  .workspace-main [class*="md:col-span-"],
+  .workspace-main [class*="lg:col-span-"] {
+    grid-column: span 1 / span 1 !important;
   }
 }

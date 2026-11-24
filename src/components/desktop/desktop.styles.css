@@ -1,7 +1,7 @@
 /* Floating macOS-style mini-app windows */
 .desktop-app-window {
-  --app-win-w: calc(min(1500px, 94vw) * var(--workspace-window-zoom, 0.864));
-  --app-win-h: calc(min(940px, calc(100dvh - 36px)) * var(--workspace-window-zoom, 0.864));
+  --app-win-w: var(--window-width);
+  --app-win-h: var(--window-height);
   position: fixed;
   top: 50%;
   left: 50%;
@@ -13,15 +13,17 @@
   flex-direction: column;
   background: #ffffff;
   font-family: var(--font-family-base);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
   border-radius: var(--radius-window, 14px);
-  border: 1px solid rgba(15, 23, 42, 0.1);
+  border: 0.5px solid rgba(148, 163, 184, 0.25);
   box-shadow:
     0 28px 70px rgba(15, 23, 42, 0.22),
     0 8px 24px rgba(15, 23, 42, 0.1),
     0 0 0 0.5px rgba(255, 255, 255, 0.6) inset;
   overflow: hidden;
-  animation: desktop-window-enter 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: desktop-window-enter 240ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .desktop-app-window.is-inactive {
@@ -38,10 +40,11 @@
 }
 
 .desktop-app-window.is-maximized {
+  animation: none;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   margin: 0;
   border-radius: 0;
   border: 0;
@@ -52,19 +55,20 @@
   from {
     opacity: 0;
     filter: blur(2px);
-    margin-top: calc(var(--app-win-h) / -2 + 12px);
+    translate: 0 12px;
   }
+
   to {
     opacity: 1;
     filter: blur(0);
-    margin-top: calc(var(--app-win-h) / -2);
+    translate: 0 0;
   }
 }
 
 .desktop-app-titlebar {
   position: relative;
-  height: 44px;
-  flex: 0 0 44px;
+  height: var(--window-titlebar-height);
+  flex: 0 0 var(--window-titlebar-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,6 +86,719 @@
   transform: translateY(-50%);
 }
 
+.desktop-pin-badge {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 0;
+  background: rgba(0, 122, 255, 0.12);
+  color: #007aff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.desktop-pin-badge:hover {
+  background: rgba(0, 122, 255, 0.2);
+}
+
+/* Pinned Desktop Widget Mode */
+.desktop-app-window.is-widget {
+  width: min(390px, calc(100vw - 32px));
+  height: min(540px, calc(100dvh - 48px));
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.34),
+    0 4px 16px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: width 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-radius 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 220ms ease;
+}
+
+.desktop-app-window.is-widget .desktop-app-titlebar {
+  height: var(--window-titlebar-height);
+  padding: 0 12px;
+}
+
+.desktop-app-window.is-widget .desktop-titlebar-title {
+  font-size: var(--window-title-size);
+}
+
+.desktop-app-window.is-widget .desktop-pin-badge {
+  width: 22px;
+  height: 22px;
+  right: 8px;
+}
+
+/* Desktop widgets: edge-to-edge artwork and softly tinted glass. */
+.desktop-widget {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(316px, calc(100vw - 32px));
+  height: min(316px, calc(100vw - 32px));
+  border-radius: 24px;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  color: #fff;
+  box-shadow: 0 4px 18px #14200d26, 0 1px 4px #14200d20;
+}
+
+.desktop-widget {
+  cursor: default;
+}
+
+.desktop-widget--spotify,
+.desktop-widget--netflix {
+  width: min(400px, calc(100vw - 32px));
+  height: 220px;
+}
+
+.dw-card {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid #ffffff38;
+  background: rgba(72, 87, 42, .78);
+  -webkit-backdrop-filter: blur(26px) saturate(125%);
+  backdrop-filter: blur(26px) saturate(125%);
+  box-shadow: inset 0 1px 0 #ffffff18;
+}
+
+.dw-backdrop,
+.dw-scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.desktop-widget--spotify .dw-card,
+.desktop-widget--netflix .dw-card {
+  padding: 14px 18px;
+}
+
+.dw-backdrop {
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.dw-scrim {
+  background: linear-gradient(180deg, #10180d66, #10180d16 35%, #10180d50 55%, #10180de8);
+}
+
+.dw-topline,
+.dw-bottomline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dw-topline {
+  min-height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  text-shadow: 0 1px 8px #0006;
+}
+
+.dw-topline>span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.dw-counter {
+  font-size: 12px;
+  color: #ffffffbf;
+  white-space: nowrap;
+}
+
+.dw-control,
+.dw-play {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 50%;
+  transition: background .16s ease, transform .16s ease;
+}
+
+.dw-control {
+  width: 36px;
+  height: 36px;
+}
+
+.dw-control:hover,
+.dw-play:hover {
+  background: #ffffff24;
+  transform: scale(1.06);
+}
+
+.dw-control[aria-pressed="true"] {
+  color: #c4ed9e;
+}
+
+.dw-play {
+  width: 60px;
+  height: 60px;
+  filter: drop-shadow(0 2px 8px #0003);
+}
+
+.dw-play svg {
+  margin-left: 3px;
+}
+
+.desktop-widget--netflix .dw-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.dw-title {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+
+.dw-sub {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #ffffffe0;
+  margin-top: 4px;
+}
+
+.dw-text-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #ffffffce;
+  margin-top: 12px;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.dw-text-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.dw-cinema-open {
+  align-self: center;
+}
+
+.dw-caption {
+  min-width: 0;
+}
+
+.dw-nav {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0;
+}
+
+.dw-bottomline .dw-title {
+  font-size: 18px;
+}
+
+.dw-bottomline .dw-sub {
+  font-size: 12px;
+}
+
+.dw-card--recipe {
+  background: linear-gradient(145deg, #586c40df, #34452de8);
+  gap: 14px;
+}
+
+.dw-recipe-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 1px solid #ffffff26;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.dw-recipe-orb {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffffff9c, #ffffff08 55%, #0004);
+  box-shadow: inset 0 1px 3px #fff8, 12px 16px 35px #0003;
+  backdrop-filter: blur(10px);
+}
+
+.dw-recipe-tag {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  color: white;
+  font-size: 12px;
+  text-shadow: 0 1px 4px #000;
+}
+
+.desktop-widget :is(button, a):focus-visible {
+  outline: 2px solid #e2ffbd;
+  outline-offset: 3px;
+}
+
+@media (hover: none) {
+  .dw-control {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-widget * {
+    transition: none;
+  }
+}
+
+/* Compact Spotify player, matching the desktop mini-player. */
+.desktop-widget--spotify {
+  box-sizing: border-box;
+  width: min(480px, calc(100vw - 32px));
+  height: calc((100dvh - 64px) / 3);
+  min-height: 210px;
+  padding: 7px;
+  background: #071e35;
+  border-radius: 30px;
+}
+
+.desktop-widget--spotify .dw-spotify-player {
+  padding: 16px 18px 10px;
+  border: 0;
+  border-radius: 24px;
+  background: #202020;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  gap: 6px;
+}
+.dw-sp-track, .dw-sp-actions, .dw-sp-transport, .dw-sp-footer, .dw-sp-output { display: flex; align-items: center; }
+.dw-sp-track { gap: 12px; }
+.dw-sp-cover { width: 58px; height: 58px; object-fit: cover; border-radius: 10px; flex-shrink: 0; background: #333; }
+.dw-sp-meta { flex: 1; min-width: 0; }
+.dw-sp-title { font-size: 15px; font-weight: 500; line-height: 1.4; color: #f6f6f6; }
+.dw-sp-artist { font-size: 13px; line-height: 1.5; margin-top: 4px; color: #a7a7a7; }
+.dw-sp-title, .dw-sp-artist { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dw-sp-actions { gap: 1px; }
+.dw-sp-button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 28px; height: 30px; border: 0; border-radius: 6px; background: transparent; color: #a7a7a7; cursor: pointer; text-decoration: none; }
+.dw-sp-button:hover { color: #fff; background: #ffffff0a; }
+.dw-sp-button[aria-pressed="true"], .dw-sp-button[aria-expanded="true"] { color: #1db954; }
+.dw-sp-transport { justify-content: center; gap: 12px; }
+.dw-sp-play { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #fff; color: #171717; text-decoration: none; transition: transform .15s ease; }
+.dw-sp-play:hover { transform: scale(1.06); }
+.dw-sp-play svg { margin-left: 2px; }
+.dw-sp-progress { display: flex; align-items: center; gap: 10px; padding-inline: 26px; color: #b3b3b3; font-size: 12px; font-variant-numeric: tabular-nums; }
+.dw-sp-timeline { flex: 1; height: 5px; overflow: hidden; border-radius: 8px; background: #646464; }
+.dw-sp-timeline span { display: block; width: 3px; height: 100%; background: #f47724; }
+.dw-sp-footer { justify-content: space-between; }
+.dw-sp-output { gap: 9px; color: #a7a7a7; }
+.dw-sp-volume {
+  position: relative;
+  width: 82px;
+  height: 5px;
+  border-radius: 8px;
+  background: #a7a7a7;
+  cursor: grab;
+  transition: background-color 0.15s ease;
+}
+.dw-sp-volume::before {
+  content: "";
+  position: absolute;
+  inset: -8px -4px;
+}
+.dw-sp-volume:hover {
+  background: #c2c2c2;
+}
+.dw-sp-volume:active {
+  cursor: grabbing;
+}
+.dw-sp-volume-fill {
+  position: relative;
+  display: block;
+  height: 100%;
+  background: #1db954;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+}
+.dw-sp-volume:hover .dw-sp-volume-fill,
+.dw-sp-volume:active .dw-sp-volume-fill {
+  background: #1ed760;
+}
+.dw-sp-volume-fill::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  transform: translateY(-50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.dw-sp-volume:hover .dw-sp-volume-fill::after,
+.dw-sp-volume:active .dw-sp-volume-fill::after {
+  transform: translateY(-50%) scale(1);
+  opacity: 1;
+}
+.dw-sp-queue { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 12px 18px; background: #202020; }
+.dw-sp-queue-header { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 600; }
+.dw-sp-queue-list { overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
+.dw-sp-queue-track { display: flex; flex-direction: column; width: 100%; padding: 7px; text-align: left; border: 0; border-radius: 6px; background: none; color: #eee; cursor: pointer; font-size: 13px; }
+.dw-sp-queue-track:hover { background: #ffffff12; }
+.dw-sp-queue-track[aria-current="true"] { color: #1db954; }
+.dw-sp-queue-track small { color: #a7a7a7; }
+@media (max-width: 400px) {
+  .desktop-widget--spotify .dw-spotify-player {
+    padding-inline: 12px;
+  }
+
+  .dw-sp-cover {
+    width: 46px;
+    height: 46px;
+  }
+
+  .dw-sp-track {
+    gap: 8px;
+  }
+
+  .dw-sp-actions {
+    flex-wrap: wrap;
+    width: 56px;
+    justify-content: flex-end;
+  }
+
+  .dw-sp-progress {
+    padding-inline: 4px;
+  }
+}
+
+/* Netflix library: feature previews beside a scrollable poster wall. */
+.desktop-widget--netflix {
+  width: min(480px, calc(100vw - 32px));
+  height: calc((100dvh - 64px) / 3);
+  min-height: 210px;
+  background: #050505;
+  border-radius: 24px;
+}
+
+.desktop-widget--netflix .dw-netflix-library {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 0 12px;
+  background: #050505;
+  border: 1px solid #ffffff18;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.dw-nf-main {
+  display: grid;
+  grid-template-rows: 52px minmax(0, 1fr) minmax(0, .5fr);
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+  padding-bottom: 24px;
+}
+
+.dw-nf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dw-nf-logo {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #e50914;
+  font: 30px/1 Impact, "Arial Narrow", sans-serif;
+  letter-spacing: .4px;
+  cursor: pointer;
+}
+
+.dw-nf-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.dw-nf-profile svg {
+  padding: 3px;
+  box-sizing: content-box;
+  border-radius: 4px;
+  background: #087f87;
+}
+
+.dw-nf-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.dw-nf-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 40%, #000b);
+  pointer-events: none;
+}
+
+.dw-nf-preview img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .2s ease;
+}
+
+.dw-nf-preview:hover img {
+  transform: scale(1.04);
+}
+
+.dw-nf-play {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+}
+
+.dw-nf-play svg {
+  width: 13px;
+  height: 13px;
+  margin-left: 2px;
+}
+
+.dw-nf-preview--featured .dw-nf-play {
+  width: 36px;
+  height: 36px;
+}
+
+.dw-nf-preview--featured .dw-nf-play svg {
+  width: 21px;
+  height: 21px;
+}
+
+.dw-nf-caption {
+  position: absolute;
+  bottom: 7px;
+  left: 8px;
+  right: 8px;
+  z-index: 1;
+  font-size: 12px;
+  line-height: 1.3;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 3px #000;
+}
+
+.dw-nf-previews {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  min-height: 0;
+}
+
+.dw-nf-posters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding-bottom: 10px;
+}
+
+.dw-nf-posters::-webkit-scrollbar {
+  display: none;
+}
+
+.dw-nf-poster-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dw-nf-poster-column:nth-child(2) {
+  padding-top: 18px;
+}
+
+.dw-nf-poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border: 0;
+  padding: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: filter .15s ease;
+}
+
+.dw-nf-poster:hover {
+  filter: brightness(1.18);
+}
+
+.dw-nf-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dw-nf-posters:focus-visible {
+  outline: 2px solid #e50914;
+  outline-offset: -3px;
+}
+
+@media (max-width: 420px) {
+  .desktop-widget--netflix .dw-netflix-library {
+    gap: 10px;
+    padding-inline: 10px;
+  }
+
+  .dw-nf-main {
+    grid-template-rows: 40px minmax(0, 1fr) minmax(0, .5fr);
+    gap: 8px;
+    padding-bottom: 14px;
+  }
+
+  .dw-nf-logo {
+    font-size: 24px;
+  }
+
+  .dw-nf-profile span {
+    display: none;
+  }
+
+  .dw-nf-profile svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dw-nf-previews,
+  .dw-nf-posters {
+    gap: 6px;
+  }
+
+  .dw-nf-caption {
+    bottom: 4px;
+    left: 5px;
+    right: 5px;
+  }
+
+  .dw-nf-previews .dw-nf-caption {
+    display: none;
+  }
+}
+
+.desktop-context-menu {
+  position: fixed;
+  z-index: 9999;
+  min-width: 184px;
+  padding: 5px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+  user-select: none;
+}
+
+.desktop-context-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #1d1d1f;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.desktop-context-menu__item:hover {
+  background: #007aff;
+  color: #ffffff;
+}
+
+.desktop-context-menu__item.is-checked {
+  color: #007aff;
+}
+
+.desktop-context-menu__item.is-checked:hover {
+  color: #ffffff;
+}
+
 .desktop-app-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -89,17 +806,13 @@
   overflow-x: hidden;
   background: #ffffff;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-
-.desktop-app-body:active,
-.desktop-app-body.is-scrolling {
-  scrollbar-color: rgba(0, 0, 0, 0.26) transparent;
+  scrollbar-width: auto;
 }
 
 .desktop-app-body::-webkit-scrollbar {
-  width: 8px;
+  -webkit-appearance: none;
+  width: 4px;
+  height: 4px;
 }
 
 .desktop-app-body::-webkit-scrollbar-track {
@@ -107,10 +820,9 @@
 }
 
 .desktop-app-body::-webkit-scrollbar-thumb {
+  -webkit-appearance: none;
   background-color: transparent;
   border-radius: 9999px;
-  border: 2px solid transparent;
-  background-clip: content-box;
 }
 
 .desktop-app-body:active::-webkit-scrollbar-thumb,
@@ -123,11 +835,31 @@
   background-color: rgba(0, 0, 0, 0.42);
 }
 
-/* Desktop resize handles (right edge, bottom edge, bottom-right corner) */
+@supports (-moz-appearance: none) {
+  .desktop-app-body {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  .desktop-app-body:active,
+  .desktop-app-body.is-scrolling {
+    scrollbar-color: rgba(0, 0, 0, 0.26) transparent;
+  }
+}
+
+/* Desktop resize handles (left/right/bottom edges, bottom-left/bottom-right corners) */
 .desktop-resize-handle {
   position: absolute;
   z-index: 20;
   touch-action: none;
+}
+
+.desktop-resize-handle--w {
+  top: 44px;
+  left: 0;
+  bottom: 14px;
+  width: 8px;
+  cursor: ew-resize;
 }
 
 .desktop-resize-handle--e {
@@ -146,41 +878,20 @@
   cursor: ns-resize;
 }
 
+.desktop-resize-handle--sw {
+  left: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  cursor: nesw-resize;
+}
+
 .desktop-resize-handle--se {
-  right: 4px;
-  bottom: 4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
   cursor: nwse-resize;
-  color: rgba(29, 29, 31, 0.72);
-  background: transparent;
-  transition: background-color 140ms ease, color 140ms ease;
-}
-
-.desktop-resize-icon {
-  width: 13px;
-  height: 13px;
-  opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 140ms ease, transform 140ms cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-}
-
-.desktop-resize-handle--se:hover,
-.desktop-resize-handle--se:active {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
-  color: #1d1d1f;
-}
-
-.desktop-resize-handle--se:hover .desktop-resize-icon,
-.desktop-resize-handle--se:active .desktop-resize-icon {
-  opacity: 1;
-  transform: scale(1);
 }
 
 /* Mobile & Tablet (< 1024px): fullscreen window above bottom dock */
@@ -373,4 +1084,149 @@
 .macos-switcher-hint {
   font-size: 11px;
   color: #52525b;
+}
+
+/* Tiled window mode (Move & Resize / Fill & Arrange) */
+.desktop-app-window.is-tiled,
+.mac-window-container.is-tiled {
+  margin: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  transform: none !important;
+  border-radius: 14px;
+  transition:
+    left 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    top 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* macOS Sequoia green-button hover tiling popover */
+.window-tile-menu {
+  position: fixed;
+  z-index: 9999;
+  width: 248px;
+  padding: 12px 14px 14px;
+  border-radius: 14px;
+  background: rgba(54, 62, 78, 0.82);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.36),
+    0 4px 14px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.92);
+  user-select: none;
+  animation: window-tile-menu-in 150ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes window-tile-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.window-tile-menu__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.window-tile-menu__heading {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.56);
+  padding: 0 2px;
+}
+
+.window-tile-menu__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.window-tile-menu__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  cursor: pointer;
+  transition: background-color 140ms ease, transform 140ms ease, color 140ms ease;
+}
+
+.window-tile-menu__btn svg {
+  width: 36px;
+  height: 26px;
+  display: block;
+}
+
+.window-tile-menu__btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  transform: scale(1.06);
+}
+
+.window-tile-menu__btn:active {
+  transform: scale(0.97);
+}
+
+.window-tile-menu__divider {
+  height: 1px;
+  margin: 12px 0;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Photos desktop widget — interactive fanned photo stack */
+.desktop-widget--photos {
+  width: min(480px, calc(100vw - 32px));
+  height: calc((100dvh - 64px) / 3);
+  min-height: 210px;
+}
+
+.dw-card--photos {
+  background: linear-gradient(155deg, rgba(30, 34, 44, 0.84), rgba(18, 20, 28, 0.9));
+  padding: 14px 16px 16px;
+  overflow: visible;
+}
+
+.dw-photos-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.dw-photos-open:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.03);
+}
+
+.dw-photos-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: visible;
 }

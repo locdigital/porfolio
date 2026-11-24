@@ -218,6 +218,15 @@
           "tag": "Camera"
         },
         {
+          "name": "Fujifilm X100VI",
+          "slug": "fujifilm-x100vi",
+          "headline": "APS-C Compact Rangefinder Camera",
+          "description": "Compact rangefinder-style camera featuring a 40.2MP X-Trans CMOS 5 HR sensor, 5-axis IBIS, fixed Fujinon 23mm f/2 lens, and classic Fujifilm Film Simulations.",
+          "image": "/uploads/fujifilm_x100vi.webp",
+          "url": "https://fujifilm-x.com/global/products/cameras/x100vi/",
+          "tag": "Camera"
+        },
+        {
           "name": "Nikkor Z 24-70mm f/4 S",
           "slug": "nikkor-z-24-70mm-f4-s",
           "headline": "Compact Standard Zoom Lens",

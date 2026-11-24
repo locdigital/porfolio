@@ -1,9 +1,12 @@
 export type SearchItemGroup =
+  | "Apps"
   | "Navigation"
   | "Work"
   | "Writing"
   | "Growth"
-  | "Photography";
+  | "Photography"
+  | "Netflix"
+  | "Spotify";
 
 export interface CommandSearchItem {
   title: string;
@@ -11,6 +14,7 @@ export interface CommandSearchItem {
   href: string;
   group: SearchItemGroup;
   keywords?: string;
+  appId?: "netflix" | "spotify" | "photos" | "workspace" | "photoshop";
 }
 
 /**

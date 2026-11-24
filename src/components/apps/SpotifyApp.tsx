@@ -143,6 +143,8 @@ export function SpotifyApp() {
             tracks={recentTracks}
             selectedTrackId={selectedTrack.id}
             likedIds={likedIds}
+            isShuffle={isShuffle}
+            onToggleShuffle={() => setIsShuffle((s) => !s)}
             onSelectTrack={selectTrack}
             onToggleLike={toggleLike}
           />
@@ -159,6 +161,8 @@ export function SpotifyApp() {
             tracks={likedTracks}
             selectedTrackId={selectedTrack.id}
             likedIds={likedIds}
+            isShuffle={isShuffle}
+            onToggleShuffle={() => setIsShuffle((s) => !s)}
             onSelectTrack={selectTrack}
             onToggleLike={toggleLike}
           />
@@ -232,6 +236,8 @@ export function SpotifyApp() {
             tracks={albumTracks}
             selectedTrackId={selectedTrack.id}
             likedIds={likedIds}
+            isShuffle={isShuffle}
+            onToggleShuffle={() => setIsShuffle((s) => !s)}
             onSelectTrack={selectTrack}
             onToggleLike={toggleLike}
           />
@@ -253,6 +259,8 @@ export function SpotifyApp() {
             tracks={tracks}
             selectedTrackId={selectedTrack.id}
             likedIds={likedIds}
+            isShuffle={isShuffle}
+            onToggleShuffle={() => setIsShuffle((s) => !s)}
             onSelectTrack={selectTrack}
             onToggleLike={toggleLike}
           />
