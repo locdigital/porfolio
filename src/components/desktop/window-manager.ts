@@ -68,7 +68,8 @@ export type WindowAction =
   | { type: "TILE_WINDOW"; id: AppId; preset: WindowTilePreset }
   | { type: "FOCUS_APP"; id: AppId }
   | { type: "MOVE_WINDOW"; id: AppId; offsetX: number; offsetY: number }
-  | { type: "SYNC_ROUTE"; pathname: string };
+  | { type: "SYNC_ROUTE"; pathname: string }
+  | { type: "RESTORE_STATE"; state: WindowManagerState };
 
 const ALL_APP_IDS: AppId[] = ["netflix", "spotify", "photos", "workspace", "photoshop"];
 
@@ -168,6 +169,10 @@ export function windowManagerReducer(
     };
   }
   switch (action.type) {
+    case "RESTORE_STATE": {
+      return action.state;
+    }
+
     case "OPEN_APP": {
       const nextZ = state.topZ + 1;
       const current = state.windows[action.id];

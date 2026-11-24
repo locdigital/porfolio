@@ -36,12 +36,46 @@ const APP_TITLES: Record<AppId, string> = {
 // so we skip mounting a duplicate floating window there.
 const floatingAppIds: AppId[] = ["netflix", "spotify", "photos", "photoshop"];
 
+const WINDOW_STATE_STORAGE_KEY = "desktop-window-manager-state-v1";
+
 export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
   const [state, dispatch] = useReducer(
     windowManagerReducer,
     initialPath,
     createInitialWindowState,
   );
+  const hasHydratedStorageRef = useRef(false);
+
+  // Restore open windows / active app / pin mode across F5 reloads
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(WINDOW_STATE_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (
+          parsed &&
+          typeof parsed === "object" &&
+          parsed.windows &&
+          typeof parsed.windows === "object" &&
+          parsed.windows.workspace &&
+          parsed.windows.netflix &&
+          parsed.windows.spotify &&
+          parsed.windows.photos &&
+          parsed.windows.photoshop
+        ) {
+          dispatch({ type: "RESTORE_STATE", state: parsed });
+        }
+      }
+    } catch {}
+    hasHydratedStorageRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydratedStorageRef.current) return;
+    try {
+      sessionStorage.setItem(WINDOW_STATE_STORAGE_KEY, JSON.stringify(state));
+    } catch {}
+  }, [state]);
 
   // Sync active app when Astro ViewTransitions changes the route
   useEffect(() => {
