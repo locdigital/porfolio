@@ -39,6 +39,7 @@ const insertAt = config.routes.findIndex(route => route.handle);
 const contentPath = "^/(?!_astro/|assets/|api/|_vercel/)[^.]*$";
 const markdownType = ".*[tT][eE][xX][tT]/[mM][aA][rR][kK][dD][oO][wW][nN].*";
 config.routes.splice(insertAt, 0,
+  { src: "^/api/(photos|photos-widget|search-index)\\.json$", headers: { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400" }, continue: true },
   { src: "^/.*\\.md$", headers: { "Content-Type": "text/markdown; charset=utf-8", "X-Content-Type-Options": "nosniff" }, continue: true },
   { src: contentPath, headers: { Vary: "Accept" }, continue: true },
   { src: contentPath, has: [{ type: "header", key: "accept", value: markdownType }], dest: "/_agent-content" },

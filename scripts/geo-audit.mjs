@@ -190,7 +190,6 @@ async function runAudit() {
     "/gear",
     "/resume",
     "/certificates",
-    "/contact",
     "/privacy",
   ]) {
     check(sitemapPathSet.has(expectedRoute), `Sitemap missing expected core route: ${expectedRoute}`);
@@ -239,7 +238,12 @@ async function runAudit() {
     const canonicals = findAll(doc, (n) => n.tagName === "link" && attr(n, "rel") === "canonical");
     const ldScripts = findAll(doc, (n) => n.tagName === "script" && attr(n, "type") === "application/ld+json");
 
-    if (route === "/404") {
+    const isAppWindow = ["/music/spotify", "/entertainment/netflix", "/color-lab/nikon-recipes"].includes(route);
+    if (isAppWindow) {
+      check(robotsContent.includes("noindex"), `${route}: application window must remain noindex`);
+      check(!sitemapPathSet.has(route), `${route}: noindex application window listed in sitemap`);
+      check(html.includes('component-export="DesktopShell"'), `${route}: missing desktop application shell`);
+    } else if (route === "/404") {
       check(robotsContent.includes("noindex"), "/404 must contain noindex in meta robots");
       check(canonicals.length === 0, "/404 must not emit a <link rel='canonical'>");
       check(ldScripts.length === 0, "/404 should not emit misleading page/service JSON-LD");
@@ -303,12 +307,14 @@ async function runAudit() {
     }
 
     // Main landmark & single H1 & visible text
-    const mains = findAll(doc, (n) => n.tagName === "main");
-    check(mains.length === 1, `${route}: expected exactly 1 <main> element`);
-    const h1s = findAll(doc, (n) => n.tagName === "h1");
-    check(h1s.length === 1 && textOf(h1s[0]).trim().length > 0, `${route}: expected exactly 1 non-empty <h1>`);
-    const mainText = mains[0] ? visibleTextOf(mains[0]).replace(/\s+/g, " ").trim() : "";
-    check(mainText.length >= 120, `${route}: initial HTML <main> text too short (${mainText.length} chars)`);
+    if (!isAppWindow) {
+      const mains = findAll(doc, (n) => n.tagName === "main");
+      check(mains.length === 1, `${route}: expected exactly 1 <main> element`);
+      const h1s = findAll(doc, (n) => n.tagName === "h1");
+      check(h1s.length === 1 && textOf(h1s[0]).trim().length > 0, `${route}: expected exactly 1 non-empty <h1>`);
+      const mainText = mains[0] ? visibleTextOf(mains[0]).replace(/\s+/g, " ").trim() : "";
+      check(mainText.length >= 120, `${route}: initial HTML <main> text too short (${mainText.length} chars)`);
+    }
 
     // Check internal links resolve & track inbound links
     const anchors = findAll(doc, (n) => n.tagName === "a" && Boolean(attr(n, "href")));
@@ -363,7 +369,7 @@ async function runAudit() {
   check(pageReports.get("/photos/trang-an")?.types.has("ImageGallery"), "/photos/trang-an missing ImageGallery schema");
   check(pageReports.get("/photos/trang-an")?.types.has("Place"), "/photos/trang-an missing Place schema");
   check(pageReports.get("/photos/trang-an")?.types.has("ImageObject"), "/photos/trang-an missing ImageObject schema");
-  check(pageReports.get("/contact")?.types.has("ContactPage"), "/contact missing ContactPage schema");
+  check(vercelConfig.routes.some((route) => route.src === "/contact" && route.status === 301 && route.headers?.Location === "/about"), "/contact must redirect to /about");
 
   // 7. Photo-flip Markdown + HTML discoverability check
   for (const [slug, sample] of samplePhotoStories.entries()) {

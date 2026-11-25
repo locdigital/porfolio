@@ -41,10 +41,25 @@ export function AppWindow({
   onMove,
   children,
 }: AppWindowProps) {
+  // Restore minimized sessions without initializing an app until its first visible frame.
+  const hasShownContent = useRef(false);
+  useEffect(() => {
+    if (!windowState.isOpen) hasShownContent.current = false;
+    else if (!windowState.isMinimized) hasShownContent.current = true;
+  }, [windowState.isOpen, windowState.isMinimized]);
   const frameRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
+  const [isCompactViewport, setIsCompactViewport] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const sync = () => setIsCompactViewport(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
   const [tileMenu, setTileMenu] = useState<{ x: number; y: number } | null>(null);
   const tileOpenTimerRef = useRef<number | null>(null);
@@ -250,25 +265,28 @@ export function AppWindow({
     }
   };
 
-  const isTiled = !windowState.isMaximized && windowState.tile !== null;
+  const isTiled = !isCompactViewport && !windowState.isMaximized && windowState.tile !== null;
 
   const transformStyle =
-    windowState.isMaximized || isTiled
+    isCompactViewport || windowState.isMaximized || isTiled
       ? undefined
       : `translate3d(${windowState.offsetX}px, ${windowState.offsetY}px, 0)`;
 
-  const sizeStyle: React.CSSProperties = isTiled && windowState.tile
-    ? getTileGeometryStyle(windowState.tile)
-    : !windowState.isMaximized && size
-      ? {
-          width: `${size.width}px`,
-          height: `${size.height}px`,
-          marginLeft: `${-size.width / 2}px`,
-          marginTop: `${-size.height / 2}px`,
-        }
-      : {};
+  const sizeStyle: React.CSSProperties = isCompactViewport
+    ? {}
+    : isTiled && windowState.tile
+      ? getTileGeometryStyle(windowState.tile)
+      : !windowState.isMaximized && size
+        ? {
+            width: `${size.width}px`,
+            height: `${size.height}px`,
+            marginLeft: `${-size.width / 2}px`,
+            marginTop: `${-size.height / 2}px`,
+          }
+        : {};
 
   const handleTitlebarContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+    if (window.innerWidth < 1024) return;
     e.preventDefault();
     e.stopPropagation();
     onFocus();
@@ -289,9 +307,7 @@ export function AppWindow({
       aria-hidden={isMinimized || undefined}
       className={`desktop-app-window${windowState.isMaximized ? " is-maximized" : ""}${
         isTiled ? " is-tiled" : ""
-      }${
-        isMinimized ? " is-minimized" : ""
-      }${windowState.isPinned ? " is-pinned is-widget" : ""}${
+      }${isMinimized ? " is-minimized" : ""}${
         isActive && !isMinimized ? " is-active" : " is-inactive"
       }`}
       style={{
@@ -314,6 +330,7 @@ export function AppWindow({
           onFocus();
         }}
         onDoubleClick={(event) => {
+          if (window.innerWidth < 1024) return;
           if ((event.target as Element).closest("button, a, input, select, textarea")) return;
           event.preventDefault();
           onToggleMaximize();
@@ -373,29 +390,27 @@ export function AppWindow({
           <span>{title}</span>
         </div>
 
-        {windowState.isPinned && (
-          <button
-            type="button"
-            className="desktop-pin-badge"
-            onClick={(e) => {
-              e.stopPropagation();
-              onTogglePin();
-            }}
-            aria-label="Unpin window"
-            title="Pinned on top — click to unpin"
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M16 3a1 1 0 0 1 .7.3l4 4a1 1 0 0 1-.2 1.6l-3.6 1.8-2.3 2.3.5 3.8a1 1 0 0 1-1.7.8L10 14.2 5.7 18.5a1 1 0 0 1-1.4-1.4L8.6 12.8 5.2 9.4a1 1 0 0 1 .8-1.7l3.8.5 2.3-2.3 1.8-3.6A1 1 0 0 1 16 3Z" />
-            </svg>
-          </button>
-        )}
+        <button
+          type="button"
+          className="desktop-app-mobile-close"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          aria-label={`Close ${title}`}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
       </header>
 
       <div
         className={`desktop-app-body${isScrolling ? " is-scrolling" : ""}`}
         onScroll={handleBodyScroll}
       >
-        {children}
+        {(!isMinimized || hasShownContent.current) && children}
       </div>
 
       {!windowState.isMaximized && (

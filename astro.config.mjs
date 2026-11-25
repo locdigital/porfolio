@@ -67,6 +67,7 @@ export default defineConfig({
   output: 'hybrid',
   // Emit permanent HTTP redirects at the edge for legacy alias routes.
   redirects: {
+    '/contact': { destination: '/about', status: 301 },
     '/service': { destination: '/services', status: 301 },
     '/experience': { destination: '/about', status: 301 },
   },
@@ -88,7 +89,7 @@ export default defineConfig({
       filter: (page) => {
         const pathname = new URL(page, SITE_ORIGIN).pathname;
         const normalized = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/';
-        if (normalized === '/404' || normalized.startsWith('/assets/')) return false;
+        if (['/404', '/music/spotify', '/entertainment/netflix', '/color-lab/nikon-recipes'].includes(normalized) || normalized.startsWith('/assets/')) return false;
         if (unpublishedPhotoPaths.has(pathname) || unpublishedPhotoPaths.has(normalized)) return false;
         return true;
       },
@@ -132,7 +133,17 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
-      include: ['recharts'],
+      include: [
+        'leaflet',
+        'recharts',
+        'cmdk',
+        '@radix-ui/react-dialog',
+        '@radix-ui/react-popover',
+        '@radix-ui/react-icons',
+        '@radix-ui/react-label',
+        '@radix-ui/react-slot',
+        'lucide-react',
+      ],
     },
   },
 });

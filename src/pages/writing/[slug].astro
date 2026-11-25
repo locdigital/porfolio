@@ -15,7 +15,9 @@ export async function getStaticPaths() {
 
 interface Props { entry: CollectionEntry<"writing">; }
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasToc = tocHeadings.length > 0;
 
 function articleDate(date: Date) {
   return new Intl.DateTimeFormat("en-US", {
@@ -57,7 +59,7 @@ const postSchema = articleSchema({
   schema={postSchema}
 >
   <div class="writing-article-shell">
-    <article class="writing-article">
+    <article class:list={["writing-article", hasToc && "writing-article--with-toc"]}>
       <header class="writing-article-header">
         <h1 class="page-title">{entry.data.title}</h1>
         <time datetime={publishedIso} class="writing-article-date">
@@ -66,6 +68,32 @@ const postSchema = articleSchema({
         </time>
         <p class="page-lead">{entry.data.description}</p>
       </header>
+
+      {hasToc && (
+        <aside class="formula-toc-aside" aria-label="Article table of contents">
+          <nav class="formula-toc" aria-label="Article table of contents" data-writing-toc>
+            <ol class="formula-toc-list">
+              {tocHeadings.map((h, index) => (
+                <li>
+                  <a
+                    href={`#${h.slug}`}
+                    class:list={[
+                      "formula-toc-link",
+                      h.depth === 3 && "is-subhead",
+                      index === 0 && "is-active",
+                    ]}
+                    data-toc-link={h.slug}
+                    aria-current={index === 0 ? "location" : undefined}
+                  >
+                    <span class="formula-toc-dot" aria-hidden="true"></span>
+                    <span>{h.text}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </aside>
+      )}
 
       <div class="writing-article-body">
         {entry.data.coverImage && (
@@ -94,7 +122,109 @@ const postSchema = articleSchema({
   </div>
 </DashboardLayout>
 
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  onPageLoad((signal) => {
+    const toc = document.querySelector<HTMLElement>("[data-writing-toc]");
+    if (!toc) return;
+
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
+    if (links.length === 0) return;
+
+    const linkById = new Map(links.map((link) => [link.dataset.tocLink ?? "", link]));
+    const headings = links
+      .map((link) => document.getElementById(link.dataset.tocLink ?? ""))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (headings.length === 0) return;
+
+    let currentId = "";
+    let lockUntil = 0;
+
+    const setActive = (id: string) => {
+      if (!id || id === currentId) return;
+      currentId = id;
+      links.forEach((link) => {
+        const active = link.dataset.tocLink === id;
+        link.classList.toggle("is-active", active);
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+
+    const mainScroll = document.getElementById("main-content");
+
+    const computeActiveHeading = () => {
+      if (performance.now() < lockUntil) return;
+
+      const useMainScroll =
+        Boolean(mainScroll) &&
+        window.matchMedia("(min-width: 1024px)").matches &&
+        getComputedStyle(mainScroll!).overflowY !== "visible";
+
+      const triggerTop = useMainScroll
+        ? mainScroll!.getBoundingClientRect().top + Math.min(140, mainScroll!.clientHeight * 0.22)
+        : Math.min(140, window.innerHeight * 0.22);
+
+      let activeId = headings[0].id;
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top <= triggerTop) {
+          activeId = heading.id;
+        } else {
+          break;
+        }
+      }
+
+      setActive(activeId);
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        computeActiveHeading();
+      });
+    };
+
+    const initialHash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+    if (initialHash && linkById.has(initialHash)) {
+      lockUntil = performance.now() + 400;
+      setActive(initialHash);
+    } else {
+      computeActiveHeading();
+    }
+
+    links.forEach((link) => {
+      link.addEventListener(
+        "click",
+        () => {
+          const id = link.dataset.tocLink;
+          if (id) {
+            lockUntil = performance.now() + 600;
+            setActive(id);
+          }
+        },
+        { signal },
+      );
+    });
+
+    mainScroll?.addEventListener("scroll", onScroll, { signal, passive: true });
+    window.addEventListener("scroll", onScroll, { signal, passive: true });
+    window.addEventListener("resize", onScroll, { signal, passive: true });
+  });
+</script>
+
 <style>
+  /* Allow wider document rail on desktop so the main column stays roomy beside the right TOC. */
+  @media (min-width: 1024px) {
+    :global(.workspace-content:has(.writing-article--with-toc)) {
+      max-width: 1160px;
+    }
+  }
+
   .writing-article-shell {
     width: 100%;
     padding-top: var(--space-4);
@@ -112,12 +242,104 @@ const postSchema = articleSchema({
     margin-inline: 0;
   }
 
+  .writing-article--with-toc {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 232px;
+    grid-template-areas:
+      "header toc"
+      "content toc";
+    column-gap: 36px;
+    align-items: start;
+  }
+
   .writing-article-header {
+    grid-area: header;
+    min-width: 0;
+    max-width: 42rem;
     display: flex;
     flex-direction: column;
     margin: 0;
     padding: 0;
     border: 0;
+  }
+
+  .writing-article-body {
+    grid-area: content;
+    min-width: 0;
+    max-width: 42rem;
+  }
+
+  .formula-toc-aside {
+    grid-area: toc;
+    position: sticky;
+    top: 8px;
+    min-width: 0;
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    padding-left: 20px;
+    border-left: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .formula-toc {
+    padding: 2px 0;
+  }
+
+  .formula-toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .formula-toc-link {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 10px;
+    margin-left: -10px;
+    border-radius: var(--radius-control);
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-snug);
+    transition: color 160ms ease, background-color 160ms ease;
+  }
+
+  .formula-toc-link.is-subhead {
+    padding-left: 20px;
+    font-size: var(--text-caption);
+  }
+
+  .formula-toc-link:hover,
+  .formula-toc-link:focus-visible {
+    color: var(--dash-text);
+    background: var(--dash-hover);
+  }
+
+  .formula-toc-link.is-active {
+    color: var(--dash-accent);
+    background: var(--dash-accent-soft);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .formula-toc-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    margin-top: 0.45em;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.45;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .formula-toc-link:hover .formula-toc-dot,
+  .formula-toc-link.is-active .formula-toc-dot {
+    opacity: 1;
   }
 
   .writing-article-date {
@@ -136,7 +358,6 @@ const postSchema = articleSchema({
     width: 2px;
     height: 16px;
     border-radius: 9999px;
-    background: rgba(41, 41, 39, 0.2);
     background: color-mix(in srgb, var(--dash-text) 20%, transparent);
   }
 
@@ -335,7 +556,6 @@ const postSchema = articleSchema({
   }
 
   .writing-prose :global(code) {
-    font-family: var(--font-mono);
     font-size: var(--text-body-sm);
   }
 
@@ -373,7 +593,122 @@ const postSchema = articleSchema({
     border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
   }
 
-  .writing-prose :global(a) {
-    text-decoration: none;
+  @media (max-width: 1199px) {
+    .writing-article--with-toc {
+      grid-template-columns: minmax(0, 1fr) 204px;
+      column-gap: 24px;
+    }
+
+    .formula-toc-aside {
+      padding-left: 16px;
+    }
+  }
+
+  @container workspace-window (max-width: 860px) {
+    .writing-article--with-toc {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "header"
+        "toc"
+        "content";
+      row-gap: 24px;
+    }
+
+    .writing-article--with-toc .writing-article-body > :first-child {
+      margin-top: 0;
+    }
+
+    .formula-toc-aside {
+      max-width: 42rem;
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 14px 16px;
+      border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+      border-radius: 12px;
+      background: var(--dash-surface);
+    }
+
+    .formula-toc-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 16px;
+    }
+
+    .formula-toc-link {
+      margin-left: 0;
+      min-height: 38px;
+      align-items: center;
+    }
+
+    .formula-toc-link.is-subhead {
+      padding-left: 18px;
+    }
+
+    .formula-toc-dot {
+      margin-top: 0;
+    }
+  }
+
+  @container workspace-window (max-width: 640px) {
+    .formula-toc-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .writing-article--with-toc {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "header"
+        "toc"
+        "content";
+      row-gap: 24px;
+    }
+
+    .writing-article--with-toc .writing-article-body > :first-child {
+      margin-top: 0;
+    }
+
+    .formula-toc-aside {
+      max-width: 42rem;
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 14px 16px;
+      border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+      border-radius: 12px;
+      background: var(--dash-surface);
+    }
+
+    .formula-toc-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 16px;
+    }
+
+    .formula-toc-link {
+      margin-left: 0;
+      min-height: 38px;
+      align-items: center;
+    }
+
+    .formula-toc-link.is-subhead {
+      padding-left: 18px;
+    }
+
+    .formula-toc-dot {
+      margin-top: 0;
+    }
+
+    .writing-prose :global(:is(h2, h3, h4)) {
+      scroll-margin-top: calc(var(--mobile-topbar-h, 56px) + env(safe-area-inset-top, 0px) + 16px);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .formula-toc-list {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

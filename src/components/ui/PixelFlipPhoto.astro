@@ -76,7 +76,6 @@ const descriptionId = `${id}-memory`;
     container-type: inline-size;
     margin: 0 0 28px;
     break-inside: avoid;
-    -webkit-column-break-inside: avoid;
   }
   .pixel-photo:focus-within,
   .pixel-photo[data-animating] { z-index: 2; }
@@ -112,7 +111,6 @@ const descriptionId = `${id}-memory`;
     display: block;
     position: relative;
     transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
   }
   .pixel-photo__lift { transition: transform 180ms ease; }
   .pixel-photo__paper { transform: translate3d(0, 0, 0) rotateZ(0deg) rotateY(0deg); }
@@ -140,9 +138,6 @@ const descriptionId = `${id}-memory`;
     height: auto;
     object-fit: cover;
     border-radius: inherit;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-drag: none;
   }
   .pixel-photo__back {
     position: absolute;
@@ -197,7 +192,7 @@ const descriptionId = `${id}-memory`;
   .pixel-photo__archive {
     display: block;
     flex: none;
-    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-family: var(--font-mono);
     font-size: var(--text-caption);
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -226,7 +221,7 @@ const descriptionId = `${id}-memory`;
   }
   .pixel-photo__memory > span { flex-shrink: 0; }
   .pixel-photo__back-title {
-    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-family: var(--font-mono);
     font-size: clamp(14.4px, 3.6cqi, 18px);
     font-weight: var(--font-weight-semibold);
     letter-spacing: 0.04em;
@@ -238,7 +233,7 @@ const descriptionId = `${id}-memory`;
   }
   .pixel-photo__metadata { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; border-block: 0.5px solid rgb(180 165 130 / 0.35); padding-block: 12px; }
   .pixel-photo__metadata > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .pixel-photo__metadata > span > span:last-child { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--text-body-sm); line-height: 1.4; overflow-wrap: anywhere; }
+  .pixel-photo__metadata > span > span:last-child { font-family: var(--font-mono); font-size: var(--text-body-sm); line-height: 1.4; overflow-wrap: anywhere; }
   .pixel-photo__story-label { display: block; flex: none; color: var(--dash-text); font-size: var(--text-body-sm); }
   .pixel-photo__story {
     display: block;

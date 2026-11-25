@@ -161,7 +161,7 @@ export default function FeaturedSectionStats() {
                 role="tab"
                 aria-selected={selected}
                 onClick={() => setMetricId(metric.id)}
-                className={`group relative min-w-0 border-0 border-b border-solid border-[var(--dash-border)] px-5 py-5 text-left transition-colors last:border-b-0 hover:bg-[var(--dash-surface-subtle)] sm:border-r sm:border-b-0 sm:last:border-r-0 ${
+                className={`group relative min-w-0 border-0 border-b border-solid border-[var(--dash-border)] px-4 py-3.5 text-left transition-colors last:border-b-0 hover:bg-[var(--dash-surface-subtle)] sm:border-r sm:border-b-0 sm:px-5 sm:py-5 sm:last:border-r-0 ${
                   selected ? "bg-[var(--dash-surface-subtle)]" : "bg-white"
                 }`}
               >
@@ -173,19 +173,21 @@ export default function FeaturedSectionStats() {
                   }}
                   aria-hidden="true"
                 />
-                <span className="flex items-center gap-2 text-[var(--text-caption)] font-semibold uppercase tracking-[var(--tracking-caps)] text-[var(--dash-muted)]">
-                  <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: metric.color }}
-                    aria-hidden="true"
-                  />
-                  {metric.label}
-                </span>
-                <span className="mt-3 block text-3xl font-semibold leading-none tracking-[-0.035em] text-[var(--dash-text)] sm:text-4xl">
-                  {metric.value}
+                <span className="flex items-center justify-between gap-2 sm:block">
+                  <span className="flex items-center gap-2 text-[var(--text-caption)] font-semibold uppercase tracking-[var(--tracking-caps)] text-[var(--dash-muted)]">
+                    <span
+                      className="h-1.5 w-1.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: metric.color }}
+                      aria-hidden="true"
+                    />
+                    {metric.label}
+                  </span>
+                  <span className="text-2xl font-semibold leading-none tracking-[-0.035em] text-[var(--dash-text)] sm:mt-3 sm:block sm:text-4xl">
+                    {metric.value}
+                  </span>
                 </span>
                 <span
-                  className="mt-2 block text-[var(--text-caption)] leading-[var(--leading-compact)]"
+                  className="mt-1.5 block text-[var(--text-caption)] leading-[var(--leading-compact)] sm:mt-2"
                   style={{ color: "var(--dash-muted, #737373)" }}
                 >
                   {metric.description}

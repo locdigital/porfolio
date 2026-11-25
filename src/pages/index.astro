@@ -132,18 +132,18 @@ const servicesPreview = [
             />
           </div>
           <div class="home-exp-body">
-            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
-              <h3 class="item-title" style="font-size: calc(var(--text-body) + 3px); line-height: var(--leading-compact); margin: 0; color: #0075de;">
+            <div class="home-exp-head">
+              <h3 class="item-title home-exp-company">
                 {exp.company}
               </h3>
-              <span style="font-size: var(--text-body-sm); font-weight: 500; line-height: var(--leading-compact); color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums; flex-shrink: 0;">
+              <span class="home-exp-period">
                 {exp.period}
               </span>
             </div>
-            <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); font-weight: 500; color: #454545; margin-top: 2px;">
+            <div class="home-exp-role">
               {exp.role}
             </div>
-            <div class="content-description" style="font-size: var(--text-body-sm); line-height: var(--leading-body); margin-top: 4px;">
+            <div class="content-description home-exp-focus">
               {exp.focus}
             </div>
           </div>
@@ -248,6 +248,44 @@ const servicesPreview = [
   .home-exp-body {
     flex: 1 1 auto;
     min-width: 0;
+  }
+
+  .home-exp-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .home-exp-company {
+    font-size: calc(var(--text-body) + 3px);
+    line-height: var(--leading-compact);
+    margin: 0;
+    color: #0075de;
+  }
+
+  .home-exp-period {
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+
+  .home-exp-role {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    font-weight: var(--font-weight-medium);
+    color: #454545;
+    margin-top: 2px;
+  }
+
+  .home-exp-focus {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    margin-top: 4px;
   }
 
   .home-experience-list .dash-row:hover {

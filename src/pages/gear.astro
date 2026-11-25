@@ -43,6 +43,7 @@ const imageScaleBySlug: Record<string, number> = {
   "nikkor-z-24-70mm-f4-s": 0.85,
   "nisi-15mm-f4-sunstar": 0.85,
   "leofoto-urban-lx-254ct": 0.82,
+  "fujifilm-x100vi": 0.8,
 };
 ---
 
@@ -156,12 +157,16 @@ const imageScaleBySlug: Record<string, number> = {
     gap: 24px;
   }
 
-  .gear-row-hover {
-    pointer-events: none;
+  .gear-row-hover,
+  .gear-row-hit {
     position: absolute;
     inset: -20px -16px;
-    z-index: 0;
     border-radius: 16px;
+  }
+
+  .gear-row-hover {
+    pointer-events: none;
+    z-index: 0;
     background: #f5f5f5;
     opacity: 0;
     transform: scale(0.95);
@@ -169,8 +174,13 @@ const imageScaleBySlug: Record<string, number> = {
                 opacity 300ms ease;
   }
 
+  .gear-row-hit {
+    z-index: 20;
+  }
+
   @media (min-width: 640px) {
-    .gear-row-hover {
+    .gear-row-hover,
+    .gear-row-hit {
       inset: -22px -24px;
     }
   }
@@ -214,21 +224,8 @@ const imageScaleBySlug: Record<string, number> = {
 
   .gear-row-link,
   .gear-row-link:hover {
-    color: var(--dash-text) !important;
-    text-decoration: none !important;
-  }
-
-  .gear-row-hit {
-    position: absolute;
-    inset: -20px -16px;
-    z-index: 20;
-    border-radius: 16px;
-  }
-
-  @media (min-width: 640px) {
-    .gear-row-hit {
-      inset: -22px -24px;
-    }
+    color: var(--dash-text);
+    text-decoration: none;
   }
 
   .gear-row-title-inner {

@@ -34,7 +34,6 @@ function MoviePreview({ movie, featured = false }: { movie: NetflixMovie; featur
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Watch ${movie.title} on Netflix`}
-      title={`Watch ${movie.title} on Netflix`}
       style={{ backgroundColor: movie.accentColor }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -80,7 +79,14 @@ export function NetflixDesktopWidget({ onOpen }: { onOpen: () => void }) {
     <div className="dw-card dw-netflix-library">
       <div className="dw-nf-main">
         <header className="dw-nf-header">
-          <button className="dw-nf-logo" onClick={onOpen} aria-label="Open Netflix library">NETFLIX</button>
+          <button className="dw-nf-logo" onClick={onOpen} aria-label="Open Netflix library">
+            <img
+              src="https://occ.a.nflxso.net/dnmt/api/v6/iL4oJVDYZ8KLSrJ6eG2OwtghbfQ/AAAAAf58AA8Z6nusXt5B-ppRug_vXEqLa657gFe5CBe4jVeSA_CxcsmYrZxZZxXSgwU5KA0aGs7lVPrdcDefw_XxI6W0EFno5krXI88dYw3BUM6HEZRO_N4ZTMzoYhMd-g4S3fo8XIxOME4.svg"
+              alt="Netflix"
+              className="dw-nf-logo-img"
+              draggable={false}
+            />
+          </button>
         </header>
         <MoviePreview movie={selected} featured />
         <div className="dw-nf-previews">{previews.map(movie => <MoviePreview key={movie.id} movie={movie} />)}</div>
@@ -89,7 +95,7 @@ export function NetflixDesktopWidget({ onOpen }: { onOpen: () => void }) {
         {[0, 1].map(column => (
           <div className="dw-nf-poster-column" key={column}>
             {posters.filter((_, index) => index % 2 === column).map(movie => (
-              <button key={movie.id} className="dw-nf-poster" onClick={() => setSelectedId(movie.id)} aria-label={`Feature ${movie.title}`} title={movie.title} style={{ backgroundColor: movie.accentColor }}>
+              <button key={movie.id} className="dw-nf-poster" onClick={() => setSelectedId(movie.id)} aria-label={`Feature ${movie.title}`} style={{ backgroundColor: movie.accentColor }}>
                 <img src={movie.posterSrc ?? movie.backdropSrc} alt={movie.title} draggable={false} loading="lazy" />
               </button>
             ))}

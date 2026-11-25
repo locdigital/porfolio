@@ -1,0 +1,62 @@
+[
+  {
+    "profile": "mobile",
+    "phase": "Before",
+    "version": "12.8.2",
+    "timestamp": "2026-11-24T20:58:23.859Z",
+    "performance": 81,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 100,
+    "lcpMs": 4995.2515,
+    "cls": 0,
+    "tbtMs": 66,
+    "transferBytes": 762353,
+    "requests": 39
+  },
+  {
+    "profile": "mobile",
+    "phase": "After",
+    "version": "12.8.2",
+    "timestamp": "2026-11-24T21:12:40.221Z",
+    "performance": 93,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 100,
+    "lcpMs": 3160.1564999999996,
+    "cls": 0,
+    "tbtMs": 2.5,
+    "transferBytes": 584331,
+    "requests": 44
+  },
+  {
+    "profile": "desktop",
+    "phase": "Before",
+    "version": "12.8.2",
+    "timestamp": "2026-11-24T20:58:37.087Z",
+    "performance": 99,
+    "accessibility": 96,
+    "bestPractices": 100,
+    "seo": 100,
+    "lcpMs": 848.5731000000002,
+    "cls": 0,
+    "tbtMs": 0,
+    "transferBytes": 762354,
+    "requests": 39
+  },
+  {
+    "profile": "desktop",
+    "phase": "After",
+    "version": "12.8.2",
+    "timestamp": "2026-11-24T21:12:52.884Z",
+    "performance": 100,
+    "accessibility": 96,
+    "bestPractices": 100,
+    "seo": 100,
+    "lcpMs": 706.4282499999999,
+    "cls": 0,
+    "tbtMs": 0,
+    "transferBytes": 684367,
+    "requests": 39
+  }
+]

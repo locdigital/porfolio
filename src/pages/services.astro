@@ -269,7 +269,7 @@ const servicesSchemas = serviceItemsSchema(
       {services.map((s) => (
         <article
           class="dash-card service-capability-card"
-          style={`--service-color: ${s.color}; --service-soft: ${s.soft}; --service-border: ${s.border}; --service-ink: ${s.ink}; --card-outer-radius: 20px; --card-padding: 14px;`}
+          style={`--service-color: ${s.color}; --service-soft: ${s.soft}; --service-border: ${s.border}; --service-ink: ${s.ink};`}
         >
           <div>
             <div class="service-card-header">
@@ -277,23 +277,23 @@ const servicesSchemas = serviceItemsSchema(
               <span class="service-card-id">{s.id}</span>
             </div>
 
-            <h3 class="item-title" style="font-size: calc(var(--text-body) + 7px); margin-bottom: 6px;">
+            <h3 class="item-title service-card-title">
               {s.title}
             </h3>
 
-            <p class="content-description" style="font-size: var(--text-body-sm); line-height: var(--leading-compact); margin: 0 0 14px;">
+            <p class="content-description service-card-summary">
               {s.summary}
             </p>
 
             <!-- Scope Checklist (Concentric nested surface block) -->
             <div class="dash-card-nested-block service-scope-block">
-              <div style="font-size: var(--text-caption); font-weight: var(--font-weight-semibold); color: var(--dash-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: var(--tracking-caps);">
+              <div class="service-scope-heading">
                 Scope & deliverables
               </div>
-              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px;">
+              <ul class="service-scope-list">
                 {s.checklist.map((item) => (
-                  <li style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-text);">
-                    <span class="dash-bullet service-bullet" aria-hidden="true"></span>
+                  <li class="service-scope-item">
+                    <span class="dash-bullet" aria-hidden="true"></span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -301,7 +301,7 @@ const servicesSchemas = serviceItemsSchema(
             </div>
 
             <!-- Tags -->
-            <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px;">
+            <div class="service-tags-row">
               {s.tags.map((t) => (
                 <span class="dash-tag service-tech-tag">{t}</span>
               ))}
@@ -587,6 +587,8 @@ const servicesSchemas = serviceItemsSchema(
   }
 
   .service-capability-card {
+    --card-outer-radius: 20px;
+    --card-padding: 14px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -633,6 +635,17 @@ const servicesSchemas = serviceItemsSchema(
     font-variant-numeric: tabular-nums;
   }
 
+  .service-card-title {
+    font-size: calc(var(--text-body) + 7px);
+    margin-bottom: 6px;
+  }
+
+  .service-card-summary {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    margin: 0 0 14px;
+  }
+
   .service-scope-block {
     margin-bottom: 14px;
     padding: 10px 12px;
@@ -640,6 +653,40 @@ const servicesSchemas = serviceItemsSchema(
       linear-gradient(180deg, color-mix(in srgb, var(--service-soft) 68%, #ffffff), #ffffff);
     border-color: color-mix(in srgb, var(--service-border) 72%, var(--dash-border));
     border-radius: max(0px, calc(var(--card-outer-radius) - var(--card-padding)));
+  }
+
+  .service-scope-heading {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .service-scope-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .service-scope-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--dash-text);
+  }
+
+  .service-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
   }
 
   .service-capability-card .dash-bullet {
@@ -797,18 +844,6 @@ const servicesSchemas = serviceItemsSchema(
     border-color: rgba(10, 10, 10, 0.16);
   }
 
-  .pricing-card:nth-child(1) {
-    grid-column: 1;
-  }
-
-  .pricing-card:nth-child(2) {
-    grid-column: 2;
-  }
-
-  .pricing-card:nth-child(3) {
-    grid-column: 3;
-  }
-
   /* Recommended Plan subtle emphasis */
   .pricing-card--recommended {
     border-color: rgba(10, 10, 10, 0.18);
@@ -959,25 +994,15 @@ const servicesSchemas = serviceItemsSchema(
     min-height: 40px;
     padding: 10px 18px;
     border-radius: 9999px;
-    border: 0 !important;
+    border: 0;
     font-size: var(--text-body-sm);
     line-height: var(--leading-compact);
     font-weight: var(--font-weight-medium);
-    text-decoration: none !important;
+    text-decoration: none;
     cursor: pointer;
     box-sizing: border-box;
     transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
-                color 150ms cubic-bezier(0.4, 0, 0.2, 1),
-                filter 150ms cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .pricing-btn span {
-    text-decoration: none;
-  }
-
-  .pricing-btn:active {
-    transform: scale(0.985);
+                color 150ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .pricing-btn:focus-visible {
@@ -987,25 +1012,22 @@ const servicesSchemas = serviceItemsSchema(
 
   .pricing-btn--secondary {
     background: transparent;
-    color: var(--dash-text, #292927);
-    border: 0 !important;
+    color: var(--dash-text);
   }
 
   .pricing-btn--secondary:hover {
-    background: #eaf4ff;
-    color: var(--dash-link-hover, #0969DA) !important;
+    background: var(--dash-accent-soft);
+    color: var(--dash-link-hover);
   }
 
   .pricing-btn--primary {
-    background: #eaf4ff;
-    color: var(--dash-text, #292927) !important;
-    border: 0 !important;
-    box-shadow: none;
+    background: var(--dash-accent-soft);
+    color: var(--dash-text);
   }
 
   .pricing-btn--primary:hover {
     background: #dbeeff;
-    color: var(--dash-link-hover, #0969DA) !important;
+    color: var(--dash-link-hover);
   }
 
   /* Responsive: Switch to horizontal swipe on mobile & tablet */
@@ -1031,8 +1053,7 @@ const servicesSchemas = serviceItemsSchema(
     }
 
     .pricing-card {
-      grid-column: auto !important;
-      grid-row: auto !important;
+      grid-row: auto;
       display: flex;
       flex-direction: column;
       flex: 0 0 min(350px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
@@ -1064,8 +1085,7 @@ const servicesSchemas = serviceItemsSchema(
     }
 
     .pricing-card {
-      grid-column: auto !important;
-      grid-row: auto !important;
+      grid-row: auto;
       display: flex;
       flex-direction: column;
       width: auto;
@@ -1137,12 +1157,6 @@ const servicesSchemas = serviceItemsSchema(
     }
   }
 
-  @media (max-width: 768px) {
-    .partners-marquee-track {
-      animation: partners-scroll 46s linear infinite !important;
-    }
-  }
-
   .partner-card {
     display: inline-flex;
     align-items: center;
@@ -1162,19 +1176,18 @@ const servicesSchemas = serviceItemsSchema(
     height: 34px;
     border-radius: 7px;
     flex-shrink: 0;
+    background: var(--dash-surface);
   }
 
   .partner-logo {
     padding: 6px;
     object-fit: contain;
-    background: var(--color-white);
   }
 
   .partner-wordmark {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-white);
     color: var(--color-jet);
     font-size: var(--text-body-sm);
     font-weight: var(--font-weight-medium);

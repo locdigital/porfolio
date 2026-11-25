@@ -114,6 +114,7 @@ const metrics: CalculatorMetric[] = [
 const metricOptions: DropdownOption[] = metrics.map((metric, index) => ({
   value: metric.id,
   label: metric.label,
+  description: metric.resultLabel,
   keywords: `${metric.id} ${metric.resultLabel} ${metric.formula}`,
   selected: index === 0,
 }));
@@ -355,6 +356,17 @@ const metricOptions: DropdownOption[] = metrics.map((metric, index) => ({
     text-transform: uppercase;
   }
 
+  .metric-select-field :global([data-dropdown] > label) {
+    margin-bottom: 7px;
+    color: var(--dash-text);
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .metric-select-field :global(.ui-dropdown-root > * + *) {
+    margin-top: 0;
+  }
+
   .calculator-title {
     margin: 0;
     color: var(--dash-text);
@@ -381,12 +393,14 @@ const metricOptions: DropdownOption[] = metrics.map((metric, index) => ({
   .calculator-input {
     width: 100%;
     min-height: 46px;
+    padding: 10px 88px 10px 13px;
     border: var(--dash-border-width, 0.9px) solid var(--dash-border);
     border-radius: 10px;
     background: var(--dash-surface);
     color: var(--dash-text);
     font: inherit;
     font-size: var(--text-body-sm);
+    font-variant-numeric: tabular-nums;
     outline: none;
     transition: border-color 160ms ease, box-shadow 160ms ease;
   }
@@ -423,11 +437,6 @@ const metricOptions: DropdownOption[] = metrics.map((metric, index) => ({
   .calculator-input-wrap {
     position: relative;
     display: block;
-  }
-
-  .calculator-input {
-    padding: 10px 88px 10px 13px;
-    font-variant-numeric: tabular-nums;
   }
 
   .calculator-input::placeholder {
@@ -553,6 +562,10 @@ const metricOptions: DropdownOption[] = metrics.map((metric, index) => ({
   @media (max-width: 720px) {
     .metric-calculator {
       padding: 18px 16px;
+    }
+
+    .calculator-input {
+      font-size: var(--text-input-mobile);
     }
 
     .calculator-heading,

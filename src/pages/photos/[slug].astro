@@ -193,12 +193,12 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
         This collection brings together {photos.length} photographs from {locationTitle}, {location.country || "Vietnam"}, by Phuc Loc Nguyen.
         It is part of a personal photography archive covering {allLocations.length} destinations across Vietnam and Southeast Asia.
         Flip a photograph to read its notes, or explore other collections in the <a href="/photos">Photography directory</a>.
-        For image use or a collaboration inquiry, <a href="/contact">contact Loc</a> with a link to this gallery and identify the photograph you have in mind.
+        For image use or a collaboration inquiry, <a href="/about">contact Loc</a> with a link to this gallery and identify the photograph you have in mind.
       </p>
     )}
 
     <!-- Properties Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; padding: 14px 0; border-top: var(--dash-border-width, 0.9px) solid var(--dash-border); border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border); font-size: var(--text-body-sm);">
+    <div class="photo-props-grid">
       {(location.region || location.country) && (
         <div>
           <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">Region</span>
@@ -505,6 +505,16 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
     max-width: none;
   }
 
+  .photo-props-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px 16px;
+    padding: 14px 0;
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    font-size: var(--text-body-sm);
+  }
+
   .editorial-subtitle {
     font-size: var(--text-body-sm);
     line-height: var(--leading-compact);
@@ -722,7 +732,6 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
     flex-direction: column;
     gap: 4px;
     padding: 14px 16px;
-    text-decoration: none !important;
   }
 
   .related-destination-name {
@@ -738,14 +747,29 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
   }
 
   @media (max-width: 640px) {
+    .photo-props-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+    }
+
     .photo-stream-gallery {
       columns: 1;
       column-gap: 0;
     }
 
+    .editorial-section {
+      gap: 24px;
+      padding-top: 28px;
+    }
+
+    .editorial-col,
+    .editorial-history-card {
+      padding: 15px 16px;
+    }
+
     .editorial-columns-grid {
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 16px;
     }
   }
 </style>

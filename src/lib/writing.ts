@@ -22,3 +22,7 @@ export function writingCategorySlug(category: string) {
 export function writingCategoryPath(category: string) {
   return `/writing/category/${writingCategorySlug(category)}`;
 }
+
+export function writingArchiveCategories(entries: CollectionEntry<"writing">[]) {
+  return [...new Set(entries.filter((entry) => entry.data.linkable !== false).map((entry) => entry.data.category))];
+}

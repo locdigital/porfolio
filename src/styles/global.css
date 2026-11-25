@@ -21,9 +21,8 @@
 }
 
 :root {
-  --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --sans: var(--font-family-base);
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --mono: var(--font-family-mono);
 
   /* Tokens consumed by Tailwind-powered React components. */
   --background: 0 0% 100%;
@@ -34,7 +33,6 @@
   --secondary-foreground: 60 2% 16%;
   --popover: 0 0% 100%;
   --popover-foreground: 60 2% 16%;
-  --card: 40 18% 97%;
   --border: 222 19% 86%;
   --input: 60 5% 88%;
   --ring: 212 92% 45%;
@@ -45,16 +43,11 @@
   --destructive-foreground: 0 0% 100%;
   --radius: 0.625rem;
 
-  /* Names used by existing page-scoped styles. */
+  /* Shared surface & ink tokens used by page-scoped styles. */
   --color-jet: #0a0a0a;
   --color-fog: #7d8187;
   --color-ivory: #f9f8f6;
-  --color-white: #fff;
-  --color-dove: #d5d9e2;
   --dash-card-border: rgba(10, 10, 10, 0.08);
-  --state-error: #97232e;
-  --state-success: #1e6531;
-  --site-copy-size: 14px;
 
   /* Tailwind typography aliases used by interactive React components. */
   --type-caption: var(--text-caption);
@@ -74,11 +67,6 @@
 
 html {
   text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: var(--sans);
 }
 
 button,

@@ -186,12 +186,16 @@ const writingSchema = collectionPageSchema({
     min-width: 0;
   }
 
-  .writing-card-hover {
-    pointer-events: none;
+  .writing-card-hover,
+  .writing-card-hit {
     position: absolute;
     inset: -24px -16px;
-    z-index: 0;
     border-radius: 16px;
+  }
+
+  .writing-card-hover {
+    pointer-events: none;
+    z-index: 0;
     background: #f5f5f5;
     opacity: 0;
     transform: scale(0.95);
@@ -199,8 +203,13 @@ const writingSchema = collectionPageSchema({
                 opacity 300ms ease;
   }
 
+  .writing-card-hit {
+    z-index: 20;
+  }
+
   @media (min-width: 640px) {
-    .writing-card-hover {
+    .writing-card-hover,
+    .writing-card-hit {
       inset: -24px;
     }
   }
@@ -225,7 +234,6 @@ const writingSchema = collectionPageSchema({
     border-radius: 12px;
     background: var(--dash-surface-subtle);
     margin-bottom: 20px;
-    text-decoration: none !important;
   }
 
   .writing-featured-image :global(img) {
@@ -238,6 +246,7 @@ const writingSchema = collectionPageSchema({
 
   .writing-featured-card h2,
   .writing-timeline-content h2 {
+    margin: 0;
     font-size: var(--text-body-lg);
     font-weight: var(--font-weight-semibold);
     line-height: 1.45;
@@ -245,14 +254,10 @@ const writingSchema = collectionPageSchema({
     color: var(--dash-text);
   }
 
-  .writing-featured-card h2 {
-    margin: 0;
-  }
-
   .writing-card-title-link {
-    color: var(--dash-text) !important;
-    text-decoration: none !important;
-    transition: color var(--duration-fast, 150ms) ease;
+    color: var(--dash-text);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
   }
 
   .writing-card-title-link:hover,
@@ -260,20 +265,7 @@ const writingSchema = collectionPageSchema({
   .writing-featured-card:focus-within .writing-card-title-link,
   .writing-timeline-content:hover .writing-card-title-link,
   .writing-timeline-content:focus-within .writing-card-title-link {
-    color: var(--dash-link-hover) !important;
-  }
-
-  .writing-card-hit {
-    position: absolute;
-    inset: -24px -16px;
-    z-index: 20;
-    border-radius: 16px;
-  }
-
-  @media (min-width: 640px) {
-    .writing-card-hit {
-      inset: -24px;
-    }
+    color: var(--dash-link-hover);
   }
 
   .writing-card-title-text {
@@ -281,11 +273,15 @@ const writingSchema = collectionPageSchema({
     z-index: 10;
   }
 
-  .writing-timeline-entry > time {
+  .writing-timeline-entry > time,
+  .writing-featured-card time {
     color: var(--dash-muted);
     font-size: var(--text-body-sm);
     line-height: var(--leading-compact);
     font-variant-numeric: tabular-nums;
+  }
+
+  .writing-timeline-entry > time {
     padding-top: 2px;
   }
 
@@ -294,11 +290,6 @@ const writingSchema = collectionPageSchema({
     z-index: 10;
     display: block;
     margin-top: 8px;
-    margin-bottom: 0;
-    color: var(--dash-muted);
-    font-size: var(--text-body-sm);
-    line-height: var(--leading-compact);
-    font-variant-numeric: tabular-nums;
   }
 
   .writing-view-link {
@@ -312,7 +303,6 @@ const writingSchema = collectionPageSchema({
     font-size: var(--text-body-sm);
     font-weight: var(--font-weight-medium);
     line-height: var(--leading-compact);
-    text-decoration: none !important;
   }
 
   .writing-timeline {
@@ -336,10 +326,6 @@ const writingSchema = collectionPageSchema({
     flex-direction: column;
     align-items: flex-start;
     min-width: 0;
-  }
-
-  .writing-timeline-content h2 {
-    margin: 0;
   }
 
   .writing-timeline-content p {

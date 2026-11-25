@@ -178,7 +178,7 @@ export function SelectWithSearch({
             disabled={disabled}
             data-active={currentValue ? "true" : "false"}
             className={cn(
-              "w-full justify-between bg-background px-3 font-normal text-foreground outline-offset-0 hover:bg-background focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20",
+              "w-full justify-between border-input bg-background px-3 text-[length:var(--text-body-sm)] font-normal text-foreground shadow-sm shadow-black/5 outline-offset-0 transition-colors hover:bg-[var(--dash-hover)] hover:text-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20",
               triggerClassName,
             )}
           >
@@ -203,14 +203,21 @@ export function SelectWithSearch({
         </PopoverTrigger>
 
         <PopoverContent
+          sideOffset={8}
+          collisionPadding={12}
           className={cn(
-            "w-[var(--radix-popper-anchor-width)] min-w-[var(--radix-popper-anchor-width)] border-input p-0",
+            "w-[var(--radix-popper-anchor-width)] min-w-[min(calc(100vw-1.5rem),18rem)] overflow-hidden rounded-xl border-input p-0 shadow-xl shadow-black/10",
             contentClassName,
           )}
           align={align}
         >
-          <Command filter={filterCommandItem} loop>
+          <Command
+            filter={filterCommandItem}
+            loop
+            className="command-search-results [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:p-1.5 [&_[cmdk-item]]:px-3 [&_[cmdk-item]]:py-2"
+          >
             <CommandInput
+              className="text-[length:var(--text-body-sm)]"
               value={search}
               onValueChange={setSearch}
               placeholder={searchPlaceholder}
@@ -239,7 +246,14 @@ export function SelectWithSearch({
                       onSelect={() => handleSelect(option.value)}
                     >
                       <div className="flex min-w-0 flex-1 flex-col">
-                        <span className="truncate">{option.label}</span>
+                        <span
+                          className={cn(
+                            "truncate text-foreground",
+                            (option.description || isSelected) && "font-medium",
+                          )}
+                        >
+                          {option.label}
+                        </span>
                         {option.description && (
                           <span className="truncate text-xs text-muted-foreground">
                             {option.description}
@@ -248,9 +262,9 @@ export function SelectWithSearch({
                       </div>
                       {isSelected && (
                         <Check
-                          size={16}
+                          size={15}
                           strokeWidth={2}
-                          className="ml-auto shrink-0 text-foreground"
+                          className="ms-auto shrink-0 text-foreground"
                           aria-hidden="true"
                         />
                       )}

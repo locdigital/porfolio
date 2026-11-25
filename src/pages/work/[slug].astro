@@ -197,7 +197,7 @@ const caseSchema = articleSchema({
 
   <!-- More Case Studies -->
   <section class="page-section page-section--divided more-work-section" aria-labelledby="heading-more-work">
-    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--docs-space-section-header-bottom, 16px);">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
       <h2 id="heading-more-work" class="section-title" style="margin: 0;">More case studies</h2>
       <a href="/work" class="dash-link" style="font-size: var(--text-body-sm);">
         View directory →
@@ -214,19 +214,8 @@ const caseSchema = articleSchema({
           >
             <!-- 3D MANILA FOLDER -->
             <div class="folder" data-folder-surface>
-              <!-- 1. BACK FOLDER FLAP -->
-              <div class="folder-back">
-                <div class="folder-back-tab"></div>
-              </div>
-
-              <!-- 2. FRONT FOLDER FLAP -->
-              <div class="folder-front">
-                <div class="folder-front-tab"></div>
-                <div class="folder-front-shine"></div>
-              </div>
-
-              <!-- 3. AMBIENT FLOOR SHADOW -->
-              <div class="folder-floor-shadow"></div>
+              <div class="folder-back" aria-hidden="true"></div>
+              <div class="folder-front" aria-hidden="true"></div>
             </div>
 
             <!-- FOLDER CAPTION -->
@@ -247,10 +236,6 @@ const caseSchema = articleSchema({
     max-width: none;
   }
 
-  .work-narrative-section {
-    width: 100%;
-  }
-
   .project-properties {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -263,20 +248,17 @@ const caseSchema = articleSchema({
     justify-items: stretch;
     align-items: start;
     text-align: left;
-    font-family: var(--font-family-base);
     font-size: var(--text-body-sm);
   }
 
   .project-property {
     min-width: 0;
     justify-self: stretch;
-    text-align: left;
   }
 
   .project-property-label,
   .project-property-value {
     display: block;
-    text-align: left;
   }
 
   .project-property-label {
@@ -293,10 +275,6 @@ const caseSchema = articleSchema({
 
   .project-property-value--strong {
     font-weight: var(--font-weight-semibold);
-  }
-
-  .more-work-section {
-    width: 100%;
   }
 
   .work-narrative-prose {
@@ -357,18 +335,8 @@ const caseSchema = articleSchema({
       padding-block: 14px;
     }
 
-    .work-narrative-section,
-    .work-narrative-prose {
-      max-width: 100%;
-    }
-
     .work-narrative-prose {
       font-size: var(--text-body-sm);
-      line-height: var(--leading-body);
-    }
-
-    .work-narrative-prose p {
-      text-align: left;
     }
 
     .more-work-grid {
@@ -379,14 +347,12 @@ const caseSchema = articleSchema({
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--mobile-page-edge, 16px);
-      -webkit-overflow-scrolling: touch;
       gap: 16px;
       margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
       padding-inline: var(--mobile-page-edge, 16px);
       padding-top: 16px;
       padding-bottom: 24px;
       scrollbar-width: none;
-      -ms-overflow-style: none;
     }
 
     .more-work-grid::-webkit-scrollbar {
@@ -401,10 +367,6 @@ const caseSchema = articleSchema({
   }
 
   @media (max-width: 440px) {
-    .more-work-grid {
-      gap: 16px;
-    }
-
     .more-work-grid .folder-item {
       flex-basis: 150px;
       width: 150px;

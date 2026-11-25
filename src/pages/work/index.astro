@@ -182,12 +182,16 @@ const workSchema = collectionPageSchema({
     box-sizing: border-box;
   }
 
-  .project-card-hover {
-    pointer-events: none;
+  .project-card-hover,
+  .project-card-hit {
     position: absolute;
     inset: -24px -16px;
-    z-index: 0;
     border-radius: 16px;
+  }
+
+  .project-card-hover {
+    pointer-events: none;
+    z-index: 0;
     background: #f5f5f5;
     opacity: 0;
     transform: scale(0.95);
@@ -195,8 +199,13 @@ const workSchema = collectionPageSchema({
                 opacity 300ms ease;
   }
 
+  .project-card-hit {
+    z-index: 20;
+  }
+
   @media (min-width: 640px) {
-    .project-card-hover {
+    .project-card-hover,
+    .project-card-hit {
       inset: -24px;
     }
   }
@@ -238,28 +247,15 @@ const workSchema = collectionPageSchema({
   }
 
   .project-card-title-link {
-    color: var(--dash-text) !important;
-    text-decoration: none !important;
-    transition: color var(--duration-fast, 150ms) ease;
+    color: var(--dash-text);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
   }
 
   .project-card-title-link:hover,
   .project-item:hover .project-card-title-link,
   .project-item:focus-within .project-card-title-link {
-    color: var(--dash-link-hover) !important;
-  }
-
-  .project-card-hit {
-    position: absolute;
-    inset: -24px -16px;
-    z-index: 20;
-    border-radius: 16px;
-  }
-
-  @media (min-width: 640px) {
-    .project-card-hit {
-      inset: -24px;
-    }
+    color: var(--dash-link-hover);
   }
 
   .project-card-title-text {
@@ -314,10 +310,10 @@ const workSchema = collectionPageSchema({
   @media (max-width: 768px) {
     /* Projects horizontal carousel */
     .projects-grid {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
       overscroll-behavior-x: contain;
       touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
@@ -333,7 +329,7 @@ const workSchema = collectionPageSchema({
 
     .projects-grid.is-dragging {
       cursor: grabbing;
-      scroll-snap-type: none !important;
+      scroll-snap-type: none;
       user-select: none;
     }
 
@@ -342,9 +338,8 @@ const workSchema = collectionPageSchema({
     }
 
     .project-item {
-      flex: 0 0 min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2))) !important;
-      width: min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2))) !important;
-      max-width: min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2))) !important;
+      flex: 0 0 min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
+      width: min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
       scroll-snap-align: start;
       scroll-snap-stop: normal;
     }
@@ -360,12 +355,6 @@ const workSchema = collectionPageSchema({
     .project-card-media {
       -webkit-user-drag: none;
       user-select: none;
-    }
-
-    .project-card-img {
-      pointer-events: none;
-      user-select: none;
-      -webkit-user-drag: none;
     }
 
     /* Carousel Controls */
@@ -392,8 +381,8 @@ const workSchema = collectionPageSchema({
     }
 
     .carousel-btn {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       display: inline-flex;
       align-items: center;
       justify-content: center;

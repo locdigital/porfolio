@@ -1,12 +1,11 @@
 ---
 import WritingArchive from "../../../components/writing/WritingArchive.astro";
-import { getWritingEntries, writingCategorySlug } from "../../../lib/writing";
+import { getWritingEntries, writingArchiveCategories, writingCategorySlug } from "../../../lib/writing";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const entries = (await getWritingEntries()).filter(entry => entry.data.linkable !== false);
-  const categories = [...new Set(entries.map(entry => entry.data.category))];
+  const categories = writingArchiveCategories(await getWritingEntries());
   return categories.map(category => ({ params: { category: writingCategorySlug(category) }, props: { category } }));
 }
 

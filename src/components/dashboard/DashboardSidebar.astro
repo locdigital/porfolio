@@ -23,6 +23,7 @@ interface NavItem {
   label: string;
   href: string;
   icon: HeroiconName;
+  iconSrc?: string;
   exact?: boolean;
 }
 
@@ -35,19 +36,21 @@ const navSections: NavSection[] = [
   {
     group: "Workspace",
     items: [
-      { label: "Overview", href: "/", icon: "home", exact: true },
-      { label: "About", href: "/about", icon: "finger-print" },
-      { label: "Work", href: "/work", icon: "briefcase" },
-      { label: "Services", href: "/services", icon: "square-3-stack-3d" },
+      { label: "About",
+        href: "/about",
+        icon: "finger-print",
+        iconSrc: "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/78/61/b9/7861b9d5-8999-25f6-303d-08bf6112f2ce/f26de0fd-1ba0-4cbf-8c76-33fb0fbfeb16.png/40x40bb.webp",
+      },
+      { label: "Work", href: "/work", icon: "work-stack" },
+      { label: "Services", href: "/services", icon: "cog-8-tooth" },
     ],
   },
   {
     group: "Personal",
     items: [
-      { label: "Writing", href: "/writing", icon: "pencil-square" },
-      { label: "Growth Hub", href: "/growth", icon: "chart-bar" },
-      { label: "Gear", href: "/gear", icon: "computer-desktop" },
-      { label: "Contact", href: "/contact", icon: "envelope" },
+      { label: "Writing", href: "/writing", icon: "journal" },
+      { label: "Growth Hub", href: "/growth", icon: "rocket-launch" },
+      { label: "Gear", href: "/gear", icon: "game-controller" },
     ],
   },
 ];
@@ -118,7 +121,15 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
                       data-astro-prefetch="load"
                     >
                       <div class="dash-nav-link-left">
-                        <Heroicon name={item.icon} size={16} class="dash-nav-icon" />
+                        {item.iconSrc ? (
+                          <span
+                            class="dash-nav-icon dash-nav-icon--mask"
+                            style={`--icon-src: url(${item.iconSrc});`}
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <Heroicon name={item.icon} size={16} class="dash-nav-icon" />
+                        )}
                         <span>{item.label}</span>
                       </div>
                     </a>

@@ -294,6 +294,50 @@ export function SpotifyApp() {
       />
 
       <main className="spotify-main">
+        <nav className="spotify-mobile-nav" aria-label="Library sections">
+          <button
+            type="button"
+            className={`spotify-mobile-nav-pill${currentView.kind === "home" ? " is-active" : ""}`}
+            onClick={() => navigateTo({ kind: "home" })}
+          >
+            Home
+          </button>
+          <button
+            type="button"
+            className={`spotify-mobile-nav-pill${currentView.kind === "browse" || currentView.kind === "playlist" ? " is-active" : ""}`}
+            onClick={() => navigateTo({ kind: "browse" })}
+          >
+            Playlists
+          </button>
+          <button
+            type="button"
+            className={`spotify-mobile-nav-pill${currentView.kind === "liked-songs" ? " is-active" : ""}`}
+            onClick={() => navigateTo({ kind: "liked-songs" })}
+          >
+            Liked{likedIds.size > 0 ? ` (${likedIds.size})` : ""}
+          </button>
+          <button
+            type="button"
+            className={`spotify-mobile-nav-pill${currentView.kind === "albums" || currentView.kind === "album" ? " is-active" : ""}`}
+            onClick={() => navigateTo({ kind: "albums" })}
+          >
+            Albums
+          </button>
+          <button
+            type="button"
+            className={`spotify-mobile-nav-pill${currentView.kind === "recently-played" ? " is-active" : ""}`}
+            onClick={() => navigateTo({ kind: "recently-played" })}
+          >
+            Recent
+          </button>
+          <button
+            type="button"
+            className={`spotify-mobile-nav-pill${currentView.kind === "made-for-you" ? " is-active" : ""}`}
+            onClick={() => navigateTo({ kind: "made-for-you" })}
+          >
+            Made for you
+          </button>
+        </nav>
         {renderMainView()}
       </main>
 

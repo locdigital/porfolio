@@ -210,7 +210,7 @@ const skillClusters = [
   <section id="career-timeline" class="page-section" aria-label="Chronological Employment History">
     <h2 class="section-title">Selected experience</h2>
 
-    <div style="display: flex; flex-direction: column; gap: var(--docs-space-subsection-gap, 32px);">
+    <div class="experience-list">
       {experiences.map((exp) => (
         <article class="experience-item">
           <div class="experience-logo" aria-hidden="true">
@@ -218,30 +218,30 @@ const skillClusters = [
           </div>
 
           <div class="experience-content">
-            <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
+            <div class="experience-head">
               <div>
-                <h3 class="item-title" style="font-size: calc(var(--text-body) + 3px); display: inline; margin: 0; color: var(--dash-text);">{exp.role}</h3>
-                <span style="color: var(--dash-muted); margin: 0 6px;">·</span>
-                <span style="font-size: var(--text-body); font-weight: 500; color: var(--dash-link-hover, #0969DA);">{exp.company}</span>
+                <h3 class="item-title experience-role">{exp.role}</h3>
+                <span class="experience-sep">·</span>
+                <span class="experience-company">{exp.company}</span>
               </div>
-              <span style="font-size: var(--text-body-sm); font-weight: 500; color: var(--dash-muted); white-space: nowrap; font-variant-numeric: tabular-nums;">{exp.period}</span>
+              <span class="experience-period">{exp.period}</span>
             </div>
 
-            <div style="font-size: var(--text-body-sm); line-height: var(--leading-compact); color: var(--dash-muted); margin-bottom: 10px;">
+            <div class="experience-meta">
               {exp.type} · {exp.location}
             </div>
 
-            <p class="content-description" style="font-size: var(--text-body-sm); line-height: var(--leading-body); margin: 0 0 12px;">
+            <p class="content-description experience-desc">
               {exp.description}
             </p>
 
-            <div style="margin-bottom: 12px; padding: 14px 18px; background: var(--color-ivory); border-radius: 12px; border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));">
-              <div style="font-size: var(--text-micro); font-weight: 600; color: var(--color-fog); text-transform: uppercase; margin-bottom: 6px; letter-spacing: var(--tracking-caps);">
+            <div class="experience-box">
+              <div class="experience-box-label">
                 Notable contributions
               </div>
-              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--docs-space-list-item-gap, 8px);">
+              <ul class="experience-achievements">
                 {exp.achievements.map((ach) => (
-                  <li style="display: flex; align-items: flex-start; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text);">
+                  <li>
                     <span class="dash-bullet" aria-hidden="true"></span>
                     <span>{ach}</span>
                   </li>
@@ -249,7 +249,7 @@ const skillClusters = [
               </ul>
             </div>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+            <div class="experience-tags">
               {exp.tools.map((t) => (
                 <span class="dash-tag">{t}</span>
               ))}
@@ -265,14 +265,14 @@ const skillClusters = [
 
     <div class="skill-cluster-grid">
       {skillClusters.map((cluster) => (
-        <div class="dash-card" style="padding: var(--docs-space-card-padding, 20px);">
-          <h3 class="item-title" style="font-size: calc(var(--text-h4) + 3px); margin: 0 0 var(--space-2);">
+        <div class="dash-card skill-cluster-card">
+          <h3 class="item-title skill-cluster-title">
             {cluster.title}
           </h3>
-          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--docs-space-list-item-gap, 8px);">
+          <ul class="skill-cluster-list">
             {cluster.items.map((item) => (
-              <li style="display: flex; align-items: center; gap: 8px; font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-muted);">
-                <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--dash-control-border);"></span>
+              <li>
+                <span class="skill-cluster-dot" aria-hidden="true"></span>
                 <span>{item}</span>
               </li>
             ))}
@@ -284,6 +284,12 @@ const skillClusters = [
 </DashboardLayout>
 
 <style>
+  .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
   .experience-item {
     display: grid;
     grid-template-columns: 48px minmax(0, 1fr);
@@ -320,10 +326,125 @@ const skillClusters = [
     min-width: 0;
   }
 
+  .experience-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .experience-role {
+    font-size: calc(var(--text-body) + 3px);
+    display: inline;
+    margin: 0;
+  }
+
+  .experience-sep {
+    color: var(--dash-muted);
+    margin: 0 6px;
+  }
+
+  .experience-company {
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-medium);
+    color: var(--dash-link-hover);
+  }
+
+  .experience-period {
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--dash-muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .experience-meta {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted);
+    margin-bottom: 10px;
+  }
+
+  .experience-desc {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    margin: 0 0 12px;
+  }
+
+  .experience-box {
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    background: var(--color-ivory);
+    border-radius: 12px;
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
+  }
+
+  .experience-box-label {
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-fog);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .experience-achievements,
+  .skill-cluster-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .experience-achievements li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-text);
+  }
+
+  .experience-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
   .skill-cluster-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
+  }
+
+  .skill-cluster-card {
+    padding: var(--space-5);
+  }
+
+  .skill-cluster-title {
+    font-size: calc(var(--text-h4) + 3px);
+    margin: 0 0 var(--space-2);
+  }
+
+  .skill-cluster-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-muted);
+  }
+
+  .skill-cluster-dot {
+    width: 4px;
+    height: 4px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--dash-border-strong);
   }
 
   @media (max-width: 1100px) {

@@ -33,5 +33,19 @@
     "photoTitle": "Gates of Điện Kính Thiên",
     "style": "pixel-art-chibi",
     "generatedAt": "2026-11-21T16:20:45.123Z"
+  },
+  "just-keep-buying": {
+    "source": "public/assets/photos/ha-long-bay/DSC_5019.webp",
+    "album": "ha-long-bay",
+    "photoTitle": "Emerald Passage Along the Cliffs",
+    "style": "pixel-art-chibi",
+    "generatedAt": "2026-11-24T18:38:07.120Z"
+  },
+  "reasons-to-stay-alive": {
+    "source": "public/assets/photos/malacca/malacca-07.webp",
+    "album": "malacca",
+    "photoTitle": "Straits Mosque at Blue Hour",
+    "style": "pixel-art-chibi",
+    "generatedAt": "2026-11-25T18:23:27.272Z"
   }
 }

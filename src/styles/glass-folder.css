@@ -168,6 +168,9 @@
   max-width: none;
   object-fit: cover;
 }
+.gf-sheet--art {
+  color: #fff;
+}
 .gf-sheet--art::after {
   content: "";
   position: absolute;

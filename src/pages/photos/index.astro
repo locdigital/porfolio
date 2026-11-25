@@ -4,7 +4,9 @@ import { getPhotoLocations } from "../../lib/content";
 import GlassFolder from "../../components/ui/GlassFolder";
 import { optimizePhotos } from "../../lib/photo-assets";
 import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
+import { resolvePhotoCoords } from "../../lib/photo-map-coords";
 import photoUpdates from "../../../data/photo-updates.json";
+import { PHOTO_REGION_ORDER, resolvePhotoRegion } from "@/constants/regions";
 
 export const prerender = true;
 
@@ -14,30 +16,12 @@ const locations = (await getPhotoLocations()).sort(
   (a, b) => updatedTime(b.slug) - updatedTime(a.slug) || a.order - b.order,
 );
 
-const regionLabels: Record<string, string> = {
-  "Northern Vietnam": "North",
-  "Central Highlands": "Highlands",
-  "Central Vietnam": "Central",
-  "South Central Coast": "Central",
-  "Southern Vietnam": "South",
-  "Mekong Delta": "South",
-  "Miền Bắc": "North",
-  "Tây Nguyên": "Highlands",
-  "Miền Trung": "Central",
-  "Nam Trung Bộ": "Central",
-  "Miền Nam": "South",
-  "Tây Nam Bộ": "South",
-};
-
 const PHOTOS_PER_ALBUM_PREVIEW = 6;
 
 const enhancedLocations = await Promise.all(
   locations.map(async (loc) => {
     const name = loc.name || loc.location;
-    const region =
-      loc.country && loc.country !== "Vietnam"
-        ? "International"
-        : regionLabels[loc.region || ""] || "Vietnam";
+    const region = resolvePhotoRegion(loc.country, loc.region);
 
     const photos = loc.photos || [];
     const photoCount = photos.length;
@@ -71,7 +55,7 @@ const enhancedLocations = await Promise.all(
 
     const optimizedSample = await optimizePhotos(sampleSource, {
       previewWidth: 480,
-      previewWidths: [320, 480],
+      previewWidths: [160, 240, 320, 480],
       previewSizes: "(max-width: 640px) 33vw, (max-width: 1024px) 22vw, 15vw",
       fullWidth: 1600,
     });
@@ -116,6 +100,16 @@ const enhancedLocations = await Promise.all(
 );
 
 type GridPhoto = (typeof enhancedLocations)[number]["samplePhotos"][number];
+
+const tripsByYear = Array.from(
+  enhancedLocations.reduce((acc, loc) => {
+    const year = loc.yearLabel || "Archive";
+    const list = acc.get(year) || [];
+    list.push(loc);
+    acc.set(year, list);
+    return acc;
+  }, new Map<string, (typeof enhancedLocations)[number][]>()),
+);
 const allGridPhotos: GridPhoto[] = [];
 for (let i = 0; i < PHOTOS_PER_ALBUM_PREVIEW; i++) {
   for (const loc of enhancedLocations) {
@@ -125,10 +119,29 @@ for (let i = 0; i < PHOTOS_PER_ALBUM_PREVIEW; i++) {
 }
 
 const totalPhotos = enhancedLocations.reduce((sum, loc) => sum + loc.photoCount, 0);
-const regionOrder = ["North", "Highlands", "Central", "South", "International"];
-const availableRegions = regionOrder.filter((r) =>
+const availableRegions = PHOTO_REGION_ORDER.filter((r) =>
   enhancedLocations.some((l) => l.region === r),
 );
+
+const mapDestinations = enhancedLocations
+  .map((loc) => {
+    const coords = resolvePhotoCoords(loc.slug, loc.latitude, loc.longitude);
+    if (!coords) return null;
+    return {
+      slug: loc.slug,
+      name: loc.displayName,
+      region: loc.region,
+      country: loc.country || "Vietnam",
+      headline: loc.headline || "",
+      photoCount: loc.photoCount,
+      heroPhoto: loc.heroPhoto,
+      previewImages: loc.previewImages,
+      lat: coords.lat,
+      lng: coords.lng,
+      search: `${loc.displayName} ${loc.region} ${loc.country || "Vietnam"} ${loc.headline || ""} ${loc.slug}`,
+    };
+  })
+  .filter((item): item is NonNullable<typeof item> => item !== null);
 
 const photosUrl = canonicalUrl("/photos");
 const photosSchema = collectionPageSchema({
@@ -184,7 +197,7 @@ const photosSchema = collectionPageSchema({
         </div>
       </div>
 
-      <div class="mp-segmented" role="tablist" aria-label="Time & Library view">
+      <div class="mp-segmented" id="mp-seg-library" role="tablist" aria-label="Time & Library view">
         <button type="button" class="mp-seg-btn" role="tab" aria-selected="false" data-seg="years">Years</button>
         <button type="button" class="mp-seg-btn" role="tab" aria-selected="false" data-seg="months">Months</button>
         <button type="button" class="mp-seg-btn is-active" role="tab" aria-selected="true" data-seg="all">All Photos</button>
@@ -224,6 +237,7 @@ const photosSchema = collectionPageSchema({
 
     <!-- 2-Column macOS Photos Body -->
     <div class="mp-body">
+      <div class="mp-sidebar-backdrop" id="mp-sidebar-backdrop" hidden aria-hidden="true"></div>
       <!-- Left Sidebar -->
       <aside class="mp-sidebar" id="mp-sidebar" aria-label="Photos Library Navigation">
         <div class="mp-sidebar-section">
@@ -236,6 +250,14 @@ const photosSchema = collectionPageSchema({
               <path d="m70.2 162.9 24-22.4c6-5.6 13.8-5.7 19.8-.3l16.4 14 37.1-33.7c7.2-6.5 15.4-5.3 22.5 1.3l38.8 34.5v8.6c0 8.9-7.2 16.1-16.1 16.1H86.2c-9 0-16-7.2-16-16.1v-2Z" fill="#fff"/>
             </svg>
             <span>Library</span>
+          </button>
+          <button type="button" class="mp-nav-item" data-nav="map">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+              <line x1="9" y1="3" x2="9" y2="18" />
+              <line x1="15" y1="6" x2="15" y2="21" />
+            </svg>
+            <span>Map</span>
           </button>
           <button type="button" class="mp-nav-item" data-nav="recent">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -401,6 +423,7 @@ const photosSchema = collectionPageSchema({
 
         <!-- Photo Grid (All Photos / Years / Months / Favorites / Regions) -->
         <div id="mp-grid-view" class="mp-grid-view">
+          <div id="mp-time-bar" class="mp-time-bar" role="tablist" aria-label="Filter by time period" hidden></div>
           <div id="mp-grid" class="mp-grid" style="--mp-cols: 6;">
             {allGridPhotos.map((photo, idx) => (
               <div
@@ -425,11 +448,11 @@ const photosSchema = collectionPageSchema({
                   <img
                     src={photo.previewSrc}
                     srcset={photo.previewSrcSet || undefined}
-                    sizes={photo.previewSizes}
+                    sizes={idx < 6 ? photo.previewSizes : `auto, ${photo.previewSizes}`}
                     alt={photo.alt}
                     width={photo.previewWidth}
                     height={photo.previewHeight}
-                    loading={idx < 18 ? "eager" : "lazy"}
+                    loading={idx < 6 ? "eager" : "lazy"}
                     decoding="async"
                   />
                 </div>
@@ -446,10 +469,46 @@ const photosSchema = collectionPageSchema({
           </div>
         </div>
 
-        <!-- Trips / Albums Folder View -->
+        <!-- Trips Timeline View (grouped by year) -->
+        <div id="mp-trips-view" class="mp-trips-view" hidden>
+          {tripsByYear.map(([year, yearLocations]) => (
+            <section class="mp-trip-year-group" data-trip-year={year}>
+              <div class="mp-trip-year-head">
+                <h2 class="mp-trip-year-title">{year}</h2>
+                <span class="mp-trip-year-count" data-trip-year-count>{yearLocations.length} {yearLocations.length === 1 ? "Trip" : "Trips"}</span>
+              </div>
+              <div class="mp-trip-cards">
+                {yearLocations.map((loc) => (
+                  <a
+                    href={`/photos/${loc.slug}`}
+                    class="mp-trip-card"
+                    data-region={loc.region}
+                    data-album={loc.displayName.toLowerCase()}
+                    data-search={`${loc.displayName} ${loc.region} ${loc.country || "Vietnam"} ${loc.dateLabel} ${loc.yearLabel} ${loc.headline || ""} ${loc.slug}`}
+                  >
+                    <img
+                      src={loc.heroPhoto}
+                      alt={loc.displayName}
+                      class="mp-trip-card-img"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div class="mp-trip-card-overlay">
+                      <span class="mp-trip-card-meta">{loc.dateLabel} · {loc.region}</span>
+                      <strong class="mp-trip-card-title">{loc.displayName}</strong>
+                      <span class="mp-trip-card-count">{loc.photoCount} Photos</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        <!-- Albums Folder View -->
         <div id="mp-albums-view" class="mp-albums-view" hidden>
           <div id="mp-folders-grid" class="glass-folder-grid">
-            {enhancedLocations.map((loc, idx) => {
+            {enhancedLocations.map((loc) => {
               const folderProps = {
                 label: loc.displayName,
                 meta: `${loc.photoCount} Photos · ${loc.region}`,
@@ -464,7 +523,7 @@ const photosSchema = collectionPageSchema({
                 action: "none" as const,
                 appear: false,
                 defaultWidth: 204,
-                eager: idx < 8,
+                eager: false,
               };
               return (
                 <div
@@ -478,6 +537,49 @@ const photosSchema = collectionPageSchema({
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        <!-- Interactive macOS Photos Map View -->
+        <div
+          id="mp-map-view"
+          class="mp-map-view"
+          data-destinations={JSON.stringify(mapDestinations)}
+          hidden
+        >
+          <div id="mp-map-canvas" class="mp-map-canvas" aria-label="Interactive photo map"></div>
+
+          <!-- Selected Destination Popover Card -->
+          <div id="mp-map-card" class="mp-map-card" hidden>
+            <button type="button" id="mp-map-card-close" class="mp-map-card-close" aria-label="Close destination preview">×</button>
+            <img data-card-img src="" alt="" class="mp-map-card-img" />
+            <div class="mp-map-card-body">
+              <div class="mp-map-card-title" data-card-title></div>
+              <div class="mp-map-card-meta" data-card-meta></div>
+              <p class="mp-map-card-headline" data-card-headline></p>
+              <a data-card-link href="/photos" class="mp-map-card-link">Open Album →</a>
+            </div>
+          </div>
+
+          <!-- Bottom-left Legal attribution (like Apple Maps) -->
+          <div class="mp-map-legal">
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">Legal</a>
+          </div>
+
+          <!-- Bottom-right Zoom Pill & Compass -->
+          <div class="mp-map-controls" aria-label="Map controls">
+            <div class="mp-map-zoom-pill">
+              <button type="button" id="mp-map-zoom-out" class="mp-map-ctrl-btn" aria-label="Zoom out">−</button>
+              <span class="mp-map-zoom-sep" aria-hidden="true"></span>
+              <button type="button" id="mp-map-zoom-in" class="mp-map-ctrl-btn" aria-label="Zoom in">+</button>
+            </div>
+            <button type="button" id="mp-map-compass" class="mp-map-compass" aria-label="Reset map orientation and zoom" title="Reset View">
+              <svg width="26" height="26" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                <circle cx="18" cy="18" r="16.5" stroke="rgba(255,255,255,0.22)" stroke-width="1" />
+                <path d="M18 3.5L20.2 8.5H15.8L18 3.5Z" fill="#ff453a" />
+                <text x="18" y="22.5" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, sans-serif">N</text>
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -501,6 +603,10 @@ const photosSchema = collectionPageSchema({
     color: var(--dash-text);
     font-family: var(--font-family-base);
     overflow: hidden;
+  }
+
+  .mp-app [hidden] {
+    display: none !important;
   }
 
   /* ── Top macOS Photos Toolbar ───────────────────────────────────────────── */
@@ -671,44 +777,6 @@ const photosSchema = collectionPageSchema({
     display: flex;
     flex-direction: column;
     gap: 16px;
-    scrollbar-width: auto;
-  }
-
-  .mp-sidebar::-webkit-scrollbar,
-  .mp-canvas::-webkit-scrollbar,
-  .mp-menu-scroll::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 4px;
-    height: 4px;
-  }
-
-  .mp-sidebar::-webkit-scrollbar-track,
-  .mp-canvas::-webkit-scrollbar-track,
-  .mp-menu-scroll::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .mp-sidebar::-webkit-scrollbar-thumb,
-  .mp-canvas::-webkit-scrollbar-thumb,
-  .mp-menu-scroll::-webkit-scrollbar-thumb {
-    -webkit-appearance: none;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 9999px;
-  }
-
-  .mp-sidebar::-webkit-scrollbar-thumb:hover,
-  .mp-canvas::-webkit-scrollbar-thumb:hover,
-  .mp-menu-scroll::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.38);
-  }
-
-  @supports (-moz-appearance: none) {
-    .mp-sidebar,
-    .mp-canvas,
-    .mp-menu-scroll {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-    }
   }
 
   .mp-sidebar-section {
@@ -768,7 +836,6 @@ const photosSchema = collectionPageSchema({
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    scrollbar-width: auto;
   }
 
   .mp-canvas-head {
@@ -858,10 +925,6 @@ const photosSchema = collectionPageSchema({
     gap: 1px;
   }
 
-  .mp-popover-menu[hidden] {
-    display: none;
-  }
-
   .mp-popover-menu::before {
     content: "";
     position: absolute;
@@ -931,7 +994,6 @@ const photosSchema = collectionPageSchema({
     display: flex;
     flex-direction: column;
     gap: 1px;
-    scrollbar-width: auto;
   }
 
   /* ── Dense macOS Photos Grid ────────────────────────────────────────────── */
@@ -946,16 +1008,183 @@ const photosSchema = collectionPageSchema({
     gap: 4px;
   }
 
+  .mp-time-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .mp-time-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mp-time-pill {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.04);
+    color: #3a3a3c;
+    font-size: var(--text-caption);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+  }
+
+  .mp-time-pill:hover {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .mp-time-pill.is-active {
+    background: #1d1d1f;
+    border-color: #1d1d1f;
+    color: #ffffff;
+  }
+
+  .mp-time-pill-count {
+    font-size: var(--text-micro);
+    opacity: 0.65;
+  }
+
+  .mp-group-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 14px 2px 6px;
+    margin-top: 4px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .mp-group-header:first-child {
+    margin-top: 0;
+    padding-top: 4px;
+  }
+
+  .mp-group-title {
+    font-size: var(--text-body-lg);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: #1d1d1f;
+  }
+
+  .mp-group-count {
+    font-size: var(--text-caption);
+    color: #6e6e73;
+  }
+
+  /* ── Trips Timeline View (grouped by year) ─────────────────────────────── */
+  .mp-trips-view {
+    flex: 1 0 auto;
+    padding: 4px 16px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .mp-trip-year-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  .mp-trip-year-title {
+    margin: 0;
+    font-size: var(--text-h3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+  }
+
+  .mp-trip-year-count {
+    font-size: var(--text-caption);
+    font-weight: 500;
+    color: #6e6e73;
+  }
+
+  .mp-trip-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .mp-trip-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #1c1c1e;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .mp-trip-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  }
+
+  .mp-trip-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 360ms ease;
+  }
+
+  .mp-trip-card:active .mp-trip-card-img {
+    filter: blur(3px);
+  }
+
+  .mp-trip-card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 14px 16px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 100%);
+    color: #ffffff;
+  }
+
+  .mp-trip-card-meta {
+    font-size: var(--text-micro);
+    font-weight: 500;
+    opacity: 0.85;
+    letter-spacing: 0.01em;
+  }
+
+  .mp-trip-card-title {
+    margin-top: 2px;
+    font-size: var(--text-h4);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .mp-trip-card-count {
+    margin-top: 3px;
+    font-size: var(--text-micro);
+    opacity: 0.8;
+  }
+
   .mp-cell {
     position: relative;
     aspect-ratio: 1 / 1;
     background: #f5f5f7;
     overflow: hidden;
     border-radius: 2px;
-  }
-
-  .mp-cell[hidden] {
-    display: none;
+    cursor: pointer;
   }
 
   .mp-cell-media {
@@ -1011,10 +1240,6 @@ const photosSchema = collectionPageSchema({
     position: relative;
   }
 
-  .glass-folder-item[hidden] {
-    display: none;
-  }
-
   .glass-folder-item:hover,
   .glass-folder-item:focus-within {
     z-index: 1;
@@ -1059,29 +1284,496 @@ const photosSchema = collectionPageSchema({
     font-weight: var(--font-weight-semibold);
   }
 
+  /* ── macOS Photos Map View ──────────────────────────────────────────────── */
+  .mp-app.is-map-mode .mp-zoom-control {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .mp-app.is-map-mode #mp-filter-wrap {
+    display: none;
+  }
+
+  .mp-app.is-map-canvas .mp-canvas {
+    overflow: hidden;
+  }
+
+  .mp-map-view {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    background: #0d2240;
+    overflow: hidden;
+  }
+
+  .mp-map-canvas {
+    width: 100%;
+    height: 100%;
+    background: #0d2240;
+  }
+
+  /* Tint dark basemap toward macOS Maps deep navy ocean + muted teal land */
+  .mp-map-view:not(.is-satellite) :global(.leaflet-tile-pane) {
+    filter: sepia(0.28) hue-rotate(158deg) saturate(2.55) brightness(1.16) contrast(1.06);
+  }
+
+  .mp-map-view :global(.leaflet-container) {
+    width: 100%;
+    height: 100%;
+    background: #0d2240;
+    font-family: var(--font-family-base);
+  }
+
+  .mp-map-view :global(.leaflet-container img.leaflet-tile) {
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  .mp-map-view :global(.mp-pin-wrapper) {
+    background: transparent;
+    border: 0;
+  }
+
+  .mp-map-view :global(.mp-pin) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: bottom center;
+  }
+
+  .mp-map-view :global(.mp-pin:hover) {
+    z-index: 900 !important;
+  }
+
+  .mp-map-view :global(.mp-pin:active) {
+    filter: blur(2px);
+  }
+
+  .mp-map-view :global(.mp-pin-frame) {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: 2.5px solid #ffffff;
+    overflow: hidden;
+    background: #1c1c1e;
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.5),
+      0 1px 4px rgba(0, 0, 0, 0.35);
+  }
+
+  .mp-map-view :global(.mp-pin-frame img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-map-view :global(.mp-pin-frame::after) {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 26px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+    pointer-events: none;
+  }
+
+  .mp-map-view :global(.mp-pin-count) {
+    position: absolute;
+    left: 5px;
+    bottom: 3px;
+    z-index: 2;
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+    pointer-events: none;
+  }
+
+  .mp-map-view :global(.mp-pin-tip) {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid #ffffff;
+    margin-top: -1px;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+  }
+
+  .mp-map-view :global(.mp-pin-tooltip) {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(24, 26, 32, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 140ms ease, transform 140ms ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  }
+
+  .mp-map-view :global(.mp-pin:hover .mp-pin-tooltip) {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .mp-map-legal {
+    position: absolute;
+    left: 12px;
+    bottom: 10px;
+    z-index: 500;
+    font-size: var(--text-micro);
+    font-weight: 500;
+  }
+
+  .mp-map-legal a {
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  .mp-map-controls {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mp-map-zoom-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background: rgba(30, 32, 38, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  .mp-map-ctrl-btn {
+    width: 26px;
+    height: 24px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.92);
+    font-family: inherit;
+    font-size: var(--text-body-lg);
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 120ms ease;
+  }
+
+  .mp-map-ctrl-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .mp-map-zoom-sep {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .mp-map-compass {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(30, 32, 38, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 140ms ease, background-color 140ms ease;
+  }
+
+  .mp-map-compass:hover {
+    background: rgba(45, 48, 56, 0.9);
+  }
+
+  .mp-map-compass:active {
+    filter: blur(2px);
+  }
+
+  .mp-map-card {
+    position: absolute;
+    left: 16px;
+    bottom: 36px;
+    z-index: 520;
+    width: 276px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(26, 28, 34, 0.9);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+  }
+
+  .mp-map-card-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+    font-size: var(--text-body-lg);
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mp-map-card-img {
+    width: 100%;
+    height: 132px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-map-card-body {
+    padding: 12px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mp-map-card-title {
+    font-size: var(--text-body-lg);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .mp-map-card-meta {
+    font-size: var(--text-caption);
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  .mp-map-card-headline {
+    margin: 4px 0 8px;
+    font-size: var(--text-caption);
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.84);
+  }
+
+  .mp-map-card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 12px;
+    border-radius: 8px;
+    background: #0a84ff;
+    color: #ffffff;
+    font-size: var(--text-caption);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 140ms ease;
+  }
+
+  .mp-map-card-link:hover {
+    background: #2b95ff;
+  }
+
+  .mp-sidebar-backdrop {
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+    :global(html:not(.is-embedded-window)) .mp-footer {
+      padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+    }
+
+    :global(html:not(.is-embedded-window)) .mp-trips-view,
+    :global(html:not(.is-embedded-window)) .mp-albums-view {
+      padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+    }
+
+    :global(html:not(.is-embedded-window)) .mp-map-legal {
+      bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    }
+
+    :global(html:not(.is-embedded-window)) .mp-map-controls {
+      bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    }
+
+    :global(html:not(.is-embedded-window)) .mp-map-card {
+      bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
   @media (max-width: 820px) {
     .mp-toolbar {
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: 8px 12px;
+    }
+
+    .mp-zoom-control {
+      display: none;
+    }
+
+    .mp-icon-btn {
+      width: 34px;
+      height: 34px;
+    }
+
+    .mp-segmented {
+      justify-self: center;
+      max-width: 100%;
+    }
+
+    .mp-seg-btn {
+      padding: 5px 10px;
+    }
+
+    .mp-toolbar-right {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
-    .mp-zoom-control,
-    .mp-toolbar-right {
-      display: none;
+
+    .mp-search {
+      flex: 1 1 auto;
+      width: auto;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 9px;
     }
-    .mp-body {
+
+    .mp-search input {
+      font-size: var(--text-input-mobile);
+    }
+
+    .mp-body,
+    .mp-app.sidebar-collapsed .mp-body {
+      position: relative;
       grid-template-columns: minmax(0, 1fr);
     }
-    .mp-sidebar {
-      display: none;
+
+    .mp-sidebar,
+    .mp-app.sidebar-collapsed .mp-sidebar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 30;
+      width: min(244px, 80vw);
+      padding: 14px 10px calc(88px + env(safe-area-inset-bottom, 0px));
+      border-right: var(--dash-border-width, 0.9px) solid var(--dash-border);
+      background: rgba(247, 247, 249, 0.98);
+      box-shadow: 12px 0 32px rgba(15, 23, 42, 0.16);
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-105%);
+      transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
     }
+
+    .mp-app.mobile-sidebar-open .mp-sidebar {
+      transform: translateX(0);
+    }
+
+    .mp-sidebar-backdrop {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 25;
+      background: rgba(15, 23, 42, 0.32);
+    }
+
+    .mp-nav-item {
+      min-height: 38px;
+      padding: 8px 10px;
+    }
+
     .mp-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3px;
+    }
+
+    .mp-grid-view {
+      padding-inline: 8px;
+    }
+
+    .mp-canvas-head {
+      padding: 10px 12px;
+      align-items: center;
+    }
+
+    .mp-filter-prefix {
+      display: none;
+    }
+
+    .mp-trip-cards {
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+      gap: 12px;
+    }
+
+    .glass-folder-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px 14px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .mp-map-controls {
+      top: 12px;
+      right: 12px;
+      bottom: auto !important;
+    }
+
+    .mp-map-card {
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-width: 340px;
+    }
+
+    .mp-map-card-img {
+      height: 112px;
     }
   }
 </style>
 
 <script>
   import { onPageLoad } from "../../scripts/page-lifecycle";
+  import type { MapDestination, MapMode, PhotosMapController } from "../../scripts/photos-map";
+  import { PHOTO_REGION_ALIASES as REGION_ALIASES } from "@/constants/regions";
 
   onPageLoad((signal) => {
     const app = document.getElementById("mp-app");
@@ -1090,6 +1782,12 @@ const photosSchema = collectionPageSchema({
     const grid = document.getElementById("mp-grid");
     const gridView = document.getElementById("mp-grid-view");
     const albumsView = document.getElementById("mp-albums-view");
+    const tripsView = document.getElementById("mp-trips-view");
+    const mapView = document.getElementById("mp-map-view");
+    const canvasHead = document.querySelector<HTMLElement>(".mp-canvas-head");
+    const footerEl = document.querySelector<HTMLElement>(".mp-footer");
+    const segLibrary = document.getElementById("mp-seg-library");
+    const timeBar = document.getElementById("mp-time-bar");
     const emptyEl = document.getElementById("mp-empty");
     const headingEl = document.getElementById("mp-heading");
     const subheadingEl = document.getElementById("mp-subheading");
@@ -1103,31 +1801,64 @@ const photosSchema = collectionPageSchema({
     const zoomOutBtn = document.getElementById("mp-zoom-out");
     const zoomInBtn = document.getElementById("mp-zoom-in");
     const sidebarToggle = document.getElementById("mp-sidebar-toggle");
+    const sidebarBackdrop = document.getElementById("mp-sidebar-backdrop");
     const infoToggle = document.getElementById("mp-info-toggle");
     const resetBtn = document.getElementById("mp-reset-btn");
+    const mobileSidebarMq = window.matchMedia("(max-width: 820px)");
 
-    const segButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".mp-seg-btn"));
+    const closeMobileSidebar = () => {
+      app.classList.remove("mobile-sidebar-open");
+      if (sidebarBackdrop) sidebarBackdrop.hidden = true;
+      if (mobileSidebarMq.matches) {
+        sidebarToggle?.setAttribute("aria-pressed", "false");
+      }
+    };
+
+    const segButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("#mp-seg-library .mp-seg-btn"));
     const navButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".mp-nav-item"));
     const cells = Array.from(document.querySelectorAll<HTMLElement>(".mp-cell"));
     const folderItems = Array.from(document.querySelectorAll<HTMLElement>(".glass-folder-item"));
+    const tripGroups = Array.from(document.querySelectorAll<HTMLElement>(".mp-trip-year-group"));
 
     let activeNav = "library";
     let activeFilter = "all";
     let activeQuery = "";
+    let activeSeg: "all" | "years" | "months" = "all";
+    let activeTimeValue = "all";
+    let activeMapMode: MapMode = "satellite";
+    let mapVisibleSlugs: Set<string> | null = null;
+    let mapDestinations: MapDestination[] = [];
+    let mapController: PhotosMapController | null = null;
 
-    const REGION_ALIASES: Record<string, string> = {
-      "mien bac": "north",
-      bac: "north",
-      "tay nguyen": "highlands",
-      "mien trung": "central",
-      trung: "central",
-      "mien nam": "south",
-      nam: "south",
-      "quoc te": "international",
-      "nuoc ngoai": "international",
-      hcm: "sai gon",
-      tphcm: "sai gon",
-      "ho chi minh": "sai gon",
+    const rawDestinations = mapView?.dataset.destinations;
+    if (rawDestinations) {
+      try {
+        mapDestinations = JSON.parse(rawDestinations) as MapDestination[];
+      } catch {
+        mapDestinations = [];
+      }
+    }
+
+    let mapLoading = false;
+    const loadMap = async () => {
+      if (mapLoading || mapController || !mapView || !mapDestinations.length) return;
+      mapLoading = true;
+      try {
+        const { createPhotosMap } = await import("../../scripts/photos-map");
+        if (signal.aborted || activeNav !== "map") return;
+        mapController = createPhotosMap({
+          container: mapView,
+          destinations: mapDestinations,
+          onVisibleSlugsChange: (slugs) => { mapVisibleSlugs = new Set(slugs); },
+          signal,
+        });
+        signal.addEventListener("abort", () => mapController?.destroy(), { once: true });
+        applyState();
+      } catch (err) {
+        console.error("[photos-map] Failed to initialize map:", err);
+      } finally {
+        mapLoading = false;
+      }
     };
 
     const normalizeText = (value: string) =>
@@ -1160,14 +1891,79 @@ const photosSchema = collectionPageSchema({
 
     const applyState = () => {
       const q = activeQuery.trim().toLowerCase();
-      const isAlbumsMode = activeNav === "trips" || activeNav === "albums";
+      const isMapNav = activeNav === "map";
+      const isMapCanvas = isMapNav;
+      const isTripsMode = !isMapNav && activeNav === "trips";
+      const isAlbumsMode = !isMapNav && activeNav === "albums";
+
+      app.classList.toggle("is-map-mode", isMapNav);
+      app.classList.toggle("is-map-canvas", isMapCanvas);
+      if (segLibrary) segLibrary.hidden = isMapNav;
+      if (filterWrap) filterWrap.hidden = isMapNav;
+      if (canvasHead) canvasHead.hidden = isMapCanvas;
+      if (footerEl) footerEl.hidden = isMapCanvas;
+      if (mapView) mapView.hidden = !isMapCanvas;
 
       navButtons.forEach((btn) => {
         btn.classList.toggle("is-active", btn.dataset.nav === activeNav);
       });
 
-      if (gridView) gridView.hidden = isAlbumsMode;
+      if (isMapNav) {
+        void loadMap();
+        const matchingSlugs = q
+          ? new Set(
+              mapDestinations
+                .filter((d) => matchesSmartQuery(d.search, q))
+                .map((d) => d.slug),
+            )
+          : null;
+        mapController?.setMode(activeMapMode);
+        mapController?.setVisible(isMapCanvas);
+        mapController?.setFilteredSlugs(matchingSlugs);
+
+        if (isMapCanvas) {
+          if (gridView) gridView.hidden = true;
+          if (tripsView) tripsView.hidden = true;
+          if (albumsView) albumsView.hidden = true;
+          return;
+        }
+      } else {
+        mapController?.setVisible(false);
+      }
+
+      if (gridView) gridView.hidden = isTripsMode || isAlbumsMode;
+      if (tripsView) tripsView.hidden = !isTripsMode;
       if (albumsView) albumsView.hidden = !isAlbumsMode;
+
+      if (isTripsMode) {
+        let visibleTrips = 0;
+        tripGroups.forEach((group) => {
+          const cards = Array.from(group.querySelectorAll<HTMLElement>(".mp-trip-card"));
+          let groupVisible = 0;
+          cards.forEach((card) => {
+            const region = card.dataset.region || "";
+            const searchHaystack = card.dataset.search || card.dataset.album || "";
+            const matchFilter =
+              activeFilter === "all" ||
+              (activeFilter.startsWith("region:") && region === activeFilter.slice(7));
+            const matchQuery = matchesSmartQuery(searchHaystack, q);
+            const show = matchFilter && matchQuery;
+            card.hidden = !show;
+            if (show) {
+              groupVisible++;
+              visibleTrips++;
+            }
+          });
+          group.hidden = groupVisible === 0;
+          const countEl = group.querySelector<HTMLElement>("[data-trip-year-count]");
+          if (countEl) {
+            countEl.textContent = `${groupVisible} ${groupVisible === 1 ? "Trip" : "Trips"}`;
+          }
+        });
+        if (headingEl) headingEl.textContent = "Trips";
+        if (subheadingEl) subheadingEl.textContent = `${visibleTrips} ${visibleTrips === 1 ? "Trip" : "Trips"} by Year`;
+        return;
+      }
 
       if (isAlbumsMode) {
         let visibleAlbums = 0;
@@ -1182,12 +1978,15 @@ const photosSchema = collectionPageSchema({
           item.hidden = !show;
           if (show) visibleAlbums++;
         });
-        if (headingEl) headingEl.textContent = activeNav === "trips" ? "Trips" : "Albums";
+        if (headingEl) headingEl.textContent = "Albums";
         if (subheadingEl) subheadingEl.textContent = `${visibleAlbums} Destinations`;
         return;
       }
 
-      let visibleCount = 0;
+      // Remove any previously injected time group headers
+      grid?.querySelectorAll(".mp-group-header").forEach((el) => el.remove());
+
+      const baseMatchedCells: HTMLElement[] = [];
       cells.forEach((cell) => {
         const slug = cell.dataset.slug || "";
         const region = cell.dataset.region || "";
@@ -1196,7 +1995,9 @@ const photosSchema = collectionPageSchema({
         const location = (cell.dataset.location || "").toLowerCase();
 
         let matchNav = true;
-        if (activeNav === "featured") matchNav = cell.dataset.featured === "1";
+        if (activeNav === "map") {
+          matchNav = !mapVisibleSlugs || mapVisibleSlugs.has(slug);
+        } else if (activeNav === "featured") matchNav = cell.dataset.featured === "1";
         else if (activeNav === "recent") matchNav = cell.dataset.recent === "1";
         else if (activeNav.startsWith("region:")) matchNav = region === activeNav.slice(7);
 
@@ -1211,14 +2012,104 @@ const photosSchema = collectionPageSchema({
         const matchQuery = matchesSmartQuery(searchHaystack, q);
 
         const show = matchNav && matchFilter && matchQuery;
-        cell.hidden = !show;
-        if (show) visibleCount++;
+        if (show) {
+          baseMatchedCells.push(cell);
+        } else {
+          cell.hidden = true;
+        }
       });
+
+      const getTimeKey = (cell: HTMLElement) =>
+        activeSeg === "years"
+          ? cell.dataset.year || "Archive"
+          : cell.dataset.date || "Archive";
+
+      let visibleCount = 0;
+
+      if (activeSeg === "years" || activeSeg === "months") {
+        const counts = new Map<string, number>();
+        baseMatchedCells.forEach((cell) => {
+          const key = getTimeKey(cell);
+          counts.set(key, (counts.get(key) || 0) + 1);
+        });
+
+        if (activeTimeValue !== "all" && !counts.has(activeTimeValue)) {
+          activeTimeValue = "all";
+        }
+
+        if (timeBar) {
+          timeBar.hidden = counts.size === 0;
+          timeBar.innerHTML = "";
+
+          const allLabel = activeSeg === "years" ? "All Years" : "All Months";
+          const allBtn = document.createElement("button");
+          allBtn.type = "button";
+          allBtn.className = `mp-time-pill${activeTimeValue === "all" ? " is-active" : ""}`;
+          allBtn.innerHTML = `<span>${allLabel}</span><span class="mp-time-pill-count">${baseMatchedCells.length}</span>`;
+          allBtn.addEventListener("click", () => {
+            activeTimeValue = "all";
+            applyState();
+          });
+          timeBar.appendChild(allBtn);
+
+          counts.forEach((count, key) => {
+            const pill = document.createElement("button");
+            pill.type = "button";
+            pill.className = `mp-time-pill${activeTimeValue === key ? " is-active" : ""}`;
+            pill.innerHTML = `<span>${key}</span><span class="mp-time-pill-count">${count}</span>`;
+            pill.addEventListener("click", () => {
+              activeTimeValue = key;
+              applyState();
+            });
+            timeBar.appendChild(pill);
+          });
+        }
+
+        const visibleByGroup = new Map<string, HTMLElement[]>();
+        baseMatchedCells.forEach((cell) => {
+          const key = getTimeKey(cell);
+          const show = activeTimeValue === "all" || key === activeTimeValue;
+          cell.hidden = !show;
+          if (show) {
+            visibleCount++;
+            const list = visibleByGroup.get(key) || [];
+            list.push(cell);
+            visibleByGroup.set(key, list);
+          }
+        });
+
+        if (grid) {
+          visibleByGroup.forEach((groupCells, key) => {
+            const firstCell = groupCells[0];
+            if (!firstCell) return;
+            const header = document.createElement("div");
+            header.className = "mp-group-header";
+            header.innerHTML = `<span class="mp-group-title">${key}</span><span class="mp-group-count">${groupCells.length} ${groupCells.length === 1 ? "Item" : "Items"}</span>`;
+            grid.insertBefore(header, firstCell);
+          });
+        }
+      } else {
+        if (timeBar) timeBar.hidden = true;
+        baseMatchedCells.forEach((cell) => {
+          cell.hidden = false;
+          visibleCount++;
+        });
+      }
 
       if (emptyEl) emptyEl.hidden = visibleCount > 0;
 
       const navLabels: Record<string, string> = {
-        library: "All Photos",
+        library:
+          activeSeg === "years"
+            ? activeTimeValue === "all"
+              ? "Years"
+              : activeTimeValue
+            : activeSeg === "months"
+              ? activeTimeValue === "all"
+                ? "Months"
+                : activeTimeValue
+              : "All Photos",
+        map: "Map",
         recent: "Recently Saved",
         featured: "Featured",
       };
@@ -1248,6 +2139,12 @@ const photosSchema = collectionPageSchema({
     sidebarToggle?.addEventListener(
       "click",
       () => {
+        if (mobileSidebarMq.matches) {
+          const open = app.classList.toggle("mobile-sidebar-open");
+          if (sidebarBackdrop) sidebarBackdrop.hidden = !open;
+          sidebarToggle.setAttribute("aria-pressed", String(open));
+          return;
+        }
         const collapsed = app.classList.toggle("sidebar-collapsed");
         sidebarToggle.setAttribute("aria-pressed", String(!collapsed));
         try {
@@ -1256,6 +2153,9 @@ const photosSchema = collectionPageSchema({
       },
       { signal },
     );
+
+    sidebarBackdrop?.addEventListener("click", closeMobileSidebar, { signal });
+    mobileSidebarMq.addEventListener("change", () => closeMobileSidebar(), { signal });
 
     // Info overlay toggle
     infoToggle?.addEventListener(
@@ -1291,11 +2191,16 @@ const photosSchema = collectionPageSchema({
     zoomOutBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) + 1), { signal });
     zoomInBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) - 1), { signal });
 
-    // Segmented control
+    // Segmented control (Years | Months | All Photos)
     segButtons.forEach((btn) => {
       btn.addEventListener(
         "click",
         () => {
+          const nextSeg = (btn.dataset.seg as "all" | "years" | "months") || "all";
+          if (nextSeg !== activeSeg) {
+            activeSeg = nextSeg;
+            activeTimeValue = "all";
+          }
           segButtons.forEach((b) => {
             b.classList.toggle("is-active", b === btn);
             b.setAttribute("aria-selected", String(b === btn));
@@ -1315,7 +2220,22 @@ const photosSchema = collectionPageSchema({
         "click",
         () => {
           activeNav = btn.dataset.nav || "library";
+          closeMobileSidebar();
           applyState();
+        },
+        { signal },
+      );
+    });
+
+    // Navigate to destination album when tapping a photo cell
+    cells.forEach((cell) => {
+      cell.addEventListener(
+        "click",
+        () => {
+          const slug = cell.dataset.slug;
+          if (slug) {
+            window.location.href = `/photos/${slug}`;
+          }
         },
         { signal },
       );

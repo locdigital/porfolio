@@ -1,0 +1,1550 @@
+{
+  "generatedAt": "2026-11-24T21:02:13.679Z",
+  "static": {
+    "staticDir": {
+      "totalBytes": 470734621,
+      "fileCount": 5013,
+      "byExt": {
+        ".html": {
+          "files": 51,
+          "bytes": 4612610
+        },
+        ".md": {
+          "files": 50,
+          "bytes": 471917
+        },
+        ".webp": {
+          "files": 4435,
+          "bytes": 406143806
+        },
+        ".png": {
+          "files": 40,
+          "bytes": 7271096
+        },
+        ".js": {
+          "files": 27,
+          "bytes": 1305953
+        },
+        ".css": {
+          "files": 11,
+          "bytes": 310732
+        },
+        ".woff2": {
+          "files": 2,
+          "bytes": 58712
+        },
+        ".jpg": {
+          "files": 251,
+          "bytes": 46440007
+        },
+        ".json": {
+          "files": 4,
+          "bytes": 445044
+        },
+        ".svg": {
+          "files": 9,
+          "bytes": 183036
+        },
+        ".ico": {
+          "files": 1,
+          "bytes": 2023
+        },
+        ".txt": {
+          "files": 126,
+          "bytes": 18541
+        },
+        ".csv": {
+          "files": 1,
+          "bytes": 83200
+        },
+        ".pdf": {
+          "files": 1,
+          "bytes": 3383133
+        },
+        ".webmanifest": {
+          "files": 1,
+          "bytes": 467
+        },
+        ".xml": {
+          "files": 2,
+          "bytes": 4343
+        },
+        "(none)": {
+          "files": 1,
+          "bytes": 1
+        }
+      }
+    },
+    "publicDir": {
+      "totalBytes": 146014111,
+      "fileCount": 739,
+      "subdirs": {
+        "apple-touch-icon.png": {
+          "totalBytes": 20566,
+          "fileCount": 1
+        },
+        "assets": {
+          "totalBytes": 104704289,
+          "fileCount": 351,
+          "byExt": {
+            ".png": {
+              "files": 24,
+              "bytes": 1522005
+            },
+            ".json": {
+              "files": 1,
+              "bytes": 4289
+            },
+            ".webp": {
+              "files": 318,
+              "bytes": 103132870
+            },
+            ".svg": {
+              "files": 8,
+              "bytes": 45125
+            }
+          }
+        },
+        "favicon-16x16.png": {
+          "totalBytes": 555,
+          "fileCount": 1
+        },
+        "favicon-32x32.png": {
+          "totalBytes": 1430,
+          "fileCount": 1
+        },
+        "favicon.ico": {
+          "totalBytes": 2023,
+          "fileCount": 1
+        },
+        "favicon.svg": {
+          "totalBytes": 137911,
+          "fileCount": 1
+        },
+        "google2986d1cd9b4d0ea8.html": {
+          "totalBytes": 53,
+          "fileCount": 1
+        },
+        "images": {
+          "totalBytes": 13286772,
+          "fileCount": 88,
+          "byExt": {
+            ".webp": {
+              "files": 76,
+              "bytes": 9016704
+            },
+            ".png": {
+              "files": 10,
+              "bytes": 3973783
+            },
+            ".jpg": {
+              "files": 2,
+              "bytes": 296285
+            }
+          }
+        },
+        "instagram_workflowspace": {
+          "totalBytes": 23196020,
+          "fileCount": 250,
+          "byExt": {
+            ".txt": {
+              "files": 124,
+              "bytes": 13888
+            },
+            ".jpg": {
+              "files": 124,
+              "bytes": 22990734
+            },
+            ".csv": {
+              "files": 1,
+              "bytes": 83200
+            },
+            ".json": {
+              "files": 1,
+              "bytes": 108198
+            }
+          }
+        },
+        "llms.txt": {
+          "totalBytes": 4582,
+          "fileCount": 1
+        },
+        "og-image.jpg": {
+          "totalBytes": 162254,
+          "fileCount": 1
+        },
+        "resume.pdf": {
+          "totalBytes": 3383133,
+          "fileCount": 1
+        },
+        "robots.txt": {
+          "totalBytes": 71,
+          "fileCount": 1
+        },
+        "site.webmanifest": {
+          "totalBytes": 467,
+          "fileCount": 1
+        },
+        "uploads": {
+          "totalBytes": 1113985,
+          "fileCount": 39,
+          "byExt": {
+            "(none)": {
+              "files": 1,
+              "bytes": 1
+            },
+            ".webp": {
+              "files": 37,
+              "bytes": 1010822
+            },
+            ".png": {
+              "files": 1,
+              "bytes": 103162
+            }
+          }
+        }
+      }
+    },
+    "bundles": {
+      "totalJsFiles": 27,
+      "totalJsRawBytes": 1305953,
+      "totalJsGzipBytes": 401455,
+      "totalCssFiles": 11,
+      "totalCssRawBytes": 310732,
+      "totalCssGzipBytes": 64294,
+      "topJsChunks": [
+        {
+          "file": "/_astro/featured-section-stats.BA-Gk98T.js",
+          "rawBytes": 430010,
+          "gzipBytes": 123530,
+          "brotliBytes": 112687
+        },
+        {
+          "file": "/_astro/DesktopShell.BZBHLByP.js",
+          "rawBytes": 261582,
+          "gzipBytes": 77169,
+          "brotliBytes": 72792
+        },
+        {
+          "file": "/_astro/client.v1uDoctG.js",
+          "rawBytes": 210451,
+          "gzipBytes": 65730,
+          "brotliBytes": 62191
+        },
+        {
+          "file": "/_astro/hoisted.C6n4mpzJ.js",
+          "rawBytes": 163635,
+          "gzipBytes": 48119,
+          "brotliBytes": 45833
+        },
+        {
+          "file": "/_astro/search.CneFzBfc.js",
+          "rawBytes": 119074,
+          "gzipBytes": 40541,
+          "brotliBytes": 37873
+        },
+        {
+          "file": "/_astro/contribution-skyline.BXn3WtdM.js",
+          "rawBytes": 26784,
+          "gzipBytes": 10454,
+          "brotliBytes": 10056
+        },
+        {
+          "file": "/_astro/hoisted.DDhSxr4S.js",
+          "rawBytes": 16555,
+          "gzipBytes": 5502,
+          "brotliBytes": 5263
+        },
+        {
+          "file": "/_astro/command-search.CpVwVGep.js",
+          "rawBytes": 15600,
+          "gzipBytes": 5030,
+          "brotliBytes": 4756
+        },
+        {
+          "file": "/_astro/router.D6RftXrj.js",
+          "rawBytes": 10701,
+          "gzipBytes": 3747,
+          "brotliBytes": 3596
+        },
+        {
+          "file": "/_astro/index.BRi61nd-.js",
+          "rawBytes": 8553,
+          "gzipBytes": 3350,
+          "brotliBytes": 3204
+        },
+        {
+          "file": "/_astro/select-with-search.zapPVMrS.js",
+          "rawBytes": 6426,
+          "gzipBytes": 2835,
+          "brotliBytes": 2674
+        },
+        {
+          "file": "/_astro/check.D0JcTfmD.js",
+          "rawBytes": 5228,
+          "gzipBytes": 1752,
+          "brotliBytes": 1659
+        },
+        {
+          "file": "/_astro/hoisted.BSZnYt5t.js",
+          "rawBytes": 4346,
+          "gzipBytes": 2039,
+          "brotliBytes": 1904
+        },
+        {
+          "file": "/_astro/hoisted.BI5d8-6o.js",
+          "rawBytes": 4307,
+          "gzipBytes": 1762,
+          "brotliBytes": 1619
+        },
+        {
+          "file": "/_astro/index.BytI3PbX.js",
+          "rawBytes": 4111,
+          "gzipBytes": 1539,
+          "brotliBytes": 1433
+        }
+      ],
+      "cssChunks": [
+        {
+          "file": "/_astro/writing.B7PNiGlM.css",
+          "rawBytes": 124073,
+          "gzipBytes": 23518,
+          "brotliBytes": 22457
+        },
+        {
+          "file": "/_astro/writing.kawkNiob.css",
+          "rawBytes": 58623,
+          "gzipBytes": 10783,
+          "brotliBytes": 10420
+        },
+        {
+          "file": "/_astro/index.CqNlIuGM.css",
+          "rawBytes": 40264,
+          "gzipBytes": 11356,
+          "brotliBytes": 10671
+        },
+        {
+          "file": "/_astro/_slug_.C771kN0g.css",
+          "rawBytes": 22075,
+          "gzipBytes": 4280,
+          "brotliBytes": 4010
+        },
+        {
+          "file": "/_astro/services.BNIa6-fZ.css",
+          "rawBytes": 15550,
+          "gzipBytes": 2996,
+          "brotliBytes": 2792
+        },
+        {
+          "file": "/_astro/_slug_.DnIcWDrj.css",
+          "rawBytes": 12359,
+          "gzipBytes": 2885,
+          "brotliBytes": 2660
+        },
+        {
+          "file": "/_astro/certificates.CYsLzfIs.css",
+          "rawBytes": 11707,
+          "gzipBytes": 2734,
+          "brotliBytes": 2521
+        },
+        {
+          "file": "/_astro/metrics.BsJ1V3SN.css",
+          "rawBytes": 10413,
+          "gzipBytes": 2070,
+          "brotliBytes": 1923
+        },
+        {
+          "file": "/_astro/_slug_.CiWd48i8.css",
+          "rawBytes": 5575,
+          "gzipBytes": 1149,
+          "brotliBytes": 1054
+        },
+        {
+          "file": "/_astro/index.B-l7uK83.css",
+          "rawBytes": 5345,
+          "gzipBytes": 1437,
+          "brotliBytes": 1305
+        },
+        {
+          "file": "/_astro/writing._mJn6g6F.css",
+          "rawBytes": 4748,
+          "gzipBytes": 1086,
+          "brotliBytes": 970
+        }
+      ]
+    },
+    "routes": {
+      "/": {
+        "html": {
+          "rawBytes": 38862,
+          "gzipBytes": 10506,
+          "brotliBytes": 9742,
+          "serializedPropsBytes": 172
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 13,
+          "rawBytes": 526697,
+          "gzipBytes": 162978,
+          "brotliBytes": 153954
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 1,
+          "rawBytes": 124073,
+          "gzipBytes": 23518,
+          "brotliBytes": 22457
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 88
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/about": {
+        "html": {
+          "rawBytes": 40296,
+          "gzipBytes": 12482,
+          "brotliBytes": 11617,
+          "serializedPropsBytes": 177
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 13,
+          "rawBytes": 526697,
+          "gzipBytes": 162978,
+          "brotliBytes": 153954
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 1,
+          "rawBytes": 124073,
+          "gzipBytes": 23518,
+          "brotliBytes": 22457
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 93
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/work": {
+        "html": {
+          "rawBytes": 45066,
+          "gzipBytes": 10787,
+          "brotliBytes": 9922,
+          "serializedPropsBytes": 176
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.CED0pRYa.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 14,
+          "rawBytes": 529013,
+          "gzipBytes": 164062,
+          "brotliBytes": 154914
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/index.B-l7uK83.css",
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 2,
+          "rawBytes": 129418,
+          "gzipBytes": 24955,
+          "brotliBytes": 23762
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 92
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/services": {
+        "html": {
+          "rawBytes": 94376,
+          "gzipBytes": 18434,
+          "brotliBytes": 16484,
+          "serializedPropsBytes": 226
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/clsx.B-dksMZM.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/featured-section-stats.BA-Gk98T.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/hoisted.h0lhlAHw.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 16,
+          "rawBytes": 958029,
+          "gzipBytes": 287217,
+          "brotliBytes": 267254
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/services.BNIa6-fZ.css",
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 2,
+          "rawBytes": 139623,
+          "gzipBytes": 26514,
+          "brotliBytes": 25249
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 96
+          },
+          {
+            "client": "load",
+            "componentUrl": "/_astro/featured-section-stats.BA-Gk98T.js",
+            "propsBytes": 46
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/photos": {
+        "html": {
+          "rawBytes": 353391,
+          "gzipBytes": 42463,
+          "brotliBytes": 33180,
+          "serializedPropsBytes": 178
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.C6n4mpzJ.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 14,
+          "rawBytes": 690332,
+          "gzipBytes": 211097,
+          "brotliBytes": 199787
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/index.CqNlIuGM.css",
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 2,
+          "rawBytes": 164337,
+          "gzipBytes": 34874,
+          "brotliBytes": 33128
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 94
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/writing": {
+        "html": {
+          "rawBytes": 36178,
+          "gzipBytes": 9841,
+          "brotliBytes": 9160,
+          "serializedPropsBytes": 179
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 13,
+          "rawBytes": 526697,
+          "gzipBytes": 162978,
+          "brotliBytes": 153954
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/writing.B7PNiGlM.css",
+            "/_astro/writing._mJn6g6F.css"
+          ],
+          "count": 2,
+          "rawBytes": 128821,
+          "gzipBytes": 24604,
+          "brotliBytes": 23427
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 95
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/growth": {
+        "html": {
+          "rawBytes": 56429,
+          "gzipBytes": 13170,
+          "brotliBytes": 11986,
+          "serializedPropsBytes": 726
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/contribution-skyline.BXn3WtdM.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/hoisted.re4_Xj4K.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 15,
+          "rawBytes": 554864,
+          "gzipBytes": 174067,
+          "brotliBytes": 164570
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 1,
+          "rawBytes": 124073,
+          "gzipBytes": 23518,
+          "brotliBytes": 22457
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 94
+          },
+          {
+            "client": "load",
+            "componentUrl": "/_astro/contribution-skyline.BXn3WtdM.js",
+            "propsBytes": 548
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/gear": {
+        "html": {
+          "rawBytes": 108876,
+          "gzipBytes": 20055,
+          "brotliBytes": 16180,
+          "serializedPropsBytes": 176
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 13,
+          "rawBytes": 526697,
+          "gzipBytes": 162978,
+          "brotliBytes": 153954
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 1,
+          "rawBytes": 124073,
+          "gzipBytes": 23518,
+          "brotliBytes": 22457
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 92
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/resume": {
+        "html": {
+          "rawBytes": 59075,
+          "gzipBytes": 13329,
+          "brotliBytes": 12112,
+          "serializedPropsBytes": 178
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 13,
+          "rawBytes": 526697,
+          "gzipBytes": 162978,
+          "brotliBytes": 153954
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 1,
+          "rawBytes": 124073,
+          "gzipBytes": 23518,
+          "brotliBytes": 22457
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 94
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      },
+      "/certificates": {
+        "html": {
+          "rawBytes": 67512,
+          "gzipBytes": 13039,
+          "brotliBytes": 11398,
+          "serializedPropsBytes": 184
+        },
+        "initialJs": {
+          "files": [
+            "/_astro/DesktopShell.BZBHLByP.js",
+            "/_astro/_commonjsHelpers.Cpj98o6Y.js",
+            "/_astro/check.D0JcTfmD.js",
+            "/_astro/client.v1uDoctG.js",
+            "/_astro/command-search-loader.D1cD63qr.js",
+            "/_astro/hoisted.DDhSxr4S.js",
+            "/_astro/hoisted.KoyPp4dZ.js",
+            "/_astro/index.BRi61nd-.js",
+            "/_astro/index.Bxr0XgtK.js",
+            "/_astro/index.BytI3PbX.js",
+            "/_astro/jsx-runtime.BjG_zV1W.js",
+            "/_astro/page.VIllvXJD.js",
+            "/_astro/router.D6RftXrj.js",
+            "/_astro/search.CGhwLyp-.js"
+          ],
+          "count": 14,
+          "rawBytes": 528738,
+          "gzipBytes": 163796,
+          "brotliBytes": 154682
+        },
+        "initialCss": {
+          "files": [
+            "/_astro/certificates.CYsLzfIs.css",
+            "/_astro/writing.B7PNiGlM.css"
+          ],
+          "count": 2,
+          "rawBytes": 135780,
+          "gzipBytes": 26252,
+          "brotliBytes": 24978
+        },
+        "islands": [
+          {
+            "client": "load",
+            "componentUrl": "/_astro/DesktopShell.BZBHLByP.js",
+            "propsBytes": 100
+          },
+          {
+            "client": "idle",
+            "componentUrl": "/_astro/command-search-loader.D1cD63qr.js",
+            "propsBytes": 84
+          }
+        ]
+      }
+    }
+  },
+  "browser": {
+    "chromeBinary": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "measuredAt": "2026-11-24T21:02:13.454Z",
+    "port": 58117,
+    "cold": [
+      {
+        "route": "/",
+        "mode": "desktop",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 56,
+        "lcpMs": 140,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 84.8,
+        "loadMs": 1010.2,
+        "domNodes": 269,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 39,
+          "local": 36,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 572691,
+          "jsTransferredBytes": 159028,
+          "cssTransferredBytes": 23195,
+          "imgTransferredBytes": 243537
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/",
+        "mode": "mobile",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 108,
+        "lcpMs": 108,
+        "cls": 0,
+        "tbtMs": 46,
+        "longTasks": 2,
+        "dclMs": 117.5,
+        "loadMs": 453.5,
+        "domNodes": 269,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 38,
+          "local": 36,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 572691,
+          "jsTransferredBytes": 159028,
+          "cssTransferredBytes": 23195,
+          "imgTransferredBytes": 243537
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/about",
+        "mode": "desktop",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 60,
+        "lcpMs": 60,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 48.1,
+        "loadMs": 349.7,
+        "domNodes": 246,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 35,
+          "local": 32,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 2168311,
+          "jsTransferredBytes": 159028,
+          "cssTransferredBytes": 23195,
+          "imgTransferredBytes": 1849641
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/about",
+        "mode": "mobile",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 112,
+        "lcpMs": 112,
+        "cls": 0,
+        "tbtMs": 21,
+        "longTasks": 1,
+        "dclMs": 95.7,
+        "loadMs": 267.7,
+        "domNodes": 246,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 34,
+          "local": 32,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 2168311,
+          "jsTransferredBytes": 159028,
+          "cssTransferredBytes": 23195,
+          "imgTransferredBytes": 1849641
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/work",
+        "mode": "desktop",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 56,
+        "lcpMs": 56,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 34.5,
+        "loadMs": 545.1,
+        "domNodes": 297,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 43,
+          "local": 40,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 548772,
+          "jsTransferredBytes": 160281,
+          "cssTransferredBytes": 24783,
+          "imgTransferredBytes": 216777
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/work",
+        "mode": "mobile",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 100,
+        "lcpMs": 100,
+        "cls": 0,
+        "tbtMs": 25,
+        "longTasks": 1,
+        "dclMs": 113.1,
+        "loadMs": 614,
+        "domNodes": 297,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 39,
+          "local": 36,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 525538,
+          "jsTransferredBytes": 160281,
+          "cssTransferredBytes": 24783,
+          "imgTransferredBytes": 193543
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/services",
+        "mode": "desktop",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 44,
+        "lcpMs": 44,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 44,
+        "loadMs": 213.9,
+        "domNodes": 902,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 38,
+          "local": 35,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 623288,
+          "jsTransferredBytes": 274260,
+          "cssTransferredBytes": 26292,
+          "imgTransferredBytes": 186289
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/services",
+        "mode": "mobile",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 100,
+        "lcpMs": 100,
+        "cls": 0,
+        "tbtMs": 57,
+        "longTasks": 2,
+        "dclMs": 111.5,
+        "loadMs": 384.8,
+        "domNodes": 870,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 37,
+          "local": 35,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 623288,
+          "jsTransferredBytes": 274260,
+          "cssTransferredBytes": 26292,
+          "imgTransferredBytes": 186289
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/photos",
+        "mode": "desktop",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 32,
+        "lcpMs": 84,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 74.3,
+        "loadMs": 212.8,
+        "domNodes": 2381,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 107,
+          "local": 105,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 2803740,
+          "jsTransferredBytes": 205640,
+          "cssTransferredBytes": 34258,
+          "imgTransferredBytes": 2470203
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/photos",
+        "mode": "mobile",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 128,
+        "lcpMs": 128,
+        "cls": 0,
+        "tbtMs": 21,
+        "longTasks": 1,
+        "dclMs": 173.7,
+        "loadMs": 345.8,
+        "domNodes": 2381,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 64,
+          "local": 63,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 1659491,
+          "jsTransferredBytes": 205640,
+          "cssTransferredBytes": 34258,
+          "imgTransferredBytes": 1325954
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/writing",
+        "mode": "desktop",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 32,
+        "lcpMs": 44,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 25.7,
+        "loadMs": 221.3,
+        "domNodes": 274,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 37,
+          "local": 34,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 598798,
+          "jsTransferredBytes": 159028,
+          "cssTransferredBytes": 24444,
+          "imgTransferredBytes": 278879
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/writing",
+        "mode": "mobile",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 84,
+        "lcpMs": 84,
+        "cls": 0,
+        "tbtMs": 22,
+        "longTasks": 1,
+        "dclMs": 90.6,
+        "loadMs": 259.1,
+        "domNodes": 274,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 36,
+          "local": 34,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 598798,
+          "jsTransferredBytes": 159028,
+          "cssTransferredBytes": 24444,
+          "imgTransferredBytes": 278879
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/growth",
+        "mode": "desktop",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 40,
+        "lcpMs": 40,
+        "cls": 0.0029,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 30.4,
+        "loadMs": 137.4,
+        "domNodes": 384,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 37,
+          "local": 34,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 526663,
+          "jsTransferredBytes": 170248,
+          "cssTransferredBytes": 23195,
+          "imgTransferredBytes": 186289
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/growth",
+        "mode": "mobile",
+        "cache": "cold",
+        "labScore": 100,
+        "fcpMs": 92,
+        "lcpMs": 92,
+        "cls": 0,
+        "tbtMs": 49,
+        "longTasks": 2,
+        "dclMs": 110,
+        "loadMs": 400.4,
+        "domNodes": 384,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 36,
+          "local": 34,
+          "fromDiskCache": 0,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 526663,
+          "jsTransferredBytes": 170248,
+          "cssTransferredBytes": 23195,
+          "imgTransferredBytes": 186289
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      }
+    ],
+    "warm": [
+      {
+        "route": "/",
+        "mode": "desktop",
+        "cache": "warm",
+        "labScore": 100,
+        "fcpMs": 56,
+        "lcpMs": 56,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 19.9,
+        "loadMs": 34.1,
+        "domNodes": 269,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 38,
+          "local": 35,
+          "fromDiskCache": 18,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 227743,
+          "jsTransferredBytes": 0,
+          "cssTransferredBytes": 0,
+          "imgTransferredBytes": 139932
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/services",
+        "mode": "desktop",
+        "cache": "warm",
+        "labScore": 100,
+        "fcpMs": 32,
+        "lcpMs": 32,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 18.2,
+        "loadMs": 48.6,
+        "domNodes": 902,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 37,
+          "local": 34,
+          "fromDiskCache": 17,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 170495,
+          "jsTransferredBytes": 0,
+          "cssTransferredBytes": 0,
+          "imgTransferredBytes": 82684
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      },
+      {
+        "route": "/photos",
+        "mode": "desktop",
+        "cache": "warm",
+        "labScore": 100,
+        "fcpMs": 56,
+        "lcpMs": 56,
+        "cls": 0,
+        "tbtMs": 0,
+        "longTasks": 0,
+        "dclMs": 26.2,
+        "loadMs": 39,
+        "domNodes": 2381,
+        "hasHorizontalOverflow": false,
+        "requests": {
+          "total": 106,
+          "local": 104,
+          "fromDiskCache": 17,
+          "videoRequests": 0,
+          "duplicateLocalRequests": [],
+          "brokenLocalRequests": [],
+          "totalTransferredBytes": 117203,
+          "jsTransferredBytes": 0,
+          "cssTransferredBytes": 0,
+          "imgTransferredBytes": 82684
+        },
+        "consoleErrors": [],
+        "pageExceptions": []
+      }
+    ],
+    "responsiveChecks": [
+      {
+        "route": "/",
+        "width": 375,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/",
+        "width": 390,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/",
+        "width": 768,
+        "scrollWidth": 753,
+        "clientWidth": 753,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/",
+        "width": 1024,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/",
+        "width": 1440,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/",
+        "width": 1920,
+        "scrollWidth": 1920,
+        "clientWidth": 1920,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/services",
+        "width": 375,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/services",
+        "width": 390,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/services",
+        "width": 768,
+        "scrollWidth": 753,
+        "clientWidth": 753,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/services",
+        "width": 1024,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/services",
+        "width": 1440,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/services",
+        "width": 1920,
+        "scrollWidth": 1920,
+        "clientWidth": 1920,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/photos",
+        "width": 375,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/photos",
+        "width": 390,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/photos",
+        "width": 768,
+        "scrollWidth": 753,
+        "clientWidth": 753,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/photos",
+        "width": 1024,
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/photos",
+        "width": 1440,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowPx": 0,
+        "mainVisible": true
+      },
+      {
+        "route": "/photos",
+        "width": 1920,
+        "scrollWidth": 1920,
+        "clientWidth": 1920,
+        "overflowPx": 0,
+        "mainVisible": true
+      }
+    ]
+  }
+}

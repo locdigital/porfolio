@@ -216,6 +216,7 @@ export function CommandSearch({
 }: CommandSearchProps) {
   const [popoverOpen, setPopoverOpen] = React.useState(false);
   const [spotlightOpen, setSpotlightOpen] = React.useState(false);
+  const [spotlightShowDefaultList, setSpotlightShowDefaultList] = React.useState(false);
   const [popoverSearch, setPopoverSearch] = React.useState("");
   const [spotlightSearch, setSpotlightSearch] = React.useState("");
   const [shortcutLabel, setShortcutLabel] = React.useState("⌘K");
@@ -245,6 +246,7 @@ export function CommandSearch({
   const closeAll = React.useCallback(() => {
     setPopoverOpen(false);
     setSpotlightOpen(false);
+    setSpotlightShowDefaultList(false);
     setPopoverSearch("");
     setSpotlightSearch("");
     setCopiedAction(null);
@@ -252,11 +254,30 @@ export function CommandSearch({
 
   const togglePopoverFromTrigger = React.useCallback((trigger: HTMLElement | null) => {
     closeMobileDrawerIfOpen();
+
+    // On mobile viewports, open the top-anchored Spotlight dialog with default suggestions
+    // so the virtual keyboard never clips an anchored popover.
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches) {
+      setPopoverOpen(false);
+      setPopoverSearch("");
+      setSpotlightShowDefaultList(true);
+      setSpotlightOpen((prev) => {
+        if (prev) {
+          setSpotlightSearch("");
+          setCopiedAction(null);
+        }
+        return !prev;
+      });
+      return;
+    }
+
     setSpotlightOpen(false);
+    setSpotlightShowDefaultList(false);
     setSpotlightSearch("");
 
     const resolvedTrigger = trigger ?? findVisibleSearchTrigger();
     if (!resolvedTrigger) {
+      setSpotlightShowDefaultList(true);
       setSpotlightOpen(true);
       return;
     }
@@ -284,6 +305,7 @@ export function CommandSearch({
   const handleSpotlightOpenChange = React.useCallback((nextOpen: boolean) => {
     setSpotlightOpen(nextOpen);
     if (!nextOpen) {
+      setSpotlightShowDefaultList(false);
       setSpotlightSearch("");
       setCopiedAction(null);
     }
@@ -311,8 +333,19 @@ export function CommandSearch({
     syncShortcutHints();
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
+      const isK = event.code === "KeyK" || event.key.toLowerCase() === "k";
+      if (isK && (event.metaKey || event.ctrlKey) && !event.altKey) {
         event.preventDefault();
+        event.stopPropagation();
+        if (window.self !== window.top) {
+          try {
+            window.top?.focus();
+            window.top?.dispatchEvent(new CustomEvent(COMMAND_SEARCH_TOGGLE_EVENT));
+            return;
+          } catch {
+            // Fall back to local dialog if parent frame is inaccessible.
+          }
+        }
         setPopoverOpen(false);
         setPopoverSearch("");
         setSpotlightOpen((prev) => {
@@ -344,7 +377,7 @@ export function CommandSearch({
     };
     const handleBeforeSwap = () => closeAll();
 
-    document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, true);
     document.addEventListener("click", handleDocumentClick);
     window.addEventListener(COMMAND_SEARCH_OPEN_EVENT, handleOpenEvent);
     window.addEventListener(COMMAND_SEARCH_TOGGLE_EVENT, handleToggleEvent);
@@ -352,7 +385,7 @@ export function CommandSearch({
     document.addEventListener("astro:page-load", syncShortcutHints);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown, true);
       document.removeEventListener("click", handleDocumentClick);
       window.removeEventListener(COMMAND_SEARCH_OPEN_EVENT, handleOpenEvent);
       window.removeEventListener(COMMAND_SEARCH_TOGGLE_EVENT, handleToggleEvent);
@@ -543,7 +576,7 @@ export function CommandSearch({
     </>
   );
 
-  const hasSpotlightQuery = spotlightSearch.trim().length > 0;
+  const hasSpotlightQuery = spotlightShowDefaultList || spotlightSearch.trim().length > 0;
 
   return (
     <>

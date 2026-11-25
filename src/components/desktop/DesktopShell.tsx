@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { navigate } from "astro:transitions/client";
 import { Dock } from "../dock/Dock";
 import { DEFAULT_DOCK_APPS, type AppId } from "../dock/dock.config";
 import { AppSwitcher } from "./AppSwitcher";
 import { AppWindow } from "./AppWindow";
-import { DesktopWidget } from "./DesktopWidget";
 import { WindowTileMenu } from "./WindowTileMenu";
 import {
   createInitialWindowState,
@@ -14,10 +13,16 @@ import {
   getWindowZIndex,
   windowManagerReducer,
 } from "./window-manager";
-import { NetflixApp } from "../apps/NetflixApp";
-import { SpotifyApp } from "../apps/SpotifyApp";
-import { PhotosApp } from "../apps/PhotosApp";
-import { NikonRecipesApp } from "../apps/NikonRecipesApp";
+
+const DesktopWidget = lazy(() => import("./DesktopWidget").then((module) => ({ default: module.DesktopWidget })));
+
+const NetflixApp = lazy(() => import("../apps/NetflixApp").then((module) => ({ default: module.NetflixApp })));
+
+const SpotifyApp = lazy(() => import("../apps/SpotifyApp").then((module) => ({ default: module.SpotifyApp })));
+
+const PhotosApp = lazy(() => import("../apps/PhotosApp").then((module) => ({ default: module.PhotosApp })));
+
+const NikonRecipesApp = lazy(() => import("../apps/NikonRecipesApp").then((module) => ({ default: module.NikonRecipesApp })));
 
 interface DesktopShellProps {
   initialPath?: string;
@@ -44,7 +49,16 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     initialPath,
     createInitialWindowState,
   );
+  const [isCompactViewport, setIsCompactViewport] = useState(false);
   const hasHydratedStorageRef = useRef(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const sync = () => setIsCompactViewport(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   // Restore open windows / active app / pin mode across F5 reloads
   useEffect(() => {
@@ -119,8 +133,8 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     if (hostFrame) {
       const hostWin = state.windows[hostWindowApp];
       hostFrame.style.zIndex = String(getWindowZIndex(hostWin));
-      hostFrame.classList.toggle("is-pinned", hostWin.isPinned);
-      if (hostWin.tile && !hostWin.isMaximized) {
+      hostFrame.classList.toggle("is-pinned", !isCompactViewport && hostWin.isPinned);
+      if (!isCompactViewport && hostWin.tile && !hostWin.isMaximized) {
         const geo = getTileGeometryStyle(hostWin.tile);
         hostFrame.classList.add("is-tiled");
         hostFrame.style.position = "fixed";
@@ -139,7 +153,7 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
         hostFrame.style.margin = "";
       }
     }
-  }, [hostWindowApp, state.windows]);
+  }, [hostWindowApp, isCompactViewport, state.windows]);
 
   const [hostContextMenu, setHostContextMenu] = useState<{ x: number; y: number } | null>(null);
   const [hostTileMenu, setHostTileMenu] = useState<{ x: number; y: number } | null>(null);
@@ -317,15 +331,33 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     [focusHostWindow, hostWindowApp],
   );
 
-  const handleQuitDockApp = useCallback(
+  const closeFloatingOrRouteApp = useCallback(
     (id: AppId) => {
       if (id === hostWindowApp) {
         const closeBtn = document.querySelector<HTMLButtonElement>('[data-window-action="close"]');
         closeBtn?.click();
       }
       dispatch({ type: "CLOSE_APP", id });
+      // If closing the app that owns a dedicated empty fallback route (e.g. /entertainment/netflix or /music/spotify),
+      // navigate cleanly back to Workspace home so mobile/desktop users aren't left on an empty shell.
+      if (
+        typeof window !== "undefined" &&
+        getDefaultAppForPath(window.location.pathname) === id &&
+        id !== "workspace" &&
+        id !== "photos"
+      ) {
+        document.documentElement.dataset.appNavigation = "true";
+        void navigate("/");
+      }
     },
     [hostWindowApp],
+  );
+
+  const handleQuitDockApp = useCallback(
+    (id: AppId) => {
+      closeFloatingOrRouteApp(id);
+    },
+    [closeFloatingOrRouteApp],
   );
 
   const [switcherOpen, setSwitcherOpen] = useState(false);
@@ -420,18 +452,19 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
       {floatingAppIds.map((id, idx) => {
         if (id === hostWindowApp) return null;
         const win = state.windows[id];
-        if (win.isOpen && !win.isMinimized && win.isPinned) {
+        if (!isCompactViewport && win.isOpen && !win.isMinimized && win.isPinned) {
           return (
-            <DesktopWidget
-              key={`${id}-widget`}
-              id={id}
-              title={APP_TITLES[id]}
-              zIndex={getWindowZIndex(win)}
-              index={idx}
-              onFocus={() => dispatch({ type: "FOCUS_APP", id })}
-              onUnpin={() => dispatch({ type: "TOGGLE_PIN_APP", id })}
-              onClose={() => dispatch({ type: "CLOSE_APP", id })}
-            />
+            <Suspense key={`${id}-widget`} fallback={null}>
+              <DesktopWidget
+                id={id}
+                title={APP_TITLES[id]}
+                zIndex={getWindowZIndex(win)}
+                index={idx}
+                onFocus={() => dispatch({ type: "FOCUS_APP", id })}
+                onUnpin={() => dispatch({ type: "TOGGLE_PIN_APP", id })}
+                onClose={() => closeFloatingOrRouteApp(id)}
+              />
+            </Suspense>
           );
         }
         return (
@@ -441,7 +474,7 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
             title={APP_TITLES[id]}
             isActive={state.activeApp === id}
             onFocus={() => dispatch({ type: "FOCUS_APP", id })}
-            onClose={() => dispatch({ type: "CLOSE_APP", id })}
+            onClose={() => closeFloatingOrRouteApp(id)}
             onMinimize={() => dispatch({ type: "MINIMIZE_APP", id })}
             onToggleMaximize={() => dispatch({ type: "TOGGLE_MAXIMIZE_APP", id })}
             onTogglePin={() => dispatch({ type: "TOGGLE_PIN_APP", id })}
@@ -450,7 +483,7 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
               dispatch({ type: "MOVE_WINDOW", id, offsetX, offsetY })
             }
           >
-            {renderAppContent(id)}
+            <Suspense fallback={null}>{renderAppContent(id)}</Suspense>
           </AppWindow>
         );
       })}

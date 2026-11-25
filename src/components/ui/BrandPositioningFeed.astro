@@ -185,7 +185,6 @@ const enrichedPosts = instagramPosts.map((post) => ({
 <style>
   .brand-positioning-block {
     width: 100%;
-    font-family: var(--font-family-base);
   }
 
   .brand-feed-header {
@@ -271,7 +270,6 @@ const enrichedPosts = instagramPosts.map((post) => ({
   }
 
   .brand-metric-label {
-    font-family: var(--font-family-base);
     font-size: var(--text-micro);
     font-weight: var(--font-weight-medium);
     color: var(--color-fog);
@@ -282,7 +280,6 @@ const enrichedPosts = instagramPosts.map((post) => ({
   }
 
   .brand-metric-val {
-    font-family: var(--font-family-base);
     font-size: var(--text-h3);
     font-weight: var(--font-weight-semibold);
     color: var(--color-jet);
@@ -293,12 +290,10 @@ const enrichedPosts = instagramPosts.map((post) => ({
 
   /* Feed Container */
   .brand-feed-container {
-    --feed-container-pad: 8px;
-    --feed-container-radius: 16px;
     border: var(--dash-border-width, 0.9px) solid var(--dash-border);
-    border-radius: var(--feed-container-radius);
+    border-radius: 16px;
     background: var(--dash-surface-subtle);
-    padding: var(--feed-container-pad);
+    padding: 8px;
   }
 
   .brand-feed-toolbar {
@@ -361,7 +356,6 @@ const enrichedPosts = instagramPosts.map((post) => ({
   .ig-sort-btn.active {
     background: var(--dash-primary);
     color: var(--dash-on-primary);
-    font-weight: var(--font-weight-medium);
   }
 
   /* Posts Grid */
@@ -372,10 +366,9 @@ const enrichedPosts = instagramPosts.map((post) => ({
   }
 
   .ig-post-item {
-    --post-radius: 8px;
     position: relative;
     aspect-ratio: 4 / 5;
-    border-radius: var(--post-radius);
+    border-radius: 8px;
     overflow: hidden;
     background: var(--dash-surface);
     border: var(--dash-border-width, 0.9px) solid var(--dash-border);
@@ -384,12 +377,11 @@ const enrichedPosts = instagramPosts.map((post) => ({
     isolation: isolate;
     transform: translateZ(0);
     -webkit-mask-image: -webkit-radial-gradient(white, black);
-    transition: border-color 160ms ease, box-shadow 160ms ease;
+    transition: border-color 160ms ease;
   }
 
   .ig-post-item:hover {
     border-color: var(--dash-border-strong);
-    box-shadow: none;
   }
 
   .ig-post-img {
@@ -397,11 +389,7 @@ const enrichedPosts = instagramPosts.map((post) => ({
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: calc(var(--post-radius, 8px) - 1px);
-  }
-
-  .ig-post-item:hover .ig-post-img {
-    transform: none;
+    border-radius: 7px;
   }
 
   .ig-carousel-badge {
@@ -427,7 +415,7 @@ const enrichedPosts = instagramPosts.map((post) => ({
   .ig-post-overlay {
     position: absolute;
     inset: 0;
-    border-radius: calc(var(--post-radius, 8px) - 1px);
+    border-radius: 7px;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.58);
     backdrop-filter: blur(1.5px);

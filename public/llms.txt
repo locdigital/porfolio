@@ -24,7 +24,6 @@ Cite the canonical page URL (`https://loc.digital/...`, without trailing slashes
 - [Selected Work](https://loc.digital/work): Six published case studies (SONY, PlayAh!, WorkFlow Space, POPS Worldwide, TOMATO Children's Home, and education communities).
 - [Services](https://loc.digital/services): Modular performance marketing, CRO, web engineering, and retainer options.
 - [Resume](https://loc.digital/resume): Education at FPT University, chronological experience, and skill clusters.
-- [Certificates](https://loc.digital/certificates): Google Skillshop and Coursera certifications.
 - [Photography](https://loc.digital/photos): 25 published destination galleries across Vietnam and Southeast Asia, ordered by most recent update.
 - [Writing](https://loc.digital/writing): Essays and personal stories index (note: individual article pages are currently disabled while the editorial archive is curated).
 - [Gear](https://loc.digital/gear): Hardware, cameras (Leica Q3, Nikon Zf), lenses, workspace setup, and outdoor equipment.

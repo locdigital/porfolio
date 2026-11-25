@@ -58,7 +58,7 @@ export function NikonRecipesApp() {
   }, [query, selectedTag]);
 
   return (
-    <div className="min-h-full bg-white text-[#1d1d1f] p-6 sm:p-8">
+    <div className="min-h-full bg-white text-[#1d1d1f] p-4 sm:p-8">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-b border-black/[0.07] pb-5">
         <div>
@@ -85,7 +85,7 @@ export function NikonRecipesApp() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search recipes or creators..."
             aria-label="Search Nikon recipes"
-            className="w-full pl-9 pr-3 py-2 text-sm bg-[#f5f5f7] border border-black/[0.08] rounded-lg text-[#1d1d1f] placeholder:text-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/15 focus:bg-white transition"
+            className="w-full pl-9 pr-3 py-2 text-base sm:text-sm bg-[#f5f5f7] border border-black/[0.08] rounded-lg text-[#1d1d1f] placeholder:text-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/15 focus:bg-white transition"
           />
         </label>
       </div>

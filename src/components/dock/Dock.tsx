@@ -38,6 +38,8 @@ export function Dock({
   className = "",
 }: DockProps) {
   const visibleApps = useMemo(() => apps.filter((app) => app.enabled), [apps]);
+  const [isCompact, setIsCompact] = useState(false);
+  const effectivePosition: DockPosition = isCompact ? "bottom" : position;
   const [pointerPos, setPointerPos] = useState<number | null>(null);
   const slotRefs = useRef<Map<AppId, HTMLDivElement>>(new Map());
   const [scales, setScales] = useState<Record<string, number>>({});
@@ -47,6 +49,14 @@ export function Dock({
     y: number;
   } | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const sync = () => setIsCompact(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     if (!contextMenu) return;
@@ -71,21 +81,25 @@ export function Dock({
 
   const handleItemContextMenu = useCallback(
     (id: AppId, rect: DOMRect) => {
-      if (position === "left") {
+      if (effectivePosition === "left") {
         setContextMenu({
           id,
           x: rect.right + 14,
           y: rect.top + rect.height / 2,
         });
       } else {
+        const clampedX = Math.max(
+          64,
+          Math.min(rect.left + rect.width / 2, window.innerWidth - 64),
+        );
         setContextMenu({
           id,
-          x: rect.left + rect.width / 2,
-          y: rect.top - 14,
+          x: clampedX,
+          y: rect.top - 10,
         });
       }
     },
-    [position],
+    [effectivePosition],
   );
 
   const registerSlotRef = useCallback((id: AppId, el: HTMLDivElement | null) => {
@@ -145,11 +159,11 @@ export function Dock({
 
   return (
     <nav
-      className={`macos-dock-anchor macos-dock-anchor--${position} ${className}`.trim()}
+      className={`macos-dock-anchor macos-dock-anchor--${effectivePosition} ${className}`.trim()}
       aria-label="Applications Dock"
     >
       <div
-        className={`macos-dock macos-dock--${position}`}
+        className={`macos-dock macos-dock--${effectivePosition}`}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
       >
@@ -157,7 +171,7 @@ export function Dock({
           <DockItem
             key={app.id}
             app={app}
-            position={position}
+            position={effectivePosition}
             scale={pointerPos !== null ? (scales[app.id] ?? 1) : 1}
             isActive={activeApp === app.id}
             isRunning={runningApps.includes(app.id)}
@@ -174,33 +188,26 @@ export function Dock({
           <div
             ref={menuRef}
             role="menu"
-            className={`macos-dock-context-menu macos-dock-context-menu--${position}`}
+            className={`macos-dock-context-menu macos-dock-context-menu--${effectivePosition}`}
             style={{ left: contextMenu.x, top: contextMenu.y }}
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              role="menuitem"
-              className="macos-dock-context-menu__item"
-              onClick={() => {
-                onPinApp?.(contextMenu.id);
-                setContextMenu(null);
-              }}
-            >
-              {pinnedApps.includes(contextMenu.id) ? "Unpin" : "Pin"}
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="macos-dock-context-menu__item"
-              onClick={() => {
-                onTogglePinMode?.();
-                setContextMenu(null);
-              }}
-            >
-              {isPinMode ? "Exit pin mode" : "Pin mode"}
-            </button>
-            <div className="macos-dock-context-menu__divider" role="separator" />
+            {!isCompact && (
+              <>
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="macos-dock-context-menu__item"
+                  onClick={() => {
+                    onTogglePinMode?.();
+                    setContextMenu(null);
+                  }}
+                >
+                  {isPinMode ? "Exit pin mode" : "Pin mode"}
+                </button>
+                <div className="macos-dock-context-menu__divider" role="separator" />
+              </>
+            )}
             {runningApps.includes(contextMenu.id) ? (
               <button
                 type="button"

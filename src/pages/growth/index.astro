@@ -236,9 +236,7 @@ const growthSchema = collectionPageSchema({
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    -ms-overflow-style: none;
     padding: 2px 2px 8px;
     margin: -2px -2px 0;
     cursor: grab;
@@ -252,6 +250,14 @@ const growthSchema = collectionPageSchema({
     cursor: grabbing;
     scroll-snap-type: none;
     user-select: none;
+  }
+
+  .growth-cluster-card,
+  .growth-playbook-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .growth-cluster-card {
@@ -291,18 +297,25 @@ const growthSchema = collectionPageSchema({
     cursor: default;
   }
 
-  @media (max-width: 640px) {
-    .growth-cluster-card {
-      flex: 0 0 min(84vw, 330px);
+  @media (max-width: 768px) {
+    .growth-clusters-grid {
+      gap: 14px;
+      margin-inline: calc(var(--mobile-page-edge, 20px) * -1);
+      padding-inline: var(--mobile-page-edge, 20px);
+      scroll-padding-inline: var(--mobile-page-edge, 20px);
+    }
+
+    .growth-carousel-btn {
+      width: 40px;
+      height: 40px;
     }
   }
 
-  .growth-cluster-card,
-  .growth-playbook-card {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  @media (max-width: 640px) {
+    .growth-cluster-card {
+      flex: 0 0 min(85vw, 336px);
+      padding: 18px 16px;
+    }
   }
 
   .growth-cluster-title {

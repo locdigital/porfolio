@@ -1370,7 +1370,7 @@ export default function ContributionSkyline({
                   onFocus={() => setLegendLevel(i)}
                   onBlur={() => setLegendLevel(-1)}
                   onClick={() => setLegendLevel((l) => (l === i ? -1 : i))}
-                  className="h-[11px] w-[11px] cursor-pointer rounded-[2px] border-0 p-0 transition-[background-color,transform] duration-500 hover:scale-125 focus-visible:outline-2 focus-visible:outline-offset-1 motion-reduce:transition-none"
+                  className="h-[11px] w-[11px] cursor-pointer rounded-[2px] border-0 p-0 transition-[background-color,filter] duration-200 active:blur-[2px] focus-visible:outline-2 focus-visible:outline-offset-1 motion-reduce:transition-none"
                   style={{
                     background: c,
                     outlineColor: "var(--color-foreground, #171717)",

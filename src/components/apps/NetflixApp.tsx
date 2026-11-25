@@ -475,14 +475,6 @@ export function NetflixApp() {
           <section className="tv-filtered">
             <div className="tv-filtered__bar">
               <div className="tv-filtered__left">
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="tv-back-btn"
-                >
-                  <ChevronLeft size={16} aria-hidden="true" />
-                  <span>Home</span>
-                </button>
                 <h2 className="tv-shelf__heading">
                   {selectedGenre !== "All" ? selectedGenre : "Search Results"}
                 </h2>
@@ -607,45 +599,91 @@ export function NetflixApp() {
       {/* Movie Detail Modal */}
       {selectedMovie && (
         <div
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-4 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pb-4"
           onClick={closeMovie}
           role="dialog"
           aria-modal="true"
           aria-label={selectedMovie.title}
         >
           <div
-            className="w-full max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-black/10"
+            className="w-full max-w-2xl max-h-[calc(100dvh-7.5rem-env(safe-area-inset-bottom,0px))] lg:max-h-[88vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-black/10"
             onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="p-6 pt-24 text-white relative"
-              style={{
-                background: selectedMovie.backdropSrc
-                  ? `linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.85) 100%), url(${selectedMovie.backdropSrc}) center / cover no-repeat`
-                  : `linear-gradient(135deg, ${selectedMovie.accentColor} 0%, #111113 100%)`,
-              }}
+              className="relative overflow-hidden bg-black text-white"
+              style={
+                !selectedMovie.backdropSrc
+                  ? {
+                      background: `linear-gradient(135deg, ${selectedMovie.accentColor} 0%, #111113 100%)`,
+                    }
+                  : undefined
+              }
             >
+              {selectedMovie.backdropSrc && (
+                <img
+                  src={selectedMovie.backdropSrc}
+                  alt={selectedMovie.title}
+                  className="block w-full h-auto max-h-[46vh] sm:max-h-[60vh] object-contain bg-black"
+                />
+              )}
+              <div
+                className={
+                  selectedMovie.backdropSrc
+                    ? "absolute inset-x-0 bottom-0 p-5 sm:p-6 pt-16 bg-gradient-to-t from-black/85 via-black/45 to-transparent"
+                    : "p-5 sm:p-6 pt-24"
+                }
+              >
+                <div className="text-xs font-medium text-white/80 mb-1">
+                  {selectedMovie.year} · {selectedMovie.genres.join(" · ")}
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight m-0 text-white pr-8">
+                  {selectedMovie.title}
+                </h2>
+              </div>
               <button
                 ref={closeButtonRef}
                 type="button"
                 onClick={closeMovie}
                 aria-label="Close movie details"
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/35 hover:bg-black/55 text-white flex items-center justify-center cursor-pointer transition"
+                className="absolute top-3.5 right-3.5 w-9 h-9 rounded-full bg-black/55 hover:bg-black/75 text-white flex items-center justify-center cursor-pointer transition"
               >
                 <X className="w-4 h-4" />
               </button>
-              <div className="text-xs font-medium text-white/75 mb-1">
-                {selectedMovie.year} · {selectedMovie.genres.join(" · ")}
-              </div>
-              <h2 className="text-2xl font-bold tracking-tight m-0 text-white pr-8">
-                {selectedMovie.title}
-              </h2>
             </div>
 
-            <div className="p-6">
+            <div className="p-5 sm:p-6 flex flex-col gap-4">
               <p className="text-sm text-[#424245] leading-relaxed m-0">
                 {selectedMovie.synopsis}
               </p>
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                <a
+                  href={selectedMovie.netflixUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 h-10 px-5 rounded-full bg-[#1d1d1f] hover:bg-[#333336] text-white text-xs font-semibold no-underline transition"
+                >
+                  <Play size={13} fill="currentColor" aria-hidden="true" />
+                  <span>Watch on Netflix</span>
+                  <ExternalLink size={12} aria-hidden="true" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => toggleMyList(selectedMovie.id)}
+                  className="inline-flex items-center justify-center gap-1.5 h-10 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-semibold cursor-pointer transition"
+                >
+                  {myList.includes(selectedMovie.id) ? (
+                    <>
+                      <Check size={14} aria-hidden="true" />
+                      <span>In My List</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={14} aria-hidden="true" />
+                      <span>Add to My List</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>

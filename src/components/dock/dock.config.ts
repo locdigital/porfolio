@@ -42,7 +42,7 @@ export const DEFAULT_DOCK_APPS: DockApplication[] = [
     name: "Netflix",
     windowTitle: "Netflix — Personal Library",
     route: "/entertainment/netflix",
-    icon: "/assets/dock/netflix.png",
+    icon: "/assets/dock/netflix.webp",
     enabled: true,
   },
   {
@@ -50,7 +50,7 @@ export const DEFAULT_DOCK_APPS: DockApplication[] = [
     name: "Spotify",
     windowTitle: "Spotify — My Music",
     route: "/music/spotify",
-    icon: "/assets/dock/spotify.png",
+    icon: "/assets/dock/spotify.webp",
     enabled: true,
   },
   {

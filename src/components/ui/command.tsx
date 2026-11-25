@@ -43,13 +43,13 @@ const CommandDialog = ({
 }: CommandDialogProps) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-2xl shadow-black/15 sm:max-w-lg [&>button:last-child]:hidden">
+      <DialogContent className="top-[max(1rem,env(safe-area-inset-top))] max-h-[calc(100dvh-2rem-env(safe-area-inset-top))] w-[calc(100%-1.5rem)] max-w-[680px] translate-y-0 overflow-hidden rounded-2xl p-0 shadow-2xl shadow-black/20 sm:top-1/2 sm:max-h-[calc(100%-3rem)] sm:w-[calc(100%-2rem)] sm:-translate-y-1/2 [&>button:last-child]:top-3.5 [&>button:last-child]:right-3.5 sm:[&>button:last-child]:hidden">
         <DialogTitle className="sr-only">{title}</DialogTitle>
         <DialogDescription className="sr-only">{description}</DialogDescription>
         <Command
           {...commandProps}
           className={cn(
-            "[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]]:px-4 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-3 [&_[cmdk-item]]:py-2",
+            "[&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-4 [&_[cmdk-input-wrapper]]:px-6 [&_[cmdk-input]]:h-16 [&_[cmdk-item]]:px-4 [&_[cmdk-item]]:py-4",
             commandProps?.className,
           )}
         >
@@ -101,7 +101,10 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn("max-h-[min(60vh,22rem)] overflow-y-auto overflow-x-hidden", className)}
+    className={cn(
+      "me-1 max-h-[min(60vh,22rem)] overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:h-[1.5px] [&::-webkit-scrollbar]:w-[1.5px] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-black/15 hover:[&::-webkit-scrollbar-thumb]:bg-black/30 [&::-webkit-scrollbar-track]:my-1.5 [&::-webkit-scrollbar-track]:bg-transparent",
+      className,
+    )}
     {...props}
   />
 ));
