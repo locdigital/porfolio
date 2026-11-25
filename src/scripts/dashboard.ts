@@ -11,19 +11,23 @@ function setupMobileDrawer(signal: AbortSignal) {
   const sidebar = document.getElementById("dash-sidebar");
   const backdrop = document.getElementById("dash-drawer-backdrop");
   const main = document.getElementById("main-content");
+  const frame = toggleBtn?.closest<HTMLElement>(".mac-window-container");
   const compactLayout = window.matchMedia("(max-width: 1023px)");
+  const isCompact = () => compactLayout.matches || Boolean(toggleBtn?.getClientRects().length);
   const bodyOverflow = document.body.style.overflow;
   const rootOverflow = root.style.overflow;
 
   function openDrawer() {
-    if (!compactLayout.matches) return;
+    if (!isCompact()) return;
     if (sidebar) sidebar.inert = false;
     sidebar?.classList.add("is-open");
     backdrop?.classList.add("is-open");
     toggleBtn?.setAttribute("aria-expanded", "true");
     if (main) main.inert = true;
-    document.body.style.overflow = "hidden";
-    root.style.overflow = "hidden";
+    if (compactLayout.matches) {
+      document.body.style.overflow = "hidden";
+      root.style.overflow = "hidden";
+    }
     closeBtn?.focus();
   }
 
@@ -35,8 +39,8 @@ function setupMobileDrawer(signal: AbortSignal) {
     if (main) main.inert = false;
     document.body.style.overflow = bodyOverflow;
     root.style.overflow = rootOverflow;
-    if (wasOpen && restoreFocus && compactLayout.matches) toggleBtn?.focus();
-    if (sidebar) sidebar.inert = compactLayout.matches;
+    if (wasOpen && restoreFocus && isCompact()) toggleBtn?.focus();
+    if (sidebar) sidebar.inert = isCompact();
   }
 
   toggleBtn?.addEventListener("click", () => {
@@ -52,6 +56,17 @@ function setupMobileDrawer(signal: AbortSignal) {
   }, { signal });
 
   compactLayout.addEventListener("change", () => closeDrawer(false), { signal });
+  if (frame && typeof ResizeObserver !== "undefined") {
+    let compact = isCompact();
+    const observer = new ResizeObserver(() => {
+      const resized = isCompact();
+      if (resized === compact) return;
+      compact = resized;
+      closeDrawer(false);
+    });
+    observer.observe(frame);
+    signal.addEventListener("abort", () => observer.disconnect(), { once: true });
+  }
   signal.addEventListener("abort", () => closeDrawer(false), { once: true });
   closeDrawer(false);
 
@@ -178,8 +193,9 @@ function setupWindowControls(signal: AbortSignal) {
     const last = windowFrame.getBoundingClientRect();
     if (first.width <= 0 || first.height <= 0 || last.width <= 0 || last.height <= 0) return;
 
-    const lastRadius = getComputedStyle(windowFrame).borderRadius;
-    const lastTransform = getComputedStyle(windowFrame).transform;
+    const style = getComputedStyle(windowFrame);
+    const lastRadius = style.borderRadius;
+    const lastTransform = style.transform;
     const baseTransform = lastTransform && lastTransform !== "none" ? lastTransform : "";
 
     const dx = first.left + first.width / 2 - (last.left + last.width / 2);
@@ -201,8 +217,8 @@ function setupWindowControls(signal: AbortSignal) {
         { transform: toTransform, borderRadius: lastRadius },
       ],
       {
-        duration: 210,
-        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        duration: parseFloat(style.getPropertyValue("--motion-duration-normal")),
+        easing: style.getPropertyValue("--motion-ease-out").trim(),
       }
     );
 
@@ -488,16 +504,25 @@ function setupWindowControls(signal: AbortSignal) {
   applyState(readState());
 }
 
+let activeFrame: Element | null = null;
+let windowController: AbortController | undefined;
+function bindWindowControls() {
+  const frame = document.querySelector(".mac-window-container");
+  if (frame === activeFrame) return;
+  windowController?.abort();
+  windowController = new AbortController();
+  activeFrame = frame;
+  setupWindowControls(windowController.signal);
+}
+
+bindWindowControls();
+document.addEventListener("astro:after-swap", bindWindowControls);
 onPageLoad((signal) => {
+  bindWindowControls();
   root.classList.add("js");
   try {
     localStorage.removeItem("bgm-state");
   } catch {}
   setupMobileDrawer(signal);
-  setupWindowControls(signal);
-
-  return () => {
-    document.body.style.overflow = "";
-  };
 });
 

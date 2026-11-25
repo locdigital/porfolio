@@ -25,7 +25,7 @@ const frame = photoNumber == null ? id : String(photoNumber).padStart(3, "0");
 const descriptionId = `${id}-memory`;
 ---
 
-<figure class="pixel-photo" data-pixel-photo data-flipped="false">
+<figure id={id} class="pixel-photo" data-pixel-photo data-flipped="false" tabindex="-1" data-motion-focus>
   <button
     class="pixel-photo__control"
     type="button"
@@ -41,6 +41,7 @@ const descriptionId = `${id}-memory`;
       <span class="pixel-photo__paper" data-flip-paper>
         <span class="pixel-photo__front" data-flip-front>
           <img src={imageUrl} srcset={srcset} sizes={sizes} alt={alt}
+            data-motion-share={id} style="view-transition-class: workspace-shared-image"
             width={width} height={height} loading={eager ? "eager" : "lazy"}
             fetchpriority={eager ? "high" : "auto"} decoding="async" draggable="false" />
         </span>
@@ -76,6 +77,12 @@ const descriptionId = `${id}-memory`;
     container-type: inline-size;
     margin: 0 0 28px;
     break-inside: avoid;
+    scroll-margin-block-start: var(--space-6);
+  }
+  @media (max-width: 1023px) {
+    .pixel-photo {
+      scroll-margin-block-start: calc(var(--mobile-topbar-h) + env(safe-area-inset-top, 0px) + var(--space-4));
+    }
   }
   .pixel-photo:focus-within,
   .pixel-photo[data-animating] { z-index: 2; }

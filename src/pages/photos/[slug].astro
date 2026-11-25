@@ -175,7 +175,7 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
   <!-- Page Introduction -->
   <header class="page-header photo-introduction">
     <div style="margin-bottom: 4px;">
-      <h1 class="page-title" style="margin: 0;">{locationTitle}</h1>
+      <h1 class="page-title" style="margin: 0;"><span data-motion-share={`album-${location.slug}`}>{locationTitle}</span></h1>
     </div>
 
     <p class="page-lead" style="margin-bottom: var(--space-2);">{location.headline}</p>
@@ -490,8 +490,8 @@ const relatedDestinations = [...explicitRelated, ...siblingRelated];
       </div>
       <div class="related-destinations-grid">
         {relatedDestinations.map(({ target, distance, category }) => (
-          <a href={`/photos/${target.slug}`} class="dash-card related-destination-card" data-astro-prefetch>
-            <span class="related-destination-name">{target.name || target.location}</span>
+          <a href={`/photos/${target.slug}`} class="dash-card related-destination-card">
+            <span class="related-destination-name" data-motion-share={`album-${target.slug}`}>{target.name || target.location}</span>
             <span class="related-destination-meta">{[category, distance].filter(Boolean).join(" · ") || target.headline}</span>
           </a>
         ))}

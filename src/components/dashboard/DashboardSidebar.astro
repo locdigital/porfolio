@@ -60,7 +60,7 @@ const isItemActive = (href: string, exact?: boolean) => {
   if (exact || normHref === "/") {
     return activePath === normHref;
   }
-  return activePath.startsWith(normHref);
+  return activePath === normHref || activePath.startsWith(`${normHref}/`);
 };
 
 const isCurrentPage = (href: string) => activePath === normalizePath(href);
@@ -77,7 +77,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
       <!-- Top Identity Block -->
       <div class="dash-sidebar-header">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home" data-astro-prefetch="load">
+          <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home" aria-current={isCurrentPage("/") ? "page" : undefined} data-astro-prefetch="hover">
             <img 
               src={avatar.src}
               alt="Nguyen Phuc Loc" 
@@ -118,7 +118,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
                       href={item.href}
                       class={`dash-nav-link ${active ? "active" : ""}`}
                       aria-current={current ? "page" : undefined}
-                      data-astro-prefetch="load"
+                      data-astro-prefetch="hover"
                     >
                       <div class="dash-nav-link-left">
                         {item.iconSrc ? (

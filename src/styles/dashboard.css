@@ -918,6 +918,10 @@ abbr {
   background: var(--dash-selected);
 }
 
+.workspace-sidebar:has(.is-pending) .dash-nav-link.active:not(.is-pending):not(:hover):not(:focus-visible) {
+  background: transparent;
+}
+
 .dash-nav-link-left {
   display: flex;
   align-items: center;
@@ -1377,9 +1381,24 @@ abbr {
 }
 
 @container workspace-window (max-width: 720px) {
+  @media (min-width: 1024px) {
+    .dash-drawer-backdrop {
+      position: absolute;
+      z-index: 44;
+    }
+
+    .mobile-topbar {
+      position: relative;
+    }
+
+    .workspace-sidebar {
+      position: absolute;
+      z-index: 45;
+    }
+  }
+
   .mobile-topbar {
     display: flex;
-    position: relative;
     height: 48px;
     flex: 0 0 48px;
     padding: 0 16px;
@@ -1402,12 +1421,10 @@ abbr {
   }
 
   .workspace-sidebar {
-    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     width: min(260px, 82%);
-    z-index: 45;
     transform: translateX(-105%);
     transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
     box-shadow: 12px 0 32px rgba(15, 23, 42, 0.16);

@@ -1,11 +1,12 @@
 ---
 import '../styles/global.css';
 import '../styles/dashboard.css';
+import '../styles/motion-tokens.css';
 import '../styles/page-transitions.css';
 import interLatinFont from '../assets/fonts/inter-latin-variable.woff2?url';
 import wallpaperImage from '../../Chibi Hikers Above the Sunset Clouds.png';
 import { getImage } from 'astro:assets';
-import { ViewTransitions } from 'astro:transitions';
+import { ViewTransitions as ClientRouter } from 'astro:transitions';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
 import CommandSearch from '../components/dashboard/CommandSearch.astro';
@@ -202,7 +203,7 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
 
   <link rel="preload" href={interLatinFont} as="font" type="font/woff2" crossorigin />
 
-  <ViewTransitions fallback="swap" />
+  <ClientRouter fallback="swap" />
   {!noindex && jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd}></script>}
 
   <!-- Google Tag Manager / Google Analytics -->
@@ -288,8 +289,7 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
           id="main-content"
           class:list={["workspace-main", { "is-fullbleed": fullBleed }]}
           tabindex="-1"
-          transition:name="workspace-document"
-          transition:animate="initial"
+          data-workspace-scroll
         >
 
           <div class:list={[contentClass, { "is-fullbleed": fullBleed }]}>

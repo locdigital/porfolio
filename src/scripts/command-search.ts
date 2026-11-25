@@ -62,7 +62,7 @@ onPageLoad((signal) => {
       return;
     }
     results.innerHTML = visibleItems.map((item, index) => `
-      <a id="command-search-option-${index}" class="command-search-result" href="${escapeHtml(item.href)}" role="option" aria-selected="false" data-astro-prefetch="load">
+      <a id="command-search-option-${index}" class="command-search-result" href="${escapeHtml(item.href)}" role="option" aria-selected="false">
         <span class="command-search-result-mark" aria-hidden="true"></span><span class="command-search-result-copy"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.description)}</span></span><span class="command-search-result-group">${escapeHtml(item.group)}</span>
       </a>`).join("");
     setActive(Math.min(activeIndex, visibleItems.length - 1), false);

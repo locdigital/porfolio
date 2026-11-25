@@ -95,6 +95,8 @@ const writingSchema = collectionPageSchema({
                   sizes="(max-width: 720px) calc(100vw - 32px), 50vw"
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchpriority={index === 0 ? "high" : "auto"}
+                  data-motion-share={isLinkable && entry.data.coverImage ? `writing-${entry.slug}` : undefined}
+                  style={isLinkable && entry.data.coverImage ? "view-transition-class: workspace-shared-image" : undefined}
                 />
               </div>
               <h2>

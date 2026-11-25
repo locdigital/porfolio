@@ -130,7 +130,7 @@ const caseSchema = articleSchema({
 
   <!-- Page Introduction (Open document surface) -->
   <header class="page-header">
-    <h1 class="page-title">{project.title}</h1>
+    <h1 class="page-title"><span data-motion-share={`work-${project.slug}`}>{project.title}</span></h1>
     <p class="page-lead project-summary">{project.summary}</p>
 
     <!-- Properties List -->

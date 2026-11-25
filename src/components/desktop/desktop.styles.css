@@ -23,7 +23,7 @@
     0 8px 24px rgba(15, 23, 42, 0.1),
     0 0 0 0.5px rgba(255, 255, 255, 0.6) inset;
   overflow: hidden;
-  animation: desktop-window-enter 240ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation: workspace-window-enter var(--motion-duration-window) var(--motion-ease-out) backwards;
 }
 
 .desktop-app-window.is-inactive {
@@ -40,7 +40,6 @@
 }
 
 .desktop-app-window.is-maximized {
-  animation: none;
   top: 0;
   left: 0;
   width: 100vw;
@@ -51,18 +50,9 @@
   transform: none !important;
 }
 
-@keyframes desktop-window-enter {
-  from {
-    opacity: 0;
-    filter: blur(2px);
-    translate: 0 12px;
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-    translate: 0 0;
-  }
+.desktop-app-window.is-exiting {
+  pointer-events: none;
+  animation: workspace-window-exit var(--motion-duration-window-exit) var(--motion-ease-in) forwards;
 }
 
 .desktop-app-titlebar {
@@ -933,7 +923,6 @@ a.dw-sp-button:hover {
     border: 0;
     box-shadow: none;
     transform: none !important;
-    animation: none;
   }
 
   .desktop-app-titlebar {
@@ -1508,7 +1497,8 @@ a.dw-sp-button:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .desktop-app-window {
+  .desktop-app-window,
+  .desktop-app-window.is-exiting {
     animation: none;
   }
 

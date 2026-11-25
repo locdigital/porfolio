@@ -107,7 +107,7 @@ export default defineConfig({
     react(),
   ],
   prefetch: {
-    prefetchAll: true,
+    prefetchAll: false,
     defaultStrategy: 'hover',
   },
   image: {

@@ -108,6 +108,8 @@ const postSchema = articleSchema({
                 sizes="(min-width: 768px) 42rem, 100vw"
                 loading="eager"
                 fetchpriority="high"
+                data-motion-share={`writing-${entry.slug}`}
+                style="view-transition-class: workspace-shared-image"
               />
             </div>
             {entry.data.coverImage.caption && <figcaption>{entry.data.coverImage.caption}</figcaption>}

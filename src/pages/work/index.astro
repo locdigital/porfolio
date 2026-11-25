@@ -108,7 +108,7 @@ const workSchema = collectionPageSchema({
         <h2 class="item-title project-card-title">
           <a href={`/work/${p.slug}`} class="project-card-title-link" data-astro-prefetch>
             <span class="project-card-hit" aria-hidden="true"></span>
-            <span class="project-card-title-text">{p.brandName}</span>
+            <span class="project-card-title-text" data-motion-share={`work-${p.slug}`}>{p.brandName}</span>
           </a>
         </h2>
 

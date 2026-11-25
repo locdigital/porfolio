@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   clampWindowOffset,
   getTileGeometryStyle,
@@ -47,7 +47,36 @@ export function AppWindow({
     if (!windowState.isOpen) hasShownContent.current = false;
     else if (!windowState.isMinimized) hasShownContent.current = true;
   }, [windowState.isOpen, windowState.isMinimized]);
-  const frameRef = useRef<HTMLDivElement | null>(null);
+  const frameRef = useRef<HTMLElement | null>(null);
+  const isVisible = windowState.isOpen && !windowState.isMinimized;
+  const [isPresented, setIsPresented] = useState(isVisible);
+  const isExiting = !isVisible && isPresented;
+  const presentedWindow = useRef(windowState);
+  const frameState = isExiting ? presentedWindow.current : windowState;
+
+  useLayoutEffect(() => {
+    if (isVisible) presentedWindow.current = windowState;
+  }, [isVisible, windowState]);
+
+  useLayoutEffect(() => {
+    if (isVisible || !isExiting) {
+      if (isVisible) setIsPresented(true);
+      return;
+    }
+    const exit = frameRef.current?.getAnimations?.().find(
+      (animation) => "animationName" in animation && animation.animationName === "workspace-window-exit",
+    );
+    if (!exit) {
+      setIsPresented(false);
+      return;
+    }
+    let interrupted = false;
+    const finish = () => {
+      if (!interrupted) setIsPresented(false);
+    };
+    void exit.finished.then(finish, finish);
+    return () => { interrupted = true; };
+  }, [isExiting, isVisible]);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   const [isCompactViewport, setIsCompactViewport] = useState(false);
@@ -153,11 +182,11 @@ export function AppWindow({
     origOffsetY: number;
   } | null>(null);
 
-  if (!windowState.isOpen) {
+  if (!windowState.isOpen && !isExiting) {
     return null;
   }
 
-  const isMinimized = windowState.isMinimized;
+  const isMinimized = windowState.isMinimized && !isExiting;
 
   const handleTitlebarPointerDown = (e: React.PointerEvent<HTMLElement>) => {
     // Only drag on desktop and when not clicking buttons or maximized
@@ -265,18 +294,18 @@ export function AppWindow({
     }
   };
 
-  const isTiled = !isCompactViewport && !windowState.isMaximized && windowState.tile !== null;
+  const isTiled = !isCompactViewport && !frameState.isMaximized && frameState.tile !== null;
 
   const transformStyle =
-    isCompactViewport || windowState.isMaximized || isTiled
+    isCompactViewport || frameState.isMaximized || isTiled
       ? undefined
-      : `translate3d(${windowState.offsetX}px, ${windowState.offsetY}px, 0)`;
+      : `translate3d(${frameState.offsetX}px, ${frameState.offsetY}px, 0)`;
 
   const sizeStyle: React.CSSProperties = isCompactViewport
     ? {}
-    : isTiled && windowState.tile
-      ? getTileGeometryStyle(windowState.tile)
-      : !windowState.isMaximized && size
+    : isTiled && frameState.tile
+      ? getTileGeometryStyle(frameState.tile)
+      : !frameState.isMaximized && size
         ? {
             width: `${size.width}px`,
             height: `${size.height}px`,
@@ -304,14 +333,15 @@ export function AppWindow({
       role="dialog"
       aria-label={title}
       aria-modal="false"
-      aria-hidden={isMinimized || undefined}
-      className={`desktop-app-window${windowState.isMaximized ? " is-maximized" : ""}${
+      aria-hidden={!isVisible || undefined}
+      inert={!isVisible}
+      className={`desktop-app-window${frameState.isMaximized ? " is-maximized" : ""}${
         isTiled ? " is-tiled" : ""
-      }${isMinimized ? " is-minimized" : ""}${
+      }${isMinimized ? " is-minimized" : ""}${isExiting ? " is-exiting" : ""}${
         isActive && !isMinimized ? " is-active" : " is-inactive"
       }`}
       style={{
-        zIndex: getWindowZIndex(windowState),
+        zIndex: getWindowZIndex(frameState),
         transform: transformStyle,
         ...sizeStyle,
       }}

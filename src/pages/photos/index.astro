@@ -82,6 +82,7 @@ const enhancedLocations = await Promise.all(
       samplePhotos: optimizedSample.map((photo, idx) => ({
         ...photo,
         id: `${loc.slug}-${idx}`,
+        detailId: `photo-${loc.slug}-${idx + 1}`,
         slug: loc.slug,
         albumName: name,
         region,
@@ -310,7 +311,7 @@ const photosSchema = collectionPageSchema({
       </aside>
 
       <!-- Main Scrollable Canvas -->
-      <section class="mp-canvas" id="mp-canvas" aria-label="Photo gallery">
+      <section class="mp-canvas" id="mp-canvas" aria-label="Photo gallery" data-workspace-scroll>
         <!-- Sticky Frosted Header Bar (like macOS Photos date/filter overlay) -->
         <div class="mp-canvas-head">
           <div class="mp-canvas-title-wrap">
@@ -426,7 +427,8 @@ const photosSchema = collectionPageSchema({
           <div id="mp-time-bar" class="mp-time-bar" role="tablist" aria-label="Filter by time period" hidden></div>
           <div id="mp-grid" class="mp-grid" style="--mp-cols: 6;">
             {allGridPhotos.map((photo, idx) => (
-              <div
+              <a
+                href={`/photos/${photo.slug}#${photo.detailId}`}
                 class="mp-cell"
                 data-id={photo.id}
                 data-index={idx}
@@ -454,12 +456,14 @@ const photosSchema = collectionPageSchema({
                     height={photo.previewHeight}
                     loading={idx < 6 ? "eager" : "lazy"}
                     decoding="async"
+                    data-motion-share={photo.detailId}
+                    style="view-transition-class: workspace-shared-image"
                   />
                 </div>
                 <div class="mp-cell-info">
                   <span>{photo.albumName}</span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
 
@@ -495,7 +499,7 @@ const photosSchema = collectionPageSchema({
                     />
                     <div class="mp-trip-card-overlay">
                       <span class="mp-trip-card-meta">{loc.dateLabel} · {loc.region}</span>
-                      <strong class="mp-trip-card-title">{loc.displayName}</strong>
+                      <strong class="mp-trip-card-title" data-motion-share={`album-${loc.slug}`}>{loc.displayName}</strong>
                       <span class="mp-trip-card-count">{loc.photoCount} Photos</span>
                     </div>
                   </a>
@@ -1771,6 +1775,7 @@ const photosSchema = collectionPageSchema({
 </style>
 
 <script>
+  import { navigate } from "astro:transitions/client";
   import { onPageLoad } from "../../scripts/page-lifecycle";
   import type { MapDestination, MapMode, PhotosMapController } from "../../scripts/photos-map";
   import { PHOTO_REGION_ALIASES as REGION_ALIASES } from "@/constants/regions";
@@ -2227,20 +2232,6 @@ const photosSchema = collectionPageSchema({
       );
     });
 
-    // Navigate to destination album when tapping a photo cell
-    cells.forEach((cell) => {
-      cell.addEventListener(
-        "click",
-        () => {
-          const slug = cell.dataset.slug;
-          if (slug) {
-            window.location.href = `/photos/${slug}`;
-          }
-        },
-        { signal },
-      );
-    });
-
     const closeFilterMenu = () => {
       if (!filterMenu || !filterTrigger) return;
       filterMenu.hidden = true;
@@ -2375,7 +2366,7 @@ const photosSchema = collectionPageSchema({
               closeAllFolders(root);
               setFolderOpen(root, true);
             } else if (href) {
-              window.location.href = href;
+              void navigate(href);
             }
           },
           { signal },
