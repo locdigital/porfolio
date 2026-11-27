@@ -31,14 +31,8 @@ export function AssistiveTouch({
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const pointerHandledClickRef = useRef(false);
-  const dragRef = useRef<{
-    startX: number;
-    startY: number;
-    origX: number;
-    origY: number;
-    moved: boolean;
-  } | null>(null);
+  const suppressClickUntilRef = useRef(0);
+  const cleanupDragListenersRef = useRef<(() => void) | null>(null);
 
   // Restore saved free-floating position across reloads
   useEffect(() => {
@@ -56,6 +50,14 @@ export function AssistiveTouch({
         setPos(clampPosition(parsed.x, parsed.y));
       }
     } catch {}
+  }, []);
+
+  // Cleanup any active drag listeners on unmount
+  useEffect(() => {
+    return () => {
+      cleanupDragListenersRef.current?.();
+      cleanupDragListenersRef.current = null;
+    };
   }, []);
 
   // Close menu on outside pointerdown, Escape, or viewport resize
@@ -92,75 +94,72 @@ export function AssistiveTouch({
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
     if (e.button !== 0) return;
+    cleanupDragListenersRef.current?.();
+
     const rect = e.currentTarget.getBoundingClientRect();
-    pointerHandledClickRef.current = false;
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch {
-      // Ignore pointer capture errors on synthetic or unsupported pointers.
-    }
-    dragRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      origX: rect.left,
-      origY: rect.top,
-      moved: false,
+    const pointerId = e.pointerId;
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const origX = rect.left;
+    const origY = rect.top;
+    let moved = false;
+
+    const cleanup = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onCancel);
+      if (cleanupDragListenersRef.current === cleanup) {
+        cleanupDragListenersRef.current = null;
+      }
     };
-  }, []);
 
-  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
-    const drag = dragRef.current;
-    if (!drag) return;
-    const dx = e.clientX - drag.startX;
-    const dy = e.clientY - drag.startY;
-    if (!drag.moved) {
-      if (Math.hypot(dx, dy) < 8) return;
-      drag.moved = true;
-      setIsDragging(true);
-      setMenuOpen(false);
-    }
-    setPos(clampPosition(drag.origX + dx, drag.origY + dy));
-  }, []);
-
-  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
-    const drag = dragRef.current;
-    if (!drag) return;
-    dragRef.current = null;
-    try {
-      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-        e.currentTarget.releasePointerCapture(e.pointerId);
+    const onMove = (ev: PointerEvent) => {
+      if (ev.pointerId !== pointerId) return;
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      if (!moved) {
+        if (Math.hypot(dx, dy) < 6) return;
+        moved = true;
+        setIsDragging(true);
+        setMenuOpen(false);
       }
-    } catch {}
-    pointerHandledClickRef.current = true;
-    if (drag.moved) {
-      setIsDragging(false);
-      const finalPos = clampPosition(
-        drag.origX + (e.clientX - drag.startX),
-        drag.origY + (e.clientY - drag.startY),
-      );
-      setPos(finalPos);
-      try {
-        sessionStorage.setItem(POS_STORAGE_KEY, JSON.stringify(finalPos));
-      } catch {}
-    } else {
-      setMenuOpen((open) => !open);
-    }
-  }, []);
+      setPos(clampPosition(origX + dx, origY + dy));
+    };
 
-  const handlePointerCancel = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
-    if (!dragRef.current) return;
-    dragRef.current = null;
-    setIsDragging(false);
-    try {
-      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-        e.currentTarget.releasePointerCapture(e.pointerId);
+    const onUp = (ev: PointerEvent) => {
+      if (ev.pointerId !== pointerId) return;
+      cleanup();
+      if (moved) {
+        suppressClickUntilRef.current = performance.now() + 300;
+        setIsDragging(false);
+        const finalPos = clampPosition(
+          origX + (ev.clientX - startX),
+          origY + (ev.clientY - startY),
+        );
+        setPos(finalPos);
+        try {
+          sessionStorage.setItem(POS_STORAGE_KEY, JSON.stringify(finalPos));
+        } catch {}
       }
-    } catch {}
+    };
+
+    const onCancel = (ev: PointerEvent) => {
+      if (ev.pointerId !== pointerId) return;
+      cleanup();
+      if (moved) {
+        suppressClickUntilRef.current = performance.now() + 300;
+        setIsDragging(false);
+      }
+    };
+
+    cleanupDragListenersRef.current = cleanup;
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onCancel);
   }, []);
 
   const handleButtonClick = useCallback(() => {
-    if (pointerHandledClickRef.current) {
-      pointerHandledClickRef.current = false;
+    if (performance.now() < suppressClickUntilRef.current) {
       return;
     }
     setMenuOpen((open) => !open);
@@ -185,6 +184,7 @@ export function AssistiveTouch({
       ref={rootRef}
       className={`assistive-touch-anchor${isDragging ? " is-dragging" : ""}${menuOpen ? " is-open" : ""}`}
       style={anchorStyle}
+      onPointerDown={(e) => e.stopPropagation()}
     >
       {menuOpen && (
         <div
@@ -261,9 +261,6 @@ export function AssistiveTouch({
         aria-expanded={menuOpen}
         onClick={handleButtonClick}
         onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerCancel}
       >
         <span className="assistive-touch-ring assistive-touch-ring--outer" aria-hidden="true">
           <span className="assistive-touch-ring assistive-touch-ring--mid">

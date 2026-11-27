@@ -9,7 +9,7 @@ draft: false
 linkable: true
 coverImage:
   src: "/images/writing/believe-in-yourself.webp"
-  alt: "Cute chibi anime pixel-art illustration for Believe in Yourself based on Pine Trunks Over Distant Ridges in Đà Lạt"
+  alt: "Cinematic thumbnail for Believe in Yourself featuring mountain ridges at Ta Chi Nhu"
   width: 1920
   height: 1080
 ---

@@ -107,6 +107,13 @@ function skipActiveViewTransition() {
 }
 
 function setupWindowControls(signal: AbortSignal) {
+  if (
+    root.classList.contains("is-embedded-window") ||
+    window.self !== window.top ||
+    new URLSearchParams(window.location.search).get("embed") === "1"
+  ) {
+    return;
+  }
   const app = root.dataset.desktopApp;
   const appLabel = app === "photos" ? "Photos" : "workspace";
   const storageKey = hostWindowStorageKey(app);

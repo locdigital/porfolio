@@ -10,7 +10,7 @@ linkable: true
 lang: "en"
 coverImage:
   src: "/images/writing/fake-it-till-you-make-it.webp"
-  alt: "Cute chibi anime pixel-art illustration for Fake It Till You Make It based on Gates of Điện Kính Thiên in Điện Kính Thiên, Thung Ui"
+  alt: "Cinematic thumbnail for Fake It Till You Make It featuring the gates of Dien Kinh Thien in Thung Ui"
   width: 1920
   height: 1080
 ---

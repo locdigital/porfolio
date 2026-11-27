@@ -66,7 +66,7 @@ export type WindowAction =
   | { type: "TOGGLE_MAXIMIZE_APP"; id: AppId }
   | { type: "SET_MAXIMIZED_APP"; id: AppId; isMaximized: boolean }
   | { type: "TOGGLE_PIN_APP"; id: AppId }
-  | { type: "TOGGLE_PIN_MODE" }
+  | { type: "TOGGLE_PIN_MODE"; hostApp?: AppId }
   | { type: "TILE_WINDOW"; id: AppId; preset: WindowTilePreset }
   | { type: "FOCUS_APP"; id: AppId }
   | { type: "MOVE_WINDOW"; id: AppId; offsetX: number; offsetY: number }
@@ -394,6 +394,7 @@ export function windowManagerReducer(
     }
 
     case "TOGGLE_PIN_MODE": {
+      const primaryApp: AppId = action.hostApp ?? "workspace";
       const bentoIds: AppId[] = ["workspace", "netflix", "spotify", "photos"];
       const alreadyInPinMode = bentoIds.every(
         (id) => state.windows[id].isOpen && state.windows[id].isPinned,
@@ -405,16 +406,16 @@ export function windowManagerReducer(
           nextWindows[id] = {
             ...nextWindows[id],
             isPinned: false,
-            isOpen: id === "workspace" ? true : false,
+            isOpen: id === primaryApp,
             isMinimized: false,
           };
         }
         nextZ += 1;
-        nextWindows.workspace = { ...nextWindows.workspace, zIndex: nextZ };
+        nextWindows[primaryApp] = { ...nextWindows[primaryApp], zIndex: nextZ };
         return {
           ...state,
           topZ: nextZ,
-          activeApp: "workspace",
+          activeApp: primaryApp,
           windows: nextWindows,
         };
       }
@@ -433,7 +434,7 @@ export function windowManagerReducer(
       return {
         ...state,
         topZ: nextZ,
-        activeApp: "workspace",
+        activeApp: primaryApp,
         windows: nextWindows,
       };
     }

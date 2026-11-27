@@ -4,9 +4,8 @@ import '../styles/dashboard.css';
 import '../styles/motion-tokens.css';
 import '../styles/page-transitions.css';
 import interLatinFont from '../assets/fonts/inter-latin-variable.woff2?url';
-import wallpaperImage from '../../Chibi Hikers Above the Sunset Clouds.png';
-import { getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
+import { getAssetPlaceholder } from '../lib/assets';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
 import CommandSearch from '../components/dashboard/CommandSearch.astro';
@@ -80,7 +79,10 @@ const canonicalHref = canonicalUrl(Astro.url.pathname);
 const normalizedPath = canonicalPath(Astro.url.pathname);
 const markdownPath = normalizedPath === "/" ? "/index.md" : `${normalizedPath}.md`;
 const markdownUrl = new URL(markdownPath, SITE_URL).toString();
-const wallpaper = await getImage({ src: wallpaperImage, format: "webp", quality: 88 });
+const WALLPAPER_SRC = "/images/wallpaper-sapa-hd.webp";
+const WALLPAPER_WIDTH = 3200;
+const WALLPAPER_HEIGHT = 2133;
+const wallpaperBlur = getAssetPlaceholder("/assets/photos/sa-pa/DSC_6711.webp");
 const resolvedOgImage = absoluteUrl(ogImage);
 const robotsDirective = robots ?? (noindex ? "noindex, nofollow" : "index, follow");
 const ogLocale = lang === "vi" ? "vi_VN" : "en_US";
@@ -170,23 +172,27 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
   <title>{title}</title>
   <script is:inline>
     document.documentElement.classList.add("js");
-    if (window.self !== window.top || new URLSearchParams(window.location.search).get("embed") === "1") {
+    const isEmbeddedWindow =
+      window.self !== window.top || new URLSearchParams(window.location.search).get("embed") === "1";
+    if (isEmbeddedWindow) {
       document.documentElement.classList.add("is-embedded-window");
     }
     if (window.matchMedia("(max-width: 768px)").matches) {
       document.documentElement.classList.add("mobile-lite");
     }
-    try {
-      const app = document.documentElement.dataset.desktopApp || "workspace";
-      const saved = JSON.parse(sessionStorage.getItem(`${app}-window-state`) || "null");
-      if (saved && typeof saved === "object") {
-        const closed = saved.closed === true;
-        const minimized = !closed && saved.minimized === true;
-        document.documentElement.classList.toggle("window-closed", closed);
-        document.documentElement.classList.toggle("window-minimized", minimized);
-        document.documentElement.classList.toggle("window-maximized", !closed && !minimized && saved.maximized === true);
-      }
-    } catch {}
+    if (!isEmbeddedWindow) {
+      try {
+        const app = document.documentElement.dataset.desktopApp || "workspace";
+        const saved = JSON.parse(sessionStorage.getItem(`${app}-window-state`) || "null");
+        if (saved && typeof saved === "object") {
+          const closed = saved.closed === true;
+          const minimized = !closed && saved.minimized === true;
+          document.documentElement.classList.toggle("window-closed", closed);
+          document.documentElement.classList.toggle("window-minimized", minimized);
+          document.documentElement.classList.toggle("window-maximized", !closed && !minimized && saved.maximized === true);
+        }
+      } catch {}
+    }
   </script>
   <meta name="theme-color" content="#FFFFFF">
   {!noindex && (
@@ -228,10 +234,17 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
 <body>
   <!-- Desktop wallpaper behind the application window. -->
   <div class="workspace-canvas">
-    <div class="workspace-wallpaper" aria-hidden="true" transition:persist="workspace-wallpaper">
+    <div
+      class="workspace-wallpaper"
+      aria-hidden="true"
+      transition:persist="workspace-wallpaper"
+      style={wallpaperBlur ? `background-image: url('${wallpaperBlur}'); background-size: cover; background-position: center;` : undefined}
+    >
       <picture>
-        <source media="(min-width: 1024px)" srcset={wallpaper.src} />
-        <img class="workspace-wallpaper-image" alt="" width={wallpaperImage.width} height={wallpaperImage.height}
+        <source media="(min-width: 1024px)" srcset={WALLPAPER_SRC} />
+        <img class="workspace-wallpaper-image" alt="" width={WALLPAPER_WIDTH} height={WALLPAPER_HEIGHT}
+          decoding="async"
+          fetchpriority="high"
           src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
       </picture>
     </div>
@@ -372,6 +385,7 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
   :global(html.is-embedded-window .workspace-wallpaper),
   :global(html.is-embedded-window .workspace-dock-persist),
   :global(html.is-embedded-window .desktop-titlebar),
+  :global(html.is-embedded-window .desktop-resize-handle),
   :global(html.is-embedded-window .mobile-topbar),
   :global(html.is-embedded-window .workspace-window-restore) {
     display: none !important;
@@ -381,6 +395,8 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
     padding: 0 !important;
     min-height: 100dvh !important;
     height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
     background: #ffffff !important;
   }
 
@@ -395,6 +411,14 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
     border: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+    transform: none !important;
+    display: flex !important;
+  }
+
+  :global(html.is-embedded-window .workspace-body) {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
   }
 
   .photos-body {

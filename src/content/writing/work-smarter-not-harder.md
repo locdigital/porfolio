@@ -10,7 +10,7 @@ linkable: true
 lang: "en"
 coverImage:
   src: "/images/writing/work-smarter-not-harder.webp"
-  alt: "Cute chibi anime pixel-art illustration for Work Smarter, Not Harder based on Dusk Over the Moored Fleet in Mỹ Tho"
+  alt: "Cinematic thumbnail for Work Smarter, Not Harder featuring dusk over the river in My Tho"
   width: 1920
   height: 1080
 ---

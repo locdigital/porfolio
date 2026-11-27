@@ -10,7 +10,7 @@ linkable: true
 lang: "en"
 coverImage:
   src: "/images/writing/reasons-to-stay-alive.webp"
-  alt: "Cute chibi anime pixel-art illustration for Reasons to Stay Alive based on Straits Mosque at Blue Hour in Melaka Straits Mosque"
+  alt: "Cinematic thumbnail for Reasons to Stay Alive featuring Melaka Straits Mosque at blue hour"
   width: 1920
   height: 1080
 ---

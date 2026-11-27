@@ -542,8 +542,8 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
 
   const handleTogglePinMode = useCallback(() => {
     focusHostWindow();
-    dispatch({ type: "TOGGLE_PIN_MODE" });
-  }, [focusHostWindow]);
+    dispatch({ type: "TOGGLE_PIN_MODE", hostApp: hostWindowApp });
+  }, [focusHostWindow, hostWindowApp]);
 
   const handlePinDockApp = useCallback(
     (id: AppId) => {

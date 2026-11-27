@@ -10,7 +10,7 @@ linkable: true
 lang: "en"
 coverImage:
   src: "/images/writing/just-keep-buying.webp"
-  alt: "Cute chibi anime pixel-art illustration for Just Keep Buying based on Emerald Passage Along the Cliffs in Hạ Long Bay"
+  alt: "Cinematic thumbnail for Just Keep Buying featuring limestone cliffs in Ha Long Bay"
   width: 1920
   height: 1080
 ---

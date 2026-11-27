@@ -17,8 +17,6 @@ const locations = (await getPhotoLocations()).sort(
   (a, b) => updatedTime(b.slug) - updatedTime(a.slug) || a.order - b.order,
 );
 
-const PHOTOS_PER_ALBUM_PREVIEW = 6;
-
 const enhancedLocations = await Promise.all(
   locations.map(async (loc) => {
     const name = loc.name || loc.location;
@@ -43,7 +41,7 @@ const enhancedLocations = await Promise.all(
     const previewImages = previews.map((photo) => photo.previewSrc);
     const heroPhoto = previewImages[0] || "";
 
-    const sampleSource = photos.slice(0, PHOTOS_PER_ALBUM_PREVIEW).map((p, idx) => ({
+    const sampleSource = photos.map((p, idx) => ({
       src: p.src,
       alt: p.alt || `${name} — frame ${idx + 1}`,
       w: p.w || 4,
@@ -142,7 +140,8 @@ const tripsByYear = Array.from(
     }, new Map<string, (typeof enhancedLocations)[number][]>()),
 );
 const allGridPhotos: GridPhoto[] = [];
-for (let i = 0; i < PHOTOS_PER_ALBUM_PREVIEW; i++) {
+const maxAlbumPhotos = Math.max(0, ...enhancedLocations.map((loc) => loc.samplePhotos.length));
+for (let i = 0; i < maxAlbumPhotos; i++) {
   for (const loc of enhancedLocations) {
     const p = loc.samplePhotos[i];
     if (p) allGridPhotos.push(p);
@@ -916,6 +915,7 @@ const photosSchema = collectionPageSchema({
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    -webkit-tap-highlight-color: transparent;
     transition: background-color 130ms ease, color 130ms ease;
   }
 
@@ -931,6 +931,21 @@ const photosSchema = collectionPageSchema({
   .mp-nav-item.is-active {
     background: #dceafe;
     color: #005bb5;
+  }
+
+  .mp-nav-item:focus,
+  .mp-nav-item:focus-visible,
+  .mp-nav-item:active {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .mp-nav-item:focus-visible {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .mp-nav-item.is-active:focus-visible {
+    background: #dceafe;
   }
 
   /* ── Main Scrollable Canvas ─────────────────────────────────────────────── */

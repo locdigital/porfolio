@@ -192,6 +192,22 @@ describe("WindowManager state transitions", () => {
     }
   });
 
+  it("preserves hostApp when toggling Pin Mode from /photos", () => {
+    let state = createInitialWindowState("/photos");
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "photos" });
+    expect(state.activeApp).toBe("photos");
+    expect(state.windows.photos.isPinned).toBe(true);
+    expect(state.windows.netflix.isPinned).toBe(true);
+    expect(state.windows.spotify.isPinned).toBe(true);
+
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "photos" });
+    expect(state.activeApp).toBe("photos");
+    expect(state.windows.photos.isOpen).toBe(true);
+    expect(state.windows.photos.isPinned).toBe(false);
+    expect(state.windows.netflix.isOpen).toBe(false);
+    expect(state.windows.spotify.isOpen).toBe(false);
+  });
+
   it("syncs explicit maximize/restore state via SET_MAXIMIZED_APP", () => {
     let state = createInitialWindowState("/");
     state = windowManagerReducer(state, { type: "TILE_WINDOW", id: "workspace", preset: "left" });

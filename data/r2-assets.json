@@ -2,11 +2,11 @@
   "version": 1,
   "bucket": "loc-digital-assets",
   "publicBaseUrl": "https://assets.loc.digital",
-  "generatedAt": "2026-11-26T17:42:11.835Z",
+  "generatedAt": "2026-11-27T16:10:36.442Z",
   "totals": {
-    "assets": 562,
-    "variants": 1884,
-    "bytes": 229015984
+    "assets": 564,
+    "variants": 1892,
+    "bytes": 230257374
   },
   "assets": {
     "/assets/photos/bali/DSC_0003.webp": {
@@ -19506,113 +19506,113 @@
     },
     "/images/writing/fake-it-till-you-make-it.webp": {
       "sourcePath": "/images/writing/fake-it-till-you-make-it.webp",
-      "hash": "5c2640a6353779d4512582d49ce0ffde580ae7f1ad27c32dc9e85e9306413c4e",
+      "hash": "7450bf36d943f2af755ef9da7120b93ea176b5197f6bea156eef0d3caad06b74",
       "width": 1920,
       "height": 1080,
       "aspectRatio": 1.7778,
       "contentType": "image/webp",
-      "bytes": 290630,
-      "originalKey": "media/images/writing/fake-it-till-you-make-it.1920w.82f7e29c148e.webp",
-      "originalUrl": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.1920w.82f7e29c148e.webp",
-      "blurDataURL": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAwCdASoUAAsAPwForE6rJaQiMAgBYCAJQBYdhF1aH0PG1dVuDQwAAP46YJtJ64P96X79TxdNzHi1kHjQKcurOGH0AAAA",
+      "bytes": 218328,
+      "originalKey": "media/images/writing/fake-it-till-you-make-it.1920w.0fb23eb0c518.webp",
+      "originalUrl": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.1920w.0fb23eb0c518.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADwAwCdASoUAAsAPwFqrU8rJiQiMAgBYCAJYgDE2B6RwcpYXfHUXtKAAP7suzEBxyR/Nr5fV+x6bNzsgAA=",
       "thumbnail": {
         "width": 320,
         "height": 180,
         "format": "webp",
-        "key": "media/images/writing/fake-it-till-you-make-it.thumb.e6711dc87a4c.webp",
-        "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.thumb.e6711dc87a4c.webp",
-        "bytes": 11622
+        "key": "media/images/writing/fake-it-till-you-make-it.thumb.1543c6ea85ae.webp",
+        "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.thumb.1543c6ea85ae.webp",
+        "bytes": 6158
       },
       "variants": [
         {
           "width": 480,
           "height": 270,
           "format": "webp",
-          "key": "media/images/writing/fake-it-till-you-make-it.480w.d57f887b9377.webp",
-          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.480w.d57f887b9377.webp",
-          "bytes": 25178
+          "key": "media/images/writing/fake-it-till-you-make-it.480w.b01095af7b9b.webp",
+          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.480w.b01095af7b9b.webp",
+          "bytes": 13606
         },
         {
           "width": 768,
           "height": 432,
           "format": "webp",
-          "key": "media/images/writing/fake-it-till-you-make-it.768w.5a031b4c8267.webp",
-          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.768w.5a031b4c8267.webp",
-          "bytes": 51426
+          "key": "media/images/writing/fake-it-till-you-make-it.768w.2dda601b7404.webp",
+          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.768w.2dda601b7404.webp",
+          "bytes": 30086
         },
         {
           "width": 1200,
           "height": 675,
           "format": "webp",
-          "key": "media/images/writing/fake-it-till-you-make-it.1200w.f3d6feb4e59a.webp",
-          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.1200w.f3d6feb4e59a.webp",
-          "bytes": 103334
+          "key": "media/images/writing/fake-it-till-you-make-it.1200w.2d5b28a36a0e.webp",
+          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.1200w.2d5b28a36a0e.webp",
+          "bytes": 74324
         },
         {
           "width": 1920,
           "height": 1080,
           "format": "webp",
-          "key": "media/images/writing/fake-it-till-you-make-it.1920w.82f7e29c148e.webp",
-          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.1920w.82f7e29c148e.webp",
-          "bytes": 265056
+          "key": "media/images/writing/fake-it-till-you-make-it.1920w.0fb23eb0c518.webp",
+          "url": "https://assets.loc.digital/media/images/writing/fake-it-till-you-make-it.1920w.0fb23eb0c518.webp",
+          "bytes": 213762
         }
       ],
-      "verifiedAt": "2026-11-26T17:29:12.902Z"
+      "verifiedAt": "2026-11-27T16:10:20.669Z"
     },
     "/images/writing/believe-in-yourself.webp": {
       "sourcePath": "/images/writing/believe-in-yourself.webp",
-      "hash": "41a1ecc682c49fdf187b872a59021e3a6415bf4b8139f262262e6c3ae4e0f4e7",
+      "hash": "1be035f5db517fec8dc6612a765241dd40ea142673020bbe07e1680daa361c26",
       "width": 1920,
       "height": 1080,
       "aspectRatio": 1.7778,
       "contentType": "image/webp",
-      "bytes": 446406,
-      "originalKey": "media/images/writing/believe-in-yourself.1920w.d9e47ebce801.webp",
-      "originalUrl": "https://assets.loc.digital/media/images/writing/believe-in-yourself.1920w.d9e47ebce801.webp",
-      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACQAwCdASoUAAsAPwFsrU8rJiQiMAgBYCAJQBOgA3AidTiUsTQgAM4TAw9PmTv/C/qO7ykaD9B9QmgsB62cDpMbxmnAAA==",
+      "bytes": 37464,
+      "originalKey": "media/images/writing/believe-in-yourself.1920w.49e577b4439c.webp",
+      "originalUrl": "https://assets.loc.digital/media/images/writing/believe-in-yourself.1920w.49e577b4439c.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAACQAwCdASoUAAsAPwFqrU8rJiQiMAgBYCAJQBdgBDwBYZ5LjZrAAP7w0o96BrwNQ1Ff1WNoj8e43VpgAAA=",
       "thumbnail": {
         "width": 320,
         "height": 180,
         "format": "webp",
-        "key": "media/images/writing/believe-in-yourself.thumb.f6d76eac8143.webp",
-        "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.thumb.f6d76eac8143.webp",
-        "bytes": 15758
+        "key": "media/images/writing/believe-in-yourself.thumb.1910a2df5d0a.webp",
+        "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.thumb.1910a2df5d0a.webp",
+        "bytes": 2960
       },
       "variants": [
         {
           "width": 480,
           "height": 270,
           "format": "webp",
-          "key": "media/images/writing/believe-in-yourself.480w.42a8a9841d51.webp",
-          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.480w.42a8a9841d51.webp",
-          "bytes": 34842
+          "key": "media/images/writing/believe-in-yourself.480w.49da4a20b04a.webp",
+          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.480w.49da4a20b04a.webp",
+          "bytes": 5368
         },
         {
           "width": 768,
           "height": 432,
           "format": "webp",
-          "key": "media/images/writing/believe-in-yourself.768w.730f63342115.webp",
-          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.768w.730f63342115.webp",
-          "bytes": 77162
+          "key": "media/images/writing/believe-in-yourself.768w.cfe188348151.webp",
+          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.768w.cfe188348151.webp",
+          "bytes": 9426
         },
         {
           "width": 1200,
           "height": 675,
           "format": "webp",
-          "key": "media/images/writing/believe-in-yourself.1200w.df726cba0ffb.webp",
-          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.1200w.df726cba0ffb.webp",
-          "bytes": 167620
+          "key": "media/images/writing/believe-in-yourself.1200w.d2593589029b.webp",
+          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.1200w.d2593589029b.webp",
+          "bytes": 17712
         },
         {
           "width": 1920,
           "height": 1080,
           "format": "webp",
-          "key": "media/images/writing/believe-in-yourself.1920w.d9e47ebce801.webp",
-          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.1920w.d9e47ebce801.webp",
-          "bytes": 403552
+          "key": "media/images/writing/believe-in-yourself.1920w.49e577b4439c.webp",
+          "url": "https://assets.loc.digital/media/images/writing/believe-in-yourself.1920w.49e577b4439c.webp",
+          "bytes": 36650
         }
       ],
-      "verifiedAt": "2026-11-26T17:29:13.085Z"
+      "verifiedAt": "2026-11-27T16:10:31.611Z"
     },
     "/images/writing/bullshit-jobs.webp": {
       "sourcePath": "/images/writing/bullshit-jobs.webp",
@@ -19781,113 +19781,113 @@
     },
     "/images/writing/my-first-100k.webp": {
       "sourcePath": "/images/writing/my-first-100k.webp",
-      "hash": "f633cc9ffec588aa2da70ccc76272f1a13c444df143b74e70d975a18abfb225b",
+      "hash": "7f48ade845c0c74220fe766bb0ce7511a00b25ebe2f0104811601745805e490e",
       "width": 1920,
       "height": 1080,
       "aspectRatio": 1.7778,
       "contentType": "image/webp",
-      "bytes": 494354,
-      "originalKey": "media/images/writing/my-first-100k.1920w.353d5cb74ee3.webp",
-      "originalUrl": "https://assets.loc.digital/media/images/writing/my-first-100k.1920w.353d5cb74ee3.webp",
-      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAwCdASoUAAsAPwFqrE6rJiQiMAgBYCAJYwC7ACHGvEgvBqlLgAD94lTq5cZzz+qoYSEhw2OR4CHYndaKgd8HiczIAA==",
+      "bytes": 289788,
+      "originalKey": "media/images/writing/my-first-100k.1920w.3d7b20912681.webp",
+      "originalUrl": "https://assets.loc.digital/media/images/writing/my-first-100k.1920w.3d7b20912681.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAwCdASoUAAsAPwFqrk8rJiQiMAgBYCAJQAAKU5Mq6OV1EsmftYAA+3/RelsCt2jpnATEmrtNF5K0HliploAA",
       "thumbnail": {
         "width": 320,
         "height": 180,
         "format": "webp",
-        "key": "media/images/writing/my-first-100k.thumb.6b74a493a858.webp",
-        "url": "https://assets.loc.digital/media/images/writing/my-first-100k.thumb.6b74a493a858.webp",
-        "bytes": 16242
+        "key": "media/images/writing/my-first-100k.thumb.94453de00e3f.webp",
+        "url": "https://assets.loc.digital/media/images/writing/my-first-100k.thumb.94453de00e3f.webp",
+        "bytes": 7482
       },
       "variants": [
         {
           "width": 480,
           "height": 270,
           "format": "webp",
-          "key": "media/images/writing/my-first-100k.480w.395fc85ea857.webp",
-          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.480w.395fc85ea857.webp",
-          "bytes": 37122
+          "key": "media/images/writing/my-first-100k.480w.5e6f88447998.webp",
+          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.480w.5e6f88447998.webp",
+          "bytes": 17616
         },
         {
           "width": 768,
           "height": 432,
           "format": "webp",
-          "key": "media/images/writing/my-first-100k.768w.f89064636aa4.webp",
-          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.768w.f89064636aa4.webp",
-          "bytes": 81132
+          "key": "media/images/writing/my-first-100k.768w.63c46268452d.webp",
+          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.768w.63c46268452d.webp",
+          "bytes": 40848
         },
         {
           "width": 1200,
           "height": 675,
           "format": "webp",
-          "key": "media/images/writing/my-first-100k.1200w.99cd378e8a27.webp",
-          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.1200w.99cd378e8a27.webp",
-          "bytes": 174980
+          "key": "media/images/writing/my-first-100k.1200w.236379cd1d8a.webp",
+          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.1200w.236379cd1d8a.webp",
+          "bytes": 101732
         },
         {
           "width": 1920,
           "height": 1080,
           "format": "webp",
-          "key": "media/images/writing/my-first-100k.1920w.353d5cb74ee3.webp",
-          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.1920w.353d5cb74ee3.webp",
-          "bytes": 444134
+          "key": "media/images/writing/my-first-100k.1920w.3d7b20912681.webp",
+          "url": "https://assets.loc.digital/media/images/writing/my-first-100k.1920w.3d7b20912681.webp",
+          "bytes": 284140
         }
       ],
-      "verifiedAt": "2026-11-26T17:29:27.790Z"
+      "verifiedAt": "2026-11-27T16:10:19.954Z"
     },
     "/images/writing/just-keep-buying.webp": {
       "sourcePath": "/images/writing/just-keep-buying.webp",
-      "hash": "c98e9a4cd40ba980813104613bc73dcafe2ef0e725b3c0d5dfff210dcc3cd742",
+      "hash": "f07e1598607dc8033c28086edc4f4cf9e7c6953e9b0a33e453f3b8a517b2be23",
       "width": 1920,
       "height": 1080,
       "aspectRatio": 1.7778,
       "contentType": "image/webp",
-      "bytes": 163092,
-      "originalKey": "media/images/writing/just-keep-buying.1920w.b6384026cace.webp",
-      "originalUrl": "https://assets.loc.digital/media/images/writing/just-keep-buying.1920w.b6384026cace.webp",
-      "blurDataURL": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACQAwCdASoUAAsAPwFqrE8rJiQiMAgBYCAJZACdAB8qJCC5GBhkAPhfBSkZkXSFmUEesryD0pHvS3diFNWZkBPTTHveE5hsQ6d4YAAA",
+      "bytes": 248078,
+      "originalKey": "media/images/writing/just-keep-buying.1920w.1b2bd90a56b9.webp",
+      "originalUrl": "https://assets.loc.digital/media/images/writing/just-keep-buying.1920w.1b2bd90a56b9.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAwCdASoUAAsAPwForE6rJaQiMAgBYCAJZACdAB6M6GI7Makyyx0QAPpvMR+Qgyjc0MgqIQuwsrGXGJLBa0m5mM6PcSiSO7eqYlr6jXAAAA==",
       "thumbnail": {
         "width": 320,
         "height": 180,
         "format": "webp",
-        "key": "media/images/writing/just-keep-buying.thumb.b6191d35f160.webp",
-        "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.thumb.b6191d35f160.webp",
-        "bytes": 8100
+        "key": "media/images/writing/just-keep-buying.thumb.8f5b00407a8a.webp",
+        "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.thumb.8f5b00407a8a.webp",
+        "bytes": 5924
       },
       "variants": [
         {
           "width": 480,
           "height": 270,
           "format": "webp",
-          "key": "media/images/writing/just-keep-buying.480w.45bea5415663.webp",
-          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.480w.45bea5415663.webp",
-          "bytes": 17082
+          "key": "media/images/writing/just-keep-buying.480w.8be1c6d629e2.webp",
+          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.480w.8be1c6d629e2.webp",
+          "bytes": 13966
         },
         {
           "width": 768,
           "height": 432,
           "format": "webp",
-          "key": "media/images/writing/just-keep-buying.768w.8fabd5381b54.webp",
-          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.768w.8fabd5381b54.webp",
-          "bytes": 32746
+          "key": "media/images/writing/just-keep-buying.768w.c8233253af07.webp",
+          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.768w.c8233253af07.webp",
+          "bytes": 31904
         },
         {
           "width": 1200,
           "height": 675,
           "format": "webp",
-          "key": "media/images/writing/just-keep-buying.1200w.388389ef1a7a.webp",
-          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.1200w.388389ef1a7a.webp",
-          "bytes": 64178
+          "key": "media/images/writing/just-keep-buying.1200w.f85a22be037a.webp",
+          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.1200w.f85a22be037a.webp",
+          "bytes": 78982
         },
         {
           "width": 1920,
           "height": 1080,
           "format": "webp",
-          "key": "media/images/writing/just-keep-buying.1920w.b6384026cace.webp",
-          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.1920w.b6384026cace.webp",
-          "bytes": 145582
+          "key": "media/images/writing/just-keep-buying.1920w.1b2bd90a56b9.webp",
+          "url": "https://assets.loc.digital/media/images/writing/just-keep-buying.1920w.1b2bd90a56b9.webp",
+          "bytes": 236066
         }
       ],
-      "verifiedAt": "2026-11-26T17:29:38.495Z"
+      "verifiedAt": "2026-11-27T16:10:21.251Z"
     },
     "/images/writing/from-curiosity-to-creation.webp": {
       "sourcePath": "/images/writing/from-curiosity-to-creation.webp",
@@ -20001,58 +20001,58 @@
     },
     "/images/writing/sa-pa.webp": {
       "sourcePath": "/images/writing/sa-pa.webp",
-      "hash": "bd55db917680454d48a3b7cfef94edce9629e865b7afca6c8453f33405d1fccc",
+      "hash": "cef67a236ec576538bcffc381817c7507d96550cfc44d192afbaadaceafb5bcf",
       "width": 1920,
       "height": 1080,
       "aspectRatio": 1.7778,
       "contentType": "image/webp",
-      "bytes": 266706,
-      "originalKey": "media/images/writing/sa-pa.1920w.2765cd13ca51.webp",
-      "originalUrl": "https://assets.loc.digital/media/images/writing/sa-pa.1920w.2765cd13ca51.webp",
-      "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACQAwCdASoUAAsAPwFwrk+rJqQiMAgBYCAJYwDE2CHYj/ZuJ/8gAP3h2qMsv9+QtJtDMDsRDfjvegxhHB3UAAAA",
+      "bytes": 284576,
+      "originalKey": "media/images/writing/sa-pa.1920w.4ae58acc8a2a.webp",
+      "originalUrl": "https://assets.loc.digital/media/images/writing/sa-pa.1920w.4ae58acc8a2a.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACQAwCdASoUAAsAPwFsrU8rJiQiMAgBYCAJQBdgA8xzBXWfvSBoAPCQquv9LQpqvBGmpHrlcqZTAWcUmGOxtvc0wAA=",
       "thumbnail": {
         "width": 320,
         "height": 180,
         "format": "webp",
-        "key": "media/images/writing/sa-pa.thumb.9ce982bb2fc6.webp",
-        "url": "https://assets.loc.digital/media/images/writing/sa-pa.thumb.9ce982bb2fc6.webp",
-        "bytes": 8588
+        "key": "media/images/writing/sa-pa.thumb.0a234780118c.webp",
+        "url": "https://assets.loc.digital/media/images/writing/sa-pa.thumb.0a234780118c.webp",
+        "bytes": 6730
       },
       "variants": [
         {
           "width": 480,
           "height": 270,
           "format": "webp",
-          "key": "media/images/writing/sa-pa.480w.ff1e8fbb4aac.webp",
-          "url": "https://assets.loc.digital/media/images/writing/sa-pa.480w.ff1e8fbb4aac.webp",
-          "bytes": 19522
+          "key": "media/images/writing/sa-pa.480w.7e680f4a1e81.webp",
+          "url": "https://assets.loc.digital/media/images/writing/sa-pa.480w.7e680f4a1e81.webp",
+          "bytes": 16556
         },
         {
           "width": 768,
           "height": 432,
           "format": "webp",
-          "key": "media/images/writing/sa-pa.768w.ebed7d20f8dd.webp",
-          "url": "https://assets.loc.digital/media/images/writing/sa-pa.768w.ebed7d20f8dd.webp",
-          "bytes": 40804
+          "key": "media/images/writing/sa-pa.768w.6d6818e8c99b.webp",
+          "url": "https://assets.loc.digital/media/images/writing/sa-pa.768w.6d6818e8c99b.webp",
+          "bytes": 37604
         },
         {
           "width": 1200,
           "height": 675,
           "format": "webp",
-          "key": "media/images/writing/sa-pa.1200w.c226a31c33ff.webp",
-          "url": "https://assets.loc.digital/media/images/writing/sa-pa.1200w.c226a31c33ff.webp",
-          "bytes": 87790
+          "key": "media/images/writing/sa-pa.1200w.d3e0a43b8fb3.webp",
+          "url": "https://assets.loc.digital/media/images/writing/sa-pa.1200w.d3e0a43b8fb3.webp",
+          "bytes": 93808
         },
         {
           "width": 1920,
           "height": 1080,
           "format": "webp",
-          "key": "media/images/writing/sa-pa.1920w.2765cd13ca51.webp",
-          "url": "https://assets.loc.digital/media/images/writing/sa-pa.1920w.2765cd13ca51.webp",
-          "bytes": 238852
+          "key": "media/images/writing/sa-pa.1920w.4ae58acc8a2a.webp",
+          "url": "https://assets.loc.digital/media/images/writing/sa-pa.1920w.4ae58acc8a2a.webp",
+          "bytes": 269562
         }
       ],
-      "verifiedAt": "2026-11-26T17:29:52.834Z"
+      "verifiedAt": "2026-11-27T16:10:20.905Z"
     },
     "/images/writing/phoenix.webp": {
       "sourcePath": "/images/writing/phoenix.webp",
@@ -20111,58 +20111,58 @@
     },
     "/images/writing/reasons-to-stay-alive.webp": {
       "sourcePath": "/images/writing/reasons-to-stay-alive.webp",
-      "hash": "6ae6a7c3496d57d9e754e5ac795c5bf409c446c4efe531693795d8559ed2e995",
+      "hash": "a15645cb73d04794a4e56be8afd99335fa309cb35c4a10dc910df2c4efd44e6c",
       "width": 1920,
       "height": 1080,
       "aspectRatio": 1.7778,
       "contentType": "image/webp",
-      "bytes": 182160,
-      "originalKey": "media/images/writing/reasons-to-stay-alive.1920w.3dc2ec60be41.webp",
-      "originalUrl": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.1920w.3dc2ec60be41.webp",
-      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAwCdASoUAAsAPwFqrU6rJiQiMAgBYCAJYwCdMoACJ9/qQHQUAADTVQAl6cJ2mNNvQ6zetYdKjr7wxApPxypJJGIAAA==",
+      "bytes": 204162,
+      "originalKey": "media/images/writing/reasons-to-stay-alive.1920w.914b3c9b3df1.webp",
+      "originalUrl": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.1920w.914b3c9b3df1.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQBACdASoUAAsAPwFqrE6rJiQiMAgBYCAJZACdMoR2WCWQABwliR7GAADNEcv/TI++b1dQt2ydLLJtsRRNKHjG6zTnUwAA",
       "thumbnail": {
         "width": 320,
         "height": 180,
         "format": "webp",
-        "key": "media/images/writing/reasons-to-stay-alive.thumb.7301a40d4577.webp",
-        "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.thumb.7301a40d4577.webp",
-        "bytes": 8230
+        "key": "media/images/writing/reasons-to-stay-alive.thumb.373b0854aeb3.webp",
+        "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.thumb.373b0854aeb3.webp",
+        "bytes": 7580
       },
       "variants": [
         {
           "width": 480,
           "height": 270,
           "format": "webp",
-          "key": "media/images/writing/reasons-to-stay-alive.480w.e8b9fb9aa130.webp",
-          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.480w.e8b9fb9aa130.webp",
-          "bytes": 17142
+          "key": "media/images/writing/reasons-to-stay-alive.480w.aedaa37c9ea7.webp",
+          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.480w.aedaa37c9ea7.webp",
+          "bytes": 16172
         },
         {
           "width": 768,
           "height": 432,
           "format": "webp",
-          "key": "media/images/writing/reasons-to-stay-alive.768w.49dfe79d4b60.webp",
-          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.768w.49dfe79d4b60.webp",
-          "bytes": 34072
+          "key": "media/images/writing/reasons-to-stay-alive.768w.425511b51de8.webp",
+          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.768w.425511b51de8.webp",
+          "bytes": 34346
         },
         {
           "width": 1200,
           "height": 675,
           "format": "webp",
-          "key": "media/images/writing/reasons-to-stay-alive.1200w.76a0c73e6aca.webp",
-          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.1200w.76a0c73e6aca.webp",
-          "bytes": 66554
+          "key": "media/images/writing/reasons-to-stay-alive.1200w.e790b6d3d51b.webp",
+          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.1200w.e790b6d3d51b.webp",
+          "bytes": 76308
         },
         {
           "width": 1920,
           "height": 1080,
           "format": "webp",
-          "key": "media/images/writing/reasons-to-stay-alive.1920w.3dc2ec60be41.webp",
-          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.1920w.3dc2ec60be41.webp",
-          "bytes": 163364
+          "key": "media/images/writing/reasons-to-stay-alive.1920w.914b3c9b3df1.webp",
+          "url": "https://assets.loc.digital/media/images/writing/reasons-to-stay-alive.1920w.914b3c9b3df1.webp",
+          "bytes": 198878
         }
       ],
-      "verifiedAt": "2026-11-26T17:30:15.665Z"
+      "verifiedAt": "2026-11-27T16:10:21.096Z"
     },
     "/instagram_workflowspace/DafhgjCoHnM/workflowspace_DafhgjCoHnM_01.jpg": {
       "sourcePath": "/instagram_workflowspace/DafhgjCoHnM/workflowspace_DafhgjCoHnM_01.jpg",
@@ -20323,58 +20323,58 @@
     },
     "/images/writing/work-smarter-not-harder.webp": {
       "sourcePath": "/images/writing/work-smarter-not-harder.webp",
-      "hash": "ae493159be7890e3daa5974f7980322ef12f1b303a966700b96efc409218a94f",
+      "hash": "330c4e6801eb03fbca0bc2fc2b154f43b03f9e7c3f2ceb46a8ee4fa28f59297f",
       "width": 1920,
       "height": 1080,
       "aspectRatio": 1.7778,
       "contentType": "image/webp",
-      "bytes": 180796,
-      "originalKey": "media/images/writing/work-smarter-not-harder.1920w.e476186c0e37.webp",
-      "originalUrl": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.1920w.e476186c0e37.webp",
-      "blurDataURL": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASoUAAsAPwF6sFCrKKSisAgBYCAJZQCo9CHW25S8Q4eAAAD9y4OPk0HcfXQSGLU7i9cT2TY/plPYmsDsgAA=",
+      "bytes": 172890,
+      "originalKey": "media/images/writing/work-smarter-not-harder.1920w.12d2327fb1b8.webp",
+      "originalUrl": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.1920w.12d2327fb1b8.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACQAwCdASoUAAsAPwFsrU8rJiQiMAgBYCAJYgCw7CB0c7vvj9LAAP6AKm7+sisjMnKRMsrHKJeFFHRrnU7HKQL4bRUV86ogPCjegAAA",
       "thumbnail": {
         "width": 320,
         "height": 180,
         "format": "webp",
-        "key": "media/images/writing/work-smarter-not-harder.thumb.7fa0c6e72b04.webp",
-        "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.thumb.7fa0c6e72b04.webp",
-        "bytes": 6856
+        "key": "media/images/writing/work-smarter-not-harder.thumb.0c2b3e782c76.webp",
+        "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.thumb.0c2b3e782c76.webp",
+        "bytes": 6820
       },
       "variants": [
         {
           "width": 480,
           "height": 270,
           "format": "webp",
-          "key": "media/images/writing/work-smarter-not-harder.480w.9f0c937d3bc3.webp",
-          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.480w.9f0c937d3bc3.webp",
-          "bytes": 14796
+          "key": "media/images/writing/work-smarter-not-harder.480w.4bed036ef0f8.webp",
+          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.480w.4bed036ef0f8.webp",
+          "bytes": 14184
         },
         {
           "width": 768,
           "height": 432,
           "format": "webp",
-          "key": "media/images/writing/work-smarter-not-harder.768w.29ea83a8795c.webp",
-          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.768w.29ea83a8795c.webp",
-          "bytes": 30850
+          "key": "media/images/writing/work-smarter-not-harder.768w.7ed4e07281d2.webp",
+          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.768w.7ed4e07281d2.webp",
+          "bytes": 29680
         },
         {
           "width": 1200,
           "height": 675,
           "format": "webp",
-          "key": "media/images/writing/work-smarter-not-harder.1200w.6e342a5edc2a.webp",
-          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.1200w.6e342a5edc2a.webp",
-          "bytes": 62912
+          "key": "media/images/writing/work-smarter-not-harder.1200w.4b5ab0b21832.webp",
+          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.1200w.4b5ab0b21832.webp",
+          "bytes": 66266
         },
         {
           "width": 1920,
           "height": 1080,
           "format": "webp",
-          "key": "media/images/writing/work-smarter-not-harder.1920w.e476186c0e37.webp",
-          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.1920w.e476186c0e37.webp",
-          "bytes": 162848
+          "key": "media/images/writing/work-smarter-not-harder.1920w.12d2327fb1b8.webp",
+          "url": "https://assets.loc.digital/media/images/writing/work-smarter-not-harder.1920w.12d2327fb1b8.webp",
+          "bytes": 169290
         }
       ],
-      "verifiedAt": "2026-11-26T17:30:30.065Z"
+      "verifiedAt": "2026-11-27T16:10:36.442Z"
     },
     "/instagram_workflowspace/DaQEvA3ATVr/workflowspace_DaQEvA3ATVr_01.jpg": {
       "sourcePath": "/instagram_workflowspace/DaQEvA3ATVr/workflowspace_DaQEvA3ATVr_01.jpg",
@@ -28006,6 +28006,116 @@
         }
       ],
       "verifiedAt": "2026-11-26T17:42:11.835Z"
+    },
+    "/assets/photos/sa-pa/DSC_6560.webp": {
+      "sourcePath": "/assets/photos/sa-pa/DSC_6560.webp",
+      "hash": "f7725a8721512ad2bf136515911e9b5efcab7ab43b0c28db3b26073c5e609ce7",
+      "width": 2400,
+      "height": 1600,
+      "aspectRatio": 1.5,
+      "contentType": "image/webp",
+      "bytes": 1224830,
+      "originalKey": "media/assets/photos/sa-pa/dsc_6560.1920w.07c36adeda14.webp",
+      "originalUrl": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6560.1920w.07c36adeda14.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAwCdASoUAA0APwFqrU6rJiQiMAgBYCAJQBOmUABMU559i2/2Ug2AAP7P3XwVcWMDUR66SOuwn3ZAEQK2g4lvC4bdwsJakiAAAA==",
+      "thumbnail": {
+        "width": 320,
+        "height": 213,
+        "format": "webp",
+        "key": "media/assets/photos/sa-pa/dsc_6560.thumb.7213b486381d.webp",
+        "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6560.thumb.7213b486381d.webp",
+        "bytes": 16874
+      },
+      "variants": [
+        {
+          "width": 480,
+          "height": 320,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6560.480w.046dfd6702d1.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6560.480w.046dfd6702d1.webp",
+          "bytes": 42650
+        },
+        {
+          "width": 768,
+          "height": 512,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6560.768w.e202a3296fc6.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6560.768w.e202a3296fc6.webp",
+          "bytes": 108588
+        },
+        {
+          "width": 1200,
+          "height": 800,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6560.1200w.c22f950bf866.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6560.1200w.c22f950bf866.webp",
+          "bytes": 322536
+        },
+        {
+          "width": 1920,
+          "height": 1280,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6560.1920w.07c36adeda14.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6560.1920w.07c36adeda14.webp",
+          "bytes": 776740
+        }
+      ],
+      "verifiedAt": "2026-11-27T15:56:24.430Z"
+    },
+    "/assets/photos/sa-pa/DSC_6597.webp": {
+      "sourcePath": "/assets/photos/sa-pa/DSC_6597.webp",
+      "hash": "ae90f4e3abb1804c67cf33b93459555b89d5c7b7b90b66fdd52297fcc8bbb7b0",
+      "width": 2400,
+      "height": 1600,
+      "aspectRatio": 1.5,
+      "contentType": "image/webp",
+      "bytes": 888638,
+      "originalKey": "media/assets/photos/sa-pa/dsc_6597.1920w.16c5596cd4f7.webp",
+      "originalUrl": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6597.1920w.16c5596cd4f7.webp",
+      "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACQAwCdASoUAA0APwFysFArJySisAgBYCAJYwAAQmCLy1QiipMAAP7ZWEx9jLeUK2634JDCSe+Z0IvbdYAAAA==",
+      "thumbnail": {
+        "width": 320,
+        "height": 213,
+        "format": "webp",
+        "key": "media/assets/photos/sa-pa/dsc_6597.thumb.c72f274412ae.webp",
+        "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6597.thumb.c72f274412ae.webp",
+        "bytes": 9266
+      },
+      "variants": [
+        {
+          "width": 480,
+          "height": 320,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6597.480w.b101d17816ea.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6597.480w.b101d17816ea.webp",
+          "bytes": 25980
+        },
+        {
+          "width": 768,
+          "height": 512,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6597.768w.ad1f90a73666.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6597.768w.ad1f90a73666.webp",
+          "bytes": 66240
+        },
+        {
+          "width": 1200,
+          "height": 800,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6597.1200w.9c235a39f417.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6597.1200w.9c235a39f417.webp",
+          "bytes": 209722
+        },
+        {
+          "width": 1920,
+          "height": 1280,
+          "format": "webp",
+          "key": "media/assets/photos/sa-pa/dsc_6597.1920w.16c5596cd4f7.webp",
+          "url": "https://assets.loc.digital/media/assets/photos/sa-pa/dsc_6597.1920w.16c5596cd4f7.webp",
+          "bytes": 530326
+        }
+      ],
+      "verifiedAt": "2026-11-27T15:56:24.749Z"
     }
   }
 }

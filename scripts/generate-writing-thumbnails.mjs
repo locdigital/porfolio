@@ -55,6 +55,34 @@ const POSTS = [
     line2: "TO CREATION",
     alt: "Cinematic thumbnail for From Curiosity to Creation featuring Phu Quy island",
   },
+  {
+    slug: "fake-it-till-you-make-it",
+    source: "public/assets/photos/thung-ui/DSC_4336.webp",
+    line1: "FAKE IT TILL",
+    line2: "YOU MAKE IT",
+    alt: "Cinematic thumbnail for Fake It Till You Make It featuring the gates of Dien Kinh Thien in Thung Ui",
+  },
+  {
+    slug: "just-keep-buying",
+    source: "public/assets/photos/ha-long-bay/DSC_5019.webp",
+    line1: "JUST KEEP",
+    line2: "BUYING",
+    alt: "Cinematic thumbnail for Just Keep Buying featuring limestone cliffs in Ha Long Bay",
+  },
+  {
+    slug: "reasons-to-stay-alive",
+    source: "public/assets/photos/malacca/malacca-07.webp",
+    line1: "REASONS TO",
+    line2: "STAY ALIVE",
+    alt: "Cinematic thumbnail for Reasons to Stay Alive featuring Melaka Straits Mosque at blue hour",
+  },
+  {
+    slug: "work-smarter-not-harder",
+    source: "public/assets/photos/my-tho/my-tho-07.webp",
+    line1: "WORK SMARTER",
+    line2: "NOT HARDER",
+    alt: "Cinematic thumbnail for Work Smarter, Not Harder featuring dusk over the river in My Tho",
+  },
 ];
 
 function escapeXml(str) {
@@ -74,6 +102,7 @@ function estimateTextWidth(text, fontSize) {
   let units = 0;
   for (const ch of text) {
     if (ch === " ") units += 0.34;
+    else if (",.".includes(ch)) units += 0.34;
     else if ("IJLT1$".includes(ch)) units += 0.62;
     else if ("MWQGOD".includes(ch)) units += 0.86;
     else units += 0.74;
@@ -142,10 +171,16 @@ function buildOverlaySvg({ line1, line2 }) {
 }
 
 async function main() {
+  const slugArg = process.argv.slice(2).find((a) => a.startsWith("--slug="))?.slice("--slug=".length);
+  const targets = slugArg ? POSTS.filter((p) => p.slug === slugArg) : POSTS;
+  if (slugArg && targets.length === 0) {
+    throw new Error(`Unknown post slug "${slugArg}". Add it to POSTS in scripts/generate-writing-thumbnails.mjs first.`);
+  }
+
   const outDir = path.resolve("public/images/writing");
   fs.mkdirSync(outDir, { recursive: true });
 
-  for (const post of POSTS) {
+  for (const post of targets) {
     const srcPath = path.resolve(post.source);
     const outPath = path.join(outDir, `${post.slug}.webp`);
     const svgBuffer = Buffer.from(buildOverlaySvg(post));
