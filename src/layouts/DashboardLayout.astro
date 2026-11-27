@@ -6,7 +6,7 @@ import '../styles/page-transitions.css';
 import interLatinFont from '../assets/fonts/inter-latin-variable.woff2?url';
 import wallpaperImage from '../../Chibi Hikers Above the Sunset Clouds.png';
 import { getImage } from 'astro:assets';
-import { ViewTransitions as ClientRouter } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
 import CommandSearch from '../components/dashboard/CommandSearch.astro';
@@ -135,6 +135,7 @@ const contentClass =
 const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label || "Workspace";
 const appLabel = app === 'photos' ? 'Photos' : 'workspace';
 const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguyen — Workspace';
+const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || '').trim();
 ---
 
 <!DOCTYPE html>
@@ -180,9 +181,10 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
       const saved = JSON.parse(sessionStorage.getItem(`${app}-window-state`) || "null");
       if (saved && typeof saved === "object") {
         const closed = saved.closed === true;
+        const minimized = !closed && saved.minimized === true;
         document.documentElement.classList.toggle("window-closed", closed);
-        document.documentElement.classList.toggle("window-minimized", !closed && saved.minimized === true);
-        document.documentElement.classList.toggle("window-maximized", !closed && saved.maximized === true);
+        document.documentElement.classList.toggle("window-minimized", minimized);
+        document.documentElement.classList.toggle("window-maximized", !closed && !minimized && saved.maximized === true);
       }
     } catch {}
   </script>
@@ -213,6 +215,14 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
   </script>
+  {cfWebAnalyticsToken && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token: cfWebAnalyticsToken })}
+    ></script>
+  )}
 </head>
 
 <body>
@@ -375,6 +385,8 @@ const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguy
   }
 
   :global(html.is-embedded-window .mac-window-container) {
+    position: relative !important;
+    inset: auto !important;
     width: 100% !important;
     max-width: none !important;
     height: 100dvh !important;

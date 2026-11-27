@@ -6,7 +6,7 @@ date: 2026-10-08
 order: 0
 sample: false
 draft: false
-linkable: false
+linkable: true
 coverImage:
   src: "/images/writing/sa-pa.webp"
   alt: "Cinematic thumbnail for Sa Pa featuring misty mountain valleys in Northern Vietnam"

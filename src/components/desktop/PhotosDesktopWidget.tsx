@@ -204,7 +204,7 @@ export function PhotosDesktopWidget({ onOpen }: PhotosDesktopWidgetProps) {
                   ))}
                 </div>
                 <div className="dw-ios-album-scrim" />
-                <span className="dw-ios-album-title">Recently Saved</span>
+                <span className="dw-ios-album-title">All Photos</span>
               </button>
 
               {destinations.slice(0, 8).map((dest) => (

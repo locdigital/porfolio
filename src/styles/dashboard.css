@@ -1,5 +1,5 @@
 /* ============================================================
-   DESIGN SYSTEM V2: NOTION-INSPIRED WORKSPACE
+   DESIGN SYSTEM V2: MINIMALIST WORKSPACE
    Phuc Loc Nguyen · loc.digital
    Minimalist workspace within a restrained macOS window frame
    ============================================================ */
@@ -197,6 +197,8 @@ img {
 }
 
 .mac-window-container {
+  position: fixed;
+  inset: 0;
   container-type: inline-size;
   container-name: workspace-window;
   width: var(--window-width);
@@ -236,6 +238,8 @@ html.window-maximized .mac-window-container .desktop-resize-handle,
     position: fixed !important;
     left: 60px;
     top: 16px;
+    right: auto;
+    bottom: auto;
     width: calc(100vw - 60px - min(480px, calc(100vw - 32px)) - 32px);
     max-width: none;
     height: calc(100dvh - 32px);
@@ -251,21 +255,17 @@ html.window-maximized .mac-window-container .desktop-resize-handle,
   }
 }
 
-.mac-window-container.is-maximized,
-html.window-maximized .mac-window-container {
-  width: 100%;
-  max-width: none;
-  height: 100dvh;
-  max-height: none;
-  border-radius: 0;
-  transform: none;
-}
+@media (min-width: 1024px) {
 
-.mac-window-container.is-maximized .desktop-titlebar,
-.mac-window-container.is-maximized .workspace-body,
-html.window-maximized .mac-window-container .desktop-titlebar,
-html.window-maximized .mac-window-container .workspace-body {
-  border-radius: 0;
+  .mac-window-container.is-maximized,
+  html.window-maximized .mac-window-container {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    border-radius: var(--radius-window);
+    transform: none;
+  }
 }
 
 .mac-window-container.is-minimized,
@@ -398,7 +398,9 @@ html.window-closed .mac-window-container,
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
   scrollbar-gutter: stable;
+  contain: layout style;
 }
 
 /* Shared Thin Light Scrollbar */
@@ -600,7 +602,7 @@ span {
   width: 100%;
 }
 
-.page-section ~ .page-section {
+.page-section~.page-section {
   margin-top: var(--dash-section-gap);
 }
 
@@ -1043,15 +1045,14 @@ abbr {
 (min-width: 1024px) and (orientation: portrait) {
   :root {
     --sidebar-w: 208px;
-    --window-width: calc(100vw - 32px);
+    --window-width: calc(100vw - 128px);
     --window-height: calc(100dvh - 32px);
   }
 
   .mac-window-container {
-    width: calc(100% - 32px);
-    height: calc(100dvh - 32px);
+    width: var(--window-width);
+    height: var(--window-height);
     max-height: none;
-    transform: none;
   }
 
   .workspace-main {
@@ -1068,6 +1069,7 @@ abbr {
 
 /* Tablet & Mobile (< 1024px) */
 @media (max-width: 1023px) {
+
   html,
   body {
     height: auto;
@@ -1090,6 +1092,8 @@ abbr {
   }
 
   .mac-window-container {
+    position: relative;
+    inset: auto;
     width: 100%;
     max-width: none;
     margin: 0;
@@ -1183,7 +1187,7 @@ abbr {
     margin-bottom: calc(var(--space-6) * 1.25);
   }
 
-  .page-section ~ .page-section {
+  .page-section~.page-section {
     margin-top: var(--dash-section-gap-mobile);
   }
 
@@ -1205,6 +1209,7 @@ abbr {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .dash-button,
   .workspace-sidebar {
     transition: none !important;
@@ -1334,9 +1339,9 @@ abbr {
   color: var(--dash-accent);
 }
 
-/* Click stability: controls should not move the window or shift layout on press. */
-.workspace-canvas :where(button, [role="button"], .dash-button, .pricing-btn):active {
-  transform: none !important;
+/* Click stability: workspace document buttons stay crisp without shifting layout on press. */
+.workspace-main :where(.dash-button, .pricing-btn):active {
+  transform: none;
 }
 
 /* Mobile performance mode */

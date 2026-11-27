@@ -6,7 +6,7 @@ date: 2026-08-11
 order: 1
 sample: false
 draft: false
-linkable: false
+linkable: true
 coverImage:
   src: "/images/writing/from-curiosity-to-creation.webp"
   alt: "Cinematic thumbnail for From Curiosity to Creation featuring Phu Quy island"

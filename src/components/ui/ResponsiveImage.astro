@@ -9,10 +9,66 @@ interface Props extends Omit<HTMLAttributes<"img">, "src" | "width" | "height"> 
   height: number;
   widths?: number[];
   quality?: ImageQuality;
+  /** Mark true for above-the-fold LCP hero images to set loading="eager" & fetchpriority="high" */
+  priority?: boolean;
+  /** Opt-in blur placeholder background for opaque photos only (never enable on transparent cutouts) */
+  placeholder?: boolean;
 }
 
-const { src, width, height, widths, sizes, quality, loading = "lazy", decoding = "async", ...attributes } = Astro.props;
-const image = await responsiveImageAttributes(src, { width, height, widths, sizes: sizes ?? undefined, quality });
+const {
+  src,
+  width,
+  height,
+  widths,
+  sizes,
+  quality,
+  priority = false,
+  placeholder = false,
+  loading = priority ? "eager" : "lazy",
+  fetchpriority = priority ? "high" : undefined,
+  decoding = "async",
+  style,
+  ...attributes
+} = Astro.props;
+
+const image = await responsiveImageAttributes(src, {
+  width,
+  height,
+  widths,
+  sizes: sizes ?? undefined,
+  quality,
+});
+
+const { avifSrcSet, blurDataURL, ...imgAttrs } = image;
+const placeholderStyle =
+  placeholder && blurDataURL
+    ? `background-image: url('${blurDataURL}'); background-size: cover; background-position: center;`
+    : "";
+const mergedStyle =
+  typeof style === "string" && placeholderStyle
+    ? `${placeholderStyle} ${style}`
+    : style ?? (placeholderStyle || undefined);
 ---
 
-<img {...attributes} {...image} loading={loading} decoding={decoding} />
+{avifSrcSet ? (
+  <picture>
+    <source type="image/avif" srcset={avifSrcSet} sizes={imgAttrs.sizes} />
+    <img
+      {...attributes}
+      {...imgAttrs}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding={decoding}
+      style={mergedStyle}
+    />
+  </picture>
+) : (
+  <img
+    {...attributes}
+    {...imgAttrs}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={decoding}
+    style={mergedStyle}
+  />
+)}

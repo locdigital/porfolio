@@ -4,7 +4,8 @@ import { getPhotoLocations } from "../../lib/content";
 import GlassFolder from "../../components/ui/GlassFolder";
 import { optimizePhotos } from "../../lib/photo-assets";
 import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
-import { resolvePhotoCoords } from "../../lib/photo-map-coords";
+import { parsePhotoCoords, resolvePhotoCoords } from "../../lib/photo-map-coords";
+import { readPhotoExifCoordinates } from "../../lib/photo-exif";
 import photoUpdates from "../../../data/photo-updates.json";
 import { PHOTO_REGION_ORDER, resolvePhotoRegion } from "@/constants/regions";
 
@@ -34,10 +35,10 @@ const enhancedLocations = await Promise.all(
       [rawHero, rawLeft, rawRight].filter(Boolean).map((src) => ({
         src,
         alt: name,
-        w: 480,
-        h: 360,
+        w: 320,
+        h: 240,
       })),
-      { previewWidth: 480, previewWidths: [480] },
+      { previewWidth: 320, previewWidths: [320, 480] },
     );
     const previewImages = previews.map((photo) => photo.previewSrc);
     const heroPhoto = previewImages[0] || "";
@@ -55,47 +56,74 @@ const enhancedLocations = await Promise.all(
 
     const optimizedSample = await optimizePhotos(sampleSource, {
       previewWidth: 480,
-      previewWidths: [160, 240, 320, 480],
-      previewSizes: "(max-width: 640px) 33vw, (max-width: 1024px) 22vw, 15vw",
+      previewWidths: [320, 480, 768],
+      previewSizes: "(max-width: 640px) 48vw, (max-width: 1024px) 30vw, 20vw",
       fullWidth: 1600,
     });
 
-    const ts = updatedTime(loc.slug);
-    const dateLabel = ts
-      ? new Intl.DateTimeFormat("en-GB", {
-          month: "short",
-          year: "numeric",
-          timeZone: "Asia/Ho_Chi_Minh",
-        }).format(new Date(ts))
-      : "Archive";
+    const formatMonthLabel = (timestamp: number) =>
+      new Intl.DateTimeFormat("en-GB", {
+        month: "short",
+        year: "numeric",
+        timeZone: "Asia/Ho_Chi_Minh",
+      }).format(new Date(timestamp));
+
+    const formatDayLabel = (timestamp: number) =>
+      new Intl.DateTimeFormat("en-GB", {
+        day: "numeric",
+        timeZone: "Asia/Ho_Chi_Minh",
+      }).format(new Date(timestamp));
+
+    const getMonthSortKey = (timestamp: number) => {
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        timeZone: "Asia/Ho_Chi_Minh",
+      }).formatToParts(new Date(timestamp));
+      const y = Number(parts.find((p) => p.type === "year")?.value || 0);
+      const m = Number(parts.find((p) => p.type === "month")?.value || 0);
+      return y * 100 + m;
+    };
+
+    const ARCHIVE_YEAR_LABEL = "2026";
+    const fallbackTs = updatedTime(loc.slug);
+    const firstCapturedTs = Date.parse(sampleSource[0]?.capturedAt || "") || fallbackTs;
+    const locDateLabel = firstCapturedTs ? formatMonthLabel(firstCapturedTs) : "Archive";
+    const locYearLabel = ARCHIVE_YEAR_LABEL;
 
     return {
       ...loc,
       displayName: name,
       region,
       photoCount,
-      updatedTimestamp: ts,
-      dateLabel,
-      yearLabel: ts ? String(new Date(ts).getFullYear()) : "Archive",
+      updatedTimestamp: fallbackTs,
+      capturedTimestamp: firstCapturedTs,
+      dateLabel: locDateLabel,
+      yearLabel: locYearLabel,
       previewImages,
       heroPhoto,
-      samplePhotos: optimizedSample.map((photo, idx) => ({
-        ...photo,
-        id: `${loc.slug}-${idx}`,
-        detailId: `photo-${loc.slug}-${idx + 1}`,
-        slug: loc.slug,
-        albumName: name,
-        region,
-        country: loc.country || "Vietnam",
-        albumCount: photoCount,
-        title: sampleSource[idx]?.title || name,
-        caption: sampleSource[idx]?.caption || "",
-        location: sampleSource[idx]?.location || name,
-        dateLabel,
-        yearLabel: ts ? String(new Date(ts).getFullYear()) : "Archive",
-        featured: idx === 0,
-        recent: updatedTime(loc.slug) > 0,
-      })),
+      samplePhotos: optimizedSample.map((photo, idx) => {
+        const photoTs = Date.parse(sampleSource[idx]?.capturedAt || "") || firstCapturedTs;
+        return {
+          ...photo,
+          id: `${loc.slug}-${idx}`,
+          detailId: `photo-${loc.slug}-${idx + 1}`,
+          slug: loc.slug,
+          albumName: name,
+          region,
+          country: loc.country || "Vietnam",
+          albumCount: photoCount,
+          title: sampleSource[idx]?.title || name,
+          caption: sampleSource[idx]?.caption || "",
+          location: sampleSource[idx]?.location || name,
+          capturedTimestamp: photoTs,
+          monthSortKey: photoTs ? getMonthSortKey(photoTs) : 0,
+          dateLabel: photoTs ? formatMonthLabel(photoTs) : "Archive",
+          yearLabel: ARCHIVE_YEAR_LABEL,
+          dayLabel: photoTs ? formatDayLabel(photoTs) : "",
+          featured: idx === 0,
+        };
+      }),
     };
   }),
 );
@@ -103,13 +131,15 @@ const enhancedLocations = await Promise.all(
 type GridPhoto = (typeof enhancedLocations)[number]["samplePhotos"][number];
 
 const tripsByYear = Array.from(
-  enhancedLocations.reduce((acc, loc) => {
-    const year = loc.yearLabel || "Archive";
-    const list = acc.get(year) || [];
-    list.push(loc);
-    acc.set(year, list);
-    return acc;
-  }, new Map<string, (typeof enhancedLocations)[number][]>()),
+  [...enhancedLocations]
+    .sort((a, b) => (b.capturedTimestamp || 0) - (a.capturedTimestamp || 0))
+    .reduce((acc, loc) => {
+      const year = loc.yearLabel || "Archive";
+      const list = acc.get(year) || [];
+      list.push(loc);
+      acc.set(year, list);
+      return acc;
+    }, new Map<string, (typeof enhancedLocations)[number][]>()),
 );
 const allGridPhotos: GridPhoto[] = [];
 for (let i = 0; i < PHOTOS_PER_ALBUM_PREVIEW; i++) {
@@ -124,10 +154,26 @@ const availableRegions = PHOTO_REGION_ORDER.filter((r) =>
   enhancedLocations.some((l) => l.region === r),
 );
 
-const mapDestinations = enhancedLocations
-  .map((loc) => {
-    const coords = resolvePhotoCoords(loc.slug, loc.latitude, loc.longitude);
+const mapDestinations = (await Promise.all(enhancedLocations.map(async (loc) => {
+    const photoLocations = (await Promise.all((loc.photos || []).map(async (photo, index) => {
+      const photoCoords = parsePhotoCoords(photo.latitude, photo.longitude) ||
+        await readPhotoExifCoordinates(photo.sourceSrc);
+      if (!photoCoords) return null;
+      return {
+        id: photo.id || `${loc.slug}-${index + 1}`,
+        src: loc.samplePhotos[index]?.previewSrc || photo.src,
+        alt: photo.title || photo.alt || loc.displayName,
+        lat: photoCoords.lat,
+        lng: photoCoords.lng,
+      };
+    }))).filter((photo): photo is NonNullable<typeof photo> => photo !== null);
+    const coords = resolvePhotoCoords(
+      loc.slug,
+      loc.latitude || photoLocations[0]?.lat,
+      loc.longitude || photoLocations[0]?.lng,
+    );
     if (!coords) return null;
+    const pinThumb = loc.samplePhotos[0]?.previewSrc || loc.heroPhoto;
     return {
       slug: loc.slug,
       name: loc.displayName,
@@ -136,12 +182,13 @@ const mapDestinations = enhancedLocations
       headline: loc.headline || "",
       photoCount: loc.photoCount,
       heroPhoto: loc.heroPhoto,
-      previewImages: loc.previewImages,
+      pinThumb,
       lat: coords.lat,
       lng: coords.lng,
       search: `${loc.displayName} ${loc.region} ${loc.country || "Vietnam"} ${loc.headline || ""} ${loc.slug}`,
+      photoLocations,
     };
-  })
+  })))
   .filter((item): item is NonNullable<typeof item> => item !== null);
 
 const photosUrl = canonicalUrl("/photos");
@@ -190,8 +237,8 @@ const photosSchema = collectionPageSchema({
             id="mp-zoom-slider"
             type="range"
             min="3"
-            max="9"
-            value="6"
+            max="7"
+            value="5"
             aria-label="Grid columns"
           />
           <button type="button" id="mp-zoom-in" class="mp-zoom-btn" aria-label="Larger thumbnails">+</button>
@@ -259,16 +306,6 @@ const photosSchema = collectionPageSchema({
               <line x1="15" y1="6" x2="15" y2="21" />
             </svg>
             <span>Map</span>
-          </button>
-          <button type="button" class="mp-nav-item" data-nav="recent">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M9 5H6.5A2.5 2.5 0 0 0 4 7.5v10A2.5 2.5 0 0 0 6.5 20h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M15 5h2.5A2.5 2.5 0 0 1 20 7.5v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M12 2.5v10m0 0-3-3m3 3 3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-              <circle cx="17.5" cy="17.5" r="4.8" fill="currentColor" />
-              <path d="M17.5 15.1v2.4h2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span>Recently Saved</span>
           </button>
         </div>
 
@@ -368,16 +405,6 @@ const photosSchema = collectionPageSchema({
                 <span>Featured</span>
               </button>
 
-              <button type="button" class="mp-menu-item" role="menuitemradio" aria-checked="false" data-filter-val="recent" data-filter-text="Recently Saved">
-                <span class="mp-menu-check" aria-hidden="true">✓</span>
-                <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <circle cx="9" cy="9" r="2" />
-                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                </svg>
-                <span>Recently Saved</span>
-              </button>
-
               <div class="mp-menu-divider" role="separator"></div>
 
               {availableRegions.map((region) => (
@@ -425,7 +452,9 @@ const photosSchema = collectionPageSchema({
         <!-- Photo Grid (All Photos / Years / Months / Favorites / Regions) -->
         <div id="mp-grid-view" class="mp-grid-view">
           <div id="mp-time-bar" class="mp-time-bar" role="tablist" aria-label="Filter by time period" hidden></div>
-          <div id="mp-grid" class="mp-grid" style="--mp-cols: 6;">
+          <div id="mp-years-view" class="mp-years-view" hidden></div>
+          <div id="mp-months-view" class="mp-months-view" hidden></div>
+          <div id="mp-grid" class="mp-grid" style="--mp-cols: 5;">
             {allGridPhotos.map((photo, idx) => (
               <a
                 href={`/photos/${photo.slug}#${photo.detailId}`}
@@ -438,9 +467,13 @@ const photosSchema = collectionPageSchema({
                 data-album-label={photo.albumName}
                 data-date={photo.dateLabel}
                 data-year={photo.yearLabel}
+                data-day={photo.dayLabel}
+                data-captured-ts={photo.capturedTimestamp}
+                data-month-sort={photo.monthSortKey}
                 data-featured={photo.featured ? "1" : "0"}
-                data-recent={photo.recent ? "1" : "0"}
                 data-full={photo.fullSrc}
+                data-preview={photo.previewSrc}
+                data-srcset={photo.previewSrcSet || ""}
                 data-title={photo.title}
                 data-location={photo.location}
                 data-caption={photo.caption}
@@ -450,14 +483,18 @@ const photosSchema = collectionPageSchema({
                   <img
                     src={photo.previewSrc}
                     srcset={photo.previewSrcSet || undefined}
-                    sizes={idx < 6 ? photo.previewSizes : `auto, ${photo.previewSizes}`}
+                    sizes={idx < 18 ? photo.previewSizes : `auto, ${photo.previewSizes}`}
                     alt={photo.alt}
                     width={photo.previewWidth}
                     height={photo.previewHeight}
-                    loading={idx < 6 ? "eager" : "lazy"}
+                    loading={idx < 18 ? "eager" : "lazy"}
                     decoding="async"
                     data-motion-share={photo.detailId}
-                    style="view-transition-class: workspace-shared-image"
+                    style={
+                      photo.blurDataURL
+                        ? `view-transition-class: workspace-shared-image; background-image: url('${photo.blurDataURL}'); background-size: cover; background-position: center;`
+                        : "view-transition-class: workspace-shared-image"
+                    }
                   />
                 </div>
                 <div class="mp-cell-info">
@@ -553,10 +590,15 @@ const photosSchema = collectionPageSchema({
         >
           <div id="mp-map-canvas" class="mp-map-canvas" aria-label="Interactive photo map"></div>
 
+          <div id="mp-map-status" class="mp-map-status" role="status" aria-live="polite">
+            <span data-map-status-copy>Loading map…</span>
+            <button type="button" data-map-retry hidden>Try again</button>
+          </div>
+
           <!-- Selected Destination Popover Card -->
           <div id="mp-map-card" class="mp-map-card" hidden>
             <button type="button" id="mp-map-card-close" class="mp-map-card-close" aria-label="Close destination preview">×</button>
-            <img data-card-img src="" alt="" class="mp-map-card-img" />
+            <img data-card-img src="" alt="" class="mp-map-card-img" loading="lazy" decoding="async" />
             <div class="mp-map-card-body">
               <div class="mp-map-card-title" data-card-title></div>
               <div class="mp-map-card-meta" data-card-meta></div>
@@ -567,6 +609,10 @@ const photosSchema = collectionPageSchema({
 
           <!-- Bottom-left Legal attribution (like Apple Maps) -->
           <div class="mp-map-legal">
+            <span>© OpenStreetMap contributors</span>
+            <span aria-hidden="true">·</span>
+            <a href="https://openfreemap.org/" target="_blank" rel="noopener noreferrer">OpenFreeMap</a>
+            <span aria-hidden="true">·</span>
             <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">Legal</a>
           </div>
 
@@ -627,6 +673,7 @@ const photosSchema = collectionPageSchema({
   }
 
   .mp-toolbar-left {
+    grid-column: 1;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -634,6 +681,7 @@ const photosSchema = collectionPageSchema({
   }
 
   .mp-toolbar-right {
+    grid-column: 3;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -685,19 +733,72 @@ const photosSchema = collectionPageSchema({
   }
 
   .mp-zoom-control input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
     width: 68px;
-    height: 4px;
-    accent-color: #8e8e93;
+    height: 3px;
+    border-radius: 9999px;
+    background: #d1d1d6;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .mp-zoom-control input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px;
+    border-radius: 9999px;
+    background: #d1d1d6;
+  }
+
+  .mp-zoom-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12.5px;
+    height: 12.5px;
+    margin-top: -4.75px;
+    border-radius: 9999px;
+    background: #8e8e93;
+    border: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 120ms ease;
+  }
+
+  .mp-zoom-control input[type="range"]::-webkit-slider-thumb:hover {
+    background: #6e6e73;
+  }
+
+  .mp-zoom-control input[type="range"]::-moz-range-track {
+    height: 3px;
+    border-radius: 9999px;
+    background: #d1d1d6;
+  }
+
+  .mp-zoom-control input[type="range"]::-moz-range-thumb {
+    width: 12.5px;
+    height: 12.5px;
+    border-radius: 9999px;
+    background: #8e8e93;
+    border: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     cursor: pointer;
   }
 
   .mp-segmented {
+    grid-column: 2;
+    justify-self: center;
     display: inline-flex;
     align-items: center;
     padding: 2px;
     background: #e5e5ea;
     border-radius: 7px;
     gap: 2px;
+    transition: opacity 140ms ease;
+  }
+
+  .mp-segmented.is-slot-hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .mp-seg-btn {
@@ -711,13 +812,13 @@ const photosSchema = collectionPageSchema({
     border-radius: 5px;
     cursor: pointer;
     white-space: nowrap;
-    transition: background-color 140ms ease, box-shadow 140ms ease;
+    transition: background-color 140ms ease, box-shadow 140ms ease, color 140ms ease;
   }
 
   .mp-seg-btn.is-active {
     background: #ffffff;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-    font-weight: var(--font-weight-semibold);
+    color: #000000;
   }
 
   .mp-search {
@@ -778,6 +879,7 @@ const photosSchema = collectionPageSchema({
     border-right: var(--dash-border-width, 0.9px) solid var(--dash-border);
     padding: 12px 10px;
     overflow-y: auto;
+    overscroll-behavior: contain;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -808,12 +910,13 @@ const photosSchema = collectionPageSchema({
     color: var(--dash-text);
     font-family: inherit;
     font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-regular);
+    font-weight: var(--font-weight-medium);
     text-align: left;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: background-color 130ms ease, color 130ms ease;
   }
 
   .mp-nav-item svg {
@@ -828,7 +931,6 @@ const photosSchema = collectionPageSchema({
   .mp-nav-item.is-active {
     background: #dceafe;
     color: #005bb5;
-    font-weight: var(--font-weight-medium);
   }
 
   /* ── Main Scrollable Canvas ─────────────────────────────────────────────── */
@@ -837,6 +939,9 @@ const photosSchema = collectionPageSchema({
     min-width: 0;
     min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    contain: layout style;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -851,9 +956,7 @@ const photosSchema = collectionPageSchema({
     justify-content: space-between;
     gap: 12px;
     padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, 0.96);
     border-bottom: var(--dash-border-width, 0.9px) solid rgba(0, 0, 0, 0.05);
   }
 
@@ -1000,16 +1103,16 @@ const photosSchema = collectionPageSchema({
     gap: 1px;
   }
 
-  /* ── Dense macOS Photos Grid ────────────────────────────────────────────── */
+  /* ── Full-Aspect Masonry Photos Grid ────────────────────────────────────── */
   .mp-grid-view {
     flex: 1 0 auto;
-    padding: 4px 12px 16px;
+    padding: 8px 16px 20px;
   }
 
   .mp-grid {
-    display: grid;
-    grid-template-columns: repeat(var(--mp-cols, 6), minmax(0, 1fr));
-    gap: 4px;
+    display: block;
+    column-count: var(--mp-cols, 5);
+    column-gap: 8px;
   }
 
   .mp-time-bar {
@@ -1057,12 +1160,12 @@ const photosSchema = collectionPageSchema({
   }
 
   .mp-group-header {
-    grid-column: 1 / -1;
+    column-span: all;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    padding: 14px 2px 6px;
-    margin-top: 4px;
+    padding: 16px 2px 8px;
+    margin: 8px 0 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
 
@@ -1081,6 +1184,206 @@ const photosSchema = collectionPageSchema({
   .mp-group-count {
     font-size: var(--text-caption);
     color: #6e6e73;
+  }
+
+  /* ── macOS Photos Years Card Grid (2-col square cards) ──────────────────── */
+  .mp-app.is-curated-time .mp-zoom-control {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .mp-years-view {
+    width: 100%;
+    padding: 8px 0 32px;
+  }
+
+  .mp-years-view :global(.mp-years-grid) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .mp-years-view :global(.mp-year-card) {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #1c1c1e;
+    cursor: pointer;
+    text-align: left;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.12),
+      0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease;
+  }
+
+  .mp-years-view :global(.mp-year-card:hover) {
+    transform: translateY(-2px);
+    box-shadow:
+      0 14px 32px rgba(0, 0, 0, 0.18),
+      0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .mp-years-view :global(.mp-year-card:active) {
+    transform: scale(0.985);
+  }
+
+  .mp-years-view :global(.mp-year-card::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.44) 0%,
+      rgba(0, 0, 0, 0.14) 30%,
+      transparent 55%
+    );
+  }
+
+  .mp-years-view :global(.mp-year-card-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-years-view :global(.mp-year-card-title) {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    z-index: 2;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: var(--text-h2);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.36);
+  }
+
+  /* ── macOS Photos Months Bento Grid (3-col, 2x2 hero + right stack) ─────── */
+  .mp-months-view {
+    width: 100%;
+    padding: 6px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .mp-months-view :global(.mp-month-section) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mp-months-view :global(.mp-month-title) {
+    margin: 0;
+    font-size: var(--text-h3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    line-height: 1.2;
+  }
+
+  .mp-months-view :global(.mp-month-bento) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .mp-months-view :global(.mp-month-card) {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f5f5f7;
+    text-decoration: none;
+    box-shadow:
+      0 4px 14px rgba(0, 0, 0, 0.09),
+      0 1px 2px rgba(0, 0, 0, 0.06);
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease;
+  }
+
+  .mp-months-view :global(.mp-month-card:hover) {
+    transform: translateY(-1.5px);
+    box-shadow:
+      0 10px 22px rgba(0, 0, 0, 0.14),
+      0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .mp-months-view :global(.mp-month-card--hero) {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  .mp-months-view :global(.mp-month-card::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      155deg,
+      rgba(0, 0, 0, 0.44) 0%,
+      rgba(0, 0, 0, 0.14) 24%,
+      transparent 48%
+    );
+  }
+
+  .mp-months-view :global(.mp-month-card-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-months-view :global(.mp-month-card-day) {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    z-index: 2;
+    color: #ffffff;
+    font-size: var(--text-caption);
+    font-weight: 600;
+    line-height: 1;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  }
+
+  .mp-months-view :global(.mp-month-card--hero .mp-month-card-day) {
+    top: 12px;
+    left: 14px;
+    font-size: var(--text-body-sm);
+  }
+
+  .mp-months-view :global(.mp-month-card-info) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 18px 10px 8px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.62), transparent);
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    pointer-events: none;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 140ms ease;
+  }
+
+  .mp-app.show-info .mp-months-view :global(.mp-month-card-info),
+  .mp-months-view :global(.mp-month-card:hover .mp-month-card-info) {
+    opacity: 1;
   }
 
   /* ── Trips Timeline View (grouped by year) ─────────────────────────────── */
@@ -1147,7 +1450,7 @@ const photosSchema = collectionPageSchema({
   }
 
   .mp-trip-card:active .mp-trip-card-img {
-    filter: blur(3px);
+    opacity: 0.9;
   }
 
   .mp-trip-card-overlay {
@@ -1184,23 +1487,28 @@ const photosSchema = collectionPageSchema({
 
   .mp-cell {
     position: relative;
-    aspect-ratio: 1 / 1;
+    display: block;
+    width: 100%;
+    margin: 0 0 8px;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
     background: #f5f5f7;
     overflow: hidden;
-    border-radius: 2px;
+    border-radius: 6px;
     cursor: pointer;
+    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
   }
 
   .mp-cell-media {
     display: block;
     width: 100%;
-    height: 100%;
   }
 
   .mp-cell-media img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     display: block;
   }
 
@@ -1305,34 +1613,102 @@ const photosSchema = collectionPageSchema({
   .mp-map-view {
     position: relative;
     flex: 1 1 auto;
-    min-height: 0;
     width: 100%;
     height: 100%;
-    background: #0d2240;
+    min-height: 280px;
+    background: #a4c8eb;
     overflow: hidden;
+  }
+
+  .mp-map-view.is-satellite {
+    background: #0d2240;
   }
 
   .mp-map-canvas {
     width: 100%;
     height: 100%;
+    background: #a4c8eb;
+  }
+
+  .mp-map-view.is-satellite .mp-map-canvas,
+  .mp-map-view.is-satellite :global(.maplibregl-map) {
     background: #0d2240;
   }
 
-  /* Tint dark basemap toward macOS Maps deep navy ocean + muted teal land */
-  .mp-map-view:not(.is-satellite) :global(.leaflet-tile-pane) {
-    filter: sepia(0.28) hue-rotate(158deg) saturate(2.55) brightness(1.16) contrast(1.06);
-  }
-
-  .mp-map-view :global(.leaflet-container) {
+  .mp-map-view :global(.maplibregl-map) {
     width: 100%;
     height: 100%;
-    background: #0d2240;
+    background: #a4c8eb;
     font-family: var(--font-family-base);
   }
 
-  .mp-map-view :global(.leaflet-container img.leaflet-tile) {
-    max-width: none !important;
-    max-height: none !important;
+  .mp-map-view :global(.maplibregl-canvas:focus) {
+    outline: none;
+  }
+
+  .mp-map-view :global(.maplibregl-marker) {
+    will-change: transform;
+  }
+
+  .mp-map-view :global(.maplibregl-marker:hover),
+  .mp-map-view :global(.maplibregl-marker:focus-within) {
+    z-index: 900 !important;
+  }
+
+  .mp-map-view :global(.mp-map-fallback) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    text-align: center;
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+    background: #f5f5f7;
+  }
+
+  .mp-map-status {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    z-index: 540;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: min(360px, calc(100% - 32px));
+    padding: 11px 14px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+    color: #34343a;
+    font-size: var(--text-caption);
+    line-height: 1.35;
+    text-align: center;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  .mp-map-view[data-map-state="ready"] .mp-map-status,
+  .mp-map-status[hidden] {
+    display: none;
+  }
+
+  .mp-map-status button {
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 7px;
+    padding: 6px 9px;
+    background: #0a84ff;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .mp-map-status button:hover {
+    background: #2b95ff;
   }
 
   .mp-map-view :global(.mp-pin-wrapper) {
@@ -1346,16 +1722,18 @@ const photosSchema = collectionPageSchema({
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
     transform-origin: bottom center;
   }
 
-  .mp-map-view :global(.mp-pin:hover) {
-    z-index: 900 !important;
+  .mp-map-view :global(.mp-pin:hover),
+  .mp-map-view :global(.mp-pin:focus-visible) {
+    transform: translateY(-2px) scale(1.04);
+    outline: none;
   }
 
   .mp-map-view :global(.mp-pin:active) {
-    filter: blur(2px);
+    transform: scale(0.96);
   }
 
   .mp-map-view :global(.mp-pin-frame) {
@@ -1366,9 +1744,7 @@ const photosSchema = collectionPageSchema({
     border: 2.5px solid #ffffff;
     overflow: hidden;
     background: #1c1c1e;
-    box-shadow:
-      0 6px 18px rgba(0, 0, 0, 0.5),
-      0 1px 4px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
   }
 
   .mp-map-view :global(.mp-pin-frame img) {
@@ -1397,7 +1773,7 @@ const photosSchema = collectionPageSchema({
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.01em;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
     pointer-events: none;
   }
 
@@ -1408,7 +1784,6 @@ const photosSchema = collectionPageSchema({
     border-right: 6px solid transparent;
     border-top: 7px solid #ffffff;
     margin-top: -1px;
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
   }
 
   .mp-map-view :global(.mp-pin-tooltip) {
@@ -1418,9 +1793,7 @@ const photosSchema = collectionPageSchema({
     transform: translateX(-50%) translateY(4px);
     padding: 3px 8px;
     border-radius: 6px;
-    background: rgba(24, 26, 32, 0.88);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(24, 26, 32, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: #ffffff;
     font-size: var(--text-micro);
@@ -1429,10 +1802,11 @@ const photosSchema = collectionPageSchema({
     opacity: 0;
     pointer-events: none;
     transition: opacity 140ms ease, transform 140ms ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
   }
 
-  .mp-map-view :global(.mp-pin:hover .mp-pin-tooltip) {
+  .mp-map-view :global(.mp-pin:hover .mp-pin-tooltip),
+  .mp-map-view :global(.mp-pin:focus-visible .mp-pin-tooltip) {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
@@ -1442,15 +1816,38 @@ const photosSchema = collectionPageSchema({
     left: 12px;
     bottom: 10px;
     z-index: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     font-size: var(--text-micro);
     font-weight: 500;
+    color: rgba(20, 24, 34, 0.56);
   }
 
   .mp-map-legal a {
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(20, 24, 34, 0.68);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  .mp-map-view.is-satellite .mp-map-legal,
+  .mp-map-view.is-satellite .mp-map-legal a {
+    color: rgba(255, 255, 255, 0.72);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .mp-map-status {
+      border-color: rgba(255, 255, 255, 0.12);
+      background: rgba(28, 30, 36, 0.9);
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .mp-map-legal,
+    .mp-map-legal a {
+      color: rgba(255, 255, 255, 0.72);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    }
   }
 
   .mp-map-controls {
@@ -1469,11 +1866,9 @@ const photosSchema = collectionPageSchema({
     height: 30px;
     padding: 0 4px;
     border-radius: 9999px;
-    background: rgba(30, 32, 38, 0.82);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(28, 30, 36, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
   }
 
   .mp-map-ctrl-btn {
@@ -1509,10 +1904,8 @@ const photosSchema = collectionPageSchema({
     padding: 0;
     border-radius: 9999px;
     border: 1px solid rgba(255, 255, 255, 0.16);
-    background: rgba(30, 32, 38, 0.82);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    background: rgba(28, 30, 36, 0.88);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -1525,7 +1918,7 @@ const photosSchema = collectionPageSchema({
   }
 
   .mp-map-compass:active {
-    filter: blur(2px);
+    transform: scale(0.94);
   }
 
   .mp-map-card {
@@ -1647,6 +2040,10 @@ const photosSchema = collectionPageSchema({
       padding: 8px 12px;
     }
 
+    .mp-toolbar-left {
+      grid-column: 1;
+    }
+
     .mp-zoom-control {
       display: none;
     }
@@ -1657,6 +2054,7 @@ const photosSchema = collectionPageSchema({
     }
 
     .mp-segmented {
+      grid-column: 2;
       justify-self: center;
       max-width: 100%;
     }
@@ -1726,12 +2124,17 @@ const photosSchema = collectionPageSchema({
     }
 
     .mp-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 3px;
+      column-count: 3;
+      column-gap: 6px;
+    }
+
+    .mp-cell {
+      margin-bottom: 6px;
+      border-radius: 4px;
     }
 
     .mp-grid-view {
-      padding-inline: 8px;
+      padding-inline: 10px;
     }
 
     .mp-canvas-head {
@@ -1755,6 +2158,55 @@ const photosSchema = collectionPageSchema({
   }
 
   @media (max-width: 640px) {
+    .mp-grid {
+      column-count: 2;
+      column-gap: 6px;
+    }
+
+    .mp-years-view,
+    .mp-months-view {
+      padding-inline: 0;
+    }
+
+    .mp-years-view :global(.mp-years-grid) {
+      gap: 12px;
+    }
+
+    .mp-years-view :global(.mp-year-card) {
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+    }
+
+    .mp-years-view :global(.mp-year-card-title) {
+      top: 12px;
+      left: 12px;
+      font-size: var(--text-h3);
+    }
+
+    .mp-months-view {
+      gap: 24px;
+    }
+
+    .mp-months-view :global(.mp-month-bento) {
+      gap: 8px;
+    }
+
+    .mp-months-view :global(.mp-month-card) {
+      aspect-ratio: 1 / 1;
+      border-radius: 9px;
+    }
+
+    .mp-months-view :global(.mp-month-card--hero) {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+
+    .mp-months-view :global(.mp-month-card-day) {
+      top: 7px;
+      left: 8px;
+      font-size: var(--text-micro);
+    }
+
     .mp-map-controls {
       top: 12px;
       right: 12px;
@@ -1779,16 +2231,23 @@ const photosSchema = collectionPageSchema({
   import { onPageLoad } from "../../scripts/page-lifecycle";
   import type { MapDestination, MapMode, PhotosMapController } from "../../scripts/photos-map";
   import { PHOTO_REGION_ALIASES as REGION_ALIASES } from "@/constants/regions";
+  import { getPhotosLibraryHash, parsePhotosLibraryHash } from "../../lib/app-routes";
 
   onPageLoad((signal) => {
     const app = document.getElementById("mp-app");
     if (!app) return;
 
+    const canvasEl = document.getElementById("mp-canvas");
     const grid = document.getElementById("mp-grid");
     const gridView = document.getElementById("mp-grid-view");
+    const yearsView = document.getElementById("mp-years-view");
+    const monthsView = document.getElementById("mp-months-view");
     const albumsView = document.getElementById("mp-albums-view");
     const tripsView = document.getElementById("mp-trips-view");
     const mapView = document.getElementById("mp-map-view");
+    const mapStatus = document.getElementById("mp-map-status");
+    const mapStatusCopy = mapStatus?.querySelector<HTMLElement>("[data-map-status-copy]");
+    const mapRetry = mapStatus?.querySelector<HTMLButtonElement>("[data-map-retry]");
     const canvasHead = document.querySelector<HTMLElement>(".mp-canvas-head");
     const footerEl = document.querySelector<HTMLElement>(".mp-footer");
     const segLibrary = document.getElementById("mp-seg-library");
@@ -1830,10 +2289,17 @@ const photosSchema = collectionPageSchema({
     let activeQuery = "";
     let activeSeg: "all" | "years" | "months" = "all";
     let activeTimeValue = "all";
-    let activeMapMode: MapMode = "satellite";
-    let mapVisibleSlugs: Set<string> | null = null;
+    let activeMapMode: MapMode = "map";
     let mapDestinations: MapDestination[] = [];
     let mapController: PhotosMapController | null = null;
+
+    const setMapStatus = (state: "loading" | "ready" | "error" | "empty", message?: string) => {
+      if (!mapView || !mapStatus) return;
+      mapView.dataset.mapState = state;
+      mapStatusCopy && (mapStatusCopy.textContent = message || (state === "loading" ? "Loading map…" : ""));
+      mapRetry?.toggleAttribute("hidden", state !== "error");
+      mapStatus.hidden = state === "ready";
+    };
 
     const rawDestinations = mapView?.dataset.destinations;
     if (rawDestinations) {
@@ -1846,25 +2312,36 @@ const photosSchema = collectionPageSchema({
 
     let mapLoading = false;
     const loadMap = async () => {
-      if (mapLoading || mapController || !mapView || !mapDestinations.length) return;
+      if (mapLoading || mapController || !mapView) return;
+      if (!mapDestinations.length) {
+        setMapStatus("empty", "No photo locations are available yet.");
+        return;
+      }
       mapLoading = true;
+      setMapStatus("loading", "Loading map…");
       try {
         const { createPhotosMap } = await import("../../scripts/photos-map");
         if (signal.aborted || activeNav !== "map") return;
         mapController = createPhotosMap({
           container: mapView,
           destinations: mapDestinations,
-          onVisibleSlugsChange: (slugs) => { mapVisibleSlugs = new Set(slugs); },
+          onStateChange: setMapStatus,
           signal,
         });
         signal.addEventListener("abort", () => mapController?.destroy(), { once: true });
         applyState();
       } catch (err) {
         console.error("[photos-map] Failed to initialize map:", err);
+        setMapStatus("error", "The interactive map could not be initialized. Try again.");
       } finally {
         mapLoading = false;
       }
     };
+
+    mapRetry?.addEventListener("click", () => {
+      if (mapController) mapController.retry();
+      else void loadMap();
+    }, { signal });
 
     const normalizeText = (value: string) =>
       value
@@ -1876,34 +2353,179 @@ const photosSchema = collectionPageSchema({
         .replace(/\s+/g, " ")
         .trim();
 
-    const matchesSmartQuery = (rawHaystack: string, rawQuery: string) => {
+    const compileQuery = (rawQuery: string) => {
       const normQ = normalizeText(rawQuery);
-      if (!normQ) return true;
-      const expandedQ = REGION_ALIASES[normQ] ? `${normQ} ${REGION_ALIASES[normQ]}` : normQ;
-      const normHaystack = normalizeText(rawHaystack);
-      const compactHaystack = normHaystack.replace(/\s+/g, "");
+      if (!normQ) return null;
       const tokens = normQ.split(" ").filter(Boolean);
-      const allTokensMatch = tokens.every(
-        (token) => normHaystack.includes(token) || compactHaystack.includes(token),
-      );
-      if (allTokensMatch) return true;
-      if (expandedQ !== normQ) {
-        const aliasTarget = normalizeText(REGION_ALIASES[normQ]);
-        return normHaystack.includes(aliasTarget) || compactHaystack.includes(aliasTarget.replace(/\s+/g, ""));
+      const aliasTarget = REGION_ALIASES[normQ] ? normalizeText(REGION_ALIASES[normQ]) : "";
+      const compactAlias = aliasTarget ? aliasTarget.replace(/\s+/g, "") : "";
+      return { tokens, aliasTarget, compactAlias };
+    };
+
+    const matchesCompiledQuery = (
+      normHaystack: string,
+      compactHaystack: string,
+      compiled: ReturnType<typeof compileQuery>,
+    ) => {
+      if (!compiled) return true;
+      if (compiled.tokens.every((token) => normHaystack.includes(token) || compactHaystack.includes(token))) {
+        return true;
+      }
+      if (compiled.aliasTarget) {
+        return normHaystack.includes(compiled.aliasTarget) || compactHaystack.includes(compiled.compactAlias);
       }
       return false;
     };
 
+    const indexedCells = cells.map((el) => {
+      const slug = el.dataset.slug || "";
+      const region = el.dataset.region || "";
+      const rawSearch = el.dataset.search || `${el.dataset.album || ""} ${region} ${el.dataset.title || ""} ${el.dataset.location || ""} ${slug}`;
+      const normSearch = normalizeText(rawSearch);
+      const img = el.querySelector<HTMLImageElement>("img");
+      return {
+        el,
+        href: el.getAttribute("href") || `/photos/${slug}`,
+        slug,
+        region,
+        albumLabel: el.dataset.albumLabel || "",
+        featured: el.dataset.featured === "1",
+        year: el.dataset.year || "Archive",
+        date: el.dataset.date || "Archive",
+        day: el.dataset.day || "",
+        capturedTs: Number(el.dataset.capturedTs || 0),
+        monthSort: Number(el.dataset.monthSort || 0),
+        previewSrc: el.dataset.preview || img?.getAttribute("src") || "",
+        previewSrcSet: el.dataset.srcset || img?.getAttribute("srcset") || "",
+        alt: img?.getAttribute("alt") || el.dataset.title || "",
+        normSearch,
+        compactSearch: normSearch.replace(/\s+/g, ""),
+      };
+    });
+
+    const indexedFolders = folderItems.map((el) => {
+      const normSearch = normalizeText(el.dataset.search || el.dataset.album || "");
+      return {
+        el,
+        region: el.dataset.region || "",
+        normSearch,
+        compactSearch: normSearch.replace(/\s+/g, ""),
+      };
+    });
+
+    const indexedTripGroups = tripGroups.map((group) => ({
+      group,
+      countEl: group.querySelector<HTMLElement>("[data-trip-year-count]"),
+      cards: Array.from(group.querySelectorAll<HTMLElement>(".mp-trip-card")).map((card) => {
+        const normSearch = normalizeText(card.dataset.search || card.dataset.album || "");
+        return {
+          el: card,
+          region: card.dataset.region || "",
+          normSearch,
+          compactSearch: normSearch.replace(/\s+/g, ""),
+        };
+      }),
+    }));
+
+    const indexedMapDestinations = mapDestinations.map((d) => {
+      const normSearch = normalizeText(d.search);
+      return {
+        slug: d.slug,
+        normSearch,
+        compactSearch: normSearch.replace(/\s+/g, ""),
+      };
+    });
+
+    const availableRegionNames = navButtons
+      .map((btn) => btn.dataset.nav || "")
+      .filter((nav) => nav.startsWith("region:"))
+      .map((nav) => nav.slice(7));
+    const availableAlbumSlugs = filterMenuItems
+      .map((item) => item.dataset.filterVal || "")
+      .filter((val) => val.startsWith("album:"))
+      .map((val) => val.slice(6));
+    const availableYears = Array.from(
+      new Set(indexedCells.map((item) => item.year).filter(Boolean)),
+    );
+    const availableMonths = Array.from(
+      new Set(indexedCells.map((item) => item.date).filter(Boolean)),
+    );
+
+    const syncUrlFromState = () => {
+      const nextHash = getPhotosLibraryHash({
+        nav: activeNav,
+        seg: activeSeg,
+        timeValue: activeTimeValue,
+        filter: activeFilter,
+      });
+      const currentUrl = new URL(window.location.href);
+      const nextLocalUrl = `${currentUrl.pathname}${currentUrl.search}${nextHash}`;
+      if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextLocalUrl) {
+        window.history.replaceState(window.history.state, "", nextLocalUrl);
+      }
+      const cleanUrl = new URL(nextLocalUrl, window.location.origin);
+      cleanUrl.searchParams.delete("embed");
+      const publicUrl = `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`;
+      window.dispatchEvent(new CustomEvent("photos:url-change", { detail: { url: publicUrl } }));
+      if (window.self !== window.top) {
+        window.parent.postMessage({ type: "photos:url-change", url: publicUrl }, window.location.origin);
+      }
+    };
+
+    const syncFilterControls = () => {
+      let labelText = "All Items";
+      filterMenuItems.forEach((btn) => {
+        const selected = (btn.dataset.filterVal || "all") === activeFilter;
+        btn.classList.toggle("is-selected", selected);
+        btn.setAttribute("aria-checked", String(selected));
+        if (selected && btn.dataset.filterText) {
+          labelText = btn.dataset.filterText;
+        }
+      });
+      if (filterLabel) filterLabel.textContent = labelText;
+    };
+
+    const syncSegControls = () => {
+      segButtons.forEach((btn) => {
+        const isCurrent = ((btn.dataset.seg as "all" | "years" | "months") || "all") === activeSeg;
+        btn.classList.toggle("is-active", isCurrent);
+        btn.setAttribute("aria-selected", String(isCurrent));
+      });
+    };
+
+    const applyHashFromLocation = () => {
+      const parsed = parsePhotosLibraryHash(window.location.hash, {
+        availableRegions: availableRegionNames,
+        availableAlbumSlugs,
+        availableTimeValues: { years: availableYears, months: availableMonths },
+      });
+      activeNav = parsed.nav;
+      activeSeg = parsed.seg;
+      activeTimeValue = parsed.timeValue;
+      activeFilter = parsed.filter;
+      syncSegControls();
+      syncFilterControls();
+    };
+
+    let suppressUrlSync = false;
+
     const applyState = () => {
-      const q = activeQuery.trim().toLowerCase();
+      if (!suppressUrlSync) {
+        syncUrlFromState();
+      }
+      const compiledQ = compileQuery(activeQuery);
       const isMapNav = activeNav === "map";
       const isMapCanvas = isMapNav;
       const isTripsMode = !isMapNav && activeNav === "trips";
       const isAlbumsMode = !isMapNav && activeNav === "albums";
 
+      const isCuratedTimeView = !isMapNav && !isTripsMode && !isAlbumsMode && (activeSeg === "years" || activeSeg === "months");
+
       app.classList.toggle("is-map-mode", isMapNav);
       app.classList.toggle("is-map-canvas", isMapCanvas);
-      if (segLibrary) segLibrary.hidden = isMapNav;
+      app.classList.toggle("is-curated-time", isCuratedTimeView);
+      segLibrary?.classList.toggle("is-slot-hidden", isMapNav);
+      segLibrary?.setAttribute("aria-hidden", String(isMapNav));
       if (filterWrap) filterWrap.hidden = isMapNav;
       if (canvasHead) canvasHead.hidden = isMapCanvas;
       if (footerEl) footerEl.hidden = isMapCanvas;
@@ -1915,10 +2537,10 @@ const photosSchema = collectionPageSchema({
 
       if (isMapNav) {
         void loadMap();
-        const matchingSlugs = q
+        const matchingSlugs = compiledQ
           ? new Set(
-              mapDestinations
-                .filter((d) => matchesSmartQuery(d.search, q))
+              indexedMapDestinations
+                .filter((d) => matchesCompiledQuery(d.normSearch, d.compactSearch, compiledQ))
                 .map((d) => d.slug),
             )
           : null;
@@ -1942,25 +2564,19 @@ const photosSchema = collectionPageSchema({
 
       if (isTripsMode) {
         let visibleTrips = 0;
-        tripGroups.forEach((group) => {
-          const cards = Array.from(group.querySelectorAll<HTMLElement>(".mp-trip-card"));
+        const filterRegion = activeFilter.startsWith("region:") ? activeFilter.slice(7) : null;
+        indexedTripGroups.forEach(({ group, countEl, cards }) => {
           let groupVisible = 0;
           cards.forEach((card) => {
-            const region = card.dataset.region || "";
-            const searchHaystack = card.dataset.search || card.dataset.album || "";
-            const matchFilter =
-              activeFilter === "all" ||
-              (activeFilter.startsWith("region:") && region === activeFilter.slice(7));
-            const matchQuery = matchesSmartQuery(searchHaystack, q);
-            const show = matchFilter && matchQuery;
-            card.hidden = !show;
+            const matchFilter = !filterRegion || card.region === filterRegion;
+            const show = matchFilter && matchesCompiledQuery(card.normSearch, card.compactSearch, compiledQ);
+            if (card.el.hidden !== !show) card.el.hidden = !show;
             if (show) {
               groupVisible++;
               visibleTrips++;
             }
           });
-          group.hidden = groupVisible === 0;
-          const countEl = group.querySelector<HTMLElement>("[data-trip-year-count]");
+          if (group.hidden !== (groupVisible === 0)) group.hidden = groupVisible === 0;
           if (countEl) {
             countEl.textContent = `${groupVisible} ${groupVisible === 1 ? "Trip" : "Trips"}`;
           }
@@ -1972,15 +2588,11 @@ const photosSchema = collectionPageSchema({
 
       if (isAlbumsMode) {
         let visibleAlbums = 0;
-        folderItems.forEach((item) => {
-          const region = item.dataset.region || "";
-          const searchHaystack = item.dataset.search || item.dataset.album || "";
-          const matchFilter =
-            activeFilter === "all" ||
-            (activeFilter.startsWith("region:") && region === activeFilter.slice(7));
-          const matchQuery = matchesSmartQuery(searchHaystack, q);
-          const show = matchFilter && matchQuery;
-          item.hidden = !show;
+        const filterRegion = activeFilter.startsWith("region:") ? activeFilter.slice(7) : null;
+        indexedFolders.forEach((item) => {
+          const matchFilter = !filterRegion || item.region === filterRegion;
+          const show = matchFilter && matchesCompiledQuery(item.normSearch, item.compactSearch, compiledQ);
+          if (item.el.hidden !== !show) item.el.hidden = !show;
           if (show) visibleAlbums++;
         });
         if (headingEl) headingEl.textContent = "Albums";
@@ -1991,112 +2603,273 @@ const photosSchema = collectionPageSchema({
       // Remove any previously injected time group headers
       grid?.querySelectorAll(".mp-group-header").forEach((el) => el.remove());
 
-      const baseMatchedCells: HTMLElement[] = [];
-      cells.forEach((cell) => {
-        const slug = cell.dataset.slug || "";
-        const region = cell.dataset.region || "";
-        const album = cell.dataset.album || "";
-        const title = (cell.dataset.title || "").toLowerCase();
-        const location = (cell.dataset.location || "").toLowerCase();
+      const navRegion = activeNav.startsWith("region:") ? activeNav.slice(7) : null;
+      const filterRegion = activeFilter.startsWith("region:") ? activeFilter.slice(7) : null;
+      const filterAlbum = activeFilter.startsWith("album:") ? activeFilter.slice(6) : null;
 
+      const baseMatchedCells: typeof indexedCells = [];
+      indexedCells.forEach((item) => {
         let matchNav = true;
-        if (activeNav === "map") {
-          matchNav = !mapVisibleSlugs || mapVisibleSlugs.has(slug);
-        } else if (activeNav === "featured") matchNav = cell.dataset.featured === "1";
-        else if (activeNav === "recent") matchNav = cell.dataset.recent === "1";
-        else if (activeNav.startsWith("region:")) matchNav = region === activeNav.slice(7);
+        if (activeNav === "featured") matchNav = item.featured;
+        else if (navRegion) matchNav = item.region === navRegion;
 
         let matchFilter = true;
-        if (activeFilter === "featured") matchFilter = cell.dataset.featured === "1";
-        else if (activeFilter === "recent") matchFilter = cell.dataset.recent === "1";
-        else if (activeFilter.startsWith("region:")) matchFilter = region === activeFilter.slice(7);
-        else if (activeFilter.startsWith("album:")) matchFilter = slug === activeFilter.slice(6);
+        if (activeFilter === "featured") matchFilter = item.featured;
+        else if (filterRegion) matchFilter = item.region === filterRegion;
+        else if (filterAlbum) matchFilter = item.slug === filterAlbum;
 
-        const searchHaystack =
-          cell.dataset.search || `${album} ${region} ${title} ${location} ${slug}`;
-        const matchQuery = matchesSmartQuery(searchHaystack, q);
-
-        const show = matchNav && matchFilter && matchQuery;
+        const show = matchNav && matchFilter && matchesCompiledQuery(item.normSearch, item.compactSearch, compiledQ);
         if (show) {
-          baseMatchedCells.push(cell);
-        } else {
-          cell.hidden = true;
+          baseMatchedCells.push(item);
+        } else if (!item.el.hidden) {
+          item.el.hidden = true;
         }
       });
 
-      const getTimeKey = (cell: HTMLElement) =>
-        activeSeg === "years"
-          ? cell.dataset.year || "Archive"
-          : cell.dataset.date || "Archive";
-
       let visibleCount = 0;
 
-      if (activeSeg === "years" || activeSeg === "months") {
-        const counts = new Map<string, number>();
-        baseMatchedCells.forEach((cell) => {
-          const key = getTimeKey(cell);
-          counts.set(key, (counts.get(key) || 0) + 1);
-        });
-
-        if (activeTimeValue !== "all" && !counts.has(activeTimeValue)) {
-          activeTimeValue = "all";
-        }
-
-        if (timeBar) {
-          timeBar.hidden = counts.size === 0;
-          timeBar.innerHTML = "";
-
-          const allLabel = activeSeg === "years" ? "All Years" : "All Months";
-          const allBtn = document.createElement("button");
-          allBtn.type = "button";
-          allBtn.className = `mp-time-pill${activeTimeValue === "all" ? " is-active" : ""}`;
-          allBtn.innerHTML = `<span>${allLabel}</span><span class="mp-time-pill-count">${baseMatchedCells.length}</span>`;
-          allBtn.addEventListener("click", () => {
-            activeTimeValue = "all";
-            applyState();
-          });
-          timeBar.appendChild(allBtn);
-
-          counts.forEach((count, key) => {
-            const pill = document.createElement("button");
-            pill.type = "button";
-            pill.className = `mp-time-pill${activeTimeValue === key ? " is-active" : ""}`;
-            pill.innerHTML = `<span>${key}</span><span class="mp-time-pill-count">${count}</span>`;
-            pill.addEventListener("click", () => {
-              activeTimeValue = key;
-              applyState();
-            });
-            timeBar.appendChild(pill);
-          });
-        }
-
-        const visibleByGroup = new Map<string, HTMLElement[]>();
-        baseMatchedCells.forEach((cell) => {
-          const key = getTimeKey(cell);
-          const show = activeTimeValue === "all" || key === activeTimeValue;
-          cell.hidden = !show;
-          if (show) {
-            visibleCount++;
-            const list = visibleByGroup.get(key) || [];
-            list.push(cell);
-            visibleByGroup.set(key, list);
+      const renderMonthsBento = (items: typeof indexedCells) => {
+        if (!monthsView) return;
+        const grouped = new Map<string, { sortKey: number; items: typeof indexedCells }>();
+        items.forEach((item) => {
+          const existing = grouped.get(item.date);
+          if (existing) {
+            existing.items.push(item);
+          } else {
+            grouped.set(item.date, { sortKey: item.monthSort, items: [item] });
           }
         });
 
-        if (grid) {
-          visibleByGroup.forEach((groupCells, key) => {
-            const firstCell = groupCells[0];
-            if (!firstCell) return;
-            const header = document.createElement("div");
-            header.className = "mp-group-header";
-            header.innerHTML = `<span class="mp-group-title">${key}</span><span class="mp-group-count">${groupCells.length} ${groupCells.length === 1 ? "Item" : "Items"}</span>`;
-            grid.insertBefore(header, firstCell);
+        const sortedMonths = Array.from(grouped.entries()).sort((a, b) => b[1].sortKey - a[1].sortKey);
+        const frag = document.createDocumentFragment();
+
+        sortedMonths.forEach(([monthLabel, group]) => {
+          const section = document.createElement("section");
+          section.className = "mp-month-section";
+
+          const heading = document.createElement("h2");
+          heading.className = "mp-month-title";
+          heading.textContent = monthLabel;
+          section.appendChild(heading);
+
+          const bento = document.createElement("div");
+          bento.className = "mp-month-bento";
+
+          const ordered = [...group.items].sort(
+            (a, b) => a.capturedTs - b.capturedTs || Number(b.featured) - Number(a.featured),
+          );
+          const hasHero = ordered.length >= 3;
+
+          ordered.forEach((photo, idx) => {
+            const card = document.createElement("a");
+            card.href = photo.href;
+            card.className = `mp-month-card${hasHero && idx === 0 ? " mp-month-card--hero" : ""}`;
+            card.setAttribute("aria-label", `${photo.albumLabel || photo.alt} (${monthLabel})`);
+
+            const img = document.createElement("img");
+            img.src = photo.previewSrc;
+            if (photo.previewSrcSet) img.srcset = photo.previewSrcSet;
+            img.sizes = hasHero && idx === 0 ? "(max-width: 640px) 66vw, 760px" : "(max-width: 640px) 33vw, 380px";
+            img.alt = photo.alt;
+            img.className = "mp-month-card-img";
+            img.loading = idx < 6 ? "eager" : "lazy";
+            img.decoding = "async";
+            card.appendChild(img);
+
+            if (photo.day) {
+              const dayBadge = document.createElement("span");
+              dayBadge.className = "mp-month-card-day";
+              dayBadge.textContent = photo.day;
+              card.appendChild(dayBadge);
+            }
+
+            if (photo.albumLabel) {
+              const info = document.createElement("div");
+              info.className = "mp-month-card-info";
+              info.textContent = photo.albumLabel;
+              card.appendChild(info);
+            }
+
+            bento.appendChild(card);
           });
+
+          section.appendChild(bento);
+          frag.appendChild(section);
+        });
+
+        monthsView.replaceChildren(frag);
+      };
+
+      const renderYearsCards = (items: typeof indexedCells) => {
+        if (!yearsView) return;
+        const grouped = new Map<string, typeof indexedCells>();
+        items.forEach((item) => {
+          const list = grouped.get(item.year) || [];
+          list.push(item);
+          grouped.set(item.year, list);
+        });
+
+        // Chronological ascending (e.g. 2023 | 2024 / 2025 | 2026) like macOS Photos
+        const sortedYears = Array.from(grouped.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+
+        const gridEl = document.createElement("div");
+        gridEl.className = "mp-years-grid";
+
+        sortedYears.forEach(([yearLabel, yearItems]) => {
+          const cover = yearItems.find((item) => item.featured) ?? yearItems[0];
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "mp-year-card";
+          card.setAttribute("aria-label", `Open ${yearLabel} (${yearItems.length} photos)`);
+          card.addEventListener("click", () => {
+            activeTimeValue = yearLabel;
+            if (canvasEl) canvasEl.scrollTop = 0;
+            applyState();
+          });
+
+          if (cover) {
+            const img = document.createElement("img");
+            img.src = cover.previewSrc;
+            if (cover.previewSrcSet) img.srcset = cover.previewSrcSet;
+            img.sizes = "(max-width: 640px) 48vw, 560px";
+            img.alt = `${yearLabel} — ${cover.albumLabel || cover.alt}`;
+            img.className = "mp-year-card-img";
+            img.loading = "eager";
+            img.decoding = "async";
+            card.appendChild(img);
+          }
+
+          const title = document.createElement("span");
+          title.className = "mp-year-card-title";
+          title.textContent = yearLabel;
+          card.appendChild(title);
+
+          gridEl.appendChild(card);
+        });
+
+        yearsView.replaceChildren(gridEl);
+      };
+
+      if (activeSeg === "years") {
+        const yearCounts = new Map<string, number>();
+        baseMatchedCells.forEach((item) => {
+          yearCounts.set(item.year, (yearCounts.get(item.year) || 0) + 1);
+        });
+
+        if (activeTimeValue !== "all" && !yearCounts.has(activeTimeValue)) {
+          activeTimeValue = "all";
         }
+
+        if (grid) grid.hidden = true;
+
+        if (activeTimeValue === "all") {
+          if (timeBar) timeBar.hidden = true;
+          if (monthsView) monthsView.hidden = true;
+          if (yearsView) yearsView.hidden = baseMatchedCells.length === 0;
+          renderYearsCards(baseMatchedCells);
+          visibleCount = baseMatchedCells.length;
+        } else {
+          if (yearsView) yearsView.hidden = true;
+          const filteredYearItems = baseMatchedCells.filter((item) => item.year === activeTimeValue);
+          visibleCount = filteredYearItems.length;
+
+          if (timeBar) {
+            timeBar.hidden = yearCounts.size === 0;
+            const frag = document.createDocumentFragment();
+            const allBtn = document.createElement("button");
+            allBtn.type = "button";
+            allBtn.className = "mp-time-pill";
+            allBtn.innerHTML = `<span>← All Years</span><span class="mp-time-pill-count">${baseMatchedCells.length}</span>`;
+            allBtn.addEventListener("click", () => {
+              activeTimeValue = "all";
+              if (canvasEl) canvasEl.scrollTop = 0;
+              applyState();
+            });
+            frag.appendChild(allBtn);
+
+            Array.from(yearCounts.entries())
+              .sort((a, b) => a[0].localeCompare(b[0]))
+              .forEach(([yearKey, count]) => {
+                const pill = document.createElement("button");
+                pill.type = "button";
+                pill.className = `mp-time-pill${activeTimeValue === yearKey ? " is-active" : ""}`;
+                pill.innerHTML = `<span>${yearKey}</span><span class="mp-time-pill-count">${count}</span>`;
+                pill.addEventListener("click", () => {
+                  activeTimeValue = yearKey;
+                  if (canvasEl) canvasEl.scrollTop = 0;
+                  applyState();
+                });
+                frag.appendChild(pill);
+              });
+            timeBar.replaceChildren(frag);
+          }
+
+          if (monthsView) monthsView.hidden = visibleCount === 0;
+          renderMonthsBento(filteredYearItems);
+        }
+      } else if (activeSeg === "months") {
+        const monthMap = new Map<string, { count: number; sortKey: number }>();
+        baseMatchedCells.forEach((item) => {
+          const existing = monthMap.get(item.date);
+          if (existing) existing.count++;
+          else monthMap.set(item.date, { count: 1, sortKey: item.monthSort });
+        });
+
+        if (activeTimeValue !== "all" && !monthMap.has(activeTimeValue)) {
+          activeTimeValue = "all";
+        }
+
+        if (grid) grid.hidden = true;
+        if (yearsView) yearsView.hidden = true;
+
+        const filteredMonthItems =
+          activeTimeValue === "all"
+            ? baseMatchedCells
+            : baseMatchedCells.filter((item) => item.date === activeTimeValue);
+        visibleCount = filteredMonthItems.length;
+
+        if (timeBar) {
+          timeBar.hidden = activeTimeValue === "all";
+          if (activeTimeValue !== "all") {
+            const frag = document.createDocumentFragment();
+            const allBtn = document.createElement("button");
+            allBtn.type = "button";
+            allBtn.className = "mp-time-pill";
+            allBtn.innerHTML = `<span>← All Months</span><span class="mp-time-pill-count">${baseMatchedCells.length}</span>`;
+            allBtn.addEventListener("click", () => {
+              activeTimeValue = "all";
+              if (canvasEl) canvasEl.scrollTop = 0;
+              applyState();
+            });
+            frag.appendChild(allBtn);
+
+            Array.from(monthMap.entries())
+              .sort((a, b) => b[1].sortKey - a[1].sortKey)
+              .forEach(([monthKey, meta]) => {
+                const pill = document.createElement("button");
+                pill.type = "button";
+                pill.className = `mp-time-pill${activeTimeValue === monthKey ? " is-active" : ""}`;
+                pill.innerHTML = `<span>${monthKey}</span><span class="mp-time-pill-count">${meta.count}</span>`;
+                pill.addEventListener("click", () => {
+                  activeTimeValue = monthKey;
+                  if (canvasEl) canvasEl.scrollTop = 0;
+                  applyState();
+                });
+                frag.appendChild(pill);
+              });
+            timeBar.replaceChildren(frag);
+          }
+        }
+
+        if (monthsView) monthsView.hidden = visibleCount === 0;
+        renderMonthsBento(filteredMonthItems);
       } else {
-        if (timeBar) timeBar.hidden = true;
-        baseMatchedCells.forEach((cell) => {
-          cell.hidden = false;
+        if (grid) grid.hidden = false;
+        if (yearsView) yearsView.hidden = true;
+        if (monthsView) monthsView.hidden = true;
+        if (timeBar && !timeBar.hidden) timeBar.hidden = true;
+        baseMatchedCells.forEach((item) => {
+          if (item.el.hidden) item.el.hidden = false;
           visibleCount++;
         });
       }
@@ -2115,13 +2888,10 @@ const photosSchema = collectionPageSchema({
                 : activeTimeValue
               : "All Photos",
         map: "Map",
-        recent: "Recently Saved",
         featured: "Featured",
       };
       if (headingEl) {
-        headingEl.textContent = activeNav.startsWith("region:")
-          ? activeNav.slice(7)
-          : navLabels[activeNav] || "All Photos";
+        headingEl.textContent = navRegion || navLabels[activeNav] || "All Photos";
       }
       if (subheadingEl) {
         subheadingEl.textContent = `${visibleCount} Items · Leica Q3, Nikon Zf & iPhone`;
@@ -2173,28 +2943,45 @@ const photosSchema = collectionPageSchema({
       { signal },
     );
 
-    // Zoom slider
+    // Zoom slider: left (−) = more columns / smaller photos, right (+) = fewer columns / larger photos
+    const MIN_COLS = 3;
+    const MAX_COLS = 7;
+    const sliderToCols = (sliderVal: number) => MAX_COLS + MIN_COLS - sliderVal;
+    const colsToSlider = (cols: number) => MAX_COLS + MIN_COLS - cols;
+
+    let zoomRaf = 0;
+    let lastCols = 5;
     const setCols = (val: number, persist = true) => {
-      const clamped = Math.max(3, Math.min(9, val));
-      if (zoomSlider) zoomSlider.value = String(clamped);
-      grid?.style.setProperty("--mp-cols", String(clamped));
+      const clamped = Math.max(MIN_COLS, Math.min(MAX_COLS, val));
+      if (zoomSlider) zoomSlider.value = String(colsToSlider(clamped));
+      if (clamped !== lastCols) {
+        lastCols = clamped;
+        if (zoomRaf) cancelAnimationFrame(zoomRaf);
+        zoomRaf = requestAnimationFrame(() => {
+          zoomRaf = 0;
+          grid?.style.setProperty("--mp-cols", String(clamped));
+        });
+      }
       if (persist) {
         try {
           localStorage.setItem(ZOOM_STORAGE_KEY, String(clamped));
         } catch {}
       }
     };
+    signal.addEventListener("abort", () => {
+      if (zoomRaf) cancelAnimationFrame(zoomRaf);
+    }, { once: true });
 
     try {
       const savedCols = Number(localStorage.getItem(ZOOM_STORAGE_KEY));
-      if (Number.isFinite(savedCols) && savedCols >= 3 && savedCols <= 9) {
+      if (Number.isFinite(savedCols) && savedCols >= MIN_COLS && savedCols <= MAX_COLS) {
         setCols(savedCols, false);
       }
     } catch {}
 
-    zoomSlider?.addEventListener("input", () => setCols(Number(zoomSlider.value)), { signal });
-    zoomOutBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) + 1), { signal });
-    zoomInBtn?.addEventListener("click", () => setCols(Number(zoomSlider?.value || 6) - 1), { signal });
+    zoomSlider?.addEventListener("input", () => setCols(sliderToCols(Number(zoomSlider.value))), { signal });
+    zoomOutBtn?.addEventListener("click", () => setCols(lastCols + 1), { signal });
+    zoomInBtn?.addEventListener("click", () => setCols(lastCols - 1), { signal });
 
     // Segmented control (Years | Months | All Photos)
     segButtons.forEach((btn) => {
@@ -2213,6 +3000,7 @@ const photosSchema = collectionPageSchema({
           if (activeNav === "trips" || activeNav === "albums") {
             activeNav = "library";
           }
+          if (canvasEl) canvasEl.scrollTop = 0;
           applyState();
         },
         { signal },
@@ -2224,8 +3012,11 @@ const photosSchema = collectionPageSchema({
       btn.addEventListener(
         "click",
         () => {
-          activeNav = btn.dataset.nav || "library";
+          const nextNav = btn.dataset.nav || "library";
+          const changed = nextNav !== activeNav;
+          activeNav = nextNav;
           closeMobileSidebar();
+          if (changed && canvasEl) canvasEl.scrollTop = 0;
           applyState();
         },
         { signal },
@@ -2288,14 +3079,22 @@ const photosSchema = collectionPageSchema({
       { signal },
     );
 
+    let searchRaf = 0;
     searchInput?.addEventListener(
       "input",
       () => {
         activeQuery = searchInput.value;
-        applyState();
+        if (searchRaf) cancelAnimationFrame(searchRaf);
+        searchRaf = requestAnimationFrame(() => {
+          searchRaf = 0;
+          applyState();
+        });
       },
       { signal },
     );
+    signal.addEventListener("abort", () => {
+      if (searchRaf) cancelAnimationFrame(searchRaf);
+    }, { once: true });
 
     resetBtn?.addEventListener(
       "click",
@@ -2336,8 +3135,10 @@ const photosSchema = collectionPageSchema({
         });
       };
 
+      const needsScaleFallback =
+        typeof CSS === "undefined" || !CSS.supports("transform", "scale(calc(100cqw / 340px))");
       const ro =
-        typeof ResizeObserver !== "undefined"
+        needsScaleFallback && typeof ResizeObserver !== "undefined"
           ? new ResizeObserver((entries) => {
               for (const entry of entries) {
                 const w = entry.contentRect.width;
@@ -2354,8 +3155,6 @@ const photosSchema = collectionPageSchema({
         const href = item.dataset.href;
         if (!root) return;
 
-        const w = root.clientWidth;
-        if (w > 0) root.style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
         ro?.observe(root);
 
         hit?.addEventListener(
@@ -2385,6 +3184,19 @@ const photosSchema = collectionPageSchema({
       signal.addEventListener("abort", () => ro?.disconnect());
     }
 
+    window.addEventListener(
+      "hashchange",
+      () => {
+        suppressUrlSync = true;
+        applyHashFromLocation();
+        applyState();
+        suppressUrlSync = false;
+        syncUrlFromState();
+      },
+      { signal },
+    );
+
+    applyHashFromLocation();
     applyState();
   });
 </script>

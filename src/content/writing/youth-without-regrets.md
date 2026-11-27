@@ -6,7 +6,7 @@ date: 2026-09-19
 order: 0
 sample: false
 draft: false
-linkable: false
+linkable: true
 coverImage:
   src: "/images/writing/youth-without-regrets.webp"
   alt: "Cinematic thumbnail for A Youth Without Regrets featuring mountain roads in Ha Giang"

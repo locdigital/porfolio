@@ -209,7 +209,16 @@ export interface CommandSearchProps {
   triggerClassName?: string;
 }
 
-export function CommandSearch({
+export function CommandSearch(props: CommandSearchProps) {
+  const isEmbedded =
+    typeof window !== "undefined" &&
+    (window.self !== window.top ||
+      new URLSearchParams(window.location.search).get("embed") === "1");
+  if (isEmbedded) return null;
+  return <CommandSearchInner {...props} />;
+}
+
+function CommandSearchInner({
   items,
   showTrigger = false,
   triggerClassName,

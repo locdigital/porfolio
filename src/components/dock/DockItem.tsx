@@ -1,27 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import type { AppId, DockApplication, DockPosition } from "./dock.config";
 import { DockTooltip } from "./DockTooltip";
 
 interface DockItemProps {
   app: DockApplication;
   position: DockPosition;
-  scale?: number;
   isActive?: boolean;
   isRunning?: boolean;
   onSelect?: (id: AppId) => void;
   onContextMenu?: (id: AppId, rect: DOMRect) => void;
-  registerSlotRef?: (id: AppId, el: HTMLDivElement | null) => void;
+  registerButtonRef?: (id: AppId, el: HTMLButtonElement | null) => void;
 }
 
-export function DockItem({
+export const DockItem = memo(function DockItem({
   app,
   position,
-  scale = 1,
   isActive = false,
   isRunning = false,
   onSelect,
   onContextMenu,
-  registerSlotRef,
+  registerButtonRef,
 }: DockItemProps) {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [bouncing, setBouncing] = useState(false);
@@ -50,7 +48,7 @@ export function DockItem({
     requestAnimationFrame(() => {
       setBouncing(true);
       if (bounceTimerRef.current !== null) window.clearTimeout(bounceTimerRef.current);
-      bounceTimerRef.current = window.setTimeout(() => setBouncing(false), 340);
+      bounceTimerRef.current = window.setTimeout(() => setBouncing(false), 320);
     });
   };
 
@@ -73,21 +71,13 @@ export function DockItem({
     }
   };
 
-  const translateOffset = scale > 1 ? Math.round((scale - 1) * 14) : 0;
-  const iconTransform =
-    position === "left"
-      ? `translate3d(${translateOffset}px, 0, 0) scale(${scale})`
-      : `translate3d(0, ${-translateOffset}px, 0) scale(${scale})`;
-
   return (
-    <div
-      className="macos-dock-slot"
-      ref={(el) => registerSlotRef?.(app.id, el)}
-    >
+    <div className="macos-dock-slot">
       <DockTooltip label={app.name} visible={tooltipVisible} position={position} />
       <button
+        ref={(el) => registerButtonRef?.(app.id, el)}
         type="button"
-        className={`macos-dock-item${bouncing ? " is-bouncing" : ""}${isActive ? " is-active" : ""}`}
+        className={`macos-dock-item${isActive ? " is-active" : ""}`}
         aria-label={app.name}
         aria-pressed={isActive}
         onPointerEnter={showTooltip}
@@ -97,12 +87,9 @@ export function DockItem({
         onClick={handleClick}
         onContextMenu={handleContextMenu}
         onKeyDown={handleKeyDown}
-        style={{
-          transform: iconTransform,
-        }}
       >
         <span
-          className="macos-dock-icon-frame"
+          className={`macos-dock-icon-frame${bouncing ? " is-bouncing" : ""}`}
           style={app.iconBackground ? { backgroundColor: app.iconBackground } : undefined}
         >
           <img
@@ -125,4 +112,4 @@ export function DockItem({
       )}
     </div>
   );
-}
+});

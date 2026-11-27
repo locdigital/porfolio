@@ -515,6 +515,9 @@ const FRONT_PATH =
   "A22 22 0 0 1 0 " +
   (FRONT_H - 22) +
   "Z"
+const FRONT_MASK = `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${FRONT_H}"><path d="${FRONT_PATH}" fill="#000"/></svg>`,
+)}")`
 
 const MAX_VISIBLE = 4
 
@@ -755,7 +758,14 @@ export default function GlassFolder({
           <div className="gf-shadow" aria-hidden="true" />
 
           {/* back panel and its artwork */}
-          <div className="gf-back" style={{ clipPath: "path('" + BACK_PATH + "')" }} aria-hidden="true">
+          <div
+            className="gf-back"
+            style={{
+              clipPath: "path('" + BACK_PATH + "')",
+              WebkitClipPath: "path('" + BACK_PATH + "')",
+            }}
+            aria-hidden="true"
+          >
             {image ? (
               <img
                 className="gf-art"
@@ -781,7 +791,16 @@ export default function GlassFolder({
           <div
             key={bump}
             className={"gf-front" + (bump ? " gf-front--bump" : "")}
-            style={{ clipPath: "path('" + FRONT_PATH + "')" }}
+            style={{
+              clipPath: "path('" + FRONT_PATH + "')",
+              WebkitClipPath: "path('" + FRONT_PATH + "')",
+              maskImage: FRONT_MASK,
+              WebkitMaskImage: FRONT_MASK,
+              maskSize: "100% 100%",
+              WebkitMaskSize: "100% 100%",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+            }}
           >
             <div className="gf-tint" aria-hidden="true" />
             <div className="gf-spec" aria-hidden="true" />

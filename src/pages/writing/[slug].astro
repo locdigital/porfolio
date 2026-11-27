@@ -126,96 +126,10 @@ const postSchema = articleSchema({
 
 <script>
   import { onPageLoad } from "../../scripts/page-lifecycle";
+  import { initTocSpy } from "../../scripts/toc-spy";
 
   onPageLoad((signal) => {
-    const toc = document.querySelector<HTMLElement>("[data-writing-toc]");
-    if (!toc) return;
-
-    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
-    if (links.length === 0) return;
-
-    const linkById = new Map(links.map((link) => [link.dataset.tocLink ?? "", link]));
-    const headings = links
-      .map((link) => document.getElementById(link.dataset.tocLink ?? ""))
-      .filter((el): el is HTMLElement => Boolean(el));
-
-    if (headings.length === 0) return;
-
-    let currentId = "";
-    let lockUntil = 0;
-
-    const setActive = (id: string) => {
-      if (!id || id === currentId) return;
-      currentId = id;
-      links.forEach((link) => {
-        const active = link.dataset.tocLink === id;
-        link.classList.toggle("is-active", active);
-        if (active) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
-      });
-    };
-
-    const mainScroll = document.getElementById("main-content");
-
-    const computeActiveHeading = () => {
-      if (performance.now() < lockUntil) return;
-
-      const useMainScroll =
-        Boolean(mainScroll) &&
-        window.matchMedia("(min-width: 1024px)").matches &&
-        getComputedStyle(mainScroll!).overflowY !== "visible";
-
-      const triggerTop = useMainScroll
-        ? mainScroll!.getBoundingClientRect().top + Math.min(140, mainScroll!.clientHeight * 0.22)
-        : Math.min(140, window.innerHeight * 0.22);
-
-      let activeId = headings[0].id;
-      for (const heading of headings) {
-        if (heading.getBoundingClientRect().top <= triggerTop) {
-          activeId = heading.id;
-        } else {
-          break;
-        }
-      }
-
-      setActive(activeId);
-    };
-
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        computeActiveHeading();
-      });
-    };
-
-    const initialHash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
-    if (initialHash && linkById.has(initialHash)) {
-      lockUntil = performance.now() + 400;
-      setActive(initialHash);
-    } else {
-      computeActiveHeading();
-    }
-
-    links.forEach((link) => {
-      link.addEventListener(
-        "click",
-        () => {
-          const id = link.dataset.tocLink;
-          if (id) {
-            lockUntil = performance.now() + 600;
-            setActive(id);
-          }
-        },
-        { signal },
-      );
-    });
-
-    mainScroll?.addEventListener("scroll", onScroll, { signal, passive: true });
-    window.addEventListener("scroll", onScroll, { signal, passive: true });
-    window.addEventListener("resize", onScroll, { signal, passive: true });
+    initTocSpy({ tocSelector: "[data-writing-toc]", signal });
   });
 </script>
 

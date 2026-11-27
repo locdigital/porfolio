@@ -11,19 +11,23 @@
   margin-top: calc(var(--app-win-h) / -2);
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+  background: transparent;
   font-family: var(--font-family-base);
   font-size: var(--text-body);
   line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
   border-radius: var(--radius-window, 14px);
-  border: 0.5px solid rgba(148, 163, 184, 0.25);
+  border: 0;
   box-shadow:
     0 28px 70px rgba(15, 23, 42, 0.22),
-    0 8px 24px rgba(15, 23, 42, 0.1),
-    0 0 0 0.5px rgba(255, 255, 255, 0.6) inset;
+    0 8px 24px rgba(15, 23, 42, 0.1);
   overflow: hidden;
   animation: workspace-window-enter var(--motion-duration-window) var(--motion-ease-out) backwards;
+}
+
+.desktop-app-window[data-app="spotify"],
+.desktop-app-window[data-app="spotify"] .desktop-app-body {
+  background: #000000;
 }
 
 .desktop-app-window.is-inactive {
@@ -45,14 +49,38 @@
   width: 100vw;
   height: 100dvh;
   margin: 0;
-  border-radius: 0;
   border: 0;
+  box-shadow: none;
   transform: none !important;
 }
 
 .desktop-app-window.is-exiting {
   pointer-events: none;
   animation: workspace-window-exit var(--motion-duration-window-exit) var(--motion-ease-in) forwards;
+}
+
+.desktop-app-window.is-dragging {
+  transition: none !important;
+  will-change: transform;
+}
+
+.desktop-app-window.is-dragging .desktop-app-body {
+  pointer-events: none;
+  user-select: none;
+}
+
+.dw-widget-motion {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  animation: dw-widget-enter 280ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes dw-widget-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.94);
+  }
 }
 
 .desktop-app-titlebar {
@@ -171,7 +199,7 @@
 }
 
 .dw-control:active {
-  filter: blur(2px);
+  transform: scale(0.92);
 }
 
 .dw-control[aria-pressed="true"] {
@@ -395,7 +423,7 @@ a.dw-sp-button:hover {
 }
 
 .dw-sp-play:active {
-  filter: blur(2px);
+  transform: scale(0.94);
 }
 
 .dw-sp-play svg {
@@ -600,7 +628,7 @@ a.dw-sp-button:hover {
   gap: 16px;
   padding: 0 12px;
   background: #050505;
-  border: 1px solid #ffffff18;
+  border: 0;
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -664,7 +692,7 @@ a.dw-sp-button:hover {
 }
 
 .dw-nf-preview:active img {
-  filter: blur(3px);
+  opacity: 0.88;
 }
 
 .dw-nf-play {
@@ -822,8 +850,13 @@ a.dw-sp-button:hover {
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
   background: #ffffff;
   -webkit-overflow-scrolling: touch;
+}
+
+.desktop-app-body.is-fullbleed {
+  overflow: hidden;
 }
 
 .desktop-app-body::-webkit-scrollbar {
@@ -930,6 +963,7 @@ a.dw-sp-button:hover {
     flex: 0 0 calc(50px + env(safe-area-inset-top, 0px));
     padding: env(safe-area-inset-top, 0px) 16px 0;
     justify-content: space-between;
+    border-radius: 0;
   }
 
   .desktop-app-titlebar .mac-traffic-lights {
@@ -972,6 +1006,7 @@ a.dw-sp-button:hover {
 
   .desktop-app-body {
     padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+    border-radius: 0;
   }
 }
 
@@ -1100,7 +1135,7 @@ a.dw-sp-button:hover {
     max-width: none !important;
     max-height: none !important;
     transform: none !important;
-    border-radius: 14px;
+    border-radius: var(--radius-window, 14px);
     transition:
       left 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
       top 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -1186,11 +1221,7 @@ a.dw-sp-button:hover {
 }
 
 .window-tile-menu__btn:active {
-  filter: blur(2px);
-}
-
-.window-tile-menu__btn:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 .window-tile-menu__divider {
@@ -1207,6 +1238,8 @@ a.dw-sp-button:hover {
 .dw-card--photos {
   background: #0d0f14;
   padding: 0;
+  border: 0;
+  box-shadow: none;
 }
 
 /* Library View — 7x3 asymmetric bento mosaic */
@@ -1243,7 +1276,7 @@ a.dw-sp-button:hover {
 }
 
 .dw-ios-tile:active img {
-  filter: blur(3px);
+  opacity: 0.88;
 }
 
 /* Top-left 2x2 hero */
@@ -1328,7 +1361,7 @@ a.dw-sp-button:hover {
 }
 
 .dw-ios-glass-circle:active {
-  filter: blur(2px);
+  transform: scale(0.94);
 }
 
 /* Collections View — Memories + Albums */
@@ -1421,7 +1454,7 @@ a.dw-sp-button:hover {
 
 .dw-ios-memory-card:active img,
 .dw-ios-album-card:active > img {
-  filter: blur(3px);
+  opacity: 0.88;
 }
 
 .dw-ios-memory-scrim,
@@ -1498,7 +1531,8 @@ a.dw-sp-button:hover {
 
 @media (prefers-reduced-motion: reduce) {
   .desktop-app-window,
-  .desktop-app-window.is-exiting {
+  .desktop-app-window.is-exiting,
+  .dw-widget-motion {
     animation: none;
   }
 

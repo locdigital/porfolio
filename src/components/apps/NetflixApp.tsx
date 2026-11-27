@@ -9,7 +9,6 @@ import {
 } from "react";
 import {
   Check,
-  ChevronLeft,
   ChevronRight,
   ExternalLink,
   Info,
@@ -24,6 +23,7 @@ import {
   NETFLIX_MOVIES,
   type NetflixMovie,
 } from "../../data/netflix";
+import { getNetflixUrl, parseNetflixUrl } from "../../lib/app-routes";
 import { MediaEmptyState } from "./MediaAppControls";
 
 const GENRE_THEMES: Record<string, { gradient: string; subtitle: string; coverSlug?: string }> = {
@@ -164,7 +164,7 @@ function ShelfSection({
 function PosterCard({
   movie,
   rank,
-  showBadge = false,
+  showBadge: _showBadge = false,
   onSelect,
 }: {
   movie: NetflixMovie;
@@ -198,14 +198,42 @@ function PosterCard({
   );
 }
 
-export function NetflixApp() {
+interface NetflixAppProps {
+  initialUrl?: string;
+  onUrlChange?: (url: string) => void;
+}
+
+export function NetflixApp({ initialUrl, onUrlChange }: NetflixAppProps = {}) {
+  const initialRoute = useMemo(() => {
+    const raw =
+      initialUrl ??
+      (typeof window !== "undefined"
+        ? `${window.location.pathname}${window.location.search}${window.location.hash}`
+        : "");
+    return parseNetflixUrl(raw);
+  }, [initialUrl]);
+
   const [query, setQuery] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState<string>("All");
-  const [selectedMovie, setSelectedMovie] = useState<NetflixMovie | null>(null);
+  const [selectedGenre, setSelectedGenre] = useState<string>(initialRoute.genre);
+  const [selectedMovie, setSelectedMovie] = useState<NetflixMovie | null>(() =>
+    initialRoute.movieSlug
+      ? NETFLIX_MOVIES.find((m) => m.slug === initialRoute.movieSlug) ?? null
+      : null,
+  );
   const [heroIndex, setHeroIndex] = useState(0);
   const [myList, setMyList] = useState<string[]>([]);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
+  const onUrlChangeRef = useRef(onUrlChange);
+  onUrlChangeRef.current = onUrlChange;
+
+  useEffect(() => {
+    const nextUrl = getNetflixUrl({
+      genre: selectedGenre,
+      movieSlug: selectedMovie?.slug ?? null,
+    });
+    onUrlChangeRef.current?.(nextUrl);
+  }, [selectedGenre, selectedMovie]);
 
   const heroMovies = useMemo(() => {
     const sorted = [...NETFLIX_MOVIES].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -614,8 +642,8 @@ export function NetflixApp() {
               style={
                 !selectedMovie.backdropSrc
                   ? {
-                      background: `linear-gradient(135deg, ${selectedMovie.accentColor} 0%, #111113 100%)`,
-                    }
+                    background: `linear-gradient(135deg, ${selectedMovie.accentColor} 0%, #111113 100%)`,
+                  }
                   : undefined
               }
             >

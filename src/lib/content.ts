@@ -1,6 +1,6 @@
 // Portfolio content is read from local Astro collections at build time.
 import { getCollection, type CollectionEntry } from "astro:content";
-import { uploadedAssetUrl } from "./uploadthing-assets";
+import { resolveAssetUrl } from "./assets";
 import { resolvePhotoAlt } from "./photo-alt";
 
 export { resolvePhotoAlt };
@@ -32,6 +32,7 @@ export type ProjectData = {
 
 export type PhotoImageData = {
   id?: string;
+  sourceSrc?: string;
   src: string;
   alt: string;
   width?: number;
@@ -220,8 +221,8 @@ export async function getProjects() {
   return entries
     .map((entry) => ({
       ...entry.data,
-      coverImage: entry.data.coverImage ? uploadedAssetUrl(entry.data.coverImage) : undefined,
-      images: (entry.data.images ?? []).map((img: string) => uploadedAssetUrl(img)),
+      coverImage: entry.data.coverImage ? resolveAssetUrl(entry.data.coverImage) : undefined,
+      images: (entry.data.images ?? []).map((img: string) => resolveAssetUrl(img)),
       tags: [...entry.data.tools, ...entry.data.skills],
     }))
     .sort((a, b) => a.order - b.order);
@@ -235,7 +236,7 @@ export async function getPhotoLocations(options: { includeUnpublished?: boolean 
     const rawHero = data.heroImage ?? sortedImages.find((image) => image.isCover) ?? sortedImages[0];
     const heroImage = rawHero ? {
       ...rawHero,
-      src: uploadedAssetUrl(rawHero.src),
+      src: resolveAssetUrl(rawHero.src),
     } : undefined;
     const name = data.name || data.location;
     const introduction = data.description ?? data.introduction ?? data.shortDescription ?? "";
@@ -253,7 +254,8 @@ export async function getPhotoLocations(options: { includeUnpublished?: boolean 
       longDescription: data.longDescription ?? data.editorialReview ?? data.description ?? "",
       heroImage,
       photos: sortedImages.map((image, index) => ({
-        src: uploadedAssetUrl(image.src),
+        sourceSrc: image.src,
+        src: resolveAssetUrl(image.src),
         alt: resolvePhotoAlt(image, name, index),
         w: image.width ?? 1600,
         h: image.height ?? 1200,
@@ -299,7 +301,7 @@ export async function getGear(): Promise<GearData | undefined> {
       ...section,
       items: (section.items ?? []).map((item) => ({
         ...item,
-        image: item.image ? uploadedAssetUrl(item.image) : undefined,
+        image: item.image ? resolveAssetUrl(item.image) : undefined,
       })),
     })),
   };

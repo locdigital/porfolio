@@ -31,9 +31,16 @@ export function SpotifyDesktopPlayer() {
   const toggleQueue = () => player.setIsQueueOpen((open) => !open);
 
   useEffect(() => {
+    sharedSpotifyAudio.warmup();
+  }, []);
+
+  useEffect(() => {
     sharedSpotifyAudio.setOnEnded(() => {
       const idx = SPOTIFY_TRACKS.findIndex((t) => t.id === track.id);
-      const next = SPOTIFY_TRACKS[(idx + 1) % SPOTIFY_TRACKS.length];
+      const nextIdx = player.isShuffle
+        ? Math.floor(Math.random() * SPOTIFY_TRACKS.length)
+        : (idx + 1) % SPOTIFY_TRACKS.length;
+      const next = SPOTIFY_TRACKS[nextIdx];
       if (next) {
         player.selectTrack(next);
         sharedSpotifyAudio.playTrack(next);
@@ -118,7 +125,7 @@ export function SpotifyDesktopPlayer() {
           className="dw-sp-play"
           onClick={() => sharedSpotifyAudio.togglePlay(track)}
           aria-label={audio.isPlaying ? `Pause ${track.title}` : `Play ${track.title}`}
-          title={audio.isPlaying ? "Pause" : "Play preview"}
+          title={audio.isPlaying ? "Pause" : "Play"}
         >
           {audio.isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={22} fill="currentColor" />}
         </button>
@@ -134,8 +141,8 @@ export function SpotifyDesktopPlayer() {
           <Repeat size={18} />
         </button>
       </div>
-      <div className="dw-sp-progress" aria-label={`Playback position ${formatDurationMs(audio.currentTime * 1000)} of ${formatDurationMs(totalMs)}`}>
-        <span>{formatDurationMs(audio.currentTime * 1000)}</span>
+      <div className="dw-sp-progress" aria-label={`Playback position ${audio.currentTime > 0 ? formatDurationMs(audio.currentTime * 1000) : "0:00"} of ${formatDurationMs(totalMs)}`}>
+        <span>{audio.currentTime > 0 ? formatDurationMs(audio.currentTime * 1000) : "0:00"}</span>
         <div
           className="dw-sp-timeline"
           data-widget-scroll

@@ -456,56 +456,10 @@ const metricsSchema = articleSchema({
 
 <script>
   import { onPageLoad } from "../../scripts/page-lifecycle";
+  import { initTocSpy } from "../../scripts/toc-spy";
 
   onPageLoad((signal) => {
-    const toc = document.querySelector<HTMLElement>("[data-formula-toc]");
-    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-formula-section]"));
-    if (!toc || sections.length === 0) return;
-
-    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
-    const linkById = new Map(links.map((link) => [link.dataset.tocLink ?? "", link]));
-
-    const setActive = (id: string) => {
-      links.forEach((link) => {
-        const active = link.dataset.tocLink === id;
-        link.classList.toggle("is-active", active);
-        if (active) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
-      });
-    };
-
-    const initialHash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
-    if (initialHash && linkById.has(initialHash)) {
-      setActive(initialHash);
-    }
-
-    links.forEach((link) => {
-      link.addEventListener("click", () => {
-        const id = link.dataset.tocLink;
-        if (id) setActive(id);
-      }, { signal });
-    });
-
-    const mainScroll = document.getElementById("main-content");
-    const useMainScroll = window.matchMedia("(min-width: 1024px)").matches && mainScroll;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]?.target.id) {
-          setActive(visible[0].target.id);
-        }
-      },
-      {
-        root: useMainScroll ? mainScroll : null,
-        rootMargin: "-10% 0px -70% 0px",
-        threshold: 0,
-      },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    initTocSpy({ tocSelector: "[data-formula-toc]", signal });
   });
 </script>
 

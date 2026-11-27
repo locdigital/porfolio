@@ -3,6 +3,18 @@ export interface MapCoords {
   lng: number;
 }
 
+export function parsePhotoCoords(
+  rawLat?: string | number,
+  rawLng?: string | number,
+): MapCoords | null {
+  const lat = typeof rawLat === "number" ? rawLat : Number(rawLat);
+  const lng = typeof rawLng === "number" ? rawLng : Number(rawLng);
+  if (Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0)) {
+    return { lat, lng };
+  }
+  return null;
+}
+
 const DESTINATION_COORDS: Record<string, MapCoords> = {
   "ha-giang": { lat: 22.8233, lng: 104.9836 },
   "sa-pa": { lat: 22.3364, lng: 103.8438 },
@@ -36,10 +48,7 @@ export function resolvePhotoCoords(
   rawLat?: string | number,
   rawLng?: string | number,
 ): MapCoords | null {
-  const lat = typeof rawLat === "number" ? rawLat : Number(rawLat);
-  const lng = typeof rawLng === "number" ? rawLng : Number(rawLng);
-  if (Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0)) {
-    return { lat, lng };
-  }
+  const explicit = parsePhotoCoords(rawLat, rawLng);
+  if (explicit) return explicit;
   return DESTINATION_COORDS[slug] ?? null;
 }

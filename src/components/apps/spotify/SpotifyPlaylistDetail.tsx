@@ -10,7 +10,6 @@ import {
   Pause,
   Play,
   PlusCircle,
-  Search,
   Shuffle,
 } from "lucide-react";
 import { formatTotalDuration, type SpotifyTrack } from "../../../data/spotify";
@@ -362,11 +361,6 @@ export function SpotifyPlaylistDetail({
               </div>
             )}
           </div>
-        </div>
-
-        <div className="flex items-center gap-3 text-xs text-[#b3b3b3]">
-          <Search size={15} aria-hidden="true" />
-          <span>Custom order</span>
         </div>
       </div>
 

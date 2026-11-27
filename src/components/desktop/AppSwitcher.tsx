@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import type { AppId, DockApplication } from "../dock/dock.config";
 
 interface AppSwitcherProps {
@@ -20,30 +19,6 @@ export function AppSwitcher({
   onCommit,
   onClose,
 }: AppSwitcherProps) {
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault();
-        onSelectIndex((selectedIndex + 1) % apps.length);
-      } else if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        onSelectIndex((selectedIndex - 1 + apps.length) % apps.length);
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        const app = apps[selectedIndex];
-        if (app) onCommit(app.id);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [apps, isOpen, onClose, onCommit, onSelectIndex, selectedIndex]);
-
   if (!isOpen) return null;
 
   const selectedApp = apps[selectedIndex] ?? apps[0];

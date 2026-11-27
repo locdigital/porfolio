@@ -7,6 +7,7 @@ import {
   type DockApplication,
   type DockPosition,
 } from "./dock.config";
+import { AssistiveTouch } from "./AssistiveTouch";
 import { DockItem } from "./DockItem";
 import "./dock.styles.css";
 
@@ -20,6 +21,8 @@ export interface DockProps {
   onSelectApp?: (id: AppId) => void;
   onPinApp?: (id: AppId) => void;
   onTogglePinMode?: () => void;
+  onOpenSwitcher?: () => void;
+  onCloseAllApps?: () => void;
   onQuitApp?: (id: AppId) => void;
   className?: string;
 }
@@ -29,20 +32,23 @@ export function Dock({
   position = "left",
   activeApp = null,
   runningApps = [],
-  pinnedApps = [],
+  pinnedApps: _pinnedApps = [],
   isPinMode = false,
   onSelectApp,
-  onPinApp,
+  onPinApp: _onPinApp,
   onTogglePinMode,
+  onOpenSwitcher,
+  onCloseAllApps,
   onQuitApp,
   className = "",
 }: DockProps) {
   const visibleApps = useMemo(() => apps.filter((app) => app.enabled), [apps]);
   const [isCompact, setIsCompact] = useState(false);
   const effectivePosition: DockPosition = isCompact ? "bottom" : position;
-  const [pointerPos, setPointerPos] = useState<number | null>(null);
-  const slotRefs = useRef<Map<AppId, HTMLDivElement>>(new Map());
-  const [scales, setScales] = useState<Record<string, number>>({});
+  const buttonRefs = useRef<Map<AppId, HTMLButtonElement>>(new Map());
+  const centersRef = useRef<Map<AppId, number>>(new Map());
+  const rafRef = useRef<number | null>(null);
+  const pendingPointerRef = useRef<{ x: number; y: number } | null>(null);
   const [contextMenu, setContextMenu] = useState<{
     id: AppId;
     x: number;
@@ -102,68 +108,107 @@ export function Dock({
     [effectivePosition],
   );
 
-  const registerSlotRef = useCallback((id: AppId, el: HTMLDivElement | null) => {
-    if (el) slotRefs.current.set(id, el);
-    else slotRefs.current.delete(id);
+  const registerButtonRef = useCallback((id: AppId, el: HTMLButtonElement | null) => {
+    if (el) buttonRefs.current.set(id, el);
+    else buttonRefs.current.delete(id);
   }, []);
 
-  const updateScales = useCallback(
+  const cacheSlotCenters = useCallback(() => {
+    centersRef.current.clear();
+    for (const app of visibleApps) {
+      const btn = buttonRefs.current.get(app.id);
+      const slot = btn?.parentElement;
+      if (!slot) continue;
+      const rect = slot.getBoundingClientRect();
+      centersRef.current.set(
+        app.id,
+        effectivePosition === "left" ? rect.top + rect.height / 2 : rect.left + rect.width / 2,
+      );
+    }
+  }, [effectivePosition, visibleApps]);
+
+  const applyMagnification = useCallback(
     (clientX: number, clientY: number) => {
       if (typeof window === "undefined") return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       if (window.innerWidth < 1024) return;
+      if (centersRef.current.size === 0) cacheSlotCenters();
 
       const radius = DEFAULT_DOCK_MOTION.influenceRadius;
       const maxBoost = DEFAULT_DOCK_MOTION.maxScale - 1;
-      const next: Record<string, number> = {};
+      const cursor = effectivePosition === "left" ? clientY : clientX;
 
       for (const app of visibleApps) {
-        const el = slotRefs.current.get(app.id);
-        if (!el) {
-          next[app.id] = 1;
-          continue;
-        }
-        const rect = el.getBoundingClientRect();
-        const center = position === "left" ? rect.top + rect.height / 2 : rect.left + rect.width / 2;
-        const cursor = position === "left" ? clientY : clientX;
+        const btn = buttonRefs.current.get(app.id);
+        const center = centersRef.current.get(app.id);
+        if (!btn || center === undefined) continue;
         const dist = Math.abs(cursor - center);
-        if (dist >= radius) {
-          next[app.id] = 1;
-        } else {
-          // Smooth Gaussian falloff
+        let scale = 1;
+        if (dist < radius) {
           const normalized = dist / radius;
           const factor = Math.exp(-3.2 * normalized * normalized);
-          next[app.id] = Number((1 + maxBoost * factor).toFixed(3));
+          scale = Number((1 + maxBoost * factor).toFixed(3));
         }
+        const offset = scale > 1 ? Math.round((scale - 1) * 14) : 0;
+        btn.style.transform =
+          effectivePosition === "left"
+            ? `translate3d(${offset}px, 0, 0) scale(${scale})`
+            : `translate3d(0, ${-offset}px, 0) scale(${scale})`;
       }
-      setScales(next);
     },
-    [position, visibleApps],
+    [cacheSlotCenters, effectivePosition, visibleApps],
   );
+
+  const handlePointerEnter = useCallback(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      cacheSlotCenters();
+    }
+  }, [cacheSlotCenters]);
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (e.pointerType === "touch") return;
-      setPointerPos(position === "left" ? e.clientY : e.clientX);
-      updateScales(e.clientX, e.clientY);
+      pendingPointerRef.current = { x: e.clientX, y: e.clientY };
+      if (rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(() => {
+          rafRef.current = null;
+          const pt = pendingPointerRef.current;
+          if (pt) applyMagnification(pt.x, pt.y);
+        });
+      }
     },
-    [position, updateScales],
+    [applyMagnification],
   );
 
   const handlePointerLeave = useCallback(() => {
-    setPointerPos(null);
-    setScales({});
+    pendingPointerRef.current = null;
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    centersRef.current.clear();
+    for (const btn of buttonRefs.current.values()) {
+      btn.style.transform = "";
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   if (visibleApps.length === 0) return null;
 
   return (
+    <>
     <nav
       className={`macos-dock-anchor macos-dock-anchor--${effectivePosition} ${className}`.trim()}
       aria-label="Applications Dock"
     >
       <div
         className={`macos-dock macos-dock--${effectivePosition}`}
+        onPointerEnter={handlePointerEnter}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
       >
@@ -172,12 +217,11 @@ export function Dock({
             key={app.id}
             app={app}
             position={effectivePosition}
-            scale={pointerPos !== null ? (scales[app.id] ?? 1) : 1}
             isActive={activeApp === app.id}
             isRunning={runningApps.includes(app.id)}
             onSelect={onSelectApp}
             onContextMenu={handleItemContextMenu}
-            registerSlotRef={registerSlotRef}
+            registerButtonRef={registerButtonRef}
           />
         ))}
       </div>
@@ -237,6 +281,16 @@ export function Dock({
           document.body,
         )}
     </nav>
+
+    {!isCompact && onTogglePinMode && (
+      <AssistiveTouch
+        isPinMode={isPinMode}
+        onTogglePinMode={onTogglePinMode}
+        onOpenSwitcher={onOpenSwitcher}
+        onCloseAll={onCloseAllApps}
+      />
+    )}
+    </>
   );
 }
 

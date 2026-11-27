@@ -5,9 +5,7 @@ export default {
   content: {
     files: [
       './src/{layouts,pages,components}/**/*.{astro,tsx}',
-      '!./src/components/about/PhotoStackShowcase.astro',
-      '!./src/components/growth/GrowthOutcomesChart.astro',
-      '!./src/components/ui/{demo,input,sss,toggle,GlassFolder}.tsx',
+      '!./src/components/ui/GlassFolder.tsx',
     ],
     transform: {
       astro: (content) =>

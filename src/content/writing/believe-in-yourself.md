@@ -6,7 +6,7 @@ date: 2026-11-12
 order: 0
 sample: false
 draft: false
-linkable: false
+linkable: true
 coverImage:
   src: "/images/writing/believe-in-yourself.webp"
   alt: "Cute chibi anime pixel-art illustration for Believe in Yourself based on Pine Trunks Over Distant Ridges in Đà Lạt"

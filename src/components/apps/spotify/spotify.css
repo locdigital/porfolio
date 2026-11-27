@@ -329,6 +329,9 @@
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  contain: layout style;
   background: var(--spotify-panel);
   border-radius: var(--spotify-radius-md);
   scrollbar-width: auto;
@@ -413,7 +416,6 @@
 .spotify-cat-pill.is-active {
   background: #ffffff;
   color: #000000;
-  font-weight: 600;
 }
 
 /* Hero Split Row: Getting Started + Popular Albums/Singles */
@@ -475,7 +477,7 @@
 }
 
 .spotify-gs-btn:active {
-  filter: blur(2px);
+  transform: scale(0.97);
 }
 
 .spotify-gs-link {
@@ -682,7 +684,7 @@
 }
 
 .spotify-card-play:active {
-  filter: blur(2px);
+  transform: scale(0.95);
 }
 
 .spotify-card-title {
@@ -820,7 +822,7 @@
 }
 
 .spotify-play-circle:active {
-  filter: blur(2px);
+  transform: scale(0.95);
 }
 
 .spotify-action-icon {
@@ -983,7 +985,6 @@
 .spotify-filter-pill.is-active {
   background: #ffffff;
   color: #000000;
-  font-weight: 600;
 }
 
 .spotify-empty {
@@ -1082,7 +1083,7 @@
 }
 
 .spotify-play-main:active {
-  filter: blur(2px);
+  transform: scale(0.94);
 }
 
 .spotify-player-progress {
@@ -1247,7 +1248,6 @@
   .spotify-mobile-nav-pill.is-active {
     background: var(--spotify-green);
     color: #000000;
-    font-weight: 700;
   }
   .spotify-topbar {
     grid-template-columns: auto minmax(0, 1fr);

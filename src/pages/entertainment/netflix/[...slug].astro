@@ -1,0 +1,30 @@
+---
+import DashboardLayout from "../../../layouts/DashboardLayout.astro";
+import { getNetflixStaticRouteEntries, NETFLIX_BASE_PATH } from "../../../lib/app-routes";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return getNetflixStaticRouteEntries().map((entry) => ({
+    params: { slug: entry.slug },
+    props: entry,
+  }));
+}
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+}
+
+const { slug, title, description } = Astro.props;
+---
+
+<DashboardLayout
+  title={title}
+  description={description}
+  currentPath={`${NETFLIX_BASE_PATH}/${slug}`}
+  noindex={true}
+>
+  <div class="app-route-fallback" aria-hidden="true"></div>
+</DashboardLayout>

@@ -61,8 +61,10 @@ export function getTileGeometryStyle(tile: WindowTileRect): {
 export type WindowAction =
   | { type: "OPEN_APP"; id: AppId }
   | { type: "CLOSE_APP"; id: AppId }
+  | { type: "CLOSE_ALL_APPS" }
   | { type: "MINIMIZE_APP"; id: AppId }
   | { type: "TOGGLE_MAXIMIZE_APP"; id: AppId }
+  | { type: "SET_MAXIMIZED_APP"; id: AppId; isMaximized: boolean }
   | { type: "TOGGLE_PIN_APP"; id: AppId }
   | { type: "TOGGLE_PIN_MODE" }
   | { type: "TILE_WINDOW"; id: AppId; preset: WindowTilePreset }
@@ -83,17 +85,48 @@ const DEFAULT_OFFSETS: Record<AppId, { x: number; y: number }> = {
 
 export function getDefaultAppForPath(pathname: string): AppId {
   pathname = pathname.replace(/\/+$/, "") || "/";
-  if (pathname === "/entertainment/netflix") return "netflix";
-  if (pathname === "/music/spotify") return "spotify";
-  if (pathname === "/color-lab/nikon-recipes") return "photoshop";
+  if (pathname === "/entertainment/netflix" || pathname.startsWith("/entertainment/netflix/")) {
+    return "netflix";
+  }
+  if (pathname === "/music/spotify" || pathname.startsWith("/music/spotify/")) {
+    return "spotify";
+  }
+  if (pathname === "/color-lab/nikon-recipes" || pathname.startsWith("/color-lab/nikon-recipes/")) {
+    return "photoshop";
+  }
   return pathname === "/photos" || pathname.startsWith("/photos/") ? "photos" : "workspace";
 }
 
-// Photos opens as an independent floating window when not on a /photos route,
-// so it can run alongside Workspace without replacing the host document.
+// Floating apps (Photos, Netflix, Spotify, Photoshop) open as independent windows
+// so they can run alongside Workspace without navigating away or blanking the host document.
 export function getDockNavigationPath(id: AppId, pathname: string): string | null {
-  if (id === "photos") return null;
+  if (id === "photos" || id === "netflix" || id === "spotify" || id === "photoshop") {
+    return null;
+  }
   return getDefaultAppForPath(pathname) === id ? null : getAppRoute(id);
+}
+
+/**
+ * Compute the URL to display in the address bar for the currently active window
+ * without triggering a full Astro navigation (preserving multi-window state).
+ */
+export function getSyncedUrlForActiveApp(
+  activeApp: AppId | null,
+  hostPathname: string,
+  workspaceUrl: string,
+  appUrls?: Partial<Record<AppId, string>>,
+): string {
+  const hostApp = getDefaultAppForPath(hostPathname);
+  if (activeApp === null) {
+    return hostApp === "photos" ? appUrls?.photos || hostPathname : workspaceUrl || "/";
+  }
+  if (activeApp === "workspace") {
+    return workspaceUrl || "/";
+  }
+  if (activeApp === "photos") {
+    return appUrls?.photos || (hostApp === "photos" ? hostPathname : getAppRoute("photos"));
+  }
+  return appUrls?.[activeApp] || getAppRoute(activeApp);
 }
 
 export function createInitialWindowState(pathname = "/"): WindowManagerState {
@@ -152,25 +185,35 @@ function findNextActiveApp(windows: Record<AppId, WindowInstance>, excludeId?: A
   return best ? best.id : null;
 }
 
+function compactWindowZIndices(state: WindowManagerState): WindowManagerState {
+  if (state.topZ < 25) return state;
+  const ordered = Object.values(state.windows).sort((a, b) => a.zIndex - b.zIndex);
+  return {
+    ...state,
+    topZ: ordered.length,
+    windows: Object.fromEntries(ordered.map((win, index) => [
+      win.id, { ...win, zIndex: index + 1 },
+    ])) as Record<AppId, WindowInstance>,
+  };
+}
+
 export function windowManagerReducer(
   state: WindowManagerState,
   action: WindowAction,
 ): WindowManagerState {
   // Keep app layers below the Dock (60) and switcher. Preserve relative order
   // while reclaiming ranks, rather than letting repeated selections grow forever.
-  if (state.topZ >= 25) {
-    const ordered = Object.values(state.windows).sort((a, b) => a.zIndex - b.zIndex);
-    state = {
-      ...state,
-      topZ: ordered.length,
-      windows: Object.fromEntries(ordered.map((win, index) => [
-        win.id, { ...win, zIndex: index + 1 },
-      ])) as Record<AppId, WindowInstance>,
-    };
-  }
+  state = compactWindowZIndices(state);
   switch (action.type) {
     case "RESTORE_STATE": {
-      return action.state;
+      const maxWindowZ = Math.max(
+        0,
+        ...Object.values(action.state.windows).map((win) => (Number.isFinite(win.zIndex) ? win.zIndex : 0)),
+      );
+      return compactWindowZIndices({
+        ...action.state,
+        topZ: Math.max(Number.isFinite(action.state.topZ) ? action.state.topZ : 0, maxWindowZ),
+      });
     }
 
     case "OPEN_APP": {
@@ -186,6 +229,7 @@ export function windowManagerReducer(
             ...current,
             isOpen: true,
             isMinimized: false,
+            isPinned: false,
             zIndex: nextZ,
           },
         },
@@ -195,7 +239,9 @@ export function windowManagerReducer(
     case "FOCUS_APP": {
       const current = state.windows[action.id];
       if (!current.isOpen) return state;
-      if (state.activeApp === action.id && !current.isMinimized) return state;
+      if (state.activeApp === action.id && !current.isMinimized && current.zIndex >= state.topZ) {
+        return state;
+      }
       const nextZ = state.topZ + 1;
       return {
         ...state,
@@ -214,6 +260,7 @@ export function windowManagerReducer(
 
     case "CLOSE_APP": {
       const current = state.windows[action.id];
+      const defaultOffset = DEFAULT_OFFSETS[action.id];
       const updatedWindows: Record<AppId, WindowInstance> = {
         ...state.windows,
         [action.id]: {
@@ -223,8 +270,8 @@ export function windowManagerReducer(
           isMaximized: false,
           isPinned: false,
           tile: null,
-          offsetX: 0,
-          offsetY: 0,
+          offsetX: defaultOffset.x,
+          offsetY: defaultOffset.y,
         },
       };
       return {
@@ -237,6 +284,28 @@ export function windowManagerReducer(
       };
     }
 
+    case "CLOSE_ALL_APPS": {
+      const updatedWindows = {} as Record<AppId, WindowInstance>;
+      for (const id of ALL_APP_IDS) {
+        const defaultOffset = DEFAULT_OFFSETS[id];
+        updatedWindows[id] = {
+          ...state.windows[id],
+          isOpen: false,
+          isMinimized: false,
+          isMaximized: false,
+          isPinned: false,
+          tile: null,
+          offsetX: defaultOffset.x,
+          offsetY: defaultOffset.y,
+        };
+      }
+      return {
+        ...state,
+        windows: updatedWindows,
+        activeApp: null,
+      };
+    }
+
     case "MINIMIZE_APP": {
       const current = state.windows[action.id];
       if (!current.isOpen) return state;
@@ -245,8 +314,6 @@ export function windowManagerReducer(
         [action.id]: {
           ...current,
           isMinimized: true,
-          isMaximized: false,
-          tile: null,
         },
       };
       return {
@@ -272,7 +339,30 @@ export function windowManagerReducer(
           [action.id]: {
             ...current,
             isMinimized: false,
-            isMaximized: !current.isMaximized,
+            isMaximized: current.tile || current.isPinned ? true : !current.isMaximized,
+            isPinned: false,
+            tile: null,
+            zIndex: nextZ,
+          },
+        },
+      };
+    }
+
+    case "SET_MAXIMIZED_APP": {
+      const current = state.windows[action.id];
+      if (!current.isOpen) return state;
+      const nextZ = state.topZ + 1;
+      return {
+        ...state,
+        topZ: nextZ,
+        activeApp: action.id,
+        windows: {
+          ...state.windows,
+          [action.id]: {
+            ...current,
+            isMinimized: false,
+            isMaximized: action.isMaximized,
+            isPinned: false,
             tile: null,
             zIndex: nextZ,
           },

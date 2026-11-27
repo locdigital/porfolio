@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Bookmark, Check, Copy, ExternalLink, Search, Sliders } from "lucide-react";
 import {
   NIKON_EDITORIAL_TAGS,
@@ -6,15 +6,42 @@ import {
   NIKON_RECIPES,
   type NikonRecipe,
 } from "../../data/nikon-recipes";
+import { getNikonUrl, parseNikonUrl } from "../../lib/app-routes";
 
 const FAVORITES_KEY = "nikon-recipes-favorites-v1";
 
-export function NikonRecipesApp() {
+interface NikonRecipesAppProps {
+  initialUrl?: string;
+  onUrlChange?: (url: string) => void;
+}
+
+export function NikonRecipesApp({ initialUrl, onUrlChange }: NikonRecipesAppProps = {}) {
+  const initialRoute = useMemo(() => {
+    const raw =
+      initialUrl ??
+      (typeof window !== "undefined"
+        ? `${window.location.pathname}${window.location.search}${window.location.hash}`
+        : "");
+    return parseNikonUrl(raw);
+  }, [initialUrl]);
+
   const [query, setQuery] = useState("");
-  const [selectedTag, setSelectedTag] = useState<string>("All");
-  const [selectedRecipe, setSelectedRecipe] = useState<NikonRecipe>(NIKON_RECIPES[0]);
+  const [selectedTag, setSelectedTag] = useState<string>(initialRoute.tag);
+  const [selectedRecipe, setSelectedRecipe] = useState<NikonRecipe>(
+    () => NIKON_RECIPES.find((r) => r.id === initialRoute.recipeId) ?? NIKON_RECIPES[0],
+  );
   const [favorites, setFavorites] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const onUrlChangeRef = useRef(onUrlChange);
+  onUrlChangeRef.current = onUrlChange;
+
+  useEffect(() => {
+    const nextUrl = getNikonUrl({
+      recipeId: selectedRecipe.id,
+      tag: selectedTag,
+    });
+    onUrlChangeRef.current?.(nextUrl);
+  }, [selectedRecipe.id, selectedTag]);
 
   useEffect(() => {
     try {

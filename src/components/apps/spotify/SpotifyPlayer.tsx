@@ -30,10 +30,16 @@ interface SpotifyPlayerProps {
   repeatMode: RepeatMode;
   onCycleRepeat: () => void;
   onPrev: () => void;
-  onNext: () => void;
+  onNext: (fromAutoEnd?: boolean) => void;
   isQueueOpen: boolean;
   onToggleQueue: () => void;
   onSelectTrack: (track: SpotifyTrack) => void;
+  onSyncTrack?: (track: SpotifyTrack) => void;
+}
+
+function formatCurrentTime(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds <= 0) return "0:00";
+  return formatDurationMs(seconds * 1000);
 }
 
 export function SpotifyPlayer({
@@ -49,21 +55,23 @@ export function SpotifyPlayer({
   isQueueOpen,
   onToggleQueue,
   onSelectTrack,
+  onSyncTrack,
 }: SpotifyPlayerProps) {
   const audio = useSharedSpotifyAudio();
   const prevTrackIdRef = useRef(selectedTrack.id);
 
-  // On mount, if another track is already playing in the shared audio engine, sync UI to it
+  // Pre-warm YouTube full-song engine & sync to any track already active in the shared engine
   useEffect(() => {
+    sharedSpotifyAudio.warmup();
     const active = SPOTIFY_TRACKS.find((t) => t.id === sharedSpotifyAudio.getSnapshot().trackId);
     if (active && active.id !== selectedTrack.id) {
       prevTrackIdRef.current = active.id;
-      onSelectTrack(active);
+      (onSyncTrack ?? onSelectTrack)(active);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // When user picks a new track inside SpotifyApp, play it on the shared engine
+  // When user steps Prev/Next or picks a new track inside SpotifyApp, play it on the shared engine
   useEffect(() => {
     if (prevTrackIdRef.current !== selectedTrack.id) {
       prevTrackIdRef.current = selectedTrack.id;
@@ -78,25 +86,65 @@ export function SpotifyPlayer({
 
   useEffect(() => {
     sharedSpotifyAudio.setOnEnded(() => {
-      onNext();
+      onNext(true);
     });
     return () => sharedSpotifyAudio.setOnEnded(null);
   }, [onNext]);
 
+  const handlePrevClick = () => {
+    // Match Spotify: if more than 3s into the track, restart from 0:00; otherwise go to previous track
+    if (sharedSpotifyAudio.getSnapshot().currentTime > 3) {
+      sharedSpotifyAudio.seek(0);
+      return;
+    }
+    onPrev();
+  };
+
   const activeTrack =
     SPOTIFY_TRACKS.find((t) => t.id === audio.trackId) ?? selectedTrack;
 
-  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+  const updateSeekFromClientX = (el: HTMLElement, clientX: number) => {
     if (!audio.duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const rect = el.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     sharedSpotifyAudio.seek(ratio * audio.duration);
   };
 
-  const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  const handleSeekPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    updateSeekFromClientX(e.currentTarget, e.clientX);
+  };
+
+  const handleSeekPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.buttons !== 1) return;
+    updateSeekFromClientX(e.currentTarget, e.clientX);
+  };
+
+  const handleSeekKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!audio.duration) return;
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      sharedSpotifyAudio.seek(audio.currentTime + 5);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      sharedSpotifyAudio.seek(audio.currentTime - 5);
+    }
+  };
+
+  const updateVolumeFromClientX = (el: HTMLElement, clientX: number) => {
+    const rect = el.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     sharedSpotifyAudio.setVolume(ratio);
+  };
+
+  const handleVolumePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    updateVolumeFromClientX(e.currentTarget, e.clientX);
+  };
+
+  const handleVolumePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.buttons !== 1) return;
+    updateVolumeFromClientX(e.currentTarget, e.clientX);
   };
 
   const progressPct =
@@ -217,7 +265,7 @@ export function SpotifyPlayer({
             <button
               type="button"
               className="spotify-ctrl-btn"
-              onClick={onPrev}
+              onClick={handlePrevClick}
               aria-label="Previous track"
               title="Previous"
             >
@@ -239,7 +287,7 @@ export function SpotifyPlayer({
             <button
               type="button"
               className="spotify-ctrl-btn"
-              onClick={onNext}
+              onClick={() => onNext(false)}
               aria-label="Next track"
               title="Next"
             >
@@ -247,17 +295,18 @@ export function SpotifyPlayer({
             </button>
             <button
               type="button"
-              className={`spotify-ctrl-btn${repeatMode !== "off" ? " is-active" : ""}`}
+              className={`spotify-ctrl-btn${repeatMode === "one" ? " is-active" : ""}`}
               onClick={onCycleRepeat}
-              aria-label={`Repeat mode: ${repeatMode}`}
-              title={`Repeat: ${repeatMode}`}
+              aria-label={repeatMode === "one" ? "Disable repeat" : "Enable repeat"}
+              aria-pressed={repeatMode === "one"}
+              title={repeatMode === "one" ? "Repeat: On" : "Repeat: Off"}
             >
               <Repeat size={15} aria-hidden="true" />
             </button>
           </div>
 
           <div className="spotify-player-progress">
-            <span>{formatDurationMs(audio.currentTime * 1000)}</span>
+            <span>{formatCurrentTime(audio.currentTime)}</span>
             <div
               className="spotify-progress-bar"
               role="slider"
@@ -266,8 +315,10 @@ export function SpotifyPlayer({
               aria-valuemax={Math.round(audio.duration)}
               aria-valuenow={Math.round(audio.currentTime)}
               tabIndex={0}
-              style={{ cursor: "pointer" }}
-              onClick={handleSeek}
+              style={{ cursor: "pointer", touchAction: "none" }}
+              onPointerDown={handleSeekPointerDown}
+              onPointerMove={handleSeekPointerMove}
+              onKeyDown={handleSeekKeyDown}
             >
               <div
                 className="spotify-progress-fill"
@@ -307,8 +358,9 @@ export function SpotifyPlayer({
             </button>
             <div
               className="spotify-volume-bar"
-              style={{ cursor: "pointer" }}
-              onClick={handleVolumeClick}
+              style={{ cursor: "pointer", touchAction: "none" }}
+              onPointerDown={handleVolumePointerDown}
+              onPointerMove={handleVolumePointerMove}
               title={`Volume ${Math.round((audio.isMuted ? 0 : audio.volume) * 100)}%`}
             >
               <div

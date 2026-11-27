@@ -1,0 +1,13 @@
+---
+import GrowthPillarPage from "../../components/growth/GrowthPillarPage.astro";
+import { getGrowthPillarBySlug } from "../../data/growth-pillars";
+
+export const prerender = true;
+
+const pillar = getGrowthPillarBySlug("automation");
+if (!pillar) {
+  throw new Error("Missing growth pillar config for automation");
+}
+---
+
+<GrowthPillarPage pillar={pillar} />

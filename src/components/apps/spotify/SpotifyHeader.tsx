@@ -130,11 +130,13 @@ export function SpotifyHeader({
           title="Phuc Loc"
         >
           <img
-            src="/images/about-photographer.png"
+            src="https://assets.loc.digital/media/images/about-photographer.thumb.61b6c4434c1e.webp"
             alt="Phuc Loc"
             className="spotify-avatar-img"
             width={32}
             height={32}
+            loading="lazy"
+            decoding="async"
           />
         </button>
       </div>

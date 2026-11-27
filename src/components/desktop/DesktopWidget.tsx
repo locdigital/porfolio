@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Maximize2, Camera } from "lucide-react";
 import type { AppId } from "../dock/dock.config";
 import { SpotifyDesktopPlayer } from "./SpotifyDesktopPlayer";
@@ -81,20 +80,12 @@ export function DesktopWidget({ id, title, zIndex, index, onFocus, onUnpin }: De
 
   return (
     <aside ref={widgetRef} className={`desktop-widget desktop-widget--${id}`} style={{ zIndex, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }} onPointerDown={handlePointerDown} onFocus={onFocus} onDoubleClick={e => { if (!(e.target as HTMLElement).closest("button, a, [data-widget-scroll]")) onUnpin(); }} aria-label={`${title} widget`}>
-      <motion.div
-        style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
-        initial={{ opacity: 0, scale: 0.92, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 240,
-          damping: 22,
-          mass: 0.9,
-          delay: index * 0.06,
-        }}
+      <div
+        className="dw-widget-motion"
+        style={{ animationDelay: `${index * 45}ms` }}
       >
         {renderBody()}
-      </motion.div>
+      </div>
     </aside>
   );
 }

@@ -1,0 +1,13 @@
+---
+import GrowthPillarPage from "../../components/growth/GrowthPillarPage.astro";
+import { getGrowthPillarBySlug } from "../../data/growth-pillars";
+
+export const prerender = true;
+
+const pillar = getGrowthPillarBySlug("google-ads");
+if (!pillar) {
+  throw new Error("Missing growth pillar config for google-ads");
+}
+---
+
+<GrowthPillarPage pillar={pillar} />

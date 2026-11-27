@@ -1,37 +1,6 @@
-import type { ImageMetadata, ImageOutputFormat, ImageQuality } from "astro";
-import { getImage } from "astro:assets";
+import type { ImageOutputFormat, ImageQuality } from "astro";
 import type { Photo } from "./locations";
-import { uploadedAssetUrl } from "./uploadthing-assets";
-import uploadManifest from "../../data/uploadthing-images.json";
-
-// Imported metadata lets Astro emit hashed, immutable WebP files during prerendering.
-// Reuse local originals when available; UploadThing remains the source for other images.
-const localImages = import.meta.glob<{ default: ImageMetadata }>(
-  [
-    "/public/**/*.webp",
-    "/public/uploads/**/*.{avif,jpeg,jpg,png}",
-    "/public/instagram_workflowspace/**/*.{avif,jpeg,jpg,png}",
-  ],
-);
-const localUploads = new Map<string, string>();
-for (const [source, url] of Object.entries(uploadManifest.images)) {
-  const key = `/${source}`;
-  if (localImages[key]) localUploads.set(url, key);
-}
-const imageSources = new Map<string, Promise<ImageMetadata | string>>();
-
-function resolveImageSource(src: string): Promise<ImageMetadata | string> {
-  let image = imageSources.get(src);
-  if (!image) {
-    const key = src.startsWith("/")
-      ? `/public${decodeURIComponent(src.split("?")[0])}`
-      : localUploads.get(src);
-    const load = key && localImages[key];
-    image = load ? load().then((module) => module.default) : Promise.resolve(src);
-    imageSources.set(src, image);
-  }
-  return image;
-}
+import { buildR2ResponsiveImage, resolveAssetUrl } from "./assets";
 
 type OptimizePhotoOptions = {
   previewWidth?: number;
@@ -50,8 +19,12 @@ export type OptimizedPhoto = Photo & {
   originalSrc: string;
   previewSrc: string;
   previewSrcSet: string;
+  /** Optional AVIF srcset when pre-generated R2 AVIF variants exist */
+  avifSrcSet?: string;
   /** WebP srcset for <picture> fallback (only set when withWebpFallback: true) */
   webpSrcSet?: string;
+  /** Lightweight base64 blur placeholder when present in the R2 manifest */
+  blurDataURL?: string;
   previewSizes: string;
   previewWidth: number;
   previewHeight: number;
@@ -75,28 +48,51 @@ type ResponsiveImageOptions = {
   quality?: ImageQuality;
 };
 
-/** Keep originals for downloads/lightboxes; send a display-sized image to the page. */
+export interface ResponsiveImageResult {
+  src: string;
+  srcset?: string;
+  avifSrcSet?: string;
+  blurDataURL?: string;
+  width: number;
+  height: number;
+  sizes?: string;
+}
+
+/**
+ * Pure dual-CDN image delivery pipeline (zero duplicate raster assets emitted into `_astro/`):
+ * 1. Tier 1 — Cloudflare R2 (`assets.loc.digital`): pre-generated 320w thumbnails + responsive
+ *    480w/768w/1200w/1920w WebP/AVIF variants with immutable caching.
+ * 2. Tier 2 — UploadThing (`65wv0vnolo.ufs.sh`): served directly from UploadThing CDN without
+ *    build-time re-downloading or duplicating onto Vercel.
+ * 3. Tier 3 — Local static UI icons/logos (`/assets/logos/*`, `/assets/dock/*`).
+ */
 export async function responsiveImageAttributes(
   source: string,
-  { width, height, widths = [320, 480, 720, 960, 1280], sizes, quality = 75 }: ResponsiveImageOptions,
-) {
-  const src = uploadedAssetUrl(source);
-  const canOptimize = src.startsWith("/") || src.startsWith("https://65wv0vnolo.ufs.sh/");
-  if (!canOptimize) return { src, width, height, sizes };
+  { width, height, widths = [480, 768, 1200, 1920], sizes }: ResponsiveImageOptions,
+): Promise<ResponsiveImageResult> {
+  // Tier 1: Pre-generated responsive variants verified on Cloudflare R2.
+  const r2Responsive = buildR2ResponsiveImage(source, { width, height, widths, sizes });
+  if (r2Responsive) {
+    const useThumb = Boolean(r2Responsive.thumbnailSrc && width <= 360);
+    const thumbSrc = r2Responsive.thumbnailSrc;
+    const srcset =
+      useThumb && thumbSrc && !r2Responsive.srcset.includes(thumbSrc)
+        ? `${thumbSrc} 320w, ${r2Responsive.srcset}`
+        : r2Responsive.srcset;
+    return {
+      src: useThumb && thumbSrc ? thumbSrc : r2Responsive.src,
+      srcset,
+      avifSrcSet: r2Responsive.avifSrcSet,
+      blurDataURL: r2Responsive.blurDataURL,
+      width: r2Responsive.width,
+      height: r2Responsive.height,
+      sizes: r2Responsive.sizes,
+    };
+  }
 
-  const sourceImage = await resolveImageSource(src);
-  const outputWidths = typeof sourceImage === "string"
-    ? widths
-    : [...new Set(widths.map((candidate) => Math.min(candidate, sourceImage.width)))];
-  const image = await getImage({
-    src: sourceImage,
-    width: typeof sourceImage === "string" ? width : Math.min(width, sourceImage.width),
-    ...(typeof sourceImage === "string" ? { height } : {}),
-    widths: outputWidths,
-    quality,
-    format: "webp",
-  });
-  return { src: image.src, srcset: image.srcSet.attribute, width, height, sizes };
+  // Tier 2 (UploadThing CDN) & Tier 3 (local static UI assets): pass through cleanly with zero Vercel bloat.
+  const resolved = resolveAssetUrl(source, { preferredWidth: width });
+  return { src: resolved, width, height, sizes };
 }
 
 export async function optimizePhoto(
@@ -106,10 +102,10 @@ export async function optimizePhoto(
   const originalWidth = photo.w || 1600;
   const originalHeight = photo.h || 1200;
   const width = Math.min(options.previewWidth ?? 960, originalWidth);
-  const height = Math.round(width * originalHeight / originalWidth);
-  const src = uploadedAssetUrl(photo.src);
+  const height = Math.round((width * originalHeight) / originalWidth);
+  const src = resolveAssetUrl(photo.src);
   const previewSizes = options.previewSizes ?? PHOTO_GRID_SIZES;
-  const preview = await responsiveImageAttributes(src, {
+  const preview = await responsiveImageAttributes(photo.src, {
     width,
     height,
     widths: options.previewWidths,
@@ -124,7 +120,9 @@ export async function optimizePhoto(
     originalSrc: photo.src,
     previewSrc: preview.src,
     previewSrcSet: preview.srcset ?? "",
+    avifSrcSet: preview.avifSrcSet,
     webpSrcSet: undefined,
+    blurDataURL: preview.blurDataURL,
     previewSizes,
     previewWidth: width,
     previewHeight: height,

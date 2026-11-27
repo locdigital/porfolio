@@ -133,7 +133,7 @@ function setupWindowControls(signal: AbortSignal) {
   const syncRootClasses = (state: WindowState) => {
     root.classList.toggle("window-closed", state.closed);
     root.classList.toggle("window-minimized", !state.closed && state.minimized);
-    root.classList.toggle("window-maximized", !state.closed && state.maximized);
+    root.classList.toggle("window-maximized", !state.closed && !state.minimized && state.maximized);
   };
 
   const getCurrentState = (): WindowState => ({
@@ -233,45 +233,132 @@ function setupWindowControls(signal: AbortSignal) {
     animation.addEventListener("cancel", cleanup, { once: true });
   };
 
-  closeButton.addEventListener("click", () => {
+  const normalizedApp = app === "photos" ? "photos" : "workspace";
+  const notifyShell = (
+    action: "close" | "minimize" | "restore" | "maximize",
+    extra?: { maximized?: boolean },
+  ) => {
+    window.dispatchEvent(
+      new CustomEvent("desktop:host-window-action", {
+        detail: { action, app: normalizedApp, ...extra },
+      }),
+    );
+  };
+
+  let resetHostGeometry: (() => void) | null = null;
+
+  const titlebar = windowFrame.querySelector<HTMLElement>(".desktop-titlebar");
+  const clearHostTileStyles = (notifyLayout = true) => {
+    if (windowFrame.classList.contains("is-tiled") || windowFrame.classList.contains("is-pinned")) {
+      windowFrame.classList.remove("is-tiled", "is-pinned");
+      windowFrame.style.position = "";
+      windowFrame.style.left = "";
+      windowFrame.style.top = "";
+      windowFrame.style.right = "";
+      windowFrame.style.bottom = "";
+      windowFrame.style.width = "";
+      windowFrame.style.height = "";
+      windowFrame.style.margin = "";
+      if (notifyLayout) {
+        window.dispatchEvent(new CustomEvent("desktop:clear-host-layout"));
+      }
+    }
+  };
+
+  const closeHostWindow = (emitToShell = true) => {
     skipActiveViewTransition();
     cancelWindowAnimation();
+    clearHostTileStyles(false);
+    resetHostGeometry?.();
+    const mainEl = document.getElementById("main-content");
+    if (mainEl) mainEl.scrollTop = 0;
     windowFrame.hidden = true;
     windowFrame.classList.remove("is-minimized", "is-maximized");
     restoreButton.hidden = false;
-    restoreButton.focus();
     syncControls();
     saveState();
-  }, { signal });
+    if (emitToShell) {
+      notifyShell("close");
+    }
+  };
 
-  restoreButton.addEventListener("click", () => {
+  const restoreHostWindow = (emitToShell = true) => {
     skipActiveViewTransition();
     cancelWindowAnimation();
     windowFrame.hidden = false;
+    windowFrame.classList.remove("is-minimized");
     restoreButton.hidden = true;
-    closeButton.focus();
     syncControls();
     saveState();
-  }, { signal });
+    if (emitToShell) {
+      notifyShell("restore");
+    }
+  };
 
-  minimizeButton.addEventListener("click", () => {
+  const minimizeHostWindow = (emitToShell = true) => {
     skipActiveViewTransition();
     cancelWindowAnimation();
-    windowFrame.classList.toggle("is-minimized");
-    if (windowFrame.classList.contains("is-minimized")) {
-      windowFrame.classList.remove("is-maximized");
+    windowFrame.classList.add("is-minimized");
+    syncControls();
+    saveState();
+    if (emitToShell) {
+      notifyShell("minimize");
     }
+  };
+
+  closeButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    closeHostWindow(true);
+  }, { signal });
+
+  restoreButton.addEventListener("click", () => {
+    restoreHostWindow(true);
+    closeButton.focus();
+  }, { signal });
+
+  minimizeButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (windowFrame.classList.contains("is-minimized")) {
+      restoreHostWindow(true);
+    } else {
+      minimizeHostWindow(true);
+    }
+  }, { signal });
+
+  window.addEventListener("desktop:host-command", (event) => {
+    const command = (event as CustomEvent<{ action?: "close" | "minimize" | "restore" }>).detail?.action;
+    if (command === "close") {
+      closeHostWindow(false);
+    } else if (command === "minimize") {
+      minimizeHostWindow(false);
+    } else if (command === "restore") {
+      restoreHostWindow(false);
+    }
+  }, { signal });
+
+  const toggleMaximize = () => {
+    const wasTiledOrPinned =
+      windowFrame.classList.contains("is-tiled") || windowFrame.classList.contains("is-pinned");
+    animateFrameChange(() => {
+      clearHostTileStyles();
+      windowFrame.classList.remove("is-minimized");
+      if (wasTiledOrPinned) {
+        windowFrame.classList.add("is-maximized");
+      } else {
+        windowFrame.classList.toggle("is-maximized");
+      }
+    });
+    notifyShell("maximize", { maximized: windowFrame.classList.contains("is-maximized") });
+  };
+  window.addEventListener("desktop:unmaximize-host", () => {
+    if (!windowFrame.classList.contains("is-maximized") && !root.classList.contains("window-maximized")) {
+      return;
+    }
+    cancelWindowAnimation();
+    windowFrame.classList.remove("is-maximized");
     syncControls();
     saveState();
   }, { signal });
-
-  const titlebar = windowFrame.querySelector<HTMLElement>(".desktop-titlebar");
-  const toggleMaximize = () => {
-    animateFrameChange(() => {
-      windowFrame.classList.remove("is-minimized");
-      windowFrame.classList.toggle("is-maximized");
-    });
-  };
   titlebar?.addEventListener("dblclick", (event) => {
     if (event.target instanceof Element && event.target.closest("button, a, input, select, textarea")) return;
     event.preventDefault();
@@ -308,6 +395,20 @@ function setupWindowControls(signal: AbortSignal) {
           sessionStorage.setItem(sizeStorageKey, JSON.stringify({ width, height }));
         } catch {}
       }
+    };
+
+    resetHostGeometry = () => {
+      offsetX = 0;
+      offsetY = 0;
+      customSize = null;
+      windowFrame.style.removeProperty("--window-offset-x");
+      windowFrame.style.removeProperty("--window-offset-y");
+      windowFrame.style.removeProperty("--window-width");
+      windowFrame.style.removeProperty("--window-height");
+      try {
+        sessionStorage.removeItem(offsetStorageKey);
+        sessionStorage.removeItem(sizeStorageKey);
+      } catch {}
     };
 
     try {
@@ -492,11 +593,12 @@ function setupWindowControls(signal: AbortSignal) {
   window.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || windowFrame.hidden || event.defaultPrevented) return;
     if (document.querySelector('[role="dialog"][data-state="open"], [data-radix-popper-content-wrapper]')) return;
-    if (!windowFrame.classList.contains("is-minimized") && !windowFrame.classList.contains("is-maximized")) return;
+    if (windowFrame.classList.contains("is-minimized") || !windowFrame.classList.contains("is-maximized")) return;
 
     animateFrameChange(() => {
-      windowFrame.classList.remove("is-minimized", "is-maximized");
+      windowFrame.classList.remove("is-maximized");
     });
+    notifyShell("maximize", { maximized: false });
     maximizeButton.focus();
   }, { signal });
 
@@ -524,5 +626,16 @@ onPageLoad((signal) => {
     localStorage.removeItem("bgm-state");
   } catch {}
   setupMobileDrawer(signal);
+
+  if (window.self !== window.top && root.dataset.desktopApp === "photos") {
+    const notifyEmbeddedPhotosUrl = () => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("embed");
+      const cleanUrl = `${url.pathname}${url.search}${url.hash}`;
+      window.parent.postMessage({ type: "photos:url-change", url: cleanUrl }, window.location.origin);
+    };
+    notifyEmbeddedPhotosUrl();
+    window.addEventListener("hashchange", notifyEmbeddedPhotosUrl, { signal });
+  }
 });
 

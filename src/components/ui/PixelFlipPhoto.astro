@@ -14,15 +14,20 @@ interface Props {
   width: number;
   height: number;
   srcset?: string;
+  avifSrcSet?: string;
+  blurDataURL?: string;
   sizes?: string;
   eager?: boolean;
 }
 
 const { id, imageUrl, alt, title, story, capturedAt, capturedTimeZone, location, photoNumber,
-  width, height, srcset, sizes, eager = false } = Astro.props;
+  width, height, srcset, avifSrcSet, blurDataURL, sizes, eager = false } = Astro.props;
 const capture = formatPhotoCapture(capturedAt, capturedTimeZone);
 const frame = photoNumber == null ? id : String(photoNumber).padStart(3, "0");
 const descriptionId = `${id}-memory`;
+const imgStyle = blurDataURL
+  ? `view-transition-class: workspace-shared-image; background-image: url('${blurDataURL}'); background-size: cover; background-position: center;`
+  : "view-transition-class: workspace-shared-image";
 ---
 
 <figure id={id} class="pixel-photo" data-pixel-photo data-flipped="false" tabindex="-1" data-motion-focus>
@@ -40,10 +45,20 @@ const descriptionId = `${id}-memory`;
     <span class="pixel-photo__lift">
       <span class="pixel-photo__paper" data-flip-paper>
         <span class="pixel-photo__front" data-flip-front>
-          <img src={imageUrl} srcset={srcset} sizes={sizes} alt={alt}
-            data-motion-share={id} style="view-transition-class: workspace-shared-image"
-            width={width} height={height} loading={eager ? "eager" : "lazy"}
-            fetchpriority={eager ? "high" : "auto"} decoding="async" draggable="false" />
+          {avifSrcSet ? (
+            <picture>
+              <source type="image/avif" srcset={avifSrcSet} sizes={sizes} />
+              <img src={imageUrl} srcset={srcset} sizes={sizes} alt={alt}
+                data-motion-share={id} style={imgStyle}
+                width={width} height={height} loading={eager ? "eager" : "lazy"}
+                fetchpriority={eager ? "high" : "auto"} decoding="async" draggable="false" />
+            </picture>
+          ) : (
+            <img src={imageUrl} srcset={srcset} sizes={sizes} alt={alt}
+              data-motion-share={id} style={imgStyle}
+              width={width} height={height} loading={eager ? "eager" : "lazy"}
+              fetchpriority={eager ? "high" : "auto"} decoding="async" draggable="false" />
+          )}
         </span>
         <span class="pixel-photo__back" data-flip-back aria-hidden="true" id={descriptionId}>
           <span class="pixel-photo__archive">Photo notes</span>

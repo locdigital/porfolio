@@ -82,6 +82,22 @@ function setupPhoto(root: HTMLElement, reduced: MediaQueryList, signal: AbortSig
     if (window.getSelection()?.toString() && event.target instanceof Node && story.contains(event.target)) return;
     flipped = !flipped;
 
+    if (flipped && root.id) {
+      const nextHash = `#${encodeURIComponent(root.id)}`;
+      const currentUrl = new URL(window.location.href);
+      const nextLocalUrl = `${currentUrl.pathname}${currentUrl.search}${nextHash}`;
+      if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextLocalUrl) {
+        window.history.replaceState(window.history.state, "", nextLocalUrl);
+      }
+      const cleanUrl = new URL(nextLocalUrl, window.location.origin);
+      cleanUrl.searchParams.delete("embed");
+      const publicUrl = `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`;
+      window.dispatchEvent(new CustomEvent("photos:url-change", { detail: { url: publicUrl } }));
+      if (window.self !== window.top) {
+        window.parent.postMessage({ type: "photos:url-change", url: publicUrl }, window.location.origin);
+      }
+    }
+
     if (reduced.matches) { settle(); return; }
     if (typeof paper.animate !== "function") {
       // Establish the old transform before changing the target on the first fallback flip.

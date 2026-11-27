@@ -20,17 +20,18 @@ export type SpotifyView =
 
 export type RepeatMode = "off" | "all" | "one";
 
-export function useSpotifyState() {
-  const [history, setHistory] = useState<SpotifyView[]>([{ kind: "home" }]);
+export function useSpotifyState(initialView?: SpotifyView) {
+  const [history, setHistory] = useState<SpotifyView[]>(() => [initialView ?? { kind: "home" }]);
   const [historyIndex, setHistoryIndex] = useState(0);
 
   const [selectedTrack, setSelectedTrack] = useState<SpotifyTrack>(SPOTIFY_TRACKS[0]);
+  const [playHistory, setPlayHistory] = useState<string[]>([]);
   const [likedIds, setLikedIds] = useState<Set<string>>(
     () =>
       new Set([
-        "joji-slow-dancing-in-the-dark",
-        "frank-ocean-pink-white",
-        "keshi-beside-you",
+        "coldplay-yellow",
+        "arctic-monkeys-505",
+        "avicii-waiting-for-love",
       ]),
   );
   const [recentTrackIds, setRecentTrackIds] = useState<string[]>([
@@ -79,8 +80,13 @@ export function useSpotifyState() {
     setHistoryIndex((i) => Math.min(history.length - 1, i + 1));
   }, [history.length]);
 
-  const selectTrack = useCallback((track: SpotifyTrack) => {
-    setSelectedTrack(track);
+  const selectTrack = useCallback((track: SpotifyTrack, recordHistory = true) => {
+    setSelectedTrack((prev) => {
+      if (recordHistory && prev.id !== track.id) {
+        setPlayHistory((hist) => [...hist.slice(-24), prev.id]);
+      }
+      return track;
+    });
     setRecentTrackIds((prev) =>
       [track.id, ...prev.filter((id) => id !== track.id)].slice(0, 8),
     );
@@ -96,24 +102,48 @@ export function useSpotifyState() {
   }, []);
 
   const stepTrack = useCallback(
-    (direction: -1 | 1) => {
+    (direction: -1 | 1, fromAutoEnd = false): boolean => {
       const idx = SPOTIFY_TRACKS.findIndex((t) => t.id === selectedTrack.id);
-      if (idx === -1) return;
-      let nextIdx: number;
-      if (isShuffle && SPOTIFY_TRACKS.length > 1) {
-        do {
-          nextIdx = Math.floor(Math.random() * SPOTIFY_TRACKS.length);
-        } while (nextIdx === idx);
-      } else {
-        nextIdx = (idx + direction + SPOTIFY_TRACKS.length) % SPOTIFY_TRACKS.length;
+      if (idx === -1) return false;
+
+      // Going backwards prefers the actual recently-played track history first
+      if (direction === -1 && playHistory.length > 0) {
+        const lastId = playHistory[playHistory.length - 1];
+        const prevTrack = SPOTIFY_TRACKS.find((t) => t.id === lastId);
+        setPlayHistory((hist) => hist.slice(0, -1));
+        if (prevTrack) {
+          selectTrack(prevTrack, false);
+          return true;
+        }
       }
-      selectTrack(SPOTIFY_TRACKS[nextIdx]);
+
+      if (isShuffle && SPOTIFY_TRACKS.length > 1) {
+        const recentSet = new Set(playHistory.slice(-Math.min(5, SPOTIFY_TRACKS.length - 2)));
+        const pool = SPOTIFY_TRACKS.filter(
+          (t) => t.id !== selectedTrack.id && !recentSet.has(t.id),
+        );
+        const candidates = pool.length > 0 ? pool : SPOTIFY_TRACKS.filter((t) => t.id !== selectedTrack.id);
+        const nextTrack = candidates[Math.floor(Math.random() * candidates.length)];
+        if (nextTrack) {
+          selectTrack(nextTrack, true);
+          return true;
+        }
+      }
+
+      // When auto-advancing at the end of the playlist with repeat off, stop at the end
+      if (fromAutoEnd && direction === 1 && repeatMode === "off" && idx === SPOTIFY_TRACKS.length - 1) {
+        return false;
+      }
+
+      const nextIdx = (idx + direction + SPOTIFY_TRACKS.length) % SPOTIFY_TRACKS.length;
+      selectTrack(SPOTIFY_TRACKS[nextIdx], direction === 1);
+      return true;
     },
-    [isShuffle, selectTrack, selectedTrack.id],
+    [isShuffle, playHistory, repeatMode, selectTrack, selectedTrack.id],
   );
 
   const cycleRepeat = useCallback(() => {
-    setRepeatMode((m) => (m === "off" ? "all" : m === "all" ? "one" : "off"));
+    setRepeatMode((m) => (m === "one" ? "off" : "one"));
   }, []);
 
   const recentTracks = useMemo(() => {

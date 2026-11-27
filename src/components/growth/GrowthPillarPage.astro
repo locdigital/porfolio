@@ -1,0 +1,285 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import Heroicon from "../icons/Heroicon.astro";
+import { GROWTH_PILLARS, type GrowthPillar } from "../../data/growth-pillars";
+import { getGrowthPlaybooks, getProjects } from "../../lib/content";
+import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
+
+interface Props {
+  pillar: GrowthPillar;
+}
+
+const { pillar } = Astro.props;
+
+const [projects, allPlaybooks] = await Promise.all([
+  getProjects(),
+  getGrowthPlaybooks(),
+]);
+
+const projectBySlug = new Map(projects.map((p) => [p.slug, p]));
+const relatedProjects = pillar.caseSlugs
+  .map((slug) => projectBySlug.get(slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const relatedPlaybooks = allPlaybooks.filter(
+  (pb) => pb.data.topicCluster === pillar.id,
+);
+
+const siblingPillars = GROWTH_PILLARS.filter((item) => item.slug !== pillar.slug);
+const pageUrl = canonicalUrl(pillar.href);
+
+const pillarSchema = collectionPageSchema({
+  url: pageUrl,
+  title: pillar.seoTitle,
+  description: pillar.seoDescription,
+  items: [
+    ...relatedProjects.map((p) => ({
+      name: p.title,
+      url: `/work/${p.slug}`,
+      description: p.summary,
+    })),
+    ...relatedPlaybooks.map((pb) => ({
+      name: pb.data.title,
+      url: `/growth/${pb.slug}`,
+      description: pb.data.summary,
+    })),
+  ],
+  breadcrumbId: `${pageUrl}#breadcrumbs`,
+});
+---
+
+<DashboardLayout
+  title={pillar.seoTitle}
+  pageTitle={pillar.title}
+  description={pillar.seoDescription}
+  breadcrumbs={[
+    { label: "Workspace", href: "/" },
+    { label: "Growth Hub", href: "/growth" },
+    { label: pillar.title },
+  ]}
+  maxWidthVariant="default"
+  schema={pillarSchema}
+>
+  <header class="page-header">
+    <p class="pillar-kicker">{pillar.shortSubtitle}</p>
+    <h1 class="page-title">{pillar.title}</h1>
+    <p class="page-lead">{pillar.summary}</p>
+  </header>
+
+  {pillar.sections.length > 0 && (
+    <section class="page-section" aria-labelledby="heading-pillar-frameworks">
+      <h2 id="heading-pillar-frameworks" class="section-title">Core operating areas</h2>
+      <div class="pillar-sections-grid">
+        {pillar.sections.map((section) => (
+          <article class="dash-card pillar-section-card">
+            <h3 class="pillar-section-title">{section.title}</h3>
+            <p class="pillar-section-summary">{section.summary}</p>
+            <ul class="pillar-points-list">
+              {section.points.map((point) => (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {pillar.guardrails.length > 0 && (
+    <section class="page-section page-section--divided" aria-labelledby="heading-guardrails">
+      <h2 id="heading-guardrails" class="section-title">Decision guardrails</h2>
+      <div class="dash-card pillar-guardrails-card">
+        <ul class="pillar-points-list">
+          {pillar.guardrails.map((item) => (
+            <li>
+              <span class="dash-bullet" aria-hidden="true"></span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {relatedPlaybooks.length > 0 && (
+    <section class="page-section page-section--divided" aria-labelledby="heading-pillar-playbooks">
+      <h2 id="heading-pillar-playbooks" class="section-title">Playbooks in this pillar</h2>
+      <div class="pillar-links-grid">
+        {relatedPlaybooks.map((pb) => (
+          <a href={`/growth/${pb.slug}`} class="dash-card pillar-link-card" data-astro-prefetch>
+            <h3 class="pillar-link-title">{pb.data.title}</h3>
+            <p class="pillar-link-summary">{pb.data.summary}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {relatedProjects.length > 0 && (
+    <section class="page-section page-section--divided" aria-labelledby="heading-pillar-cases">
+      <h2 id="heading-pillar-cases" class="section-title">Related case studies</h2>
+      <div class="pillar-links-grid">
+        {relatedProjects.map((project) => (
+          <a href={`/work/${project.slug}`} class="dash-card pillar-link-card" data-astro-prefetch>
+            <span class="pillar-link-meta">{project.client} · {project.year}</span>
+            <h3 class="pillar-link-title">{project.title}</h3>
+            <p class="pillar-link-summary">{project.summary}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="page-section page-section--divided" aria-labelledby="heading-other-pillars">
+    <h2 id="heading-other-pillars" class="section-title">Explore other Growth pillars</h2>
+    <div class="pillar-nav-grid">
+      {siblingPillars.map((item) => (
+        <a href={item.href} class="dash-card pillar-nav-card" data-astro-prefetch>
+          <div class="pillar-nav-top">
+            <span class="pillar-nav-title">{item.title}</span>
+            <Heroicon name="link" variant="outline" size={14} />
+          </div>
+          <span class="pillar-nav-sub">{item.shortSubtitle}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</DashboardLayout>
+
+<style>
+  .pillar-kicker {
+    margin: 0 0 8px;
+    font-size: var(--text-caption);
+    font-weight: 500;
+    color: var(--dash-muted);
+    letter-spacing: 0.01em;
+  }
+
+  .pillar-sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .pillar-section-card,
+  .pillar-guardrails-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pillar-section-title {
+    margin: 0;
+    font-size: var(--text-subtitle);
+    font-weight: 600;
+    color: var(--dash-text);
+  }
+
+  .pillar-section-summary {
+    margin: 0;
+    font-size: var(--text-body);
+    color: var(--dash-muted);
+    line-height: 1.55;
+  }
+
+  .pillar-points-list {
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: var(--text-body);
+    color: var(--dash-text);
+    line-height: 1.5;
+  }
+
+  .pillar-points-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pillar-points-list .dash-bullet {
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .pillar-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .pillar-link-card {
+    padding: 18px 20px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 150ms ease, transform 150ms ease;
+  }
+
+  .pillar-link-card:hover,
+  .pillar-nav-card:hover {
+    border-color: var(--dash-border-strong, var(--dash-muted));
+    transform: translateY(-1px);
+  }
+
+  .pillar-link-meta {
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+  }
+
+  .pillar-link-title {
+    margin: 0;
+    font-size: var(--text-subtitle);
+    font-weight: 600;
+    color: var(--dash-text);
+  }
+
+  .pillar-link-summary {
+    margin: 0;
+    font-size: var(--text-body);
+    color: var(--dash-muted);
+    line-height: 1.5;
+  }
+
+  .pillar-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .pillar-nav-card {
+    padding: 14px 16px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 150ms ease, transform 150ms ease;
+  }
+
+  .pillar-nav-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--dash-text);
+  }
+
+  .pillar-nav-title {
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--dash-text);
+  }
+
+  .pillar-nav-sub {
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+  }
+</style>

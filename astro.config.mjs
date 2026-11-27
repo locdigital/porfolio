@@ -4,9 +4,17 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 
 const SITE_ORIGIN = 'https://loc.digital';
+const R2_ASSET_HOST = (() => {
+  try {
+    return new URL(process.env.PUBLIC_ASSET_BASE_URL || 'https://assets.loc.digital').hostname;
+  } catch {
+    return 'assets.loc.digital';
+  }
+})();
+const ALLOWED_IMAGE_DOMAINS = Array.from(new Set([R2_ASSET_HOST, 'assets.loc.digital', '65wv0vnolo.ufs.sh']));
 
 function loadUnpublishedPhotoPaths() {
   const blocked = new Set();
@@ -63,8 +71,8 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  // Public content is generated once at build time; only explicit API routes use SSR.
-  output: 'hybrid',
+  // Public content is generated once at build time; only explicit routes with prerender = false use SSR.
+  output: 'static',
   // Emit permanent HTTP redirects at the edge for legacy alias routes.
   redirects: {
     '/contact': { destination: '/about', status: 301 },
@@ -75,8 +83,8 @@ export default defineConfig({
     // Generate responsive WebP files at build time instead of transforming on first visit.
     imageService: false,
     imagesConfig: {
-      sizes: [16, 32, 48, 56, 64, 80, 96, 112, 128, 240, 256, 320, 360, 384, 400, 480, 520, 640, 720, 750, 760, 828, 960, 1080, 1200, 1280, 1920, 2048, 3840],
-      domains: ['65wv0vnolo.ufs.sh'],
+      sizes: [16, 32, 48, 56, 64, 80, 96, 112, 128, 240, 256, 320, 360, 384, 400, 480, 520, 640, 720, 750, 760, 768, 828, 960, 1080, 1200, 1280, 1920, 2048, 3840],
+      domains: ALLOWED_IMAGE_DOMAINS,
       // Keep existing image URLs working for tabs opened before this deployment.
       formats: ['image/webp'],
       minimumCacheTTL: 86400,
@@ -89,7 +97,16 @@ export default defineConfig({
       filter: (page) => {
         const pathname = new URL(page, SITE_ORIGIN).pathname;
         const normalized = pathname !== '/' ? pathname.replace(/\/+$/, '') : '/';
-        if (['/404', '/music/spotify', '/entertainment/netflix', '/color-lab/nikon-recipes'].includes(normalized) || normalized.startsWith('/assets/')) return false;
+        if (
+          normalized === '/404' ||
+          normalized === '/music/spotify' ||
+          normalized.startsWith('/music/spotify/') ||
+          normalized === '/entertainment/netflix' ||
+          normalized.startsWith('/entertainment/netflix/') ||
+          normalized === '/color-lab/nikon-recipes' ||
+          normalized.startsWith('/color-lab/nikon-recipes/') ||
+          normalized.startsWith('/assets/')
+        ) return false;
         if (unpublishedPhotoPaths.has(pathname) || unpublishedPhotoPaths.has(normalized)) return false;
         return true;
       },
@@ -111,7 +128,7 @@ export default defineConfig({
     defaultStrategy: 'hover',
   },
   image: {
-    domains: ['65wv0vnolo.ufs.sh'],
+    domains: ALLOWED_IMAGE_DOMAINS,
     remotePatterns: [],
     service: {
       entrypoint: 'astro/assets/services/sharp',
@@ -127,19 +144,24 @@ export default defineConfig({
       chunkSizeWarningLimit: 1024,
       rollupOptions: {
         output: {
-          // Split vendor chunks for better long-term caching
-          manualChunks: {},
+          // Split heavy vendor libraries into dedicated chunks for better long-term caching
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return;
+            if (id.includes('/maplibre-gl/')) return 'vendor-maplibre';
+            if (id.includes('/recharts/') || id.includes('/d3-')) return 'vendor-charts';
+          },
         },
       },
     },
     optimizeDeps: {
       include: [
-        'leaflet',
+        'maplibre-gl',
         'recharts',
         'cmdk',
+        'clsx',
+        'tailwind-merge',
         '@radix-ui/react-dialog',
         '@radix-ui/react-popover',
-        '@radix-ui/react-icons',
         '@radix-ui/react-label',
         '@radix-ui/react-slot',
         'lucide-react',

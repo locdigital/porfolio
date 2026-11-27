@@ -1,8 +1,8 @@
 "use client";
 
 import { type DialogProps } from "@radix-ui/react-dialog";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Command as CommandPrimitive } from "cmdk";
+import { Search } from "lucide-react";
 import * as React from "react";
 
 import {
@@ -76,9 +76,8 @@ const CommandInput = React.forwardRef<
     )}
     cmdk-input-wrapper=""
   >
-    <MagnifyingGlassIcon
-      width={16}
-      height={16}
+    <Search
+      size={16}
       aria-hidden="true"
       className="me-2.5 shrink-0 text-muted-foreground/80"
     />

@@ -41,6 +41,8 @@ html,
 ::view-transition-new(workspace-content) {
   width: 100%;
   height: 100%;
+  object-fit: none;
+  object-position: top left;
 }
 
 ::view-transition-old(workspace-content) {
@@ -102,21 +104,21 @@ html[data-workspace-reveal="groups"]::view-transition-old(workspace-content) {
 @keyframes workspace-page-enter {
   from {
     opacity: 0;
-    transform: translateY(var(--motion-page-distance)) scale(var(--motion-page-scale));
+    transform: translate3d(0, var(--motion-page-distance), 0);
   }
 }
 
 @keyframes workspace-page-exit {
   to {
     opacity: 0;
-    transform: translateY(var(--motion-page-exit-distance));
+    transform: translate3d(0, var(--motion-page-exit-distance), 0);
   }
 }
 
 @keyframes workspace-group-enter {
   from {
     opacity: 0;
-    transform: translateY(var(--motion-reveal-distance));
+    transform: translate3d(0, var(--motion-reveal-distance), 0);
   }
 }
 

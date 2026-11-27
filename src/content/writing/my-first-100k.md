@@ -6,7 +6,7 @@ date: 2026-10-27
 order: 0
 sample: false
 draft: false
-linkable: false
+linkable: true
 coverImage:
   src: "/images/writing/my-first-100k.webp"
   alt: "Cute chibi anime pixel-art illustration for My First $100K based on River Bend Below Hang Múa in Hang Múa, Ninh Bình"

@@ -8,11 +8,14 @@ import {
   type SpotifyTrack,
 } from "../../../data/spotify";
 import { SpotifyArtwork } from "./SpotifyArtwork";
+import type { SpotifyHomeCategory } from "../../../lib/app-routes";
 import type { SpotifyView } from "./useSpotifyState";
 
 interface SpotifyHomeProps {
   selectedTrack: SpotifyTrack;
   recentTracks: SpotifyTrack[];
+  catFilter: SpotifyHomeCategory;
+  onCatFilterChange: (cat: SpotifyHomeCategory) => void;
   onNavigate: (view: SpotifyView) => void;
   onSelectTrack: (track: SpotifyTrack, openEmbed?: boolean) => void;
 }
@@ -48,10 +51,11 @@ const TIPS = [
 
 export function SpotifyHome({
   recentTracks,
+  catFilter,
+  onCatFilterChange,
   onNavigate,
   onSelectTrack,
 }: SpotifyHomeProps) {
-  const [catFilter, setCatFilter] = useState<"All" | "Music" | "Podcasts" | "Audiobooks">("All");
   const [tipIndex, setTipIndex] = useState(0);
 
   const handlePlayCollection = (e: React.MouseEvent, collection: SpotifyPlaylist) => {
@@ -77,7 +81,7 @@ export function SpotifyHome({
               key={cat}
               type="button"
               className={`spotify-cat-pill${catFilter === cat ? " is-active" : ""}`}
-              onClick={() => setCatFilter(cat)}
+              onClick={() => onCatFilterChange(cat)}
             >
               {cat}
             </button>

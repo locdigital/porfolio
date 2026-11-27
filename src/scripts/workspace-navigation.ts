@@ -259,7 +259,10 @@ document.addEventListener("astro:before-swap", (event) => {
   if (motion) {
     motion.swapping = true;
     if (supportsViewTransitions) {
-      const finish = () => clearTransitionNames(motion);
+      const finish = () => {
+        clearTransitionNames(motion);
+        delete root.dataset.workspaceReveal;
+      };
       void navigation.viewTransition.finished.then(finish, finish);
       if (reducedMotion.matches) navigation.viewTransition.skipTransition();
     }
@@ -285,7 +288,7 @@ document.addEventListener("astro:before-swap", (event) => {
   }
   nextRoot.classList.toggle("window-closed", closed);
   nextRoot.classList.toggle("window-minimized", !closed && minimized);
-  nextRoot.classList.toggle("window-maximized", !closed && maximized);
+  nextRoot.classList.toggle("window-maximized", !closed && !minimized && maximized);
 
   // Keeping the host and the React dock connected also keeps their listeners,
   // window geometry, player state and any embedded browsing contexts alive.
@@ -306,6 +309,15 @@ document.addEventListener("astro:before-swap", (event) => {
         const back = currentFrame.querySelector(".mobile-topbar-left a");
         const nextBack = nextFrame.querySelector(".mobile-topbar-left a");
         if (back && nextBack) back.replaceWith(nextBack);
+      }
+    }
+    // Preserve un-executed page scripts (e.g. Astro <script> modules emitted outside #main-content)
+    // so Astro's runScripts() executes them on first client-side visit to the route.
+    for (const script of Array.from(nextDoc.scripts)) {
+      const type = script.getAttribute("type");
+      const isExecutable = !type || type === "module" || type === "text/javascript";
+      if (isExecutable && script.dataset.astroExec !== "" && !document.contains(script)) {
+        document.body.append(script);
       }
     }
     syncPrefetchPolicy(document);

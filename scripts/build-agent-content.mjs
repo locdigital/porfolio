@@ -15,7 +15,7 @@ async function collect(dir) {
       const relative = path.relative(staticDir, filename).split(path.sep).join("/");
       const pathname = `/${relative.replace(/(?:^|\/)index\.html$/, "").replace(/\.html$/, "").replace(/\/$/, "")}`;
       const html = await readFile(filename, "utf8");
-      if (!html.includes('id="main-content"')) continue;
+      if (!html.includes('id="main-content"') || html.includes('class="app-route-fallback"')) continue;
       documents[pathname] = htmlToMarkdown(html, new URL(pathname, "https://loc.digital").href);
       const markdownFile = path.join(staticDir, pathname === "/" ? "index.md" : `${pathname.slice(1)}.md`);
       await mkdir(path.dirname(markdownFile), { recursive: true });
@@ -39,7 +39,9 @@ const insertAt = config.routes.findIndex(route => route.handle);
 const contentPath = "^/(?!_astro/|assets/|api/|_vercel/)[^.]*$";
 const markdownType = ".*[tT][eE][xX][tT]/[mM][aA][rR][kK][dD][oO][wW][nN].*";
 config.routes.splice(insertAt, 0,
-  { src: "^/api/(photos|photos-widget|search-index)\\.json$", headers: { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400" }, continue: true },
+  { src: "^/_astro/.*$", headers: { "Cache-Control": "public, max-age=31536000, immutable" }, continue: true },
+  { src: "^/api/private/.*$", headers: { "Cache-Control": "private, no-store, max-age=0", "X-Content-Type-Options": "nosniff" }, continue: true },
+  { src: "^/api/(photos|photos-widget|search-index)\\.json$", headers: { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400", "X-Content-Type-Options": "nosniff" }, continue: true },
   { src: "^/.*\\.md$", headers: { "Content-Type": "text/markdown; charset=utf-8", "X-Content-Type-Options": "nosniff" }, continue: true },
   { src: contentPath, headers: { Vary: "Accept" }, continue: true },
   { src: contentPath, has: [{ type: "header", key: "accept", value: markdownType }], dest: "/_agent-content" },

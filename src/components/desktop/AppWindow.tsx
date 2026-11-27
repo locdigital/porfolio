@@ -18,6 +18,7 @@ interface AppWindowProps {
   windowState: WindowInstance;
   title: string;
   isActive: boolean;
+  isFullBleed?: boolean;
   onFocus: () => void;
   onClose: () => void;
   onMinimize: () => void;
@@ -28,10 +29,11 @@ interface AppWindowProps {
   children: React.ReactNode;
 }
 
-export function AppWindow({
+export const AppWindow = React.memo(function AppWindow({
   windowState,
   title,
   isActive,
+  isFullBleed = false,
   onFocus,
   onClose,
   onMinimize,
@@ -43,16 +45,22 @@ export function AppWindow({
 }: AppWindowProps) {
   // Restore minimized sessions without initializing an app until its first visible frame.
   const hasShownContent = useRef(false);
-  useEffect(() => {
-    if (!windowState.isOpen) hasShownContent.current = false;
-    else if (!windowState.isMinimized) hasShownContent.current = true;
-  }, [windowState.isOpen, windowState.isMinimized]);
   const frameRef = useRef<HTMLElement | null>(null);
   const isVisible = windowState.isOpen && !windowState.isMinimized;
   const [isPresented, setIsPresented] = useState(isVisible);
   const isExiting = !isVisible && isPresented;
   const presentedWindow = useRef(windowState);
   const frameState = isExiting ? presentedWindow.current : windowState;
+  const [size, setSize] = useState<{ width: number; height: number } | null>(null);
+
+  useEffect(() => {
+    if (!windowState.isOpen) {
+      hasShownContent.current = false;
+      setSize(null);
+    } else if (!windowState.isMinimized) {
+      hasShownContent.current = true;
+    }
+  }, [windowState.isOpen, windowState.isMinimized]);
 
   useLayoutEffect(() => {
     if (isVisible) presentedWindow.current = windowState;
@@ -78,7 +86,6 @@ export function AppWindow({
     return () => { interrupted = true; };
   }, [isExiting, isVisible]);
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   const [isCompactViewport, setIsCompactViewport] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
 
@@ -170,6 +177,10 @@ export function AppWindow({
     startY: number;
     origX: number;
     origY: number;
+    winW: number;
+    winH: number;
+    lastX: number;
+    lastY: number;
     dragging: boolean;
   } | null>(null);
   const resizeStateRef = useRef<{
@@ -180,7 +191,20 @@ export function AppWindow({
     origH: number;
     origOffsetX: number;
     origOffsetY: number;
+    lastW: number;
+    lastH: number;
+    lastOffsetX: number;
+    lastOffsetY: number;
   } | null>(null);
+  const interactionRafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (interactionRafRef.current !== null) {
+        cancelAnimationFrame(interactionRafRef.current);
+      }
+    };
+  }, []);
 
   if (!windowState.isOpen && !isExiting) {
     return null;
@@ -195,45 +219,70 @@ export function AppWindow({
     if ((e.target as Element).closest("button, a, input, select, textarea")) return;
 
     onFocus();
+    const rect = frameRef.current?.getBoundingClientRect();
     dragStateRef.current = {
       startX: e.clientX,
       startY: e.clientY,
       origX: windowState.offsetX,
       origY: windowState.offsetY,
+      winW: rect?.width ?? 1140,
+      winH: rect?.height ?? 720,
+      lastX: windowState.offsetX,
+      lastY: windowState.offsetY,
       dragging: false,
     };
   };
 
   const handleTitlebarPointerMove = (e: React.PointerEvent<HTMLElement>) => {
-    if (!dragStateRef.current) return;
+    const d = dragStateRef.current;
+    if (!d) return;
     if (e.buttons !== 1) {
       dragStateRef.current = null;
+      frameRef.current?.classList.remove("is-dragging");
       return;
     }
-    const dx = e.clientX - dragStateRef.current.startX;
-    const dy = e.clientY - dragStateRef.current.startY;
-    if (!dragStateRef.current.dragging) {
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    if (!d.dragging) {
       if (Math.hypot(dx, dy) < 5) return;
-      dragStateRef.current.dragging = true;
+      d.dragging = true;
       e.currentTarget.setPointerCapture(e.pointerId);
+      frameRef.current?.classList.add("is-dragging");
     }
-    const rect = frameRef.current?.getBoundingClientRect();
     const clamped = clampWindowOffset(
-      dragStateRef.current.origX + dx,
-      dragStateRef.current.origY + dy,
+      d.origX + dx,
+      d.origY + dy,
       window.innerWidth,
       window.innerHeight,
-      rect?.width ?? 1140,
-      rect?.height ?? 720,
+      d.winW,
+      d.winH,
     );
-    onMove(clamped.offsetX, clamped.offsetY);
+    d.lastX = clamped.offsetX;
+    d.lastY = clamped.offsetY;
+    if (interactionRafRef.current === null) {
+      interactionRafRef.current = requestAnimationFrame(() => {
+        interactionRafRef.current = null;
+        if (dragStateRef.current && frameRef.current) {
+          frameRef.current.style.transform = `translate3d(${dragStateRef.current.lastX}px, ${dragStateRef.current.lastY}px, 0)`;
+        }
+      });
+    }
   };
 
   const handleTitlebarPointerUp = (e: React.PointerEvent<HTMLElement>) => {
-    if (!dragStateRef.current) return;
+    const d = dragStateRef.current;
+    if (!d) return;
     dragStateRef.current = null;
+    if (interactionRafRef.current !== null) {
+      cancelAnimationFrame(interactionRafRef.current);
+      interactionRafRef.current = null;
+    }
+    frameRef.current?.classList.remove("is-dragging");
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
       e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+    if (d.dragging) {
+      onMove(d.lastX, d.lastY);
     }
   };
 
@@ -245,6 +294,7 @@ export function AppWindow({
       const rect = frameRef.current?.getBoundingClientRect();
       if (!rect) return;
       e.currentTarget.setPointerCapture(e.pointerId);
+      frameRef.current?.classList.add("is-dragging");
       resizeStateRef.current = {
         edge,
         startX: e.clientX,
@@ -253,6 +303,10 @@ export function AppWindow({
         origH: rect.height,
         origOffsetX: windowState.offsetX,
         origOffsetY: windowState.offsetY,
+        lastW: rect.width,
+        lastH: rect.height,
+        lastOffsetX: windowState.offsetX,
+        lastOffsetY: windowState.offsetY,
       };
     };
 
@@ -277,21 +331,45 @@ export function AppWindow({
       ? Math.max(MIN_WINDOW_HEIGHT, Math.min(maxH, r.origH + dy))
       : r.origH;
 
-    setSize({ width: nextW, height: nextH });
-
     const nextOffsetX = isWest
       ? r.origOffsetX - (nextW - r.origW) / 2
       : r.origOffsetX + (nextW - r.origW) / 2;
     const nextOffsetY = r.origOffsetY + (nextH - r.origH) / 2;
-    onMove(nextOffsetX, nextOffsetY);
+
+    r.lastW = nextW;
+    r.lastH = nextH;
+    r.lastOffsetX = nextOffsetX;
+    r.lastOffsetY = nextOffsetY;
+
+    if (interactionRafRef.current === null) {
+      interactionRafRef.current = requestAnimationFrame(() => {
+        interactionRafRef.current = null;
+        const cur = resizeStateRef.current;
+        const el = frameRef.current;
+        if (!cur || !el) return;
+        el.style.width = `${cur.lastW}px`;
+        el.style.height = `${cur.lastH}px`;
+        el.style.marginLeft = `${-cur.lastW / 2}px`;
+        el.style.marginTop = `${-cur.lastH / 2}px`;
+        el.style.transform = `translate3d(${cur.lastOffsetX}px, ${cur.lastOffsetY}px, 0)`;
+      });
+    }
   };
 
   const handleResizePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!resizeStateRef.current) return;
+    const r = resizeStateRef.current;
+    if (!r) return;
     resizeStateRef.current = null;
+    if (interactionRafRef.current !== null) {
+      cancelAnimationFrame(interactionRafRef.current);
+      interactionRafRef.current = null;
+    }
+    frameRef.current?.classList.remove("is-dragging");
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
       e.currentTarget.releasePointerCapture(e.pointerId);
     }
+    setSize({ width: r.lastW, height: r.lastH });
+    onMove(r.lastOffsetX, r.lastOffsetY);
   };
 
   const isTiled = !isCompactViewport && !frameState.isMaximized && frameState.tile !== null;
@@ -330,6 +408,7 @@ export function AppWindow({
     <>
     <section
       ref={frameRef}
+      data-app={windowState.id}
       role="dialog"
       aria-label={title}
       aria-modal="false"
@@ -345,8 +424,14 @@ export function AppWindow({
         transform: transformStyle,
         ...sizeStyle,
       }}
-      onPointerDown={onFocus}
-      onFocus={onFocus}
+      onPointerDownCapture={(e) => {
+        if ((e.target as Element).closest(".mac-traffic-lights")) return;
+        onFocus();
+      }}
+      onFocusCapture={(e) => {
+        if ((e.target as Element).closest(".mac-traffic-lights")) return;
+        onFocus();
+      }}
     >
       <header
         className="desktop-app-titlebar"
@@ -437,8 +522,8 @@ export function AppWindow({
       </header>
 
       <div
-        className={`desktop-app-body${isScrolling ? " is-scrolling" : ""}`}
-        onScroll={handleBodyScroll}
+        className={`desktop-app-body${isScrolling ? " is-scrolling" : ""}${isFullBleed ? " is-fullbleed" : ""}`}
+        onScroll={isFullBleed ? undefined : handleBodyScroll}
       >
         {(!isMinimized || hasShownContent.current) && children}
       </div>
@@ -525,4 +610,4 @@ export function AppWindow({
     )}
     </>
   );
-}
+});

@@ -6,7 +6,7 @@ date: 2026-09-05
 order: 0
 sample: false
 draft: false
-linkable: false
+linkable: true
 coverImage:
   src: "/images/writing/phoenix.webp"
   alt: "Cinematic thumbnail for Phoenix featuring coastal cliffs in Bali"

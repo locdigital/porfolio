@@ -50,16 +50,6 @@
     "status": "ok"
   },
   {
-    "id": "notion",
-    "name": "Notion",
-    "file": "/assets/dock/notion.png",
-    "sourceUrl": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ea/1b/48/ea1b4840-9ee3-ab66-a482-659ced115cbb/AppIconProd-0-0-1x_U007epad-0-0-0-1-0-0-85-220.png/512x512bb.jpg",
-    "publisher": "Notion Labs, Incorporated",
-    "bytes": 24160,
-    "licenseNote": "Notion Labs, Inc. official app icon via Apple App Store CDN (brand asset, all rights reserved by Notion Labs, Inc.).",
-    "status": "ok"
-  },
-  {
     "id": "chrome",
     "name": "Google Chrome",
     "file": "/assets/dock/chrome.png",

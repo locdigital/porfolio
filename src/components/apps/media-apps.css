@@ -143,8 +143,7 @@
 
 .tv-header__tabs li.is-current button {
   color: #ffffff;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .tv-header__controls {
@@ -273,7 +272,7 @@
 }
 
 .tv-paddle:active:not(:disabled) .tv-paddle__icon {
-  filter: blur(2px);
+  opacity: 0.72;
 }
 
 .tv-paddle--hero {
@@ -425,7 +424,7 @@
 }
 
 .tv-btn-primary:active {
-  filter: blur(2px);
+  transform: scale(0.97);
 }
 
 .tv-btn-circle {
@@ -450,7 +449,7 @@
 }
 
 .tv-btn-circle:active {
-  filter: blur(2px);
+  transform: scale(0.95);
 }
 
 /* Apple TV frosted glass pagination platter */
@@ -580,7 +579,7 @@
 
 .tv-poster-card:active .tv-poster-art,
 .tv-genre-card:active {
-  filter: blur(3px);
+  transform: scale(0.98);
 }
 
 .tv-poster-rank {

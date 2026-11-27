@@ -55,14 +55,6 @@ const APPS = [
     licenseNote: "Figma, Inc. official app icon via Apple App Store CDN (brand asset, all rights reserved by Figma, Inc.).",
   },
   {
-    id: "notion",
-    name: "Notion",
-    sourceType: "itunes",
-    lookupId: "1232780281", // Notion Labs, Inc. official App Store listing
-    fallbackUrl: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png",
-    licenseNote: "Notion Labs, Inc. official app icon via Apple App Store CDN (brand asset, all rights reserved by Notion Labs, Inc.).",
-  },
-  {
     id: "chrome",
     name: "Google Chrome",
     sourceType: "itunes",

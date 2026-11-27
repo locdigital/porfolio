@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./spotify/spotify.css";
 import { Play } from "lucide-react";
 import {
@@ -9,6 +9,11 @@ import {
   getTracksByIds,
   type SpotifyPlaylist,
 } from "../../data/spotify";
+import {
+  getSpotifyUrl,
+  parseSpotifyUrl,
+  type SpotifyHomeCategory,
+} from "../../lib/app-routes";
 import { SpotifyActivity } from "./spotify/SpotifyActivity";
 import { SpotifyArtwork } from "./spotify/SpotifyArtwork";
 import { SpotifyHeader } from "./spotify/SpotifyHeader";
@@ -17,10 +22,33 @@ import { SpotifyPlayer } from "./spotify/SpotifyPlayer";
 import { SpotifyPlaylistDetail } from "./spotify/SpotifyPlaylistDetail";
 import { SpotifySearch } from "./spotify/SpotifySearch";
 import { SpotifySidebar } from "./spotify/SpotifySidebar";
+import { sharedSpotifyAudio } from "./spotify/spotify-audio";
 import { useSpotifyState } from "./spotify/useSpotifyState";
+import type { SpotifyTrack } from "../../data/spotify";
 
-export function SpotifyApp() {
+interface SpotifyAppProps {
+  initialUrl?: string;
+  onUrlChange?: (url: string) => void;
+}
+
+export function SpotifyApp({ initialUrl, onUrlChange }: SpotifyAppProps = {}) {
+  const initialRoute = useMemo(() => {
+    const raw =
+      initialUrl ??
+      (typeof window !== "undefined"
+        ? `${window.location.pathname}${window.location.search}${window.location.hash}`
+        : "");
+    return parseSpotifyUrl(raw);
+  }, [initialUrl]);
+
   const [searchQuery, setSearchQuery] = useState("");
+  const [homeCategory, setHomeCategory] = useState<SpotifyHomeCategory>(
+    initialRoute.homeCategory,
+  );
+  const mainRef = useRef<HTMLElement | null>(null);
+  const onUrlChangeRef = useRef(onUrlChange);
+  onUrlChangeRef.current = onUrlChange;
+
   const {
     currentView,
     canGoBack,
@@ -44,7 +72,23 @@ export function SpotifyApp() {
     setIsActivityOpen,
     isQueueOpen,
     setIsQueueOpen,
-  } = useSpotifyState();
+  } = useSpotifyState(initialRoute.view);
+
+  useEffect(() => {
+    const nextUrl = getSpotifyUrl(currentView, homeCategory);
+    onUrlChangeRef.current?.(nextUrl);
+  }, [currentView, homeCategory]);
+
+  const playSelectedTrack = (track: SpotifyTrack) => {
+    selectTrack(track);
+    sharedSpotifyAudio.playTrack(track);
+  };
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
+  }, [currentView]);
 
   const renderCollectionGrid = (
     heading: string,
@@ -83,7 +127,7 @@ export function SpotifyApp() {
                 onClick={(e) => {
                   e.stopPropagation();
                   const first = getTracksByIds(col.trackIds)[0];
-                  if (first) selectTrack(first);
+                  if (first) playSelectedTrack(first);
                 }}
                 aria-label={`Play ${col.title}`}
               >
@@ -105,8 +149,10 @@ export function SpotifyApp() {
           <SpotifyHome
             selectedTrack={selectedTrack}
             recentTracks={recentTracks}
+            catFilter={homeCategory}
+            onCatFilterChange={setHomeCategory}
             onNavigate={navigateTo}
-            onSelectTrack={selectTrack}
+            onSelectTrack={playSelectedTrack}
           />
         );
 
@@ -117,7 +163,7 @@ export function SpotifyApp() {
             onExternalQueryChange={setSearchQuery}
             selectedTrackId={selectedTrack.id}
             likedIds={likedIds}
-            onSelectTrack={selectTrack}
+            onSelectTrack={playSelectedTrack}
             onToggleLike={toggleLike}
             onNavigate={navigateTo}
           />
@@ -145,7 +191,7 @@ export function SpotifyApp() {
             likedIds={likedIds}
             isShuffle={isShuffle}
             onToggleShuffle={() => setIsShuffle((s) => !s)}
-            onSelectTrack={selectTrack}
+            onSelectTrack={playSelectedTrack}
             onToggleLike={toggleLike}
           />
         );
@@ -163,7 +209,7 @@ export function SpotifyApp() {
             likedIds={likedIds}
             isShuffle={isShuffle}
             onToggleShuffle={() => setIsShuffle((s) => !s)}
-            onSelectTrack={selectTrack}
+            onSelectTrack={playSelectedTrack}
             onToggleLike={toggleLike}
           />
         );
@@ -205,7 +251,7 @@ export function SpotifyApp() {
                       className="spotify-card-play"
                       onClick={(e) => {
                         e.stopPropagation();
-                        selectTrack(track);
+                        playSelectedTrack(track);
                       }}
                       aria-label={`Play ${track.album}`}
                     >
@@ -238,7 +284,7 @@ export function SpotifyApp() {
             likedIds={likedIds}
             isShuffle={isShuffle}
             onToggleShuffle={() => setIsShuffle((s) => !s)}
-            onSelectTrack={selectTrack}
+            onSelectTrack={playSelectedTrack}
             onToggleLike={toggleLike}
           />
         );
@@ -261,7 +307,7 @@ export function SpotifyApp() {
             likedIds={likedIds}
             isShuffle={isShuffle}
             onToggleShuffle={() => setIsShuffle((s) => !s)}
-            onSelectTrack={selectTrack}
+            onSelectTrack={playSelectedTrack}
             onToggleLike={toggleLike}
           />
         );
@@ -293,7 +339,7 @@ export function SpotifyApp() {
         onNavigate={navigateTo}
       />
 
-      <main className="spotify-main">
+      <main ref={mainRef} className="spotify-main">
         <nav className="spotify-mobile-nav" aria-label="Library sections">
           <button
             type="button"
@@ -347,7 +393,7 @@ export function SpotifyApp() {
         recentTracks={recentTracks}
         recentCollections={recentCollections}
         selectedTrackId={selectedTrack.id}
-        onSelectTrack={(t) => selectTrack(t)}
+        onSelectTrack={(t) => playSelectedTrack(t)}
         onOpenCollection={(playlistId) =>
           navigateTo({ kind: "playlist", playlistId })
         }
@@ -362,13 +408,14 @@ export function SpotifyApp() {
         repeatMode={repeatMode}
         onCycleRepeat={cycleRepeat}
         onPrev={() => stepTrack(-1)}
-        onNext={() => stepTrack(1)}
+        onNext={(fromAutoEnd) => stepTrack(1, fromAutoEnd)}
         isQueueOpen={isQueueOpen}
         onToggleQueue={() => {
           setIsActivityOpen(false);
           setIsQueueOpen((o) => !o);
         }}
-        onSelectTrack={(t) => selectTrack(t)}
+        onSelectTrack={(t) => playSelectedTrack(t)}
+        onSyncTrack={(t) => selectTrack(t, false)}
       />
     </div>
   );

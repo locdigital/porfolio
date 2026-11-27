@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import { GROWTH_PILLARS } from "../../data/growth-pillars";
 import { getGrowthPlaybooks, getProjects } from "../../lib/content";
 import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
 import { ChevronLeft, ChevronRight } from "../../components/icons/phosphor";
@@ -12,74 +13,7 @@ const projects = await getProjects();
 const playbooks = await getGrowthPlaybooks();
 
 const projectBySlug = new Map(projects.map((p) => [p.slug, p]));
-
-const clusters = [
-  {
-    id: "meta-ads-scaling",
-    title: "Meta Ads Scaling & Creative Testing",
-    summary:
-      "Campaign structure, creative hook testing, horizontal versus vertical scaling readiness, funnel segmentation, delivery diagnostics, and incrementality guardrails.",
-    caseSlugs: ["workflow-space", "playah", "tomato-childrens-home"],
-    topics: [
-      "Campaign structure & consolidation",
-      "Creative testing systems & fatigue",
-      "Horizontal vs. vertical scaling",
-      "Server-side CAPI & attribution checks",
-    ],
-  },
-  {
-    id: "tiktok-shop-gmv",
-    title: "TikTok Shop GMV Scaling",
-    summary:
-      "Decomposing TikTok Shop GMV across paid Spark Ads, creator/KOC affiliate seeding, live commerce, product assortment, conversion rate, and margin discipline.",
-    caseSlugs: ["playah"],
-    topics: [
-      "GMV decomposition & unit economics",
-      "Affiliate & KOC creator pipelines",
-      "TikTok Shop Ads vs. blended MER",
-      "Commission, returns & contribution margin",
-    ],
-  },
-  {
-    id: "google-ads",
-    title: "Google Ads & Search / Performance Max",
-    summary:
-      "Intent-led Search architecture, Performance Max asset & feed hygiene, brand vs. non-brand separation, and offline/server conversion quality.",
-    caseSlugs: ["workflow-space", "playah"],
-    topics: [
-      "Search intent segmentation",
-      "Performance Max & Shopping feeds",
-      "Brand vs. non-brand incrementality",
-      "Enhanced conversions & lead quality",
-    ],
-  },
-  {
-    id: "unit-economics",
-    title: "Unit Economics & Measurement",
-    summary:
-      "Connecting platform metrics (ROAS, CPA, CPL) with blended business health (MER, CAC, LTV, payback period, and contribution profit before scaling budget).",
-    caseSlugs: ["playah", "tomato-childrens-home", "sony"],
-    topics: [
-      "ROAS vs. MER vs. Contribution Profit",
-      "Break-even ROAS & margin thresholds",
-      "CAC payback & cohort retention",
-      "Scenario modeling & budget pacing",
-    ],
-  },
-  {
-    id: "growth-architecture",
-    title: "Growth Architecture, Technical SEO & Automation",
-    summary:
-      "Full-funnel acquisition systems connecting fast web experiences, CRO, GA4 server-side instrumentation, and AI-assisted marketing workflows.",
-    caseSlugs: ["pops-worldwide", "sony", "education-communities"],
-    topics: [
-      "Technical SEO & organic scale",
-      "Landing page CRO & booking flows",
-      "GA4 & server-side event schemas",
-      "CRM & AI workflow automation",
-    ],
-  },
-];
+const clusters = GROWTH_PILLARS;
 
 const growthUrl = canonicalUrl("/growth");
 const growthSchema = collectionPageSchema({
@@ -88,12 +22,11 @@ const growthSchema = collectionPageSchema({
   description:
     "Practical performance marketing architecture, unit economics formulas, topic clusters, and verified case studies by Phuc Loc Nguyen.",
   items: [
-    {
-      name: "Performance Marketing Formula Library",
-      url: "/growth/metrics",
-      description:
-        "Definitions, assumptions, and limitations for ROAS, MER, CAC, CVR, AOV, Break-even ROAS, and Contribution Profit.",
-    },
+    ...clusters.map((pillar) => ({
+      name: `${pillar.title} (${pillar.shortSubtitle})`,
+      url: pillar.href,
+      description: pillar.seoDescription,
+    })),
     ...projects.map((p) => ({
       name: p.title,
       url: `/work/${p.slug}`,
@@ -146,7 +79,19 @@ const growthSchema = collectionPageSchema({
     <div id="growth-clusters-track" class="growth-clusters-grid" tabindex="0" role="region" aria-label="Topic clusters carousel">
       {clusters.map((cluster) => (
         <article id={cluster.id} class="dash-card growth-cluster-card">
-          <h3 class="growth-cluster-title">{cluster.title}</h3>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <h3 class="growth-cluster-title">
+              <a href={cluster.href} class="dash-link" data-astro-prefetch>
+                {cluster.title}
+              </a>
+            </h3>
+            <a href={cluster.href} class="dash-link" style="font-size: var(--text-caption); color: var(--dash-muted); white-space: nowrap;" data-astro-prefetch>
+              {cluster.href}
+            </a>
+          </div>
+          <p style="margin: -4px 0 4px; font-size: var(--text-caption); color: var(--dash-muted); font-weight: 500;">
+            {cluster.shortSubtitle}
+          </p>
           <p class="growth-cluster-summary">{cluster.summary}</p>
           <ul class="growth-topic-list">
             {cluster.topics.map((topic) => (

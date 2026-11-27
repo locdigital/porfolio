@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useRef, useState, type ComponentType } from "react";
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState, type ComponentType } from "react";
 import { navigate, type TransitionBeforePreparationEvent } from "astro:transitions/client";
 import { Dock } from "../dock/Dock";
 import { DEFAULT_DOCK_APPS, type AppId } from "../dock/dock.config";
@@ -9,15 +9,22 @@ import {
   createInitialWindowState,
   getDefaultAppForPath,
   getDockNavigationPath,
+  getSyncedUrlForActiveApp,
   getTileGeometryStyle,
   getWindowZIndex,
   windowManagerReducer,
 } from "./window-manager";
+import { readHostWindowState } from "../../lib/host-window-state";
 
 const DesktopWidget = lazy(() => import("./DesktopWidget").then((module) => ({ default: module.DesktopWidget })));
 
-function preloadableApp(load: () => Promise<{ default: ComponentType }>) {
-  let ready: ComponentType | undefined;
+export interface FloatingAppProps {
+  initialUrl?: string;
+  onUrlChange?: (url: string) => void;
+}
+
+function preloadableApp<P extends object>(load: () => Promise<{ default: ComponentType<P> }>) {
+  let ready: ComponentType<P> | undefined;
   const preload = async () => {
     const module = await load();
     ready = module.default;
@@ -25,18 +32,18 @@ function preloadableApp(load: () => Promise<{ default: ComponentType }>) {
   };
   const LazyApp = lazy(preload);
 
-  function App() {
+  function App(props: P) {
     // Keep the mounted component type stable if it originally loaded via Suspense.
     const [Content] = useState(() => ready ?? LazyApp);
-    return <Content />;
+    return <Content {...props} />;
   }
   return { App, preload };
 }
 
-const { App: NetflixApp, preload: loadNetflix } = preloadableApp(
+const { App: NetflixApp, preload: loadNetflix } = preloadableApp<FloatingAppProps>(
   () => import("../apps/NetflixApp").then((module) => ({ default: module.NetflixApp })),
 );
-const { App: SpotifyApp, preload: loadSpotify } = preloadableApp(
+const { App: SpotifyApp, preload: loadSpotify } = preloadableApp<FloatingAppProps>(
   () => import("../apps/SpotifyApp").then((module) => ({ default: module.SpotifyApp })),
 );
 
@@ -63,7 +70,16 @@ const floatingAppIds: AppId[] = ["netflix", "spotify", "photos", "photoshop"];
 
 const WINDOW_STATE_STORAGE_KEY = "desktop-window-manager-state-v1";
 
-export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
+export function DesktopShell(props: DesktopShellProps) {
+  const isEmbedded =
+    typeof window !== "undefined" &&
+    (window.self !== window.top ||
+      new URLSearchParams(window.location.search).get("embed") === "1");
+  if (isEmbedded) return null;
+  return <DesktopShellInner {...props} />;
+}
+
+function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
   const [state, dispatch] = useReducer(
     windowManagerReducer,
     initialPath,
@@ -71,6 +87,7 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
   );
   const [isCompactViewport, setIsCompactViewport] = useState(false);
   const hasHydratedStorageRef = useRef(false);
+  const persistTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 1023px)");
@@ -98,7 +115,21 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
           parsed.windows.photoshop
         ) {
           dispatch({ type: "RESTORE_STATE", state: parsed });
+          const urlApp = getDefaultAppForPath(window.location.pathname);
+          if (urlApp !== "workspace" && parsed.activeApp !== urlApp) {
+            dispatch({ type: "OPEN_APP", id: urlApp });
+          }
         }
+      }
+      const currentHostApp: AppId =
+        getDefaultAppForPath(window.location.pathname) === "photos" ? "photos" : "workspace";
+      const hostSaved = readHostWindowState(sessionStorage, currentHostApp);
+      if (hostSaved.closed) {
+        dispatch({ type: "CLOSE_APP", id: currentHostApp });
+      } else if (hostSaved.minimized) {
+        dispatch({ type: "MINIMIZE_APP", id: currentHostApp });
+      } else if (hostSaved.maximized) {
+        dispatch({ type: "SET_MAXIMIZED_APP", id: currentHostApp, isMaximized: true });
       }
     } catch {}
     hasHydratedStorageRef.current = true;
@@ -106,15 +137,87 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
 
   useEffect(() => {
     if (!hasHydratedStorageRef.current) return;
-    try {
-      sessionStorage.setItem(WINDOW_STATE_STORAGE_KEY, JSON.stringify(state));
-    } catch {}
+    if (persistTimerRef.current !== null) {
+      window.clearTimeout(persistTimerRef.current);
+    }
+    persistTimerRef.current = window.setTimeout(() => {
+      persistTimerRef.current = null;
+      try {
+        sessionStorage.setItem(WINDOW_STATE_STORAGE_KEY, JSON.stringify(state));
+      } catch {}
+    }, 120);
+    return () => {
+      if (persistTimerRef.current !== null) {
+        window.clearTimeout(persistTimerRef.current);
+        persistTimerRef.current = null;
+      }
+    };
   }, [state]);
 
   // Sync active app when Astro ViewTransitions changes the route
+  const [routeSwapTick, setRouteSwapTick] = useState(0);
+  const [hostPathname, setHostPathname] = useState<string>(() =>
+    typeof window !== "undefined" ? window.location.pathname : initialPath,
+  );
+  const initialBrowserUrl =
+    typeof window !== "undefined"
+      ? `${window.location.pathname}${window.location.search}${window.location.hash}`
+      : initialPath;
+  const initialRouteApp = getDefaultAppForPath(
+    typeof window !== "undefined" ? window.location.pathname : initialPath,
+  );
+  const appUrlsRef = useRef<Partial<Record<AppId, string>>>({
+    [initialRouteApp]: initialBrowserUrl,
+  });
+  const workspaceUrlRef = useRef<string>(
+    typeof window !== "undefined" && getDefaultAppForPath(window.location.pathname) === "workspace"
+      ? `${window.location.pathname}${window.location.search}${window.location.hash}`
+      : getDefaultAppForPath(initialPath) === "workspace"
+        ? initialPath
+        : "/",
+  );
+  const hostPathnameRef = useRef(hostPathname);
+  hostPathnameRef.current = hostPathname;
+
+  const handleAppUrlChange = useCallback((id: AppId, nextUrl: string) => {
+    if (!nextUrl) return;
+    appUrlsRef.current[id] = nextUrl;
+    if (typeof window === "undefined") return;
+    if (stateRef.current.activeApp === id) {
+      const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      if (nextUrl !== currentUrl) {
+        window.history.replaceState(window.history.state, "", nextUrl);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const handlePageLoad = () => {
-      dispatch({ type: "SYNC_ROUTE", pathname: window.location.pathname });
+      const nextPathname = window.location.pathname;
+      const nextFullUrl = `${nextPathname}${window.location.search}${window.location.hash}`;
+      const routeApp = getDefaultAppForPath(nextPathname);
+      setHostPathname(nextPathname);
+      hostPathnameRef.current = nextPathname;
+      appUrlsRef.current[routeApp] = nextFullUrl;
+      if (routeApp === "workspace") {
+        workspaceUrlRef.current = nextFullUrl;
+      }
+      dispatch({ type: "SYNC_ROUTE", pathname: nextPathname });
+      setRouteSwapTick((tick) => tick + 1);
+    };
+    const handlePhotosUrlEvent = (event: Event) => {
+      const nextUrl = (event as CustomEvent<{ url?: string }>).detail?.url;
+      if (typeof nextUrl === "string" && nextUrl.startsWith("/photos")) {
+        appUrlsRef.current.photos = nextUrl;
+      }
+    };
+    const handleHashChange = () => {
+      const currentFullUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      const currentApp = getDefaultAppForPath(window.location.pathname);
+      appUrlsRef.current[currentApp] = currentFullUrl;
+      if (currentApp === "workspace") {
+        workspaceUrlRef.current = currentFullUrl;
+      }
     };
     const prepareFloatingRoute = (event: Event) => {
       const navigation = event as TransitionBeforePreparationEvent;
@@ -131,28 +234,43 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     const handleOpenAppEvent = (event: Event) => {
       const id = (event as CustomEvent<{ id?: AppId }>).detail?.id;
       if (!id) return;
-      if (id === "workspace" && getDefaultAppForPath(window.location.pathname) !== "workspace") {
-        void navigate("/");
-        return;
-      }
-      dispatch({ type: "OPEN_APP", id });
+      handleSelectDockAppRef.current(id);
     };
     document.addEventListener("astro:before-preparation", prepareFloatingRoute);
     document.addEventListener("astro:after-swap", handlePageLoad);
     window.addEventListener("desktop:open-app", handleOpenAppEvent);
+    window.addEventListener("photos:url-change", handlePhotosUrlEvent);
+    window.addEventListener("hashchange", handleHashChange);
     return () => {
       document.removeEventListener("astro:before-preparation", prepareFloatingRoute);
       document.removeEventListener("astro:after-swap", handlePageLoad);
       window.removeEventListener("desktop:open-app", handleOpenAppEvent);
+      window.removeEventListener("photos:url-change", handlePhotosUrlEvent);
+      window.removeEventListener("hashchange", handleHashChange);
     };
   }, []);
 
-  const currentPathname =
-    typeof window !== "undefined" ? window.location.pathname : initialPath;
-  const hostWindowApp: AppId = getDefaultAppForPath(currentPathname) === "photos" ? "photos" : "workspace";
-
-  // Sync maximized class and z-index on host .mac-window-container so all windows can run simultaneously
+  // Keep the browser URL bar in sync with the active floating/host window without navigating away.
   useEffect(() => {
+    if (!hasHydratedStorageRef.current || typeof window === "undefined") return;
+    const targetUrl = getSyncedUrlForActiveApp(
+      state.activeApp,
+      hostPathname,
+      workspaceUrlRef.current,
+      appUrlsRef.current,
+    );
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (targetUrl && targetUrl !== currentUrl) {
+      window.history.replaceState(window.history.state, "", targetUrl);
+    }
+  }, [state.activeApp, hostPathname]);
+
+  const hostWindowApp: AppId = getDefaultAppForPath(hostPathname) === "photos" ? "photos" : "workspace";
+
+  const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+  // Sync maximized class and z-index on host .mac-window-container synchronously before paint
+  useIsomorphicLayoutEffect(() => {
     const anyFloatingMaximized = floatingAppIds.some(
       (id) =>
         id !== hostWindowApp &&
@@ -166,6 +284,17 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     if (hostFrame) {
       const hostWin = state.windows[hostWindowApp];
       hostFrame.style.zIndex = String(getWindowZIndex(hostWin));
+      const isHostTiledOrPinned =
+        !isCompactViewport && (hostWin.isPinned || (Boolean(hostWin.tile) && !hostWin.isMaximized));
+      if (
+        isHostTiledOrPinned &&
+        (hostFrame.classList.contains("is-maximized") ||
+          document.documentElement.classList.contains("window-maximized"))
+      ) {
+        hostFrame.classList.remove("is-maximized");
+        document.documentElement.classList.remove("window-maximized");
+        window.dispatchEvent(new CustomEvent("desktop:unmaximize-host"));
+      }
       hostFrame.classList.toggle("is-pinned", !isCompactViewport && hostWin.isPinned);
       if (!isCompactViewport && hostWin.tile && !hostWin.isMaximized) {
         const geo = getTileGeometryStyle(hostWin.tile);
@@ -173,20 +302,45 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
         hostFrame.style.position = "fixed";
         hostFrame.style.left = geo.left;
         hostFrame.style.top = geo.top;
+        hostFrame.style.right = "auto";
+        hostFrame.style.bottom = "auto";
         hostFrame.style.width = geo.width;
         hostFrame.style.height = geo.height;
         hostFrame.style.margin = "0";
       } else {
         hostFrame.classList.remove("is-tiled");
-        hostFrame.style.position = "relative";
+        hostFrame.style.position = "";
         hostFrame.style.left = "";
         hostFrame.style.top = "";
+        hostFrame.style.right = "";
+        hostFrame.style.bottom = "";
         hostFrame.style.width = "";
         hostFrame.style.height = "";
         hostFrame.style.margin = "";
       }
     }
-  }, [hostWindowApp, isCompactViewport, state.windows]);
+  }, [hostWindowApp, isCompactViewport, routeSwapTick, state.windows]);
+
+  useEffect(() => {
+    const handleClearHostLayout = () => {
+      const hostWin = state.windows[hostWindowApp];
+      if (hostWin.isPinned) {
+        dispatch({ type: "TOGGLE_PIN_APP", id: hostWindowApp });
+      }
+      if (hostWin.tile) {
+        dispatch({
+          type: "MOVE_WINDOW",
+          id: hostWindowApp,
+          offsetX: hostWin.offsetX,
+          offsetY: hostWin.offsetY,
+        });
+      }
+    };
+    window.addEventListener("desktop:clear-host-layout", handleClearHostLayout);
+    return () => {
+      window.removeEventListener("desktop:clear-host-layout", handleClearHostLayout);
+    };
+  }, [hostWindowApp, state.windows]);
 
   const [hostContextMenu, setHostContextMenu] = useState<{ x: number; y: number } | null>(null);
   const [hostTileMenu, setHostTileMenu] = useState<{ x: number; y: number } | null>(null);
@@ -230,9 +384,6 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     const onClick = () => {
       clearHostTileTimers();
       setHostTileMenu(null);
-      if (state.windows[hostWindowApp].tile) {
-        dispatch({ type: "MOVE_WINDOW", id: hostWindowApp, offsetX: 0, offsetY: 0 });
-      }
     };
 
     hostMaxBtn.addEventListener("mouseenter", onEnter);
@@ -244,7 +395,7 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
       hostMaxBtn.removeEventListener("mouseleave", onLeave);
       hostMaxBtn.removeEventListener("click", onClick);
     };
-  }, [clearHostTileTimers, hostWindowApp, scheduleHostTileClose, state.windows]);
+  }, [clearHostTileTimers, hostWindowApp, routeSwapTick, scheduleHostTileClose]);
 
   useEffect(() => {
     const hostTitlebar = document.querySelector<HTMLElement>(".mac-window-container .desktop-titlebar");
@@ -260,7 +411,7 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     return () => {
       hostTitlebar.removeEventListener("contextmenu", handleContextMenu);
     };
-  }, [hostWindowApp, state.windows]);
+  }, [hostWindowApp, routeSwapTick]);
 
   useEffect(() => {
     if (!hostContextMenu) return;
@@ -278,43 +429,85 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     };
   }, [hostContextMenu]);
 
-  // Clicking directly on the Workspace window brings it to front without closing/minimizing other apps
+  // Keep refs to current hostWindowApp and state so the capture listener never churns on re-renders.
+  const hostWindowAppRef = useRef<AppId>(hostWindowApp);
+  hostWindowAppRef.current = hostWindowApp;
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
+  // Clicking directly on the Workspace window brings it to front without closing/minimizing other apps.
+  // Use document-level capture so it survives astro:after-swap DOM replacement and child stopPropagation.
   useEffect(() => {
-    const handleHostPointerDown = () => {
-      dispatch({ type: "FOCUS_APP", id: hostWindowApp });
+    const focusHost = () => {
+      const appId = hostWindowAppRef.current;
+      const currentState = stateRef.current;
+      const hostWin = currentState.windows[appId];
+      // If user landed directly on an empty floating-app fallback route (e.g. /entertainment/netflix)
+      // and clicks the visible Workspace host frame, restore Workspace home content too.
+      if (appId === "workspace" && document.querySelector(".mac-window-container .app-route-fallback")) {
+        void navigate("/");
+      }
+      if (!hostWin.isOpen || hostWin.isMinimized) {
+        dispatch({ type: "OPEN_APP", id: appId });
+      } else if (currentState.activeApp !== appId || hostWin.zIndex < currentState.topZ) {
+        dispatch({ type: "FOCUS_APP", id: appId });
+      }
     };
-    const hostFrame = document.querySelector<HTMLElement>(".mac-window-container");
-    const titlebar = hostFrame?.querySelector<HTMLElement>(".desktop-titlebar");
-    const handleTitlebarClick = (event: MouseEvent) => {
-      if (event.target instanceof Element && event.target.closest("button, a, input, select, textarea")) return;
-      handleHostPointerDown();
+    const handleHostInteract = (event: Event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+      if (target.closest(".mac-traffic-lights")) return;
+      if (target.closest(".mac-window-container")) {
+        focusHost();
+      }
     };
-    hostFrame?.addEventListener("pointerdown", handleHostPointerDown);
-    hostFrame?.addEventListener("focusin", handleHostPointerDown);
-    titlebar?.addEventListener("click", handleTitlebarClick);
+    const handleHostWindowAction = (event: Event) => {
+      const detail = (
+        event as CustomEvent<{
+          action?: "close" | "minimize" | "restore" | "maximize";
+          app?: AppId;
+          maximized?: boolean;
+        }>
+      ).detail;
+      const appId = detail?.app ?? hostWindowAppRef.current;
+      if (detail?.action === "close") {
+        dispatch({ type: "CLOSE_APP", id: appId });
+      } else if (detail?.action === "minimize") {
+        dispatch({ type: "MINIMIZE_APP", id: appId });
+      } else if (detail?.action === "restore") {
+        dispatch({ type: "OPEN_APP", id: appId });
+      } else if (detail?.action === "maximize") {
+        dispatch({
+          type: "SET_MAXIMIZED_APP",
+          id: appId,
+          isMaximized: Boolean(detail.maximized),
+        });
+      }
+    };
+    document.addEventListener("pointerdown", handleHostInteract, true);
+    document.addEventListener("focusin", handleHostInteract, true);
+    window.addEventListener("desktop:host-window-action", handleHostWindowAction);
     return () => {
-      hostFrame?.removeEventListener("pointerdown", handleHostPointerDown);
-      hostFrame?.removeEventListener("focusin", handleHostPointerDown);
-      titlebar?.removeEventListener("click", handleTitlebarClick);
+      document.removeEventListener("pointerdown", handleHostInteract, true);
+      document.removeEventListener("focusin", handleHostInteract, true);
+      window.removeEventListener("desktop:host-window-action", handleHostWindowAction);
     };
-  }, [hostWindowApp, state.windows]);
+  }, []);
 
   // Bring the Astro host window (.mac-window-container) to front when workspace or host photos is focused
   const focusHostWindow = useCallback(() => {
-    const restoreBtn = document.querySelector<HTMLButtonElement>('[data-window-action="restore"]');
     const hostFrame = document.querySelector<HTMLElement>(".mac-window-container");
-    if (hostFrame?.hidden && restoreBtn) {
-      restoreBtn.click();
-    } else if (hostFrame?.classList.contains("is-minimized")) {
-      const minBtn = document.querySelector<HTMLButtonElement>('[data-window-action="minimize"]');
-      minBtn?.click();
+    if (hostFrame?.hidden || hostFrame?.classList.contains("is-minimized")) {
+      window.dispatchEvent(
+        new CustomEvent("desktop:host-command", { detail: { action: "restore" } }),
+      );
     }
   }, []);
 
   const handleSelectDockApp = useCallback(
     (id: AppId) => {
-      const route = getDockNavigationPath(id, window.location.pathname);
-      if (!route && id === hostWindowApp) {
+      const route = getDockNavigationPath(id, hostPathnameRef.current);
+      if (id === hostWindowApp) {
         focusHostWindow();
       }
 
@@ -326,6 +519,8 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     },
     [focusHostWindow, hostWindowApp],
   );
+  const handleSelectDockAppRef = useRef(handleSelectDockApp);
+  handleSelectDockAppRef.current = handleSelectDockApp;
 
   const enabledApps = useMemo(
     () => DEFAULT_DOCK_APPS.filter((app) => app.enabled),
@@ -362,16 +557,25 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
 
   const closeFloatingOrRouteApp = useCallback(
     (id: AppId) => {
+      if (id === "spotify") {
+        void import("../apps/spotify/spotify-audio").then(({ sharedSpotifyAudio }) => {
+          sharedSpotifyAudio.stop();
+        });
+      }
+      if (id !== "workspace") {
+        delete appUrlsRef.current[id];
+      }
       if (id === hostWindowApp) {
-        const closeBtn = document.querySelector<HTMLButtonElement>('[data-window-action="close"]');
-        closeBtn?.click();
+        window.dispatchEvent(
+          new CustomEvent("desktop:host-command", { detail: { action: "close" } }),
+        );
       }
       dispatch({ type: "CLOSE_APP", id });
       // If closing the app that owns a dedicated empty fallback route (e.g. /entertainment/netflix or /music/spotify),
       // navigate cleanly back to Workspace home so mobile/desktop users aren't left on an empty shell.
       if (
         typeof window !== "undefined" &&
-        getDefaultAppForPath(window.location.pathname) === id &&
+        getDefaultAppForPath(hostPathnameRef.current) === id &&
         id !== "workspace" &&
         id !== "photos"
       ) {
@@ -388,35 +592,102 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
     [closeFloatingOrRouteApp],
   );
 
+  const handleCloseAllApps = useCallback(() => {
+    void import("../apps/spotify/spotify-audio").then(({ sharedSpotifyAudio }) => {
+      sharedSpotifyAudio.stop();
+    });
+    delete appUrlsRef.current.netflix;
+    delete appUrlsRef.current.spotify;
+    delete appUrlsRef.current.photos;
+    delete appUrlsRef.current.photoshop;
+    window.dispatchEvent(
+      new CustomEvent("desktop:host-command", { detail: { action: "close" } }),
+    );
+    dispatch({ type: "CLOSE_ALL_APPS" });
+  }, []);
+
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [switcherIndex, setSwitcherIndex] = useState(0);
+  const switcherCommitTimerRef = useRef<number | null>(null);
+
+  const clearSwitcherCommitTimer = useCallback(() => {
+    if (switcherCommitTimerRef.current !== null) {
+      window.clearTimeout(switcherCommitTimerRef.current);
+      switcherCommitTimerRef.current = null;
+    }
+  }, []);
+
+  const commitSwitcherSelection = useCallback(
+    (index: number) => {
+      clearSwitcherCommitTimer();
+      const targetApp = enabledApps[index];
+      setSwitcherOpen(false);
+      if (targetApp) {
+        handleSelectDockApp(targetApp.id);
+      }
+    },
+    [clearSwitcherCommitTimer, enabledApps, handleSelectDockApp],
+  );
 
   useEffect(() => {
+    const scheduleCommit = (nextIndex: number) => {
+      clearSwitcherCommitTimer();
+      switcherCommitTimerRef.current = window.setTimeout(() => {
+        commitSwitcherSelection(nextIndex);
+      }, 850);
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Tab" || e.key === "Tab") {
-        if (e.defaultPrevented || e.ctrlKey || (!switcherOpen && !e.altKey && !e.metaKey)) return;
+        if (e.defaultPrevented || e.ctrlKey) return;
         const target = e.target instanceof Element ? e.target : null;
-        if (!switcherOpen && target?.closest('[role="dialog"][aria-modal="true"]')) return;
+        if (
+          !switcherOpen &&
+          (target?.closest('[role="dialog"][aria-modal="true"]') ||
+            target?.closest("input, textarea, select, [contenteditable='true']"))
+        ) {
+          return;
+        }
         e.preventDefault();
         const step = e.shiftKey ? -1 : 1;
+        let nextIndex: number;
         if (!switcherOpen) {
           const activeIdx = enabledApps.findIndex((a) => a.id === state.activeApp);
           const base = activeIdx >= 0 ? activeIdx : 0;
-          setSwitcherIndex((base + step + enabledApps.length) % enabledApps.length);
+          nextIndex = (base + step + enabledApps.length) % enabledApps.length;
+          setSwitcherIndex(nextIndex);
           setSwitcherOpen(true);
         } else {
-          setSwitcherIndex((i) => (i + step + enabledApps.length) % enabledApps.length);
+          nextIndex = (switcherIndex + step + enabledApps.length) % enabledApps.length;
+          setSwitcherIndex(nextIndex);
         }
+        if (!e.altKey && !e.metaKey) {
+          scheduleCommit(nextIndex);
+        }
+        return;
+      }
+
+      if (!switcherOpen) return;
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        clearSwitcherCommitTimer();
+        setSwitcherOpen(false);
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        commitSwitcherSelection(switcherIndex);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        const step = e.key === "ArrowRight" ? 1 : -1;
+        const nextIndex = (switcherIndex + step + enabledApps.length) % enabledApps.length;
+        setSwitcherIndex(nextIndex);
+        scheduleCommit(nextIndex);
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (switcherOpen && (e.key === "Alt" || e.key === "Meta")) {
-        const targetApp = enabledApps[switcherIndex];
-        setSwitcherOpen(false);
-        if (targetApp) {
-          handleSelectDockApp(targetApp.id);
-        }
+        commitSwitcherSelection(switcherIndex);
       }
     };
 
@@ -426,22 +697,68 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [enabledApps, handleSelectDockApp, state.activeApp, switcherIndex, switcherOpen]);
+  }, [
+    clearSwitcherCommitTimer,
+    commitSwitcherSelection,
+    enabledApps,
+    state.activeApp,
+    switcherIndex,
+    switcherOpen,
+  ]);
+
+  useEffect(() => () => clearSwitcherCommitTimer(), [clearSwitcherCommitTimer]);
 
   const renderAppContent = (id: AppId) => {
+    const props: FloatingAppProps = {
+      initialUrl: appUrlsRef.current[id],
+      onUrlChange: (url) => handleAppUrlChange(id, url),
+    };
     switch (id) {
       case "netflix":
-        return <NetflixApp />;
+        return <NetflixApp {...props} />;
       case "spotify":
-        return <SpotifyApp />;
+        return <SpotifyApp {...props} />;
       case "photos":
-        return <PhotosApp />;
+        return <PhotosApp {...props} />;
       case "photoshop":
-        return <NikonRecipesApp />;
+        return <NikonRecipesApp {...props} />;
       default:
         return null;
     }
   };
+
+  const windowHandlers = useMemo(() => {
+    const map = {} as Record<
+      AppId,
+      {
+        onFocus: () => void;
+        onClose: () => void;
+        onMinimize: () => void;
+        onToggleMaximize: () => void;
+        onTogglePin: () => void;
+        onTile: (preset: import("./window-manager").WindowTilePreset) => void;
+        onMove: (offsetX: number, offsetY: number) => void;
+      }
+    >;
+    for (const id of floatingAppIds) {
+      map[id] = {
+        onFocus: () => dispatch({ type: "FOCUS_APP", id }),
+        onClose: () => closeFloatingOrRouteApp(id),
+        onMinimize: () => dispatch({ type: "MINIMIZE_APP", id }),
+        onToggleMaximize: () => dispatch({ type: "TOGGLE_MAXIMIZE_APP", id }),
+        onTogglePin: () => dispatch({ type: "TOGGLE_PIN_APP", id }),
+        onTile: (preset) => dispatch({ type: "TILE_WINDOW", id, preset }),
+        onMove: (offsetX, offsetY) => dispatch({ type: "MOVE_WINDOW", id, offsetX, offsetY }),
+      };
+    }
+    return map;
+  }, [closeFloatingOrRouteApp]);
+
+  const handleOpenSwitcher = useCallback(() => {
+    const activeIdx = enabledApps.findIndex((a) => a.id === stateRef.current.activeApp);
+    setSwitcherIndex(activeIdx >= 0 ? activeIdx : 0);
+    setSwitcherOpen(true);
+  }, [enabledApps]);
 
   return (
     <>
@@ -455,6 +772,8 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
         onSelectApp={handleSelectDockApp}
         onPinApp={handlePinDockApp}
         onTogglePinMode={handleTogglePinMode}
+        onOpenSwitcher={handleOpenSwitcher}
+        onCloseAllApps={handleCloseAllApps}
         onQuitApp={handleQuitDockApp}
       />
 
@@ -465,15 +784,20 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
         runningApps={runningApps}
         onSelectIndex={setSwitcherIndex}
         onCommit={(id) => {
+          clearSwitcherCommitTimer();
           setSwitcherOpen(false);
           handleSelectDockApp(id);
         }}
-        onClose={() => setSwitcherOpen(false)}
+        onClose={() => {
+          clearSwitcherCommitTimer();
+          setSwitcherOpen(false);
+        }}
       />
 
       {floatingAppIds.map((id, idx) => {
         if (id === hostWindowApp) return null;
         const win = state.windows[id];
+        const handlers = windowHandlers[id];
         if (!isCompactViewport && win.isOpen && !win.isMinimized && win.isPinned) {
           return (
             <Suspense key={`${id}-widget`} fallback={null}>
@@ -482,9 +806,9 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
                 title={APP_TITLES[id]}
                 zIndex={getWindowZIndex(win)}
                 index={idx}
-                onFocus={() => dispatch({ type: "FOCUS_APP", id })}
-                onUnpin={() => dispatch({ type: "TOGGLE_PIN_APP", id })}
-                onClose={() => closeFloatingOrRouteApp(id)}
+                onFocus={handlers.onFocus}
+                onUnpin={handlers.onTogglePin}
+                onClose={handlers.onClose}
               />
             </Suspense>
           );
@@ -495,15 +819,14 @@ export function DesktopShell({ initialPath = "/" }: DesktopShellProps) {
               windowState={win}
               title={APP_TITLES[id]}
               isActive={state.activeApp === id}
-              onFocus={() => dispatch({ type: "FOCUS_APP", id })}
-              onClose={() => closeFloatingOrRouteApp(id)}
-              onMinimize={() => dispatch({ type: "MINIMIZE_APP", id })}
-              onToggleMaximize={() => dispatch({ type: "TOGGLE_MAXIMIZE_APP", id })}
-              onTogglePin={() => dispatch({ type: "TOGGLE_PIN_APP", id })}
-              onTile={(preset) => dispatch({ type: "TILE_WINDOW", id, preset })}
-              onMove={(offsetX, offsetY) =>
-                dispatch({ type: "MOVE_WINDOW", id, offsetX, offsetY })
-              }
+              isFullBleed={id === "photos" || id === "spotify"}
+              onFocus={handlers.onFocus}
+              onClose={handlers.onClose}
+              onMinimize={handlers.onMinimize}
+              onToggleMaximize={handlers.onToggleMaximize}
+              onTogglePin={handlers.onTogglePin}
+              onTile={handlers.onTile}
+              onMove={handlers.onMove}
             >
               {renderAppContent(id)}
             </AppWindow>
