@@ -4,10 +4,13 @@ import { Dock } from "../dock/Dock";
 import { DEFAULT_DOCK_APPS, type AppId } from "../dock/dock.config";
 import { AppSwitcher } from "./AppSwitcher";
 import { AppWindow } from "./AppWindow";
+import { EmbeddedRouteApp } from "./EmbeddedRouteApp";
 import { WindowTileMenu } from "./WindowTileMenu";
 import {
   createInitialWindowState,
+  getActivePinLayout,
   getDefaultAppForPath,
+  getPinBentoIds,
   getDockNavigationPath,
   getSyncedUrlForActiveApp,
   getTileGeometryStyle,
@@ -15,6 +18,7 @@ import {
   windowManagerReducer,
 } from "./window-manager";
 import { readHostWindowState } from "../../lib/host-window-state";
+import { getUiCopy } from "../../i18n/ui";
 
 const DesktopWidget = lazy(() => import("./DesktopWidget").then((module) => ({ default: module.DesktopWidget })));
 
@@ -47,26 +51,15 @@ const { App: SpotifyApp, preload: loadSpotify } = preloadableApp<FloatingAppProp
   () => import("../apps/SpotifyApp").then((module) => ({ default: module.SpotifyApp })),
 );
 
-const PhotosApp = lazy(() => import("../apps/PhotosApp").then((module) => ({ default: module.PhotosApp })));
-
 const NikonRecipesApp = lazy(() => import("../apps/NikonRecipesApp").then((module) => ({ default: module.NikonRecipesApp })));
 
 interface DesktopShellProps {
   initialPath?: string;
 }
 
-const APP_TITLES: Record<AppId, string> = {
-  netflix: "Netflix — Personal Library",
-  spotify: "Spotify — My Music",
-  photos: "Photos — Photography",
-  workspace: "Phuc Loc Nguyen — Workspace",
-  photoshop: "Color Lab — Nikon Imaging Recipes",
-};
-
-// Photos can open as an independent floating window alongside Workspace.
-// On /photos and /photos/[slug], the Astro host frame already renders Photos,
-// so we skip mounting a duplicate floating window there.
-const floatingAppIds: AppId[] = ["netflix", "spotify", "photos", "photoshop"];
+// Any app other than the current host page can open as a floating window
+// (and pin as a desktop widget) alongside the host window.
+const floatingAppIds: AppId[] = ["netflix", "spotify", "photos", "workspace", "photoshop"];
 
 const WINDOW_STATE_STORAGE_KEY = "desktop-window-manager-state-v1";
 
@@ -80,6 +73,9 @@ export function DesktopShell(props: DesktopShellProps) {
 }
 
 function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
+  const desktopCopy = useMemo(() => getUiCopy().desktop, []);
+  const appTitles = desktopCopy.appTitles;
+
   const [state, dispatch] = useReducer(
     windowManagerReducer,
     initialPath,
@@ -116,7 +112,9 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
         ) {
           dispatch({ type: "RESTORE_STATE", state: parsed });
           const urlApp = getDefaultAppForPath(window.location.pathname);
-          if (urlApp !== "workspace" && parsed.activeApp !== urlApp) {
+          // Pin Mode may have a non-host app in the centre; don't unpin it on reload.
+          const restoredPinMode = Array.isArray(parsed.pinLayout) && parsed.windows[urlApp]?.isPinned;
+          if (!parsed.windows[urlApp]?.isOpen || (parsed.activeApp !== urlApp && !restoredPinMode)) {
             dispatch({ type: "OPEN_APP", id: urlApp });
           }
         }
@@ -236,15 +234,27 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
       if (!id) return;
       handleSelectDockAppRef.current(id);
     };
+    const handleEmbedMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      const data = event.data as { type?: string; id?: AppId; url?: string } | null;
+      if (data?.type === "desktop:open-app" && data.id) {
+        if (typeof data.url === "string" && data.url.startsWith("/")) {
+          appUrlsRef.current[data.id] = data.url;
+        }
+        handleSelectDockAppRef.current(data.id);
+      }
+    };
     document.addEventListener("astro:before-preparation", prepareFloatingRoute);
     document.addEventListener("astro:after-swap", handlePageLoad);
     window.addEventListener("desktop:open-app", handleOpenAppEvent);
+    window.addEventListener("message", handleEmbedMessage);
     window.addEventListener("photos:url-change", handlePhotosUrlEvent);
     window.addEventListener("hashchange", handleHashChange);
     return () => {
       document.removeEventListener("astro:before-preparation", prepareFloatingRoute);
       document.removeEventListener("astro:after-swap", handlePageLoad);
       window.removeEventListener("desktop:open-app", handleOpenAppEvent);
+      window.removeEventListener("message", handleEmbedMessage);
       window.removeEventListener("photos:url-change", handlePhotosUrlEvent);
       window.removeEventListener("hashchange", handleHashChange);
     };
@@ -266,6 +276,17 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
   }, [state.activeApp, hostPathname]);
 
   const hostWindowApp: AppId = getDefaultAppForPath(hostPathname) === "photos" ? "photos" : "workspace";
+
+  // Pin Mode: every bento app open + pinned. pinLayout[0] is the large centre
+  // window; the rest fill the widget column in order.
+  const isPinMode = getPinBentoIds(hostWindowApp).every(
+    (id) => state.windows[id].isOpen && state.windows[id].isPinned,
+  );
+  const pinLayout: AppId[] | null = isPinMode
+    ? getActivePinLayout(state) ?? getPinBentoIds(hostWindowApp)
+    : null;
+  const pinCenter: AppId | null = !isCompactViewport && pinLayout ? pinLayout[0] : null;
+  const isHostPinDocked = pinCenter !== null && pinCenter !== hostWindowApp;
 
   const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -296,6 +317,9 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
         window.dispatchEvent(new CustomEvent("desktop:unmaximize-host"));
       }
       hostFrame.classList.toggle("is-pinned", !isCompactViewport && hostWin.isPinned);
+      // Another app took the Pin Mode centre: hide the host page, its widget stands in.
+      hostFrame.classList.toggle("is-pin-docked", isHostPinDocked);
+      hostFrame.toggleAttribute("inert", isHostPinDocked);
       if (!isCompactViewport && hostWin.tile && !hostWin.isMaximized) {
         const geo = getTileGeometryStyle(hostWin.tile);
         hostFrame.classList.add("is-tiled");
@@ -319,7 +343,7 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
         hostFrame.style.margin = "";
       }
     }
-  }, [hostWindowApp, isCompactViewport, routeSwapTick, state.windows]);
+  }, [hostWindowApp, isCompactViewport, isHostPinDocked, routeSwapTick, state.windows]);
 
   useEffect(() => {
     const handleClearHostLayout = () => {
@@ -506,11 +530,17 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
 
   const handleSelectDockApp = useCallback(
     (id: AppId) => {
-      const route = getDockNavigationPath(id, hostPathnameRef.current);
       if (id === hostWindowApp) {
         focusHostWindow();
       }
 
+      const activeLayout = getActivePinLayout(stateRef.current);
+      if (activeLayout?.includes(id) && window.innerWidth >= 1024) {
+        dispatch({ type: "FOCUS_PIN_APP", id });
+        return;
+      }
+
+      const route = getDockNavigationPath(id, hostPathnameRef.current);
       if (route) {
         void navigate(route);
       } else {
@@ -534,11 +564,6 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
   const pinnedApps = useMemo<AppId[]>(() => {
     return enabledApps.filter(({ id }) => state.windows[id].isPinned).map(({ id }) => id);
   }, [enabledApps, state.windows]);
-
-  const isPinMode = useMemo(() => {
-    const bentoIds: AppId[] = ["workspace", "netflix", "spotify", "photos"];
-    return bentoIds.every((id) => state.windows[id].isOpen && state.windows[id].isPinned);
-  }, [state.windows]);
 
   const handleTogglePinMode = useCallback(() => {
     focusHostWindow();
@@ -719,7 +744,27 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
       case "spotify":
         return <SpotifyApp {...props} />;
       case "photos":
-        return <PhotosApp {...props} />;
+        return (
+          <EmbeddedRouteApp
+            appId="photos"
+            defaultRoute="/photos"
+            title={appTitles.photos}
+            initialUrl={props.initialUrl}
+            onUrlChange={props.onUrlChange}
+            onFocus={windowHandlers.photos.onFocus}
+          />
+        );
+      case "workspace":
+        return (
+          <EmbeddedRouteApp
+            appId="workspace"
+            defaultRoute="/"
+            title={appTitles.workspace}
+            initialUrl={props.initialUrl || workspaceUrlRef.current}
+            onUrlChange={props.onUrlChange}
+            onFocus={windowHandlers.workspace.onFocus}
+          />
+        );
       case "photoshop":
         return <NikonRecipesApp {...props} />;
       default:
@@ -795,19 +840,44 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
       />
 
       {floatingAppIds.map((id, idx) => {
-        if (id === hostWindowApp) return null;
         const win = state.windows[id];
         const handlers = windowHandlers[id];
-        if (!isCompactViewport && win.isOpen && !win.isMinimized && win.isPinned) {
+        const pinSlot = pinLayout ? pinLayout.indexOf(id) : -1;
+        // In Pin Mode, clicking a widget swaps it into the centre instead of unpinning.
+        const handleWidgetOpen = pinSlot > 0
+          ? () => dispatch({ type: "FOCUS_PIN_APP", id })
+          : handlers.onTogglePin;
+        if (id === hostWindowApp) {
+          // The host page lives in the Astro frame; while another app holds the
+          // centre, a widget stands in for it in the column.
+          if (!isHostPinDocked) return null;
           return (
             <Suspense key={`${id}-widget`} fallback={null}>
               <DesktopWidget
                 id={id}
-                title={APP_TITLES[id]}
+                title={appTitles[id]}
                 zIndex={getWindowZIndex(win)}
                 index={idx}
+                slot={pinSlot - 1}
                 onFocus={handlers.onFocus}
-                onUnpin={handlers.onTogglePin}
+                onUnpin={handleWidgetOpen}
+                onClose={handlers.onClose}
+              />
+            </Suspense>
+          );
+        }
+        const isPinCenter = pinCenter === id;
+        if (!isCompactViewport && win.isOpen && !win.isMinimized && win.isPinned && !isPinCenter) {
+          return (
+            <Suspense key={`${id}-widget`} fallback={null}>
+              <DesktopWidget
+                id={id}
+                title={appTitles[id]}
+                zIndex={getWindowZIndex(win)}
+                index={idx}
+                slot={pinSlot > 0 ? pinSlot - 1 : undefined}
+                onFocus={handlers.onFocus}
+                onUnpin={handleWidgetOpen}
                 onClose={handlers.onClose}
               />
             </Suspense>
@@ -817,9 +887,10 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
           <Suspense key={id} fallback={null}>
             <AppWindow
               windowState={win}
-              title={APP_TITLES[id]}
+              title={appTitles[id]}
               isActive={state.activeApp === id}
-              isFullBleed={id === "photos" || id === "spotify"}
+              isFullBleed={id === "spotify" || id === "photos" || id === "workspace"}
+              isPinCenter={isPinCenter}
               onFocus={handlers.onFocus}
               onClose={handlers.onClose}
               onMinimize={handlers.onMinimize}
@@ -869,7 +940,9 @@ function DesktopShellInner({ initialPath = "/" }: DesktopShellProps) {
               <path d="M12 17v5" />
               <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
             </svg>
-            <span>{state.windows[hostWindowApp].isPinned ? "Unpin widget" : "Pin as widget"}</span>
+            <span>
+              {state.windows[hostWindowApp].isPinned ? "Unpin widget" : "Pin as widget"}
+            </span>
           </button>
         </div>
       )}

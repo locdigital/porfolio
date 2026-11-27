@@ -47,6 +47,7 @@ import {
   filterCommandItem,
 } from "@/lib/command-search";
 import { cn } from "@/lib/utils";
+import { getUiCopy } from "@/i18n/ui";
 
 export const COMMAND_SEARCH_OPEN_EVENT = "workspace-command-search:open";
 export const COMMAND_SEARCH_TOGGLE_EVENT = "workspace-command-search:toggle";
@@ -223,6 +224,7 @@ function CommandSearchInner({
   showTrigger = false,
   triggerClassName,
 }: CommandSearchProps) {
+  const searchCopy = getUiCopy().search;
   const [popoverOpen, setPopoverOpen] = React.useState(false);
   const [spotlightOpen, setSpotlightOpen] = React.useState(false);
   const [spotlightShowDefaultList, setSpotlightShowDefaultList] = React.useState(false);
@@ -422,6 +424,12 @@ function CommandSearchInner({
         return;
       }
 
+      const strippedTarget = targetPath.replace(/^\/vi(?=\/|$)/, "") || "/";
+      if (strippedTarget === "/photos" || strippedTarget.startsWith("/photos/")) {
+        window.location.assign(href);
+        return;
+      }
+
       // Allow Radix overlay/popover to clean up before Astro swaps the DOM.
       window.requestAnimationFrame(() => {
         try {
@@ -436,6 +444,11 @@ function CommandSearchInner({
 
   const handleSelectItem = React.useCallback(
     (item: CommandSearchItem) => {
+      if (item.appId === "photos") {
+        closeAll();
+        window.location.assign(item.href);
+        return;
+      }
       if (item.appId) {
         closeAll();
         window.requestAnimationFrame(() => {
@@ -468,16 +481,17 @@ function CommandSearchInner({
   const renderResults = () => (
     <>
       <CommandList>
-        <CommandEmpty>No results found. Try another title, topic, or place.</CommandEmpty>
+        <CommandEmpty>{searchCopy.empty}</CommandEmpty>
 
         {groupedItems.map((section, sectionIndex) => (
           <React.Fragment key={section.group}>
             {sectionIndex > 0 && <CommandSeparator />}
-            <CommandGroup heading={section.group}>
+            <CommandGroup heading={searchCopy.groups[section.group] ?? section.group}>
               {section.items.map((item) => {
                 const keywords = [
                   item.description,
                   item.group,
+                  searchCopy.groups[item.group] ?? "",
                   item.href,
                   ...(item.keywords ? item.keywords.split(/\s+/).filter(Boolean) : []),
                 ];
@@ -513,10 +527,10 @@ function CommandSearchInner({
         ))}
 
         <CommandSeparator />
-        <CommandGroup heading="Quick actions">
+        <CommandGroup heading={searchCopy.quickActionsHeading}>
           <CommandItem
-            value="Copy email address :: action:copy-email"
-            keywords={["email", "mail", "contact", CONTACT_EMAIL, "clipboard"]}
+            value={`${searchCopy.copyEmail} :: action:copy-email`}
+            keywords={["email", "mail", "contact", "lien he", "thu dien tu", CONTACT_EMAIL, "clipboard"]}
             onSelect={() => void handleCopyAction("email", CONTACT_EMAIL)}
           >
             {copiedAction === "email" ? (
@@ -537,19 +551,19 @@ function CommandSearchInner({
             <div className="flex min-w-0 flex-1 flex-col">
               <span className="truncate font-medium text-[length:var(--text-body-sm)] text-foreground">
                 {copiedAction === "email"
-                  ? "Copied email to clipboard"
-                  : "Copy email address"}
+                  ? searchCopy.copiedEmail
+                  : searchCopy.copyEmail}
               </span>
               <span className="truncate text-[length:var(--text-body-sm)] text-muted-foreground">
                 {CONTACT_EMAIL}
               </span>
             </div>
-            <CommandShortcut>Copy</CommandShortcut>
+            <CommandShortcut>{searchCopy.copyShortcut}</CommandShortcut>
           </CommandItem>
 
           <CommandItem
-            value="Copy current page link :: action:copy-link"
-            keywords={["url", "share", "link", "clipboard"]}
+            value={`${searchCopy.copyLink} :: action:copy-link`}
+            keywords={["url", "share", "link", "chia se", "duong dan", "clipboard"]}
             onSelect={() => void handleCopyAction("link", window.location.href)}
           >
             {copiedAction === "link" ? (
@@ -570,11 +584,11 @@ function CommandSearchInner({
             <div className="flex min-w-0 flex-1 flex-col">
               <span className="truncate font-medium text-[length:var(--text-body-sm)] text-foreground">
                 {copiedAction === "link"
-                  ? "Copied link to clipboard"
-                  : "Copy current page link"}
+                  ? searchCopy.copiedLink
+                  : searchCopy.copyLink}
               </span>
               <span className="truncate text-[length:var(--text-body-sm)] text-muted-foreground">
-                Share this page URL
+                {searchCopy.sharePageUrl}
               </span>
             </div>
             <CommandShortcut>URL</CommandShortcut>
@@ -630,7 +644,7 @@ function CommandSearchInner({
               className="text-[length:var(--text-body-sm)]"
               value={popoverSearch}
               onValueChange={setPopoverSearch}
-              placeholder="Search pages, work, writing, photos..."
+              placeholder={searchCopy.placeholder}
             />
             {renderResults()}
           </Command>
@@ -641,8 +655,8 @@ function CommandSearchInner({
       <CommandDialog
         open={spotlightOpen}
         onOpenChange={handleSpotlightOpenChange}
-        title="Search workspace"
-        description="Search pages, case studies, writing, growth playbooks, and photography."
+        title={searchCopy.dialogTitle}
+        description={searchCopy.dialogDescription}
         commandProps={{
           filter: filterCommandItem,
           loop: true,
@@ -653,7 +667,7 @@ function CommandSearchInner({
           className="text-[length:var(--text-body-sm)]"
           value={spotlightSearch}
           onValueChange={setSpotlightSearch}
-          placeholder="Search pages, work, writing, photos..."
+          placeholder={searchCopy.placeholder}
           wrapperClassName={!hasSpotlightQuery ? "border-b-0" : undefined}
         />
         {hasSpotlightQuery &&

@@ -138,7 +138,7 @@ export type PhotoLocationData = {
   featured?: boolean;
   published?: boolean;
   status?: "draft" | "verified" | "published";
-  language?: "en" | "vi";
+  language?: "en";
   publishedAt?: string;
   updatedAt?: string;
   seoTitle?: string;

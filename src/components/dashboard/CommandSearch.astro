@@ -8,8 +8,11 @@ import {
   getProjects,
 } from "../../lib/content";
 import { getWritingEntries } from "../../lib/writing";
+import { getUiCopy } from "../../i18n/ui";
 import { NETFLIX_MOVIES } from "../../data/netflix";
 import { SPOTIFY_TRACKS } from "../../data/spotify";
+
+const copy = getUiCopy();
 
 const [projects, writing, photos, playbooks, gear] = await Promise.all([
   getProjects(),
@@ -29,75 +32,82 @@ const gearKeywords = [
 
 const navigationItems: CommandSearchItem[] = [
   {
-    title: "Overview",
-    description: "Phuc Loc Nguyen's personal workspace",
+    title: copy.nav.overview,
+    description: copy.search.navDescriptions.overview,
     href: "/",
     group: "Navigation",
     keywords: "home workspace portfolio dashboard",
   },
   {
-    title: "About",
-    description: "Background, experience, and approach",
+    title: copy.nav.about,
+    description: copy.search.navDescriptions.about,
     href: "/about",
     group: "Navigation",
-    keywords: "profile bio experience story",
+    keywords: "profile bio experience story contact",
   },
   {
-    title: "Work",
-    description: "Selected performance marketing case studies",
+    title: copy.nav.work,
+    description: copy.search.navDescriptions.work,
     href: "/work",
     group: "Navigation",
     keywords: "projects portfolio case studies clients",
   },
   {
-    title: "Services",
-    description: "Growth and performance marketing services",
+    title: copy.nav.services,
+    description: copy.search.navDescriptions.services,
     href: "/services",
     group: "Navigation",
     keywords: "consulting marketing retainer tiktok shop paid media",
   },
   {
-    title: "Writing",
-    description: "Essays, notes, and field observations",
+    title: copy.nav.writing,
+    description: copy.search.navDescriptions.writing,
     href: "/writing",
     group: "Navigation",
     keywords: "articles blog essays notes",
   },
   {
-    title: "Growth Hub",
-    description: "Playbooks, systems, and marketing formulas",
+    title: copy.nav.growth,
+    description: copy.search.navDescriptions.growth,
     href: "/growth",
     group: "Navigation",
-    keywords: "performance marketing guides playbooks systems",
+    keywords: "performance marketing guides playbooks systems growth",
   },
   {
     title: "Marketing formulas",
-    description: "ROAS, MER, CAC, CVR, AOV, and contribution profit",
+    description: copy.search.navDescriptions.metrics,
     href: "/growth/metrics",
     group: "Navigation",
     keywords: "metrics calculator formulas roas mer cac cvr aov break-even",
   },
   {
-    title: "Gear",
-    description: "Cameras, computers, and everyday tools",
+    title: copy.nav.gear,
+    description: copy.search.navDescriptions.gear,
     href: "/gear",
     group: "Navigation",
     keywords: gearKeywords,
+  },
+  {
+    title: copy.nav.resume,
+    description: copy.search.navDescriptions.resume,
+    href: "/resume",
+    group: "Navigation",
+    keywords: "resume cv experience education fpt",
   },
 ];
 
 const appItems: CommandSearchItem[] = [
   {
     title: "Workspace",
-    description: "Open Phuc Loc Nguyen's main workspace window",
+    description: copy.search.appDescriptions.workspace,
     href: "/",
     group: "Apps",
     keywords: "app desktop workspace home portfolio",
     appId: "workspace",
   },
   {
-    title: "Photos",
-    description: "Open Photos app — 25 destinations & photography archive",
+    title: copy.nav.photos,
+    description: copy.search.appDescriptions.photos(photos.length),
     href: "/photos",
     group: "Apps",
     keywords: "app photos photography gallery albums trips camera",
@@ -105,7 +115,7 @@ const appItems: CommandSearchItem[] = [
   },
   {
     title: "Spotify",
-    description: "Open Spotify app — curated personal music playlist",
+    description: copy.search.appDescriptions.spotify,
     href: "/music/spotify",
     group: "Apps",
     keywords: "app spotify music songs tracks playlist audio",
@@ -113,7 +123,7 @@ const appItems: CommandSearchItem[] = [
   },
   {
     title: "Netflix",
-    description: "Open Netflix app — personal film & series library",
+    description: copy.search.appDescriptions.netflix,
     href: "/entertainment/netflix",
     group: "Apps",
     keywords: "app netflix movies films cinema entertainment watch",
@@ -129,7 +139,9 @@ const searchItems: CommandSearchItem[] = [
     description: project.summary,
     href: `/work/${project.slug}`,
     group: "Work" as const,
-    keywords: [project.title, project.role, ...project.tools, ...project.skills].join(" "),
+    keywords: [project.title, project.role, ...project.tools, ...project.skills]
+      .filter(Boolean)
+      .join(" "),
   })),
   ...writing.map((entry) => ({
     title: entry.data.title,

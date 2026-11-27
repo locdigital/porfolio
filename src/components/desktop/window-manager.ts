@@ -33,6 +33,11 @@ export interface WindowManagerState {
   windows: Record<AppId, WindowInstance>;
   activeApp: AppId | null;
   topZ: number;
+  /**
+   * Pin Mode bento order: index 0 is the large centre window, 1-3 are the
+   * widget slots (top → bottom). `null` whenever Pin Mode is not active.
+   */
+  pinLayout?: AppId[] | null;
 }
 
 // All app surfaces share one stack. Pinning changes presentation, not priority.
@@ -67,6 +72,7 @@ export type WindowAction =
   | { type: "SET_MAXIMIZED_APP"; id: AppId; isMaximized: boolean }
   | { type: "TOGGLE_PIN_APP"; id: AppId }
   | { type: "TOGGLE_PIN_MODE"; hostApp?: AppId }
+  | { type: "FOCUS_PIN_APP"; id: AppId }
   | { type: "TILE_WINDOW"; id: AppId; preset: WindowTilePreset }
   | { type: "FOCUS_APP"; id: AppId }
   | { type: "MOVE_WINDOW"; id: AppId; offsetX: number; offsetY: number }
@@ -97,13 +103,10 @@ export function getDefaultAppForPath(pathname: string): AppId {
   return pathname === "/photos" || pathname.startsWith("/photos/") ? "photos" : "workspace";
 }
 
-// Floating apps (Photos, Netflix, Spotify, Photoshop) open as independent windows
-// so they can run alongside Workspace without navigating away or blanking the host document.
-export function getDockNavigationPath(id: AppId, pathname: string): string | null {
-  if (id === "photos" || id === "netflix" || id === "spotify" || id === "photoshop") {
-    return null;
-  }
-  return getDefaultAppForPath(pathname) === id ? null : getAppRoute(id);
+// All dock apps can open as independent floating windows alongside the current
+// host page (Workspace or Photos) without navigating away.
+export function getDockNavigationPath(_id: AppId, _pathname: string): string | null {
+  return null;
 }
 
 /**
@@ -117,11 +120,12 @@ export function getSyncedUrlForActiveApp(
   appUrls?: Partial<Record<AppId, string>>,
 ): string {
   const hostApp = getDefaultAppForPath(hostPathname);
+  const defaultWorkspaceUrl = "/";
   if (activeApp === null) {
-    return hostApp === "photos" ? appUrls?.photos || hostPathname : workspaceUrl || "/";
+    return hostApp === "photos" ? appUrls?.photos || hostPathname : workspaceUrl || defaultWorkspaceUrl;
   }
   if (activeApp === "workspace") {
-    return workspaceUrl || "/";
+    return workspaceUrl || defaultWorkspaceUrl;
   }
   if (activeApp === "photos") {
     return appUrls?.photos || (hostApp === "photos" ? hostPathname : getAppRoute("photos"));
@@ -152,6 +156,7 @@ export function createInitialWindowState(pathname = "/"): WindowManagerState {
     windows,
     activeApp: initialActive,
     topZ: 10,
+    pinLayout: null,
   };
 }
 
@@ -197,7 +202,33 @@ function compactWindowZIndices(state: WindowManagerState): WindowManagerState {
   };
 }
 
+export function getPinBentoIds(hostApp: AppId = "workspace"): AppId[] {
+  return hostApp === "photos"
+    ? ["photos", "netflix", "spotify", "workspace"]
+    : ["workspace", "netflix", "spotify", "photos"];
+}
+
+/** Returns the Pin Mode layout when every bento app is still open and pinned. */
+export function getActivePinLayout(state: WindowManagerState): AppId[] | null {
+  const layout = state.pinLayout;
+  if (!Array.isArray(layout) || layout.length === 0) return null;
+  const valid = layout.every((id) => state.windows[id]?.isOpen && state.windows[id]?.isPinned);
+  return valid ? layout : null;
+}
+
 export function windowManagerReducer(
+  state: WindowManagerState,
+  action: WindowAction,
+): WindowManagerState {
+  const next = reduceWindowState(state, action);
+  // Any action that unpins/closes a bento app ends Pin Mode's custom layout.
+  if (next.pinLayout && !getActivePinLayout(next)) {
+    return { ...next, pinLayout: null };
+  }
+  return next;
+}
+
+function reduceWindowState(
   state: WindowManagerState,
   action: WindowAction,
 ): WindowManagerState {
@@ -395,28 +426,35 @@ export function windowManagerReducer(
 
     case "TOGGLE_PIN_MODE": {
       const primaryApp: AppId = action.hostApp ?? "workspace";
-      const bentoIds: AppId[] = ["workspace", "netflix", "spotify", "photos"];
+      const bentoIds = getPinBentoIds(primaryApp);
       const alreadyInPinMode = bentoIds.every(
         (id) => state.windows[id].isOpen && state.windows[id].isPinned,
       );
       let nextZ = state.topZ;
       const nextWindows = { ...state.windows };
       if (alreadyInPinMode) {
+        // Keep the host plus whichever app was in the centre when leaving Pin Mode.
+        const centreApp = getActivePinLayout(state)?.[0] ?? primaryApp;
         for (const id of bentoIds) {
           nextWindows[id] = {
             ...nextWindows[id],
             isPinned: false,
-            isOpen: id === primaryApp,
+            isOpen: id === primaryApp || id === centreApp,
             isMinimized: false,
           };
         }
         nextZ += 1;
         nextWindows[primaryApp] = { ...nextWindows[primaryApp], zIndex: nextZ };
+        if (centreApp !== primaryApp) {
+          nextZ += 1;
+          nextWindows[centreApp] = { ...nextWindows[centreApp], zIndex: nextZ };
+        }
         return {
           ...state,
           topZ: nextZ,
-          activeApp: primaryApp,
+          activeApp: centreApp,
           windows: nextWindows,
+          pinLayout: null,
         };
       }
       for (const id of bentoIds) {
@@ -436,6 +474,27 @@ export function windowManagerReducer(
         topZ: nextZ,
         activeApp: primaryApp,
         windows: nextWindows,
+        pinLayout: bentoIds,
+      };
+    }
+
+    case "FOCUS_PIN_APP": {
+      const layout = getActivePinLayout(state);
+      const slot = layout ? layout.indexOf(action.id) : -1;
+      if (!layout || slot < 0) return reduceWindowState(state, { type: "FOCUS_APP", id: action.id });
+      const nextLayout = [...layout];
+      // Swap the clicked widget with the current centre app so the others stay put.
+      [nextLayout[0], nextLayout[slot]] = [nextLayout[slot], nextLayout[0]];
+      const nextZ = state.topZ + 1;
+      return {
+        ...state,
+        topZ: nextZ,
+        activeApp: action.id,
+        pinLayout: nextLayout,
+        windows: {
+          ...state.windows,
+          [action.id]: { ...state.windows[action.id], isMinimized: false, zIndex: nextZ },
+        },
       };
     }
 

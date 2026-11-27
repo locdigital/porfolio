@@ -161,12 +161,15 @@ function setupWindowControls(signal: AbortSignal) {
     const minimized = windowFrame.classList.contains("is-minimized");
     const maximized = windowFrame.classList.contains("is-maximized");
 
+    const minLabel = `${minimized ? "Restore" : "Minimize"} ${appLabel}`;
+    const maxLabel = maximized ? "Restore window size" : `Maximize ${appLabel}`;
+
     minimizeButton.setAttribute("aria-pressed", String(minimized));
-    minimizeButton.setAttribute("aria-label", `${minimized ? "Restore" : "Minimize"} ${appLabel}`);
-    minimizeButton.title = `${minimized ? "Restore" : "Minimize"} ${appLabel}`;
+    minimizeButton.setAttribute("aria-label", minLabel);
+    minimizeButton.title = minLabel;
     maximizeButton.setAttribute("aria-pressed", String(maximized));
-    maximizeButton.setAttribute("aria-label", maximized ? "Restore window size" : `Maximize ${appLabel}`);
-    maximizeButton.title = maximized ? "Restore window size" : `Maximize ${appLabel}`;
+    maximizeButton.setAttribute("aria-label", maxLabel);
+    maximizeButton.title = maxLabel;
   };
 
   const applyState = ({ closed, minimized, maximized }: WindowState) => {
@@ -633,16 +636,5 @@ onPageLoad((signal) => {
     localStorage.removeItem("bgm-state");
   } catch {}
   setupMobileDrawer(signal);
-
-  if (window.self !== window.top && root.dataset.desktopApp === "photos") {
-    const notifyEmbeddedPhotosUrl = () => {
-      const url = new URL(window.location.href);
-      url.searchParams.delete("embed");
-      const cleanUrl = `${url.pathname}${url.search}${url.hash}`;
-      window.parent.postMessage({ type: "photos:url-change", url: cleanUrl }, window.location.origin);
-    };
-    notifyEmbeddedPhotosUrl();
-    window.addEventListener("hashchange", notifyEmbeddedPhotosUrl, { signal });
-  }
 });
 

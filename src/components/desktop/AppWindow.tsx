@@ -19,6 +19,8 @@ interface AppWindowProps {
   title: string;
   isActive: boolean;
   isFullBleed?: boolean;
+  /** Fills the Pin Mode centre slot (fixed geometry, no drag/resize). */
+  isPinCenter?: boolean;
   onFocus: () => void;
   onClose: () => void;
   onMinimize: () => void;
@@ -34,6 +36,7 @@ export const AppWindow = React.memo(function AppWindow({
   title,
   isActive,
   isFullBleed = false,
+  isPinCenter = false,
   onFocus,
   onClose,
   onMinimize,
@@ -215,7 +218,7 @@ export const AppWindow = React.memo(function AppWindow({
   const handleTitlebarPointerDown = (e: React.PointerEvent<HTMLElement>) => {
     // Only drag on desktop and when not clicking buttons or maximized
     if (e.button !== 0) return;
-    if (window.innerWidth < 1024 || windowState.isMaximized) return;
+    if (window.innerWidth < 1024 || windowState.isMaximized || isPinCenter) return;
     if ((e.target as Element).closest("button, a, input, select, textarea")) return;
 
     onFocus();
@@ -373,13 +376,14 @@ export const AppWindow = React.memo(function AppWindow({
   };
 
   const isTiled = !isCompactViewport && !frameState.isMaximized && frameState.tile !== null;
+  const isPinCentered = isPinCenter && !isCompactViewport;
 
   const transformStyle =
-    isCompactViewport || frameState.isMaximized || isTiled
+    isCompactViewport || frameState.isMaximized || isTiled || isPinCentered
       ? undefined
       : `translate3d(${frameState.offsetX}px, ${frameState.offsetY}px, 0)`;
 
-  const sizeStyle: React.CSSProperties = isCompactViewport
+  const sizeStyle: React.CSSProperties = isCompactViewport || isPinCentered
     ? {}
     : isTiled && frameState.tile
       ? getTileGeometryStyle(frameState.tile)
@@ -416,7 +420,7 @@ export const AppWindow = React.memo(function AppWindow({
       inert={!isVisible}
       className={`desktop-app-window${frameState.isMaximized ? " is-maximized" : ""}${
         isTiled ? " is-tiled" : ""
-      }${isMinimized ? " is-minimized" : ""}${isExiting ? " is-exiting" : ""}${
+      }${isPinCentered ? " is-pin-center" : ""}${isMinimized ? " is-minimized" : ""}${isExiting ? " is-exiting" : ""}${
         isActive && !isMinimized ? " is-active" : " is-inactive"
       }`}
       style={{
@@ -528,7 +532,7 @@ export const AppWindow = React.memo(function AppWindow({
         {(!isMinimized || hasShownContent.current) && children}
       </div>
 
-      {!windowState.isMaximized && (
+      {!windowState.isMaximized && !isPinCentered && (
         <>
           <div
             className="desktop-resize-handle desktop-resize-handle--w"

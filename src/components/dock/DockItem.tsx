@@ -7,6 +7,7 @@ interface DockItemProps {
   position: DockPosition;
   isActive?: boolean;
   isRunning?: boolean;
+  disableBounce?: boolean;
   onSelect?: (id: AppId) => void;
   onContextMenu?: (id: AppId, rect: DOMRect) => void;
   registerButtonRef?: (id: AppId, el: HTMLButtonElement | null) => void;
@@ -17,6 +18,7 @@ export const DockItem = memo(function DockItem({
   position,
   isActive = false,
   isRunning = false,
+  disableBounce = false,
   onSelect,
   onContextMenu,
   registerButtonRef,
@@ -53,7 +55,7 @@ export const DockItem = memo(function DockItem({
   };
 
   const handleClick = () => {
-    triggerBounce();
+    if (!disableBounce) triggerBounce();
     hideTooltip();
     onSelect?.(app.id);
   };

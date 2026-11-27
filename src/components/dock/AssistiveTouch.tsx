@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Layers, Pin, PinOff, Search, X } from "lucide-react";
+import { ChevronLeft, Keyboard, Layers, Pin, PinOff, X } from "lucide-react";
+import { getUiCopy } from "../../i18n/ui";
 
 export interface AssistiveTouchProps {
   isPinMode: boolean;
@@ -27,7 +28,9 @@ export function AssistiveTouch({
   onOpenSwitcher,
   onCloseAll,
 }: AssistiveTouchProps) {
+  const copy = getUiCopy().desktop;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuView, setMenuView] = useState<"actions" | "shortcuts">("actions");
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -49,7 +52,7 @@ export function AssistiveTouch({
       ) {
         setPos(clampPosition(parsed.x, parsed.y));
       }
-    } catch {}
+    } catch { }
   }, []);
 
   // Cleanup any active drag listeners on unmount
@@ -139,7 +142,7 @@ export function AssistiveTouch({
         setPos(finalPos);
         try {
           sessionStorage.setItem(POS_STORAGE_KEY, JSON.stringify(finalPos));
-        } catch {}
+        } catch { }
       }
     };
 
@@ -165,10 +168,23 @@ export function AssistiveTouch({
     setMenuOpen((open) => !open);
   }, []);
 
-  const handleOpenSearch = useCallback(() => {
-    setMenuOpen(false);
-    window.dispatchEvent(new CustomEvent("workspace-command-search:toggle"));
-  }, []);
+  // Each reopen starts from the action grid, not a stale shortcuts view.
+  useEffect(() => {
+    if (!menuOpen) setMenuView("actions");
+  }, [menuOpen]);
+
+  const modKey =
+    typeof navigator !== "undefined" && /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent)
+      ? "⌘"
+      : "Ctrl";
+  const shortcuts: { keys: string[]; label: string }[] = [
+    { keys: [modKey, "K"], label: copy.shortcutList.search },
+    { keys: ["Tab"], label: copy.shortcutList.nextApp },
+    { keys: ["⇧", "Tab"], label: copy.shortcutList.prevApp },
+    { keys: ["←", "→"], label: copy.shortcutList.switcherMove },
+    { keys: ["Enter"], label: copy.shortcutList.switcherOpen },
+    { keys: ["Esc"], label: copy.shortcutList.escape },
+  ];
 
   const isOnRightEdge =
     typeof window !== "undefined" && pos !== null && pos.x + BUTTON_SIZE / 2 > window.innerWidth / 2;
@@ -186,7 +202,39 @@ export function AssistiveTouch({
       style={anchorStyle}
       onPointerDown={(e) => e.stopPropagation()}
     >
-      {menuOpen && (
+      {menuOpen && menuView === "shortcuts" && (
+        <div
+          role="dialog"
+          aria-label={copy.shortcutsTitle}
+          className={`assistive-touch-menu assistive-touch-shortcuts${isOnRightEdge ? " is-right" : ""}${isNearTop ? " is-below" : ""}`}
+        >
+          <div className="assistive-touch-shortcuts-head">
+            <button
+              type="button"
+              className="assistive-touch-shortcuts-back"
+              aria-label={copy.shortcutsBack}
+              onClick={() => setMenuView("actions")}
+            >
+              <ChevronLeft size={16} strokeWidth={2} />
+            </button>
+            <span>{copy.shortcutsTitle}</span>
+          </div>
+          <ul className="assistive-touch-shortcuts-list">
+            {shortcuts.map((item) => (
+              <li key={item.label}>
+                <span className="assistive-touch-shortcuts-label">{item.label}</span>
+                <span className="assistive-touch-shortcuts-keys">
+                  {item.keys.map((key) => (
+                    <kbd key={key}>{key}</kbd>
+                  ))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {menuOpen && menuView === "actions" && (
         <div
           role="menu"
           aria-label="AssistiveTouch menu"
@@ -205,7 +253,7 @@ export function AssistiveTouch({
               {isPinMode ? <PinOff size={17} strokeWidth={1.9} /> : <Pin size={17} strokeWidth={1.9} />}
             </span>
             <span className="assistive-touch-action-label">
-              {isPinMode ? "Exit Pin" : "Pin Mode"}
+              {isPinMode ? copy.exitPinShort : copy.pinShort}
             </span>
           </button>
 
@@ -221,19 +269,19 @@ export function AssistiveTouch({
             <span className="assistive-touch-action-icon">
               <Layers size={17} strokeWidth={1.9} />
             </span>
-            <span className="assistive-touch-action-label">Switcher</span>
+            <span className="assistive-touch-action-label">{copy.switcher}</span>
           </button>
 
           <button
             type="button"
             role="menuitem"
             className="assistive-touch-action"
-            onClick={handleOpenSearch}
+            onClick={() => setMenuView("shortcuts")}
           >
             <span className="assistive-touch-action-icon">
-              <Search size={17} strokeWidth={1.9} />
+              <Keyboard size={17} strokeWidth={1.9} />
             </span>
-            <span className="assistive-touch-action-label">Search</span>
+            <span className="assistive-touch-action-label">{copy.shortcuts}</span>
           </button>
 
           <button
@@ -248,7 +296,7 @@ export function AssistiveTouch({
             <span className="assistive-touch-action-icon">
               <X size={17} strokeWidth={2} />
             </span>
-            <span className="assistive-touch-action-label">Close All</span>
+            <span className="assistive-touch-action-label">{copy.closeAll}</span>
           </button>
         </div>
       )}

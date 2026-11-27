@@ -1,0 +1,43 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+---
+
+<DashboardLayout
+  title="Privacy — Phuc Loc Nguyen"
+  pageTitle="Privacy"
+  description="How loc.digital handles technical requests, browser storage, external services, and information shared when contacting Phuc Loc Nguyen."
+  breadcrumbs={[{ label: "Privacy" }]}
+  maxWidthVariant="reading"
+>
+  <header class="page-header">
+    <h1 class="page-title">Privacy</h1>
+    <p class="page-lead">
+      This page explains how information is handled while you browse this personal portfolio or get in touch.
+    </p>
+  </header>
+
+  <article class="dash-prose">
+    <section class="page-section">
+      <h2 class="section-title">Browsing the website</h2>
+      <p>loc.digital is Phuc Loc Nguyen’s portfolio of marketing work, photography, and professional background. You can read the public pages without creating an account. The current site does not install advertising pixels or third-party analytics scripts.</p>
+      <p>The website is hosted on Vercel. Serving a page or image involves technical request information, such as an IP address, requested URL, browser information, and request time. Hosting infrastructure may process this information to deliver content, maintain service reliability, and prevent abuse. See <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Vercel’s privacy policy</a> for its practices.</p>
+    </section>
+
+    <section class="page-section">
+      <h2 class="section-title">Browser storage and images</h2>
+      <p>The portfolio uses browser session storage to remember an unlocked project showcase within the current tab. Navigation also keeps scroll positions in browser history. These features support the interface and do not send a browsing profile to an analytics service. You can clear site data through your browser settings.</p>
+      <p>Images are served as optimized files from the website. Some media and legacy image links use UploadThing’s delivery infrastructure, which receives the technical information needed to fulfill those requests.</p>
+    </section>
+
+    <section class="page-section">
+      <h2 class="section-title">Contact and external links</h2>
+      <p>If you choose to email or message me, you provide the information included in that conversation. I use it to respond to your inquiry and discuss the work or collaboration you requested. Please avoid including sensitive personal information in an initial project brief.</p>
+      <p>Email, Zalo, LinkedIn, Instagram, Pexels, and other linked services operate separately from this website. Following their links takes you to services with their own privacy practices. The portfolio’s email-copy button copies the displayed address to your clipboard when you activate it.</p>
+    </section>
+
+    <section class="page-section">
+      <h2 class="section-title">Questions and requests</h2>
+      <p>For questions about this page or information you have shared with me, email <a href="mailto:hi@loc.digital">hi@loc.digital</a>. Include enough context to identify the relevant conversation. You can also use the channels on the <a href="/about">About page</a>.</p>
+    </section>
+  </article>
+</DashboardLayout>

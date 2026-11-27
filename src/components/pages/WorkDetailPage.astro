@@ -1,0 +1,376 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import { getProjects, type ProjectData } from "../../lib/content";
+import BeforeAfterPerformance from "../ui/BeforeAfterPerformance.astro";
+import ShowcasePassGate from "../ui/ShowcasePassGate.astro";
+import BrandPositioningFeed from "../ui/BrandPositioningFeed.astro";
+import Heroicon from "../icons/Heroicon.astro";
+import { articleSchema, canonicalUrl } from "../../lib/seo";
+
+interface Props {
+  project: ProjectData;
+}
+
+const { project } = Astro.props;
+
+const allProjects = await getProjects();
+const otherProjects = allProjects
+  .filter((p) => p.slug !== project.slug)
+  .slice(0, 3)
+  .map((p) => ({
+    ...p,
+    href: `/work/${p.slug}`,
+  }));
+
+const descriptionParagraphs = Array.isArray(project.description)
+  ? project.description
+  : project.description
+      .split(/\n{2,}/)
+      .map((paragraph: string) => paragraph.trim())
+      .filter(Boolean);
+
+let comparisonData: any = null;
+
+if (project.slug === "playah") {
+  comparisonData = {
+    badge: "",
+    heading: "From Static Brand Awareness to +10x TikTok Shop GMV",
+    description:
+      "Multi-layered comparison: scaling from tens of millions to >1B VND monthly revenue while maintaining ROAS > 10.",
+    categoryLabel: "TikTok Shop Acceleration",
+    beforeLabel: "Baseline (Jul 2025)",
+    afterLabel: "Scaled Engine (Aug 2025)",
+    beforeImage: {
+      src: "/images/playah/playah-before.webp",
+      alt: "PlayAh! TikTok Shop Revenue & GMV baseline before optimization (July 2025 — 125M VND)",
+    },
+    afterImage: {
+      src: "/images/playah/playah-after.webp",
+      alt: "PlayAh! TikTok Shop Revenue & GMV after optimization (August 2025 — 1.46B VND)",
+    },
+    beforePanel: {
+      eyebrow: "Initial Phase",
+      title: "Isolated Ad Spend",
+      description:
+        "Static Facebook ad sets without automated affiliate seeding, erratic CPA, and unintegrated conversion tracking.",
+      metrics: [
+        { label: "Monthly GMV", value: "30-50M" },
+        { label: "Blended ROAS", value: "1.8x" },
+        { label: "Affiliate Creators", value: "None" },
+      ],
+    },
+    afterPanel: {
+      eyebrow: "Optimized Phase",
+      title: "1B+ / Month System",
+      description:
+        "Automated TikTok Shop affiliate engine + Meta conversion funnels maintaining >10 ROAS across product catalogs.",
+      metrics: [
+        { label: "Monthly GMV", value: "> 1,000M" },
+        { label: "Blended ROAS", value: "> 10x" },
+        { label: "Affiliate GMV", value: "65%" },
+      ],
+    },
+    highlights: [
+      {
+        id: "affiliate-seeding",
+        title: "Direct Affiliate Seeding",
+        description: "Hundreds of creator samples routed automatically based on category GMV potential.",
+      },
+      {
+        id: "server-tracking",
+        title: "Server-Side Tracking",
+        description: "Meta CAPI + TikTok Events API deduplication for near 100% purchase attribution.",
+      },
+    ],
+  };
+}
+
+const caseUrl = canonicalUrl(`/work/${project.slug}`);
+const caseTags = [...(project.tools ?? []), ...(project.skills ?? [])];
+const caseSchema = articleSchema({
+  url: caseUrl,
+  title: project.title,
+  description: project.summary,
+  type: "CreativeWork",
+  image: project.coverImage || undefined,
+  articleSection: "Case Study",
+  keywords: caseTags,
+  datePublished: project.publishedAt,
+  dateModified: project.updatedAt,
+});
+---
+
+<DashboardLayout
+  title={`${project.title} | Case Study — Phuc Loc Nguyen`}
+  pageTitle={project.title}
+  description={project.summary}
+  ogImage={project.coverImage || undefined}
+  ogImageAlt={`${project.title} — case study by Phuc Loc Nguyen`}
+  ogType="article"
+  datePublished={project.publishedAt}
+  dateModified={project.updatedAt}
+  breadcrumbs={[
+    { label: "Workspace", href: "/" },
+    { label: "Work", href: "/work" },
+    { label: project.title },
+  ]}
+  maxWidthVariant="default"
+  schema={caseSchema}
+>
+  {project.link && (
+    <div style="display: flex; justify-content: flex-end; margin-bottom: var(--space-6); font-size: var(--text-body-sm);">
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="dash-link"
+        style="color: var(--dash-accent); display: inline-flex; align-items: center; gap: 6px;"
+      >
+        <Heroicon name="link" variant="outline" size={15} />
+        <span style="text-decoration: underline; text-decoration-color: currentColor; text-underline-offset: 1px; text-decoration-thickness: 0.5px;">
+          {project.linkLabel || "Live project"}
+        </span>
+      </a>
+    </div>
+  )}
+
+  <header class="page-header">
+    <h1 class="page-title"><span data-motion-share={`work-${project.slug}`}>{project.title}</span></h1>
+    <p class="page-lead project-summary">{project.summary}</p>
+
+    <div class="project-properties" role="list" aria-label="Project properties">
+      <div class="project-property" role="listitem">
+        <span class="project-property-label">Role</span>
+        <span class="project-property-value project-property-value--strong">{project.role}</span>
+      </div>
+      <div class="project-property" role="listitem">
+        <span class="project-property-label">Timeline</span>
+        <span class="project-property-value">{project.year}</span>
+      </div>
+      <div class="project-property" role="listitem">
+        <span class="project-property-label">Client / Platform</span>
+        <span class="project-property-value">{project.client}</span>
+      </div>
+    </div>
+  </header>
+
+  {comparisonData && (
+    <section class="page-section" aria-label="Performance comparison">
+      <h2 class="section-title">Performance breakdown</h2>
+      <p style="font-size: var(--text-body); line-height: var(--leading-body); color: var(--dash-muted); margin: 0 0 var(--space-4);">
+        {comparisonData.description}
+      </p>
+
+      <BeforeAfterPerformance {...comparisonData} />
+    </section>
+  )}
+
+  <section class="page-section work-narrative-section" aria-labelledby="heading-narrative">
+    <h2 id="heading-narrative" class="section-title">
+      Context, strategy & execution
+    </h2>
+
+    <div class="dash-prose work-narrative-prose">
+      {descriptionParagraphs.map((para) => (
+        <p>{para}</p>
+      ))}
+    </div>
+
+    {caseTags.length > 0 && (
+      <div class="work-taxonomy-block">
+        <div class="work-tags-row" aria-label="Tools and capabilities applied">
+          {caseTags.map((tag: string) => (
+            <span class="dash-tag">{tag}</span>
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+
+  {project.slug === "workflow-space" && (
+    <section class="page-section" aria-label="Brand positioning and visual identity">
+      <BrandPositioningFeed />
+    </section>
+  )}
+
+  {project.password && (
+    <ShowcasePassGate id={project.slug} password={project.password} />
+  )}
+
+  <section class="page-section page-section--divided more-work-section" aria-labelledby="heading-more-work">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4);">
+      <h2 id="heading-more-work" class="section-title" style="margin: 0;">
+        More case studies
+      </h2>
+      <a href="/work" class="dash-link" style="font-size: var(--text-body-sm);" data-astro-prefetch>
+        View directory →
+      </a>
+    </div>
+
+    <div class="more-work-grid">
+      {otherProjects.map((op) => (
+        <div class="folder-item">
+          <a
+            href={op.href}
+            class="folder-wrapper"
+            aria-label={`Open case study folder: ${op.title}`}
+            data-astro-prefetch
+          >
+            <div class="folder" data-folder-surface>
+              <div class="folder-back" aria-hidden="true"></div>
+              <div class="folder-front" aria-hidden="true"></div>
+            </div>
+
+            <div class="folder-caption">
+              <span class="folder-title">{op.title}</span>
+            </div>
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+</DashboardLayout>
+
+<style>
+  .project-summary {
+    width: 100%;
+    max-width: none;
+  }
+
+  .project-properties {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+    margin: 0;
+    padding: 16px 0;
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    justify-items: stretch;
+    align-items: start;
+    text-align: left;
+    font-size: var(--text-body-sm);
+  }
+
+  .project-property {
+    min-width: 0;
+    justify-self: stretch;
+  }
+
+  .project-property-label,
+  .project-property-value {
+    display: block;
+  }
+
+  .project-property-label {
+    margin-bottom: 2px;
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+  }
+
+  .project-property-value {
+    font-size: var(--text-body-sm);
+    color: var(--dash-text);
+    overflow-wrap: anywhere;
+  }
+
+  .project-property-value--strong {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .work-narrative-prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-para-to-para, 16px);
+    width: 100%;
+    color: var(--dash-text);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  .work-narrative-prose p {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+    text-wrap: pretty;
+  }
+
+  .work-taxonomy-block {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .work-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: var(--space-3);
+  }
+
+  .more-work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 184px));
+    column-gap: 28px;
+    row-gap: 32px;
+    padding: 16px 0 24px;
+  }
+
+  .more-work-grid .folder-item {
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 680px) {
+    .more-work-grid {
+      grid-template-columns: repeat(2, minmax(0, 184px));
+      column-gap: 20px;
+      row-gap: 28px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .project-properties {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding-block: 14px;
+    }
+
+    .work-narrative-prose {
+      font-size: var(--text-body-sm);
+    }
+
+    .more-work-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: visible;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
+      gap: 16px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
+      padding-top: 16px;
+      padding-bottom: 24px;
+      scrollbar-width: none;
+    }
+
+    .more-work-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .more-work-grid .folder-item {
+      flex: 0 0 158px;
+      width: 158px;
+      scroll-snap-align: start;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .more-work-grid .folder-item {
+      flex-basis: 150px;
+      width: 150px;
+    }
+  }
+</style>

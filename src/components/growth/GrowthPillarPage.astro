@@ -19,7 +19,11 @@ const [projects, allPlaybooks] = await Promise.all([
 const projectBySlug = new Map(projects.map((p) => [p.slug, p]));
 const relatedProjects = pillar.caseSlugs
   .map((slug) => projectBySlug.get(slug))
-  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  .filter((p): p is NonNullable<typeof p> => Boolean(p))
+  .map((p) => ({
+    ...p,
+    href: `/work/${p.slug}`,
+  }));
 
 const relatedPlaybooks = allPlaybooks.filter(
   (pb) => pb.data.topicCluster === pillar.id,
@@ -35,7 +39,7 @@ const pillarSchema = collectionPageSchema({
   items: [
     ...relatedProjects.map((p) => ({
       name: p.title,
-      url: `/work/${p.slug}`,
+      url: p.href,
       description: p.summary,
     })),
     ...relatedPlaybooks.map((pb) => ({
@@ -68,7 +72,9 @@ const pillarSchema = collectionPageSchema({
 
   {pillar.sections.length > 0 && (
     <section class="page-section" aria-labelledby="heading-pillar-frameworks">
-      <h2 id="heading-pillar-frameworks" class="section-title">Core operating areas</h2>
+      <h2 id="heading-pillar-frameworks" class="section-title">
+        Core operating areas
+      </h2>
       <div class="pillar-sections-grid">
         {pillar.sections.map((section) => (
           <article class="dash-card pillar-section-card">
@@ -90,7 +96,9 @@ const pillarSchema = collectionPageSchema({
 
   {pillar.guardrails.length > 0 && (
     <section class="page-section page-section--divided" aria-labelledby="heading-guardrails">
-      <h2 id="heading-guardrails" class="section-title">Decision guardrails</h2>
+      <h2 id="heading-guardrails" class="section-title">
+        Decision guardrails
+      </h2>
       <div class="dash-card pillar-guardrails-card">
         <ul class="pillar-points-list">
           {pillar.guardrails.map((item) => (
@@ -106,7 +114,9 @@ const pillarSchema = collectionPageSchema({
 
   {relatedPlaybooks.length > 0 && (
     <section class="page-section page-section--divided" aria-labelledby="heading-pillar-playbooks">
-      <h2 id="heading-pillar-playbooks" class="section-title">Playbooks in this pillar</h2>
+      <h2 id="heading-pillar-playbooks" class="section-title">
+        Playbooks in this pillar
+      </h2>
       <div class="pillar-links-grid">
         {relatedPlaybooks.map((pb) => (
           <a href={`/growth/${pb.slug}`} class="dash-card pillar-link-card" data-astro-prefetch>
@@ -120,10 +130,12 @@ const pillarSchema = collectionPageSchema({
 
   {relatedProjects.length > 0 && (
     <section class="page-section page-section--divided" aria-labelledby="heading-pillar-cases">
-      <h2 id="heading-pillar-cases" class="section-title">Related case studies</h2>
+      <h2 id="heading-pillar-cases" class="section-title">
+        Related case studies
+      </h2>
       <div class="pillar-links-grid">
         {relatedProjects.map((project) => (
-          <a href={`/work/${project.slug}`} class="dash-card pillar-link-card" data-astro-prefetch>
+          <a href={project.href} class="dash-card pillar-link-card" data-astro-prefetch>
             <span class="pillar-link-meta">{project.client} · {project.year}</span>
             <h3 class="pillar-link-title">{project.title}</h3>
             <p class="pillar-link-summary">{project.summary}</p>
@@ -134,7 +146,9 @@ const pillarSchema = collectionPageSchema({
   )}
 
   <section class="page-section page-section--divided" aria-labelledby="heading-other-pillars">
-    <h2 id="heading-other-pillars" class="section-title">Explore other Growth pillars</h2>
+    <h2 id="heading-other-pillars" class="section-title">
+      Explore other Growth pillars
+    </h2>
     <div class="pillar-nav-grid">
       {siblingPillars.map((item) => (
         <a href={item.href} class="dash-card pillar-nav-card" data-astro-prefetch>

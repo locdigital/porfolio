@@ -1297,9 +1297,14 @@ export default function ContributionSkyline({
             {active >= 0 && model.cells[active] ? (
               <>
                 <strong className="font-semibold">
-                  {model.cells[active].count ? nf.format(model.cells[active].count) + " " + noun(model.cells[active].count) : "No " + plural}
+                  {model.cells[active].count
+                    ? nf.format(model.cells[active].count) + " " + noun(model.cells[active].count)
+                    : "No " + plural}
                 </strong>
-                <span className="opacity-75"> on {dfy.format(dayMs(model.cells[active].date))}</span>
+                <span className="opacity-75">
+                  {" on "}
+                  {dfy.format(dayMs(model.cells[active].date))}
+                </span>
               </>
             ) : (
               " "

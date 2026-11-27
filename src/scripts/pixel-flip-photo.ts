@@ -41,6 +41,9 @@ function setupPhoto(root: HTMLElement, reduced: MediaQueryList, signal: AbortSig
   let pointerStart: { x: number; y: number; scroll: number } | undefined;
   let dragged = false;
 
+  const flipPrefix = control.dataset.flipPrefix || "Flip photo";
+  const frontPrefix = control.dataset.frontPrefix || "Show front";
+
   const syncScrollable = () => {
     root.dataset.scrollable = flipped
       ? String(story.scrollHeight > story.clientHeight + 2)
@@ -50,7 +53,7 @@ function setupPhoto(root: HTMLElement, reduced: MediaQueryList, signal: AbortSig
   const updateState = () => {
     root.dataset.flipped = String(flipped);
     control.setAttribute("aria-pressed", String(flipped));
-    control.setAttribute("aria-label", `${flipped ? "Show front" : "Flip photo"}: ${control.dataset.title}`);
+    control.setAttribute("aria-label", `${flipped ? frontPrefix : flipPrefix}: ${control.dataset.title}`);
     control.setAttribute("aria-describedby", control.dataset.description!);
     front.setAttribute("aria-hidden", String(flipped));
     back.setAttribute("aria-hidden", String(!flipped));
@@ -88,13 +91,6 @@ function setupPhoto(root: HTMLElement, reduced: MediaQueryList, signal: AbortSig
       const nextLocalUrl = `${currentUrl.pathname}${currentUrl.search}${nextHash}`;
       if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextLocalUrl) {
         window.history.replaceState(window.history.state, "", nextLocalUrl);
-      }
-      const cleanUrl = new URL(nextLocalUrl, window.location.origin);
-      cleanUrl.searchParams.delete("embed");
-      const publicUrl = `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`;
-      window.dispatchEvent(new CustomEvent("photos:url-change", { detail: { url: publicUrl } }));
-      if (window.self !== window.top) {
-        window.parent.postMessage({ type: "photos:url-change", url: publicUrl }, window.location.origin);
       }
     }
 
@@ -145,13 +141,6 @@ function setupPhoto(root: HTMLElement, reduced: MediaQueryList, signal: AbortSig
   control.addEventListener("pointermove", (event) => {
     if (pointerStart && event.buttons && Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) > 6) dragged = true;
   }, { signal });
-  if (typeof ResizeObserver !== "undefined") {
-    const observer = new ResizeObserver(() => {
-      if (flipped) syncScrollable();
-    });
-    observer.observe(root);
-    signal.addEventListener("abort", () => observer.disconnect(), { once: true });
-  }
   control.addEventListener("pointercancel", () => { dragged = true; }, { signal });
   // The story remains within the single button. Arrow keys scroll it without extra tab stops.
   control.addEventListener("keydown", (event) => {
@@ -172,17 +161,34 @@ function setupPhoto(root: HTMLElement, reduced: MediaQueryList, signal: AbortSig
     }
   }, { signal });
   updateState();
-  return settle;
+  return { settle, syncIfFlipped: () => { if (flipped) syncScrollable(); } };
 }
 
 onPageLoad((signal) => {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   const roots = Array.from(document.querySelectorAll<HTMLElement>("[data-pixel-photo]"));
+  if (!roots.length) return;
   const titleColors = pickShuffledTitleColors(roots.length);
-  const cleanups = roots.map((root, index) => {
+  const controllers = roots.map((root, index) => {
     const titleEl = root.querySelector<HTMLElement>("[data-flip-title]");
     if (titleEl) titleEl.style.setProperty("--title-color", titleColors[index]);
     return setupPhoto(root, reduced, signal);
   });
-  return () => cleanups.forEach((cleanup) => cleanup());
+
+  let resizeTimer = 0;
+  window.addEventListener(
+    "resize",
+    () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        controllers.forEach((ctrl) => ctrl.syncIfFlipped());
+      }, 140);
+    },
+    { signal },
+  );
+
+  return () => {
+    window.clearTimeout(resizeTimer);
+    controllers.forEach((ctrl) => ctrl.settle());
+  };
 });

@@ -145,7 +145,7 @@ const photos = defineCollection({
     featured: z.boolean().optional().default(false),
     published: z.boolean().optional().default(true),
     status: z.enum(["draft", "verified", "published"]).optional(),
-    language: z.enum(["en", "vi"]).optional().default("en"),
+    language: z.enum(["en"]).optional().default("en"),
     publishedAt: z.string().optional(),
     updatedAt: z.string().optional(),
     seoTitle: z.string().optional(),
@@ -197,31 +197,33 @@ const gear = defineCollection({
   }),
 });
 
+const writingSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  category: z.string(),
+  date: z.coerce.date(),
+  updatedAt: z.coerce.date().optional(),
+  order: z.number().default(0),
+  sample: z.boolean().default(false),
+  draft: z.boolean().default(false),
+  linkable: z.boolean().default(true),
+  lang: z.enum(["en"]).default("en"),
+  topicCluster: z.string().optional(),
+  relatedCaseStudies: z.array(z.string()).optional().default([]),
+  relatedDestinations: z.array(z.string()).optional().default([]),
+  sources: z.array(sourceRefSchema).optional().default([]),
+  coverImage: z.object({
+    src: z.string(),
+    alt: z.string(),
+    width: z.number().positive(),
+    height: z.number().positive(),
+    caption: z.string().optional(),
+  }).optional(),
+});
+
 const writing = defineCollection({
   type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    category: z.string(),
-    date: z.coerce.date(),
-    updatedAt: z.coerce.date().optional(),
-    order: z.number().default(0),
-    sample: z.boolean().default(false),
-    draft: z.boolean().default(false),
-    linkable: z.boolean().default(true),
-    lang: z.enum(["en", "vi"]).default("en"),
-    topicCluster: z.string().optional(),
-    relatedCaseStudies: z.array(z.string()).optional().default([]),
-    relatedDestinations: z.array(z.string()).optional().default([]),
-    sources: z.array(sourceRefSchema).optional().default([]),
-    coverImage: z.object({
-      src: z.string(),
-      alt: z.string(),
-      width: z.number().positive(),
-      height: z.number().positive(),
-      caption: z.string().optional(),
-    }).optional(),
-  }),
+  schema: writingSchema,
 });
 
 const growth = defineCollection({
@@ -258,7 +260,7 @@ const growth = defineCollection({
     updatedAt: z.coerce.date().optional(),
     draft: z.boolean().default(true),
     status: z.enum(["draft", "needs-evidence", "published"]).default("draft"),
-    lang: z.enum(["en", "vi"]).default("en"),
+    lang: z.enum(["en"]).default("en"),
   }),
 });
 

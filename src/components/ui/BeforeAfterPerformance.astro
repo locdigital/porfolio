@@ -1,6 +1,7 @@
 ---
 import ResponsiveImage from "./ResponsiveImage.astro";
 import { ChevronLeft, ChevronRight, GripHorizontal } from "../icons/phosphor";
+import { getUiCopy } from "../../i18n/ui";
 
 export interface PerformanceMetric {
   label: string;
@@ -45,6 +46,8 @@ export interface Props {
   className?: string;
 }
 
+const baCopy = getUiCopy().beforeAfter;
+
 const {
   badge = "",
   heading = "Before / after performance lift",
@@ -55,8 +58,8 @@ const {
   afterImage,
   beforePanel,
   afterPanel,
-  beforeLabel = "Before",
-  afterLabel = "After",
+  beforeLabel = baCopy.before,
+  afterLabel = baCopy.after,
   orientation = "horizontal",
   initialPosition = 50,
   dividerWidth = 2,
@@ -115,7 +118,7 @@ const effectiveCategoryLabel = categoryLabel ?? defaultPair.category;
       <div
         class={`bap-slider ${!isHorizontal ? 'is-vertical' : ''}`}
         role="slider"
-        aria-label="Before and after performance comparison slider"
+        aria-label={baCopy.sliderAria}
         aria-valuemin="0"
         aria-valuemax="100"
         aria-valuenow={Math.round(initialPosition)}

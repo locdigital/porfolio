@@ -5,13 +5,13 @@ import '../styles/motion-tokens.css';
 import '../styles/page-transitions.css';
 import interLatinFont from '../assets/fonts/inter-latin-variable.woff2?url';
 import { ClientRouter } from 'astro:transitions';
-import { getAssetPlaceholder } from '../lib/assets';
 import MacTitlebar from '../components/dashboard/MacTitlebar.astro';
 import DashboardSidebar from '../components/dashboard/DashboardSidebar.astro';
 import CommandSearch from '../components/dashboard/CommandSearch.astro';
 import { DesktopShell } from '../components/desktop/DesktopShell';
 import Heroicon from '../components/icons/Heroicon.astro';
-import { ChevronLeft, ChevronRight } from '../components/icons/phosphor';
+import { ChevronRight } from '../components/icons/phosphor';
+import { getUiCopy } from '../i18n/ui';
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,
@@ -30,7 +30,6 @@ import {
 } from "../lib/seo";
 
 interface Props {
-  app?: 'workspace' | 'photos';
   title?: string;
   pageTitle?: string;
   description?: string;
@@ -47,14 +46,13 @@ interface Props {
   dateModified?: string;
   noindex?: boolean;
   robots?: string;
-  lang?: 'en' | 'vi';
-  alternates?: { hreflang: string; href: string }[];
   fullBleed?: boolean;
 }
 
+const copy = getUiCopy();
+
 const {
-  app = 'workspace',
-  title = "Phuc Loc Nguyen — Workspace",
+  title = copy.workspaceTitle,
   pageTitle,
   description = DEFAULT_DESCRIPTION,
   breadcrumbs,
@@ -70,8 +68,6 @@ const {
   dateModified,
   noindex = false,
   robots,
-  lang = 'en',
-  alternates,
   fullBleed = false,
 } = Astro.props;
 
@@ -79,13 +75,11 @@ const canonicalHref = canonicalUrl(Astro.url.pathname);
 const normalizedPath = canonicalPath(Astro.url.pathname);
 const markdownPath = normalizedPath === "/" ? "/index.md" : `${normalizedPath}.md`;
 const markdownUrl = new URL(markdownPath, SITE_URL).toString();
-const WALLPAPER_SRC = "/images/wallpaper-sapa-hd.webp";
-const WALLPAPER_WIDTH = 3200;
-const WALLPAPER_HEIGHT = 2133;
-const wallpaperBlur = getAssetPlaceholder("/assets/photos/sa-pa/DSC_6711.webp");
+const WALLPAPER_SRC = "/images/wallpaper-sapa-ridge-hd.webp";
+const WALLPAPER_WIDTH = 2400;
+const WALLPAPER_HEIGHT = 1600;
 const resolvedOgImage = absoluteUrl(ogImage);
 const robotsDirective = robots ?? (noindex ? "noindex, nofollow" : "index, follow");
-const ogLocale = lang === "vi" ? "vi_VN" : "en_US";
 
 const pageSchemas = (Array.isArray(schema) ? schema.flat() : [schema]).filter(Boolean);
 const breadcrumbNode =
@@ -104,7 +98,6 @@ const autoWebPageNode =
         title,
         description,
         type: pageType,
-        lang,
         primaryImageUrl: resolvedOgImage,
         datePublished,
         dateModified,
@@ -117,15 +110,7 @@ const graphNodes: JsonLd[] = [
   ...(breadcrumbNode ? [breadcrumbNode] : []),
   ...pageSchemas,
 ];
-const jsonLd = !noindex ? safeJsonLd(graphSchema(graphNodes, { lang })) : "";
-
-const hreflangLinks =
-  alternates && alternates.length > 0
-    ? alternates
-    : [
-        { hreflang: lang, href: canonicalHref },
-        { hreflang: "x-default", href: canonicalHref },
-      ];
+const jsonLd = !noindex ? safeJsonLd(graphSchema(graphNodes)) : "";
 
 const contentClass =
   maxWidthVariant === 'reading'
@@ -134,14 +119,16 @@ const contentClass =
       ? 'workspace-content workspace-content--gallery'
       : 'workspace-content';
 
-const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label || "Workspace";
-const appLabel = app === 'photos' ? 'Photos' : 'workspace';
-const windowTitle = app === 'photos' ? 'Photos — Photography' : 'Phuc Loc Nguyen — Workspace';
+const mobileLabel = pageTitle || breadcrumbs?.[breadcrumbs.length - 1]?.label || copy.nav.overview;
+const appLabel = 'workspace';
+const windowTitle = copy.workspaceTitle;
+const resumeHref = '/resume';
+const privacyHref = '/privacy';
 const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || '').trim();
 ---
 
 <!DOCTYPE html>
-<html lang={lang} data-desktop-app={app}>
+<html lang="en" data-desktop-app="workspace">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
@@ -157,8 +144,8 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
   <meta property="og:image:alt" content={ogImageAlt}>
   {!noindex && <meta property="og:url" content={canonicalHref} />}
   <meta property="og:type" content={ogType}>
-  <meta property="og:locale" content={ogLocale}>
-  <meta property="og:site_name" content="Phuc Loc Nguyen — Workspace">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content={copy.siteName}>
   {ogType === 'article' && datePublished && <meta property="article:published_time" content={datePublished} />}
   {ogType === 'article' && dateModified && <meta property="article:modified_time" content={dateModified} />}
   {ogType === 'article' && author && <meta property="article:author" content={author} />}
@@ -198,9 +185,6 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
   {!noindex && (
     <>
       <link rel="canonical" href={canonicalHref} />
-      {hreflangLinks.map((alt) => (
-        <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
-      ))}
       <link rel="alternate" type="text/markdown" href={markdownUrl} title="Markdown version" />
     </>
   )}
@@ -210,6 +194,7 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
   <link rel="manifest" href="/site.webmanifest" />
 
   <link rel="preload" href={interLatinFont} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={WALLPAPER_SRC} as="image" type="image/webp" media="(min-width: 1024px)" fetchpriority="high" />
 
   <ClientRouter fallback="swap" />
   {!noindex && jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd}></script>}
@@ -238,14 +223,19 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
       class="workspace-wallpaper"
       aria-hidden="true"
       transition:persist="workspace-wallpaper"
-      style={wallpaperBlur ? `background-image: url('${wallpaperBlur}'); background-size: cover; background-position: center;` : undefined}
     >
-      <picture>
-        <source media="(min-width: 1024px)" srcset={WALLPAPER_SRC} />
-        <img class="workspace-wallpaper-image" alt="" width={WALLPAPER_WIDTH} height={WALLPAPER_HEIGHT}
-          decoding="async"
+      <picture class="workspace-wallpaper-picture">
+        <source media="(min-width: 1024px)" srcset={WALLPAPER_SRC} type="image/webp" />
+        <img
+          class="workspace-wallpaper-image"
+          alt=""
+          width={WALLPAPER_WIDTH}
+          height={WALLPAPER_HEIGHT}
+          loading="eager"
+          decoding="sync"
           fetchpriority="high"
-          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+        />
       </picture>
     </div>
 
@@ -256,41 +246,31 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
     <!-- Floating macOS-inspired Application Window -->
     <div class="mac-window-container">
 
-      <!-- Desktop Window Titlebar (44px, white background, traffic lights) -->
-      <MacTitlebar title={windowTitle} appLabel={appLabel} currentPath={currentPath} />
+      <!-- Desktop Window Titlebar (32px, white background, traffic lights) -->
+      <MacTitlebar title={windowTitle} appLabel={appLabel} />
 
       <!-- Mobile Sticky Top Bar (< 1024px) -->
-      <header class="mobile-topbar" aria-label="Mobile Navigation Bar">
+      <header class="mobile-topbar" aria-label={copy.navAriaLabel}>
         <div class="mobile-topbar-left">
-          {app === 'workspace' ? (
-            <button
-              id="mobile-drawer-toggle"
-              class="mobile-menu-btn"
-              type="button"
-              aria-label="Open navigation menu"
-              aria-controls="dash-sidebar"
-              aria-expanded="false"
-            >
-              <Heroicon name="bars-3" size={20} />
-            </button>
-          ) : normalizedPath !== '/photos' ? (
-            <a href="/photos" class="mobile-menu-btn" aria-label="Back to Photos library" data-astro-prefetch>
-              <ChevronLeft size={20} aria-hidden="true" />
-            </a>
-          ) : (
-            <a href="/" class="mobile-menu-btn" aria-label="Back to Workspace" data-astro-prefetch>
-              <Heroicon name="home" size={18} />
-            </a>
-          )}
+          <button
+            id="mobile-drawer-toggle"
+            class="mobile-menu-btn"
+            type="button"
+            aria-label={copy.openNavMenu}
+            aria-controls="dash-sidebar"
+            aria-expanded="false"
+          >
+            <Heroicon name="bars-3" size={20} />
+          </button>
           <span class="mobile-page-label">{mobileLabel}</span>
         </div>
       </header>
 
       <!-- Two-column Body: 232px Sidebar + Main Content -->
-      <div class:list={["workspace-body", { "photos-body": app === 'photos' }]}>
+      <div class="workspace-body">
 
         <!-- Sidebar Navigation -->
-        {app === 'workspace' && <DashboardSidebar currentPath={currentPath} />}
+        <DashboardSidebar currentPath={currentPath} />
 
         <!-- Main Workspace Document Surface -->
         <main
@@ -304,7 +284,7 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
             <div class="workspace-doc-main">
               <!-- Optional Breadcrumbs if provided -->
               {breadcrumbs && breadcrumbs.length > 0 && (
-                <nav class="dash-breadcrumbs" aria-label="Breadcrumbs">
+                <nav class="dash-breadcrumbs" aria-label={copy.breadcrumbsAriaLabel}>
                   <ol>
                     {breadcrumbs.map((crumb, idx) => (
                       <li>
@@ -329,8 +309,13 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
             </div>
 
             {!fullBleed && (
-              <footer class="workspace-doc-footer" aria-label="Footer">
-                <p class="workspace-doc-footer-meta">© {new Date().getFullYear()} Phuc Loc Nguyen.</p>
+              <footer class="workspace-doc-footer" aria-label={copy.footerAriaLabel}>
+                <nav class="workspace-doc-footer-links" aria-label={copy.footerAriaLabel}>
+                  <a href={resumeHref} class="dash-link" data-astro-prefetch>{copy.footerResumeLink}</a>
+                  <span aria-hidden="true">·</span>
+                  <a href={privacyHref} class="dash-link" data-astro-prefetch>{copy.footerPrivacyLink}</a>
+                </nav>
+                <p class="workspace-doc-footer-meta">{copy.footerCopyright(new Date().getFullYear())}</p>
               </footer>
             )}
           </div>
@@ -350,12 +335,12 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
       class="workspace-window-restore"
       type="button"
       data-window-action="restore"
-      aria-label={`Open ${appLabel}`}
-      title={`Open ${appLabel}`}
+      aria-label={copy.openApp(appLabel)}
+      title={copy.openApp(appLabel)}
       hidden
     >
       <span class="workspace-window-restore-icon" aria-hidden="true"></span>
-      <span>Open {appLabel}</span>
+      <span>{copy.openApp(appLabel)}</span>
     </button>
 
   </div>
@@ -371,7 +356,6 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
   :global(html.is-embedded-window .workspace-dock-persist),
   :global(html.is-embedded-window .desktop-titlebar),
   :global(html.is-embedded-window .desktop-resize-handle),
-  :global(html.is-embedded-window .mobile-topbar),
   :global(html.is-embedded-window .workspace-window-restore) {
     display: none !important;
   }
@@ -406,8 +390,11 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
     overflow: hidden !important;
   }
 
-  .photos-body {
-    grid-template-columns: minmax(0, 1fr);
+  :global(html.is-embedded-window .workspace-main) {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    padding-bottom: 32px !important;
   }
 
   .workspace-main.is-fullbleed {
@@ -455,11 +442,17 @@ const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || ''
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-end;
-    gap: 16px 24px;
-    font-size: var(--text-body);
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: var(--text-body-sm);
     line-height: var(--leading-compact);
     color: var(--dash-muted);
+  }
+
+  .workspace-doc-footer-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .workspace-doc-footer-meta {

@@ -1,6 +1,6 @@
 /** EXIF wall-clock values stay local; offset timestamps can use a known IANA zone. */
 export function formatPhotoCapture(value?: string, timeZone?: string) {
-  const missing = { date: "Chưa cập nhật", time: "Chưa cập nhật" };
+  const missing = { date: "Not updated", time: "Not updated" };
   if (!value) return missing;
   const match = /^(\d{4}-\d{2}-\d{2})(?:[T ](\d{2}:\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:\d{2})?)?$/.exec(value.trim());
   if (!match) return missing;
@@ -18,8 +18,8 @@ export function formatPhotoCapture(value?: string, timeZone?: string) {
   try {
     const zone = convert ? timeZone : "UTC";
     return {
-      date: new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: zone }).format(instant),
-      time: clock ? new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: zone }).format(instant) : missing.time,
+      date: new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: zone }).format(instant),
+      time: clock ? new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: zone }).format(instant) : missing.time,
     };
   } catch {
     return missing;

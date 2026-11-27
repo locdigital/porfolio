@@ -9,6 +9,7 @@ import {
 } from "./dock.config";
 import { AssistiveTouch } from "./AssistiveTouch";
 import { DockItem } from "./DockItem";
+import { getUiCopy } from "../../i18n/ui";
 import "./dock.styles.css";
 
 export interface DockProps {
@@ -24,6 +25,7 @@ export interface DockProps {
   onOpenSwitcher?: () => void;
   onCloseAllApps?: () => void;
   onQuitApp?: (id: AppId) => void;
+  disableBounce?: boolean;
   className?: string;
 }
 
@@ -40,8 +42,10 @@ export function Dock({
   onOpenSwitcher,
   onCloseAllApps,
   onQuitApp,
+  disableBounce = false,
   className = "",
 }: DockProps) {
+  const copy = getUiCopy().desktop;
   const visibleApps = useMemo(() => apps.filter((app) => app.enabled), [apps]);
   const [isCompact, setIsCompact] = useState(false);
   const effectivePosition: DockPosition = isCompact ? "bottom" : position;
@@ -192,6 +196,14 @@ export function Dock({
     }
   }, []);
 
+  const handleSelectItem = useCallback(
+    (id: AppId) => {
+      handlePointerLeave();
+      onSelectApp?.(id);
+    },
+    [handlePointerLeave, onSelectApp],
+  );
+
   useEffect(() => {
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
@@ -202,94 +214,95 @@ export function Dock({
 
   return (
     <>
-    <nav
-      className={`macos-dock-anchor macos-dock-anchor--${effectivePosition} ${className}`.trim()}
-      aria-label="Applications Dock"
-    >
-      <div
-        className={`macos-dock macos-dock--${effectivePosition}`}
-        onPointerEnter={handlePointerEnter}
-        onPointerMove={handlePointerMove}
-        onPointerLeave={handlePointerLeave}
+      <nav
+        className={`macos-dock-anchor macos-dock-anchor--${effectivePosition} ${className}`.trim()}
+        aria-label={copy.dockAria}
       >
-        {visibleApps.map((app) => (
-          <DockItem
-            key={app.id}
-            app={app}
-            position={effectivePosition}
-            isActive={activeApp === app.id}
-            isRunning={runningApps.includes(app.id)}
-            onSelect={onSelectApp}
-            onContextMenu={handleItemContextMenu}
-            registerButtonRef={registerButtonRef}
-          />
-        ))}
-      </div>
+        <div
+          className={`macos-dock macos-dock--${effectivePosition}`}
+          onPointerEnter={handlePointerEnter}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
+        >
+          {visibleApps.map((app) => (
+            <DockItem
+              key={app.id}
+              app={app}
+              position={effectivePosition}
+              isActive={activeApp === app.id}
+              isRunning={runningApps.includes(app.id)}
+              disableBounce={disableBounce}
+              onSelect={handleSelectItem}
+              onContextMenu={handleItemContextMenu}
+              registerButtonRef={registerButtonRef}
+            />
+          ))}
+        </div>
 
-      {contextMenu &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div
-            ref={menuRef}
-            role="menu"
-            className={`macos-dock-context-menu macos-dock-context-menu--${effectivePosition}`}
-            style={{ left: contextMenu.x, top: contextMenu.y }}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            {!isCompact && (
-              <>
+        {contextMenu &&
+          typeof document !== "undefined" &&
+          createPortal(
+            <div
+              ref={menuRef}
+              role="menu"
+              className={`macos-dock-context-menu macos-dock-context-menu--${effectivePosition}`}
+              style={{ left: contextMenu.x, top: contextMenu.y }}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              {!isCompact && onTogglePinMode && (
+                <>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="macos-dock-context-menu__item"
+                    onClick={() => {
+                      onTogglePinMode();
+                      setContextMenu(null);
+                    }}
+                  >
+                    {isPinMode ? copy.exitPinMode : copy.pinMode}
+                  </button>
+                  <div className="macos-dock-context-menu__divider" role="separator" />
+                </>
+              )}
+              {runningApps.includes(contextMenu.id) && onQuitApp ? (
                 <button
                   type="button"
                   role="menuitem"
                   className="macos-dock-context-menu__item"
                   onClick={() => {
-                    onTogglePinMode?.();
+                    onQuitApp(contextMenu.id);
                     setContextMenu(null);
                   }}
                 >
-                  {isPinMode ? "Exit pin mode" : "Pin mode"}
+                  {copy.quit}
                 </button>
-                <div className="macos-dock-context-menu__divider" role="separator" />
-              </>
-            )}
-            {runningApps.includes(contextMenu.id) ? (
-              <button
-                type="button"
-                role="menuitem"
-                className="macos-dock-context-menu__item"
-                onClick={() => {
-                  onQuitApp?.(contextMenu.id);
-                  setContextMenu(null);
-                }}
-              >
-                Quit
-              </button>
-            ) : (
-              <button
-                type="button"
-                role="menuitem"
-                className="macos-dock-context-menu__item"
-                onClick={() => {
-                  onSelectApp?.(contextMenu.id);
-                  setContextMenu(null);
-                }}
-              >
-                Open
-              </button>
-            )}
-          </div>,
-          document.body,
-        )}
-    </nav>
+              ) : (
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="macos-dock-context-menu__item"
+                  onClick={() => {
+                    onSelectApp?.(contextMenu.id);
+                    setContextMenu(null);
+                  }}
+                >
+                  {copy.open}
+                </button>
+              )}
+            </div>,
+            document.body,
+          )}
+      </nav>
 
-    {!isCompact && onTogglePinMode && (
-      <AssistiveTouch
-        isPinMode={isPinMode}
-        onTogglePinMode={onTogglePinMode}
-        onOpenSwitcher={onOpenSwitcher}
-        onCloseAll={onCloseAllApps}
-      />
-    )}
+      {!isCompact && onTogglePinMode && (
+        <AssistiveTouch
+          isPinMode={isPinMode}
+          onTogglePinMode={onTogglePinMode}
+          onOpenSwitcher={onOpenSwitcher}
+          onCloseAll={onCloseAllApps}
+        />
+      )}
     </>
   );
 }

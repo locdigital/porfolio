@@ -82,7 +82,7 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
   {
     id: "money-heist",
     slug: "phi-vu-trieu-do",
-    title: "Money Heist (Phi Vụ Triệu Đô)",
+    title: "Money Heist",
     year: 2017,
     genres: ["Thriller", "Drama"],
     synopsis:
@@ -158,7 +158,7 @@ export const NETFLIX_MOVIES: NetflixMovie[] = [
   {
     id: "spirited-away",
     slug: "vung-dat-linh-hon",
-    title: "Spirited Away (Vùng Đất Linh Hồn)",
+    title: "Spirited Away",
     year: 2001,
     genres: ["Anime", "Fantasy", "Family"],
     synopsis:

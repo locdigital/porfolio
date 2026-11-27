@@ -1,5 +1,6 @@
 import React from "react";
 import type { WindowTilePreset } from "./window-manager";
+import { getUiCopy } from "../../i18n/ui";
 
 interface WindowTileMenuProps {
   x: number;
@@ -108,10 +109,11 @@ export function WindowTileMenu({
   onMouseEnter,
   onMouseLeave,
 }: WindowTileMenuProps) {
+  const copy = getUiCopy().desktop;
   return (
     <div
       role="menu"
-      aria-label="Window tiling options"
+      aria-label={copy.tilingAria}
       className="window-tile-menu"
       style={{ left: x, top: y }}
       onPointerDown={(e) => e.stopPropagation()}
@@ -119,48 +121,54 @@ export function WindowTileMenu({
       onMouseLeave={onMouseLeave}
     >
       <div className="window-tile-menu__section">
-        <div className="window-tile-menu__heading">Move &amp; Resize</div>
+        <div className="window-tile-menu__heading">{copy.moveResize}</div>
         <div className="window-tile-menu__grid">
-          {MOVE_RESIZE_ITEMS.map((item) => (
-            <button
-              key={item.preset}
-              type="button"
-              role="menuitem"
-              className="window-tile-menu__btn"
-              title={item.label}
-              aria-label={item.label}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect(item.preset);
-              }}
-            >
-              {item.icon}
-            </button>
-          ))}
+          {MOVE_RESIZE_ITEMS.map((item) => {
+            const label = copy.tileLabels[item.preset] ?? item.label;
+            return (
+              <button
+                key={item.preset}
+                type="button"
+                role="menuitem"
+                className="window-tile-menu__btn"
+                title={label}
+                aria-label={label}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect(item.preset);
+                }}
+              >
+                {item.icon}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       <div className="window-tile-menu__divider" role="separator" />
 
       <div className="window-tile-menu__section">
-        <div className="window-tile-menu__heading">Fill &amp; Arrange</div>
+        <div className="window-tile-menu__heading">{copy.fillArrange}</div>
         <div className="window-tile-menu__grid">
-          {FILL_ARRANGE_ITEMS.map((item) => (
-            <button
-              key={item.preset}
-              type="button"
-              role="menuitem"
-              className="window-tile-menu__btn"
-              title={item.label}
-              aria-label={item.label}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect(item.preset);
-              }}
-            >
-              {item.icon}
-            </button>
-          ))}
+          {FILL_ARRANGE_ITEMS.map((item) => {
+            const label = copy.tileLabels[item.preset] ?? item.label;
+            return (
+              <button
+                key={item.preset}
+                type="button"
+                role="menuitem"
+                className="window-tile-menu__btn"
+                title={label}
+                aria-label={label}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect(item.preset);
+                }}
+              >
+                {item.icon}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

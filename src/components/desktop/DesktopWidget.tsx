@@ -11,12 +11,14 @@ interface DesktopWidgetProps {
   title: string;
   zIndex: number;
   index: number;
+  /** Pin Mode column slot (0 = top). When set, a plain click moves the app to the centre. */
+  slot?: number;
   onFocus: () => void;
   onUnpin: () => void;
   onClose: () => void;
 }
 
-function getWidgetSlotPos(id: AppId, index: number, measuredWidth?: number) {
+function getWidgetSlotPos(id: AppId, index: number, measuredWidth?: number, slot?: number) {
   const gap = 16;
   if (typeof window === "undefined") return { x: gap, y: gap };
   const width = measuredWidth ?? Math.min(480, window.innerWidth - 32);
@@ -24,11 +26,13 @@ function getWidgetSlotPos(id: AppId, index: number, measuredWidth?: number) {
   const x = Math.max(gap, window.innerWidth - gap - width);
 
   let y = gap;
-  if (id === "netflix") {
+  if (slot !== undefined && slot >= 0) {
+    y = gap + (slotH + gap) * Math.min(slot, 2);
+  } else if (id === "netflix") {
     y = gap;
   } else if (id === "spotify") {
     y = gap + slotH + gap;
-  } else if (id === "photos") {
+  } else if (id === "photos" || id === "workspace") {
     y = gap + (slotH + gap) * 2;
   } else {
     const size = 320;
@@ -42,15 +46,15 @@ function getWidgetSlotPos(id: AppId, index: number, measuredWidth?: number) {
   };
 }
 
-export function DesktopWidget({ id, title, zIndex, index, onFocus, onUnpin }: DesktopWidgetProps) {
-  const [pos, setPos] = useState(() => getWidgetSlotPos(id, index));
+export function DesktopWidget({ id, title, zIndex, index, slot, onFocus, onUnpin }: DesktopWidgetProps) {
+  const [pos, setPos] = useState(() => getWidgetSlotPos(id, index, undefined, slot));
   const [itemIndex, setItemIndex] = useState(0);
   const widgetRef = useRef<HTMLElement>(null);
 
   const computePos = useCallback(() => {
     const measuredWidth = widgetRef.current?.getBoundingClientRect().width;
-    setPos(getWidgetSlotPos(id, index, measuredWidth));
-  }, [id, index]);
+    setPos(getWidgetSlotPos(id, index, measuredWidth, slot));
+  }, [id, index, slot]);
 
   useEffect(() => {
     computePos();
@@ -79,7 +83,7 @@ export function DesktopWidget({ id, title, zIndex, index, onFocus, onUnpin }: De
   };
 
   return (
-    <aside ref={widgetRef} className={`desktop-widget desktop-widget--${id}`} style={{ zIndex, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }} onPointerDown={handlePointerDown} onFocus={onFocus} onDoubleClick={e => { if (!(e.target as HTMLElement).closest("button, a, [data-widget-scroll]")) onUnpin(); }} aria-label={`${title} widget`}>
+    <aside ref={widgetRef} className={`desktop-widget desktop-widget--${id}`} style={{ zIndex, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }} onPointerDown={handlePointerDown} onFocus={onFocus} onClick={slot !== undefined ? e => { if (!(e.target as HTMLElement).closest("button, a, input, [data-widget-scroll]")) onUnpin(); } : undefined} onDoubleClick={slot === undefined ? e => { if (!(e.target as HTMLElement).closest("button, a, [data-widget-scroll]")) onUnpin(); } : undefined} data-pin-slot={slot} aria-label={`${title} widget`}>
       <div
         className="dw-widget-motion"
         style={{ animationDelay: `${index * 45}ms` }}

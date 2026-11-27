@@ -1,5 +1,6 @@
 ---
 import { formatPhotoCapture } from "../../lib/photo-capture";
+import { getUiCopy } from "../../i18n/ui";
 
 interface Props {
   id: string;
@@ -21,59 +22,67 @@ interface Props {
 }
 
 const { id, imageUrl, alt, title, story, capturedAt, capturedTimeZone, location, photoNumber,
-  width, height, srcset, avifSrcSet, blurDataURL, sizes, eager = false } = Astro.props;
+  width, height, srcset, avifSrcSet, sizes, eager = false } = Astro.props;
+const detailCopy = getUiCopy().photosUi.detail;
 const capture = formatPhotoCapture(capturedAt, capturedTimeZone);
 const frame = photoNumber == null ? id : String(photoNumber).padStart(3, "0");
 const descriptionId = `${id}-memory`;
-const imgStyle = blurDataURL
-  ? `view-transition-class: workspace-shared-image; background-image: url('${blurDataURL}'); background-size: cover; background-position: center;`
-  : "view-transition-class: workspace-shared-image";
+const aspectStyle = `aspect-ratio: ${width} / ${height};`;
 ---
 
-<figure id={id} class="pixel-photo" data-pixel-photo data-flipped="false" tabindex="-1" data-motion-focus>
+<figure
+  id={id}
+  class="pixel-photo"
+  data-pixel-photo
+  data-flipped="false"
+  data-eager={eager ? "true" : undefined}
+  data-aspect={String(height / Math.max(1, width))}
+  data-order={String(photoNumber ?? 0)}
+  tabindex="-1"
+>
   <button
     class="pixel-photo__control"
     type="button"
     data-flip-control
     aria-pressed="false"
-    aria-label={`Flip photo: ${title}`}
+    aria-label={detailCopy.flipAria(title)}
     aria-describedby={descriptionId}
     data-title={title}
     data-description={descriptionId}
+    data-flip-prefix="Flip photo"
+    data-front-prefix="Show front"
   >
     <span class="pixel-photo__shadow" data-flip-shadow aria-hidden="true"></span>
     <span class="pixel-photo__lift">
       <span class="pixel-photo__paper" data-flip-paper>
-        <span class="pixel-photo__front" data-flip-front>
+        <span class="pixel-photo__front" data-flip-front style={aspectStyle}>
           {avifSrcSet ? (
             <picture>
               <source type="image/avif" srcset={avifSrcSet} sizes={sizes} />
               <img src={imageUrl} srcset={srcset} sizes={sizes} alt={alt}
-                data-motion-share={id} style={imgStyle}
                 width={width} height={height} loading={eager ? "eager" : "lazy"}
                 fetchpriority={eager ? "high" : "auto"} decoding="async" draggable="false" />
             </picture>
           ) : (
             <img src={imageUrl} srcset={srcset} sizes={sizes} alt={alt}
-              data-motion-share={id} style={imgStyle}
               width={width} height={height} loading={eager ? "eager" : "lazy"}
               fetchpriority={eager ? "high" : "auto"} decoding="async" draggable="false" />
           )}
         </span>
         <span class="pixel-photo__back" data-flip-back aria-hidden="true" id={descriptionId}>
-          <span class="pixel-photo__archive">Photo notes</span>
+          <span class="pixel-photo__archive">{detailCopy.photoNotes}</span>
           <span class="pixel-photo__memory" data-flip-scroll>
             <span class="pixel-photo__back-title" data-flip-title>{title}</span>
             <span class="pixel-photo__metadata">
-              <span><span class="pixel-photo__label">Date</span><span>{capture.date}</span></span>
-              <span><span class="pixel-photo__label">Time</span><span>{capture.time}</span></span>
-              <span><span class="pixel-photo__label">Place</span><span>{location || "Not updated"}</span></span>
-              <span><span class="pixel-photo__label">Frame</span><span>#{frame}</span></span>
+              <span><span class="pixel-photo__label">{detailCopy.date}</span><span>{capture.date}</span></span>
+              <span><span class="pixel-photo__label">{detailCopy.time}</span><span>{capture.time}</span></span>
+              <span><span class="pixel-photo__label">{detailCopy.place}</span><span>{location || detailCopy.notUpdated}</span></span>
+              <span><span class="pixel-photo__label">{detailCopy.frame}</span><span>#{frame}</span></span>
             </span>
-            <span class="pixel-photo__story-label pixel-photo__label">Story</span>
-            <span class="pixel-photo__story" data-flip-story>{story?.trim() || "Story coming soon."}</span>
+            <span class="pixel-photo__story-label pixel-photo__label">{detailCopy.story}</span>
+            <span class="pixel-photo__story" data-flip-story>{story?.trim() || detailCopy.storyComingSoon}</span>
           </span>
-          <span class="pixel-photo__back-footer">Tap to flip<span class="pixel-photo__scroll-hint"> · Scroll to read</span></span>
+          <span class="pixel-photo__back-footer">{detailCopy.tapToFlip}<span class="pixel-photo__scroll-hint">{detailCopy.scrollToRead}</span></span>
         </span>
       </span>
     </span>
@@ -90,14 +99,12 @@ const imgStyle = blurDataURL
     position: relative;
     isolation: isolate;
     container-type: inline-size;
-    margin: 0 0 28px;
-    break-inside: avoid;
-    scroll-margin-block-start: var(--space-6);
+    margin: 0;
+    scroll-margin-block-start: calc(var(--photos-header-h, 48px) + var(--space-4));
   }
-  @media (max-width: 1023px) {
-    .pixel-photo {
-      scroll-margin-block-start: calc(var(--mobile-topbar-h) + env(safe-area-inset-top, 0px) + var(--space-4));
-    }
+  .pixel-photo:not([data-eager="true"]):not([data-flipped="true"]):not([data-animating]) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 340px;
   }
   .pixel-photo:focus-within,
   .pixel-photo[data-animating] { z-index: 2; }
@@ -120,10 +127,10 @@ const imgStyle = blurDataURL
   }
   .pixel-photo__shadow {
     position: absolute;
-    inset: 12px 5px 0;
+    inset: 10px 6px 0;
     border-radius: var(--radius-card-sm);
-    background: rgb(24 24 24 / .4);
-    filter: blur(9px);
+    background: transparent;
+    box-shadow: 0 12px 24px rgb(24 24 24 / .24);
     opacity: .17;
     transform: translate3d(0, 5px, -1px) scale(.98, .98);
     pointer-events: none;
@@ -146,18 +153,22 @@ const imgStyle = blurDataURL
     border-radius: var(--radius-card-sm);
   }
   .pixel-photo__front {
+    position: relative;
     display: block;
+    width: 100%;
     padding: 0;
     border: 0;
-    background: transparent;
+    background: #f0f0f3;
     transform: translateZ(.2px);
     overflow: hidden;
     touch-action: pan-y pinch-zoom;
   }
   .pixel-photo__front img {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
     border-radius: inherit;
   }

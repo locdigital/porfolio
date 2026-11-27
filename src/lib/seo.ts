@@ -126,10 +126,12 @@ export function breadcrumbListSchema(
 ): JsonLd | null {
   if (!breadcrumbs || breadcrumbs.length === 0) return null;
 
-  const hasHome = breadcrumbs[0]?.href === "/";
+  const homeHref = "/";
+  const homeLabel = "Overview";
+  const hasHome = breadcrumbs[0]?.href === homeHref || breadcrumbs[0]?.href === "/";
   const normalizedItems: { name: string; item: string }[] = [];
-  if (!hasHome && canonicalUrl("/") !== currentPageUrl) {
-    normalizedItems.push({ name: "Overview", item: canonicalUrl("/") });
+  if (!hasHome && canonicalUrl(homeHref) !== currentPageUrl) {
+    normalizedItems.push({ name: homeLabel, item: canonicalUrl(homeHref) });
   }
 
   for (let i = 0; i < breadcrumbs.length; i++) {

@@ -684,3 +684,92 @@
   color: rgba(255, 255, 255, 0.86);
   white-space: nowrap;
 }
+
+/* AssistiveTouch → Shortcuts panel */
+.assistive-touch-menu.assistive-touch-shortcuts {
+  display: block;
+  width: 264px;
+  padding: 10px 12px 12px;
+}
+
+.assistive-touch-shortcuts-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px -4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.assistive-touch-shortcuts-back {
+  appearance: none;
+  border: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.assistive-touch-shortcuts-back:hover,
+.assistive-touch-shortcuts-back:focus-visible {
+  outline: none;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.assistive-touch-shortcuts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.assistive-touch-shortcuts-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 2px;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.assistive-touch-shortcuts-list li:first-child {
+  border-top: 0;
+}
+
+.assistive-touch-shortcuts-label {
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.assistive-touch-shortcuts-keys {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 3px;
+}
+
+.assistive-touch-shortcuts-keys kbd {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.25), inset 0 0.5px 0 rgba(255, 255, 255, 0.2);
+}

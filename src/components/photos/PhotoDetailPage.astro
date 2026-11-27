@@ -1,0 +1,868 @@
+---
+import PhotosLayout from "../../layouts/PhotosLayout.astro";
+import { getPhotoLocations } from "../../lib/content";
+import { optimizePhotos } from "../../lib/photo-assets";
+import { resolveAssetUrl } from "../../lib/assets";
+import { getLocationEditorial } from "../../data/location-stories";
+import { Camera, PhosphorIcon } from "../icons/phosphor";
+import Heroicon from "../icons/Heroicon.astro";
+import PixelFlipPhoto from "../ui/PixelFlipPhoto.astro";
+import { canonicalUrl, imageGallerySchema } from "../../lib/seo";
+import { formatDate } from "../../lib/i18n";
+import { getUiCopy } from "../../i18n/ui";
+import photoUpdates from "../../../data/photo-updates.json";
+
+type PhotoLocationItem = Awaited<ReturnType<typeof getPhotoLocations>>[number];
+
+interface Props {
+  location: PhotoLocationItem;
+  allLocations: PhotoLocationItem[];
+}
+
+const { location, allLocations } = Astro.props;
+const photosUi = getUiCopy().photosUi;
+const detailUi = photosUi.detail;
+const photosBasePath = "/photos";
+
+const editorial = getLocationEditorial(location.slug);
+
+const updates = photoUpdates as Record<string, { updatedAt: string }>;
+const realUpdatedAt = location.updatedAt || updates[location.slug]?.updatedAt;
+const formattedUpdatedDate =
+  realUpdatedAt && !Number.isNaN(Date.parse(realUpdatedAt))
+    ? formatDate(new Date(realUpdatedAt), "short")
+    : undefined;
+
+type GalleryPhoto = PhotoLocationItem["photos"][number];
+const locationTitle = location.name || location.location;
+
+const sourcePhotos = (location.photos as GalleryPhoto[]).map((photo, index) => ({
+  ...photo,
+  location: photo.location || locationTitle,
+  alt: photo.alt || `${locationTitle} — ${index + 1}`,
+}));
+
+const photos = await optimizePhotos(sourcePhotos, {
+  previewWidth: 960,
+  previewWidths: [320, 360, 480, 640, 720, 960, 1280],
+  previewSizes:
+    "(max-width: 640px) calc(100vw - 32px), (max-width: 768px) calc((100vw - 48px) / 2), (max-width: 1023px) calc((100vw - 64px) / 2), (max-width: 1279px) calc((94vw - 334px) / 2), (max-width: 1376px) calc((94vw - 350px) / 2), 472px",
+});
+
+const seoTitle = location.seoTitle
+  ? `${location.seoTitle} — Phuc Loc Nguyen`
+  : `${locationTitle} — Travel Journal & Photography | Phuc Loc Nguyen`;
+
+const seoDescription =
+  location.seoDescription ||
+  editorial?.seoDescription ||
+  location.shortDescription ||
+  location.introduction ||
+  location.headline ||
+  `First-hand photographs and travel notes from ${locationTitle} by Phuc Loc Nguyen.`;
+
+const rawOgImage = location.seoImage || location.heroImage?.src || photos[0]?.fullSrc || photos[0]?.previewSrc;
+const ogImage = rawOgImage ? resolveAssetUrl(rawOgImage) : undefined;
+const ogImageAlt =
+  location.heroImage?.alt ||
+  photos[0]?.alt ||
+  `${locationTitle} travel photograph by Phuc Loc Nguyen`;
+
+const detailPath = `${photosBasePath}/${location.slug}`;
+const pageUrl = canonicalUrl(detailPath);
+const gallerySchema = imageGallerySchema({
+  url: pageUrl,
+  title: seoTitle,
+  description: seoDescription,
+  locationName: locationTitle,
+  alternateNames: location.alternateNames,
+  country: location.country,
+  region: location.region,
+  latitude: location.latitude,
+  longitude: location.longitude,
+  dateModified: realUpdatedAt,
+  breadcrumbId: `${pageUrl}#breadcrumbs`,
+  images: photos.map((p, idx) => ({
+    url: p.fullSrc || p.previewSrc,
+    name: sourcePhotos[idx]?.title || p.alt,
+    caption: sourcePhotos[idx]?.story || sourcePhotos[idx]?.caption || p.alt,
+    width: p.w,
+    height: p.h,
+    dateCreated: sourcePhotos[idx]?.capturedAt,
+    locationName: sourcePhotos[idx]?.location || locationTitle,
+  })),
+});
+
+const formattedBudget =
+  location.budgetCurrency && (location.budgetMin || location.budgetMax)
+    ? `${location.budgetMin ?? ""}${location.budgetMin && location.budgetMax ? "–" : ""}${location.budgetMax ?? ""} ${location.budgetCurrency}${location.budgetNote ? ` (${location.budgetNote})` : ""}`
+    : location.budgetNote && !location.budgetNote.toLowerCase().startsWith("per ")
+      ? location.budgetNote
+      : undefined;
+
+const hasPlanningDetails = Boolean(
+  location.overview ||
+    location.favoriteThings ||
+    location.whatIWouldDoAgain ||
+    (location.suitableFor && location.suitableFor.length > 0) ||
+    (location.notFor && location.notFor.length > 0) ||
+    (location.transportation && location.transportation.length > 0) ||
+    (location.localTransport && location.localTransport.length > 0) ||
+    (location.bestTimeOfDay && location.bestTimeOfDay.length > 0) ||
+    location.weatherNote ||
+    (location.travelTips && location.travelTips.length > 0) ||
+    location.crowdLevel ||
+    location.travelDifficulty,
+);
+
+const publishedBySlug = new Map(allLocations.map((loc) => [loc.slug, loc]));
+const mapTarget = (target: PhotoLocationItem) => ({
+  slug: target.slug,
+  name: target.name || target.location,
+  region: target.region,
+  country: target.country,
+  headline: target.headline,
+});
+
+const explicitRelated = (location.relatedLocations ?? [])
+  .map((rel) => {
+    const target = publishedBySlug.get(rel.slug);
+    if (!target) return null;
+    const locTarget = mapTarget(target);
+    return {
+      slug: target.slug,
+      distance: rel.distance,
+      category: rel.category,
+      target: locTarget,
+    };
+  })
+  .filter((item): item is NonNullable<typeof item> => Boolean(item))
+  .slice(0, 3);
+
+const usedRelatedSlugs = new Set([location.slug, ...explicitRelated.map((item) => item.target.slug)]);
+const fallbackCandidates = [
+  ...allLocations.filter(
+    (other) =>
+      !usedRelatedSlugs.has(other.slug) &&
+      (other.region === location.region || other.country === location.country),
+  ),
+  ...allLocations.filter(
+    (other) =>
+      !usedRelatedSlugs.has(other.slug) &&
+      other.region !== location.region &&
+      other.country !== location.country,
+  ),
+];
+
+const siblingRelated = fallbackCandidates
+  .slice(0, Math.max(0, 3 - explicitRelated.length))
+  .map((target) => {
+    const locTarget = mapTarget(target);
+    return {
+      slug: target.slug,
+      distance: locTarget.region || locTarget.country,
+      category: locTarget.headline,
+      target: locTarget,
+    };
+  });
+
+const relatedDestinations = [...explicitRelated, ...siblingRelated];
+const fallbackIntroParts = detailUi.fallbackIntro(
+  photos.length,
+  locationTitle,
+  location.country || "Vietnam",
+  allLocations.length,
+);
+const wouldReturnDisplay = location.wouldReturn
+  ? detailUi.wouldReturnLabels[location.wouldReturn.toLowerCase()] ?? location.wouldReturn
+  : undefined;
+---
+
+<PhotosLayout
+  title={seoTitle}
+  pageTitle={locationTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+  ogType="article"
+  dateModified={realUpdatedAt}
+  breadcrumbs={[
+    { label: detailUi.breadcrumbPhotos, href: photosBasePath },
+    { label: locationTitle },
+  ]}
+  maxWidthVariant="default"
+  currentPath={detailPath}
+  schema={gallerySchema}
+>
+  <!-- Page Introduction -->
+  <header class="page-header photo-introduction">
+    <div style="margin-bottom: 4px;">
+      <h1 class="page-title" style="margin: 0;"><span data-motion-share={`album-${location.slug}`}>{locationTitle}</span></h1>
+    </div>
+
+    <p class="page-lead" style="margin-bottom: var(--space-2);">{location.headline}</p>
+    {editorial?.subtitle && (
+      <p class="editorial-subtitle">{editorial.subtitle}</p>
+    )}
+
+    {location.introduction && (
+      <p style="font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text); margin: 0 0 var(--space-4);">
+        {location.introduction}
+      </p>
+    )}
+    {!editorial && (location.introduction?.trim().length || 0) < 300 && (
+      <p class="dash-prose" style="font-size: var(--text-body-sm); line-height: var(--leading-body); margin: 0 0 var(--space-4);">
+        {fallbackIntroParts.beforePhotosLink}
+        <a href={photosBasePath}>{fallbackIntroParts.photosLinkText}</a>
+        {fallbackIntroParts.betweenLinks}
+        <a href="/about">{fallbackIntroParts.contactLinkText}</a>
+        {fallbackIntroParts.afterContactLink}
+      </p>
+    )}
+
+    <!-- Properties Grid -->
+    <div class="photo-props-grid">
+      {(location.region || location.country) && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">{detailUi.region}</span>
+          <span style="font-weight: 500; color: var(--dash-text);">
+            {location.region && location.country && location.region !== location.country
+              ? `${location.region}, ${location.country}`
+              : location.region || location.country}
+          </span>
+        </div>
+      )}
+      {location.bestMonths && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">{detailUi.bestSeason}</span>
+          <span style="font-weight: 500; color: var(--dash-text);">{location.bestMonths}</span>
+        </div>
+      )}
+      {location.recommendedStay && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">{detailUi.recommendedStay}</span>
+          <span style="font-weight: 500; color: var(--dash-text);">{location.recommendedStay}</span>
+        </div>
+      )}
+      {formattedBudget && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">{detailUi.budgetNote}</span>
+          <span style="font-weight: 500; color: var(--dash-text);">{formattedBudget}</span>
+        </div>
+      )}
+      {wouldReturnDisplay && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">{detailUi.wouldReturn}</span>
+          <span style="font-weight: 500; color: var(--dash-success);">{wouldReturnDisplay}</span>
+        </div>
+      )}
+      <div>
+        <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">{detailUi.gallery}</span>
+        <span style="color: var(--dash-text);">{photosUi.photoCount(photos.length)}</span>
+      </div>
+      {formattedUpdatedDate && (
+        <div>
+          <span style="color: var(--dash-muted); display: block; margin-bottom: 2px;">{detailUi.updated}</span>
+          <span style="color: var(--dash-text);">{formattedUpdatedDate}</span>
+        </div>
+      )}
+    </div>
+  </header>
+
+  <!-- Photo Stream (Zero-reflow balanced masonry on desktop, chronological single column on mobile) -->
+  <p class="photo-flip-hint">{detailUi.flipHint}</p>
+  <section class="page-section" aria-label="Photo stream">
+    <div id="photo-stream-gallery" class="dash-gallery photo-stream-gallery">
+      {photos.map((p, index) => (
+        <PixelFlipPhoto
+          id={`photo-${location.slug}-${index + 1}`}
+          imageUrl={p.previewSrc}
+          srcset={p.previewSrcSet}
+          avifSrcSet={p.avifSrcSet}
+          sizes={p.previewSizes}
+          alt={p.alt}
+          width={p.w}
+          height={p.h}
+          eager={index < 4}
+          title={sourcePhotos[index].title || p.alt}
+          story={sourcePhotos[index].story || sourcePhotos[index].caption}
+          capturedAt={sourcePhotos[index].capturedAt}
+          capturedTimeZone={sourcePhotos[index].capturedTimeZone}
+          location={sourcePhotos[index].location || locationTitle}
+          photoNumber={index + 1}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Verified First-Hand Field Notes & Practical Planning -->
+  {hasPlanningDetails && (
+    <section class="page-section page-section--divided editorial-section" aria-labelledby="heading-field-notes">
+      <div class="editorial-label-row">
+        <span class="editorial-kicker">{detailUi.fieldNotesKicker}</span>
+      </div>
+      <h2 id="heading-field-notes" class="section-title" style="margin: 0;">
+        {detailUi.fieldNotesHeading(locationTitle)}
+      </h2>
+
+      {location.overview && (
+        <div class="editorial-prose">
+          {location.overview.split(/\n{2,}/).map((para: string) => (
+            <p>{para.trim()}</p>
+          ))}
+        </div>
+      )}
+
+      {(location.favoriteThings || location.whatIWouldDoAgain) && (
+        <div class="editorial-columns-grid">
+          {location.favoriteThings && (
+            <div class="editorial-col">
+              <h3 class="item-title editorial-col-title">{detailUi.favoriteDetails}</h3>
+              <p class="field-note-text">{location.favoriteThings}</p>
+            </div>
+          )}
+          {location.whatIWouldDoAgain && (
+            <div class="editorial-col">
+              <h3 class="item-title editorial-col-title">{detailUi.whatIWouldDoAgain}</h3>
+              <p class="field-note-text">{location.whatIWouldDoAgain}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div class="editorial-columns-grid">
+        {((location.suitableFor && location.suitableFor.length > 0) ||
+          (location.notFor && location.notFor.length > 0)) && (
+          <div class="editorial-col">
+            <h3 class="item-title editorial-col-title">{detailUi.whoItSuits}</h3>
+            {location.suitableFor && location.suitableFor.length > 0 && (
+              <div class="field-tags-row" aria-label={detailUi.whoItSuits}>
+                {location.suitableFor.map((tag: string) => (
+                  <span class="dash-tag">{tag}</span>
+                ))}
+              </div>
+            )}
+            {location.notFor && location.notFor.length > 0 && (
+              <div style="margin-top: 12px;">
+                <div class="field-sub-label">{detailUi.lessIdealIf}</div>
+                <ul class="editorial-list">
+                  {location.notFor.map((item: string) => (
+                    <li>
+                      <span class="dash-bullet" aria-hidden="true"></span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {((location.travelTips && location.travelTips.length > 0) ||
+          location.weatherNote ||
+          (location.transportation && location.transportation.length > 0) ||
+          (location.localTransport && location.localTransport.length > 0) ||
+          location.crowdLevel ||
+          location.travelDifficulty) && (
+          <div class="editorial-col">
+            <h3 class="item-title editorial-col-title">{detailUi.practicalLogistics}</h3>
+            <ul class="editorial-list">
+              {location.transportation && location.transportation.length > 0 && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>{detailUi.gettingThere}</strong> {location.transportation.join(", ")}</span>
+                </li>
+              )}
+              {location.localTransport && location.localTransport.length > 0 && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>{detailUi.gettingAround}</strong> {location.localTransport.join(", ")}</span>
+                </li>
+              )}
+              {location.bestTimeOfDay && location.bestTimeOfDay.length > 0 && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>{detailUi.bestLightTiming}</strong> {location.bestTimeOfDay.join(", ")}</span>
+                </li>
+              )}
+              {location.crowdLevel && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>{detailUi.crowds}</strong> {detailUi.crowdLabels[location.crowdLevel] || location.crowdLevel}</span>
+                </li>
+              )}
+              {location.travelDifficulty && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>{detailUi.difficulty}</strong> {detailUi.difficultyLabels[location.travelDifficulty] || location.travelDifficulty}</span>
+                </li>
+              )}
+              {location.weatherNote && (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span><strong>{detailUi.weatherNote}</strong> {location.weatherNote}</span>
+                </li>
+              )}
+              {location.travelTips && location.travelTips.map((tip: string) => (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- Editorial Section: Travel Journal & Cultural Notes -->
+  {editorial && (
+    <section class="page-section page-section--divided editorial-section" aria-labelledby="heading-story">
+      <!-- Travel Journal Story -->
+      <article class="editorial-story-block">
+        <div class="editorial-label-row">
+          <span class="editorial-kicker">{detailUi.journalKicker}</span>
+        </div>
+        <h2 id="heading-story" class="section-title editorial-story-heading">
+          {editorial.subtitle}
+        </h2>
+        <div class="editorial-prose">
+          {editorial.story.split("\n\n").map((para) => (
+            <p>{para}</p>
+          ))}
+        </div>
+      </article>
+
+      <!-- Historical Context Card -->
+      <div class="editorial-history-card">
+        <div class="editorial-history-header">
+          <PhosphorIcon name="scroll" size={17} weight="light" aria-hidden="true" />
+          <h3 class="editorial-history-title">{detailUi.historyHeading}</h3>
+        </div>
+        <p class="editorial-history-text">{editorial.history}</p>
+      </div>
+
+      <!-- Personal Review -->
+      <div class="editorial-review-block">
+        <h3 class="item-title" style="font-size: calc(var(--text-h4) + 3px); margin-bottom: var(--space-2);">
+          {detailUi.perspectiveHeading}
+        </h3>
+        <p style="font-size: var(--text-body-sm); line-height: var(--leading-body); color: var(--dash-text); margin: 0;">
+          {editorial.review}
+        </p>
+      </div>
+
+      <!-- Highlights & Photography Tips Grid -->
+      <div class="editorial-columns-grid">
+        {editorial.highlights && editorial.highlights.length > 0 && (
+          <div class="editorial-col">
+            <h3 class="item-title editorial-col-title">
+              <PhosphorIcon name="compass" size={16} weight="light" className="editorial-col-icon" aria-hidden="true" />
+              <span>{detailUi.highlightsHeading}</span>
+            </h3>
+            <ul class="editorial-list">
+              {editorial.highlights.map((item) => (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {editorial.photographyTips && editorial.photographyTips.length > 0 && (
+          <div class="editorial-col">
+            <h3 class="item-title editorial-col-title">
+              <Camera size={16} weight="light" className="editorial-col-icon" aria-hidden="true" />
+              <span>{detailUi.photoTipsHeading}</span>
+            </h3>
+            <ul class="editorial-list">
+              {editorial.photographyTips.map((tip) => (
+                <li>
+                  <span class="dash-bullet" aria-hidden="true"></span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <!-- Research Sources / References -->
+      {editorial.sources && editorial.sources.length > 0 && (
+        <div class="editorial-sources-footer">
+          <span class="editorial-sources-title">{detailUi.sourcesHeading}</span>
+          <ul class="editorial-sources-items">
+            {editorial.sources.map((s) => (
+              <li>
+                <a href={s.url} target="_blank" rel="noopener noreferrer" class="editorial-source-link">
+                  <Heroicon name="link" variant="outline" size={14} class="editorial-source-icon" />
+                  <span>{s.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  )}
+
+  <!-- Related Destinations -->
+  {relatedDestinations.length > 0 && (
+    <section class="page-section page-section--divided" aria-labelledby="heading-related-destinations">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: var(--space-4);">
+        <h2 id="heading-related-destinations" class="section-title" style="margin: 0;">
+          {detailUi.relatedHeading}
+        </h2>
+        <a href={photosBasePath} class="dash-link" style="font-size: var(--text-body-sm);" data-astro-prefetch>
+          {detailUi.allGalleries(allLocations.length)}
+        </a>
+      </div>
+      <div class="related-destinations-grid">
+        {relatedDestinations.map(({ target, distance, category }) => (
+          <a href={`${photosBasePath}/${target.slug}`} class="dash-card related-destination-card">
+            <span class="related-destination-name" data-motion-share={`album-${target.slug}`}>
+              {target.name}
+            </span>
+            <span class="related-destination-meta">
+              {[category, distance].filter(Boolean).join(" · ") || target.headline}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</PhotosLayout>
+
+<style>
+  .photo-introduction > p {
+    max-width: none;
+  }
+
+  .photo-props-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px 16px;
+    padding: 14px 0;
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    font-size: var(--text-body-sm);
+  }
+
+  .editorial-subtitle {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--dash-muted);
+    font-style: italic;
+    margin: 0 0 16px;
+  }
+
+  .photo-flip-hint {
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+    margin: 0 0 16px;
+  }
+
+  .photo-stream-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+
+  .photo-stream-gallery :global(.photo-stream-col) {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  /* Editorial Section Styling */
+  .editorial-section {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 36px;
+  }
+
+  .editorial-kicker {
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--dash-muted);
+  }
+
+  .editorial-story-heading {
+    font-family: var(--font-family-headline);
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-text);
+    margin: var(--space-2) 0 var(--space-4);
+  }
+
+  .editorial-prose p {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-text);
+    margin: 0 0 var(--space-4);
+    max-width: none;
+  }
+
+  .editorial-prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .field-note-text {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-text);
+    margin: 0;
+  }
+
+  .field-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .field-sub-label {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    color: var(--dash-muted);
+    margin-bottom: 6px;
+  }
+
+  .editorial-history-card {
+    padding: 18px 20px;
+    background: var(--dash-surface, #ffffff);
+    border: 1px solid var(--dash-border, rgba(10, 10, 10, 0.08));
+    border-radius: var(--radius-card, 12px);
+  }
+
+  .editorial-history-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--dash-text);
+  }
+
+  .editorial-history-title {
+    font-size: calc(var(--text-h4) + 3px);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+    margin: 0;
+  }
+
+  .editorial-history-text {
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-text);
+    margin: 0;
+    max-width: none;
+  }
+
+  .editorial-review-block p {
+    max-width: none;
+  }
+
+  .editorial-columns-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .editorial-col {
+    border: var(--dash-border-width, 1px) solid var(--dash-border);
+    border-radius: var(--radius-card-sm, 10px);
+    background: var(--dash-surface);
+    padding: 18px 20px;
+  }
+
+  .editorial-col-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: calc(var(--text-h4) + 3px);
+    margin: 0 0 var(--space-3);
+  }
+
+  .editorial-col-icon {
+    color: var(--dash-muted);
+    flex-shrink: 0;
+  }
+
+  .editorial-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .editorial-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--dash-text);
+  }
+
+  .editorial-sources-footer {
+    padding-top: 18px;
+    border-top: 1px dashed var(--dash-border, rgba(10, 10, 10, 0.12));
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+  }
+
+  .editorial-sources-title {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    color: var(--dash-muted);
+  }
+
+  .editorial-sources-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
+  .editorial-source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--dash-muted);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .editorial-source-link span {
+    text-decoration: underline;
+    text-decoration-color: var(--dash-underline, #858580);
+    text-underline-offset: 1px;
+    text-decoration-thickness: 0.5px;
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .editorial-source-icon {
+    flex: none;
+  }
+
+  .editorial-source-link:hover {
+    color: var(--dash-link-hover);
+  }
+
+  .editorial-source-link:hover span {
+    text-decoration-color: currentColor;
+  }
+
+  .related-destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 12px;
+  }
+
+  .related-destination-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+  }
+
+  .related-destination-name {
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-text);
+  }
+
+  .related-destination-meta {
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+    line-height: var(--leading-compact);
+  }
+
+  @media (max-width: 640px) {
+    .photo-props-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+    }
+
+    .photo-stream-gallery {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .editorial-section {
+      gap: 24px;
+      padding-top: 28px;
+    }
+
+    .editorial-col,
+    .editorial-history-card {
+      padding: 15px 16px;
+    }
+
+    .editorial-columns-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>
+
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  onPageLoad((signal) => {
+    const gallery = document.getElementById("photo-stream-gallery");
+    if (!gallery) return;
+
+    const cards = Array.from(gallery.querySelectorAll<HTMLElement>(":scope > [data-pixel-photo]"));
+    if (cards.length < 3) return;
+
+    const desktopMq = window.matchMedia("(min-width: 641px)");
+    let mode: "linear" | "columns" | null = null;
+
+    const layout = () => {
+      if (desktopMq.matches) {
+        if (mode === "columns") return;
+        mode = "columns";
+        const col0 = document.createElement("div");
+        const col1 = document.createElement("div");
+        col0.className = "photo-stream-col";
+        col1.className = "photo-stream-col";
+        let h0 = 0;
+        let h1 = 0;
+        for (const card of cards) {
+          const ratio = Number(card.dataset.aspect || 1) || 1;
+          if (h0 <= h1) {
+            col0.appendChild(card);
+            h0 += ratio;
+          } else {
+            col1.appendChild(card);
+            h1 += ratio;
+          }
+        }
+        gallery.replaceChildren(col0, col1);
+      } else {
+        if (mode === "linear") return;
+        mode = "linear";
+        const frag = document.createDocumentFragment();
+        for (const card of cards) frag.appendChild(card);
+        gallery.replaceChildren(frag);
+      }
+    };
+
+    layout();
+    desktopMq.addEventListener("change", layout, { signal });
+  });
+</script>

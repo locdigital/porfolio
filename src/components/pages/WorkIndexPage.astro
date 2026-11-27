@@ -1,0 +1,549 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import { getProjects } from "../../lib/content";
+import { ChevronRight, ChevronLeft } from "../icons/phosphor";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
+import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
+
+const projects = await getProjects();
+const brandNames: Record<string, string> = {
+  sony: "SONY",
+  playah: "PlayAh!",
+  "workflow-space": "WorkFlow Space",
+  "pops-worldwide": "POPS Worldwide",
+  "tomato-childrens-home": "TOMATO Children's Home",
+  "education-communities": "Đại Học Đừng Học Đại",
+};
+
+const enhancedProjects = projects.map((p) => {
+  let category = "Performance";
+  if (p.slug === "sony" || p.slug === "playah") category = "E-Commerce";
+  else if (p.slug === "workflow-space") category = "Paid Media";
+  else if (p.slug === "pops-worldwide") category = "SEO";
+  else if (p.slug === "tomato-childrens-home") category = "Marketing 360";
+  else if (p.slug === "education-communities") category = "Community";
+
+  return {
+    ...p,
+    category,
+    brandName: brandNames[p.slug] ?? p.client,
+    href: `/work/${p.slug}`,
+  };
+});
+
+const projectCount = enhancedProjects.length;
+const workUrl = canonicalUrl("/work");
+const workSchema = collectionPageSchema({
+  url: workUrl,
+  title: "Work — Phuc Loc Nguyen",
+  description:
+    "Performance marketing case studies across SONY D2C marketing, PlayAh!, WorkFlow Space, POPS Worldwide, TOMATO Children's Home, and community-led education projects.",
+  items: enhancedProjects.map((p) => ({
+    name: p.title,
+    url: p.href,
+    description: p.summary,
+    image: p.coverImage,
+  })),
+  breadcrumbId: `${workUrl}#breadcrumbs`,
+});
+---
+
+<DashboardLayout
+  title="Work — Phuc Loc Nguyen"
+  pageTitle="Work"
+  description="Performance marketing case studies across SONY D2C marketing, PlayAh!, WorkFlow Space, POPS Worldwide, TOMATO Children's Home, and community-led education projects."
+  breadcrumbs={[
+    { label: "Workspace", href: "/" },
+    { label: "Work" },
+  ]}
+  maxWidthVariant="default"
+  schema={workSchema}
+>
+  <header class="page-header">
+    <h1 class="page-title">Work</h1>
+    <p class="page-lead">
+      Deep dives into D2C e-commerce, multi-channel paid acquisition, TikTok Shop GMV acceleration, technical SEO roadmaps, and community-led organic growth.
+    </p>
+    <p style="font-size: var(--text-body-sm); color: var(--dash-muted); margin: 10px 0 0;">
+      Explore the <a href="/growth" class="dash-link" data-astro-prefetch>Growth Hub</a>, <a href="/growth/metrics" class="dash-link" data-astro-prefetch>marketing formulas</a>, or <a href="/services" class="dash-link" data-astro-prefetch>retainer services</a>.
+    </p>
+  </header>
+
+  <div id="projects-grid" class="projects-grid">
+    {enhancedProjects.map((p, index) => (
+      <article class="project-item" data-category={p.category}>
+        <div class="project-card-hover" aria-hidden="true"></div>
+
+        {p.coverImage && (
+          <div class="project-card-media">
+            <ResponsiveImage
+              src={p.coverImage}
+              alt={p.title}
+              width={640}
+              height={360}
+              widths={[320, 360, 480, 640, 720, 960]}
+              sizes="(max-width: 768px) 85vw, (max-width: 1100px) 50vw, 33vw"
+              class="project-card-img"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "auto"}
+            />
+          </div>
+        )}
+
+        <h2 class="item-title project-card-title">
+          <a href={p.href} class="project-card-title-link" data-astro-prefetch>
+            <span class="project-card-hit" aria-hidden="true"></span>
+            <span class="project-card-title-text" data-motion-share={`work-${p.slug}`}>{p.brandName}</span>
+          </a>
+        </h2>
+
+        <p class="project-card-summary">
+          {p.summary}
+        </p>
+
+        <div class="project-card-footer" aria-hidden="true">
+          <span class="project-card-link">
+            <span>Read breakdown</span>
+            <ChevronRight size={14} strokeWidth={1.75} aria-hidden="true" />
+          </span>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div id="carousel-controls" class="carousel-controls" aria-label="Project carousel controls">
+    <span id="carousel-counter" class="carousel-counter" aria-live="polite">1 / {projectCount}</span>
+    <div id="carousel-nav" class="carousel-nav-group">
+      <button type="button" id="carousel-prev" class="carousel-btn" aria-label="Previous project" disabled>
+        <ChevronLeft size={16} aria-hidden="true" />
+      </button>
+      <button type="button" id="carousel-next" class="carousel-btn" aria-label="Next project">
+        <ChevronRight size={16} aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+</DashboardLayout>
+
+<style>
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    column-gap: 48px;
+    row-gap: 64px;
+    padding-top: 8px;
+    padding-bottom: 24px;
+  }
+
+  .carousel-controls {
+    display: none;
+  }
+
+  .project-item {
+    position: relative;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-sizing: border-box;
+  }
+
+  .project-card-hover,
+  .project-card-hit {
+    position: absolute;
+    inset: -24px -16px;
+    border-radius: 16px;
+  }
+
+  .project-card-hover {
+    pointer-events: none;
+    z-index: 0;
+    background: #f5f5f5;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease;
+  }
+
+  .project-card-hit {
+    z-index: 20;
+  }
+
+  @media (min-width: 640px) {
+    .project-card-hover,
+    .project-card-hit {
+      inset: -24px;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project-item:hover .project-card-hover,
+    .project-item:focus-within .project-card-hover {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .project-card-media {
+    position: relative;
+    z-index: 10;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--dash-surface-subtle);
+    margin-bottom: 20px;
+  }
+
+  .project-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .project-card-title {
+    margin: 0;
+    font-size: var(--text-body-lg);
+    line-height: 1.45;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-subheading);
+    color: var(--dash-text);
+  }
+
+  .project-card-title-link {
+    color: var(--dash-text);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .project-card-title-link:hover,
+  .project-item:hover .project-card-title-link,
+  .project-item:focus-within .project-card-title-link {
+    color: var(--dash-link-hover);
+  }
+
+  .project-card-title-text {
+    position: relative;
+    z-index: 10;
+  }
+
+  .project-card-title a:focus-visible {
+    outline: none;
+  }
+
+  .project-card-title a:focus-visible .project-card-hit {
+    outline: 2px solid var(--dash-accent);
+    outline-offset: 2px;
+  }
+
+  .project-card-summary {
+    position: relative;
+    z-index: 10;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-muted);
+    margin: 8px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .project-card-footer {
+    position: relative;
+    z-index: 10;
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .project-card-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--dash-link-hover);
+    gap: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--mobile-page-edge, 16px);
+      gap: 14px;
+      margin-inline: calc(var(--mobile-page-edge, 16px) * -1);
+      padding-inline: var(--mobile-page-edge, 16px);
+      padding-top: 2px;
+      padding-bottom: 12px;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+
+    .projects-grid.is-dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
+      user-select: none;
+    }
+
+    .projects-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .project-item {
+      flex: 0 0 min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
+      width: min(360px, calc(100vw - (var(--mobile-page-edge, 16px) * 2)));
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+    }
+
+    .project-card-hover {
+      display: none;
+    }
+
+    .project-card-hit {
+      inset: 0;
+    }
+
+    .project-card-media {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding-inline: 2px;
+    }
+
+    .carousel-counter {
+      font-size: var(--text-body-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--dash-muted);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    .carousel-nav-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .carousel-btn {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--dash-hover);
+      border: 0;
+      border-radius: 9999px;
+      color: var(--color-jet);
+      cursor: pointer;
+      padding: 0;
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms ease;
+    }
+
+    .carousel-btn:focus-visible {
+      outline: 2px solid var(--dash-accent);
+      outline-offset: 2px;
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .projects-grid {
+      gap: 12px;
+    }
+  }
+</style>
+
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+
+  onPageLoad((signal) => {
+    const gridElement = document.getElementById("projects-grid");
+    if (!gridElement) return;
+    const grid = gridElement;
+
+    const projectItems = Array.from(grid.querySelectorAll<HTMLElement>(".project-item"));
+    const controls = document.getElementById("carousel-controls");
+    const counter = document.getElementById("carousel-counter");
+    const navGroup = document.getElementById("carousel-nav");
+    const prevBtn = document.querySelector<HTMLButtonElement>("#carousel-prev");
+    const nextBtn = document.querySelector<HTMLButtonElement>("#carousel-next");
+
+    let activeVisibleIndex = 0;
+    let snapPositions: number[] = [];
+    const measureItems = () => {
+      const firstOffset = projectItems[0]?.offsetLeft || 0;
+      snapPositions = projectItems.map((item) => item.offsetLeft - firstOffset);
+    };
+    measureItems();
+
+    function getVisibleItems() {
+      return projectItems;
+    }
+
+    function updateControls() {
+      const visible = getVisibleItems();
+      const total = visible.length;
+      if (total === 0) {
+        if (controls) controls.style.display = "none";
+        return;
+      }
+      if (controls) controls.style.display = "";
+      if (activeVisibleIndex < 0) activeVisibleIndex = 0;
+      if (activeVisibleIndex >= total) activeVisibleIndex = total - 1;
+      if (counter) counter.textContent = `${activeVisibleIndex + 1} / ${total}`;
+
+      if (total === 1) {
+        if (navGroup) navGroup.style.display = "none";
+      } else {
+        if (navGroup) navGroup.style.display = "";
+        if (prevBtn) {
+          const isFirst = activeVisibleIndex === 0;
+          prevBtn.disabled = isFirst;
+          if (isFirst) prevBtn.setAttribute("aria-disabled", "true");
+          else prevBtn.removeAttribute("aria-disabled");
+        }
+        if (nextBtn) {
+          const isLast = activeVisibleIndex === total - 1;
+          nextBtn.disabled = isLast;
+          if (isLast) nextBtn.setAttribute("aria-disabled", "true");
+          else nextBtn.removeAttribute("aria-disabled");
+        }
+      }
+    }
+
+    function scrollToItem(index: number, smooth = true) {
+      const visible = getVisibleItems();
+      if (index < 0 || index >= visible.length) return;
+      activeVisibleIndex = index;
+      const scrollLeft = snapPositions[index] ?? 0;
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      grid.scrollTo({
+        left: scrollLeft,
+        behavior: smooth && !prefersReduced ? "smooth" : "auto",
+      });
+      updateControls();
+    }
+
+    function calculateActiveIndexFromScroll() {
+      const visible = getVisibleItems();
+      if (visible.length <= 1) {
+        activeVisibleIndex = 0;
+        updateControls();
+        return;
+      }
+      const scrollLeft = grid.scrollLeft;
+      let closestIndex = 0;
+      let smallestDistance = Infinity;
+      snapPositions.forEach((itemSnapPos, idx) => {
+        const dist = Math.abs(scrollLeft - itemSnapPos);
+        if (dist < smallestDistance) {
+          smallestDistance = dist;
+          closestIndex = idx;
+        }
+      });
+      if (closestIndex !== activeVisibleIndex) {
+        activeVisibleIndex = closestIndex;
+        updateControls();
+      }
+    }
+
+    let scrollFrame = 0;
+    function handleScroll() {
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
+        calculateActiveIndexFromScroll();
+      });
+    }
+
+    grid.addEventListener("scroll", handleScroll, { passive: true, signal });
+    grid.addEventListener("scrollend", calculateActiveIndexFromScroll, { passive: true, signal });
+
+    let isDown = false;
+    let startX = 0;
+    let scrollStart = 0;
+    let hasDragged = false;
+
+    grid.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      isDown = true;
+      hasDragged = false;
+      startX = e.pageX;
+      scrollStart = grid.scrollLeft;
+      grid.classList.add("is-dragging");
+    }, { signal });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      const walk = e.pageX - startX;
+      if (Math.abs(walk) > 4) hasDragged = true;
+      grid.scrollLeft = scrollStart - walk;
+    }, { signal });
+
+    const onMouseUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      grid.classList.remove("is-dragging");
+      calculateActiveIndexFromScroll();
+    };
+
+    window.addEventListener("mouseup", onMouseUp, { signal });
+    grid.addEventListener(
+      "click",
+      (e) => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          hasDragged = false;
+        }
+      },
+      { capture: true, signal },
+    );
+
+    prevBtn?.addEventListener("click", () => {
+      if (activeVisibleIndex > 0) scrollToItem(activeVisibleIndex - 1, true);
+    }, { signal });
+
+    nextBtn?.addEventListener("click", () => {
+      const visible = getVisibleItems();
+      if (activeVisibleIndex < visible.length - 1) scrollToItem(activeVisibleIndex + 1, true);
+    }, { signal });
+
+    const resizeObserver = new ResizeObserver(() => {
+      measureItems();
+      handleScroll();
+    });
+    resizeObserver.observe(grid);
+    signal.addEventListener("abort", () => {
+      resizeObserver.disconnect();
+      cancelAnimationFrame(scrollFrame);
+    }, { once: true });
+
+    updateControls();
+  });
+</script>

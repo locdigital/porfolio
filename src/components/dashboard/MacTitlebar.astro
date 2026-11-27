@@ -1,26 +1,29 @@
 ---
+import { getUiCopy } from "../../i18n/ui";
+
 interface Props {
   appLabel?: string;
   title?: string;
-  locale?: string;
-  currentPath?: string;
 }
 
 const {
   appLabel = "workspace",
-  title = "Phuc Loc Nguyen — Workspace",
+  title,
 } = Astro.props;
+
+const copy = getUiCopy();
+const resolvedTitle = title ?? copy.workspaceTitle;
 ---
 
-<header class="desktop-titlebar" aria-label="Application Window Title Bar">
+<header class="desktop-titlebar" aria-label={copy.windowControls.titleBarAria}>
   <!-- Functional macOS-style window controls. -->
-  <div class="mac-traffic-lights" aria-label="Window controls">
+  <div class="mac-traffic-lights" aria-label={copy.windowControls.controlsAria}>
     <button
       class="mac-dot mac-dot-close"
       type="button"
       data-window-action="close"
-      aria-label={`Close ${appLabel}`}
-      title={`Close ${appLabel}`}
+      aria-label={copy.windowControls.close(appLabel)}
+      title={copy.windowControls.close(appLabel)}
     >
       <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
         <use href="/assets/icons/all-three.svg#window-close"></use>
@@ -30,9 +33,9 @@ const {
       class="mac-dot mac-dot-minimize"
       type="button"
       data-window-action="minimize"
-      aria-label={`Minimize ${appLabel}`}
+      aria-label={copy.windowControls.minimize(appLabel)}
       aria-pressed="false"
-      title={`Minimize ${appLabel}`}
+      title={copy.windowControls.minimize(appLabel)}
     >
       <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
         <use href="/assets/icons/all-three.svg#window-minimize"></use>
@@ -42,9 +45,9 @@ const {
       class="mac-dot mac-dot-maximize"
       type="button"
       data-window-action="maximize"
-      aria-label={`Maximize ${appLabel}`}
+      aria-label={copy.windowControls.maximize(appLabel)}
       aria-pressed="false"
-      title={`Maximize ${appLabel}`}
+      title={copy.windowControls.maximize(appLabel)}
     >
       <svg class="mac-control-icon" viewBox="0 0 48 48" aria-hidden="true">
         <use href="/assets/icons/all-three.svg#window-maximize"></use>
@@ -54,6 +57,6 @@ const {
 
   <!-- Centered Workspace Title -->
   <div class="desktop-titlebar-title">
-    <span>{title}</span>
+    <span>{resolvedTitle}</span>
   </div>
 </header>

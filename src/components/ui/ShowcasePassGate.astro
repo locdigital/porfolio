@@ -1,6 +1,7 @@
 ---
 import { createHash } from "node:crypto";
 import { Lock } from "../icons/phosphor";
+import { getUiCopy } from "../../i18n/ui";
 
 interface Props {
   id: string;
@@ -16,19 +17,22 @@ interface Props {
   errorMessage?: string;
 }
 
+const gateCopy = getUiCopy().passGate;
+
 const {
   id,
   password,
   storageKey = `${id}:unlocked`,
-  inputLabel = "Access code",
-  placeholder = "Enter access code",
-  buttonLabel = "Unlock",
-  successLabel = "Unlocked",
-  errorMessage = "Incorrect access code. Please try again.",
+  title = gateCopy.title,
+  description = gateCopy.description,
+  inputLabel = gateCopy.inputLabel,
+  placeholder = gateCopy.placeholder,
+  buttonLabel = gateCopy.buttonLabel,
+  successLabel = gateCopy.successLabel,
+  errorMessage = gateCopy.errorMessage,
 } = Astro.props;
 
-const title = "Private project details";
-const description = "Campaign reports, visuals, and notes shared with authorized viewers.";
+const checkingLabel = gateCopy.checkingLabel;
 const passList = Array.isArray(password) ? password : [password];
 const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().toLowerCase()).digest("hex"));
 ---
@@ -70,7 +74,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
     <slot />
   </div>
 
-<script is:inline data-astro-rerun define:vars={{ id, passwordHashes, storageKey, errorMessage }}>
+<script is:inline data-astro-rerun define:vars={{ id, passwordHashes, storageKey, errorMessage, checkingLabel }}>
   (() => {
     const root = document.getElementById(id);
     if (!root || root.dataset.gateReady === "true") return;
@@ -115,7 +119,7 @@ const passwordHashes = passList.map((p) => createHash("sha256").update(p.trim().
       button.disabled = loading;
       button.setAttribute("aria-busy", loading ? "true" : "false");
       root.dataset.loading = loading ? "true" : "false";
-      if (buttonLabel) buttonLabel.textContent = loading ? "Checking..." : initialButtonLabel;
+      if (buttonLabel) buttonLabel.textContent = loading ? checkingLabel : initialButtonLabel;
     };
 
     const resetErrorState = () => {

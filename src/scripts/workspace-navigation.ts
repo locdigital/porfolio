@@ -180,6 +180,19 @@ function prepareMotion(navigation: TransitionBeforePreparationEvent): Navigation
 
 document.addEventListener("astro:before-preparation", (event) => {
   const navigation = event as TransitionBeforePreparationEvent;
+  const destPath = navigation.to.pathname;
+  if (destPath === "/photos" || destPath.startsWith("/photos/")) {
+    navigation.preventDefault();
+    if (window.self !== window.top) {
+      window.parent.postMessage(
+        { type: "desktop:open-app", id: "photos", url: `${navigation.to.pathname}${navigation.to.search}${navigation.to.hash}` },
+        window.location.origin,
+      );
+      return;
+    }
+    window.location.assign(navigation.to.href);
+    return;
+  }
   pendingNavigation = navigation.signal;
   navigation.sourceElement?.closest(".dash-nav-link")?.classList.add("is-pending");
 
@@ -207,7 +220,7 @@ window.addEventListener("click", (event) => {
 });
 document.addEventListener("scroll", (event) => {
   if (event.target instanceof HTMLElement && event.target.hasAttribute("data-workspace-scroll") &&
-      history.state?.index === activeIndex) {
+    history.state?.index === activeIndex) {
     const element = event.target;
     const scrollPositions = positions.get(activeIndex) ?? {};
     scrollPositions[element.id] = { top: element.scrollTop, left: element.scrollLeft };
@@ -245,16 +258,6 @@ document.addEventListener("astro:before-swap", (event) => {
   nextRoot.classList.toggle("mobile-lite", matchMedia("(max-width: 768px)").matches);
   nextRoot.classList.toggle("is-embedded-window", window.self !== window.top || navigation.to.searchParams.get("embed") === "1");
   nextRoot.classList.toggle("desktop-floating-maximized", root.classList.contains("desktop-floating-maximized"));
-
-  const photoLibrary = nextDoc.getElementById("mp-app");
-  if (photoLibrary) {
-    try {
-      if (localStorage.getItem("mp-photos-sidebar-collapsed") === "1") {
-        photoLibrary.classList.add("sidebar-collapsed");
-        nextDoc.getElementById("mp-sidebar-toggle")?.setAttribute("aria-pressed", "false");
-      }
-    } catch {}
-  }
 
   if (motion) {
     motion.swapping = true;
@@ -305,11 +308,6 @@ document.addEventListener("astro:before-swap", (event) => {
       const label = currentFrame.querySelector(".mobile-page-label");
       const nextLabel = nextFrame.querySelector(".mobile-page-label");
       if (label && nextLabel) label.textContent = nextLabel.textContent;
-      if (root.dataset.desktopApp === "photos") {
-        const back = currentFrame.querySelector(".mobile-topbar-left a");
-        const nextBack = nextFrame.querySelector(".mobile-topbar-left a");
-        if (back && nextBack) back.replaceWith(nextBack);
-      }
     }
     // Preserve un-executed page scripts (e.g. Astro <script> modules emitted outside #main-content)
     // so Astro's runScripts() executes them on first client-side visit to the route.

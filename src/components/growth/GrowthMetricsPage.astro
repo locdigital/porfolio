@@ -1,0 +1,760 @@
+---
+import DashboardLayout from "../../layouts/DashboardLayout.astro";
+import FormulaCalculator from "./FormulaCalculator.astro";
+import { articleSchema, canonicalUrl } from "../../lib/seo";
+
+interface FormulaEntryItem {
+  id: string;
+  name: string;
+  equation: string;
+  summary: string;
+  variables: { symbol: string; definition: string; unit: string }[];
+  revenueBasis: string;
+  assumptions: string[];
+  whenInappropriate: string[];
+  workedExample: {
+    scenario: string;
+    inputs: string;
+    calculation: string;
+    interpretation: string;
+  };
+}
+
+const formulas: FormulaEntryItem[] = [
+  {
+    id: "roas",
+    name: "ROAS (Return on Ad Spend)",
+    equation: "ROAS = Attributed Revenue / Advertising Spend",
+    summary:
+      "Measures gross revenue attributed by an ad platform (or analytics model) per unit of direct media spend on that channel.",
+    variables: [
+      {
+        symbol: "Attributed Revenue",
+        definition: "Revenue credited to the ad channel within a defined attribution window (e.g., 7-day click, 1-day view).",
+        unit: "Same currency as spend (e.g., VND or USD)",
+      },
+      {
+        symbol: "Advertising Spend",
+        definition: "Media cost charged by the ad platform over the matching time window (excluding agency fees unless specified).",
+        unit: "Currency (VND or USD)",
+      },
+    ],
+    revenueBasis:
+      "Platform-attributed revenue is NOT identical to net recognized revenue or cash collected. For marketplaces like TikTok Shop, confirm whether the platform reports GMV (gross checkout value before cancellations/returns/subsidies) or net settled revenue.",
+    assumptions: [
+      "Revenue and spend cover the exact same date range and currency.",
+      "Conversion tracking (Pixel + CAPI / Events API) deduplicates browser and server events.",
+      "Attribution window is stated explicitly when comparing Meta, Google, and TikTok.",
+    ],
+    whenInappropriate: [
+      "Comparing sum of platform-reported ROAS across channels directly against total store revenue (platforms overlap and double-count conversions).",
+      "Evaluating profitability when gross margins, shipping, returns, or marketplace commissions vary widely across SKUs.",
+      "Lead-generation funnels with long offline sales cycles where closed revenue is not fed back via offline conversions.",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario (not client performance): Direct-to-consumer campaign over 30 days.",
+      inputs: "Ad Spend = 100,000,000 VND; Platform-attributed net order value = 400,000,000 VND.",
+      calculation: "ROAS = 400,000,000 / 100,000,000 = 4.0x (or 400%).",
+      interpretation:
+        "Every 1 VND spent on media generated 4.0 VND of platform-attributed revenue; whether 4.0x is profitable depends on Break-Even ROAS.",
+    },
+  },
+  {
+    id: "mer",
+    name: "MER (Marketing Efficiency Ratio / Blended ROAS)",
+    equation: "MER = Total Revenue / Total Marketing Spend",
+    summary:
+      "Measures overall top-line business efficiency across all paid and organic channels without relying on platform attribution models.",
+    variables: [
+      {
+        symbol: "Total Revenue",
+        definition: "Total net store/business revenue across all channels (paid + organic + direct + CRM) in the period.",
+        unit: "Currency (VND or USD)",
+      },
+      {
+        symbol: "Total Marketing Spend",
+        definition: "Sum of all paid media spend (plus variable creator commissions or creative/agency marketing costs if defined consistently).",
+        unit: "Currency (VND or USD)",
+      },
+    ],
+    revenueBasis:
+      "Blended metric anchored to actual accounting or backend order revenue (net of cancellations, discounts, and refunds where available), eliminating cross-platform attribution inflation.",
+    assumptions: [
+      "Consistent definition of Total Marketing Spend (document whether creator commissions, KOC samples, and retainers are included).",
+      "Measured over stable cycles long enough to absorb conversion lag (typically weekly or monthly).",
+    ],
+    whenInappropriate: [
+      "Isolating which specific ad set, campaign, or creative caused a lift (use MER alongside channel diagnostics and incrementality tests).",
+      "Businesses where repeat purchases from older cohorts dominate short-term revenue (pair total MER with New-Customer MER / aMER).",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario: Multi-channel brand running Meta, Google, TikTok, and organic email.",
+      inputs: "Total net monthly revenue = 1,200,000,000 VND; Total marketing spend (Meta + Google + TikTok + affiliate fees) = 240,000,000 VND.",
+      calculation: "MER = 1,200,000,000 / 240,000,000 = 5.0x.",
+      interpretation:
+        "Even if individual ad managers report higher combined attributed revenue due to overlap, actual blended efficiency is 5.0x.",
+    },
+  },
+  {
+    id: "cac",
+    name: "CAC (Customer Acquisition Cost)",
+    equation: "CAC = Acquisition Cost / New Customers Acquired",
+    summary:
+      "Measures the true cost required to acquire one brand-new customer (distinct from CPA, which can count repeat orders or leads).",
+    variables: [
+      {
+        symbol: "Acquisition Cost",
+        definition: "Marketing (and sales, if B2B/high-ticket) expenditure allocated to acquiring new customers in the period.",
+        unit: "Currency (VND or USD)",
+      },
+      {
+        symbol: "New Customers Acquired",
+        definition: "Count of first-time unique buyers (excluding repeat purchases by existing customers).",
+        unit: "Integer count (customers)",
+      },
+    ],
+    revenueBasis:
+      "Blended business metric. Distinguish clearly between Paid CAC (paid media spend / new customers from paid), Blended CAC (total marketing cost / all new customers), and CPA (cost per action/order including repeat buyers).",
+    assumptions: [
+      "Order database deduplicates returning customers accurately by phone, email, or customer ID.",
+      "Time lag between click/lead and first purchase is accounted for in cohort windows.",
+    ],
+    whenInappropriate: [
+      "Replacing CAC with platform CPA in retention-heavy stores—retargeting existing buyers lowers CPA artificially while hiding rising new-customer CAC.",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario: E-commerce store tracking first-time vs. returning buyers.",
+      inputs: "Total acquisition spend = 150,000,000 VND; Total orders = 1,000 (600 new customers, 400 returning).",
+      calculation: "Blended CAC = 150,000,000 / 600 = 250,000 VND per new customer (whereas CPA per order would look like 150,000 VND).",
+      interpretation:
+        "Scaling budget safely requires comparing 250,000 VND CAC against first-order contribution margin and LTV payback.",
+    },
+  },
+  {
+    id: "cvr",
+    name: "CVR (Conversion Rate)",
+    equation: "CVR = Orders / Sessions",
+    summary:
+      "Measures the percentage of website or storefront sessions that result in a completed order (or qualified conversion action in lead funnels).",
+    variables: [
+      {
+        symbol: "Orders",
+        definition: "Completed checkout orders (or qualified lead submissions) within the reporting period.",
+        unit: "Integer count (orders or leads)",
+      },
+      {
+        symbol: "Sessions",
+        definition: "Tracked visits/sessions on the storefront or landing page (do not mix Sessions with Ad Clicks without stating so).",
+        unit: "Integer count (sessions)",
+      },
+    ],
+    revenueBasis:
+      "Funnel efficiency ratio. Clarify denominator (GA4 sessions vs. landing-page views vs. ad clicks) and numerator (placed orders vs. paid/delivered orders).",
+    assumptions: [
+      "Session deduplication and checkout completion events fire reliably across devices and payment redirects.",
+    ],
+    whenInappropriate: [
+      "Judging traffic quality on CVR alone—cold prospecting traffic naturally converts lower than branded search or retargeting.",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario: Landing page CRO test.",
+      inputs: "Sessions = 20,000; Completed orders = 640.",
+      calculation: "CVR = 640 / 20,000 = 0.032 (3.2%).",
+      interpretation:
+        "Improving CVR from 2.4% to 3.2% lifts revenue by 33.3% at identical traffic volume and CPC.",
+    },
+  },
+  {
+    id: "aov",
+    name: "AOV (Average Order Value)",
+    equation: "AOV = Revenue / Number of Orders",
+    summary:
+      "Measures the average monetary value generated per order, used to diagnose bundle pricing, upsells, and shipping thresholds.",
+    variables: [
+      {
+        symbol: "Revenue",
+        definition: "Total order revenue over the same basis (explicitly specify net merchandise revenue vs. gross checkout including shipping/tax).",
+        unit: "Currency (VND or USD)",
+      },
+      {
+        symbol: "Number of Orders",
+        definition: "Count of completed orders corresponding to that revenue figure.",
+        unit: "Integer count (orders)",
+      },
+    ],
+    revenueBasis:
+      "State clearly whether discounts, shipping fees, and platform vouchers are included or excluded; never compare GMV-based AOV with net-revenue AOV without adjustment.",
+    assumptions: [
+      "Order distribution is not overly skewed by rare wholesale outliers (pair mean AOV with median order value when skewed).",
+    ],
+    whenInappropriate: [
+      "Subscription or B2B retainer models where multi-month contract value matters more than single-checkout AOV.",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario: Bundle offer launch.",
+      inputs: "Net order revenue = 450,000,000 VND across 1,000 orders.",
+      calculation: "AOV = 450,000,000 / 1,000 = 450,000 VND.",
+      interpretation:
+        "Raising AOV via bundles increases allowable CAC/CPA for the same unit margin.",
+    },
+  },
+  {
+    id: "revenue-decomposition",
+    name: "Revenue Decomposition",
+    equation: "Revenue = Sessions × Conversion Rate × Average Order Value",
+    summary:
+      "Decomposes top-line revenue into three independently measurable levers: qualified traffic volume, conversion efficiency, and basket size.",
+    variables: [
+      {
+        symbol: "Sessions",
+        definition: "Qualified traffic reaching the storefront or landing page.",
+        unit: "Count (sessions)",
+      },
+      {
+        symbol: "Conversion Rate (CVR)",
+        definition: "Orders / Sessions.",
+        unit: "Decimal ratio (e.g., 0.03 for 3%)",
+      },
+      {
+        symbol: "Average Order Value (AOV)",
+        definition: "Revenue / Orders.",
+        unit: "Currency per order",
+      },
+    ],
+    revenueBasis:
+      "Algebraically exact when CVR = Orders / Sessions and AOV = Revenue / Orders on the same revenue definition (net revenue or GMV).",
+    assumptions: [
+      "All three terms are measured over the exact same cohort window and revenue definition.",
+    ],
+    whenInappropriate: [
+      "Treating the levers as fully independent in practice—buying lower-intent traffic can increase Sessions while simultaneously depressing CVR.",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario: Diagnosing why monthly revenue grew or stalled.",
+      inputs: "Sessions = 25,000; CVR = 3.0% (0.03); AOV = 400,000 VND.",
+      calculation: "Revenue = 25,000 × 0.03 × 400,000 = 300,000,000 VND.",
+      interpretation:
+        "A 10% gain in Sessions plus a 10% gain in CVR and 10% gain in AOV compounds to 1.1 × 1.1 × 1.1 = +33.1% revenue.",
+    },
+  },
+  {
+    id: "break-even-roas",
+    name: "Break-Even ROAS",
+    equation: "Break-even ROAS = 1 / Pre-ad Contribution Margin Rate",
+    summary:
+      "Defines the minimum ROAS required so that variable contribution from attributed revenue exactly covers advertising spend (zero profit, zero loss).",
+    variables: [
+      {
+        symbol: "Pre-ad Contribution Margin Rate",
+        definition: "(Net Revenue − Variable COGS − Payment/Shipping/Platform Fees − Return Allowance) / Net Revenue, strictly BEFORE deducting ad spend.",
+        unit: "Decimal ratio (0 < m ≤ 1, e.g., 0.40 for 40%)",
+      },
+    ],
+    revenueBasis:
+      "Applies ONLY when contribution margin is defined strictly after all non-ad variable costs and BEFORE advertising spend, AND when attributed revenue uses the same basis (net revenue vs. GMV) as the margin calculation.",
+    assumptions: [
+      "No double-counting: advertising spend MUST NOT already be subtracted inside Pre-ad Contribution Margin Rate.",
+      "If platform ROAS reports GMV while margin is computed on net revenue (post-discount/returns), adjust Break-even ROAS upward by (GMV / Net Revenue).",
+      "Does not include fixed overhead (office rent, full-time salaries, software retainers), which must still be covered by total Contribution Profit.",
+    ],
+    whenInappropriate: [
+      "High-repeat subscription/consumable brands intentionally acquiring first orders below break-even based on verified 60–90 day LTV payback.",
+      "When marketplace commissions, affiliate fees, or COD return rates vary significantly across campaigns.",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario: E-commerce SKU economics check before scaling Meta/TikTok spend.",
+      inputs: "Net selling price = 500,000 VND; COGS = 175,000 VND; Shipping + Payment + Marketplace fees + Return reserve = 125,000 VND. Pre-ad variable margin = 200,000 VND (40%, or 0.40).",
+      calculation: "Break-even ROAS = 1 / 0.40 = 2.5x.",
+      interpretation:
+        "At 2.5x ROAS on net revenue, every 100 VND of ad spend generates 250 VND revenue × 40% = 100 VND pre-ad margin (0 contribution profit). Scaling safely requires targeting above 2.5x—e.g., 3.5x–4.0x—so contribution profit covers fixed overhead and net profit.",
+    },
+  },
+  {
+    id: "contribution-profit",
+    name: "Contribution Profit (Post-Ad)",
+    equation: "Contribution Profit = (Revenue × Pre-ad Contribution Margin Rate) − Advertising Spend",
+    summary:
+      "Measures the actual cash dollars/VND left over after variable product/fulfillment costs AND paid advertising spend to fund fixed overhead and net profit.",
+    variables: [
+      {
+        symbol: "Revenue",
+        definition: "Net recognized revenue (post-discounts, post-cancellations/returns) for the period or channel.",
+        unit: "Currency (VND or USD)",
+      },
+      {
+        symbol: "Pre-ad Contribution Margin Rate",
+        definition: "Variable margin rate excluding advertising spend but including COGS, fulfillment, shipping, payment fees, and variable marketplace/affiliate commissions.",
+        unit: "Decimal ratio (e.g., 0.40)",
+      },
+      {
+        symbol: "Advertising Spend",
+        definition: "Total paid advertising spend for the matching period.",
+        unit: "Currency (VND or USD)",
+      },
+    ],
+    revenueBasis:
+      "Finance/economics ground-truth metric. Always align Revenue and Pre-ad Contribution Margin Rate on net revenue rather than unadjusted GMV.",
+    assumptions: [
+      "Pre-ad Contribution Margin Rate excludes advertising spend (preventing double-counting) and captures all other variable costs.",
+      "Fixed costs (payroll, rent, fixed tools) are subtracted afterward to arrive at operating profit (EBITDA).",
+    ],
+    whenInappropriate: [
+      "Evaluating contribution profit on unverified platform-attributed revenue without cross-checking total blended net revenue and MER.",
+    ],
+    workedExample: {
+      scenario: "Illustrative hypothetical scenario: Comparing two scaling options (high ROAS low volume vs. moderate ROAS higher volume).",
+      inputs: "Option A: Revenue = 600M VND, Spend = 100M VND (6.0x). Option B: Revenue = 1,000M VND, Spend = 220M VND (4.55x). Pre-ad Contribution Margin Rate = 40% (0.40).",
+      calculation:
+        "Option A: (600M × 0.40) − 100M = 140M VND. Option B: (1,000M × 0.40) − 220M = 180M VND.",
+      interpretation:
+        "Even though Option B has a lower ROAS (4.55x vs. 6.0x), Option B produces +40M VND more Contribution Profit because marginal ROAS (400M incremental revenue / 120M incremental spend = 3.33x) exceeds Break-Even ROAS (2.5x).",
+    },
+  },
+];
+
+const metricsUrl = canonicalUrl("/growth/metrics");
+
+const seoTitle = "Performance Marketing Formula Library — Phuc Loc Nguyen";
+const seoDescription =
+  "Clear definitions, variable rules, revenue basis distinctions, assumptions, and limitations for ROAS, MER, CAC, CVR, AOV, Break-even ROAS, and Contribution Profit.";
+
+const metricsSchema = articleSchema({
+  url: metricsUrl,
+  title: seoTitle,
+  description: seoDescription,
+  type: "TechArticle",
+  articleSection: "Unit Economics & Measurement",
+  keywords: [
+    "ROAS formula",
+    "MER",
+    "CAC",
+    "Break-even ROAS",
+    "Contribution Profit",
+    "Unit Economics",
+    "Performance Marketing",
+  ],
+});
+---
+
+<DashboardLayout
+  title={seoTitle}
+  pageTitle="Formula Library"
+  description={seoDescription}
+  ogType="article"
+  breadcrumbs={[
+    { label: "Workspace", href: "/" },
+    { label: "Growth Hub", href: "/growth" },
+    { label: "Formula Library" },
+  ]}
+  maxWidthVariant="default"
+  schema={metricsSchema}
+>
+  <div class="metrics-layout">
+    <header class="page-header metrics-header">
+      <h1 class="page-title">Performance Marketing Formula Library</h1>
+      <p class="page-lead">
+        Practical definitions, variable units, attribution caveats, and break-even economics written by <a href="/about" class="dash-link" data-astro-prefetch>Phuc Loc Nguyen</a>. Designed to prevent double-counting costs or confusing platform ROAS with real contribution profit.
+      </p>
+    </header>
+
+    <div class="metrics-main">
+      <!-- Interactive Metric Calculator -->
+      <section
+        class="page-section metrics-calculator-section"
+        aria-label="Interactive metric calculator"
+      >
+        <FormulaCalculator />
+      </section>
+
+      <!-- Detailed Formula Entries -->
+      <section
+        class="page-section page-section--divided"
+        aria-label="Formula definitions and assumptions"
+      >
+        <div class="formula-entries">
+          {formulas.map((f) => (
+            <article id={f.id} class="dash-card formula-entry-card" data-formula-section>
+              <header class="formula-entry-header">
+                <h2 class="formula-entry-title">{f.name}</h2>
+                <p class="formula-entry-summary">{f.summary}</p>
+                <div class="formula-equation-box">
+                  <code>{f.equation}</code>
+                </div>
+              </header>
+
+              <div class="formula-subblock">
+                <h3 class="formula-subhead">
+                  Variables & units
+                </h3>
+                <ul class="formula-list">
+                  {f.variables.map((v) => (
+                    <li>
+                      <span class="dash-bullet" aria-hidden="true"></span>
+                      <span>
+                        <strong>{v.symbol}</strong> ({v.unit}): {v.definition}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="formula-subblock">
+                <h3 class="formula-subhead">
+                  Revenue basis & attribution distinction
+                </h3>
+                <p class="formula-body-copy">{f.revenueBasis}</p>
+              </div>
+
+              <div class="formula-two-col">
+                <div class="formula-subblock">
+                  <h3 class="formula-subhead">
+                    Assumptions & guardrails
+                  </h3>
+                  <ul class="formula-list">
+                    {f.assumptions.map((item) => (
+                      <li>
+                        <span class="dash-bullet" aria-hidden="true"></span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="formula-subblock">
+                  <h3 class="formula-subhead">
+                    When this formula misleads
+                  </h3>
+                  <ul class="formula-list">
+                    {f.whenInappropriate.map((item) => (
+                      <li>
+                        <span class="dash-bullet" aria-hidden="true"></span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="formula-example-box">
+                <div class="formula-example-label">{f.workedExample.scenario}</div>
+                <p class="formula-example-line">
+                  <strong>Inputs:</strong> {f.workedExample.inputs}
+                </p>
+                <p class="formula-example-line">
+                  <strong>Calculation:</strong> <code>{f.workedExample.calculation}</code>
+                </p>
+                <p class="formula-example-line" style="margin-bottom: 0;">
+                  <strong>Decision insight:</strong> {f.workedExample.interpretation}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <!-- Right-side Sticky Table of Contents -->
+    <aside class="formula-toc-aside" aria-label="Formula table of contents">
+      <nav class="formula-toc" aria-label="Formula table of contents" data-formula-toc>
+        <ol class="formula-toc-list">
+          {formulas.map((f, index) => (
+            <li>
+              <a
+                href={`#${f.id}`}
+                class:list={["formula-toc-link", index === 0 && "is-active"]}
+                data-toc-link={f.id}
+                aria-current={index === 0 ? "location" : undefined}
+              >
+                <span class="formula-toc-dot" aria-hidden="true"></span>
+                <span>{f.name}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </aside>
+  </div>
+</DashboardLayout>
+
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+  import { initTocSpy } from "../../scripts/toc-spy";
+
+  onPageLoad((signal) => {
+    initTocSpy({ tocSelector: "[data-formula-toc]", signal });
+  });
+</script>
+
+<style>
+  @media (min-width: 1024px) {
+    :global(.workspace-content:has(.metrics-layout)) {
+      max-width: 1160px;
+    }
+  }
+
+  .metrics-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 232px;
+    grid-template-areas:
+      "header toc"
+      "content toc";
+    column-gap: 36px;
+    align-items: start;
+  }
+
+  .metrics-header {
+    grid-area: header;
+    min-width: 0;
+  }
+
+  .metrics-main {
+    grid-area: content;
+    min-width: 0;
+  }
+
+  .metrics-calculator-section :global(.metric-calculator) {
+    margin-top: 0;
+  }
+
+  .formula-toc-aside {
+    grid-area: toc;
+    position: sticky;
+    top: 8px;
+    min-width: 0;
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    padding-left: 20px;
+    border-left: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .formula-toc {
+    padding: 2px 0;
+  }
+
+  .formula-toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .formula-toc-link {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 10px;
+    margin-left: -10px;
+    border-radius: var(--radius-control);
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-snug);
+    transition: color 160ms ease, background-color 160ms ease;
+  }
+
+  .formula-toc-link:hover,
+  .formula-toc-link:focus-visible {
+    color: var(--dash-text);
+    background: var(--dash-hover);
+  }
+
+  .formula-toc-link.is-active {
+    color: var(--dash-accent);
+    background: var(--dash-accent-soft);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .formula-toc-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    margin-top: 0.45em;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.45;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .formula-toc-link:hover .formula-toc-dot,
+  .formula-toc-link.is-active .formula-toc-dot {
+    opacity: 1;
+  }
+
+  .formula-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .formula-entry-card {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-margin-top: 24px;
+  }
+
+  .formula-entry-title {
+    margin: 0 0 6px;
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--dash-text);
+  }
+
+  .formula-entry-summary {
+    margin: 0 0 12px;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--dash-muted);
+  }
+
+  .formula-equation-box {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--color-ivory, #F9F8F6);
+    border: 1px solid var(--dash-card-border, rgba(10, 10, 10, 0.08));
+    font-size: var(--text-body-sm);
+    color: var(--dash-text);
+  }
+
+  .formula-subblock {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .formula-subhead {
+    margin: 0;
+    font-size: calc(var(--text-caption) + 3px);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--dash-muted);
+  }
+
+  .formula-body-copy {
+    margin: 0;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-text);
+  }
+
+  .formula-two-col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .formula-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .formula-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-compact);
+    color: var(--dash-text);
+  }
+
+  .formula-example-box {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--dash-surface-subtle, #F5F5F3);
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+  }
+
+  .formula-example-label {
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-muted);
+    margin-bottom: 6px;
+  }
+
+  .formula-example-line {
+    margin: 0 0 6px;
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body);
+    color: var(--dash-text);
+  }
+
+  @media (max-width: 1199px) {
+    .metrics-layout {
+      grid-template-columns: minmax(0, 1fr) 204px;
+      gap: 24px;
+    }
+
+    .formula-toc-aside {
+      padding-left: 16px;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .metrics-layout {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "header"
+        "toc"
+        "content";
+      row-gap: 20px;
+    }
+
+    .metrics-header {
+      margin-bottom: 0;
+    }
+
+    .formula-toc-aside {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 14px 16px;
+      border: var(--dash-border-width, 0.9px) solid var(--dash-border);
+      border-radius: 12px;
+      background: var(--dash-surface);
+    }
+
+    .formula-toc-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 16px;
+    }
+
+    .formula-toc-link {
+      margin-left: 0;
+      min-height: 38px;
+      align-items: center;
+    }
+
+    .formula-toc-dot {
+      margin-top: 0;
+    }
+
+    .formula-entry-card {
+      scroll-margin-top: calc(var(--mobile-topbar-h, 56px) + env(safe-area-inset-top, 0px) + 16px);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .formula-toc-list {
+      grid-template-columns: 1fr;
+    }
+
+    .formula-two-col {
+      grid-template-columns: 1fr;
+    }
+
+    .formula-entry-card {
+      padding: 18px 16px;
+    }
+  }
+</style>

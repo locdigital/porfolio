@@ -1,0 +1,3335 @@
+---
+import PhotosLayout from "../../layouts/PhotosLayout.astro";
+import { getPhotoLocations } from "../../lib/content";
+import GlassFolder from "../ui/GlassFolder";
+import { optimizePhotos } from "../../lib/photo-assets";
+import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
+import { parsePhotoCoords, resolvePhotoCoords } from "../../lib/photo-map-coords";
+import { readPhotoExifCoordinates } from "../../lib/photo-exif";
+import photoUpdates from "../../../data/photo-updates.json";
+import { PHOTO_REGION_ORDER, resolvePhotoRegion } from "@/constants/regions";
+import { getUiCopy } from "../../i18n/ui";
+
+const photosUi = getUiCopy().photosUi;
+const photosBasePath = "/photos";
+const regionLabel = (region: string) => photosUi.regionLabels[region] ?? region;
+
+const normalizeSearchServer = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d")
+    .toLowerCase()
+    .replace(/[-_/]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const safeInlineJson = (data: unknown) =>
+  JSON.stringify(data).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
+
+const updates = photoUpdates as Record<string, { updatedAt: string }>;
+const updatedTime = (slug: string) => Date.parse(updates[slug]?.updatedAt ?? "") || 0;
+const locations = (await getPhotoLocations()).sort(
+  (a, b) => updatedTime(b.slug) - updatedTime(a.slug) || a.order - b.order,
+);
+
+const enhancedLocations = await Promise.all(
+  locations.map(async (loc) => {
+    const name = loc.name || loc.location;
+    const region = resolvePhotoRegion(loc.country, loc.region);
+    const displayRegion = regionLabel(region);
+    const displayCountry = loc.country || "Vietnam";
+    const displayHeadline = loc.headline || "";
+    const displaySeoDescription = loc.seoDescription || displayHeadline;
+
+    const photos = loc.photos || [];
+    const photoCount = photos.length;
+    const images = loc.images || [];
+    const rawHero = loc.heroImage?.src || images[0]?.src || photos[0]?.src || "";
+    const rawLeft = images[1]?.src || photos[1]?.src || rawHero;
+    const rawRight = images[2]?.src || photos[2]?.src || rawHero;
+
+    const previews = await optimizePhotos(
+      [rawHero, rawLeft, rawRight].filter(Boolean).map((src) => ({
+        src,
+        alt: name,
+        w: 320,
+        h: 240,
+      })),
+      { previewWidth: 320, previewWidths: [320, 480] },
+    );
+    const previewImages = previews.map((photo) => photo.previewSrc);
+    const heroPhoto = previewImages[0] || "";
+
+    const sampleSource = photos.map((p, idx) => ({
+      src: p.src,
+      alt: p.alt || `${name} — frame ${idx + 1}`,
+      w: p.w || 4,
+      h: p.h || 5,
+      title: p.title,
+      caption: p.caption,
+      location: p.location || name,
+      capturedAt: p.capturedAt,
+    }));
+
+    const optimizedSample = await optimizePhotos(sampleSource, {
+      previewWidth: 480,
+      previewWidths: [320, 480, 768],
+      previewSizes: "(max-width: 640px) 48vw, (max-width: 820px) 32vw, 20vw",
+      fullWidth: 1600,
+    });
+
+    const dateLocale = "en-GB";
+    const archiveFallbackLabel = "Archive";
+
+    const formatMonthLabel = (timestamp: number) =>
+      new Intl.DateTimeFormat(dateLocale, {
+        month: "short",
+        year: "numeric",
+        timeZone: "Asia/Ho_Chi_Minh",
+      }).format(new Date(timestamp));
+
+    const formatDayLabel = (timestamp: number) =>
+      new Intl.DateTimeFormat(dateLocale, {
+        day: "numeric",
+        timeZone: "Asia/Ho_Chi_Minh",
+      }).format(new Date(timestamp));
+
+    const getMonthSortKey = (timestamp: number) => {
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        timeZone: "Asia/Ho_Chi_Minh",
+      }).formatToParts(new Date(timestamp));
+      const y = Number(parts.find((p) => p.type === "year")?.value || 0);
+      const m = Number(parts.find((p) => p.type === "month")?.value || 0);
+      return y * 100 + m;
+    };
+
+    const ARCHIVE_YEAR_LABEL = "2026";
+    const fallbackTs = updatedTime(loc.slug);
+    const firstCapturedTs = Date.parse(sampleSource[0]?.capturedAt || "") || fallbackTs;
+    const locDateLabel = firstCapturedTs ? formatMonthLabel(firstCapturedTs) : archiveFallbackLabel;
+    const locYearLabel = ARCHIVE_YEAR_LABEL;
+
+    return {
+      ...loc,
+      displayName: name,
+      region,
+      displayRegion,
+      displayCountry,
+      displayHeadline,
+      displaySeoDescription,
+      photoCount,
+      updatedTimestamp: fallbackTs,
+      capturedTimestamp: firstCapturedTs,
+      dateLabel: locDateLabel,
+      yearLabel: locYearLabel,
+      previewImages,
+      heroPhoto,
+      samplePhotos: optimizedSample.map((photo, idx) => {
+        const photoTs = Date.parse(sampleSource[idx]?.capturedAt || "") || firstCapturedTs;
+        const rawSearch = `${name} ${region} ${displayRegion} ${displayCountry} ${sampleSource[idx]?.title || ""} ${sampleSource[idx]?.location || ""} ${loc.slug}`;
+        return {
+          ...photo,
+          id: `${loc.slug}-${idx}`,
+          detailId: `photo-${loc.slug}-${idx + 1}`,
+          slug: loc.slug,
+          albumName: name,
+          region,
+          displayRegion,
+          country: displayCountry,
+          albumCount: photoCount,
+          title: sampleSource[idx]?.title || name,
+          location: sampleSource[idx]?.location || name,
+          capturedTimestamp: photoTs,
+          monthSortKey: photoTs ? getMonthSortKey(photoTs) : 0,
+          dateLabel: photoTs ? formatMonthLabel(photoTs) : archiveFallbackLabel,
+          yearLabel: ARCHIVE_YEAR_LABEL,
+          dayLabel: photoTs ? formatDayLabel(photoTs) : "",
+          featured: idx === 0,
+          normSearch: normalizeSearchServer(rawSearch),
+        };
+      }),
+    };
+  }),
+);
+
+type GridPhoto = (typeof enhancedLocations)[number]["samplePhotos"][number];
+
+const tripsByYear = Array.from(
+  [...enhancedLocations]
+    .sort((a, b) => (b.capturedTimestamp || 0) - (a.capturedTimestamp || 0))
+    .reduce((acc, loc) => {
+      const year = loc.yearLabel || "Archive";
+      const list = acc.get(year) || [];
+      list.push(loc);
+      acc.set(year, list);
+      return acc;
+    }, new Map<string, (typeof enhancedLocations)[number][]>()),
+);
+
+const allGridPhotos: GridPhoto[] = [];
+const maxAlbumPhotos = Math.max(0, ...enhancedLocations.map((loc) => loc.samplePhotos.length));
+for (let i = 0; i < maxAlbumPhotos; i++) {
+  for (const loc of enhancedLocations) {
+    const p = loc.samplePhotos[i];
+    if (p) allGridPhotos.push(p);
+  }
+}
+
+// Render first 36 photos in SSR HTML (round-robin covers all 25 destinations for fast paint & SEO).
+// Remaining photos stream into shortest masonry columns via IntersectionObserver.
+const INITIAL_SSR_COUNT = 36;
+const initialGridPhotos = allGridPhotos.slice(0, INITIAL_SSR_COUNT);
+
+const compactPhotosPayload = allGridPhotos.map((photo) => ({
+  h: `${photosBasePath}/${photo.slug}#${photo.detailId}`,
+  s: photo.slug,
+  r: photo.region,
+  a: photo.albumName,
+  f: photo.featured ? 1 : 0,
+  y: photo.yearLabel,
+  d: photo.dateLabel,
+  dy: photo.dayLabel,
+  ts: photo.capturedTimestamp,
+  ms: photo.monthSortKey,
+  p: photo.previewSrc,
+  ss: photo.previewSrcSet || "",
+  w: photo.previewWidth,
+  ht: photo.previewHeight,
+  al: photo.alt,
+  q: photo.normSearch,
+}));
+
+const totalPhotos = enhancedLocations.reduce((sum, loc) => sum + loc.photoCount, 0);
+const availableRegions = PHOTO_REGION_ORDER.filter((r) =>
+  enhancedLocations.some((l) => l.region === r),
+);
+
+const mapDestinations = (
+  await Promise.all(
+    enhancedLocations.map(async (loc) => {
+      const photoLocations = (
+        await Promise.all(
+          (loc.photos || []).map(async (photo, index) => {
+            const photoCoords =
+              parsePhotoCoords(photo.latitude, photo.longitude) ||
+              (await readPhotoExifCoordinates(photo.sourceSrc));
+            if (!photoCoords) return null;
+            const localizedPhoto = loc.samplePhotos[index];
+            return {
+              id: photo.id || `${loc.slug}-${index + 1}`,
+              src: localizedPhoto?.previewSrc || photo.src,
+              alt: localizedPhoto?.title || localizedPhoto?.alt || loc.displayName,
+              lat: photoCoords.lat,
+              lng: photoCoords.lng,
+            };
+          }),
+        )
+      ).filter((photo): photo is NonNullable<typeof photo> => photo !== null);
+      const coords = resolvePhotoCoords(
+        loc.slug,
+        loc.latitude || photoLocations[0]?.lat,
+        loc.longitude || photoLocations[0]?.lng,
+      );
+      if (!coords) return null;
+      const pinThumb = loc.samplePhotos[0]?.previewSrc || loc.heroPhoto;
+      return {
+        slug: loc.slug,
+        name: loc.displayName,
+        region: loc.region,
+        country: loc.displayCountry,
+        headline: loc.displayHeadline,
+        photoCount: loc.photoCount,
+        heroPhoto: loc.heroPhoto,
+        pinThumb,
+        lat: coords.lat,
+        lng: coords.lng,
+        search: `${loc.displayName} ${loc.region} ${loc.displayRegion} ${loc.displayCountry} ${loc.displayHeadline} ${loc.slug}`,
+        photoLocations,
+      };
+    }),
+  )
+).filter((item): item is NonNullable<typeof item> => item !== null);
+
+const photosUrl = canonicalUrl(photosBasePath);
+const photosSchema = collectionPageSchema({
+  url: photosUrl,
+  title: "Photography & Travel Journals — Phuc Loc Nguyen",
+  description: photosUi.seoDescription(locations.length),
+  items: enhancedLocations.map((loc) => ({
+    name: loc.displayName,
+    url: `${photosBasePath}/${loc.slug}`,
+    description: loc.displaySeoDescription,
+    image: loc.heroPhoto || undefined,
+  })),
+});
+
+const scriptI18n = {
+  basePath: photosBasePath,
+  allItems: photosUi.allItems,
+  allPhotos: photosUi.allPhotos,
+  years: photosUi.years,
+  months: photosUi.months,
+  map: photosUi.map,
+  trips: photosUi.trips,
+  featured: photosUi.featured,
+  albums: photosUi.albums,
+  loadingMap: photosUi.loadingMap,
+  emptyMap: "No photo locations are available yet.",
+  initMapError: "The interactive map could not be initialized. Try again.",
+  tripSingular: "Trip",
+  tripPlural: "Trips",
+  tripsByYearSuffix: "by Year",
+  destinationsUnit: "Destinations",
+  allYearsBack: "← All Years",
+  allMonthsBack: "← All Months",
+  openYearPrefix: "Open",
+  photosUnit: "photos",
+  itemsSuffix: "Items · Leica Q3, Nikon Zf & iPhone",
+  archiveFallback: "Archive",
+  regionLabels: photosUi.regionLabels,
+};
+---
+
+<PhotosLayout
+  title={photosUi.seoTitle}
+  pageTitle={photosUi.pageTitle}
+  description={photosUi.seoDescription(locations.length)}
+  currentPath={photosBasePath}
+  maxWidthVariant="gallery"
+  fullBleed={true}
+  schema={photosSchema}
+>
+  <div class="mp-app" id="mp-app" data-photos-i18n={JSON.stringify(scriptI18n)}>
+    <!-- Sticky Photos Toolbar -->
+    <div class="mp-toolbar" role="toolbar" aria-label={photosUi.toolbarAria}>
+      <div class="mp-toolbar-left">
+        <button
+          type="button"
+          id="mp-sidebar-toggle"
+          class="mp-icon-btn"
+          aria-label={photosUi.toggleSidebar}
+          aria-pressed="true"
+          title={photosUi.toggleSidebar}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M9 3v18" />
+          </svg>
+        </button>
+
+        <div class="mp-zoom-control" aria-label={photosUi.thumbnailSizeAria}>
+          <button type="button" id="mp-zoom-out" class="mp-zoom-btn" aria-label={photosUi.smallerThumbnails}>−</button>
+          <input
+            id="mp-zoom-slider"
+            type="range"
+            min="3"
+            max="7"
+            value="5"
+            aria-label={photosUi.gridColumnsAria}
+          />
+          <button type="button" id="mp-zoom-in" class="mp-zoom-btn" aria-label={photosUi.largerThumbnails}>+</button>
+        </div>
+      </div>
+
+      <div class="mp-segmented" id="mp-seg-library" role="tablist" aria-label={photosUi.timeViewAria}>
+        <button type="button" class="mp-seg-btn" role="tab" aria-selected="false" data-seg="years">{photosUi.years}</button>
+        <button type="button" class="mp-seg-btn" role="tab" aria-selected="false" data-seg="months">{photosUi.months}</button>
+        <button type="button" class="mp-seg-btn is-active" role="tab" aria-selected="true" data-seg="all">{photosUi.allPhotos}</button>
+      </div>
+
+      <div class="mp-toolbar-right">
+        <button
+          type="button"
+          id="mp-info-toggle"
+          class="mp-icon-btn"
+          aria-label={photosUi.showInfo}
+          aria-pressed="false"
+          title={photosUi.showInfo}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </button>
+
+        <label class="mp-search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            id="mp-search-input"
+            type="search"
+            placeholder={photosUi.searchPlaceholder}
+            aria-label={photosUi.searchAria}
+            autocomplete="off"
+          />
+        </label>
+      </div>
+    </div>
+
+    <!-- 2-Column Body (Sticky Sidebar + Native Document Scroll Canvas) -->
+    <div class="mp-body">
+      <div class="mp-sidebar-backdrop" id="mp-sidebar-backdrop" hidden aria-hidden="true"></div>
+
+      <!-- Left Sidebar -->
+      <aside class="mp-sidebar" id="mp-sidebar" aria-label={photosUi.sidebarAria}>
+        <div class="mp-sidebar-section">
+          <div class="mp-sidebar-heading">{photosUi.sectionPhotos}</div>
+          <button type="button" class="mp-nav-item is-active" data-nav="library">
+            <svg width="16" height="13" viewBox="0 0 250 202" fill="none" aria-hidden="true">
+              <path d="M30.3 26.4 159.8 4.6c12.7-2.2 24.8 6.4 27 19.1l2.9 17.1H87.3c-21.2 0-38.4 17.2-38.4 38.4v85.1c-10.5-.6-19.5-8.3-21.3-19.1L11.1 53.3C8.9 40.6 17.5 28.5 30.3 26.4Z" fill="#80B9FF"/>
+              <rect x="59.6" y="51.4" width="179.1" height="139" rx="25" fill="#087BFA"/>
+              <circle cx="120.2" cy="102.8" r="19.5" fill="#fff"/>
+              <path d="m70.2 162.9 24-22.4c6-5.6 13.8-5.7 19.8-.3l16.4 14 37.1-33.7c7.2-6.5 15.4-5.3 22.5 1.3l38.8 34.5v8.6c0 8.9-7.2 16.1-16.1 16.1H86.2c-9 0-16-7.2-16-16.1v-2Z" fill="#fff"/>
+            </svg>
+            <span>{photosUi.library}</span>
+          </button>
+          <button type="button" class="mp-nav-item" data-nav="map">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+              <line x1="9" y1="3" x2="9" y2="18" />
+              <line x1="15" y1="6" x2="15" y2="21" />
+            </svg>
+            <span>{photosUi.map}</span>
+          </button>
+        </div>
+
+        <div class="mp-sidebar-section">
+          <div class="mp-sidebar-heading">{photosUi.sectionCollections}</div>
+          <button type="button" class="mp-nav-item" data-nav="trips">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="7" width="18" height="13" rx="2" />
+              <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            <span>{photosUi.trips}</span>
+          </button>
+          <button type="button" class="mp-nav-item" data-nav="featured">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            <span>{photosUi.featured}</span>
+          </button>
+          <button type="button" class="mp-nav-item" data-nav="albums">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+            </svg>
+            <span>{photosUi.albums}</span>
+          </button>
+        </div>
+
+        <div class="mp-sidebar-section">
+          <div class="mp-sidebar-heading">{photosUi.sectionRegions}</div>
+          {availableRegions.map((region) => (
+            <button type="button" class="mp-nav-item" data-nav={`region:${region}`}>
+              <svg width="16" height="14" viewBox="0 0 24 20" fill="none" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="16" rx="3.2" stroke="currentColor" stroke-width="1.9" />
+                <circle cx="8" cy="7.5" r="2.1" fill="currentColor" />
+                <path d="M2.5 15.5 7 11.2c.7-.7 1.8-.7 2.5 0l2 1.9 3.6-4.1c.7-.8 1.9-.8 2.6 0l3.8 4.4V16a2 2 0 0 1-2 2H4.5a2 2 0 0 1-2-2v-.5Z" fill="currentColor" />
+              </svg>
+              <span>{regionLabel(region)}</span>
+            </button>
+          ))}
+        </div>
+      </aside>
+
+      <!-- Main Gallery Canvas -->
+      <section class="mp-canvas" id="mp-canvas" aria-label={photosUi.pageTitle}>
+        <div class="mp-canvas-head">
+          <div class="mp-canvas-title-wrap">
+            <h1 id="mp-heading" class="mp-heading">{photosUi.allPhotos}</h1>
+            <span id="mp-subheading" class="mp-subheading">
+              {photosUi.subheading(locations.length)}
+            </span>
+          </div>
+
+          <div class="mp-filter-wrap" id="mp-filter-wrap">
+            <button
+              type="button"
+              id="mp-filter-trigger"
+              class="mp-filter-pill"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <span class="mp-filter-prefix">{photosUi.filterBy}</span>
+              <strong id="mp-filter-label">{photosUi.allItems}</strong>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            <div id="mp-filter-menu" class="mp-popover-menu" role="menu" aria-label={photosUi.filterMenuAria} hidden>
+              <button type="button" class="mp-menu-item is-selected" role="menuitemradio" aria-checked="true" data-filter-val="all" data-filter-text={photosUi.allItems}>
+                <span class="mp-menu-check" aria-hidden="true">✓</span>
+                <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <rect x="3" y="3" width="5" height="5" rx="1" />
+                  <rect x="10" y="3" width="5" height="5" rx="1" />
+                  <rect x="17" y="3" width="4" height="5" rx="1" />
+                  <rect x="3" y="10" width="5" height="5" rx="1" />
+                  <rect x="10" y="10" width="5" height="5" rx="1" />
+                  <rect x="17" y="10" width="4" height="5" rx="1" />
+                  <rect x="3" y="17" width="5" height="4" rx="1" />
+                  <rect x="10" y="17" width="5" height="4" rx="1" />
+                  <rect x="17" y="17" width="4" height="4" rx="1" />
+                </svg>
+                <span>{photosUi.allItems}</span>
+              </button>
+
+              <div class="mp-menu-divider" role="separator"></div>
+
+              <button type="button" class="mp-menu-item" role="menuitemradio" aria-checked="false" data-filter-val="featured" data-filter-text={photosUi.featured}>
+                <span class="mp-menu-check" aria-hidden="true">✓</span>
+                <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                  <line x1="4" y1="6" x2="20" y2="6" />
+                  <circle cx="9" cy="6" r="2" fill="currentColor" />
+                  <line x1="4" y1="12" x2="20" y2="12" />
+                  <circle cx="15" cy="12" r="2" fill="currentColor" />
+                  <line x1="4" y1="18" x2="20" y2="18" />
+                  <circle cx="10" cy="18" r="2" fill="currentColor" />
+                </svg>
+                <span>{photosUi.featured}</span>
+              </button>
+
+              <div class="mp-menu-divider" role="separator"></div>
+
+              {availableRegions.map((region) => (
+                <button
+                  type="button"
+                  class="mp-menu-item"
+                  role="menuitemradio"
+                  aria-checked="false"
+                  data-filter-val={`region:${region}`}
+                  data-filter-text={regionLabel(region)}
+                >
+                  <span class="mp-menu-check" aria-hidden="true">✓</span>
+                  <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="2.5" />
+                  </svg>
+                  <span>{regionLabel(region)}</span>
+                </button>
+              ))}
+
+              <div class="mp-menu-divider" role="separator"></div>
+
+              <div class="mp-menu-scroll">
+                {enhancedLocations.map((loc) => (
+                  <button
+                    type="button"
+                    class="mp-menu-item"
+                    role="menuitemradio"
+                    aria-checked="false"
+                    data-filter-val={`album:${loc.slug}`}
+                    data-filter-text={loc.displayName}
+                  >
+                    <span class="mp-menu-check" aria-hidden="true">✓</span>
+                    <svg class="mp-menu-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                    <span>{loc.displayName}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo Grid (All Photos / Years / Months / Featured / Regions) -->
+        <div id="mp-grid-view" class="mp-grid-view">
+          <div id="mp-time-bar" class="mp-time-bar" role="tablist" aria-label={photosUi.timeViewAria} hidden></div>
+          <div id="mp-years-view" class="mp-years-view" hidden></div>
+          <div id="mp-months-view" class="mp-months-view" hidden></div>
+          <div id="mp-months-sentinel" class="mp-sentinel" aria-hidden="true" hidden></div>
+
+          <div id="mp-grid" class="mp-grid" style="--mp-cols: 5;">
+            {initialGridPhotos.map((photo, idx) => (
+              <a href={`${photosBasePath}/${photo.slug}#${photo.detailId}`} class="mp-cell">
+                <div class="mp-cell-media" style={`aspect-ratio: ${photo.previewWidth} / ${photo.previewHeight};`}>
+                  <img
+                    src={photo.previewSrc}
+                    srcset={photo.previewSrcSet || undefined}
+                    sizes={photo.previewSizes}
+                    alt={photo.alt}
+                    width={photo.previewWidth}
+                    height={photo.previewHeight}
+                    loading={idx < 12 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                </div>
+                <div class="mp-cell-info">
+                  <span>{photo.albumName}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+          <div id="mp-grid-sentinel" class="mp-sentinel" aria-hidden="true"></div>
+
+          <div id="mp-empty" class="mp-empty" hidden>
+            <p id="mp-empty-msg">{photosUi.emptyMsg}</p>
+            <button type="button" id="mp-reset-btn" class="mp-reset-btn">{photosUi.showAllPhotos}</button>
+          </div>
+        </div>
+
+        <!-- Trips Timeline View (grouped by year) -->
+        <div id="mp-trips-view" class="mp-trips-view" hidden>
+          {tripsByYear.map(([year, yearLocations]) => (
+            <section class="mp-trip-year-group" data-trip-year={year}>
+              <div class="mp-trip-year-head">
+                <h2 class="mp-trip-year-title">{year}</h2>
+                <span class="mp-trip-year-count" data-trip-year-count>{photosUi.tripUnit(yearLocations.length)}</span>
+              </div>
+              <div class="mp-trip-cards">
+                {yearLocations.map((loc, tripIdx) => (
+                  <a
+                    href={`${photosBasePath}/${loc.slug}`}
+                    class="mp-trip-card"
+                    data-region={loc.region}
+                    data-search={normalizeSearchServer(`${loc.displayName} ${loc.region} ${loc.displayRegion} ${loc.displayCountry} ${loc.dateLabel} ${loc.yearLabel} ${loc.displayHeadline} ${loc.slug}`)}
+                  >
+                    <img
+                      src={loc.heroPhoto}
+                      alt={loc.displayName}
+                      class="mp-trip-card-img"
+                      width="480"
+                      height="300"
+                      loading={tripIdx < 8 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                    <div class="mp-trip-card-overlay">
+                      <span class="mp-trip-card-meta">{loc.dateLabel} · {loc.displayRegion}</span>
+                      <strong class="mp-trip-card-title">{loc.displayName}</strong>
+                      <span class="mp-trip-card-count">{photosUi.photoCount(loc.photoCount)}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        <!-- Albums Folder View -->
+        <div id="mp-albums-view" class="mp-albums-view" hidden>
+          <div id="mp-folders-grid" class="glass-folder-grid">
+            {enhancedLocations.map((loc) => {
+              const folderProps = {
+                label: loc.displayName,
+                meta: photosUi.albumMeta(loc.photoCount, loc.displayRegion),
+                image: loc.heroPhoto || undefined,
+                art: "none" as const,
+                files: loc.previewImages.map((image, index) => ({
+                  name: `${loc.displayName} — ${index + 1}`,
+                  image,
+                  href: `${photosBasePath}/${loc.slug}`,
+                })),
+                href: `${photosBasePath}/${loc.slug}`,
+                action: "none" as const,
+                appear: false,
+                defaultWidth: 204,
+                eager: false,
+              };
+              return (
+                <div
+                  class="glass-folder-item"
+                  data-region={loc.region}
+                  data-search={normalizeSearchServer(`${loc.displayName} ${loc.region} ${loc.displayRegion} ${loc.displayCountry} ${loc.displayHeadline} ${loc.slug}`)}
+                  data-href={`${photosBasePath}/${loc.slug}`}
+                >
+                  <GlassFolder {...folderProps} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <!-- Interactive Map View -->
+        <div id="mp-map-view" class="mp-map-view" hidden>
+          <div id="mp-map-canvas" class="mp-map-canvas" aria-label={photosUi.map}></div>
+
+          <div id="mp-map-status" class="mp-map-status" role="status" aria-live="polite">
+            <span data-map-status-copy>{photosUi.loadingMap}</span>
+            <button type="button" data-map-retry hidden>{photosUi.tryAgain}</button>
+          </div>
+
+          <!-- Selected Destination Popover Card -->
+          <div id="mp-map-card" class="mp-map-card" hidden>
+            <button type="button" id="mp-map-card-close" class="mp-map-card-close" aria-label={photosUi.closePreview}>×</button>
+            <img data-card-img src="" alt="" class="mp-map-card-img" loading="lazy" decoding="async" />
+            <div class="mp-map-card-body">
+              <div class="mp-map-card-title" data-card-title></div>
+              <div class="mp-map-card-meta" data-card-meta></div>
+              <p class="mp-map-card-headline" data-card-headline></p>
+              <a data-card-link href={photosBasePath} class="mp-map-card-link">{photosUi.openAlbum}</a>
+            </div>
+          </div>
+
+          <!-- Bottom-left Legal attribution -->
+          <div class="mp-map-legal">
+            <span>© OpenStreetMap contributors</span>
+            <span aria-hidden="true">·</span>
+            <a href="https://openfreemap.org/" target="_blank" rel="noopener noreferrer">OpenFreeMap</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">{photosUi.legal}</a>
+          </div>
+
+          <!-- Bottom-right Zoom Pill & Compass -->
+          <div class="mp-map-controls" aria-label={photosUi.mapControlsAria}>
+            <div class="mp-map-zoom-pill">
+              <button type="button" id="mp-map-zoom-out" class="mp-map-ctrl-btn" aria-label={photosUi.zoomOut}>−</button>
+              <span class="mp-map-zoom-sep" aria-hidden="true"></span>
+              <button type="button" id="mp-map-zoom-in" class="mp-map-ctrl-btn" aria-label={photosUi.zoomIn}>+</button>
+            </div>
+            <button type="button" id="mp-map-compass" class="mp-map-compass" aria-label={photosUi.resetView} title={photosUi.resetView}>
+              <svg width="26" height="26" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                <circle cx="18" cy="18" r="16.5" stroke="rgba(255,255,255,0.22)" stroke-width="1" />
+                <path d="M18 3.5L20.2 8.5H15.8L18 3.5Z" fill="#ff453a" />
+                <text x="18" y="22.5" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, sans-serif">N</text>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom Status Footer -->
+        <footer class="mp-footer" aria-label={photosUi.pageTitle}>
+          <strong id="mp-footer-count">{photosUi.footerSummary(totalPhotos, locations.length)}</strong>
+          <span>{photosUi.footerGear}</span>
+        </footer>
+      </section>
+    </div>
+
+    <script is:inline type="application/json" id="mp-photos-data" set:html={safeInlineJson(compactPhotosPayload)} />
+    <script is:inline type="application/json" id="mp-map-data" set:html={safeInlineJson(mapDestinations)} />
+  </div>
+</PhotosLayout>
+
+<style>
+  .mp-app {
+    --mp-toolbar-h: 44px;
+    display: flex;
+    flex-direction: column;
+    min-height: var(--photos-viewport-h, calc(100dvh - var(--photos-header-h, 48px)));
+    background: #ffffff;
+    color: var(--dash-text);
+    font-family: var(--font-family-base);
+  }
+
+  .mp-app [hidden] {
+    display: none !important;
+  }
+
+  /* ── Sticky Top Toolbar ─────────────────────────────────────────────────── */
+  .mp-toolbar {
+    position: sticky;
+    top: calc(var(--photos-header-h, 48px) + env(safe-area-inset-top, 0px));
+    z-index: 30;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    min-height: var(--mp-toolbar-h);
+    padding: 8px 16px;
+    background: #f7f7f8;
+    border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    user-select: none;
+  }
+
+  .mp-toolbar-left {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .mp-toolbar-right {
+    grid-column: 3;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .mp-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 28px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--dash-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+
+  .mp-icon-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--dash-text);
+  }
+
+  .mp-icon-btn.is-active {
+    background: rgba(0, 122, 255, 0.14);
+    color: #007aff;
+  }
+
+  .mp-zoom-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mp-zoom-btn {
+    border: 0;
+    background: transparent;
+    color: var(--dash-muted);
+    font-family: inherit;
+    font-size: var(--text-body-sm);
+    line-height: 1;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .mp-zoom-control input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 72px;
+    height: 3px;
+    border-radius: 9999px;
+    background: #d1d1d6;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .mp-zoom-control input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px;
+    border-radius: 9999px;
+    background: #d1d1d6;
+  }
+
+  .mp-zoom-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    margin-top: -5px;
+    border-radius: 9999px;
+    background: #8e8e93;
+    border: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .mp-zoom-control input[type="range"]::-moz-range-track {
+    height: 3px;
+    border-radius: 9999px;
+    background: #d1d1d6;
+  }
+
+  .mp-zoom-control input[type="range"]::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border-radius: 9999px;
+    background: #8e8e93;
+    border: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .mp-segmented {
+    grid-column: 2;
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    background: #e5e5ea;
+    border-radius: 7px;
+    gap: 2px;
+    transition: opacity 140ms ease;
+  }
+
+  .mp-segmented.is-slot-hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mp-seg-btn {
+    border: 0;
+    background: transparent;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    padding: 4px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 140ms ease, box-shadow 140ms ease, color 140ms ease;
+  }
+
+  .mp-seg-btn.is-active {
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    color: #000000;
+  }
+
+  .mp-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+    height: 28px;
+    width: 184px;
+    background: rgba(0, 0, 0, 0.05);
+    border: var(--dash-border-width, 0.9px) solid rgba(0, 0, 0, 0.06);
+    border-radius: 7px;
+    color: var(--dash-muted);
+  }
+
+  .mp-search:focus-within {
+    background: #ffffff;
+    border-color: rgba(0, 122, 255, 0.45);
+  }
+
+  .mp-search input {
+    border: 0;
+    background: transparent;
+    width: 100%;
+    min-width: 0;
+    font-family: inherit;
+    font-size: var(--text-caption);
+    color: var(--dash-text);
+    outline: none;
+  }
+
+  .mp-search input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+
+  /* ── 2-Column Body (Sticky Sidebar + Native Scroll Canvas) ──────────────── */
+  .mp-body {
+    flex: 1 0 auto;
+    display: grid;
+    grid-template-columns: 204px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .mp-app.sidebar-collapsed .mp-body {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+
+  .mp-app.sidebar-collapsed .mp-sidebar {
+    opacity: 0;
+    pointer-events: none;
+    border-right-width: 0;
+    padding-inline: 0;
+    overflow: hidden;
+  }
+
+  .mp-sidebar {
+    position: sticky;
+    top: calc(var(--photos-header-h, 48px) + var(--mp-toolbar-h, 44px) + env(safe-area-inset-top, 0px));
+    height: calc(var(--photos-viewport-h, calc(100dvh - var(--photos-header-h, 48px))) - var(--mp-toolbar-h, 44px) - env(safe-area-inset-top, 0px));
+    background: #f5f5f7;
+    border-right: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    padding: 14px 10px 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+
+  .mp-sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mp-sidebar-heading {
+    padding: 2px 8px 4px;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-muted);
+  }
+
+  .mp-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 130ms ease, color 130ms ease;
+  }
+
+  .mp-nav-item svg {
+    color: #007aff;
+    flex-shrink: 0;
+  }
+
+  .mp-nav-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .mp-nav-item.is-active {
+    background: #dceafe;
+    color: #005bb5;
+  }
+
+  /* ── Main Gallery Canvas (Natural Document Flow) ────────────────────────── */
+  .mp-canvas {
+    position: relative;
+    min-width: 0;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mp-canvas-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px 10px;
+    background: #ffffff;
+  }
+
+  .mp-canvas-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .mp-heading {
+    margin: 0;
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-subheading);
+    color: var(--dash-text);
+    line-height: var(--leading-snug);
+  }
+
+  .mp-subheading {
+    font-size: var(--text-micro);
+    color: var(--dash-muted);
+    line-height: var(--leading-snug);
+  }
+
+  .mp-filter-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .mp-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background: #f2f2f7;
+    border: var(--dash-border-width, 0.9px) solid rgba(0, 0, 0, 0.08);
+    border-radius: 9999px;
+    font-family: inherit;
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+    cursor: pointer;
+    transition: background-color 140ms ease;
+  }
+
+  .mp-filter-pill:hover {
+    background: #e8e8ed;
+  }
+
+  .mp-filter-pill strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--dash-text);
+  }
+
+  .mp-popover-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 40;
+    width: 224px;
+    padding: 6px;
+    border-radius: 14px;
+    background: rgba(247, 247, 249, 0.98);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow:
+      0 14px 36px rgba(0, 0, 0, 0.16),
+      0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .mp-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-regular);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .mp-menu-item:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .mp-menu-check {
+    width: 12px;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-semibold);
+    opacity: 0;
+    flex-shrink: 0;
+  }
+
+  .mp-menu-item.is-selected .mp-menu-check {
+    opacity: 1;
+  }
+
+  .mp-menu-icon {
+    color: #3a3a3c;
+    flex-shrink: 0;
+  }
+
+  .mp-menu-item span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mp-menu-divider {
+    height: 1px;
+    margin: 4px 8px;
+    background: rgba(0, 0, 0, 0.09);
+  }
+
+  .mp-menu-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  /* ── Zero-Reflow Masonry Photos Grid ────────────────────────────────────── */
+  .mp-grid-view {
+    flex: 1 0 auto;
+    padding: 4px 18px 24px;
+  }
+
+  .mp-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--mp-cols, 5), minmax(0, 1fr));
+    gap: 8px;
+    align-items: start;
+  }
+
+  .mp-grid :global(.mp-masonry-col) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .mp-grid :global(.mp-cell) {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0;
+    background: #f2f2f5;
+    overflow: hidden;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+    contain: layout paint style;
+  }
+
+  .mp-grid :global(.mp-cell-media) {
+    position: relative;
+    display: block;
+    width: 100%;
+    background: #f0f0f3;
+    overflow: hidden;
+  }
+
+  .mp-grid :global(.mp-cell-media img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-grid :global(.mp-cell-info) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 14px 8px 6px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.62), transparent);
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    pointer-events: none;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 140ms ease;
+  }
+
+  .mp-app.show-info .mp-grid :global(.mp-cell-info),
+  .mp-grid :global(.mp-cell:hover .mp-cell-info) {
+    opacity: 1;
+  }
+
+  .mp-sentinel {
+    width: 100%;
+    height: 1px;
+    pointer-events: none;
+  }
+
+  /* ── Time Filter Bar ────────────────────────────────────────────────────── */
+  .mp-time-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .mp-time-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mp-time-bar :global(.mp-time-pill) {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.04);
+    color: #3a3a3c;
+    font-family: inherit;
+    font-size: var(--text-caption);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+  }
+
+  .mp-time-bar :global(.mp-time-pill:hover) {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .mp-time-bar :global(.mp-time-pill.is-active) {
+    background: #1d1d1f;
+    border-color: #1d1d1f;
+    color: #ffffff;
+  }
+
+  .mp-time-bar :global(.mp-time-pill-count) {
+    font-size: var(--text-micro);
+    opacity: 0.65;
+  }
+
+  /* ── Years Card Grid ────────────────────────────────────────────────────── */
+  .mp-app.is-curated-time .mp-zoom-control {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .mp-years-view {
+    width: 100%;
+    padding: 6px 0 32px;
+  }
+
+  .mp-years-view :global(.mp-years-grid) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .mp-years-view :global(.mp-year-card) {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #1c1c1e;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.11);
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease;
+  }
+
+  .mp-years-view :global(.mp-year-card:hover) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+  }
+
+  .mp-years-view :global(.mp-year-card::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.44) 0%,
+      rgba(0, 0, 0, 0.14) 30%,
+      transparent 55%
+    );
+  }
+
+  .mp-years-view :global(.mp-year-card-img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-years-view :global(.mp-year-card-title) {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    z-index: 2;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: var(--text-h2);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.36);
+  }
+
+  /* ── Months Bento Grid (Zero top white gaps, progressive sections) ──────── */
+  .mp-months-view {
+    width: 100%;
+    padding: 4px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .mp-months-view :global(.mp-month-section) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 520px;
+  }
+
+  .mp-months-view :global(.mp-month-title) {
+    margin: 0;
+    font-size: var(--text-h3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    line-height: 1.2;
+  }
+
+  .mp-months-view :global(.mp-month-bento) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .mp-months-view :global(.mp-month-card) {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f0f0f3;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .mp-months-view :global(.mp-month-card:hover) {
+    transform: translateY(-1.5px);
+  }
+
+  .mp-months-view :global(.mp-month-card--hero) {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: auto;
+    height: auto;
+    align-self: stretch;
+    min-height: 0;
+  }
+
+  .mp-months-view :global(.mp-month-card::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      155deg,
+      rgba(0, 0, 0, 0.44) 0%,
+      rgba(0, 0, 0, 0.14) 24%,
+      transparent 48%
+    );
+  }
+
+  .mp-months-view :global(.mp-month-card-img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-months-view :global(.mp-month-card-day) {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    z-index: 2;
+    color: #ffffff;
+    font-size: var(--text-caption);
+    font-weight: 600;
+    line-height: 1;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  }
+
+  .mp-months-view :global(.mp-month-card--hero .mp-month-card-day) {
+    top: 12px;
+    left: 14px;
+    font-size: var(--text-body-sm);
+  }
+
+  .mp-months-view :global(.mp-month-card-info) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 18px 10px 8px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.62), transparent);
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    pointer-events: none;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 140ms ease;
+  }
+
+  .mp-app.show-info .mp-months-view :global(.mp-month-card-info),
+  .mp-months-view :global(.mp-month-card:hover .mp-month-card-info) {
+    opacity: 1;
+  }
+
+  /* ── Trips Timeline View ────────────────────────────────────────────────── */
+  .mp-trips-view {
+    flex: 1 0 auto;
+    padding: 4px 18px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .mp-trip-year-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  .mp-trip-year-title {
+    margin: 0;
+    font-size: var(--text-h3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+  }
+
+  .mp-trip-year-count {
+    font-size: var(--text-caption);
+    font-weight: 500;
+    color: #6e6e73;
+  }
+
+  .mp-trip-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .mp-trip-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #1c1c1e;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .mp-trip-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  }
+
+  .mp-trip-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-trip-card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 14px 16px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.72) 100%);
+    color: #ffffff;
+  }
+
+  .mp-trip-card-meta {
+    font-size: var(--text-micro);
+    font-weight: 500;
+    opacity: 0.85;
+    letter-spacing: 0.01em;
+  }
+
+  .mp-trip-card-title {
+    margin-top: 2px;
+    font-size: var(--text-h4);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .mp-trip-card-count {
+    margin-top: 3px;
+    font-size: var(--text-micro);
+    opacity: 0.8;
+  }
+
+  /* ── Albums GlassFolder Grid ────────────────────────────────────────────── */
+  .mp-albums-view {
+    flex: 1 0 auto;
+    padding: 18px 20px 36px;
+  }
+
+  .glass-folder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 152px), 1fr));
+    gap: 36px 20px;
+  }
+
+  .glass-folder-item {
+    min-width: 0;
+    position: relative;
+  }
+
+  .glass-folder-item:hover,
+  .glass-folder-item:focus-within {
+    z-index: 1;
+  }
+
+  /* Empty State */
+  .mp-empty {
+    padding: 56px 16px;
+    text-align: center;
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+  }
+
+  .mp-reset-btn {
+    margin-top: 10px;
+    border: var(--dash-border-width, 0.9px) solid var(--dash-border-strong);
+    background: #ffffff;
+    color: var(--dash-text);
+    font-family: inherit;
+    font-size: var(--text-caption);
+    font-weight: var(--font-weight-medium);
+    padding: 7px 16px;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+
+  /* Bottom Status Footer */
+  .mp-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 20px 16px calc(28px + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+    font-size: var(--text-caption);
+    color: var(--dash-muted);
+  }
+
+  .mp-footer strong {
+    color: var(--dash-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* ── Interactive Map View ───────────────────────────────────────────────── */
+  .mp-app.is-map-mode .mp-zoom-control {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .mp-app.is-map-mode #mp-filter-wrap {
+    display: none;
+  }
+
+  .mp-map-view {
+    position: relative;
+    width: 100%;
+    height: calc(var(--photos-viewport-h, calc(100dvh - var(--photos-header-h, 48px))) - var(--mp-toolbar-h, 44px) - env(safe-area-inset-top, 0px));
+    min-height: 400px;
+    background: #a4c8eb;
+    overflow: hidden;
+  }
+
+  .mp-map-view.is-satellite {
+    background: #0d2240;
+  }
+
+  .mp-map-canvas {
+    width: 100%;
+    height: 100%;
+    background: #a4c8eb;
+  }
+
+  .mp-map-view.is-satellite .mp-map-canvas,
+  .mp-map-view.is-satellite :global(.maplibregl-map) {
+    background: #0d2240;
+  }
+
+  .mp-map-view :global(.maplibregl-map) {
+    width: 100%;
+    height: 100%;
+    background: #a4c8eb;
+    font-family: var(--font-family-base);
+  }
+
+  .mp-map-view :global(.maplibregl-canvas:focus) {
+    outline: none;
+  }
+
+  .mp-map-view :global(.maplibregl-marker) {
+    will-change: transform;
+  }
+
+  .mp-map-view :global(.maplibregl-marker:hover),
+  .mp-map-view :global(.maplibregl-marker:focus-within) {
+    z-index: 900 !important;
+  }
+
+  .mp-map-view :global(.mp-map-fallback) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    text-align: center;
+    color: var(--dash-muted);
+    font-size: var(--text-body-sm);
+    background: #f5f5f7;
+  }
+
+  .mp-map-status {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    z-index: 540;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: min(360px, calc(100% - 32px));
+    padding: 11px 14px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+    color: #34343a;
+    font-size: var(--text-caption);
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .mp-map-view[data-map-state="ready"] .mp-map-status,
+  .mp-map-status[hidden] {
+    display: none;
+  }
+
+  .mp-map-status button {
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 7px;
+    padding: 6px 9px;
+    background: #0a84ff;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .mp-map-view :global(.mp-pin-wrapper) {
+    background: transparent;
+    border: 0;
+  }
+
+  .mp-map-view :global(.mp-pin) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: bottom center;
+  }
+
+  .mp-map-view :global(.mp-pin:hover),
+  .mp-map-view :global(.mp-pin:focus-visible) {
+    transform: translateY(-2px) scale(1.04);
+    outline: none;
+  }
+
+  .mp-map-view :global(.mp-pin-frame) {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: 2.5px solid #ffffff;
+    overflow: hidden;
+    background: #1c1c1e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+  }
+
+  .mp-map-view :global(.mp-pin-frame img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-map-view :global(.mp-pin-frame::after) {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 26px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+    pointer-events: none;
+  }
+
+  .mp-map-view :global(.mp-pin-count) {
+    position: absolute;
+    left: 5px;
+    bottom: 3px;
+    z-index: 2;
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+    pointer-events: none;
+  }
+
+  .mp-map-view :global(.mp-pin-tip) {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid #ffffff;
+    margin-top: -1px;
+  }
+
+  .mp-map-view :global(.mp-pin-tooltip) {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(24, 26, 32, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    font-size: var(--text-micro);
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 140ms ease, transform 140ms ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
+  }
+
+  .mp-map-view :global(.mp-pin:hover .mp-pin-tooltip),
+  .mp-map-view :global(.mp-pin:focus-visible .mp-pin-tooltip) {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .mp-map-legal {
+    position: absolute;
+    left: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--text-micro);
+    font-weight: 500;
+    color: rgba(20, 24, 34, 0.56);
+  }
+
+  .mp-map-legal a {
+    color: rgba(20, 24, 34, 0.68);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .mp-map-controls {
+    position: absolute;
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mp-map-zoom-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background: rgba(28, 30, 36, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  }
+
+  .mp-map-ctrl-btn {
+    width: 28px;
+    height: 26px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.92);
+    font-family: inherit;
+    font-size: var(--text-body-lg);
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mp-map-ctrl-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .mp-map-zoom-sep {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .mp-map-compass {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(28, 30, 36, 0.88);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mp-map-card {
+    position: absolute;
+    left: 16px;
+    bottom: calc(38px + env(safe-area-inset-bottom, 0px));
+    z-index: 520;
+    width: 276px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(26, 28, 34, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+  }
+
+  .mp-map-card-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+    font-size: var(--text-body-lg);
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mp-map-card-img {
+    width: 100%;
+    height: 132px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mp-map-card-body {
+    padding: 12px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mp-map-card-title {
+    font-size: var(--text-body-lg);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .mp-map-card-meta {
+    font-size: var(--text-caption);
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  .mp-map-card-headline {
+    margin: 4px 0 8px;
+    font-size: var(--text-caption);
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.84);
+  }
+
+  .mp-map-card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #0a84ff;
+    color: #ffffff;
+    font-size: var(--text-caption);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .mp-sidebar-backdrop {
+    display: none;
+  }
+
+  /* ── Tablet & Mobile Layout (<= 820px) ──────────────────────────────────── */
+  @media (max-width: 820px) {
+    .mp-app {
+      --mp-toolbar-h: 94px;
+    }
+
+    .mp-toolbar {
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 8px;
+      padding: 8px 12px;
+    }
+
+    .mp-toolbar-left {
+      grid-column: 1;
+    }
+
+    .mp-zoom-control {
+      display: none;
+    }
+
+    .mp-icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .mp-segmented {
+      grid-column: 2;
+      justify-self: end;
+      max-width: 100%;
+    }
+
+    .mp-seg-btn {
+      padding: 6px 9px;
+      font-size: var(--text-micro);
+    }
+
+    .mp-toolbar-right {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mp-search {
+      flex: 1 1 auto;
+      width: auto;
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 9px;
+    }
+
+    .mp-search input {
+      font-size: var(--text-input-mobile);
+    }
+
+    .mp-body,
+    .mp-app.sidebar-collapsed .mp-body {
+      position: relative;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mp-sidebar,
+    .mp-app.sidebar-collapsed .mp-sidebar {
+      position: fixed;
+      top: calc(var(--photos-header-h, 50px) + env(safe-area-inset-top, 0px));
+      bottom: 0;
+      left: 0;
+      height: auto;
+      z-index: 55;
+      width: min(264px, 82vw);
+      padding: 14px 12px calc(24px + env(safe-area-inset-bottom, 0px));
+      border-right: var(--dash-border-width, 0.9px) solid var(--dash-border);
+      background: #f7f7f9;
+      box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18);
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-105%);
+      transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .mp-app.mobile-sidebar-open .mp-sidebar {
+      transform: translateX(0);
+    }
+
+    .mp-sidebar-backdrop {
+      display: block;
+      position: fixed;
+      top: calc(var(--photos-header-h, 50px) + env(safe-area-inset-top, 0px));
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.34);
+    }
+
+    .mp-nav-item {
+      min-height: 40px;
+      padding: 8px 10px;
+    }
+
+    .mp-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .mp-grid :global(.mp-masonry-col) {
+      gap: 6px;
+    }
+
+    .mp-grid :global(.mp-cell) {
+      border-radius: 5px;
+    }
+
+    .mp-grid-view {
+      padding: 4px 12px 24px;
+    }
+
+    .mp-canvas-head {
+      padding: 12px 12px 8px;
+      align-items: center;
+    }
+
+    .mp-filter-prefix {
+      display: none;
+    }
+
+    .mp-trips-view {
+      padding: 4px 12px 28px;
+    }
+
+    .mp-trip-cards {
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+      gap: 12px;
+    }
+
+    .mp-albums-view {
+      padding: 14px 12px 32px;
+    }
+
+    .glass-folder-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px 14px;
+    }
+  }
+
+  /* ── Mobile Layout (<= 640px) ───────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .mp-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .mp-years-view :global(.mp-years-grid) {
+      gap: 12px;
+    }
+
+    .mp-years-view :global(.mp-year-card) {
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+    }
+
+    .mp-years-view :global(.mp-year-card-title) {
+      top: 12px;
+      left: 12px;
+      font-size: var(--text-h3);
+    }
+
+    .mp-months-view {
+      gap: 24px;
+    }
+
+    .mp-months-view :global(.mp-month-bento) {
+      gap: 8px;
+    }
+
+    .mp-months-view :global(.mp-month-card) {
+      aspect-ratio: 1 / 1;
+      border-radius: 9px;
+    }
+
+    .mp-months-view :global(.mp-month-card--hero) {
+      aspect-ratio: auto;
+      height: auto;
+      align-self: stretch;
+      min-height: 0;
+    }
+
+    .mp-months-view :global(.mp-month-card-day) {
+      top: 7px;
+      left: 8px;
+      font-size: var(--text-micro);
+    }
+
+    .mp-map-controls {
+      top: 12px;
+      right: 12px;
+      bottom: auto;
+    }
+
+    .mp-map-card {
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-width: 340px;
+    }
+
+    .mp-map-card-img {
+      height: 112px;
+    }
+  }
+</style>
+
+<script>
+  import { onPageLoad } from "../../scripts/page-lifecycle";
+  import type { MapDestination, MapMode, PhotosMapController } from "../../scripts/photos-map";
+  import { PHOTO_REGION_ALIASES as REGION_ALIASES } from "@/constants/regions";
+  import { getPhotosLibraryHash, parsePhotosLibraryHash } from "../../lib/app-routes";
+
+  interface CompactPhoto {
+    h: string;
+    s: string;
+    r: string;
+    a: string;
+    f: 0 | 1;
+    y: string;
+    d: string;
+    dy: string;
+    ts: number;
+    ms: number;
+    p: string;
+    ss: string;
+    w: number;
+    ht: number;
+    al: string;
+    q: string;
+  }
+
+  interface PhotosScriptI18n {
+    basePath: string;
+    allItems: string;
+    allPhotos: string;
+    years: string;
+    months: string;
+    map: string;
+    trips: string;
+    featured: string;
+    albums: string;
+    loadingMap: string;
+    emptyMap: string;
+    initMapError: string;
+    tripSingular: string;
+    tripPlural: string;
+    tripsByYearSuffix: string;
+    destinationsUnit: string;
+    allYearsBack: string;
+    allMonthsBack: string;
+    openYearPrefix: string;
+    photosUnit: string;
+    itemsSuffix: string;
+    archiveFallback: string;
+    regionLabels: Record<string, string>;
+  }
+
+  onPageLoad((signal) => {
+    const app = document.getElementById("mp-app");
+    if (!app) return;
+
+    let i18n: PhotosScriptI18n = {
+      basePath: "/photos",
+      allItems: "All Items",
+      allPhotos: "All Photos",
+      years: "Years",
+      months: "Months",
+      map: "Map",
+      trips: "Trips",
+      featured: "Featured",
+      albums: "Albums",
+      loadingMap: "Loading map…",
+      emptyMap: "No photo locations are available yet.",
+      initMapError: "The interactive map could not be initialized. Try again.",
+      tripSingular: "Trip",
+      tripPlural: "Trips",
+      tripsByYearSuffix: "by Year",
+      destinationsUnit: "Destinations",
+      allYearsBack: "← All Years",
+      allMonthsBack: "← All Months",
+      openYearPrefix: "Open",
+      photosUnit: "photos",
+      itemsSuffix: "Items · Leica Q3, Nikon Zf & iPhone",
+      archiveFallback: "Archive",
+      regionLabels: {},
+    };
+    try {
+      if (app.dataset.photosI18n) {
+        i18n = { ...i18n, ...(JSON.parse(app.dataset.photosI18n) as Partial<PhotosScriptI18n>) };
+      }
+    } catch {}
+
+    let allPhotos: CompactPhoto[] = [];
+    try {
+      const photosEl = document.getElementById("mp-photos-data");
+      if (photosEl?.textContent) {
+        allPhotos = JSON.parse(photosEl.textContent) as CompactPhoto[];
+      }
+    } catch {}
+
+    let mapDestinations: MapDestination[] = [];
+    try {
+      const mapEl = document.getElementById("mp-map-data");
+      if (mapEl?.textContent) {
+        mapDestinations = JSON.parse(mapEl.textContent) as MapDestination[];
+      }
+    } catch {}
+
+    const grid = document.getElementById("mp-grid");
+    const gridSentinel = document.getElementById("mp-grid-sentinel");
+    const gridView = document.getElementById("mp-grid-view");
+    const yearsView = document.getElementById("mp-years-view");
+    const monthsView = document.getElementById("mp-months-view");
+    const monthsSentinel = document.getElementById("mp-months-sentinel");
+    const albumsView = document.getElementById("mp-albums-view");
+    const tripsView = document.getElementById("mp-trips-view");
+    const mapView = document.getElementById("mp-map-view");
+    const mapStatus = document.getElementById("mp-map-status");
+    const mapStatusCopy = mapStatus?.querySelector<HTMLElement>("[data-map-status-copy]");
+    const mapRetry = mapStatus?.querySelector<HTMLButtonElement>("[data-map-retry]");
+    const canvasHead = document.querySelector<HTMLElement>(".mp-canvas-head");
+    const footerEl = document.querySelector<HTMLElement>(".mp-footer");
+    const segLibrary = document.getElementById("mp-seg-library");
+    const timeBar = document.getElementById("mp-time-bar");
+    const emptyEl = document.getElementById("mp-empty");
+    const headingEl = document.getElementById("mp-heading");
+    const subheadingEl = document.getElementById("mp-subheading");
+    const filterWrap = document.getElementById("mp-filter-wrap");
+    const filterTrigger = document.getElementById("mp-filter-trigger");
+    const filterMenu = document.getElementById("mp-filter-menu");
+    const filterLabel = document.getElementById("mp-filter-label");
+    const filterMenuItems = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter-val]"));
+    const searchInput = document.getElementById("mp-search-input") as HTMLInputElement | null;
+    const zoomSlider = document.getElementById("mp-zoom-slider") as HTMLInputElement | null;
+    const zoomOutBtn = document.getElementById("mp-zoom-out");
+    const zoomInBtn = document.getElementById("mp-zoom-in");
+    const sidebarToggle = document.getElementById("mp-sidebar-toggle");
+    const sidebarBackdrop = document.getElementById("mp-sidebar-backdrop");
+    const infoToggle = document.getElementById("mp-info-toggle");
+    const resetBtn = document.getElementById("mp-reset-btn");
+    const mobileSidebarMq = window.matchMedia("(max-width: 820px)");
+    const phoneMq = window.matchMedia("(max-width: 640px)");
+
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    };
+
+    const closeMobileSidebar = () => {
+      app.classList.remove("mobile-sidebar-open");
+      if (sidebarBackdrop) sidebarBackdrop.hidden = true;
+      document.body.style.overflow = "";
+      if (mobileSidebarMq.matches) {
+        sidebarToggle?.setAttribute("aria-pressed", "false");
+      }
+    };
+    signal.addEventListener("abort", () => {
+      document.body.style.overflow = "";
+    }, { once: true });
+
+    const segButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("#mp-seg-library .mp-seg-btn"));
+    const navButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".mp-nav-item"));
+    const folderItems = Array.from(document.querySelectorAll<HTMLElement>(".glass-folder-item"));
+    const tripGroups = Array.from(document.querySelectorAll<HTMLElement>(".mp-trip-year-group"));
+
+    let activeNav = "library";
+    let activeFilter = "all";
+    let activeQuery = "";
+    let activeSeg: "all" | "years" | "months" = "all";
+    let activeTimeValue = "all";
+    let activeMapMode: MapMode = "map";
+    let mapController: PhotosMapController | null = null;
+    let desktopCols = 5;
+
+    const getEffectiveCols = () => {
+      if (phoneMq.matches) return 2;
+      if (mobileSidebarMq.matches) return 3;
+      return desktopCols;
+    };
+
+    const getBatchSize = () => (phoneMq.matches ? 30 : 48);
+
+    const normalizeText = (value: string) =>
+      value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[đĐ]/g, "d")
+        .toLowerCase()
+        .replace(/[-_/]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const compileQuery = (rawQuery: string) => {
+      const normQ = normalizeText(rawQuery);
+      if (!normQ) return null;
+      const tokens = normQ.split(" ").filter(Boolean);
+      const aliasTarget = REGION_ALIASES[normQ] ? normalizeText(REGION_ALIASES[normQ]) : "";
+      const compactAlias = aliasTarget ? aliasTarget.replace(/\s+/g, "") : "";
+      return { tokens, aliasTarget, compactAlias };
+    };
+
+    const matchesCompiledQuery = (
+      normHaystack: string,
+      compactHaystack: string,
+      compiled: ReturnType<typeof compileQuery>,
+    ) => {
+      if (!compiled) return true;
+      if (compiled.tokens.every((token) => normHaystack.includes(token) || compactHaystack.includes(token))) {
+        return true;
+      }
+      if (compiled.aliasTarget) {
+        return normHaystack.includes(compiled.aliasTarget) || compactHaystack.includes(compiled.compactAlias);
+      }
+      return false;
+    };
+
+    const indexedPhotos = allPhotos.map((item) => ({
+      ...item,
+      compactSearch: item.q.replace(/\s+/g, ""),
+    }));
+
+    const indexedFolders = folderItems.map((el) => {
+      const normSearch = el.dataset.search || "";
+      return {
+        el,
+        region: el.dataset.region || "",
+        normSearch,
+        compactSearch: normSearch.replace(/\s+/g, ""),
+      };
+    });
+
+    const indexedTripGroups = tripGroups.map((group) => ({
+      group,
+      countEl: group.querySelector<HTMLElement>("[data-trip-year-count]"),
+      cards: Array.from(group.querySelectorAll<HTMLElement>(".mp-trip-card")).map((card) => {
+        const normSearch = card.dataset.search || "";
+        return {
+          el: card,
+          region: card.dataset.region || "",
+          normSearch,
+          compactSearch: normSearch.replace(/\s+/g, ""),
+        };
+      }),
+    }));
+
+    const indexedMapDestinations = mapDestinations.map((d) => {
+      const normSearch = normalizeText(d.search);
+      return {
+        slug: d.slug,
+        normSearch,
+        compactSearch: normSearch.replace(/\s+/g, ""),
+      };
+    });
+
+    // ── Progressive Zero-Reflow Masonry Engine ───────────────────────────────
+    let masonryItems: typeof indexedPhotos = [];
+    let masonryCursor = 0;
+    let masonryColEls: HTMLDivElement[] = [];
+    let masonryColHeights: number[] = [];
+    let masonryActiveCols = 0;
+
+    const createCellNode = (photo: CompactPhoto, eager: boolean) => {
+      const a = document.createElement("a");
+      a.href = photo.h;
+      a.className = "mp-cell";
+
+      const media = document.createElement("div");
+      media.className = "mp-cell-media";
+      media.style.aspectRatio = `${photo.w} / ${photo.ht}`;
+
+      const img = document.createElement("img");
+      img.src = photo.p;
+      if (photo.ss) img.srcset = photo.ss;
+      img.sizes = phoneMq.matches ? "48vw" : mobileSidebarMq.matches ? "32vw" : `${Math.ceil(100 / Math.max(3, desktopCols))}vw`;
+      img.alt = photo.al;
+      img.width = photo.w;
+      img.height = photo.ht;
+      img.loading = eager ? "eager" : "lazy";
+      img.decoding = "async";
+      media.appendChild(img);
+
+      const info = document.createElement("div");
+      info.className = "mp-cell-info";
+      const label = document.createElement("span");
+      label.textContent = photo.a;
+      info.appendChild(label);
+
+      a.append(media, info);
+      return a;
+    };
+
+    const appendMasonryBatch = (count: number) => {
+      if (!grid || masonryCursor >= masonryItems.length || masonryColEls.length === 0) {
+        if (gridSentinel) gridSentinel.hidden = true;
+        return;
+      }
+      const end = Math.min(masonryItems.length, masonryCursor + count);
+      const frags = masonryColEls.map(() => document.createDocumentFragment());
+
+      for (let i = masonryCursor; i < end; i++) {
+        const photo = masonryItems[i];
+        let shortest = 0;
+        for (let c = 1; c < masonryColHeights.length; c++) {
+          if (masonryColHeights[c] < masonryColHeights[shortest]) shortest = c;
+        }
+        frags[shortest].appendChild(createCellNode(photo, i < 12));
+        masonryColHeights[shortest] += photo.ht / Math.max(1, photo.w);
+      }
+
+      for (let c = 0; c < masonryColEls.length; c++) {
+        if (frags[c].childNodes.length > 0) {
+          masonryColEls[c].appendChild(frags[c]);
+        }
+      }
+      masonryCursor = end;
+      if (gridSentinel) gridSentinel.hidden = masonryCursor >= masonryItems.length;
+    };
+
+    const resetMasonry = (items: typeof indexedPhotos, targetRendered?: number) => {
+      if (!grid) return;
+      const cols = getEffectiveCols();
+      masonryItems = items;
+      masonryCursor = 0;
+      masonryActiveCols = cols;
+      masonryColHeights = new Array<number>(cols).fill(0);
+      grid.style.setProperty("--mp-cols", String(cols));
+
+      const frag = document.createDocumentFragment();
+      masonryColEls = [];
+      for (let c = 0; c < cols; c++) {
+        const col = document.createElement("div");
+        col.className = "mp-masonry-col";
+        masonryColEls.push(col);
+        frag.appendChild(col);
+      }
+      grid.replaceChildren(frag);
+      appendMasonryBatch(targetRendered ?? getBatchSize());
+    };
+
+    // ── Progressive Months Bento Engine ──────────────────────────────────────
+    let pendingMonths: [string, { sortKey: number; items: typeof indexedPhotos }][] = [];
+    let monthsCursor = 0;
+
+    const appendMonthsBatch = (count: number) => {
+      if (!monthsView || monthsCursor >= pendingMonths.length) {
+        if (monthsSentinel) monthsSentinel.hidden = true;
+        return;
+      }
+      const end = Math.min(pendingMonths.length, monthsCursor + count);
+      const frag = document.createDocumentFragment();
+
+      for (let m = monthsCursor; m < end; m++) {
+        const [monthLabel, group] = pendingMonths[m];
+        const section = document.createElement("section");
+        section.className = "mp-month-section";
+
+        const heading = document.createElement("h2");
+        heading.className = "mp-month-title";
+        heading.textContent = monthLabel;
+        section.appendChild(heading);
+
+        const bento = document.createElement("div");
+        bento.className = "mp-month-bento";
+
+        const ordered = [...group.items].sort((a, b) => a.ts - b.ts || b.f - a.f);
+        const hasHero = ordered.length >= 3;
+
+        ordered.forEach((photo, idx) => {
+          const card = document.createElement("a");
+          card.href = photo.h;
+          card.className = `mp-month-card${hasHero && idx === 0 ? " mp-month-card--hero" : ""}`;
+          card.setAttribute("aria-label", `${photo.a || photo.al} (${monthLabel})`);
+
+          const img = document.createElement("img");
+          img.src = photo.p;
+          if (photo.ss) img.srcset = photo.ss;
+          img.sizes = hasHero && idx === 0 ? "(max-width: 640px) 66vw, 760px" : "(max-width: 640px) 33vw, 380px";
+          img.alt = photo.al;
+          img.className = "mp-month-card-img";
+          img.loading = m === 0 && idx < 4 ? "eager" : "lazy";
+          img.decoding = "async";
+          card.appendChild(img);
+
+          if (photo.dy) {
+            const dayBadge = document.createElement("span");
+            dayBadge.className = "mp-month-card-day";
+            dayBadge.textContent = photo.dy;
+            card.appendChild(dayBadge);
+          }
+
+          if (photo.a) {
+            const info = document.createElement("div");
+            info.className = "mp-month-card-info";
+            info.textContent = photo.a;
+            card.appendChild(info);
+          }
+
+          bento.appendChild(card);
+        });
+
+        section.appendChild(bento);
+        frag.appendChild(section);
+      }
+
+      monthsView.appendChild(frag);
+      monthsCursor = end;
+      if (monthsSentinel) monthsSentinel.hidden = monthsCursor >= pendingMonths.length;
+    };
+
+    const renderMonthsBento = (items: typeof indexedPhotos) => {
+      if (!monthsView) return;
+      const grouped = new Map<string, { sortKey: number; items: typeof indexedPhotos }>();
+      items.forEach((item) => {
+        const existing = grouped.get(item.d);
+        if (existing) existing.items.push(item);
+        else grouped.set(item.d, { sortKey: item.ms, items: [item] });
+      });
+
+      pendingMonths = Array.from(grouped.entries()).sort((a, b) => b[1].sortKey - a[1].sortKey);
+      monthsCursor = 0;
+      monthsView.replaceChildren();
+      appendMonthsBatch(3);
+    };
+
+    // Single IntersectionObserver handles progressive loading for both All Photos & Months
+    if (typeof IntersectionObserver !== "undefined") {
+      const batchObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            if (entry.target === gridSentinel && grid && !grid.hidden) {
+              appendMasonryBatch(getBatchSize());
+            } else if (entry.target === monthsSentinel && monthsView && !monthsView.hidden) {
+              appendMonthsBatch(2);
+            }
+          }
+        },
+        { rootMargin: "1200px 0px" },
+      );
+      if (gridSentinel) batchObserver.observe(gridSentinel);
+      if (monthsSentinel) batchObserver.observe(monthsSentinel);
+      signal.addEventListener("abort", () => batchObserver.disconnect(), { once: true });
+    }
+
+    // ── Map Initialization ───────────────────────────────────────────────────
+    const setMapStatus = (state: "loading" | "ready" | "error" | "empty", message?: string) => {
+      if (!mapView || !mapStatus) return;
+      mapView.dataset.mapState = state;
+      if (mapStatusCopy) mapStatusCopy.textContent = message || (state === "loading" ? i18n.loadingMap : "");
+      mapRetry?.toggleAttribute("hidden", state !== "error");
+      mapStatus.hidden = state === "ready";
+    };
+
+    let mapLoading = false;
+    const loadMap = async () => {
+      if (mapLoading || mapController || !mapView) return;
+      if (!mapDestinations.length) {
+        setMapStatus("empty", i18n.emptyMap);
+        return;
+      }
+      mapLoading = true;
+      setMapStatus("loading", i18n.loadingMap);
+      try {
+        const { createPhotosMap } = await import("../../scripts/photos-map");
+        if (signal.aborted || activeNav !== "map") return;
+        mapController = createPhotosMap({
+          container: mapView,
+          destinations: mapDestinations,
+          basePath: i18n.basePath,
+          onStateChange: setMapStatus,
+          signal,
+        });
+        signal.addEventListener("abort", () => mapController?.destroy(), { once: true });
+        applyState();
+      } catch (err) {
+        console.error("[photos-map] Failed to initialize map:", err);
+        setMapStatus("error", i18n.initMapError);
+      } finally {
+        mapLoading = false;
+      }
+    };
+
+    mapRetry?.addEventListener("click", () => {
+      if (mapController) mapController.retry();
+      else void loadMap();
+    }, { signal });
+
+    // ── State & Hash Sync ────────────────────────────────────────────────────
+    const availableRegionNames = navButtons
+      .map((btn) => btn.dataset.nav || "")
+      .filter((nav) => nav.startsWith("region:"))
+      .map((nav) => nav.slice(7));
+    const availableAlbumSlugs = filterMenuItems
+      .map((item) => item.dataset.filterVal || "")
+      .filter((val) => val.startsWith("album:"))
+      .map((val) => val.slice(6));
+    const availableYears = Array.from(new Set(indexedPhotos.map((item) => item.y).filter(Boolean)));
+    const availableMonths = Array.from(new Set(indexedPhotos.map((item) => item.d).filter(Boolean)));
+
+    const syncUrlFromState = () => {
+      const nextHash = getPhotosLibraryHash({
+        nav: activeNav,
+        seg: activeSeg,
+        timeValue: activeTimeValue,
+        filter: activeFilter,
+      });
+      const currentUrl = new URL(window.location.href);
+      const nextLocalUrl = `${currentUrl.pathname}${currentUrl.search}${nextHash}`;
+      if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextLocalUrl) {
+        window.history.replaceState(window.history.state, "", nextLocalUrl);
+      }
+    };
+
+    const syncFilterControls = () => {
+      let labelText = i18n.allItems;
+      filterMenuItems.forEach((btn) => {
+        const selected = (btn.dataset.filterVal || "all") === activeFilter;
+        btn.classList.toggle("is-selected", selected);
+        btn.setAttribute("aria-checked", String(selected));
+        if (selected && btn.dataset.filterText) labelText = btn.dataset.filterText;
+      });
+      if (filterLabel) filterLabel.textContent = labelText;
+    };
+
+    const syncSegControls = () => {
+      segButtons.forEach((btn) => {
+        const isCurrent = ((btn.dataset.seg as "all" | "years" | "months") || "all") === activeSeg;
+        btn.classList.toggle("is-active", isCurrent);
+        btn.setAttribute("aria-selected", String(isCurrent));
+      });
+    };
+
+    const applyHashFromLocation = () => {
+      const parsed = parsePhotosLibraryHash(window.location.hash, {
+        availableRegions: availableRegionNames,
+        availableAlbumSlugs,
+        availableTimeValues: { years: availableYears, months: availableMonths },
+      });
+      activeNav = parsed.nav;
+      activeSeg = parsed.seg;
+      activeTimeValue = parsed.timeValue;
+      activeFilter = parsed.filter;
+      syncSegControls();
+      syncFilterControls();
+    };
+
+    const renderYearsCards = (items: typeof indexedPhotos) => {
+      if (!yearsView) return;
+      const grouped = new Map<string, typeof indexedPhotos>();
+      items.forEach((item) => {
+        const list = grouped.get(item.y) || [];
+        list.push(item);
+        grouped.set(item.y, list);
+      });
+
+      const sortedYears = Array.from(grouped.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+      const gridEl = document.createElement("div");
+      gridEl.className = "mp-years-grid";
+
+      sortedYears.forEach(([yearLabel, yearItems]) => {
+        const cover = yearItems.find((item) => item.f === 1) ?? yearItems[0];
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "mp-year-card";
+        card.setAttribute("aria-label", `${i18n.openYearPrefix} ${yearLabel} (${yearItems.length} ${i18n.photosUnit})`);
+        card.addEventListener("click", () => {
+          activeTimeValue = yearLabel;
+          scrollToTop();
+          applyState();
+        });
+
+        if (cover) {
+          const img = document.createElement("img");
+          img.src = cover.p;
+          if (cover.ss) img.srcset = cover.ss;
+          img.sizes = "(max-width: 640px) 48vw, 560px";
+          img.alt = `${yearLabel} — ${cover.a || cover.al}`;
+          img.className = "mp-year-card-img";
+          img.loading = "eager";
+          img.decoding = "async";
+          card.appendChild(img);
+        }
+
+        const title = document.createElement("span");
+        title.className = "mp-year-card-title";
+        title.textContent = yearLabel;
+        card.appendChild(title);
+
+        gridEl.appendChild(card);
+      });
+
+      yearsView.replaceChildren(gridEl);
+    };
+
+    let suppressUrlSync = false;
+
+    const applyState = () => {
+      if (!suppressUrlSync) syncUrlFromState();
+
+      const compiledQ = compileQuery(activeQuery);
+      const isMapNav = activeNav === "map";
+      const isTripsMode = !isMapNav && activeNav === "trips";
+      const isAlbumsMode = !isMapNav && activeNav === "albums";
+      const isCollectionMode = isTripsMode || isAlbumsMode;
+      const isCuratedTimeView = !isMapNav && !isCollectionMode && (activeSeg === "years" || activeSeg === "months");
+
+      app.classList.toggle("is-map-mode", isMapNav);
+      app.classList.toggle("is-map-canvas", isMapNav);
+      app.classList.toggle("is-curated-time", isCuratedTimeView || isCollectionMode);
+      segLibrary?.classList.toggle("is-slot-hidden", isMapNav);
+      segLibrary?.setAttribute("aria-hidden", String(isMapNav));
+      segButtons.forEach((btn) => {
+        const isCurrent = !isCollectionMode && !isMapNav && ((btn.dataset.seg as "all" | "years" | "months") || "all") === activeSeg;
+        btn.classList.toggle("is-active", isCurrent);
+        btn.setAttribute("aria-selected", String(isCurrent));
+      });
+      if (filterWrap) filterWrap.hidden = isMapNav;
+      if (canvasHead) canvasHead.hidden = isMapNav;
+      if (footerEl) footerEl.hidden = isMapNav;
+      if (mapView) mapView.hidden = !isMapNav;
+
+      navButtons.forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.nav === activeNav);
+      });
+
+      if (isMapNav) {
+        void loadMap();
+        const matchingSlugs = compiledQ
+          ? new Set(
+              indexedMapDestinations
+                .filter((d) => matchesCompiledQuery(d.normSearch, d.compactSearch, compiledQ))
+                .map((d) => d.slug),
+            )
+          : null;
+        mapController?.setMode(activeMapMode);
+        mapController?.setVisible(true);
+        mapController?.setFilteredSlugs(matchingSlugs);
+        if (gridView) gridView.hidden = true;
+        if (tripsView) tripsView.hidden = true;
+        if (albumsView) albumsView.hidden = true;
+        return;
+      } else {
+        mapController?.setVisible(false);
+      }
+
+      if (gridView) gridView.hidden = isTripsMode || isAlbumsMode;
+      if (tripsView) tripsView.hidden = !isTripsMode;
+      if (albumsView) albumsView.hidden = !isAlbumsMode;
+
+      if (isTripsMode) {
+        let visibleTrips = 0;
+        const filterRegion = activeFilter.startsWith("region:") ? activeFilter.slice(7) : null;
+        indexedTripGroups.forEach(({ group, countEl, cards }) => {
+          let groupVisible = 0;
+          cards.forEach((card) => {
+            const matchFilter = !filterRegion || card.region === filterRegion;
+            const show = matchFilter && matchesCompiledQuery(card.normSearch, card.compactSearch, compiledQ);
+            if (card.el.hidden !== !show) card.el.hidden = !show;
+            if (show) {
+              groupVisible++;
+              visibleTrips++;
+            }
+          });
+          if (group.hidden !== (groupVisible === 0)) group.hidden = groupVisible === 0;
+          if (countEl) {
+            countEl.textContent = `${groupVisible} ${groupVisible === 1 ? i18n.tripSingular : i18n.tripPlural}`;
+          }
+        });
+        if (headingEl) headingEl.textContent = i18n.trips;
+        if (subheadingEl) subheadingEl.textContent = `${visibleTrips} ${visibleTrips === 1 ? i18n.tripSingular : i18n.tripPlural} ${i18n.tripsByYearSuffix}`;
+        return;
+      }
+
+      if (isAlbumsMode) {
+        let visibleAlbums = 0;
+        const filterRegion = activeFilter.startsWith("region:") ? activeFilter.slice(7) : null;
+        indexedFolders.forEach((item) => {
+          const matchFilter = !filterRegion || item.region === filterRegion;
+          const show = matchFilter && matchesCompiledQuery(item.normSearch, item.compactSearch, compiledQ);
+          if (item.el.hidden !== !show) item.el.hidden = !show;
+          if (show) visibleAlbums++;
+        });
+        if (headingEl) headingEl.textContent = i18n.albums;
+        if (subheadingEl) subheadingEl.textContent = `${visibleAlbums} ${i18n.destinationsUnit}`;
+        return;
+      }
+
+      const navRegion = activeNav.startsWith("region:") ? activeNav.slice(7) : null;
+      const filterRegion = activeFilter.startsWith("region:") ? activeFilter.slice(7) : null;
+      const filterAlbum = activeFilter.startsWith("album:") ? activeFilter.slice(6) : null;
+
+      const baseMatched = indexedPhotos.filter((item) => {
+        if (activeNav === "featured" && item.f !== 1) return false;
+        if (navRegion && item.r !== navRegion) return false;
+        if (activeFilter === "featured" && item.f !== 1) return false;
+        if (filterRegion && item.r !== filterRegion) return false;
+        if (filterAlbum && item.s !== filterAlbum) return false;
+        return matchesCompiledQuery(item.q, item.compactSearch, compiledQ);
+      });
+
+      let visibleCount = 0;
+
+      if (activeSeg === "years") {
+        const yearCounts = new Map<string, number>();
+        baseMatched.forEach((item) => yearCounts.set(item.y, (yearCounts.get(item.y) || 0) + 1));
+
+        if (activeTimeValue !== "all" && !yearCounts.has(activeTimeValue)) {
+          activeTimeValue = "all";
+        }
+
+        if (grid) grid.hidden = true;
+        if (gridSentinel) gridSentinel.hidden = true;
+
+        if (activeTimeValue === "all") {
+          if (timeBar) timeBar.hidden = true;
+          if (monthsView) monthsView.hidden = true;
+          if (monthsSentinel) monthsSentinel.hidden = true;
+          if (yearsView) yearsView.hidden = baseMatched.length === 0;
+          renderYearsCards(baseMatched);
+          visibleCount = baseMatched.length;
+        } else {
+          if (yearsView) yearsView.hidden = true;
+          const filteredYearItems = baseMatched.filter((item) => item.y === activeTimeValue);
+          visibleCount = filteredYearItems.length;
+
+          if (timeBar) {
+            timeBar.hidden = yearCounts.size === 0;
+            const frag = document.createDocumentFragment();
+            const allBtn = document.createElement("button");
+            allBtn.type = "button";
+            allBtn.className = "mp-time-pill";
+            allBtn.innerHTML = `<span>${i18n.allYearsBack}</span><span class="mp-time-pill-count">${baseMatched.length}</span>`;
+            allBtn.addEventListener("click", () => {
+              activeTimeValue = "all";
+              scrollToTop();
+              applyState();
+            });
+            frag.appendChild(allBtn);
+
+            Array.from(yearCounts.entries())
+              .sort((a, b) => a[0].localeCompare(b[0]))
+              .forEach(([yearKey, count]) => {
+                const pill = document.createElement("button");
+                pill.type = "button";
+                pill.className = `mp-time-pill${activeTimeValue === yearKey ? " is-active" : ""}`;
+                pill.innerHTML = `<span>${yearKey}</span><span class="mp-time-pill-count">${count}</span>`;
+                pill.addEventListener("click", () => {
+                  activeTimeValue = yearKey;
+                  scrollToTop();
+                  applyState();
+                });
+                frag.appendChild(pill);
+              });
+            timeBar.replaceChildren(frag);
+          }
+
+          if (monthsView) monthsView.hidden = visibleCount === 0;
+          renderMonthsBento(filteredYearItems);
+        }
+      } else if (activeSeg === "months") {
+        const monthMap = new Map<string, { count: number; sortKey: number }>();
+        baseMatched.forEach((item) => {
+          const existing = monthMap.get(item.d);
+          if (existing) existing.count++;
+          else monthMap.set(item.d, { count: 1, sortKey: item.ms });
+        });
+
+        if (activeTimeValue !== "all" && !monthMap.has(activeTimeValue)) {
+          activeTimeValue = "all";
+        }
+
+        if (grid) grid.hidden = true;
+        if (gridSentinel) gridSentinel.hidden = true;
+        if (yearsView) yearsView.hidden = true;
+
+        const filteredMonthItems =
+          activeTimeValue === "all"
+            ? baseMatched
+            : baseMatched.filter((item) => item.d === activeTimeValue);
+        visibleCount = filteredMonthItems.length;
+
+        if (timeBar) {
+          timeBar.hidden = activeTimeValue === "all";
+          if (activeTimeValue !== "all") {
+            const frag = document.createDocumentFragment();
+            const allBtn = document.createElement("button");
+            allBtn.type = "button";
+            allBtn.className = "mp-time-pill";
+            allBtn.innerHTML = `<span>${i18n.allMonthsBack}</span><span class="mp-time-pill-count">${baseMatched.length}</span>`;
+            allBtn.addEventListener("click", () => {
+              activeTimeValue = "all";
+              scrollToTop();
+              applyState();
+            });
+            frag.appendChild(allBtn);
+
+            Array.from(monthMap.entries())
+              .sort((a, b) => b[1].sortKey - a[1].sortKey)
+              .forEach(([monthKey, meta]) => {
+                const pill = document.createElement("button");
+                pill.type = "button";
+                pill.className = `mp-time-pill${activeTimeValue === monthKey ? " is-active" : ""}`;
+                pill.innerHTML = `<span>${monthKey}</span><span class="mp-time-pill-count">${meta.count}</span>`;
+                pill.addEventListener("click", () => {
+                  activeTimeValue = monthKey;
+                  scrollToTop();
+                  applyState();
+                });
+                frag.appendChild(pill);
+              });
+            timeBar.replaceChildren(frag);
+          }
+        }
+
+        if (monthsView) monthsView.hidden = visibleCount === 0;
+        renderMonthsBento(filteredMonthItems);
+      } else {
+        if (grid) grid.hidden = false;
+        if (yearsView) yearsView.hidden = true;
+        if (monthsView) monthsView.hidden = true;
+        if (monthsSentinel) monthsSentinel.hidden = true;
+        if (timeBar && !timeBar.hidden) timeBar.hidden = true;
+        visibleCount = baseMatched.length;
+        resetMasonry(baseMatched);
+      }
+
+      if (emptyEl) emptyEl.hidden = visibleCount > 0;
+
+      const navLabels: Record<string, string> = {
+        library:
+          activeSeg === "years"
+            ? activeTimeValue === "all"
+              ? i18n.years
+              : activeTimeValue
+            : activeSeg === "months"
+              ? activeTimeValue === "all"
+                ? i18n.months
+                : activeTimeValue
+              : i18n.allPhotos,
+        map: i18n.map,
+        featured: i18n.featured,
+      };
+      if (headingEl) {
+        headingEl.textContent = (navRegion ? i18n.regionLabels[navRegion] || navRegion : null) || navLabels[activeNav] || i18n.allPhotos;
+      }
+      if (subheadingEl) {
+        subheadingEl.textContent = `${visibleCount} ${i18n.itemsSuffix}`;
+      }
+    };
+
+    const ZOOM_STORAGE_KEY = "mp-photos-cols";
+    const SIDEBAR_STORAGE_KEY = "mp-photos-sidebar-collapsed";
+
+    try {
+      if (!mobileSidebarMq.matches && localStorage.getItem(SIDEBAR_STORAGE_KEY) === "1") {
+        app.classList.add("sidebar-collapsed");
+        sidebarToggle?.setAttribute("aria-pressed", "false");
+      } else if (mobileSidebarMq.matches) {
+        sidebarToggle?.setAttribute("aria-pressed", "false");
+      }
+    } catch {}
+
+    sidebarToggle?.addEventListener(
+      "click",
+      () => {
+        if (mobileSidebarMq.matches) {
+          const open = app.classList.toggle("mobile-sidebar-open");
+          if (sidebarBackdrop) sidebarBackdrop.hidden = !open;
+          document.body.style.overflow = open ? "hidden" : "";
+          sidebarToggle.setAttribute("aria-pressed", String(open));
+          return;
+        }
+        const collapsed = app.classList.toggle("sidebar-collapsed");
+        sidebarToggle.setAttribute("aria-pressed", String(!collapsed));
+        try {
+          localStorage.setItem(SIDEBAR_STORAGE_KEY, collapsed ? "1" : "0");
+        } catch {}
+      },
+      { signal },
+    );
+
+    sidebarBackdrop?.addEventListener("click", closeMobileSidebar, { signal });
+
+    const handleBreakpointChange = () => {
+      closeMobileSidebar();
+      if (grid && !grid.hidden && getEffectiveCols() !== masonryActiveCols) {
+        resetMasonry(masonryItems, Math.max(getBatchSize(), masonryCursor));
+      }
+    };
+    mobileSidebarMq.addEventListener("change", handleBreakpointChange, { signal });
+    phoneMq.addEventListener("change", handleBreakpointChange, { signal });
+
+    infoToggle?.addEventListener(
+      "click",
+      () => {
+        const active = app.classList.toggle("show-info");
+        infoToggle.classList.toggle("is-active", active);
+        infoToggle.setAttribute("aria-pressed", String(active));
+      },
+      { signal },
+    );
+
+    const MIN_COLS = 3;
+    const MAX_COLS = 7;
+    const sliderToCols = (sliderVal: number) => MAX_COLS + MIN_COLS - sliderVal;
+    const colsToSlider = (cols: number) => MAX_COLS + MIN_COLS - cols;
+
+    let zoomRaf = 0;
+    const setCols = (val: number, persist = true) => {
+      const clamped = Math.max(MIN_COLS, Math.min(MAX_COLS, val));
+      if (zoomSlider) zoomSlider.value = String(colsToSlider(clamped));
+      if (clamped !== desktopCols) {
+        desktopCols = clamped;
+        if (zoomRaf) cancelAnimationFrame(zoomRaf);
+        zoomRaf = requestAnimationFrame(() => {
+          zoomRaf = 0;
+          if (grid && !grid.hidden && getEffectiveCols() !== masonryActiveCols) {
+            resetMasonry(masonryItems, Math.max(getBatchSize(), masonryCursor));
+          }
+        });
+      }
+      if (persist) {
+        try {
+          localStorage.setItem(ZOOM_STORAGE_KEY, String(clamped));
+        } catch {}
+      }
+    };
+    signal.addEventListener("abort", () => {
+      if (zoomRaf) cancelAnimationFrame(zoomRaf);
+    }, { once: true });
+
+    try {
+      const savedCols = Number(localStorage.getItem(ZOOM_STORAGE_KEY));
+      if (Number.isFinite(savedCols) && savedCols >= MIN_COLS && savedCols <= MAX_COLS) {
+        desktopCols = savedCols;
+        if (zoomSlider) zoomSlider.value = String(colsToSlider(savedCols));
+      }
+    } catch {}
+
+    zoomSlider?.addEventListener("input", () => setCols(sliderToCols(Number(zoomSlider.value))), { signal });
+    zoomOutBtn?.addEventListener("click", () => setCols(desktopCols + 1), { signal });
+    zoomInBtn?.addEventListener("click", () => setCols(desktopCols - 1), { signal });
+
+    segButtons.forEach((btn) => {
+      btn.addEventListener(
+        "click",
+        () => {
+          const nextSeg = (btn.dataset.seg as "all" | "years" | "months") || "all";
+          if (nextSeg !== activeSeg) {
+            activeSeg = nextSeg;
+            activeTimeValue = "all";
+          }
+          syncSegControls();
+          if (activeNav === "trips" || activeNav === "albums") {
+            activeNav = "library";
+          }
+          scrollToTop();
+          applyState();
+        },
+        { signal },
+      );
+    });
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener(
+        "click",
+        () => {
+          const nextNav = btn.dataset.nav || "library";
+          const changed = nextNav !== activeNav;
+          activeNav = nextNav;
+          closeMobileSidebar();
+          if (changed) scrollToTop();
+          applyState();
+        },
+        { signal },
+      );
+    });
+
+    const closeFilterMenu = () => {
+      if (!filterMenu || !filterTrigger) return;
+      filterMenu.hidden = true;
+      filterTrigger.setAttribute("aria-expanded", "false");
+    };
+
+    filterTrigger?.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+        if (!filterMenu) return;
+        const nextOpen = filterMenu.hidden;
+        filterMenu.hidden = !nextOpen;
+        filterTrigger.setAttribute("aria-expanded", String(nextOpen));
+      },
+      { signal },
+    );
+
+    filterMenuItems.forEach((item) => {
+      item.addEventListener(
+        "click",
+        () => {
+          activeFilter = item.dataset.filterVal || "all";
+          syncFilterControls();
+          closeFilterMenu();
+          scrollToTop();
+          applyState();
+        },
+        { signal },
+      );
+    });
+
+    document.addEventListener(
+      "click",
+      (e) => {
+        if (filterMenu && !filterMenu.hidden && !filterWrap?.contains(e.target as Node)) {
+          closeFilterMenu();
+        }
+      },
+      { signal },
+    );
+
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape") {
+          if (filterMenu && !filterMenu.hidden) closeFilterMenu();
+          if (app.classList.contains("mobile-sidebar-open")) closeMobileSidebar();
+        }
+      },
+      { signal },
+    );
+
+    let searchTimer = 0;
+    searchInput?.addEventListener(
+      "input",
+      () => {
+        activeQuery = searchInput.value;
+        window.clearTimeout(searchTimer);
+        searchTimer = window.setTimeout(() => {
+          applyState();
+        }, 80);
+      },
+      { signal },
+    );
+    signal.addEventListener("abort", () => window.clearTimeout(searchTimer), { once: true });
+
+    resetBtn?.addEventListener(
+      "click",
+      () => {
+        activeNav = "library";
+        activeFilter = "all";
+        activeQuery = "";
+        syncFilterControls();
+        if (searchInput) searchInput.value = "";
+        scrollToTop();
+        applyState();
+      },
+      { signal },
+    );
+
+    // GlassFolder interactions for Albums
+    const foldersGrid = document.getElementById("mp-folders-grid");
+    if (foldersGrid) {
+      const FOLDER_BASE_WIDTH = 340;
+      const setFolderOpen = (root: HTMLElement, open: boolean) => {
+        if (open) root.setAttribute("data-open", "true");
+        else root.removeAttribute("data-open");
+        root.querySelector<HTMLButtonElement>(".gf-hit")?.setAttribute("aria-expanded", String(open));
+        const files = root.querySelector<HTMLElement>(".gf-files");
+        if (files) files.inert = !open;
+      };
+
+      const closeAllFolders = (except?: HTMLElement) => {
+        folderItems.forEach((item) => {
+          const root = item.querySelector<HTMLElement>(".gf-root");
+          if (root && root !== except && root.hasAttribute("data-open")) {
+            setFolderOpen(root, false);
+          }
+        });
+      };
+
+      const needsScaleFallback =
+        typeof CSS === "undefined" || !CSS.supports("transform", "scale(calc(100cqw / 340px))");
+      const ro =
+        needsScaleFallback && typeof ResizeObserver !== "undefined"
+          ? new ResizeObserver((entries) => {
+              for (const entry of entries) {
+                const w = entry.contentRect.width;
+                if (w > 0) {
+                  (entry.target as HTMLElement).style.setProperty("--gf-k", String(w / FOLDER_BASE_WIDTH));
+                }
+              }
+            })
+          : null;
+
+      folderItems.forEach((item) => {
+        const root = item.querySelector<HTMLElement>(".gf-root");
+        const hit = item.querySelector<HTMLButtonElement>(".gf-hit");
+        const href = item.dataset.href;
+        if (!root) return;
+
+        ro?.observe(root);
+
+        hit?.addEventListener(
+          "click",
+          () => {
+            const isOpen = root.hasAttribute("data-open");
+            if (!isOpen) {
+              closeAllFolders(root);
+              setFolderOpen(root, true);
+            } else if (href) {
+              window.location.assign(href);
+            }
+          },
+          { signal },
+        );
+      });
+
+      document.addEventListener(
+        "click",
+        (e) => {
+          const target = e.target as HTMLElement | null;
+          if (!target?.closest(".glass-folder-item")) closeAllFolders();
+        },
+        { signal },
+      );
+
+      signal.addEventListener("abort", () => ro?.disconnect(), { once: true });
+    }
+
+    window.addEventListener(
+      "hashchange",
+      () => {
+        suppressUrlSync = true;
+        applyHashFromLocation();
+        applyState();
+        suppressUrlSync = false;
+        syncUrlFromState();
+      },
+      { signal },
+    );
+
+    applyHashFromLocation();
+    applyState();
+  });
+</script>

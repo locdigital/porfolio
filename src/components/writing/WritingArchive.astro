@@ -3,14 +3,18 @@ import DashboardLayout from "../../layouts/DashboardLayout.astro";
 import { ArrowRight } from "../icons/phosphor";
 import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import { getWritingEntries, writingCategorySlug } from "../../lib/writing";
+import { formatDate } from "../../lib/i18n";
 import { canonicalUrl, collectionPageSchema } from "../../lib/seo";
 
-interface Props { category?: string; }
+interface Props {
+  category?: string;
+}
+
 const { category } = Astro.props;
 
 const allEntries = await getWritingEntries();
-const entries = category ? allEntries.filter(entry => entry.data.category === category) : allEntries;
-const samplePreview = entries.length > 0 && entries.every(entry => entry.data.sample);
+const entries = category ? allEntries.filter((entry) => entry.data.category === category) : allEntries;
+const samplePreview = entries.length > 0 && entries.every((entry) => entry.data.sample);
 const featuredEntries = entries.slice(0, 2);
 const timelineEntries = entries.slice(2);
 const featuredFallbacks = [
@@ -24,23 +28,26 @@ const featuredFallbacks = [
   },
 ];
 
-function archiveDate(date: Date) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "Asia/Ho_Chi_Minh",
-  }).format(date);
-}
+const archiveDate = (date: Date) => formatDate(date, "article");
 
 const basePath = "/writing";
 const homePath = "/";
-const pageUrl = canonicalUrl(category ? `/writing/category/${writingCategorySlug(category)}` : basePath);
-const linkableEntries = entries.filter(entry => entry.data.linkable !== false);
+const pagePath = category
+  ? `/writing/category/${writingCategorySlug(category)}`
+  : basePath;
+const pageUrl = canonicalUrl(pagePath);
+const linkableEntries = entries.filter((entry) => entry.data.linkable !== false);
+
+const seoTitle = category ? `${category} — Writing — Phuc Loc Nguyen` : "Writing — Phuc Loc Nguyen";
+
+const seoDescription = category
+  ? `Articles about ${category} by Phuc Loc Nguyen.`
+  : "Essays, field stories, and reflections on marketing, career, and travel by Phuc Loc Nguyen.";
+
 const writingSchema = collectionPageSchema({
   url: pageUrl,
-  title: category ? `${category} — Writing — Phuc Loc Nguyen` : "Writing — Phuc Loc Nguyen",
-  description: category ? `Articles about ${category} by Phuc Loc Nguyen.` : "Essays, field stories, and reflections on growth, career, and travel by Phuc Loc Nguyen.",
+  title: seoTitle,
+  description: seoDescription,
   items: linkableEntries.map((entry) => ({
     name: entry.data.title,
     url: `${basePath}/${entry.slug}`,
@@ -52,13 +59,13 @@ const writingSchema = collectionPageSchema({
 ---
 
 <DashboardLayout
-  title={category ? `${category} — Writing — Phuc Loc Nguyen` : "Writing — Phuc Loc Nguyen"}
+  title={seoTitle}
   pageTitle="Writing"
-  description={category ? `Articles about ${category} by Phuc Loc Nguyen.` : "Essays, field stories, and reflections on marketing, career, and travel by Phuc Loc Nguyen."}
+  description={seoDescription}
   breadcrumbs={[
     { label: "Personal", href: homePath },
     { label: "Writing", href: category ? basePath : undefined },
-    ...(category ? [{ label: category }] : [])
+    ...(category ? [{ label: category }] : []),
   ]}
   maxWidthVariant="default"
   currentPath={Astro.url.pathname}
@@ -67,7 +74,9 @@ const writingSchema = collectionPageSchema({
   <header class="page-header">
     <h1 class="page-title">{category || "Writing"}</h1>
     <p class="page-lead">
-      {category ? `${entries.length} ${entries.length === 1 ? "article" : "articles"} in this topic.` : "Essays and notes on performance, curiosity, career building, and travel."}
+      {category
+        ? `${entries.length} ${entries.length === 1 ? "article" : "articles"} in this topic.`
+        : "Essays and notes on performance, curiosity, career building, and travel."}
     </p>
     {samplePreview && (
       <p class="writing-preview-note">
@@ -201,8 +210,7 @@ const writingSchema = collectionPageSchema({
     background: #f5f5f5;
     opacity: 0;
     transform: scale(0.95);
-    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 300ms ease;
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease;
   }
 
   .writing-card-hit {

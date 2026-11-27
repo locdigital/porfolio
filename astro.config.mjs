@@ -41,7 +41,8 @@ function loadPhotoLastMod() {
     const raw = JSON.parse(fs.readFileSync(path.resolve('./data/photo-updates.json'), 'utf8'));
     for (const [slug, meta] of Object.entries(raw)) {
       if (meta && typeof meta.updatedAt === 'string' && !Number.isNaN(Date.parse(meta.updatedAt))) {
-        map.set(`/photos/${slug}`, new Date(meta.updatedAt).toISOString());
+        const iso = new Date(meta.updatedAt).toISOString();
+        map.set(`/photos/${slug}`, iso);
       }
     }
   } catch {
@@ -64,13 +65,6 @@ function normalizeCanonicalUrl(rawUrl) {
 export default defineConfig({
   site: SITE_ORIGIN,
   trailingSlash: 'never',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'vi'],
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
   // Public content is generated once at build time; only explicit routes with prerender = false use SSR.
   output: 'static',
   // Emit permanent HTTP redirects at the edge for legacy alias routes.

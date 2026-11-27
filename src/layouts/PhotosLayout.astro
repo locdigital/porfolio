@@ -1,10 +1,548 @@
 ---
-import type { ComponentProps } from "astro/types";
-import DashboardLayout from "./DashboardLayout.astro";
+import "../styles/global.css";
+import "../styles/dashboard.css";
+import "../components/dock/dock.styles.css";
+import interLatinFont from "../assets/fonts/inter-latin-variable.woff2?url";
+import MacTitlebar from "../components/dashboard/MacTitlebar.astro";
+import { DesktopShell } from "../components/desktop/DesktopShell";
+import { ChevronLeft, ChevronRight } from "../components/icons/phosphor";
+import { getUiCopy } from "../i18n/ui";
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_ALT,
+  PERSON_NAME,
+  SITE_URL,
+  absoluteUrl,
+  breadcrumbListSchema,
+  canonicalPath,
+  canonicalUrl,
+  graphSchema,
+  pageSchema,
+  safeJsonLd,
+  type BreadcrumbItem,
+  type JsonLd,
+} from "../lib/seo";
 
-type Props = Omit<ComponentProps<typeof DashboardLayout>, "app">;
+interface Props {
+  title?: string;
+  pageTitle?: string;
+  description?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  currentPath?: string;
+  maxWidthVariant?: "default" | "reading" | "gallery";
+  schema?: JsonLd | JsonLd[];
+  pageType?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: "website" | "article" | "profile";
+  author?: string;
+  datePublished?: string;
+  dateModified?: string;
+  noindex?: boolean;
+  robots?: string;
+  fullBleed?: boolean;
+}
+
+const copy = getUiCopy();
+
+const {
+  title = copy.photosUi.seoTitle,
+  pageTitle,
+  description = DEFAULT_DESCRIPTION,
+  breadcrumbs,
+  currentPath = Astro.url.pathname,
+  schema = [],
+  pageType = "WebPage",
+  ogImage = DEFAULT_OG_IMAGE,
+  ogImageAlt = DEFAULT_OG_IMAGE_ALT,
+  ogType = "website",
+  author = PERSON_NAME,
+  datePublished,
+  dateModified,
+  noindex = false,
+  robots,
+  fullBleed = false,
+} = Astro.props;
+
+const WALLPAPER_SRC = "/images/wallpaper-sapa-ridge-hd.webp";
+const WALLPAPER_WIDTH = 2400;
+const WALLPAPER_HEIGHT = 1600;
+
+const canonicalHref = canonicalUrl(Astro.url.pathname);
+const normalizedPath = canonicalPath(Astro.url.pathname);
+const markdownPath = normalizedPath === "/" ? "/index.md" : `${normalizedPath}.md`;
+const markdownUrl = new URL(markdownPath, SITE_URL).toString();
+const resolvedOgImage = absoluteUrl(ogImage);
+const robotsDirective = robots ?? (noindex ? "noindex, nofollow" : "index, follow");
+
+const pageSchemas = (Array.isArray(schema) ? schema.flat() : [schema]).filter(Boolean);
+const breadcrumbNode =
+  !noindex && breadcrumbs && breadcrumbs.length > 0
+    ? breadcrumbListSchema(breadcrumbs, canonicalHref)
+    : null;
+const hasExplicitWebPage = pageSchemas.some((node) => {
+  const id = node?.["@id"];
+  return typeof id === "string" && id.endsWith("#webpage");
+});
+
+const autoWebPageNode =
+  !noindex && !hasExplicitWebPage
+    ? pageSchema({
+        url: canonicalHref,
+        title,
+        description,
+        type: pageType,
+        primaryImageUrl: resolvedOgImage,
+        datePublished,
+        dateModified,
+        breadcrumbId: breadcrumbNode?.["@id"] as string | undefined,
+      })
+    : null;
+
+const graphNodes: JsonLd[] = [
+  ...(autoWebPageNode ? [autoWebPageNode] : []),
+  ...(breadcrumbNode ? [breadcrumbNode] : []),
+  ...pageSchemas,
+];
+const jsonLd = !noindex ? safeJsonLd(graphSchema(graphNodes)) : "";
+
+const photosHomeHref = "/photos";
+const isPhotosRoot = normalizedPath === "/photos";
+const windowTitle = isPhotosRoot
+  ? `${copy.photosUi.pageTitle} · ${copy.authorName}`
+  : pageTitle
+    ? `${pageTitle} — ${copy.photosUi.pageTitle}`
+    : copy.photosWindowTitle;
+const cfWebAnalyticsToken = (import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN || "").trim();
 ---
 
-<DashboardLayout {...Astro.props} app="photos">
-  <slot />
-</DashboardLayout>
+<!DOCTYPE html>
+<html lang="en" data-standalone-photos="true" data-desktop-app="photos">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual">
+  <meta name="description" content={description}>
+  <meta name="robots" content={robotsDirective}>
+  {!noindex && author && <meta name="author" content={author} />}
+  <meta name="is-agentic-site-type" content="business">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={resolvedOgImage}>
+  <meta property="og:image:alt" content={ogImageAlt}>
+  {!noindex && <meta property="og:url" content={canonicalHref} />}
+  <meta property="og:type" content={ogType}>
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content={copy.photosWindowTitle}>
+  {ogType === "article" && datePublished && <meta property="article:published_time" content={datePublished} />}
+  {ogType === "article" && dateModified && <meta property="article:modified_time" content={dateModified} />}
+  {ogType === "article" && author && <meta property="article:author" content={author} />}
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={resolvedOgImage}>
+  <meta name="twitter:image:alt" content={ogImageAlt}>
+
+  <title>{title}</title>
+  <script is:inline>
+    document.documentElement.classList.add("js");
+    const isEmbeddedWindow =
+      window.self !== window.top || new URLSearchParams(window.location.search).get("embed") === "1";
+    if (isEmbeddedWindow) {
+      document.documentElement.classList.add("is-embedded-window");
+    }
+    if (!isEmbeddedWindow) {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem("photos-window-state") || "null");
+        if (saved && typeof saved === "object") {
+          const closed = saved.closed === true;
+          const minimized = !closed && saved.minimized === true;
+          document.documentElement.classList.toggle("window-closed", closed);
+          document.documentElement.classList.toggle("window-minimized", minimized);
+          document.documentElement.classList.toggle("window-maximized", !closed && !minimized && saved.maximized === true);
+        }
+      } catch {}
+    }
+  </script>
+  <meta name="theme-color" content="#FFFFFF">
+  {!noindex && (
+    <>
+      <link rel="canonical" href={canonicalHref} />
+      <link rel="alternate" type="text/markdown" href={markdownUrl} title="Markdown version" />
+    </>
+  )}
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <link rel="preload" href={interLatinFont} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={WALLPAPER_SRC} as="image" type="image/webp" media="(min-width: 1024px)" fetchpriority="high" />
+
+  {!noindex && jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd}></script>}
+
+  <!-- Google Tag Manager / Google Analytics -->
+  <script is:inline async src="https://www.googletagmanager.com/gtm.js?id=GTM-KMGLHHMB"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  {cfWebAnalyticsToken && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token: cfWebAnalyticsToken })}
+    ></script>
+  )}
+</head>
+
+<body class="photos-standalone-body">
+  <div class="workspace-canvas">
+    <div class="workspace-wallpaper" aria-hidden="true">
+      <picture class="workspace-wallpaper-picture">
+        <source media="(min-width: 1024px)" srcset={WALLPAPER_SRC} type="image/webp" />
+        <img
+          class="workspace-wallpaper-image"
+          alt=""
+          width={WALLPAPER_WIDTH}
+          height={WALLPAPER_HEIGHT}
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
+          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+        />
+      </picture>
+    </div>
+
+    <div class="workspace-dock-persist">
+      <DesktopShell client:load initialPath={currentPath} />
+    </div>
+
+    <div class="mac-window-container photos-window-container">
+      <MacTitlebar title={windowTitle} appLabel={copy.nav.photos} />
+
+      <header class="photos-standalone-header" aria-label={copy.photosUi.pageTitle}>
+        <div class="photos-standalone-header-left">
+          {isPhotosRoot ? (
+            <a href={photosHomeHref} class="photos-brand-link" aria-current="page">
+              <span class="photos-brand-title">{copy.photosUi.pageTitle}</span>
+              <span class="photos-brand-author" aria-hidden="true">· {copy.authorName}</span>
+            </a>
+          ) : (
+            <div class="photos-detail-nav">
+              <a href={photosHomeHref} class="photos-back-link" aria-label={copy.mobileBackToPhotos}>
+                <ChevronLeft size={16} aria-hidden="true" />
+                <span>{copy.photosUi.detail.breadcrumbPhotos}</span>
+              </a>
+            </div>
+          )}
+        </div>
+      </header>
+
+      <main
+        id="main-content"
+        class:list={["photos-standalone-main", { "is-fullbleed": fullBleed }]}
+        tabindex="-1"
+      >
+        {fullBleed ? (
+          <slot />
+        ) : (
+          <div class="photos-detail-container">
+            {breadcrumbs && breadcrumbs.length > 0 && (
+              <nav class="dash-breadcrumbs" aria-label={copy.breadcrumbsAriaLabel}>
+                <ol>
+                  {breadcrumbs.map((crumb, idx) => (
+                    <li>
+                      {idx > 0 && (
+                        <span class="dash-crumb-sep">
+                          <ChevronRight size={12} aria-hidden="true" />
+                        </span>
+                      )}
+                      {crumb.href ? (
+                        <a href={crumb.href} class="dash-crumb-link">
+                          {crumb.label}
+                        </a>
+                      ) : (
+                        <span class="dash-crumb-current" aria-current="page">
+                          {crumb.label}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )}
+
+            <slot />
+
+            <footer class="photos-detail-footer" aria-label={copy.footerAriaLabel}>
+              <a href={photosHomeHref} class="dash-link">{copy.mobileBackToPhotos}</a>
+              <p class="photos-detail-footer-meta">{copy.footerCopyright(new Date().getFullYear())}</p>
+            </footer>
+          </div>
+        )}
+      </main>
+
+      <!-- Desktop resize handles -->
+      <div class="desktop-resize-handle desktop-resize-handle--w" data-window-resize="w" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--e" data-window-resize="e" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--s" data-window-resize="s" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--sw" data-window-resize="sw" aria-hidden="true"></div>
+      <div class="desktop-resize-handle desktop-resize-handle--se" data-window-resize="se" aria-hidden="true"></div>
+    </div>
+
+    <button
+      class="workspace-window-restore"
+      type="button"
+      data-window-action="restore"
+      aria-label={copy.openApp(copy.nav.photos)}
+      title={copy.openApp(copy.nav.photos)}
+      hidden
+    >
+      <span class="workspace-window-restore-icon" aria-hidden="true"></span>
+      <span>{copy.openApp(copy.nav.photos)}</span>
+    </button>
+  </div>
+
+  <script src="../scripts/photos-window.ts"></script>
+</body>
+</html>
+
+<style>
+  :global(html[data-standalone-photos]) {
+    --photos-header-h: 0px;
+    --photos-viewport-h: calc(var(--window-height, 92dvh) - var(--titlebar-height, 32px));
+  }
+
+  :global(html[data-standalone-photos].window-maximized) {
+    --photos-viewport-h: calc(100dvh - var(--titlebar-height, 32px));
+  }
+
+  .photos-window-container.is-pinned {
+    --photos-viewport-h: calc(100dvh - 64px);
+  }
+
+  .photos-window-container a {
+    text-decoration: none;
+  }
+
+  :where(.photos-window-container a[href]) {
+    color: var(--dash-accent);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .photos-standalone-header {
+    display: none;
+  }
+
+  .photos-standalone-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    overflow-x: clip;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    background: #ffffff;
+    color: var(--dash-text);
+  }
+
+  .photos-standalone-main.is-fullbleed {
+    padding: 0;
+  }
+
+  .photos-detail-container {
+    width: 100%;
+    max-width: 1040px;
+    margin-inline: auto;
+    padding: 28px 24px 56px;
+    box-sizing: border-box;
+  }
+
+  .photos-detail-footer {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: var(--text-body-sm);
+    color: var(--dash-muted);
+  }
+
+  .photos-detail-footer-meta {
+    margin: 0;
+    font-size: var(--text-body-sm);
+  }
+
+  @media (max-width: 1023px) {
+    :global(html[data-standalone-photos]) {
+      --photos-header-h: 50px;
+      --photos-viewport-h: calc(100dvh - var(--photos-header-h, 50px));
+    }
+
+    .photos-standalone-header {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: calc(var(--photos-header-h) + env(safe-area-inset-top, 0px));
+      padding: env(safe-area-inset-top, 0px) 14px 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: var(--dash-border-width, 0.9px) solid var(--dash-border);
+    }
+
+    .photos-standalone-header-left {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .photos-brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      color: var(--dash-text);
+    }
+
+    .photos-brand-title {
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: var(--tracking-subheading);
+      color: var(--dash-text);
+      white-space: nowrap;
+    }
+
+    .photos-brand-author {
+      font-size: var(--text-body-sm);
+      font-weight: var(--font-weight-regular);
+      color: var(--dash-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .photos-detail-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .photos-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 8px 5px 4px;
+      margin-left: -4px;
+      border-radius: var(--radius-control);
+      font-size: var(--text-body-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--dash-text);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+    }
+
+    .photos-back-link:hover {
+      background: var(--dash-hover);
+      color: var(--dash-link-hover);
+    }
+
+    .photos-standalone-main {
+      overflow: visible;
+      scrollbar-gutter: auto;
+    }
+
+    .photos-detail-container {
+      padding: 18px 16px calc(88px + env(safe-area-inset-bottom, 0px));
+    }
+
+    :global(html[data-standalone-photos] .mp-footer) {
+      padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .photos-brand-author {
+      display: none;
+    }
+
+    .photos-detail-footer {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  /* Embedded floating AppWindow overrides (must win over <= 1023px rules when window is narrow/tiled) */
+  :global(html[data-standalone-photos].is-embedded-window) {
+    --photos-header-h: 0px;
+    --photos-viewport-h: 100dvh;
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  :global(html[data-standalone-photos].is-embedded-window body) {
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  :global(html[data-standalone-photos].is-embedded-window .workspace-wallpaper),
+  :global(html[data-standalone-photos].is-embedded-window .workspace-dock-persist),
+  :global(html[data-standalone-photos].is-embedded-window .desktop-titlebar),
+  :global(html[data-standalone-photos].is-embedded-window .desktop-resize-handle),
+  :global(html[data-standalone-photos].is-embedded-window .photos-standalone-header),
+  :global(html[data-standalone-photos].is-embedded-window .workspace-window-restore) {
+    display: none !important;
+  }
+
+  :global(html[data-standalone-photos].is-embedded-window .workspace-canvas) {
+    padding: 0 !important;
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+  }
+
+  :global(html[data-standalone-photos].is-embedded-window .photos-window-container) {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    display: flex !important;
+  }
+
+  :global(html[data-standalone-photos].is-embedded-window .photos-standalone-main) {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+
+  :global(html[data-standalone-photos].is-embedded-window .photos-detail-container) {
+    padding-bottom: 48px !important;
+  }
+
+  :global(html[data-standalone-photos].is-embedded-window .mp-footer) {
+    padding-bottom: 24px !important;
+  }
+</style>

@@ -222,7 +222,7 @@ async function runAudit() {
 
     const htmlEl = findAll(doc, (n) => n.tagName === "html")[0];
     const lang = attr(htmlEl, "lang");
-    check(Boolean(lang && ["en", "vi"].includes(lang)), `${route}: invalid or missing <html lang>`);
+    check(Boolean(lang && lang === "en"), `${route}: invalid or missing <html lang>`);
 
     const titles = findAll(doc, (n) => n.tagName === "title");
     check(titles.length === 1 && textOf(titles[0]).trim().length > 0, `${route}: expected exactly 1 non-empty <title>`);

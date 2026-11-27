@@ -1,4 +1,5 @@
 import type { AppId, DockApplication } from "../dock/dock.config";
+import { getUiCopy } from "../../i18n/ui";
 
 interface AppSwitcherProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export function AppSwitcher({
 }: AppSwitcherProps) {
   if (!isOpen) return null;
 
+  const copy = getUiCopy().desktop;
   const selectedApp = apps[selectedIndex] ?? apps[0];
 
   return (
@@ -29,7 +31,7 @@ export function AppSwitcher({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label="App Switcher"
+      aria-label={copy.switcherAria}
     >
       <div
         className="macos-switcher-hud"
@@ -46,7 +48,7 @@ export function AppSwitcher({
                 className={`macos-switcher-item${isSelected ? " is-selected" : ""}`}
                 onMouseEnter={() => onSelectIndex(index)}
                 onClick={() => onCommit(app.id)}
-                aria-label={`Switch to ${app.name}`}
+                aria-label={copy.switchTo(app.name)}
               >
                 <span
                   className="macos-switcher-icon-wrap"
@@ -59,9 +61,8 @@ export function AppSwitcher({
                   <img
                     src={app.icon}
                     alt=""
-                    className={`macos-switcher-icon${
-                      app.iconFit === "contain" ? " is-contain" : ""
-                    }`}
+                    className={`macos-switcher-icon${app.iconFit === "contain" ? " is-contain" : ""
+                      }`}
                   />
                 </span>
                 <span className="macos-switcher-label">{app.name}</span>
@@ -76,7 +77,7 @@ export function AppSwitcher({
         <div className="macos-switcher-footer">
           <span className="macos-switcher-active-name">{selectedApp?.name}</span>
           <span className="macos-switcher-hint">
-            Tab / Click to switch · Enter to open · Esc to close
+            {copy.switcherHint}
           </span>
         </div>
       </div>

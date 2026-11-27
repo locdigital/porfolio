@@ -948,7 +948,7 @@ export const LOCATION_STORIES: Record<string, LocationEditorial> = {
       "editorialStatus": "verified"
   },
 
-  // 24. BANGKOK (THÁI LAN)
+  // 24. BANGKOK (THAILAND)
   "thai-lan": {
       "slug": "thai-lan",
       "title": "Bangkok",

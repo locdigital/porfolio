@@ -192,20 +192,59 @@ describe("WindowManager state transitions", () => {
     }
   });
 
-  it("preserves hostApp when toggling Pin Mode from /photos", () => {
-    let state = createInitialWindowState("/photos");
-    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "photos" });
-    expect(state.activeApp).toBe("photos");
-    expect(state.windows.photos.isPinned).toBe(true);
-    expect(state.windows.netflix.isPinned).toBe(true);
+  it("moves the clicked app to the Pin Mode centre by swapping slots", () => {
+    let state = createInitialWindowState("/");
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "workspace" });
+    expect(state.pinLayout).toEqual(["workspace", "netflix", "spotify", "photos"]);
+
+    state = windowManagerReducer(state, { type: "FOCUS_PIN_APP", id: "spotify" });
+    expect(state.pinLayout).toEqual(["spotify", "netflix", "workspace", "photos"]);
+    expect(state.activeApp).toBe("spotify");
     expect(state.windows.spotify.isPinned).toBe(true);
 
-    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "photos" });
+    state = windowManagerReducer(state, { type: "FOCUS_PIN_APP", id: "photos" });
+    expect(state.pinLayout).toEqual(["photos", "netflix", "workspace", "spotify"]);
+
+    // Leaving Pin Mode keeps the host plus the current centre app open.
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "workspace" });
+    expect(state.pinLayout).toBeNull();
     expect(state.activeApp).toBe("photos");
     expect(state.windows.photos.isOpen).toBe(true);
-    expect(state.windows.photos.isPinned).toBe(false);
+    expect(state.windows.workspace.isOpen).toBe(true);
+    expect(state.windows.netflix.isOpen).toBe(false);
+  });
+
+  it("drops the Pin Mode layout once a bento app is unpinned", () => {
+    let state = createInitialWindowState("/");
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "workspace" });
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_APP", id: "netflix" });
+    expect(state.pinLayout).toBeNull();
+  });
+
+  it("toggles Pin Mode cleanly for Workspace and Photos alongside Netflix and Spotify", () => {
+    let state = createInitialWindowState("/");
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "workspace" });
+    expect(state.activeApp).toBe("workspace");
+    expect(state.windows.workspace.isPinned).toBe(true);
+    expect(state.windows.netflix.isPinned).toBe(true);
+    expect(state.windows.spotify.isPinned).toBe(true);
+    expect(state.windows.photos.isPinned).toBe(true);
+
+    state = windowManagerReducer(state, { type: "TOGGLE_PIN_MODE", hostApp: "workspace" });
+    expect(state.activeApp).toBe("workspace");
+    expect(state.windows.workspace.isOpen).toBe(true);
+    expect(state.windows.workspace.isPinned).toBe(false);
     expect(state.windows.netflix.isOpen).toBe(false);
     expect(state.windows.spotify.isOpen).toBe(false);
+    expect(state.windows.photos.isOpen).toBe(false);
+
+    let photosState = createInitialWindowState("/photos");
+    photosState = windowManagerReducer(photosState, { type: "TOGGLE_PIN_MODE", hostApp: "photos" });
+    expect(photosState.activeApp).toBe("photos");
+    expect(photosState.windows.photos.isPinned).toBe(true);
+    expect(photosState.windows.netflix.isPinned).toBe(true);
+    expect(photosState.windows.spotify.isPinned).toBe(true);
+    expect(photosState.windows.workspace.isPinned).toBe(true);
   });
 
   it("syncs explicit maximize/restore state via SET_MAXIMIZED_APP", () => {
@@ -222,14 +261,14 @@ describe("WindowManager state transitions", () => {
     expect(state.windows.workspace.isMaximized).toBe(false);
   });
 
-  it("opens floating apps alongside Workspace without navigating away and raises Workspace on focus", () => {
+  it("opens all dock apps alongside the current host window without navigating away", () => {
     expect(getDockNavigationPath("photos", "/photos/da-lat")).toBeNull();
     expect(getDockNavigationPath("photos", "/photos/")).toBeNull();
     expect(getDockNavigationPath("photos", "/writing")).toBeNull();
     expect(getDockNavigationPath("netflix", "/")).toBeNull();
     expect(getDockNavigationPath("spotify", "/")).toBeNull();
     expect(getDockNavigationPath("workspace", "/writing/example")).toBeNull();
-    expect(getDockNavigationPath("workspace", "/photos/da-lat")).toBe("/");
+    expect(getDockNavigationPath("workspace", "/photos/da-lat")).toBeNull();
     expect(getDefaultAppForPath("/photoshop")).toBe("workspace");
     expect(getDefaultAppForPath("/music/spotify/")).toBe("spotify");
 

@@ -2,15 +2,17 @@
 import avatar from "../../assets/avatar.webp";
 import Heroicon from "../icons/Heroicon.astro";
 import type { HeroiconName } from "../icons/heroicons";
+import { getUiCopy } from "../../i18n/ui";
 
 interface Props {
   currentPath?: string;
-  locale?: string;
 }
 
 const {
   currentPath = Astro.url.pathname,
 } = Astro.props;
+
+const copy = getUiCopy();
 
 const normalizePath = (path: string) => {
   if (path === "/" || path === "") return "/";
@@ -18,6 +20,7 @@ const normalizePath = (path: string) => {
 };
 
 const activePath = normalizePath(currentPath);
+const homeHref = "/";
 
 interface NavItem {
   label: string;
@@ -34,23 +37,24 @@ interface NavSection {
 
 const navSections: NavSection[] = [
   {
-    group: "Workspace",
+    group: copy.nav.workspaceGroup,
     items: [
-      { label: "About",
+      {
+        label: copy.nav.about,
         href: "/about",
         icon: "finger-print",
         iconSrc: "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/78/61/b9/7861b9d5-8999-25f6-303d-08bf6112f2ce/f26de0fd-1ba0-4cbf-8c76-33fb0fbfeb16.png/40x40bb.webp",
       },
-      { label: "Work", href: "/work", icon: "work-stack" },
-      { label: "Services", href: "/services", icon: "cog-8-tooth" },
+      { label: copy.nav.work, href: "/work", icon: "work-stack" },
+      { label: copy.nav.services, href: "/services", icon: "cog-8-tooth" },
     ],
   },
   {
-    group: "Personal",
+    group: copy.nav.personalGroup,
     items: [
-      { label: "Writing", href: "/writing", icon: "journal" },
-      { label: "Growth Hub", href: "/growth", icon: "rocket-launch" },
-      { label: "Gear", href: "/gear", icon: "game-controller" },
+      { label: copy.nav.writing, href: "/writing", icon: "journal" },
+      { label: copy.nav.growth, href: "/growth", icon: "rocket-launch" },
+      { label: copy.nav.gear, href: "/gear", icon: "game-controller" },
     ],
   },
 ];
@@ -70,33 +74,33 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
 <div id="dash-drawer-backdrop" class="dash-drawer-backdrop" aria-hidden="true"></div>
 
 <!-- Sidebar Container -->
-<aside id="dash-sidebar" class="workspace-sidebar" aria-label="Workspace Navigation">
+<aside id="dash-sidebar" class="workspace-sidebar" aria-label={copy.navAriaLabel}>
   <div class="workspace-sidebar-inner">
-    
+
     <div>
       <!-- Top Identity Block -->
       <div class="dash-sidebar-header">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <a href="/" class="dash-user-row" aria-label="Phuc Loc Nguyen Home" aria-current={isCurrentPage("/") ? "page" : undefined} data-astro-prefetch="hover">
-            <img 
+          <a href={homeHref} class="dash-user-row" aria-label={copy.homeAriaLabel} aria-current={isCurrentPage(homeHref) ? "page" : undefined} data-astro-prefetch="hover">
+            <img
               src={avatar.src}
-              alt="Nguyen Phuc Loc" 
+              alt={copy.authorName}
               class="dash-user-avatar"
               width="28"
               height="28"
               decoding="async"
             />
             <div>
-              <div class="dash-user-name">Phuc Loc Nguyen</div>
-              <div class="dash-user-meta">Personal workspace</div>
+              <div class="dash-user-name">{copy.authorName}</div>
+              <div class="dash-user-meta">{copy.workspaceMeta}</div>
             </div>
           </a>
 
           <!-- Mobile Close Button -->
-          <button 
-            id="dash-drawer-close" 
-            class="mobile-menu-btn" 
-            aria-label="Close navigation menu"
+          <button
+            id="dash-drawer-close"
+            class="mobile-menu-btn"
+            aria-label={copy.closeNavMenu}
           >
             <Heroicon name="x-mark" size={18} />
           </button>
@@ -104,7 +108,7 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
       </div>
 
       <!-- Navigation Sections -->
-      <nav aria-label="Workspace Pages">
+      <nav aria-label={copy.navPagesAriaLabel}>
         {navSections.map((section) => (
           <div class="dash-nav-group">
             <div class="dash-nav-heading">{section.group}</div>
@@ -141,6 +145,5 @@ const isCurrentPage = (href: string) => activePath === normalizePath(href);
         ))}
       </nav>
     </div>
-
   </div>
 </aside>

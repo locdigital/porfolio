@@ -54,7 +54,7 @@ export function htmlToMarkdown(html, canonicalUrl) {
         if (spans.length >= 2) {
           const label = textOf(spans[0]).replace(/\s+/g, " ").trim();
           const val = textOf(spans[1]).replace(/\s+/g, " ").trim();
-          if (val && val !== "Chưa cập nhật" && val !== "Not updated") {
+          if (val && val !== "Not updated") {
             metaParts.push(`${label}: ${val}`);
           }
         }

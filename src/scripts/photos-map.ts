@@ -175,11 +175,29 @@ export function computeBoundsTuple(
 export function createPhotosMap(options: {
   container: HTMLElement;
   destinations: MapDestination[];
+  basePath?: string;
   onVisibleSlugsChange?: (slugs: string[]) => void;
   onStateChange?: (state: PhotosMapState, message?: string) => void;
   signal: AbortSignal;
 }): PhotosMapController {
-  const { container, destinations, onVisibleSlugsChange, onStateChange, signal } = options;
+  const {
+    container,
+    destinations,
+    basePath = "/photos",
+    onVisibleSlugsChange,
+    onStateChange,
+    signal,
+  } = options;
+  const numberLocale = "en-US";
+  const copy = {
+    loading: "Loading map…",
+    empty: "No photo locations are available yet.",
+    webglFallback: "Interactive map requires WebGL support in your browser.",
+    timeoutError: "The basemap took too long to load. Check your connection and try again.",
+    loadError: "The OpenFreeMap basemap could not be loaded. Check your connection and try again.",
+    photosLabel: "Photos",
+    photosUnitAria: "photos",
+  };
 
   let map: MapLibreMap | null = null;
   let resizeObserver: ResizeObserver | null = null;
@@ -240,9 +258,9 @@ export function createPhotosMap(options: {
       imgEl.alt = dest.name;
     }
     if (titleEl) titleEl.textContent = dest.name;
-    if (metaEl) metaEl.textContent = `${dest.photoCount.toLocaleString()} Photos · ${dest.country}`;
+    if (metaEl) metaEl.textContent = `${dest.photoCount.toLocaleString(numberLocale)} ${copy.photosLabel} · ${dest.country}`;
     if (headlineEl) headlineEl.textContent = dest.headline || "";
-    if (linkEl) linkEl.href = `/photos/${dest.albumSlug || dest.slug}`;
+    if (linkEl) linkEl.href = `${basePath}/${dest.albumSlug || dest.slug}`;
     cardEl.hidden = false;
   };
 
@@ -290,7 +308,7 @@ export function createPhotosMap(options: {
     if (!map || initialBoundsFitted) return;
     const active = getActiveDestinations();
     if (active.length === 0) {
-      setState("empty", "No photo locations are available yet.");
+      setState("empty", copy.empty);
       return;
     }
     initialBoundsFitted = true;
@@ -316,7 +334,7 @@ export function createPhotosMap(options: {
     });
 
   const createClusterMarker = (cluster: PinCluster): PooledMarker => {
-    const countText = cluster.totalPhotos.toLocaleString();
+    const countText = cluster.totalPhotos.toLocaleString(numberLocale);
     const labelText =
       cluster.items.length === 1
         ? cluster.cover.name
@@ -326,7 +344,7 @@ export function createPhotosMap(options: {
     const wrapper = document.createElement("div");
     wrapper.className = "mp-pin-wrapper";
     wrapper.innerHTML = `
-      <div class="mp-pin" role="button" tabindex="0" aria-label="${escapeHtml(labelText)} (${escapeHtml(countText)} photos)" data-count="${cluster.items.length}">
+      <div class="mp-pin" role="button" tabindex="0" aria-label="${escapeHtml(labelText)} (${escapeHtml(countText)} ${copy.photosUnitAria})" data-count="${cluster.items.length}">
         <div class="mp-pin-tooltip">${escapeHtml(labelText)}</div>
         <div class="mp-pin-frame">
           <img src="${escapeHtml(thumbSrc)}" alt="${escapeHtml(cluster.cover.name)}" width="60" height="60" loading="lazy" decoding="async" />
@@ -446,7 +464,7 @@ export function createPhotosMap(options: {
       if (maplibreWorkerUrl) {
         setWorkerUrl(maplibreWorkerUrl);
       }
-      setState("loading", "Loading map…");
+      setState("loading", copy.loading);
       map = new MapLibreMap({
         container: canvasEl,
         style: initialStyle,
@@ -465,15 +483,15 @@ export function createPhotosMap(options: {
     } catch (err) {
       console.error("[photos-map] WebGL initialization failed:", err);
       canvasEl.innerHTML =
-        '<div class="mp-map-fallback">Interactive map requires WebGL support in your browser.</div>';
-      setState("error", "Interactive map requires WebGL support in this browser.");
+        `<div class="mp-map-fallback">${escapeHtml(copy.webglFallback)}</div>`;
+      setState("error", copy.webglFallback);
       return;
     }
 
     styleLoadTimer = window.setTimeout(() => {
       if (!styleReady) {
         console.error("[photos-map] OpenFreeMap style did not finish loading within 15 seconds.");
-        setState("error", "The basemap took too long to load. Check your connection and try again.");
+        setState("error", copy.timeoutError);
       }
     }, 15_000);
 
@@ -497,7 +515,7 @@ export function createPhotosMap(options: {
       if (!styleReady || (status && status >= 400 && !map?.isStyleLoaded())) {
         styleErrorCount += 1;
         if (styleErrorCount >= 2) {
-          setState("error", "The OpenFreeMap basemap could not be loaded. Check your connection and try again.");
+          setState("error", copy.loadError);
         }
       }
     });
@@ -562,7 +580,7 @@ export function createPhotosMap(options: {
       hideCard();
     });
 
-    if (destinations.length === 0) setState("empty", "No photo locations are available yet.");
+    if (destinations.length === 0) setState("empty", copy.empty);
     renderClusters();
     syncCompass();
   };
@@ -570,14 +588,14 @@ export function createPhotosMap(options: {
   const retry = () => {
     styleReady = false;
     styleErrorCount = 0;
-    setState("loading", "Loading map…");
+    setState("loading", copy.loading);
     if (!map) {
       ensureInitialized();
       return;
     }
     if (styleLoadTimer !== null) window.clearTimeout(styleLoadTimer);
     styleLoadTimer = window.setTimeout(() => {
-      if (!styleReady) setState("error", "The basemap could not be loaded. Check your connection and try again.");
+      if (!styleReady) setState("error", copy.loadError);
     }, 15_000);
     map.setStyle(standardStyle(), { diff: false });
   };
