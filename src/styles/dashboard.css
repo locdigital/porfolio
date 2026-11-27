@@ -977,13 +977,6 @@ abbr {
   flex: 1 1 auto;
 }
 
-.mobile-topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
 .mobile-menu-btn {
   padding: 6px;
   flex-shrink: 0;
@@ -1001,16 +994,6 @@ abbr {
 
 .mobile-menu-btn:active {
   background: var(--dash-hover);
-}
-
-.mobile-search-btn {
-  margin-right: -10px;
-  color: var(--dash-muted);
-}
-
-.mobile-search-btn:hover,
-.mobile-search-btn:active {
-  color: var(--dash-text);
 }
 
 .mobile-page-label {
@@ -1129,11 +1112,6 @@ abbr {
     margin-left: -10px;
     min-width: 44px;
     min-height: 44px;
-  }
-
-  .mobile-search-btn {
-    margin-left: 0;
-    margin-right: -10px;
   }
 
   #dash-drawer-close {
