@@ -13,6 +13,10 @@ This site uses a **dual-CDN media storage architecture** designed for zero Verce
 3. **Tier 3 (Local Static UI Assets)**
    - Small UI icons, favicons, dock icons, and brand logos in `public/assets/logos/` and `public/assets/dock/` stay local. Only `/assets/logos/*` are run through Astro Sharp at build time.
 
+## Deploy Output
+
+Masters stay in `public/` because the optimise, migrate and thumbnail scripts read them. After the build, `scripts/prune-deploy-assets.mjs` (part of `pnpm build`) deletes every file from `.vercel/output/static` that has a verified entry in `data/r2-assets.json` and is not referenced locally by the built site, and adds a static 302 redirect from its old URL to the R2 original. Instagram scrape exports (`post.txt`, CSV/JSON) are never deployed. Run `node scripts/prune-deploy-assets.mjs --dry-run` after a build to preview.
+
 ## Resolution Flow
 
 - `src/lib/assets.ts`: `resolveAssetUrl()` and `buildR2ResponsiveImage()` resolve **Cloudflare R2 -> UploadThing -> local** (including automatically upgrading legacy UploadThing URLs when a verified Cloudflare R2 entry exists).

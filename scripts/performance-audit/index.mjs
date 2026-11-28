@@ -26,7 +26,7 @@ import { brotliCompressSync, constants as zlibConstants, gzipSync } from "node:z
 const ROOT = process.cwd();
 const STATIC_DIR = path.join(ROOT, ".vercel/output/static");
 const PUBLIC_DIR = path.join(ROOT, "public");
-const DOCS_DIR = path.join(ROOT, "docs");
+const DOCS_DIR = path.join(ROOT, "docs", "metrics");
 const BASELINE_FILE = path.join(DOCS_DIR, "baseline-metrics.json");
 const AFTER_FILE = path.join(DOCS_DIR, "after-metrics.json");
 

@@ -2,11 +2,11 @@
 
 **Date:** 2026-11-26
 **Target Site:** `https://loc.digital` (`locdigital/porfolio`, Astro 5 + Vercel + Cloudflare DNS/R2/Web Analytics/Turnstile)
-**Baseline Reference:** Existing `PERFORMANCE_REPORT.md` (measured 2026-11-25 against local production output) and `scripts/audit-media.mjs`.
+**Baseline Reference:** Existing `docs/reports/PERFORMANCE_REPORT.md` (measured 2026-11-25 against local production output) and `scripts/audit-media.mjs`.
 **After Measurement:** Local production output (`.vercel/output/static`) built on 2026-11-26 after Cloudflare infrastructure integration, served over localhost with gzip compression and production `Cache-Control` headers, audited via headless Google Chrome (Chrome DevTools Protocol).
 
 > [!NOTE]
-> Cloudflare R2 upload and DNS nameserver migration require authenticated Cloudflare & Spaceship dashboard actions (see `CLOUDFLARE_SETUP.md`). Therefore, "After" measurements reflect the **local build & runtime verification prior to R2 cutover** (with R2 manifest fallback active and responsive image optimization applied to `/about` and the shared asset pipeline). Re-run this comparison against a Vercel Preview Deployment after executing `pnpm run assets:optimize && pnpm run assets:migrate:r2`.
+> Cloudflare R2 upload and DNS nameserver migration require authenticated Cloudflare & Spaceship dashboard actions (see `docs/CLOUDFLARE_SETUP.md`). Therefore, "After" measurements reflect the **local build & runtime verification prior to R2 cutover** (with R2 manifest fallback active and responsive image optimization applied to `/about` and the shared asset pipeline). Re-run this comparison against a Vercel Preview Deployment after executing `pnpm run assets:optimize && pnpm run assets:migrate:r2`.
 
 ---
 
@@ -55,7 +55,7 @@ Measured at **Desktop (1440×900, 1× DPR)** and **Mobile (390×844, 2× DPR)** 
 ## 3. Lighthouse Status & Target (95+)
 
 - **Installed CLI status:** `lighthouse` CLI is not installed in the local environment (`which lighthouse` -> not found), so live Lighthouse 12 scores were not re-run locally in this pass.
-- **Recorded baseline (`PERFORMANCE_REPORT.md`):** Homepage Desktop **100 / 100** (LCP 0.71 s, CLS 0.000, TBT 0 ms); Homepage Mobile **93 / 100** (LCP 3.16 s, CLS 0.000, TBT 3 ms).
+- **Recorded baseline (`docs/reports/PERFORMANCE_REPORT.md`):** Homepage Desktop **100 / 100** (LCP 0.71 s, CLS 0.000, TBT 0 ms); Homepage Mobile **93 / 100** (LCP 3.16 s, CLS 0.000, TBT 3 ms).
 - **Expected post-preview Lighthouse impact:**
   - `/about` Mobile & Desktop LCP and Total Byte Weight improve dramatically (~1.41 MiB saved via responsive WebP + `fetchpriority="high"`).
   - Once assets are migrated to Cloudflare R2 (`assets.loc.digital`), edge-cached `480/768/1200/1920` WebP/AVIF variants with `public, max-age=31536000, immutable` reduce TTFB on photography pages globally.

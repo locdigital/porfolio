@@ -1,4 +1,6 @@
-import "maplibre-gl/dist/maplibre-gl.css";
+// Imported as a URL (not a side-effect import) so Astro does not hoist 70 KB of
+// render-blocking MapLibre CSS into the Photos page head; it loads with the map.
+import maplibreCssUrl from "maplibre-gl/dist/maplibre-gl.css?url";
 import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import {
   LngLatBounds,
@@ -6,6 +8,12 @@ import {
   Marker as MapLibreMarker,
   setWorkerUrl,
 } from "maplibre-gl";
+import { loadStylesheet } from "../lib/load-stylesheet";
+
+/** Attach the MapLibre stylesheet once and resolve when it has applied. */
+export function ensureMapStyles(): Promise<void> {
+  return loadStylesheet(maplibreCssUrl);
+}
 
 export interface MapDestination {
   slug: string;

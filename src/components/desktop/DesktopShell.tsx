@@ -19,6 +19,8 @@ import {
 } from "./window-manager";
 import { readHostWindowState } from "../../lib/host-window-state";
 import { getUiCopy } from "../../i18n/ui";
+import { loadStylesheet } from "../../lib/load-stylesheet";
+import { NETFLIX_STYLES_URL, SPOTIFY_STYLES_URL } from "../apps/app-styles";
 
 const DesktopWidget = lazy(() => import("./DesktopWidget").then((module) => ({ default: module.DesktopWidget })));
 
@@ -45,10 +47,16 @@ function preloadableApp<P extends object>(load: () => Promise<{ default: Compone
 }
 
 const { App: NetflixApp, preload: loadNetflix } = preloadableApp<FloatingAppProps>(
-  () => import("../apps/NetflixApp").then((module) => ({ default: module.NetflixApp })),
+  () =>
+    Promise.all([import("../apps/NetflixApp"), loadStylesheet(NETFLIX_STYLES_URL)]).then(([module]) => ({
+      default: module.NetflixApp,
+    })),
 );
 const { App: SpotifyApp, preload: loadSpotify } = preloadableApp<FloatingAppProps>(
-  () => import("../apps/SpotifyApp").then((module) => ({ default: module.SpotifyApp })),
+  () =>
+    Promise.all([import("../apps/SpotifyApp"), loadStylesheet(SPOTIFY_STYLES_URL)]).then(([module]) => ({
+      default: module.SpotifyApp,
+    })),
 );
 
 const NikonRecipesApp = lazy(() => import("../apps/NikonRecipesApp").then((module) => ({ default: module.NikonRecipesApp })));

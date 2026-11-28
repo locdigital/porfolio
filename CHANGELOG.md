@@ -1,3 +1,14 @@
+# Source & delivery cleanup (2026-11-28)
+
+| Area | Change |
+| --- | --- |
+| CSS | Spotify and Netflix app styles no longer ship in the shared bundle (133 KB → 99 KB on every page); they load with the app via `src/lib/load-stylesheet.ts`. MapLibre CSS (71 KB) is no longer render-blocking on `/photos`; it loads with the map. |
+| HTML | `src/components/layout/SiteHead.astro` replaces the duplicated `<head>` in both layouts. Google Tag Manager is fetched on idle instead of competing with first paint. |
+| Media | Desktop wallpaper re-encoded (600 KB → 304 KB). `scripts/prune-deploy-assets.mjs` drops 687 R2-mirrored masters (135.6 MB) from the deploy output and redirects their old URLs to R2; the `/assets/photos/*` SSR proxy (and its function) is removed. |
+| Build | The empty `growth` collection is skipped, removing a warning on every rendered page. |
+| Removed | Unreferenced `src/lib/uploadthing/server.ts`, `scripts/generate-majesticons.mjs`, `scripts/optimize-dock-images.mjs`, `scripts/optimize-image.mjs`, root `all-three-transparent.svg` / `gallery-icon.svg`, unused `public/favicon.svg` (137 KB). |
+| Layout | Root docs moved to `docs/`; reports to `docs/reports/`, benchmark JSON to `docs/metrics/`. |
+
 # Performance refactor
 
 This continuation started from an uncommitted refactor. The starting build already had separate search and photo feed builders, a cache helper, a typed UploadThing registry and extensive page and stylesheet edits. The measurements in the performance report use that working tree as the starting point.

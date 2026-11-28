@@ -55,3 +55,13 @@ export const ALLOWED_ASSET_CORS_ORIGINS = [
   "https://loc.digital",
   "https://www.loc.digital",
 ] as const;
+
+/** Desktop wallpaper shared by every workspace layout (preloaded on wide screens only). */
+export const WORKSPACE_WALLPAPER = {
+  src: "/images/wallpaper-sapa-ridge-hd.webp",
+  width: 2400,
+  height: 1600,
+} as const;
+
+/** Google Tag Manager container, loaded after the page becomes idle. */
+export const GTM_CONTAINER_ID = "GTM-KMGLHHMB";

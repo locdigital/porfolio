@@ -307,7 +307,13 @@ export async function getGear(): Promise<GearData | undefined> {
   };
 }
 
+// The growth collection is reserved for future playbooks. Skip the lookup while it has no
+// entries so Astro does not log an "empty collection" warning for every rendered page.
+const HAS_GROWTH_ENTRIES =
+  Object.keys(import.meta.glob("../content/growth/*.{md,mdx}")).length > 0;
+
 export async function getGrowthPlaybooks(): Promise<CollectionEntry<"growth">[]> {
+  if (!HAS_GROWTH_ENTRIES) return [];
   try {
     const entries = await getCollection(
       "growth",

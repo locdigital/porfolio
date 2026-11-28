@@ -2651,7 +2651,8 @@ const scriptI18n = {
       mapLoading = true;
       setMapStatus("loading", i18n.loadingMap);
       try {
-        const { createPhotosMap } = await import("../../scripts/photos-map");
+        const { createPhotosMap, ensureMapStyles } = await import("../../scripts/photos-map");
+        await ensureMapStyles();
         if (signal.aborted || activeNav !== "map") return;
         mapController = createPhotosMap({
           container: mapView,

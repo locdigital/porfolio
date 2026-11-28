@@ -13,7 +13,7 @@
     "prestart": "node scripts/ensure-node-20.mjs",
     "start": "astro dev",
     "prebuild": "node scripts/ensure-node-20.mjs && node scripts/sync-photo-updates.mjs",
-    "build": "astro check && astro build && node scripts/patch-vercel-runtime.mjs && node scripts/build-agent-content.mjs",
+    "build": "astro check && astro build && node scripts/patch-vercel-runtime.mjs && node scripts/build-agent-content.mjs && node scripts/prune-deploy-assets.mjs",
     "precheck": "node scripts/ensure-node-20.mjs",
     "check": "astro check",
     "pretest": "node scripts/ensure-node-20.mjs",

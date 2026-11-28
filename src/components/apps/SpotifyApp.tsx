@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import "./spotify/spotify.css";
 import { Play } from "lucide-react";
 import {
   ALL_SPOTIFY_COLLECTIONS,

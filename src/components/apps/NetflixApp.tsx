@@ -1,4 +1,3 @@
-import "./media-apps.css";
 import {
   useCallback,
   useEffect,
